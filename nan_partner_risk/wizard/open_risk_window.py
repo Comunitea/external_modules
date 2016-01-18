@@ -28,7 +28,6 @@ from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
 
-
 class open_risk_window(osv.osv_memory):
     """ Open Risk Window and show Partner relative information """
 
@@ -39,7 +38,6 @@ class open_risk_window(osv.osv_memory):
         'unpayed_amount': fields.float('Expired Unpaid Payments', digits=(4,2), readonly="True"),
         'pending_amount': fields.float('Unexpired Unpaid Payments', digits=(4,2), readonly="True"),
         'draft_invoices_amount': fields.float('Draft Invoices', digits=(4,2), readonly="True"),
-        'circulating_amount': fields.float('Payments Sent to Bank', digits=(4,2), readonly="True"),
         'pending_orders_amount': fields.float('Uninvoiced Orders', digits=(4,2), readonly="True"),
         'total_debt': fields.float('Total Debt', digits=(4,2), readonly="True"),
         'credit_limit': fields.float('Credit Limit', digits=(4,2), readonly="True"),
@@ -50,7 +48,6 @@ class open_risk_window(osv.osv_memory):
         'unpayed_amount': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).unpayed_amount or 0.0,
         'pending_amount': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).pending_amount or 0.0,
         'draft_invoices_amount': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).draft_invoices_amount or 0.0,
-        'circulating_amount': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).circulating_amount or 0.0,
         'pending_orders_amount': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).pending_orders_amount or 0.0,
         'total_debt': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).total_debt or 0.0,
         'credit_limit': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).credit_limit or 0.0,
@@ -58,5 +55,7 @@ class open_risk_window(osv.osv_memory):
         'total_risk_percent': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).total_risk_percent or 0.0,
     }
 
+
+open_risk_window()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
