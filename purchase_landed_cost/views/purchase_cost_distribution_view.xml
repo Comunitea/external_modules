@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
 	<data>
-
 		<menuitem id="menu_purchase_cost_control"
                   name="Costs distributions"
                   parent="base.menu_purchase_root"
-                  sequence="9" />
-
+                  sequence="6"/>
 		<record id="action_purchase_cost_distribution" model="ir.actions.act_window">
 			<field name="name">Purchase cost distributions</field>
 			<field name="res_model">purchase.cost.distribution</field>
@@ -29,6 +27,7 @@
 		</record>
 
 		<menuitem id="menu_purchase_cost_distribution"
+				  name="Costs Distribution"
                   action="action_purchase_cost_distribution"
                   parent="menu_purchase_cost_control"/>
 
