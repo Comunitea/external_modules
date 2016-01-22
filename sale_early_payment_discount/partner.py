@@ -20,13 +20,15 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class res_partner(osv.osv):
-    """Objeto que une las empresas con plazos de pago y descuentos pronto pago"""
+
+class res_partner(models.Model):
+    """Objeto que une las empresas con plazos de pago y descuentos pronto
+       pago"""
 
     _inherit = "res.partner"
 
-    _columns = {
-        'early_payment_discount_ids': fields.one2many('account.partner.payment.term.early.discount', 'partner_id', 'E.P. discounts')
-    }
+    early_payment_discount_ids = fields.One2many(
+        'account.partner.payment.term.early.discount', 'partner_id',
+        'E.P. discounts')

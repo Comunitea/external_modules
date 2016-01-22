@@ -19,14 +19,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp import models, fields
 
-from openerp.osv import osv, fields
 
-class payment_term(osv.osv):
-    """Objeto que une las empresas con plazos de pago y descuentos pronto pago"""
+class payment_term(models.Model):
+    """Objeto que une las empresas con plazos de pago y descuentos pronto
+       pago"""
 
     _inherit = "account.payment.term"
 
-    _columns = {
-        'early_payment_discount_ids': fields.one2many('account.partner.payment.term.early.discount', 'payment_term_id', 'E.P. discounts')
-    }
+    early_payment_discount_ids = fields.One2many(
+        'account.partner.payment.term.early.discount', 'payment_term_id',
+        'E.P. discounts')
