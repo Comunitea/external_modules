@@ -19,18 +19,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp import models, fields
 
-"""Add a new property for early payment discount account by default"""
 
-from openerp.osv import osv, fields
-
-class product_category(osv.osv):
+class product_category(models.Model):
     """Add a new property for early payment discount account by default"""
+
     _inherit = 'product.category'
 
-    _columns = {
-        'property_account_sale_early_payment_disc': fields.property('account.account',
-            type='many2one', relation='account.account',
-            string='Sale early payment account', method=True, view_load=True,
-            help='This account will be used to input the early payments discount in sale')
-    }
+    property_account_sale_early_payment_disc = fields.Many2one(
+        'account.account', 'Sale early payment account',
+        help='This account will be used to input the early payments discount \
+             in sale', company_dependent=True)

@@ -22,79 +22,44 @@
 
 """Inherit sale_order to add early payment discount"""
 
-from openerp.osv import fields, osv
-from openerp.addons.decimal_precision import decimal_precision as dp
+from openerp import models, fields, api, exceptions, _
+import openerp.addons.decimal_precision as dp
 
-class sale_order(osv.osv):
+
+class sale_order(models.Model):
     """Inherit sale_order to add early payment discount"""
 
-    _inherit ="sale.order"
+    _inherit = 'sale.order'
 
-    def _amount_all2(self, cr, uid, ids, field_name, arg, context):
+    early_payment_discount = fields.Float('E.P. disc.(%)', digits=(16,2), help="Early payment discount")
+    early_payment_disc_total = fields.Float('With E.P.', digits_compute=dp.get_precision('Account'), compute='_amount_all2')
+    early_payment_disc_untaxed = fields.Float('Untaxed Amount E.P.', digits_compute=dp.get_precision('Account'), compute='_amount_all2')
+    early_payment_disc_tax = fields.Float('Taxes E.P.', digits_compute=dp.get_precision('Account'), compute='_amount_all2')
+    total_early_discount = fields.Float('E.P. amount', digits_compute=dp.get_precision('Account'), compute='_amount_all2')
+
+    @api.one
+    @api.depends('order_line', 'early_payment_discount',
+                 'order_line.price_unit', 'order_line.tax_id',
+                 'order_line.discount', 'order_line.product_uom_qty')
+    def _amount_all2(self):
         """calculates functions amount fields"""
-        res = {}
-
-        for order in self.browse(cr, uid, ids):
-            res[order.id] = {
-                'early_payment_disc_untaxed': 0.0,
-                'early_payment_disc_tax': 0.0,
-                'early_payment_disc_total': 0.0,
-                'total_early_discount': 0.0
-            }
-
-            if not order.early_payment_discount:
-                res[order.id]['early_payment_disc_total'] = order.amount_total
-                res[order.id]['early_payment_disc_tax'] = order.amount_tax
-                res[order.id]['early_payment_disc_untaxed'] = order.amount_untaxed
-            else:
-                res[order.id]['early_payment_disc_tax'] = order.amount_tax * (1.0 - (float(order.early_payment_discount or 0.0)) / 100.0)
-                res[order.id]['early_payment_disc_untaxed'] = order.amount_untaxed * (1.0 - (float(order.early_payment_discount or 0.0)) / 100.0)
-                res[order.id]['early_payment_disc_total'] = res[order.id]['early_payment_disc_untaxed'] + res[order.id]['early_payment_disc_tax']
-                res[order.id]['total_early_discount'] = res[order.id]['early_payment_disc_untaxed'] - order.amount_untaxed
-
-        return res
-
-    def _get_order(self, cr, uid, ids, context={}):
-        result = {}
-        for line in self.pool.get('sale.order.line').browse(cr, uid, ids, context=context):
-            result[line.order_id.id] = True
-        return result.keys()
-
-    _columns = {
-        'early_payment_discount': fields.float('E.P. disc.(%)', digits=(16,2), help="Early payment discount"),
-        'early_payment_disc_total': fields.function(_amount_all2, method=True, digits_compute=dp.get_precision('Account'), string='With E.P.',
-            store = {
-                'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line','early_payment_discount'], 10),
-                'sale.order.line': (_get_order, ['price_unit', 'tax_id', 'discount', 'product_uom_qty'], 10),
-            },
-            multi='epd'),
-        'early_payment_disc_untaxed': fields.function(_amount_all2, method=True, digits_compute=dp.get_precision('Account'), string='Untaxed Amount E.P.',
-            store = {
-                'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line','early_payment_discount'], 10),
-                'sale.order.line': (_get_order, ['price_unit', 'tax_id', 'discount', 'product_uom_qty'], 10),
-            },
-            multi='epd'),
-        'early_payment_disc_tax': fields.function(_amount_all2, method=True, digits_compute=dp.get_precision('Account'), string='Taxes E.P.',
-            store = {
-                'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line','early_payment_discount'], 10),
-                'sale.order.line': (_get_order, ['price_unit', 'tax_id', 'discount', 'product_uom_qty'], 10),
-            },
-            multi='epd'),
-        'total_early_discount': fields.function(_amount_all2, method=True, digits_compute=dp.get_precision('Account'), string='E.P. amount',
-            store = {
-                'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line','early_payment_discount'], 10),
-                'sale.order.line': (_get_order, ['price_unit', 'tax_id', 'discount', 'product_uom_qty'], 10),
-            },
-            multi='epd'),
-    }
+        if not self.early_payment_discount:
+            self.early_payment_disc_total = self.amount_total
+            self.early_payment_disc_tax = self.amount_tax
+            self.early_payment_disc_untaxed = self.amount_untaxed
+        else:
+            self.early_payment_disc_tax = self.amount_tax * (1.0 - (float(self.early_payment_discount or 0.0)) / 100.0)
+            self.early_payment_disc_untaxed = self.amount_untaxed * (1.0 - (float(self.early_payment_discount or 0.0)) / 100.0)
+            self.early_payment_disc_total = self.early_payment_disc_untaxed + self.early_payment_disc_tax
+            self.total_early_discount = self.early_payment_disc_untaxed - self.amount_untaxed
 
     def onchange_partner_id2(self, cr, uid, ids, part, early_payment_discount=False, payment_term=False):
         """extend this event for delete early payment discount if it isn't valid to new partner or add new early payment discount"""
-        res = self.onchange_partner_id(cr, uid, ids, part)
+        res = self.onchange_partner_id(cr, uid, ids, part, {})
         if not part:
             res['value']['early_payment_discount'] = False
             return res
-        
+
         early_discs = []
 
         if not early_payment_discount and res.get('value', False):
@@ -134,15 +99,14 @@ class sale_order(osv.osv):
 
         return {'value': res}
 
-
-    def action_invoice_create(self, cr, uid, ids, grouped=False, states=['confirmed', 'done', 'exception'], date_inv = False, context=None):
+    @api.multi
+    def action_invoice_create(self, grouped=False, states=['confirmed', 'done', 'exception'], date_invoice=False):
         """
         Inherited method for writing early_payment_discount value in created invoice
         """
-        invoice_id = super(sale_order, self).action_invoice_create(cr, uid, ids, grouped=grouped, states=states, date_inv = date_inv, context=context)
-        invoice_facade = self.pool.get('account.invoice')
-        current_sale = self.browse(cr, uid, ids, context=context)[0]
+        invoice_id = super(sale_order, self).action_invoice_create(grouped=grouped, states=states, date_invoice = date_invoice)
+        invoice = self.env['account.invoice'].browse(invoice_id)
+        current_sale = self and self[0] or False
         if current_sale.early_payment_discount:
-            invoice_facade.write(cr, uid, invoice_id, {'early_payment_discount': current_sale.early_payment_discount})
+            invoice.write({'early_payment_discount': current_sale.early_payment_discount})
         return invoice_id
-

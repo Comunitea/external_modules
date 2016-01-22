@@ -20,34 +20,31 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields, api
 
-class account_partner_payment_term_early_discount(osv.osv):
-    """Objeto que une las empresas con plazos de pago y descuentos pronto pago"""
+
+class account_partner_payment_term_early_discount(models.Model):
+    """Objeto que une las empresas con plazos de pago y descuentos pronto
+        pago"""
 
     _name = "account.partner.payment.term.early.discount"
     _description = "Early payment discounts"
 
-    def _get_default_partner(self, cr, uid, context):
+    @api.model
+    def _get_default_partner(self):
         """return id of active object if it is res.partner"""
-        if context.get('partner_id', False):
-            return int(context['partner_id'])
-        return False
+        return self.env.context.get('partner_id', False)
 
-    def _get_default_payment_term(self, cr, uid, context):
+    @api.model
+    def _get_default_payment_term(self):
         """return id of active object if it is account.payment.term"""
-        if context.get('payment_term', False):
-            return int(context['payment_term'])
-        return False
+        return self.env.context.get('payment_term', False)
 
-    _columns = {
-        'name': fields.char('Name', size=64, required=True),
-        'partner_id': fields.many2one('res.partner', 'Partner'),
-        'payment_term_id': fields.many2one('account.payment.term', 'Payment Term'),
-        'early_payment_discount': fields.float('E.P. disc.(%)', digits=(16,2), required=True, help="Percentage of discount for early payment.")
-    }
-
-    _defaults = {
-        'partner_id': _get_default_partner,
-        'payment_term_id': _get_default_payment_term
-    }
+    name = fields.Char('Name', size=64, required=True)
+    partner_id = fields.Many2one('res.partner', 'Partner',
+                                 default=_get_default_partner)
+    payment_term_id = fields.Many2one('account.payment.term', 'Payment Term',
+                                      default=_get_default_payment_term)
+    early_payment_discount = fields.Float(
+        'E.P. disc.(%)', digits=(16, 2), required=True,
+        help="Percentage of discount for early payment.")
