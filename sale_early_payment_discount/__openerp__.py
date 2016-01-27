@@ -21,27 +21,25 @@
 ##############################################################################
 
 {
-    "name" : "Early payment discount",
-    "description" : """Pexego - Allow set an early payment discount in sale orders, invoices and picking lists. Includes:
+    'name' : 'Early payment discount',
+    'description' : """Pexego - Allow set an early payment discount in sale orders, invoices and picking lists. Includes:
                         -A new sales report overriding default Order Report.
                         -A new product category: System Products (a new account for E.P. will be set here)
                         -A new product for early payment discounts (an output stock account for discounts can be set here)
                     """,
-    "version" : "1.0",
-    "author" : "Pexego",
-    "depends" : ["base","product","account","sale","decimal_precision"],
-    "category" : "Enterprise Specific Modules",
-    "init_xml" : [],
-    # "update_xml" : ['security/ir.model.access.csv',
-    #                 'data/product_product.xml',
-    #                 'partner_payment_term_early_discount_view.xml',
-    #                 'partner_view.xml',
-    #                 'payment_term_view.xml',
-    #                 'sale_view.xml',
-    #                 'account_invoice_view.xml',
-    #                 'sale_report.xml',
-    #                 'product_category_view.xml'],
-    # 'demo_xml': [],
-    'installable': True,
-    'active': False,
+    'version' : '1.0',
+    'author' : 'Pexego',
+    'depends' : ['base', 'product', 'account', 'sale', 'sale_stock', 'stock',
+                 'stock_account', 'decimal_precision'],
+    'category' : 'Enterprise Specific Modules',
+    'data' : ['security/ir.model.access.csv',
+                    'data/product_product.xml',
+                    'partner_payment_term_early_discount_view.xml',
+                    'partner_view.xml',
+                    'payment_term_view.xml',
+                    'sale_view.xml',
+                    'account_invoice_view.xml',
+                    'product_category_view.xml',
+                    'report/sale_order.xml'],
+    'installable': True
 }

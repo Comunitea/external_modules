@@ -20,19 +20,26 @@
 #
 ##############################################################################
 
-"""Inherit stock_picking to add early payment discount from sale order"""
+from openerp import models, api
 
-from openerp.osv import osv
-
-class stock_picking(osv.osv):
+class stock_picking(models.Model):
     """Inherit stock_picking to add early payment discount from sale order"""
 
     _inherit = "stock.picking"
 
-    def _invoice_hook(self, cursor, user, picking, invoice_id):
+    """def _invoice_hook(self, cursor, user, picking, invoice_id):
         '''Call after the creation of the invoice from picking, add early payment discount from sale order'''
         #checks if early payment discount is defined in sale order
         if picking and picking.sale_id and picking.sale_id.early_payment_discount and invoice_id:
             self.pool.get('account.invoice').write(cursor, user, [invoice_id], {'early_payment_discount': picking.sale_id.early_payment_discount})
-            
-        return super(stock_picking, self)._invoice_hook(cursor, user, picking, invoice_id)
+
+        return super(stock_picking, self)._invoice_hook(cursor, user, picking,
+                                                        invoice_id)"""
+    @api.model
+    def _create_invoice_from_picking(self, picking, vals):
+        ''' This function simply creates the invoice from the given values. It is overriden in delivery module to add the delivery costs.
+        '''
+        if picking and picking.sale_id and picking.sale_id.early_payment_discount:
+            vals['early_payment_discount'] = picking.sale_id.early_payment_discount
+
+        return super(stock_picking, self)._create_invoice_from_picking(picking, vals)
