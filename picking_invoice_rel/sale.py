@@ -31,7 +31,6 @@ class sale_order(osv.osv):
         if not res:
             return res
         self._logger.debug('SO inv create ids,res:%s %s', ids,res)
-
         invoice_ids = res
         if not isinstance(invoice_ids,list):
            invoice_ids = [invoice_ids]

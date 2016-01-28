@@ -20,6 +20,10 @@
 #
 ##############################################################################
 from openerp.osv import fields, osv
+class stock_move (osv.osv):
+    _inherit = "stock.move"
+    def _create_invoice_line_from_vals(self, cr, uid, move, invoice_line_vals, context=None):
+        return self.pool.get('account.invoice.line').create(cr, uid, invoice_line_vals, context=context)
 
 class stock_picking(osv.osv):
     _inherit = "stock.picking"
@@ -40,13 +44,19 @@ where p.name = split_part(i.origin,':',1) and (p.id,i.id) not in (select picking
 
     def action_invoice_create(self, cr, uid, ids, journal_id=False,
             group=False, type='out_invoice', context=None):
+        import ipdb; ipdb.set_trace()
         res = super(stock_picking,self).action_invoice_create(cr, uid, ids, journal_id,
             group, type, context)
-        picking_id = res.keys()[0]
-        invoice_ids = res.values()[0]
-        if not isinstance(invoice_ids,list):
-           invoice_ids = [invoice_ids]
-        self.write(cr, uid, picking_id, {'invoice_ids' : [(6,0, invoice_ids )]}, context=context) 
+        picking_id = ids #res.keys()[0]
+        invoice_ids = res #.values()[0]
+        # if not isinstance(invoice_ids,list):
+        #    invoice_ids = [invoice_ids]
+        # for picking_id in ids:
+        #     picking = self.pool.get('stock.picking').browse(cr, uid, picking_id)
+        #     for move in picking.move_lines:
+        #         self.pool.get('account.invoice.line')
+
+        self.write(cr, uid, picking_id, {'invoice_ids' : [(6,0, invoice_ids )]}, context=context)
         return res
 
     def copy(self, cr, uid, id, default=None, context=None):
@@ -55,7 +65,15 @@ where p.name = split_part(i.origin,':',1) and (p.id,i.id) not in (select picking
         default = default.copy()
         default.update({'invoice_ids': [],})
         return super(stock_picking, self).copy(cr, uid, id, default, context)
-                
+
+
+    def _invoice_line_hook(self, cursor, user, move_line, invoice_line_id):
+        super(stock_picking, self)._invoice_line_hook(cursor, user, move_line, invoice_line_id)
+        if move_line and invoice_line_id:
+            self.pool.get('account.invoice.line').write(cursor, user, invoice_line_id, {
+                    'stock_move_id': move_line.id,
+                })
+        return
 
 stock_picking()
 

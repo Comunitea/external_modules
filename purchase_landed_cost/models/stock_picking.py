@@ -10,7 +10,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def action_open_landed_cost(self):
-        import ipdb; ipdb.set_trace()
+
         self.ensure_one()
         line_obj = self.env['purchase.cost.distribution.line']
         lines = line_obj.search([('picking_id', '=', self.id)])

@@ -149,6 +149,7 @@ class PurchaseCostDistribution(models.Model):
 
     @api.multi
     def action_calculate(self):
+
         for distribution in self:
             # Check expense lines for amount 0
             if any([not x.expense_amount for x in distribution.expense_lines]):
@@ -203,8 +204,7 @@ class PurchaseCostDistribution(models.Model):
                     elif expense.type.calculation_method == 'volume':
                         multiplier = line.total_volume
                         if expense.affected_lines:
-                            divisor = sum([x.total_volume for x in
-                                           expense.affected_lines])
+                            divisor = sum([x.total_volume for x in expense.affected_lines])
                         else:
                             divisor = distribution.total_volume
                     elif expense.type.calculation_method == 'equal':
@@ -214,8 +214,12 @@ class PurchaseCostDistribution(models.Model):
                     else:
                         raise exceptions.Warning(
                             _('No valid distribution type.'))
-                    expense_amount = (expense.expense_amount * multiplier /
-                                      divisor)
+                    #para evitar division por 0
+                    if divisor != 0:
+                        expense_amount = (expense.expense_amount * multiplier /
+                                          divisor)
+                    else:
+                        expense_amount = expense.expense_amount
                     expense_line = {
                         'distribution_expense': expense.id,
                         'expense_amount': expense_amount,
@@ -308,7 +312,7 @@ class PurchaseCostDistributionLine(models.Model):
     @api.one
     @api.depends('product_id', 'product_qty')
     def _compute_total_volume(self):
-        self.total_volume = self.product_volume * self.product_qty
+        self.total_volume = self.product_volume * self.product_qty or self.product_id.volume * self.product_qty
 
     @api.one
     @api.depends('expense_lines', 'expense_lines.cost_ratio')
