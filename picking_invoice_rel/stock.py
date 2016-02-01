@@ -44,7 +44,6 @@ where p.name = split_part(i.origin,':',1) and (p.id,i.id) not in (select picking
 
     def action_invoice_create(self, cr, uid, ids, journal_id=False,
             group=False, type='out_invoice', context=None):
-        import ipdb; ipdb.set_trace()
         res = super(stock_picking,self).action_invoice_create(cr, uid, ids, journal_id,
             group, type, context)
         picking_id = ids #res.keys()[0]
