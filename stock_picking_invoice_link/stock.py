@@ -50,6 +50,8 @@ class StockPicking(models.Model):
     invoice_view_xmlid = fields.Char(compute='_get_invoice_view_xmlid',
                                      string="Invoice View XMLID",
                                      readonly=True)
+    client_order_ref = fields.Char(related='sale_id.client_order_ref', string="Client Ref")
+
 
 
 
