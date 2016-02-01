@@ -55,7 +55,7 @@ class sale_order(models.Model):
 
     def onchange_partner_id2(self, cr, uid, ids, part, early_payment_discount=False, payment_term=False):
         """extend this event for delete early payment discount if it isn't valid to new partner or add new early payment discount"""
-        res = self.onchange_partner_id(cr, uid, ids, part, {})
+        res = self.onchange_partner_id(cr, uid, ids, part)
         if not part:
             res['value']['early_payment_discount'] = False
             return res
