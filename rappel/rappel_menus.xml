@@ -1,0 +1,10 @@
+<openerp>
+   <data>
+
+        <menuitem id="menu_rappel_config_sale" name="Rappel" sequence="5" parent="base.menu_base_config"/>
+            <menuitem action="action_rappel_sales" id="menu_rappel_rappel_sale" name="Rappels" sequence="1" parent="menu_rappel_config_sale"/>
+            <menuitem action="action_rappel_info" id="menu_rappel_rappel_info" name="Current Info Rappels" sequence="2" parent="menu_rappel_config_sale"/>
+            <menuitem action="action_rappel_calculated" id="menu_rappel_rappel_calculated" name="Computed Rappels" sequence="3" parent="menu_rappel_config_sale"/>
+            <menuitem action="action_rappel_type" id="menu_rappel_types_sale" name="Rappel Types" sequence="4" parent="menu_rappel_config_sale"/>
+   </data>
+</openerp>
