@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+        <record id="view_order_form_add_warehouse" model="ir.ui.view">
+            <field name="name">sale.order.form.add.warehouse</field>
+            <field name="model">sale.order</field>
+            <field name="type">form</field>
+             <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//field[@name='order_line']/form/group/group/div[@name='discount']" position="after">
+                    <field name="warehouse_id" widget="selection"/>
+                    <field name="method" attrs="{'required':[('warehouse_id','!=',False)]}"/>
+                    <newline/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

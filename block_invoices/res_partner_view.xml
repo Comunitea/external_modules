@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--[01/07/15] Se añade el campo 'Ventas bloqueadas' a la vista form de la empresa-->
+        <record model="ir.ui.view" id="view_partner_form_add_block_sales_field">
+            <field name="name">view.partner.form.add.block.sales.field</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='sales_purchases']/group[1]" position="before">
+                    <group colspan="4" col="4">
+                        <field name="blocked_sales" readonly="1"/>
+                        <button name="check_customer_block_state" type="object" string="Check"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

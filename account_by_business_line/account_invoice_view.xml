@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record model="ir.ui.view" id="view_invoice_line_form_inherit_add_business_line">
+        <field name="name">account.invoice.line.form.inherit.add_business_line</field>
+        <field name="model">account.invoice.line</field>
+        <field name="inherit_id" ref="account.view_invoice_line_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="account_analytic_id" position="after">
+                <field name="business_line_id" widget="selection"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_invoice_line_tree_add_business_line" model="ir.ui.view">
+            <field name="name">account.invoice.line.tree.add_business_line</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_tree"/>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <field name="discount" position="after">
+                    <field name="business_line_id" widget="selection"/>
+                </field>
+                <field name="price_unit" position="before">
+                    <field name="account_analytic_id"/>
+                    <field name="analytics_id"/>
+                </field>
+            </field>
+        </record>
+
+    <record model="ir.ui.view" id="invoice_supplier_form_inherit_add_business_line">
+        <field name="name">account.invoice.supplier.form.inherit.add_business_line</field>
+        <field name="model">account.invoice</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <field name="fiscal_position" position="after">
+                <field name="business_line_id" widget="selection"/>
+            </field>
+            <field name="quantity" position="before">
+                <field name="business_line_id" widget="selection"/>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="invoice_form_inherit_add_business_line">
+        <field name="name">account.invoice.form.inherit.add_business_line</field>
+        <field name="model">account.invoice</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <field name="fiscal_position" position="after">
+                <field name="business_line_id" widget="selection"/>
+            </field>
+        </field>
+    </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="banking_export_sdd_wizard_view_add_gb_partner" model="ir.ui.view">
+            <field name="name">banking.export.sdd.wizard.view.add_gb_partner</field>
+            <field name="model">banking.export.sdd.wizard</field>
+            <field name="inherit_id" ref="account_banking_sepa_direct_debit.banking_export_sdd_wizard_view"/>
+            <field name="arch" type="xml">
+                <field name="batch_booking" position="after">
+                    <field name="group_by_partner"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

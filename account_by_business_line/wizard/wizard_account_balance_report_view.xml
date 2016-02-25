@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+     <record id="account_trial_balance_view_webkit_add_business_line" model="ir.ui.view">
+        <field name="name">Trial Balance</field>
+        <field name="model">trial.balance.webkit</field>
+        <field name="inherit_id" ref="account_financial_report_webkit.account_trial_balance_view_webkit"/>
+        <field name="arch" type="xml">
+            <page name="filters" position="after">
+                <page string="Business Line Filters" name="blines">
+                    <field name="business_line_ids" nolabel="1" colspan="4"/>
+                </page>
+            </page>
+        </field>
+    </record>
+
+</data>
+</openerp>

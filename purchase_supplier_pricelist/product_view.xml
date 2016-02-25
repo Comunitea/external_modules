@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="product_supplierinfo_form_view_add_amounts" model="ir.ui.view">
+            <field name="name">product.supplierinfo.form.view.add_amounts</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='pricelist_ids']/tree/field[@name='min_quantity']" position="before">
+                    <field name="from_date"/>
+                </xpath>
+                <xpath expr="//field[@name='pricelist_ids']/tree/field[@name='price']" position="before">
+                    <field name="gross_amount" on_change="on_change_price(gross_amount, discount)"/>
+                    <field name="discount" on_change="on_change_price(gross_amount, discount)"/>
+                </xpath>
+                <xpath expr="//field[@name='pricelist_ids']/form/group/field[@name='min_quantity']" position="before">
+                    <field name="from_date"/>
+                </xpath>
+                <xpath expr="//field[@name='pricelist_ids']/form/group/field[@name='price']" position="before">
+                    <field name="gross_amount" on_change="on_change_price(gross_amount, discount)"/>
+                    <field name="discount" on_change="on_change_price(gross_amount, discount)"/>
+                </xpath>
+                <field name="company_id" position="after">
+                    <field name="supplier_currency_id"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

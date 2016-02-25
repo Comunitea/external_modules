@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="wizard_moves_to_pick_form" model="ir.ui.view">
+            <field name="name">wizard.moves.to.pick.form</field>
+            <field name="model">moves.to.pick</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="name" invisible="1"/>
+                    <label string="Are you sure to pick selected moves?" colspan="2"/>
+                    <group col="2" colspan="2">
+                        <button icon='gtk-cancel' special="cancel" string="Cancel" />
+                        <button name="to_pick" string="To pick" colspan="1" type="object" icon="gtk-go-forward" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <act_window
+            id="action moves_to_pick" name="To pick"
+            res_model="moves.to.pick"
+            src_model="stock.move"
+            view_type="form"
+            view_mode="form"
+            target="new"
+            view_id="wizard_moves_to_pick_form"
+            key2="client_action_multi"
+            />
+
+    </data>
+</openerp>

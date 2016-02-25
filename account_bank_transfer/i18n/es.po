@@ -1,0 +1,73 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#   * account_bank_transfer
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-07-15 15:25+0000\n"
+"PO-Revision-Date: 2014-07-15 15:25+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_bank_transfer
+#: field:account.bank.transfer.wzd,name:0
+msgid "Description"
+msgstr "Descripción"
+
+#. module: account_bank_transfer
+#: field:account.bank.transfer.wzd,amount:0
+msgid "Amount to transfer"
+msgstr "Importe a transferir"
+
+#. module: account_bank_transfer
+#: model:ir.actions.act_window,name:account_bank_transfer.action_bank_transfer
+msgid "account.bank.transfer.wzd.open"
+msgstr "account.bank.transfer.wzd.open"
+
+#. module: account_bank_transfer
+#: view:account.bank.transfer.wzd:0
+#: model:ir.ui.menu,name:account_bank_transfer.action_bank_transfer_menu
+msgid "Transfer between banks"
+msgstr "Transferencia entre bancos"
+
+#. module: account_bank_transfer
+#: field:account.bank.transfer.wzd,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: account_bank_transfer
+#: field:account.bank.transfer.wzd,mid_account_id:0
+msgid "Intermediate account"
+msgstr "Cuenta intermedia"
+
+#. module: account_bank_transfer
+#: model:ir.model,name:account_bank_transfer.model_account_bank_transfer_wzd
+msgid "account.bank.transfer.wzd"
+msgstr "account.bank.transfer.wzd"
+
+#. module: account_bank_transfer
+#: view:account.bank.transfer.wzd:0
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: account_bank_transfer
+#: view:account.bank.transfer.wzd:0
+msgid "Execute transfer"
+msgstr "Ejecutar transferencia"
+
+#. module: account_bank_transfer
+#: field:account.bank.transfer.wzd,orig_journal_id:0
+msgid "Orig. bank"
+msgstr "Banco orig."
+
+#. module: account_bank_transfer
+#: field:account.bank.transfer.wzd,dest_journal_id:0
+msgid "Dest. bank"
+msgstr "Banco dest."
+

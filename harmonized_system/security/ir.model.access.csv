@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_harmonyzed_codes,harmonyzed.codes,model_harmonyzed_codes,account.group_account_manager,1,1,1,1
+access_harmonyzed_codes_sale_manager,harmonyzed.codes sale manager,model_harmonyzed_codes,base.group_sale_manager,1,1,1,1
+access_harmonyzed_codes_purchase_manager,harmonyzed.codes purchase manager,model_harmonyzed_codes,purchase.group_purchase_manager,1,1,1,1
+access_harmonyzed_codes_stock_manager,harmonyzed.codes stock manager,model_harmonyzed_codes,stock.group_stock_manager,1,1,1,1
+access_harmonyzed_codes_all,harmonyzed.codes all,model_harmonyzed_codes,,1,0,0,0

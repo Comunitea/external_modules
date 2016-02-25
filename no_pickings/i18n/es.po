@@ -1,0 +1,136 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#       * no_pickings
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-15 17:52+0000\n"
+"PO-Revision-Date: 2016-01-15 17:52+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: no_pickings
+#: view:moves.to.pick:no_pickings.wizard_moves_to_pick_form
+msgid "Are you sure to pick selected moves?"
+msgstr "¿Está usted seguro de albaranar los movimientos seleccionados?"
+
+#. module: no_pickings
+#: view:moves.to.pick:no_pickings.wizard_moves_to_pick_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: no_pickings
+#: field:moves.to.pick,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: no_pickings
+#: field:moves.to.pick,create_date:0
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: no_pickings
+#: code:addons/no_pickings/wizard/moves_to_pick.py:31
+#, python-format
+msgid "Customer of moves must be the same."
+msgstr "El cliente de los movimientos debe ser el mismo."
+
+#. module: no_pickings
+#: code:addons/no_pickings/no_pickings.py:56
+#, python-format
+msgid "Error"
+msgstr "Error"
+
+#. module: no_pickings
+#: field:moves.to.pick,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: no_pickings
+#: field:moves.to.pick,write_uid:0
+msgid "Last Updated by"
+msgstr "Últ. actualización por"
+
+#. module: no_pickings
+#: field:moves.to.pick,write_date:0
+msgid "Last Updated on"
+msgstr "Últ. actualización el"
+
+#. module: no_pickings
+#: model:ir.model,name:no_pickings.model_stock_location
+msgid "Location"
+msgstr "Ubicación"
+
+#. module: no_pickings
+#: field:moves.to.pick,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: no_pickings
+#: field:sale.order,no_picking:0
+msgid "No picking"
+msgstr "No albaranar"
+
+#. module: no_pickings
+#: view:stock.move:no_pickings.view_move_search_add_groups
+msgid "Origin"
+msgstr "Origen"
+
+#. module: no_pickings
+#: view:stock.move:no_pickings.view_move_search_add_groups
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: no_pickings
+#: view:stock.move:no_pickings.view_move_search_add_groups
+msgid "Picking"
+msgstr "Albarán"
+
+#. module: no_pickings
+#: model:ir.model,name:no_pickings.model_stock_picking
+msgid "Picking List"
+msgstr "Albarán"
+
+#. module: no_pickings
+#: model:ir.model,name:no_pickings.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: no_pickings
+#: model:ir.model,name:no_pickings.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de existencias"
+
+#. module: no_pickings
+#: model:ir.actions.act_window,name:no_pickings.action_move_form_no_picking
+#: model:ir.ui.menu,name:no_pickings.menu_moves_to_pick
+msgid "Stock Moves To Pick"
+msgstr "Movimientos a albaranar"
+
+#. module: no_pickings
+#: model:ir.actions.act_window,name:no_pickings.action moves_to_pick
+#: view:moves.to.pick:no_pickings.wizard_moves_to_pick_form
+msgid "To pick"
+msgstr "Albaranar"
+
+#. module: no_pickings
+#: view:stock.picking:no_pickings.view_picking_form_add_undo_btn
+msgid "Undo"
+msgstr "Deshacer"
+
+#. module: no_pickings
+#: view:stock.move:no_pickings.view_move_search_add_groups
+msgid "Warehouse"
+msgstr "Almacén"
+
+#. module: no_pickings
+#: code:addons/no_pickings/wizard/moves_to_pick.py:34
+#, python-format
+msgid "Warehouse of moves must be the same."
+msgstr "El almacén de los movimientos debe ser el mismo."
