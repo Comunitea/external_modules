@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record model="ir.ui.view" id="view_partner_form_holidays">
+        <field name="name">res.partner.form.holidays</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <page name="accounting_disabled" position="after">
+                <page string="Holidays">
+                    <group>
+                        <field name="pays_during_holidays" colspan="4"/>
+                        <field name="holiday_ids" nolabel="1" colspan="4">
+                            <form string="Holidays">
+                                <group>
+                                    <field name="start"/>
+                                    <field name="end"/>
+                                </group>
+                            </form>
+                            <tree string="Holidays">
+                                <field name="start"/>
+                                <field name="end"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </page>
+            <field name="property_payment_term" position="after">
+                <field name="payment_days"/>
+            </field>
+        </field>
+    </record>
+
+</data>
+</openerp>
+

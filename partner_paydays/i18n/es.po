@@ -1,0 +1,99 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#       * partner_paydays
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-22 16:23+0000\n"
+"PO-Revision-Date: 2016-01-22 16:23+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: partner_paydays
+#: field:res.partner.holidays,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: partner_paydays
+#: field:res.partner.holidays,create_date:0
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: partner_paydays
+#: field:res.partner.holidays,end:0
+msgid "End"
+msgstr "Fin"
+
+#. module: partner_paydays
+#: view:res.partner:partner_paydays.view_partner_form_holidays
+#: field:res.partner,holiday_ids:0
+msgid "Holidays"
+msgstr "Vacaciones"
+
+#. module: partner_paydays
+#: field:res.partner.holidays,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: partner_paydays
+#: help:res.partner,payment_days:0
+msgid "If a company has more than one payment days in a month you should fill them in this field and set 'Day of the Month' field in line to zero. For example, if a company pays the 5th and 20th days of the month you should write '5-20' here."
+msgstr "Si una empresa tiene más de un día de pago en un mes, debe indicarlo en este campo. Por ejemplo, si una empresa paga los días 5 y 20 del mes debe escribir '5-20' aquí."
+
+#. module: partner_paydays
+#: help:res.partner,pays_during_holidays:0
+msgid "Indicates whether the partner pays during holidays. If it doesn''t, it will be taken into account when calculating due dates."
+msgstr "Indica si la empresa paga durante las vacaciones. Sino lo hace, lo tendrá en cuenta cuando calcule las fechas de vencimiento."
+
+#. module: partner_paydays
+#: model:ir.model,name:partner_paydays.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: partner_paydays
+#: field:res.partner.holidays,write_uid:0
+msgid "Last Updated by"
+msgstr "Últ. actualización por"
+
+#. module: partner_paydays
+#: field:res.partner.holidays,write_date:0
+msgid "Last Updated on"
+msgstr "Últ. actualización el"
+
+#. module: partner_paydays
+#: model:ir.model,name:partner_paydays.model_res_partner
+#: field:res.partner.holidays,partner_id:0
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: partner_paydays
+#: model:ir.model,name:partner_paydays.model_account_payment_term
+msgid "Payment Term"
+msgstr "Plazo de pago"
+
+#. module: partner_paydays
+#: field:res.partner,payment_days:0
+msgid "Payment days"
+msgstr "Días de pago"
+
+#. module: partner_paydays
+#: code:addons/partner_paydays/partner_paydays.py:48
+#, python-format
+msgid "Payment days field format is not valid."
+msgstr "El formato del campo Días dde pago no es válido."
+
+#. module: partner_paydays
+#: field:res.partner,pays_during_holidays:0
+msgid "Pays During Holidays"
+msgstr "Paga en vacaciones"
+
+#. module: partner_paydays
+#: field:res.partner.holidays,start:0
+msgid "Start"
+msgstr "Inicio"
