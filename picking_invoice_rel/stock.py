@@ -23,6 +23,7 @@ from openerp.osv import fields, osv
 class stock_move (osv.osv):
     _inherit = "stock.move"
     def _create_invoice_line_from_vals(self, cr, uid, move, invoice_line_vals, context=None):
+        invoice_line_vals['stock_move_id'] = move.id
         return self.pool.get('account.invoice.line').create(cr, uid, invoice_line_vals, context=context)
 
 class stock_picking(osv.osv):
@@ -64,15 +65,4 @@ where p.name = split_part(i.origin,':',1) and (p.id,i.id) not in (select picking
         default = default.copy()
         default.update({'invoice_ids': [],})
         return super(stock_picking, self).copy(cr, uid, id, default, context)
-
-
-    def _invoice_line_hook(self, cursor, user, move_line, invoice_line_id):
-        super(stock_picking, self)._invoice_line_hook(cursor, user, move_line, invoice_line_id)
-        if move_line and invoice_line_id:
-            self.pool.get('account.invoice.line').write(cursor, user, invoice_line_id, {
-                    'stock_move_id': move_line.id,
-                })
-        return
-
-stock_picking()
 
