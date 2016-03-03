@@ -133,6 +133,7 @@ class AccountPaymentTerm(models.Model):
         return date.strftime('%Y-%m-%d')
 
     def compute(self, cr, uid, id, value, date_ref=False, context=None):
+        if context is None: context= {}
         result = super(AccountPaymentTerm, self).compute(cr, uid, id, value,
                                                          date_ref, context)
         if not context.get('partner_id'):
