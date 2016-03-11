@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+        <record id="view_product_stock_unsafety_filter" model="ir.ui.view">
+            <field name="name">product.stock.unsafety.filter</field>
+            <field name="model">product.stock.unsafety</field>
+            <field name="arch" type="xml">
+                <search string="Search Product Stock Unsafety">
+                    <field name="product_id"/>
+                    <field name="supplier_id"/>
+                    <field name="state"/>
+                    <field name="date"/>
+                    <filter icon="terp-emblem-important" string="Exceptions" name="exceptions" domain="[('state','=','exception')]"/>
+                    <filter icon="terp-emblem-important" string="In Progress" name="in_progress" domain="[('state','=','in_progress')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Product" icon="terp-accessories-archiver" domain="[]" context="{'group_by':'product_id'}"/>
+                        <filter string="Date" icon="terp-go-month" domain="[]" context="{'group_by':'date'}"/>
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="view_product_stock_unsafety_tree" model="ir.ui.view">
+            <field name="name">product.stock.unsafety.tree</field>
+            <field name="model">product.stock.unsafety</field>
+            <field name="arch" type="xml">
+                <tree string="Product stock unsafety" colors="red:state=='exception';blue:state=='in_progress'">
+                    <field name="date"/>
+                    <field name="product_id"/>
+                    <field name="incoming_qty" />
+                    <field name="min_fixed"/>
+                    <field name="max_fixed"/>
+                    <field name="real_stock"/>
+                    <field name="virtual_stock" string="Virtual Stock Conservative"/>
+                    <button name="cancel" type="object" string="Cancel" states='exception,in_progress' icon="STOCK_CANCEL"/>
+                    <field name="company_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_product_stock_unsafety_form" model="ir.ui.view">
+            <field name="name">product.stock.unsafety.form</field>
+            <field name="model">product.stock.unsafety</field>
+            <field name="arch" type="xml">
+                <form string="Product Stock Unsafety" version="7.0">
+                <header>
+                    <button name="cancel" type="object" string="Cancel" states='exception,in_progress' icon="STOCK_CANCEL"/>
+                    <field name="state" widget="statusbar" satusbar_visible="in_progress,finalized"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="General Information">
+                            <field name="date" readonly="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="name" readonly="1"/>
+                            <field name="supplier_id" readonly="1"/>
+                        </group>
+                        <group string="Quantities">
+                            <field name="min_fixed" readonly="1"/>
+                            <field name="max_fixed" readonly="1"/>
+                            <field name="minimum_proposal" readonly="1"/>
+                            <field name="real_stock" readonly="1"/>
+                            <field name="virtual_stock" string="Virtual Stock Conservative" readonly="1"/>
+                            <field name="incoming_qty" readonly="1"/>
+                        </group>
+                        <group string="Amounts Awaiting Come">
+                            <field name="product_qty"/>
+                            <field name="date_delivery" readonly="1"/>
+                        </group>
+                        <group string="Order">
+                            <field name="purchase_id" readonly="1"/>
+                        </group>
+                        <group string="Additional Information">
+                            <field name="responsible" readonly="1"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_product_stock_unsafety_form" model="ir.actions.act_window">
+            <field name="name">Product Stock Unsafety</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.stock.unsafety</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_product_stock_unsafety_tree"/>
+            <field name="search_view_id" ref="view_product_stock_unsafety_filter"/>
+            <field name="context">{'search_default_exceptions':1,'search_default_in_progress':1}</field>
+            <field name="help" type="html">
+
+              <p class="oe_view_nocontent_create">
+                Click to start a new Product Stock Unsafety.
+              </p>
+
+            </field>
+        </record>
+        <menuitem
+            action="action_product_stock_unsafety_form"
+            id="menu_action_product_stock_unsafety"
+            parent="stock.menu_stock_sched"
+            sequence="60"
+        />
+
+    </data>
+</openerp>

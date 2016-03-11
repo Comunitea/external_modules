@@ -1,0 +1,312 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#   * product_stock_unsafety
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-20 10:36+0000\n"
+"PO-Revision-Date: 2013-12-20 11:39+0100\n"
+"Last-Translator: marta <marta@pexego.es>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+#: selection:product.stock.unsafety,state:0
+msgid "In Progress"
+msgstr "En Curso"
+
+#. module: product_stock_unsafety
+#: model:ir.model,name:product_stock_unsafety.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Línea pedido de compra"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,real_stock:0
+msgid "Real Stock"
+msgstr "Stock Real"
+
+#. module: product_stock_unsafety
+#: field:minimum.day,days_sale:0
+msgid "Days Sale"
+msgstr "Días de venta"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Product stock unsafety"
+msgstr "Bajo Mínimos"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,responsible:0
+msgid "Responsible"
+msgstr "Responsable"
+
+#. module: product_stock_unsafety
+#: model:ir.model,name:product_stock_unsafety.model_stock_warehouse_orderpoint
+msgid "Minimum Inventory Rule"
+msgstr "Regla de inventario mínimo"
+
+#. module: product_stock_unsafety
+#: view:product.product:0
+msgid "days"
+msgstr "días"
+
+#. module: product_stock_unsafety
+#: selection:product.stock.unsafety,state:0
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: product_stock_unsafety
+#: model:ir.actions.act_window,name:product_stock_unsafety.action_minimum_day_form
+#: model:ir.ui.menu,name:product_stock_unsafety.menu_action_minimum_day
+msgid "Minimun day"
+msgstr "Días Mínimos"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Search Product Stock Unsafety"
+msgstr "Buscar Bajo Mínimos"
+
+#. module: product_stock_unsafety
+#: model:ir.actions.act_window,help:product_stock_unsafety.action_product_stock_unsafety_form
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to start a new Product Stock Unsafety.\n"
+"              </p>\n"
+"\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Pincha para crear un bajo mínimos.\n"
+"              </p>\n"
+"\n"
+"            "
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,supplier_id:0
+msgid "Supplier"
+msgstr "Proveedor"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,product_qty:0
+msgid "Qty ordered"
+msgstr "Cant. Pedida"
+
+#. module: product_stock_unsafety
+#: view:product.product:0
+msgid "Sale Conditions"
+msgstr "Condiciones de venta"
+
+#. module: product_stock_unsafety
+#: field:minimum.day,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Status"
+msgstr "Estado"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,date_delivery:0
+msgid "Delivery"
+msgstr "Entrega"
+
+#. module: product_stock_unsafety
+#: model:ir.model,name:product_stock_unsafety.model_product_product
+#: view:product.stock.unsafety:0
+#: field:product.stock.unsafety,product_id:0
+msgid "Product"
+msgstr "Producto"
+
+#. module: product_stock_unsafety
+#: model:ir.actions.act_window,help:product_stock_unsafety.action_minimum_day_form
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to start a new Minimum Day\n"
+"              </p>\n"
+"\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Pincha para crear un nuevo día mínimo\n"
+"              </p>\n"
+"\n"
+"            "
+
+#. module: product_stock_unsafety
+#: view:minimum.day:0
+#: view:product.stock.unsafety:0
+msgid "General Information"
+msgstr "Información General"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Quantities"
+msgstr "Cantidades"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Group By"
+msgstr "Agrupar Por"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,name:0
+msgid "Reason"
+msgstr "Motivo"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,incoming_qty:0
+msgid "Incoming qty."
+msgstr "Entradas pendientes"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+#: field:product.stock.unsafety,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: product_stock_unsafety
+#: view:product.product:0
+msgid "Stock and Expected Variations"
+msgstr "Existencias y variaciones esperadas"
+
+#. module: product_stock_unsafety
+#: view:minimum.day:0
+msgid "Search Minimum day"
+msgstr "Buscar día mínimo"
+
+#. module: product_stock_unsafety
+#: model:ir.model,name:product_stock_unsafety.model_product_stock_unsafety
+msgid "Products that have stock under minimum"
+msgstr "Productos que tienen el stock bajo mínimos."
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,min_fixed:0
+msgid "Min. Fixed"
+msgstr "Mín. Fijado"
+
+#. module: product_stock_unsafety
+#: field:stock.warehouse.orderpoint,min_days_id:0
+msgid "Stock Mínimum Days"
+msgstr "Días Mínimos"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Virtual Stock Conservative"
+msgstr "Stock Virtual Conservador"
+
+#. module: product_stock_unsafety
+#: view:minimum.day:0
+msgid "Minimum day"
+msgstr "Día Mínimo"
+
+#. module: product_stock_unsafety
+#: selection:product.stock.unsafety,state:0
+msgid "Exception"
+msgstr "Excepción"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,minimum_proposal:0
+msgid "Min. Proposal"
+msgstr "Mín. Propuesto"
+
+#. module: product_stock_unsafety
+#: field:minimum.day,default:0
+msgid "Default"
+msgstr "Por Defecto"
+
+#. module: product_stock_unsafety
+#: field:product.product,virtual_stock_conservative:0
+msgid "Virtual                                                               Stock                                                               Conservative"
+msgstr "Stock Virtual Conservativo"
+
+#. module: product_stock_unsafety
+#: model:ir.model,name:product_stock_unsafety.model_purchase_order
+msgid "Purchase Order"
+msgstr "Pedido de compra"
+
+#. module: product_stock_unsafety
+#: model:ir.model,name:product_stock_unsafety.model_procurement_order
+msgid "Procurement"
+msgstr "Abastecimiento"
+
+#. module: product_stock_unsafety
+#: code:addons/product_stock_unsafety/schedulers.py:93
+#, python-format
+msgid "Minimum Stock"
+msgstr "Stock Mínimo"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Exceptions"
+msgstr "Excepciones"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Order"
+msgstr "Pedido"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,virtual_stock:0
+msgid "Virtual Stock"
+msgstr "Stock Virtual"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Amounts Awaiting Come"
+msgstr "Cant. Pendientes de Recibir"
+
+#. module: product_stock_unsafety
+#: code:addons/product_stock_unsafety/schedulers.py:91
+#, python-format
+msgid "Days sale"
+msgstr "Días de venta"
+
+#. module: product_stock_unsafety
+#: selection:product.stock.unsafety,state:0
+msgid "Finalized"
+msgstr "Finalizado"
+
+#. module: product_stock_unsafety
+#: model:ir.actions.act_window,name:product_stock_unsafety.action_product_stock_unsafety_form
+#: model:ir.ui.menu,name:product_stock_unsafety.menu_action_product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Product Stock Unsafety"
+msgstr "Bajo Mínimos"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,state:0
+msgid "State"
+msgstr "Estado"
+
+#. module: product_stock_unsafety
+#: view:minimum.day:0
+msgid "E.g.: Product of high turnover"
+msgstr "Ej.: Producto de Alta Rotación"
+
+#. module: product_stock_unsafety
+#: field:product.stock.unsafety,purchase_id:0
+msgid "Purchase"
+msgstr "Compra"
+
+#. module: product_stock_unsafety
+#: model:ir.model,name:product_stock_unsafety.model_minimum_day
+msgid "minimum.day"
+msgstr "Día Mínimo"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: product_stock_unsafety
+#: view:product.stock.unsafety:0
+msgid "Additional Information"
+msgstr "Información Adicional"
+
