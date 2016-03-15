@@ -42,16 +42,24 @@
             <field name="arch" type="xml">
                 <notebook position="inside">
                     <page string="Credit Insurance">
-                        <field name="company_credit_limit" attrs="{'readonly':[('risk_insurance_status', 'not in', ['company_granted'])]}"/>
-                        <field name="insurance_credit_limit" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
-                        <field name="risk_insurance_status"/>
-                        <field name="risk_insurance_grant_date" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
-                        <field name="risk_insurance_coverage_percent" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
-                        <newline/>
-                        <field name="risk_insurance_code" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
-                        <field name="risk_insurance_code_2" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
-                        <newline/>
-                        <field name="risk_insurance_notes" colspan="4"/>
+                        <group>
+                            <group>
+                                <field name="company_credit_limit" attrs="{'readonly':[('risk_insurance_status', 'not in', ['company_granted'])]}"/>
+                                <field name="risk_insurance_status"/>
+                                 <field name="risk_insurance_coverage_percent" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
+                              
+                                <field name="risk_insurance_code" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
+                               
+                               
+                            </group>
+                            <group>
+                                <field name="insurance_credit_limit" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/> 
+                                <field name="risk_insurance_code_2" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
+                                <field name="risk_insurance_grant_date" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
+                               
+                            </group>
+                            <field name="risk_insurance_notes" colspan="4"/>
+                        </group>
                     </page>
                 </notebook>
             </field>
