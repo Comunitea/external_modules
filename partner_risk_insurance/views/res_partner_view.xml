@@ -2,7 +2,8 @@
 <openerp>
 <data>
     <!--Add risk insurance tab in partner form. -->
-    <record model="ir.ui.view" id="view_partner_form">
+    <!--Odoo v8 view -->
+<!-- <record model="ir.ui.view" id="view_partner_form">
         <field name="name">res.partner.form.risk_insurance</field>
         <field name="model">res.partner</field>
         <field name="type">form</field>
@@ -30,6 +31,30 @@
                 </page>
             </notebook>
         </field>
-    </record>
+    </record> -->
+
+    <!-- Pedro View -->
+    <record model="ir.ui.view" id="view_partner_form">
+            <field name="name">res.partner.form.risk_insurance</field>
+            <field name="model">res.partner</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Credit Insurance">
+                        <field name="company_credit_limit" attrs="{'readonly':[('risk_insurance_status', 'not in', ['company_granted'])]}"/>
+                        <field name="insurance_credit_limit" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
+                        <field name="risk_insurance_status"/>
+                        <field name="risk_insurance_grant_date" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
+                        <field name="risk_insurance_coverage_percent" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
+                        <newline/>
+                        <field name="risk_insurance_code" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
+                        <field name="risk_insurance_code_2" attrs="{'readonly':[('risk_insurance_status', 'not in', ['insurance_granted'])]}"/>
+                        <newline/>
+                        <field name="risk_insurance_notes" colspan="4"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
 </data>
 </openerp>

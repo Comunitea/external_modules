@@ -9,7 +9,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_button_confirm']" position="replace">
                     <button name="draft_to_risk" string="Confirm Order" states="draft" groups="base.group_user"/>
-                    <button name="risk_to_router" string="Approve Order" states="wait_risk" groups="base.group_user" class="oe_highlight"/>
+                    <button name="%(action_open_risk_window)d" string="View Risk Information" states="wait_risk" context="{'risk_partner_id': partner_id}" icon="gtk-info" type="action"/>
+                    <button name="risk_to_router" string="Approve Order" states="wait_risk" groups="nan_partner_risk.group_risk_manager" class="oe_highlight"/>
                     <button name="risk_to_cancel" string="Cancel Order" states="wait_risk" groups="base.group_user"/>
                 </xpath>
                 <xpath expr="//button[@name='action_button_confirm'][@states='sent']" position="replace">

@@ -14,6 +14,7 @@ Developed for Trod y Avia, S.L.""",
                     'account',
                     'sale',
                     'sale_stock',
+                    'partner_risk_insurance',  # Pedro dependency, for partner risk states
                     'account_payment'],
         "category": "Custom Modules",
         "data": ['wizard/open_risk_window_view.xml',
