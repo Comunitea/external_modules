@@ -32,7 +32,7 @@ RISK_STATUS = [('company_granted', 'Credit granted by the company'),
                ('insurance_granted', 'Credit granted by the insurance'),
                ('requested', 'Insurance requested'),
                ('request_again', 'Insurance credit should be requested again'),
-               ('denied', 'Credit denied by the insurance company')
+               ('denied', 'Credit denied by the insurance company'),
                ('incidents', 'Customer with incidents at risk'),
                ('new_customer', 'Warning! New customer - See payments')]
 
