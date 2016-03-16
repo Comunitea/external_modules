@@ -32,6 +32,7 @@
         "stock",
         "l10n_es_aeat_mod349",
         "intrastat_base",
+        "intrastat_product",
         "picking_invoice_rel",
     ],
     'init': [],
