@@ -21,7 +21,6 @@
 
 from openerp.osv import osv, fields
 from openerp.tools.translate import _
-
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -32,6 +31,9 @@ from datetime import datetime
 
 import logging
 log = logging.getLogger('l10n_es_intrastat')
+
+from openerp import models, fields as fields2
+import openerp.addons.decimal_precision as dp
 
 def get_start_date(*args, **kwargs):
     # Don't like dateutil, not in the python battery pack
@@ -48,13 +50,27 @@ def get_start_date(*args, **kwargs):
         )
     return now.strftime('%Y-%m-%d')
 
-class l10n_es_intrastat(osv.osv):
+class l10n_es_intrastat(models.Model):
     _name = 'l10n.es.intrastat'
+    _inherit = 'report.intrastat.common'
     _rec_name = 'start_date'
     _order = 'start_date desc, ttype'
 
-    def _compute_numbers(self, cr, uid, ids, name, arg, context=None):
-        return self.pool.get('report.intrastat.common')._compute_numbers(cr, uid, ids, self, context=context)
+    end_date = fields2.Date(
+        compute='_compute_dates', string='End date', readonly=True, store=True,
+        help="End date for the declaration. Must be the last day of the "
+        "month of the start date.")
+    num_lines = fields2.Integer(
+        compute='_compute_numbers', string='Number of lines', store=True,
+        track_visibility='always',
+        help="Number of lines in this declaration.")
+    total_amount = fields2.Float(
+        compute='_compute_numbers', digits=dp.get_precision('Account'),
+        string='Total amount', store=True, track_visibility='always',
+        help="Total amount in company currency of the declaration.")
+
+    # def _compute_numbers(self, cr, uid, ids, name, arg, context=None):
+    #     return self.pool.get('report.intrastat.common')._compute_numbers(cr, uid, ids, self, context=context)
 
     def _compute_total_fiscal_amount(self, cr, uid, ids, name, arg, context=None):
         result = {}
@@ -66,7 +82,10 @@ class l10n_es_intrastat(osv.osv):
         return result
 
     def _compute_end_date(self, cr, uid, ids, name, arg, context=None):
-        return self.pool.get('report.intrastat.common')._compute_end_date(cr, uid, ids, self, context=context)
+        return
+        # no funciona lo de abajo
+        obj = self.browse(cr, uid, ids[0], context)
+        return self.pool.get('report.intrastat.common')._compute_dates(cr, uid, ids, obj, context=context)
 
     def _get_intrastat_from_line(self, cr, uid, ids, context=None):
         return self.pool.get('l10n.es.intrastat').search(cr, uid, [('intrastat_line_ids', 'in', ids)], context=context)
@@ -85,9 +104,9 @@ class l10n_es_intrastat(osv.osv):
         'company_id': fields.many2one('res.company', 'Company', required=True, readonly=True, help="Related company."),
         'country_id': fields.related('company_id', 'country_id', readonly=True, type='integer', string='Country'),
         'start_date': fields.date('Start date', required=True, states={'done':[('readonly',True)]}, help="Start date of the declaration. Must be the first day of a month."),
-        'end_date': fields.function(_compute_end_date, method=True, type='date', string='End date', store={
-            'l10n.es.intrastat': (lambda self, cr, uid, ids, c={}: ids, ['start_date'], 10),
-                }, help="End date for the declaration. Is the last day of the month of the start date."),
+        # 'end_date': fields.function(_compute_dates, method=True, type='date', string='End date', store={
+        #     'l10n.es.intrastat': (lambda self, cr, uid, ids, c={}: ids, ['start_date'], 10),
+                # }, help="End date for the declaration. Is the last day of the month of the start date."),
         'date_done' : fields.datetime('Date done', readonly=True, help="Last date when the intrastat declaration was converted to 'Done' state."),
         'data_source': fields.selection([
             ('move', 'Generate report from Stock Moves'),
@@ -105,15 +124,15 @@ class l10n_es_intrastat(osv.osv):
         'revision': fields.integer('Revision', readonly=True, help="Used to keep track of unique changes"),
 
         'intrastat_line_ids': fields.one2many('l10n.es.intrastat.line', 'parent_id', 'Intrastat product lines', states={'done':[('readonly',True)]}),
-        'num_lines': fields.function(_compute_numbers, method=True, type='integer', multi='numbers', string='Number of lines', store={
-            'l10n.es.intrastat.line': (_get_intrastat_from_line, ['parent_id'], 20),
-        }, help="Number of lines in this declaration."),
+        # 'num_lines': fields.function(_compute_numbers, method=True, type='integer', multi='numbers', string='Number of lines', store={
+        #     'l10n.es.intrastat.line': (_get_intrastat_from_line, ['parent_id'], 20),
+        # }, help="Number of lines in this declaration."),
         'total_weight': fields.function(_compute_total_weight, method=True, digits=(16,3), string='Total weight', store={
             'l10n.es.intrastat.line': (_get_intrastat_from_line, ['weight'], 20),
             }, help="Total weight."),
-        'total_amount': fields.function(_compute_numbers, method=True, digits=(16,2), multi='numbers', string='Total amount', store={
-            'l10n.es.intrastat.line': (_get_intrastat_from_line, ['amount_company_currency', 'parent_id'], 20),
-            }, help="Total amount in Company currency of the declaration."),
+        # 'total_amount': fields.function(_compute_numbers, method=True, digits=(16,2), multi='numbers', string='Total amount', store={
+        #     'l10n.es.intrastat.line': (_get_intrastat_from_line, ['amount_company_currency', 'parent_id'], 20),
+        #     }, help="Total amount in Company currency of the declaration."),
         'currency_id': fields.related('company_id', 'currency_id', readonly=True, type='many2one', relation='res.currency', string='Currency'),
         'notes' : fields.text('Notes', help="You can add some comments here if you want."),
         'merge_lines': fields.boolean('Merge lines', states={'done':[('readonly',True)]}, help="Check to combine the lines with the same intrastat code, country of origin/destination, type of transport, nature of transaction, etc."),
@@ -204,13 +223,13 @@ class l10n_es_intrastat(osv.osv):
                 # La posición fiscal de la factura indica que no está sujeta a operaciones intracomunitarias
                 log.debug("invoice %s had fiscal position with intracommunity oparations = False", invoice.number)
                 continue
-            if not invoice.address_invoice_id.country_id:
+            if not invoice.partner_id.commercial_partner_id.country_id:
                 log.debug("invoice %s partner had no country, assuming same country as company and skipping", invoice.number)
                 continue
-            if not invoice.address_invoice_id.country_id.intrastat:
+            if not invoice.partner_id.commercial_partner_id.country_id.intrastat:
                 log.debug("invoice %s partner was in country that doesnt require intrastat reporting", invoice.number)
                 continue
-            if invoice.address_invoice_id.country_id.id == declaration.company_id.partner_id.country.id:
+            if invoice.partner_id.commercial_partner_id.country_id.id == declaration.company_id.partner_id.country_id.id:
                 log.debug("invoice %s had same country of origin as Company", invoice.number)
                 continue
 
@@ -280,7 +299,7 @@ class l10n_es_intrastat(osv.osv):
                     'invoice_line_id': inv_line.id,
                     'picking_id': False,
                     'move_id': False,
-                    'country_id': invoice.address_invoice_id.country_id.id,
+                    'country_id': invoice.partner_id.commercial_partner_id.country_id.id,
                     'state_id': invoice.company_id.state_id.id,
                     'incoterm_id': invoice.sale_order_ids and invoice.sale_order_ids[0].incoterm and invoice.sale_order_ids[0].incoterm.id or default_incoterm,
                     'product_id': inv_line.product_id.id,
