@@ -339,7 +339,7 @@ class l10n_es_intrastat(models.Model):
         ], context=context)
 
         for move in sm_obj.browse(cr, uid, stock_ids, context=context):
-            address = move.address_id or move.picking_id.address_id
+            address = (move.partner_id and move.partner_id.commercial_partner_id) or (move.picking_id and move.picking_id.partner_id.commercial_partner_id)
             if not address:
                 # Think of inventory/production/internal movements
                 log.debug("stock move didnt seem to have an address")
