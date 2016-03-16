@@ -1,0 +1,11 @@
+Primero hay que desinstalar el módulo addons/report_intrastat
+Debido a que ya hay datos del módulo addons/report_intarstat ejecutamos la actualización:
+UPDATE report_intrastat_code SET intrastat_code = name WHERE intrastat_code IS null;
+ALTER TABLE report_intrastat_code ALTER COLUMN intrastat_code SET NOT NULL;
+DROP VIEW report_intrastat;
+
+-- select * from product_uom
+-- update product_template set weight_net = 1.000 where uom_id = 2;
+-- update product_template set weight = 1.000 where uom_id = 2 and weight in (0,1);
+-- update product_template set weight = round(weight*uos_coeff,3) where uom_id = 2 and weight > 2;
+-- select id, weight_net, weight, uom_id, uos_coeff from product_template where uom_id = 2 order by weight;
