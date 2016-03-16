@@ -351,7 +351,7 @@ class l10n_es_intrastat(models.Model):
             if country and not country.intrastat:
                 log.debug("stock move was from/to country that doesnt require intrastat reporting")
                 continue
-            if country and country.id == declaration.company_id.partner_id.country.id:
+            if country and country.id == declaration.company_id.partner_id.country_id.id:
                 log.debug("stock move was from/to same country as company")
                 continue
             if move.product_id.exclude_from_intrastat:
