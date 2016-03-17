@@ -130,25 +130,30 @@
 		<field name="type">form</field>
 		<field name="arch" type="xml">
 			<form>
-				<group string="Declaration">
-    				<field name="country_id" domain="[('intrastat','=',True)]" on_change="onchange_country(country_id)"/>
-    				<field name="country_code"/>
-                    <field name="state_id" domain="[('country_id','=',parent.country_id)]" on_change="onchange_state(state_id)"/>
-                    <field name="state_code"/>
-    				<field name="product_id" on_change="onchange_product(product_id, supplementary_quantity)"/>
-                    <field name="country_origin_id"/>
-                    <field name="incoterm_id"/>
-                    <field name="transaction"/>
-                    <field name="transport"/>
-                    <field name="port_loading_unloading"/>
-    				<field name="intrastat_id"/>
-    				<field name="intrastat_code"/>
-                    <field name="statistical_procedure"/>
-                    <field name="extnr"/>
-    				<field name="weight"/>
-                    <field name="amount_company_currency"/>
-                    <field name="supplementary_quantity" on_change="onchange_qty(product_id, supplementary_quantity)"/>
-                    <field name="amount_statistic_company_currency"/>
+				<group string="Declaration" colspan="4">
+                    <group>
+        				<field name="country_id" domain="[('intrastat','=',True)]" on_change="onchange_country(country_id)"/>
+                        <field name="state_id" domain="[('country_id','=',parent.country_id)]" on_change="onchange_state(state_id)"/>
+        				<field name="product_id" on_change="onchange_product(product_id, supplementary_quantity)"/>
+                        <field name="incoterm_id"/>
+                        <field name="transport"/>
+        				<field name="intrastat_id"/>
+                        <field name="statistical_procedure"/>
+        				<field name="weight"/>
+                        <field name="supplementary_quantity" on_change="onchange_qty(product_id, supplementary_quantity)"/>
+                    </group>
+                    <group>
+                        <field name="country_code"/>
+                         <field name="state_code"/>
+                         <field name="country_origin_id"/>
+                         <field name="transaction"/>
+                         <field name="port_loading_unloading"/>
+                         <field name="intrastat_code"/>
+                         <field name="extnr"/>
+                         <field name="amount_company_currency"/>
+                        <field name="amount_statistic_company_currency"/>
+                    </group>
+
                 </group>
 				<group string="OpenERP details" colspan="4">
     				<field name="invoice_id"/>
