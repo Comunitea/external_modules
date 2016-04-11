@@ -33,7 +33,7 @@
         "l10n_es_aeat_mod349",
         "intrastat_base",
         "intrastat_product",
-        "stock_picking_invoice_link",
+        "picking_invoice_rel",
     ],
     'init': [],
     'update_xml': [
