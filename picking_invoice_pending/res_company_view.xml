@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_company_form_add_pending_fields" model="ir.ui.view">
+            <field name="name">res.company.form.add_pending_fields</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="after">
+                    <field name="required_invoice_pending_move"/>
+                    <field name="property_pending_supplier_invoice_account" attrs="{'invisible': [('required_invoice_pending_move','=',False)]}"/>
+                    <field name="property_pending_stock_journal" attrs="{'invisible': [('required_invoice_pending_move','=',False)]}"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

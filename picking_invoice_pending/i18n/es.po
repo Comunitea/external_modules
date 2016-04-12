@@ -1,0 +1,79 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* picking_invoice_pending
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-25 10:24+0000\n"
+"PO-Revision-Date: 2015-09-25 10:24+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: picking_invoice_pending
+#: field:stock.picking,pending_invoice_move_id:0
+msgid "Account pending move"
+msgstr "Asiento pendiente de factura"
+
+#. module: picking_invoice_pending
+#: model:ir.model,name:picking_invoice_pending.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: picking_invoice_pending
+#: model:ir.model,name:picking_invoice_pending.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: picking_invoice_pending
+#: field:res.company,property_pending_supplier_invoice_account:0
+msgid "Pending supplier invoice account"
+msgstr "Cuenta albaranes pendientes factura"
+
+#. module: picking_invoice_pending
+#: field:res.company,property_pending_stock_journal:0
+msgid "Pending supplier invoice journal"
+msgstr "Diario albaranes pendientes factura"
+
+#. module: picking_invoice_pending
+#: model:ir.model,name:picking_invoice_pending.model_stock_picking
+msgid "Picking List"
+msgstr "Albarán"
+
+#. module: picking_invoice_pending
+#: field:res.company,required_invoice_pending_move:0
+msgid "Require pending move"
+msgstr "Requiere asiento pendiente factura"
+
+#. module: picking_invoice_pending
+#: help:res.company,required_invoice_pending_move:0
+msgid "Require pending move to done incoming picking"
+msgstr "Requiere que se haga el asiento de pendientes de factura en albaranes de entrada"
+
+#. module: picking_invoice_pending
+#: help:res.company,property_pending_supplier_invoice_account:0
+msgid "This account is used for accounting in pending supplier invoices."
+msgstr "Esta cuenta se usa para contabilizar las facturas pendientes de recibir."
+
+#. module: picking_invoice_pending
+#: help:res.company,property_pending_stock_journal:0
+msgid "This journal is used for accounting in pending supplier invoices."
+msgstr "Este diario se usa para contabilizar las facturas pendientes de recibir."
+
+#. module: picking_invoice_pending
+#: code:addons/picking_invoice_pending/stock_picking.py:130
+#, python-format
+msgid "You need to configure an account in the company for pending invoices"
+msgstr "Necesita configurar una cuenta en la compañía para las facturas pendientes de recibir"
+
+#. module: picking_invoice_pending
+#: code:addons/picking_invoice_pending/stock_picking.py:133
+#, python-format
+msgid "You need to configure an account journal in the company for pending invoices"
+msgstr "Necesita configurar un diario en la compañía para las facturas pendientes de recibir"
+
