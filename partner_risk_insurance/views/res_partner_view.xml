@@ -41,7 +41,7 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <notebook position="inside">
-                    <page string="Credit Insurance">
+                    <page string="Credit Insurance" attrs="{'invisible': [('parent_id', '!=', False), ('is_company','=',False)]}">
                         <group>
                             <group>
                                 <field name="company_credit_limit" attrs="{'readonly':[('risk_insurance_status', 'not in', ['company_granted'])]}"/>
