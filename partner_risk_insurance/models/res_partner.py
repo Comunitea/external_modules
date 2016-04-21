@@ -75,12 +75,12 @@ class res_partner(orm.Model):
     def _credit_limit(self, cr, uid, ids, name, arg, context=None):
         res = {}
         for partner in self.browse(cr, uid, ids, context):
-            if partner.risk_insurance_status in ('company_granted'):                
-                res[partner.id] = partner.company_credit_limit
-            elif partner.risk_insurance_status in ('insurance_granted'):
-                res[partner.id] = partner.insurance_credit_limit
-            else:
-                res[partner.id] = 0.0
+            res[partner.id] = 0.0
+            if partner.risk_insurance_status:
+                if partner.risk_insurance_status in ('company_granted'):
+                    res[partner.id] = partner.company_credit_limit
+                elif partner.risk_insurance_status in ('insurance_granted'):
+                    res[partner.id] = partner.insurance_credit_limit
         return res
 
     _columns = {
@@ -94,15 +94,14 @@ class res_partner(orm.Model):
         'risk_insurance_coverage_percent': fields.property(type='float',
                                                            string="Insurance's Credit Coverage",
                                                            help='Percentage of the credit covered by the insurance.'),
-        'risk_insurance_status': fields.selection(RISK_STATUS, 'Risk Status', required=True,
-                                                  help="This option is used to define the risk status.\n" \
-                                                  "Credit granted by the company: Only company's credit limit are applied.\n"\
-                                                  "Credit granted by the insurance: Only insurance's credit limit are applied.\n"\
-                                                  "Insurance requested: The risk has been requested to the insurance company.\n"\
-                                                  "Insurance credit should be requested again: The risk should be requested again to the insurance company.\n"\
-                                                  "Credit denied by the insurance company: The insurance company has denied the risk.\n"\
-                                                  "Customer with incidents at risk: The customer have incidents at risk.\n"\
-                                                  "Warning! New customer - See payments: New customer. Track payments."),
+        'risk_insurance_status': fields.property(type='selection', selection=RISK_STATUS, string='Risk Status',
+                                                   help="This option is used to define the risk status.\n" \
+                                                   "Credit granted by the company: Only company's credit limit are applied.\n"\
+                                                   "Credit granted by the insurance: Only insurance's credit limit are applied.\n"\
+                                                   "Insurance requested: The risk has been requested to the insurance company.\n"\
+                                                   "Insurance credit should be requested again: The risk should be requested again to the insurance company.\n"\
+                                                   "Credit denied by the insurance company: The insurance company has denied the risk.\n"\
+                                                   "Warning! New customer - See payments: New customer. Track payments."),
         'risk_insurance_grant_date': fields.property(type='date',
                                                      string="Insurance Grant Date",
                                                      help='Date when the insurance was granted by the insurance company.'),
