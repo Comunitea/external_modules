@@ -40,15 +40,15 @@
 
     <!-- Own style -->
     <paraStyle name="Standard" fontName="DejaVu Sans" fontSize="8"/>
-    <paraStyle name="TitleText" fontName="DejaVu Sans Bold" fontSize="20.0" leading="25" alignment="CENTER"/>
-    <paraStyle name="FieldDescription" fontName="DejaVu Sans Bold" fontSize="9.0" leading="13" alignment="JUSTIFY" spaceBefore="0.0" spaceAfter="0.0"/>
-    <paraStyle name="FieldDescriptionCenter" fontName="DejaVu Sans Bold" fontSize="9.0" leading="9.0" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
-    <paraStyle name="FieldDescriptionItalic" fontName="Helvetica-BoldOblique" fontSize="9.0" leading="9.0" alignment="JUSTIFY" spaceBefore="0.0" spaceAfter="0.0"/>
-    <paraStyle name="Detail" fontName="DejaVu Sans" fontSize="8.0" leading="7.5" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
-    <paraStyle name="DetailRight" fontName="DejaVu Sans" fontSize="8.0" leading="7.5" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
-    <paraStyle name="DetailCenter" fontName="DejaVu Sans" fontSize="8.0" leading="7.5" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
-    <paraStyle name="DetailLeft" fontName="DejaVu Sans" fontSize="8.0" leading="7.5" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
-    <paraStyle name="DetailSmall" fontName="DejaVu Sans" fontSize="7.0" leading="13" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="TitleText" fontName="DejaVu Sans Bold" fontSize="15.0" leading="25" alignment="CENTER"/>
+    <paraStyle name="FieldDescription" fontName="DejaVu Sans Bold" fontSize="7.0" leading="13" alignment="JUSTIFY" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="FieldDescriptionCenter" fontName="DejaVu Sans Bold" fontSize="7.0" leading="9.0" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="FieldDescriptionItalic" fontName="Helvetica-BoldOblique" fontSize="7.0" leading="9.0" alignment="JUSTIFY" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="Detail" fontName="DejaVu Sans" fontSize="6.0" leading="7.5" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="DetailRight" fontName="DejaVu Sans" fontSize="6.0" leading="7.5" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="DetailCenter" fontName="DejaVu Sans" fontSize="6.0" leading="7.5" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="DetailLeft" fontName="DejaVu Sans" fontSize="6.0" leading="7.5" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="DetailSmall" fontName="DejaVu Sans" fontSize="5.0" leading="13" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="pageFooter" fontName="DejaVu Sans Bold" fontSize="8.0" leading="25"/>
   </stylesheet>
   <images/>
@@ -63,14 +63,14 @@
         <font color="white"> </font>
     </para>
 
-    <blockTable colWidths="1.6cm,1.8cm,1.9cm,2.2cm,4.5cm,3.2cm,2cm,2cm" repeatRows="1" style="Tabla">
+    <blockTable colWidths="1.2cm,1.2cm,1.5cm,5.1cm,7.2cm,1.5cm,1.5cm" repeatRows="1" style="Tabla">
         <!-- Table header -->
       <tr>
         <td><para style="FieldDescription">Entry</para></td>
         <td><para style="FieldDescriptionCenter">Date</para></td>
-        <td><para style="FieldDescription">Period</para></td>
+        <!--td><para style="FieldDescription">Period</para></td-->
         <td>
-          <para style="FieldDescription">Journal</para>
+          <!--para style="FieldDescription">Journal</para-->
           <para style="FieldDescriptionItalic">Account</para>
         </td>
         <td>
@@ -89,12 +89,12 @@
       <!-- Table content -->
     <section>
       [[repeatIn(objects,'o')]]
-      <blockTable colWidths="1.6cm,1.8cm,1.9cm,2.2cm,4.5cm,3.2cm,2cm,2cm" rowHeights="0.6cm" style="SubTabla">
+      <blockTable colWidths="1.2cm,1.2cm,1.5cm,5.1cm,7.2cm,1.5cm,1.5cm" rowHeights="0.4cm" style="SubTabla">
         <tr>
         <td><para style="DetailCenter"> [[o.name]]</para></td>
         <td><para style="Detail"> [[formatLang(o.date, date=True)]]</para></td>
         <td><para style="Detail">[[o.period_id.name]]</para></td>
-        <td><para style="Detail">[[o.journal_id.code]]</para></td>
+        <!--td><para style="Detail">[[o.journal_id.code]]</para></td-->
         <td><para style="Detail">[[o.partner_id.name]]</para></td>
         <td><para style="Detail">[[o.ref]]</para></td>
         <td><para style="DetailRight">[[formatLang(o.amount)]] </para></td>
@@ -103,7 +103,7 @@
       <tr>
         <td><para style="Detail">[[repeatIn(o.line_id,'l')]]</para></td>
         <td></td>
-        <td></td>
+        <!--td></td-->
         <td><para style="Detail">[[l.account_id.code]]</para></td>
         <td><para style="DetailSmall">[[l.account_id.name]]</para></td>
         <td><para style="DetailSmall">[[l.name]]</para></td>
