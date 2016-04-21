@@ -18,7 +18,7 @@
 
 {
     "name": "Partner Risk Insurance",
-    "version": "1.0",
+    "version": "8.0.2.0.0",
     "description": """
     This module adds a new tab in the partner form to introduce risk insurance
      information.
