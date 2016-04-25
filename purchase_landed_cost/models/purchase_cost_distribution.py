@@ -149,7 +149,7 @@ class PurchaseCostDistribution(models.Model):
 
     @api.multi
     def action_calculate(self):
-
+        import ipdb; ipdb.set_trace()
         for distribution in self:
             # Check expense lines for amount 0
             if any([not x.expense_amount for x in distribution.expense_lines]):
@@ -225,7 +225,7 @@ class PurchaseCostDistribution(models.Model):
                         'expense_amount': expense_amount,
                         'cost_ratio': expense_amount / line.product_qty,
                     }
-                    line.expense_lines = [(0, 0, expense_line)]
+                    line.write({'expense_lines': [(0, 0, expense_line)]})
             distribution.state = 'calculated'
         return True
 
