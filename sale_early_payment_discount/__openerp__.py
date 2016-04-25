@@ -22,10 +22,7 @@
 
 {
     'name' : 'Early payment discount',
-    'description' : """Pexego - Allow set an early payment discount in sale orders, invoices and picking lists. Includes:
-                        -A new sales report overriding default Order Report.
-                        -A new product category: System Products (a new account for E.P. will be set here)
-                        -A new product for early payment discounts (an output stock account for discounts can be set here)
+    'description' : """ Adds valued fields in the picking for early discount
                     """,
     'version' : '1.0',
     'author' : 'Pexego',
