@@ -149,7 +149,6 @@ class PurchaseCostDistribution(models.Model):
 
     @api.multi
     def action_calculate(self):
-        import ipdb; ipdb.set_trace()
         for distribution in self:
             # Check expense lines for amount 0
             if any([not x.expense_amount for x in distribution.expense_lines]):
