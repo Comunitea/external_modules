@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+
+        <record id="fast_return_form" model="ir.ui.view">
+            <field name="name">fast.return.form</field>
+            <field name="model">fast.return</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Fast returns">
+                    <h1>
+                        Generate all return pickings?
+                    </h1>
+                    <h2 >
+                        Solo se generarán rectificativas de las entregas ya facturadas.
+                    </h2>
+                    <group>
+                        <field name="journal_id" domain="[('type','=',journal_type)]"/>
+                    </group>
+                  <footer>
+                      <button string="Return" name="fast_return" type="object" class="oe_highlight"/>
+                      or
+                      <button string="Cancel" class="oe_link" special="cancel"/>
+                  </footer>
+                </form>
+            </field>
+        </record>
+
+       <record id="action_fast_return" model="ir.actions.act_window">
+            <field name="name">Fast Return</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fast.return</field>
+           <field name="src_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="fast_return_form"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+
+        <record id="ir_fast_return" model="ir.values">
+            <field name="name">Fast Return</field>
+            <field name="key2">client_action_multi</field>
+            <field name="model">stock.picking</field>
+            <field name="value" eval="'ir.actions.act_window,%d'%action_fast_return" />
+        </record>
+
+    </data>
+</openerp>
+
