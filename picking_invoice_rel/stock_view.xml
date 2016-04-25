@@ -11,6 +11,18 @@
     <!--view_id="stock.view_picking_out_tree"-->
     <!--context="{'default_sale_id': active_id, 'contact_display': 'partner'}" />-->
 
+     <record id="view_picking_out_form_elnsale" model="ir.ui.view">
+            <field name="name">stock.picking.out.form.elnsale</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <field name="client_order_ref"/>
+                </field>
+            </field>
+        </record>
+
     </data>
 </openerp>
 
