@@ -26,7 +26,7 @@
     'description': """""",
     'author': 'COMUNITEA',
     'website': '',
-    "depends": ['stock_valued_picking',
+    "depends": ['stock_picking_valued',
                 'web_action_conditionable',
                 'stock_picking_invoice_link'],
     "data": [
