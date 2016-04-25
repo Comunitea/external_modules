@@ -32,7 +32,8 @@
                 'purchase_discount'],
     "data": [
         'views/valued_picking_report.xml',
-        'partner_view.xml',
-        'stock_view.xml'],
+        'views/partner_view.xml',
+        'views/stock_view.xml',
+        'views/sale_order_view.xml'],
     "installable": True
 }

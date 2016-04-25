@@ -25,6 +25,5 @@ class resPartner(models.Model):
     _inherit = 'res.partner'
 
     valued_picking = fields.Boolean(string="Print valued picking",
-                                    domain=[('customer', '=', True)],
                                     help="If checked It will print valued "
                                     "picks for this customer")
