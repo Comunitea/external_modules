@@ -28,7 +28,7 @@
     'website': '',
     "depends": ['stock_picking_valued',
                 'web_action_conditionable',
-                'stock_picking_invoice_link'],
+                'picking_invoice_rel'],
     "data": [
         'stock_picking_view.xml',
         'stock_data.xml',

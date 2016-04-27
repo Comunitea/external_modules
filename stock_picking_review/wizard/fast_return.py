@@ -110,7 +110,7 @@ class FastReturn(models.TransientModel):
             invoices = self.env['account.invoice'].browse(invoice_ids)
             for invoice in invoices:
                 rect_inv_id = invoice.picking_ids[0].move_lines[0].\
-                    origin_returned_move_id.picking_id.invoice_id.id
+                    origin_returned_move_id.picking_id.invoice_ids[0].id
                 print "Factura recitificada"
                 print rect_inv_id
                 vals = {'origin_invoices_ids': [(6, 0, [rect_inv_id,])]}
