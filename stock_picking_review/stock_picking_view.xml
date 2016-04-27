@@ -101,11 +101,9 @@
                     <field name="amount_total" readonly="True" sum="Totals"/>
                     <field name="amount_total_acc" readonly="True" sum="Totals"/>
                     <field name="receipt_amount" readonly="True" sum="Totals"/>
-                    <!--<field name="delivery_id" />-->
                     <field name="reviewed" />
                     <field name="sale_id" readonly="True"/>
-<!--                      <field name="invoice_id" readonly="True"/>
- -->                    <field name="invoice_state" readonly="True"/>
+                    <field name="invoice_state" readonly="True"/>
                 </tree>
             </field>
         </record>
@@ -150,8 +148,7 @@
                             <group col="2">
                                 <field name="backorder_id" readonly="1" attrs="{'invisible': [('backorder_id','=',False)]}"/>
                                 <field name="sale_id" readonly="True"/>
-<!--                                 <field name="invoice_id" readonly="True"/>
- -->                                <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
+                                <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
                             </group>
                         </group>
                         <group string="Invoices">
