@@ -28,7 +28,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class stock_move(models.Model):
+class StockMove(models.Model):
 
     _inherit = "stock.move"
 
@@ -59,6 +59,21 @@ class stock_move(models.Model):
     change_price = fields.Boolean("Cambio precio")
     new_price_unit = fields.Float("Nuevo precio (Udm)")
     new_discount = fields.Float("Nuevo descuento")
+
+    @api.multi
+    def _check_qty(self):
+        res = True
+        for move in self:
+            if move.accepted_qty > move.product_uos_qty or \
+                    move.product_uom_acc_qty > move.product_uom_qty:
+                return False
+        return res
+
+    _constraints = [
+        (_check_qty,
+         'Some accepted qty is grater than the original quantity.',
+         ['accepted_qty', 'product_uom_acc_qty'])
+    ]
 
     @api.onchange('accepted_qty')
     def accepted_qty_onchange(self):
@@ -92,7 +107,7 @@ class stock_move(models.Model):
 
     @api.multi
     def action_done(self):
-        res = super(stock_move, self).action_done()
+        res = super(StockMove, self).action_done()
         for move in self:
             if move.picking_id.picking_type_code == 'outgoing':
                 move.write({'accepted_qty': move.product_uos_qty,
@@ -101,9 +116,9 @@ class stock_move(models.Model):
 
     def _get_invoice_line_vals(self, cr, uid, move, partner, inv_type,
                                context=None):
-        res = super(stock_move, self)._get_invoice_line_vals(cr, uid, move,
-                                                             partner, inv_type,
-                                                             context=context)
+        res = super(StockMove, self)._get_invoice_line_vals(cr, uid, move,
+                                                            partner, inv_type,
+                                                            context=context)
         if move.picking_id.state == 'done' and move.picking_id.reviewed:
             # Solo se cogen las cantidades aceptadas para
             # albaranes  finalizados y revisados. Con esto nos aseguramios
@@ -225,7 +240,7 @@ class StockPicking(models.Model):
 
             if moves_to_unreserve:
                 move_obj.do_unreserve(moves_to_unreserve)
-                # break the link between moves in order to be able to fix 
+                # break the link between moves in order to be able to fix
                 # them later if needed
                 move_obj.write(moves_to_unreserve, {'move_orig_ids': False})
 
@@ -249,7 +264,7 @@ class StockPicking(models.Model):
                     move.invoice_state = 'none'
 
                 if new_qty:
-                    # The return of a return should be linked with 
+                    # The return of a return should be linked with
                     # the original's destination move if it was not cancelled
                     if move.origin_returned_move_id.move_dest_id.id and \
                             move.origin_returned_move_id.move_dest_id.state  \
