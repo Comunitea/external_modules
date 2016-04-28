@@ -151,15 +151,18 @@
                                 <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
                             </group>
                         </group>
-                        <group string="Invoices">
-                            <field name="invoice_ids" nolabel="1" readonly="True"/>
-                        </group>
+                        
                         <notebook>
                             <page string="Products" >
                                 <separator string="Stock Moves" />
                                 <field name="move_lines"
                                        context="{'address_in_id': partner_id, 'form_view_ref':'stock.view_move_picking_form', 'tree_view_ref':'stock_picking_review.stock_move_review_simple_tree','default_picking_id': active_id}"/>
                                 <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+                            </page>
+                            <page string="Invoices">
+                                <group string="Invoices">
+                                    <field name="invoice_ids" nolabel="1" readonly="True"/>
+                                </group>
                             </page>
 
                         </notebook>

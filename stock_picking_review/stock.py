@@ -78,13 +78,28 @@ class StockMove(models.Model):
     @api.onchange('accepted_qty')
     def accepted_qty_onchange(self):
         """
-        We change the product_uom_qty
+        We change the product_uom_acc_qty
         """
         product = self.product_id
+        t_uom = self.env['product.uom']
         if product:
             qty = self.accepted_qty
-            if self.product_id.uos_coeff:
-                self.product_uom_acc_qty = qty / self.product_id.uos_coeff
+            uos_id = self.product_uos.id
+            uom_id = self.product_id.uom_id.id
+            self.product_uom_acc_qty = t_uom._compute_qty(uos_id, qty, uom_id)
+
+    @api.onchange('product_uom_acc_qty')
+    def uom_acc_qty(self):
+        """
+        We change the accepted_qty
+        """
+        product = self.product_id
+        t_uom = self.env['product.uom']
+        if product:
+            qty = self.product_uom_acc_qty
+            uos_id = self.product_uos.id
+            uom_id = self.product_id.uom_id.id
+            self.accepted_qty = t_uom._compute_qty(uom_id, qty, uos_id)
 
     @api.multi
     def _get_subtotal_accepted(self):
@@ -124,17 +139,9 @@ class StockMove(models.Model):
             # albaranes  finalizados y revisados. Con esto nos aseguramios
             # el comportamiento normal en caso de no pasar por l proceso de
             # devolución
-            sale_line = move.procurement_id.sale_line_id
-
             if move.product_uos and move.product_uos != move.product_uom and \
                     move.accepted_qty:
-                res["quantity_second_uom"] = move.accepted_qty
-            res["quantity"] = move.product_uom_acc_qty
-            if move.change_price:
-                res["price_unit"] = move.new_price_unit
-            else:
-                if sale_line:
-                    res["price_unit"] = sale_line.price_unit
+                res["quantity"] = move.accepted_qty
         return res
 
 
@@ -377,3 +384,22 @@ class StockPicking(models.Model):
         print picking
         _logger.debug("CMNT Calculo en  _amount_all_acc (picking) %s",
                       time.time() - init_t)
+
+    @api.cr_uid_ids_context
+    def do_recompute_remaining_quantities(self, cr, uid, picking_ids,
+                                          context=None):
+        for picking in self.browse(cr, uid, picking_ids, context=context):
+            if picking.pack_operation_ids and picking.state == 'done':
+                return
+        return super(StockPicking, self).\
+            do_recompute_remaining_quantities(cr, uid, picking_ids, context)
+
+
+class StockPackOperation(models.Model):
+    _inherit = "stock.pack.operation"
+
+    @api.one
+    def unlink(self):
+        if self.picking_id.state == 'done':
+            return  # Avoid unlink operations in done state
+        return super(StockPackOperation, self).unlink()

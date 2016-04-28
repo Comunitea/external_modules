@@ -79,7 +79,7 @@ class FastReturn(models.TransientModel):
             'res_model': 'stock.picking',
             'view_type': 'form',
             'view_mode': 'tree,form',
-            'views': [(resource_id, 'tree'),(resource_form_id, 'form')],
+            'views': [(resource_id, 'tree'), (resource_form_id, 'form')],
             'domain': "[('id','in', ["+','.join(map(str, picking_ids))+"])]",
             'context': self.env.context,
             'target': 'current',

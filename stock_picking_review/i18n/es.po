@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* stock_picking_review
+#   * stock_picking_review
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-23 10:50+0000\n"
-"PO-Revision-Date: 2015-10-23 10:50+0000\n"
+"POT-Creation-Date: 2016-04-28 12:29+0000\n"
+"PO-Revision-Date: 2016-04-28 12:29+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -36,6 +36,11 @@ msgid "Add an internal note..."
 msgstr "Añadir una nota interna..."
 
 #. module: stock_picking_review
+#: field:stock.move,change_price:0
+msgid "Cambio precio"
+msgstr "Cambio precio"
+
+#. module: stock_picking_review
 #: view:fast.return:stock_picking_review.fast_return_form
 msgid "Cancel"
 msgstr "Cancelar"
@@ -46,45 +51,47 @@ msgid "Cost subtotal Accepted"
 msgstr "Coste subtotal sobre aceptadas"
 
 #. module: stock_picking_review
+#: selection:fast.return,journal_type:0
+msgid "Create Customer Invoice"
+msgstr "Crear factura de cliente"
+
+#. module: stock_picking_review
+#: selection:fast.return,journal_type:0
+msgid "Create Supplier Invoice"
+msgstr "Crear factura de proveedor
+#. module: stock_picking_review
 #: field:fast.return,create_uid:0
 msgid "Created by"
-msgstr "Created by"
+msgstr "Creado por"
 
 #. module: stock_picking_review
 #: field:fast.return,create_date:0
 msgid "Created on"
-msgstr "Created on"
+msgstr "Creado en"
 
 #. module: stock_picking_review
-#: field:stock.picking,delivery_id:0
-msgid "Delivery Person"
-msgstr "Repartidor"
+#: field:fast.return,journal_id:0
+msgid "Destination Journal"
+msgstr "Diario de destino"
 
 #. module: stock_picking_review
-#: view:stock.picking:stock_picking_review.stock_picking_review_search
-msgid "Delivery person"
-msgstr "Repartidor"
+#: field:fast.return,display_name:0
+msgid "Display Name"
+msgstr "Nombre mostrado"
 
 #. module: stock_picking_review
-#: view:stock.move:stock_picking_review.stock_move_review_tree
-msgid "Done"
-msgstr "Realizado"
-
-#. module: stock_picking_review
-#: code:addons/stock_picking_review/stock.py:203
-#: code:addons/stock_picking_review/stock.py:205
+#: code:addons/stock_picking_review/stock.py:234
 #, python-format
 msgid "Error!"
 msgstr "Error!"
 
 #. module: stock_picking_review
-#: model:ir.actions.act_window,name:stock_picking_review.action_fast_return
+#: model:ir.actions.act_window,name:stock_picking_review.eln_action_fast_return
 msgid "Fast Return"
 msgstr "Revisión y devolución rápida de entregas"
 
 #. module: stock_picking_review
-#: code:addons/stock_picking_review/stock.py:203
-#: code:addons/stock_picking_review/stock.py:205
+#: code:addons/stock_picking_review/stock.py:234
 #, python-format
 msgid "Fast return is only available with outgoing pickings!"
 msgstr "¡La devolución rápida solo está disponible para albaranes de entrega!"
@@ -100,29 +107,34 @@ msgid "Generate all return pickings?"
 msgstr " Condfirmas que deseas marcar los albaranes seleccionados como revisados y generar los albaranes de devolución?"
 
 #. module: stock_picking_review
-#: view:stock.picking:stock_picking_review.stock_picking_review_search
-msgid "Group By"
-msgstr "Agrupar por"
-
-#. module: stock_picking_review
 #: field:fast.return,id:0
 msgid "ID"
 msgstr "ID"
 
 #. module: stock_picking_review
-#: field:stock.picking,invoice_id:0
-msgid "Invoice"
-msgstr "Factura"
+#: view:stock.picking:stock_picking_review.stock_picking_review_form
+msgid "Invoices"
+msgstr "Facturas"
+
+#. module: stock_picking_review
+#: field:fast.return,journal_type:0
+msgid "Journal Type"
+msgstr "Tipo del diario"
+
+#. module: stock_picking_review
+#: field:fast.return,__last_update:0
+msgid "Last Modified on"
+msgstr "Ultima modificación en"
 
 #. module: stock_picking_review
 #: field:fast.return,write_uid:0
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr Ultima actualización por"
 
 #. module: stock_picking_review
 #: field:fast.return,write_date:0
 msgid "Last Updated on"
-msgstr "Last Updated on"
+msgstr "Ultima actualización en"
 
 #. module: stock_picking_review
 #: field:stock.move,margin_accepted:0
@@ -141,7 +153,7 @@ msgid "Moves"
 msgstr "Movimientos"
 
 #. module: stock_picking_review
-#: code:addons/stock_picking_review/wizard/fast_return.py:55
+#: code:addons/stock_picking_review/wizard/fast_return.py:77
 #, python-format
 msgid "New return pickings"
 msgstr "Nuevos albaranes de devolución"
@@ -150,6 +162,16 @@ msgstr "Nuevos albaranes de devolución"
 #: view:stock.picking:stock_picking_review.stock_picking_review_search
 msgid "Not Reviewed"
 msgstr "No revisados"
+
+#. module: stock_picking_review
+#: field:stock.move,new_discount:0
+msgid "Nuevo descuento"
+msgstr "Nuevo descuento"
+
+#. module: stock_picking_review
+#: field:stock.move,new_price_unit:0
+msgid "Nuevo precio (Udm)"
+msgstr "Nuevo precio (Udm)"
 
 #. module: stock_picking_review
 #: view:stock.picking:stock_picking_review.stock_picking_review_search
@@ -187,11 +209,6 @@ msgid "Pickings"
 msgstr "Albaranes"
 
 #. module: stock_picking_review
-#: view:stock.move:stock_picking_review.stock_move_review_tree
-msgid "Process"
-msgstr "Procesar"
-
-#. module: stock_picking_review
 #: view:stock.picking:stock_picking_review.stock_picking_review_form
 msgid "Products"
 msgstr "Productos"
@@ -206,6 +223,16 @@ msgstr "Anticipo/Pago"
 #: view:stock.picking:stock_picking_review.stock_picking_review_tree
 msgid "Reference"
 msgstr "Referencia"
+
+#. module: stock_picking_review
+#: selection:fast.return,journal_type:0
+msgid "Refund Purchase"
+msgstr "Reemboloso compra"
+
+#. module: stock_picking_review
+#: selection:fast.return,journal_type:0
+msgid "Refund Sale"
+msgstr "Reembolso venta"
 
 #. module: stock_picking_review
 #: field:stock.move,rejected:0
@@ -253,6 +280,16 @@ msgid "Sale price"
 msgstr "Precio de venta"
 
 #. module: stock_picking_review
+#: view:fast.return:stock_picking_review.fast_return_form
+msgid "Solo se generarán rectificativas de las entregas ya facturadas."
+msgstr "Solo se generarán rectificativas de las entregas ya facturadas."
+
+#. module: stock_picking_review
+#: constraint:stock.move:0
+msgid "Some accepted qty is grater than the original quantity."
+msgstr "Alguna cantidad aceptada es mayor que la cantidadad original."
+
+#. module: stock_picking_review
 #: model:ir.model,name:stock_picking_review.model_stock_move
 msgid "Stock Move"
 msgstr "Movimiento de existencias"
@@ -263,9 +300,21 @@ msgid "Stock Moves"
 msgstr "Movimientos de existencias"
 
 #. module: stock_picking_review
+#: view:stock.move:stock_picking_review.stock_move_review_simple_tree
+#: view:stock.move:stock_picking_review.stock_move_review_tree
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#. module: stock_picking_review
 #: field:stock.move,price_subtotal_accepted:0
 msgid "Subtotal Accepted"
 msgstr "Subtotal sobre aceptadas"
+
+#. module: stock_picking_review
+#: view:stock.move:stock_picking_review.stock_move_review_simple_tree
+#: view:stock.move:stock_picking_review.stock_move_review_tree
+msgid "Subtotal aceptado"
+msgstr "Subtotal aceptado"
 
 #. module: stock_picking_review
 #: field:stock.picking,amount_tax_acc:0
@@ -276,12 +325,6 @@ msgstr "Revisón de impuestos"
 #: view:stock.move:stock_picking_review.stock_move_review_search
 msgid "Today"
 msgstr "Hoy"
-
-#. module: stock_picking_review
-#: view:stock.move:stock_picking_review.stock_move_review_simple_tree
-#: view:stock.move:stock_picking_review.stock_move_review_tree
-msgid "Total"
-msgstr "Total"
 
 #. module: stock_picking_review
 #: field:stock.picking,amount_total_acc:0

@@ -16,6 +16,7 @@
                         Solo se generarán rectificativas de las entregas ya facturadas.
                     </h2>
                     <group>
+                        <field name="journal_type" invisible="1"/>
                         <field name="journal_id" domain="[('type','=',journal_type)]"/>
                     </group>
                   <footer>
@@ -27,25 +28,17 @@
             </field>
         </record>
 
-       <record id="action_fast_return" model="ir.actions.act_window">
-            <field name="name">Fast Return</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">fast.return</field>
-           <field name="src_model">stock.picking</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="fast_return_form"/>
-            <field name="target">new</field>
-            <field name="multi">True</field>
-        </record>
-
-        <record id="ir_fast_return" model="ir.values">
-            <field name="name">Fast Return</field>
-            <field name="key2">client_action_multi</field>
-            <field name="model">stock.picking</field>
-            <field name="value" eval="'ir.actions.act_window,%d'%action_fast_return" />
-        </record>
-
+         <act_window
+            id="eln_action_fast_return"
+            name="Fast Return"
+            res_model="fast.return"
+            src_model="stock.picking"
+            view_type="form"
+            view_mode="tree,form"
+            target="new"
+            view_id="fast_return_form"
+            key2="client_action_multi"
+            />
     </data>
 </openerp>
 
