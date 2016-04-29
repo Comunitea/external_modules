@@ -2,34 +2,22 @@
 <openerp>
     <data>
       <record id="open_risk_window_view" model="ir.ui.view">
-           <field name="name">create_project_from_sale_form</field>
+           <field name="name">open_risk_window_view</field>
            <field name="model">open.risk.window</field>
-           <field name="type">form</field>
            <field name="arch" type="xml">
                 <form string="Partner Risk Information">
-                    <group colspan="4" col="4">
-                        <group string="Debt" colspan="2" col="2">
-                            <field name="unpayed_amount" colspan="2"/>
-                            <field name="pending_amount" colspan="2"/>
-                            <field name="draft_invoices_amount" colspan="2"/>
-                            <field name="circulating_amount" colspan="2"/>
-                            <field name="pending_orders_amount" colspan="2"/>
-                            <separator colspan="2"/>
-                            <field name="total_debt" colspan="2"/>
-                            <label string="" colspan="2"/>
-                        </group>
-                        <group string="Credit" colspan="2" col="2">
-                            <field name="credit_limit" colspan="2"/>
-                            <field name="available_risk" colspan="2"/>
-                            <field name="total_risk_percent" widget="progressbar" colspan="2"/>
-                            <field name="risk_insurance_status" colspan="2"/>
-                            <label string="" colspan="2"/>
-                        </group>
+                    <group colspan="4">
+                        <field name="unpayed_amount"/>
+                        <field name="pending_amount"/>
+                        <field name="draft_invoices_amount"/>
+                        <field name="pending_orders_amount"/>
+                        <separator colspan="4"/>
+                        <field name="total_debt"/>
+                        <separator colspan="4"/>
+                        <field name="credit_limit"/>
+                        <field name="available_risk"/>
+                        <field name="total_risk_percent" widget="progressbar"/>
                     </group>
-                    <separator colspan="4"/>
-                    <field name="risk_insurance_notes" colspan="4"/>
-                    <label string="" colspan="4"/>
-                    <!-- <separator colspan="4"/> -->
                 </form>
            </field>
       </record>
@@ -39,7 +27,7 @@
              <field name="res_model">open.risk.window</field>
              <field name="type">ir.actions.act_window</field>
              <field name="view_type">form</field>
-             <field name="view_mode">tree,form</field>
+             <field name="view_mode">form</field>
              <field name="view_id" ref="open_risk_window_view"/>
              <field name="target">new</field>
        </record>
