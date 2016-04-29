@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+          <record id="view_order_product_graph2" model="ir.ui.view">
+               <field name="name">sale.report.graph2</field>
+               <field name="model">sale.report</field>
+               <field name="arch" type="xml">
+                   <graph string="Sales Analysis" type="pivot" stacked="True">
+                       <field name="section_id" type="row"/>
+                       <field name="date" interval="month" type="col"/>
+                       <field name="benefit" type="measure"/>
+                   </graph>
+               </field>
+          </record>
+
+          <record id="view_order_product_graph2" model="ir.ui.view">
+               <field name="name">sale.report.graph2</field>
+               <field name="model">sale.report</field>
+               <field name="arch" type="xml">
+                   <graph string="Sales Analysis" type="pivot" stacked="True">
+                       <field name="section_id" type="row"/>
+                       <field name="date" interval="month" type="col"/>
+                       <field name="cost_price" type="measure"/>
+                   </graph>
+               </field>
+          </record>
+</data>
+</openerp>

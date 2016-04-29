@@ -1,0 +1,37 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_margin_percentage
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-12-17 16:33+0000\n"
+"PO-Revision-Date: 2014-12-17 16:33+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_margin_percentage
+#: field:sale.order.line,margin_perc:0
+msgid "Margin"
+msgstr "Margen"
+
+#. module: sale_margin_percentage
+#: field:sale.order,total_purchase:0
+msgid "Price purchase"
+msgstr "Precio de compra"
+
+#. module: sale_margin_percentage
+#: model:ir.model,name:sale_margin_percentage.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: sale_margin_percentage
+#: model:ir.model,name:sale_margin_percentage.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea pedido de venta"
+
