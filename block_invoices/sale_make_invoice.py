@@ -3,6 +3,8 @@
 #
 #    Copyright (C) 2015 Comunitea All Rights Reserved
 #    @author Alberto Luengo Cabanillas
+#    Copyright (C) 2016
+#    Comunitea Servicios Tecnológicos (http://www.comunitea.com)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published
