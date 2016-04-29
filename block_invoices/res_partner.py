@@ -3,7 +3,7 @@
 #
 #    Copyright (C) 2015 Comunitea All Rights Reserved
 #    @author Alberto Luengo Cabanillas
-#    Copyright (C) 2015
+#    Copyright (C) 2016
 #    Comunitea Servicios Tecnológicos (http://www.comunitea.com)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -100,5 +100,5 @@ class ResPartner(osv.osv):
 
     _inherit = "res.partner"
     _columns = {
-        'blocked_sales': fields.boolean('Sales blocked?')
+        'blocked_sales': fields.boolean('Sales blocked?', copy=False)
     }
