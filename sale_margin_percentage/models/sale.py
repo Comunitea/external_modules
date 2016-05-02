@@ -21,8 +21,8 @@ class SaleOrderLine(models.Model):
                             ((100.0 - self.discount) / 100.0)) -
                            (self.purchase_price * self.product_uom_qty), 2)
             self.margin_perc = round((margin * 100) /
-                                     ((self.purchase_price *
-                                       self.product_uom_qty) or 1.0), 2)
+                                     (self.price_unit * self.product_uom_qty *
+                                      ((100.0 - self.discount) / 100.0)), 2)
             self.margin = margin
 
     margin = fields.Float(compute="_product_margin", string='Margin',
