@@ -17,12 +17,12 @@ class SaleOrderLine(models.Model):
         self.purchase_price = 0.0
         if self.product_id and self.product_id.standard_price:
             self.purchase_price = self.product_id.standard_price
-            margin = round((self.price_unit * self.product_uom_qty *
-                            ((100.0 - self.discount) / 100.0)) -
-                           (self.purchase_price * self.product_uom_qty), 2)
-            self.margin_perc = round((margin * 100) /
-                                     (self.price_unit * self.product_uom_qty *
-                                      ((100.0 - self.discount) / 100.0)), 2)
+            sale_price = self.price_unit * self.product_uom_qty * \
+                ((100.0 - self.discount) / 100.0)
+            purchase_price = self.purchase_price * self.product_uom_qty
+            margin = round(sale_price - purchase_price, 2)
+            if sale_price:
+                self.margin_perc = round((margin * 100) / sale_price, 2)
             self.margin = margin
 
     margin = fields.Float(compute="_product_margin", string='Margin',
@@ -44,12 +44,14 @@ class SaleOrder(models.Model):
         total_purchase = self.total_purchase
 
         self.margin = 0.0
-        margin = 0.0
+        sale_price = margin = 0.0
         if total_purchase != 0:
             for line in self.order_line:
                 margin += line.margin or 0.0
+                sale_price += line.price_subtotal
             self.margin = round(margin, 2)
-            self.margin_perc = round((margin * 100) / total_purchase, 2)
+            if sale_price:
+                self.margin_perc = round((margin * 100) / sale_price, 2)
 
     @api.one
     def _get_total_price_purchase(self):
