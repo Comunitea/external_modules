@@ -90,7 +90,7 @@ class StockPicking(models.Model):
             # Convertir a unidad de medida
             unit_price_line = product_uom_obj._compute_price(
                 move_line.product_uom.id, unit_price_line,
-                move_line.product_id.uom_id.id )
+                move_line.product_id.uom_id.id)
 
                 #raise Warning("There is no purchase line related. Can not "
                 #              "calculate price for accounting pending
@@ -168,4 +168,17 @@ class StockPicking(models.Model):
                                         "journal in the company for pending "
                                         "invoices"))
                     pick.account_pending_invoice()
+        return res
+
+    @api.model
+    def _prepare_values_extra_move(self, op, product, remaining_qty):
+        """
+
+        """
+        res = super(StockPicking, self).\
+            _prepare_values_extra_move(op, product, remaining_qty)
+        if op.linked_move_operation_ids and \
+                op.linked_move_operation_ids.move_id.purchase_line_id:
+            res.update(purchase_line_id=op.linked_move_operation_ids.move_id.
+                       purchase_line_id.id)
         return res
