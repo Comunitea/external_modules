@@ -68,9 +68,21 @@ class StockPicking(models.Model):
                     property_account_expense_categ.id
 
             name = move_line.name or origin
+            # Get purchase line id
+            purchase_line_obj = False
             if move_line.purchase_line_id:
-                unit_price_line = move_line.purchase_line_id.price_unit
-                discount_line = move_line.purchase_line_id.discount or 0.0
+                purchase_line_obj = move_line.purchase_line_id
+            else:   # Get purchase line id from other move
+                for m in self.move_lines:
+                    if m.product_id.id == move_line.product_id.id and \
+                            m.purchase_line_id:
+                        purchase_line_obj = m.purchase_line_id
+                        break
+
+            # Get prices from purchase if exists
+            if purchase_line_obj:
+                unit_price_line = purchase_line_obj.price_unit
+                discount_line = purchase_line_obj.discount or 0.0
             else:
                 unit_price_line = move_line.product_id.standard_price
                 discount_line = 0
