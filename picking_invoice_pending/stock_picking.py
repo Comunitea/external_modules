@@ -137,8 +137,13 @@ class StockPicking(models.Model):
         res = super(StockPicking, self).write(vals)
         if vals.get('date_done', False):
             for pick in self:
-                if (pick.picking_type_id.code == "incoming" and pick.move_lines
-                        and pick.move_lines[0].purchase_line_id and
+                exists_purchase = False
+                for move in pick.move_lines:
+                    if move.purchase_line_id:
+                        exists_purchase = True
+                        break
+                if (pick.picking_type_id.code == "incoming" and
+                        exists_purchase and
                         pick.invoice_state in ['invoiced', '2binvoiced'] and
                         pick.company_id.required_invoice_pending_move):
                     pick.refresh()
