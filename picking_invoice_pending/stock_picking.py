@@ -41,7 +41,7 @@ class StockPicking(models.Model):
         move_line_obj = self.env['account.move.line']
 
         amount = 0
-        date = self.min_date and self.min_date[:10] or \
+        date = self.date_done and self.date_done[:10] or \
             time.strftime('%Y-%m-%d')
         period_id = period_obj.find(date)
 
@@ -68,9 +68,21 @@ class StockPicking(models.Model):
                     property_account_expense_categ.id
 
             name = move_line.name or origin
+            # Get purchase line id
+            purchase_line_obj = False
             if move_line.purchase_line_id:
-                unit_price_line = move_line.purchase_line_id.price_unit
-                discount_line = move_line.purchase_line_id.discount or 0.0
+                purchase_line_obj = move_line.purchase_line_id
+            else:   # Get purchase line id from other move
+                for m in self.move_lines:
+                    if m.product_id.id == move_line.product_id.id and \
+                            m.purchase_line_id:
+                        purchase_line_obj = m.purchase_line_id
+                        break
+
+            # Get prices from purchase if exists
+            if purchase_line_obj:
+                unit_price_line = purchase_line_obj.price_unit
+                discount_line = purchase_line_obj.discount or 0.0
             else:
                 unit_price_line = move_line.product_id.standard_price
                 discount_line = 0
@@ -78,7 +90,7 @@ class StockPicking(models.Model):
             # Convertir a unidad de medida
             unit_price_line = product_uom_obj._compute_price(
                 move_line.product_uom.id, unit_price_line,
-                move_line.product_id.uom_id.id )
+                move_line.product_id.uom_id.id)
 
                 #raise Warning("There is no purchase line related. Can not "
                 #              "calculate price for accounting pending
@@ -137,8 +149,13 @@ class StockPicking(models.Model):
         res = super(StockPicking, self).write(vals)
         if vals.get('date_done', False):
             for pick in self:
-                if (pick.picking_type_id.code == "incoming" and pick.move_lines
-                        and pick.move_lines[0].purchase_line_id and
+                exists_purchase = False
+                for move in pick.move_lines:
+                    if move.purchase_line_id:
+                        exists_purchase = True
+                        break
+                if (pick.picking_type_id.code == "incoming" and
+                        exists_purchase and
                         pick.invoice_state in ['invoiced', '2binvoiced'] and
                         pick.company_id.required_invoice_pending_move):
                     pick.refresh()
@@ -151,4 +168,17 @@ class StockPicking(models.Model):
                                         "journal in the company for pending "
                                         "invoices"))
                     pick.account_pending_invoice()
+        return res
+
+    @api.model
+    def _prepare_values_extra_move(self, op, product, remaining_qty):
+        """
+
+        """
+        res = super(StockPicking, self).\
+            _prepare_values_extra_move(op, product, remaining_qty)
+        if op.linked_move_operation_ids and \
+                op.linked_move_operation_ids.move_id.purchase_line_id:
+            res.update(purchase_line_id=op.linked_move_operation_ids.move_id.
+                       purchase_line_id.id)
         return res
