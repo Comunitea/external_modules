@@ -34,10 +34,10 @@ class StockMove(models.Model):
 
     accepted_qty = fields.Float(
         digits=dp.get_precision('Product Unit of Measure'),
-        string='Accepted qty (UoS)')
+        string='Accepted qty (UoS)', copy=False)
     product_uom_acc_qty = fields.Float(
         digits=dp.get_precision('Product Unit of Measure'),
-        string='Accepted qty')
+        string='Accepted qty', copy=False)
     rejected = fields.Boolean('Rejected')
 
     price_subtotal_accepted = fields.Float(
