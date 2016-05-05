@@ -41,7 +41,7 @@ class StockPicking(models.Model):
         move_line_obj = self.env['account.move.line']
 
         amount = 0
-        date = self.min_date and self.min_date[:10] or \
+        date = self.date_done and self.date_done[:10] or \
             time.strftime('%Y-%m-%d')
         period_id = period_obj.find(date)
 
