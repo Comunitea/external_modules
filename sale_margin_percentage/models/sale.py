@@ -15,8 +15,14 @@ class SaleOrderLine(models.Model):
         self.margin = 0.0
         self.margin_perc = 0.0
         self.purchase_price = 0.0
-        if self.product_id and self.product_id.standard_price:
-            self.purchase_price = self.product_id.standard_price
+        c = self._context.copy()
+        c.update(company_id=self.order_id.company_id.id)
+        t_product = self.env['product.product'].with_context(c)
+        product = False
+        if self.product_id:
+            product = t_product.browse(self.product_id.id)
+        if product and product.standard_price:
+            self.purchase_price = product.standard_price
             sale_price = self.price_unit * self.product_uom_qty * \
                 ((100.0 - self.discount) / 100.0)
             purchase_price = self.purchase_price * self.product_uom_qty
@@ -61,7 +67,11 @@ class SaleOrder(models.Model):
                 self.total_purchase += line.purchase_price * \
                     line.product_uom_qty
             elif line.product_id:
-                cost_price = line.product_id.standard_price
+                c = self._context.copy()
+                c.update(company_id=self.order_id.company_id.id)
+                t_product = self.env['product.product'].with_context(c)
+                product = t_product.browse(self.product_id.id)
+                cost_price = product.standard_price
                 self.total_purchase += cost_price * \
                     line.product_uom_qty
 
