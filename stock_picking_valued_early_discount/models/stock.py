@@ -22,27 +22,27 @@ from openerp import models, fields, api
 from openerp.addons.decimal_precision import decimal_precision as dp
 
 
-class stock_picking(models.Model):
+class StockPicking(models.Model):
 
     _inherit = "stock.picking"
 
     early_payment_disc_untaxed = fields.Float(
-        'Untaxed Amount E.P.', digits_compute=dp.get_precision('Sale Price'),
+        'Untaxed Amount E.P.', digits=dp.get_precision('Discount'),
         readonly=True, store=True, compute='_amount_all')
     early_payment_disc_tax = fields.Float(
-        'Taxes E.P.', digits_compute=dp.get_precision('Sale Price'),
+        'Taxes E.P.', digits=dp.get_precision('Discount'),
         readonly=True, store=True, compute='_amount_all')
     early_payment_disc_total = fields.Float(
-        'Total with E.P.', digits_compute=dp.get_precision('Sale Price'),
+        'Total with E.P.', digits=dp.get_precision('Discount'),
         readonly=True, store=True, compute='_amount_all')
     total_early_discount = fields.Float(
-        'E.P. amount', digits_compute=dp.get_precision('Sale Price'),
+        'E.P. amount', digits=dp.get_precision('Discount'),
         readonly=True, store=True, compute='_amount_all')
 
     @api.multi
     @api.depends('move_lines', 'partner_id')
     def _amount_all(self):
-        res = super(stock_picking, self)._amount_all()
+        res = super(StockPicking, self)._amount_all()
         for picking in self:
             if not picking.sale_id.early_payment_discount:
                 picking.early_payment_disc_untaxed = picking.amount_untaxed

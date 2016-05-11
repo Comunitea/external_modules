@@ -16,7 +16,8 @@ class SaleOrderLine(models.Model):
         self.margin_perc = 0.0
         self.purchase_price = 0.0
         c = self._context.copy()
-        c.update(company_id=self.order_id.company_id.id)
+        c.update(company_id=self.order_id.company_id.id,
+                 force_company=self.order_id.company_id.id)
         t_product = self.env['product.product'].with_context(c)
         product = False
         if self.product_id:
@@ -68,7 +69,8 @@ class SaleOrder(models.Model):
                     line.product_uom_qty
             elif line.product_id:
                 c = self._context.copy()
-                c.update(company_id=self.company_id.id)
+                c.update(company_id=self.order_id.company_id.id,
+                         force_company=self.order_id.company_id.id)
                 t_product = self.env['product.product'].with_context(c)
                 product = t_product.browse(self.product_id.id)
                 cost_price = product.standard_price
