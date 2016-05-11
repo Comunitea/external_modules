@@ -42,19 +42,19 @@ class StockMove(models.Model):
 
     price_subtotal_accepted = fields.Float(
         compute='_get_subtotal_accepted', string="Subtotal Accepted",
-        digits=dp.get_precision('Sale Price'), readonly=True,
+        digits=dp.get_precision('Account'), readonly=True,
         store=False)
     cost_subtotal_accepted = fields.Float(
         compute='_get_subtotal_accepted', string="Cost subtotal Accepted",
-        digits=dp.get_precision('Sale Price'), readonly=True,
+        digits=dp.get_precision('Account'), readonly=True,
         store=False)
     margin_accepted = fields.Float(
         compute='_get_subtotal_accepted', string="Margin Accepted",
-        digits=dp.get_precision('Sale Price'), readonly=True,
+        digits=dp.get_precision('Account'), readonly=True,
         store=False)
     percent_margin_accepted = fields.Float(
         compute='_get_subtotal_accepted', string="% margin Accepted",
-        digits=dp.get_precision('Sale Price'), readonly=True,
+        digits=dp.get_precision('Account'), readonly=True,
         store=False)
     change_price = fields.Boolean("Cambio precio")
     new_price_unit = fields.Float("Nuevo precio (Udm)")
@@ -165,27 +165,27 @@ class StockPicking(models.Model):
                                  copy=True)
     amount_untaxed_acc = fields.Float(
         compute='_amount_all_acc',
-        digits_compute=dp.get_precision('Sale Price'),
+        digits_compute=dp.get_precision('Account'),
         string='Untaxed Amount Review', readonly=True, store=False)
     amount_tax_acc = fields.Float(
         compute='_amount_all_acc',
-        digits_compute=dp.get_precision('Sale Price'),
+        digits_compute=dp.get_precision('Account'),
         string='Taxes Review', readonly=True, store=False)
     amount_total_acc = fields.Float(
         compute='_amount_all_acc',
-        digits_compute=dp.get_precision('Sale Price'),
+        digits_compute=dp.get_precision('Account'),
         string='Total Review', readonly=True, store=False)
     amount_gross_acc = fields.Float(
         compute='_amount_all_acc',
-        digits_compute=dp.get_precision('Sale Price'),
+        digits_compute=dp.get_precision('Account'),
         string='amount gross Review', readonly=True, store=False)
     amount_discounted_acc = fields.Float(
         compute='_amount_all_acc',
-        digits_compute=dp.get_precision('Sale Price'),
+        digits_compute=dp.get_precision('Account'),
         string='Sale price', readonly=True, store=False)
     receipt_amount = fields.Float(
         compute='_receipt_amount',
-        digits_compute=dp.get_precision('Sale Price'),
+        digits_compute=dp.get_precision('Account'),
         string='Receipt', readonly=False, store=False)
 
     @api.multi
