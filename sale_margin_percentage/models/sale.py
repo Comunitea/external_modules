@@ -70,7 +70,7 @@ class SaleOrder(models.Model):
             elif line.product_id:
                 c = self._context.copy()
                 c.update(company_id=self.order_id.company_id.id,
-                         force_company=self.order_id.company_id.id)
+                         force_company=self.company_id.id)
                 t_product = self.env['product.product'].with_context(c)
                 product = t_product.browse(self.product_id.id)
                 cost_price = product.standard_price
