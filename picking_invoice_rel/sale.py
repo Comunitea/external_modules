@@ -26,8 +26,8 @@ class sale_order(osv.osv):
     _inherit = "sale.order"
     _logger = logging.getLogger(__name__)
 
-    def action_invoice_create(self, cr, uid, ids, grouped=False, states=['confirmed', 'done', 'exception'], date_inv = False, context=None):
-        res = super(sale_order, self).action_invoice_create(cr, uid, ids, grouped, states, date_inv, context)
+    def action_invoice_create(self, cr, uid, ids, grouped=False, states=['confirmed', 'done', 'exception'], date_invoice = False, context=None):
+        res = super(sale_order, self).action_invoice_create(cr, uid, ids, grouped, states, date_invoice, context)
         if not res:
             return res
         self._logger.debug('SO inv create ids,res:%s %s', ids,res)
@@ -38,7 +38,7 @@ class sale_order(osv.osv):
         picking_ids = picking_obj.search(cr, uid, [('sale_id','in',ids)])
         self._logger.debug('PO inv create picking_ids:%s', picking_ids)
         for picking_id in picking_ids:
-            picking_obj.write(cr, uid, picking_id, {'invoice_ids' : [(6,0, invoice_ids )]}, context=context) 
+            picking_obj.write(cr, uid, picking_id, {'invoice_ids' : [(6,0, invoice_ids )]}, context=context)
         return res
 
 sale_order()
