@@ -181,4 +181,18 @@ class StockPicking(models.Model):
                 op.linked_move_operation_ids.move_id.purchase_line_id:
             res.update(purchase_line_id=op.linked_move_operation_ids.move_id.
                        purchase_line_id.id)
+            t_uom = self.env['product.uom']
+
+            uos_id = uom_id = op.product_uom_id.id
+            uos_qty = uom_qty = remaining_qty
+            move = op.linked_move_operation_ids[0].move_id
+            uos_id = move.product_uos.id or uos_id
+            uos_qty = t_uom._compute_qty(uom_id, uom_qty, uos_id)
+            uos_vals = {
+                'product_uos': uos_id,
+                'product_uos_qty': uos_qty,
+                'product_uom': uos_id,
+                'product_uom_qty': uos_qty,
+            }
+            res.update(uos_vals)
         return res
