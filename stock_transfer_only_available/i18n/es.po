@@ -19,7 +19,7 @@ msgstr ""
 #: code:addons/stock_transfer_only_available/wizard/stock_transfer_details.py:53
 #, python-format
 msgid "Not found enought stock in %s for product %s"
-msgstr "No se ha encontrado suficiente stock en %s para el producto %s"
+msgstr "No hay suficiente stock en %s del producto %s"
 
 #. module: stock_transfer_only_available
 #: code:addons/stock_transfer_only_available/wizard/stock_transfer_details.py:52
