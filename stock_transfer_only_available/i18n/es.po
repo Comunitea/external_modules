@@ -1,0 +1,28 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * stock_transfer_only_available
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-26 11:42+0000\n"
+"PO-Revision-Date: 2016-05-26 11:42+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_transfer_only_available
+#: code:addons/stock_transfer_only_available/wizard/stock_transfer_details.py:53
+#, python-format
+msgid "Not found enought stock in %s for product %s"
+msgstr "No se ha encontrado suficiente stock en %s para el producto %s"
+
+#. module: stock_transfer_only_available
+#: code:addons/stock_transfer_only_available/wizard/stock_transfer_details.py:52
+#, python-format
+msgid "Quantity error"
+msgstr "Error de stock"
