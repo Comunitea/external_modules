@@ -10,7 +10,7 @@
 
             <field name="email_to" >${(ctx.get('partner_email') or '')|safe}</field>
             <field name="partner_to">${ctx.get('partner_id') or ''}</field>
-            <field name="auto_delete" eval="True"/>
+            <field name="auto_delete" eval="False"/>
 
             <field name="body_html"><![CDATA[
                 <html>
