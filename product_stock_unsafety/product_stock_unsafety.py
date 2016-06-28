@@ -57,7 +57,7 @@ class product_stock_unsafety(orm.Model):
         'company_id': fields.many2one('res.company', 'Company')
     }
     _defaults = {
-        'date':  time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        'date':  fields.date.context_today
     }
 
     def cancel(self, cr, uid, ids, context=None):
