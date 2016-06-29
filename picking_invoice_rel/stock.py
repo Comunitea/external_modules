@@ -20,11 +20,14 @@
 #
 ##############################################################################
 from openerp.osv import fields, osv
+
+
 class stock_move (osv.osv):
     _inherit = "stock.move"
     def _create_invoice_line_from_vals(self, cr, uid, move, invoice_line_vals, context=None):
         invoice_line_vals['stock_move_id'] = move.id
         return self.pool.get('account.invoice.line').create(cr, uid, invoice_line_vals, context=context)
+
 
 class stock_picking(osv.osv):
     _inherit = "stock.picking"
@@ -42,21 +45,20 @@ insert into picking_invoice_rel(picking_id,invoice_id) select p.id,i.id from sto
 where p.name = split_part(i.origin,':',1) and (p.id,i.id) not in (select picking_id,invoice_id from picking_invoice_rel);
 """)
 
-
     def action_invoice_create(self, cr, uid, ids, journal_id=False,
-            group=False, type='out_invoice', context=None):
-        res = super(stock_picking,self).action_invoice_create(cr, uid, ids, journal_id,
-            group, type, context)
-        picking_id = ids #res.keys()[0]
-        invoice_ids = res #.values()[0]
-        # if not isinstance(invoice_ids,list):
-        #    invoice_ids = [invoice_ids]
-        # for picking_id in ids:
-        #     picking = self.pool.get('stock.picking').browse(cr, uid, picking_id)
-        #     for move in picking.move_lines:
-        #         self.pool.get('account.invoice.line')
-
-        self.write(cr, uid, picking_id, {'invoice_ids' : [(6,0, invoice_ids )]}, context=context)
+                              group=False, type='out_invoice', context=None):
+        res = super(stock_picking, self).\
+            action_invoice_create(cr, uid, ids, journal_id, group, type,
+                                  context)
+        invoice_ids = res
+        inv_obj = self.pool.get('account.invoice')
+        for inv in inv_obj.browse(cr, uid, invoice_ids):
+            pick_ids = set()
+            for l in inv.invoice_line:
+                if l.stock_move_id and l.stock_move_id.picking_id:
+                    pick_ids.add(l.stock_move_id.picking_id.id)
+            pick_ids = list(pick_ids)
+            inv.write({'picking_ids' : [(6,0, pick_ids )]})
         return res
 
     def copy(self, cr, uid, id, default=None, context=None):
@@ -65,4 +67,3 @@ where p.name = split_part(i.origin,':',1) and (p.id,i.id) not in (select picking
         default = default.copy()
         default.update({'invoice_ids': [],})
         return super(stock_picking, self).copy(cr, uid, id, default, context)
-
