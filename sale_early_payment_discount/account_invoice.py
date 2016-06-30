@@ -21,6 +21,7 @@
 ##############################################################################
 from openerp import models, fields, api, exceptions, _
 import openerp.addons.decimal_precision as dp
+import time
 
 def intersect(la, lb):
     """returns True for equal keys in two lists"""
@@ -102,6 +103,10 @@ class account_invoice(models.Model):
         prod_early_payment = prod_early_payment and prod_early_payment[0] or False
 
         if prod_early_payment:
+            analytic_id = False
+            rec = self.env['account.analytic.default'].account_get(prod_early_payment.id, self.partner_id.id, self._uid, time.strftime('%Y-%m-%d'), company_id=self.company_id.id)
+            if rec:
+                analytic_id = rec.analytic_id.id
             group_account_line = {}
             for early_payment_line in early_payments:
                 group_account_line[early_payment_line] = {}
@@ -120,6 +125,7 @@ class account_invoice(models.Model):
 
 
             for early_payment_line in group_account_line:
+              
                 for account_id in group_account_line[early_payment_line]:
                     self.env['account.invoice.line'].create({
                         'name': _("Early payment discount") + " " + str(self.early_payment_discount) + "%",
@@ -128,7 +134,8 @@ class account_invoice(models.Model):
                         'account_id': int(account_id),
                         'price_unit': 0.0 - (self.compute_early_payment_discount(group_account_line[early_payment_line][account_id], self.early_payment_discount)),
                         'quantity': 1,
-                        'invoice_line_tax_id': [(6, 0, [int(x) for x in early_payment_line.split(',')])]
+                        'invoice_line_tax_id': [(6, 0, [int(x) for x in early_payment_line.split(',')])],
+                        'account_analytic_id': analytic_id
                         })
 
 
@@ -139,7 +146,8 @@ class account_invoice(models.Model):
                         'product_id': prod_early_payment.id,
                         'account_id': prod_early_payment.categ_id and prod_early_payment.categ_id.property_account_sale_early_payment_disc.id or prod_early_payment.property_stock_account_output.id,
                         'price_unit': 0.0 - (self.compute_early_payment_discount(cr, uid, inv_lines_out_vat, self.early_payment_discount)),
-                        'quantity': 1
+                        'quantity': 1,
+                        'account_analytic_id': analytic_id
                         })
 
         #recompute taxes
