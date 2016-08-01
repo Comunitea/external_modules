@@ -218,7 +218,6 @@ class StockPicking(models.Model):
     @api.multi
     def fast_returns(self):
         move_obj = self.env['stock.move']
-        data_obj = self.env['stock.return.picking.line']
         res = []
         for pick in self:
             # Cancel assignment of existing chained assigned move
@@ -280,11 +279,6 @@ class StockPicking(models.Model):
                             move.origin_returned_move_id.move_dest_id.id
                     else:
                         move_dest_id = False
-                    data_obj = self.env['ir.model.data']
-                    location_dest_id = \
-                        data_obj.\
-                        get_object_reference('stock_picking_review',
-                                             'stock_location_returns')[1],
                     if len(move.linked_move_operation_ids) == 1:
                         lot_id = \
                             move.linked_move_operation_ids[0].\
@@ -303,7 +297,7 @@ class StockPicking(models.Model):
                         'accepted_qty': new_qty,
                         'product_uom_acc_qty': new_uom_qty,
                         'location_id': move.location_dest_id.id,
-                        'location_dest_id': location_dest_id,
+                        'location_dest_id': move.location_id.id,
                         'picking_type_id': pick_type_id,
                         'warehouse_id': pick.picking_type_id.warehouse_id.id,
                         'origin_returned_move_id': move.id,

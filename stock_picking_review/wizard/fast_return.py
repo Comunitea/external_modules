@@ -94,8 +94,7 @@ class FastReturn(models.TransientModel):
 
     def create_invoice(self, pickings):
         picks = self.env['stock.picking'].browse(pickings)
-        pick_ids = [p.id for p in picks if p.invoice_state == '2binvoiced'
-                    and p.partner_id.invoice_method == 'a']
+        pick_ids = [p.id for p in picks if p.invoice_state == '2binvoiced']
         print pick_ids
         if pick_ids:
             invoice_wzd_vals = {
@@ -116,4 +115,3 @@ class FastReturn(models.TransientModel):
                 vals = {'origin_invoices_ids': [(6, 0, [rect_inv_id,])]}
                 print vals
                 invoice.write(vals)
-            invoices.signal_workflow('invoice_open')
