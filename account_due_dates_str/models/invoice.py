@@ -40,24 +40,21 @@ class AccountInvoice(models.Model):
                                                 self.move_id.id),
                                                ('date_maturity', "!=", False)],
                                               order="date_maturity asc")
+            payment_mode = False
+            if self.payment_mode_id:
+                payment_mode = self.payment_mode_id
+                expiration_dates_str += payment_mode.name + \
+                    u":\n"
             for line in move_lines:
                 date = time.strptime(line.date_maturity, "%Y-%m-%d")
                 date = datetime.fromtimestamp(mktime(date))
                 date = date.strftime("%d/%m/%Y")
-                payment_mode = False
-                if not payment_mode and self.payment_mode_id:
-                    payment_mode = self.payment_mode_id
                 expiration_dates_str += date + \
-                    " ------> " + \
+                    "                          " + \
                     str(self.type in ('out_invoice', 'in_refund') and
                         line.debit or (self.type in ('in_invoice',
                                                      'out_refund') and
-                        line.credit or 0))
-                if payment_mode:
-                    expiration_dates_str += " ------> " + payment_mode.name + \
-                        u"\n"
-                else:
-                    expiration_dates_str += "\n"
+                        line.credit or 0)) + "\n"
 
         self.expiration_dates_str = expiration_dates_str
 
