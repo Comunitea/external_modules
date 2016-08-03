@@ -123,11 +123,10 @@ class account_invoice(models.Model):
                     else:
                         raise exceptions.except_orm(_('Warning'), _('Cannot set early payment discount because now is impossible find the early payment account. Review invoice products categories have defined early payment account by default or early payment discount product have defined an output account.'))
 
-
+            partner_id = self.partner_id and self.partner_id.id or False
             for early_payment_line in group_account_line:
-              
                 for account_id in group_account_line[early_payment_line]:
-                    self.env['account.invoice.line'].create({
+                    self.env['account.invoice.line'].with_context(partner_id=partner_id).create({
                         'name': _("Early payment discount") + " " + str(self.early_payment_discount) + "%",
                         'invoice_id': self.id,
                         'product_id': prod_early_payment.id,
@@ -138,14 +137,13 @@ class account_invoice(models.Model):
                         'account_analytic_id': analytic_id
                         })
 
-
             if inv_lines_out_vat:
-                self.env['account.invoice.line'].create({
+                self.env['account.invoice.line'].with_context(partner_id=partner_id).create({
                         'name': _("Early payment discount") + " " + str(self.early_payment_discount) + "%",
                         'invoice_id': self.id,
                         'product_id': prod_early_payment.id,
                         'account_id': prod_early_payment.categ_id and prod_early_payment.categ_id.property_account_sale_early_payment_disc.id or prod_early_payment.property_stock_account_output.id,
-                        'price_unit': 0.0 - (self.compute_early_payment_discount(cr, uid, inv_lines_out_vat, self.early_payment_discount)),
+                        'price_unit': 0.0 - (self.compute_early_payment_discount(inv_lines_out_vat, self.early_payment_discount)),
                         'quantity': 1,
                         'account_analytic_id': analytic_id
                         })
