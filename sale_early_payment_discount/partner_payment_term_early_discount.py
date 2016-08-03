@@ -48,3 +48,6 @@ class account_partner_payment_term_early_discount(models.Model):
     early_payment_discount = fields.Float(
         'E.P. disc.(%)', digits=(16, 2), required=True,
         help="Percentage of discount for early payment.")
+    company_id = fields.Many2one(
+        'res.company', 'Company',
+        default=lambda self: self.env.user.company_id)

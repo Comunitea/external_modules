@@ -18,6 +18,7 @@
                             <group>
                                 <field name="payment_term_id"/>
                                 <field name="early_payment_discount"/>
+                                <field name="company_id"/>
                             </group>
                         </group>
                     </sheet>
@@ -35,6 +36,7 @@
                     <field name="partner_id" select="1"/>
                     <field name="payment_term_id" select="1"/>
                     <field name="early_payment_discount" select="1"/>
+                    <field name="company_id"/>
                 </tree>
             </field>
         </record>
