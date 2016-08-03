@@ -181,15 +181,17 @@ class account_invoice(models.Model):
         if not partner_id:
             res['value']['early_payment_discount'] = False
             return res
-
+        
+        partner = self.pool.get('res.partner').browse(cr, uid, partner_id, context)
+        com_part_id = partner.commercial_partner_id.id
         early_discs = []
 
         if not payment_term and not (res.get('value') and res['value'].get('payment_term')):
-            early_discs = self.pool.get('account.partner.payment.term.early.discount').search(cr, uid, [('partner_id', '=', partner_id), ('payment_term_id', '=', False)], context=context)
+            early_discs = self.pool.get('account.partner.payment.term.early.discount').search(cr, uid, [('partner_id', '=', com_part_id), ('payment_term_id', '=', False)], context=context)
             if early_discs:
                 res['value']['early_payment_discount'] = self.pool.get('account.partner.payment.term.early.discount').browse(cr, uid, early_discs[0], context).early_payment_discount
         elif payment_term and not (res.get('value') and res['value'].get('payment_term')):
-            early_discs = self.pool.get('account.partner.payment.term.early.discount').search(cr, uid, [('partner_id', '=', partner_id), ('payment_term_id', '=', payment_term)], context=context)
+            early_discs = self.pool.get('account.partner.payment.term.early.discount').search(cr, uid, [('partner_id', '=', com_part_id), ('payment_term_id', '=', payment_term)], context=context)
             if early_discs:
                 res['value']['early_payment_discount'] = self.pool.get('account.partner.payment.term.early.discount').browse(cr, uid, early_discs[0], context).early_payment_discount
             else:
@@ -197,7 +199,7 @@ class account_invoice(models.Model):
                 if early_discs:
                     res['value']['early_payment_discount'] = self.pool.get('account.partner.payment.term.early.discount').browse(cr, uid, early_discs[0], context).early_payment_discount
         elif res.get('value') and res['value'].get('payment_term'):
-            early_discs = self.pool.get('account.partner.payment.term.early.discount').search(cr, uid, [('partner_id', '=', partner_id), '|',('payment_term_id', '=', res['value']['payment_term']), ('payment_term_id', '=', False)], context=context)
+            early_discs = self.pool.get('account.partner.payment.term.early.discount').search(cr, uid, [('partner_id', '=', com_part_id), '|',('payment_term_id', '=', res['value']['payment_term']), ('payment_term_id', '=', False)], context=context)
             if early_discs:
                 res['value']['early_payment_discount'] = self.pool.get('account.partner.payment.term.early.discount').browse(cr, uid, early_discs[0], context).early_payment_discount
             else:
@@ -218,7 +220,7 @@ class account_invoice(models.Model):
 
         self.date_due = False
 
-        early_discs = early_disc_obj.search([('partner_id', '=', self.partner_id.id), ('payment_term_id', '=', self.payment_term.id)])
+        early_discs = early_disc_obj.search([('partner_id', '=', self.partner_id.commercial_partner_id.id), ('payment_term_id', '=', self.payment_term.id)])
         if early_discs:
             self.early_payment_discount = early_discs.early_payment_discount
         else:
