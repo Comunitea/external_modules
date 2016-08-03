@@ -50,7 +50,7 @@ class AccountInvoice(models.Model):
                 date = datetime.fromtimestamp(mktime(date))
                 date = date.strftime("%d/%m/%Y")
                 expiration_dates_str += date + \
-                    "                          " + \
+                    "------------->" + \
                     str(self.type in ('out_invoice', 'in_refund') and
                         line.debit or (self.type in ('in_invoice',
                                                      'out_refund') and
