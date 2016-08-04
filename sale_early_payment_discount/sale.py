@@ -89,7 +89,7 @@ class sale_order(models.Model):
         if not payment_term:
             res['early_payment_discount'] = False
             return {'value': res}
-        partner = self.pool.get('res.partner').browse(cr, uid, part, context)
+        partner = self.pool.get('res.partner').browse(cr, uid, part)
         com_part_id = partner.commercial_partner_id.id
         early_discs = self.pool.get('account.partner.payment.term.early.discount').search(cr, uid, [('partner_id', '=', com_part_id), ('payment_term_id', '=', payment_term)])
         if early_discs:
