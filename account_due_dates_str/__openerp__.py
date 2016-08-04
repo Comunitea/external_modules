@@ -27,7 +27,7 @@
     'website': 'https://launchpad.net/banking-addons',
     'category': 'Banking addons',
     'depends': ['account', 'account_payment'],
-    'data': ['views/account_view.xml'],
+    'data': [],
     'description': '''
 Get a new field thar have the due dates in a string''',
     'installable': True,
