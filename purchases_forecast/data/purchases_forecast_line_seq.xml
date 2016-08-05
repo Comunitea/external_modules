@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data noupdate = "1">
+        <!-- Type -->
+        <record model="ir.sequence.type" id="seq_purchases_forecast_line">
+            <field name="name">Sequence purchases Forecast Line</field>
+            <field name="code">purchases.forecast.lines</field>
+        </record>
+
+        <!-- Sequence -->
+        <record id="seq_purchases_forecast_line_action" model="ir.sequence">
+            <field name="name">Def. purchases Forecast Line seq.</field>
+            <field name="code">purchases.forecast.lines</field>
+            <field name="prefix">PFL/</field>
+            <field name="padding">8</field>
+            <field name="company_id" eval="0"/>
+        </record>
+    </data>
+</openerp>

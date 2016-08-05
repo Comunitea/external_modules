@@ -1,0 +1,595 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* sales_forecast
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-16 18:36+0000\n"
+"PO-Revision-Date: 2015-04-16 20:50+0100\n"
+"Last-Translator: Pedro <pegomez@elnogal.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_ES\n"
+"X-Generator: Poedit 1.7.5\n"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Group By..."
+msgstr "Agrupar por..."
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Oct €"
+msgstr "Oct €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Sep        €"
+msgstr "Sep        €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "March"
+msgstr "Marzo"
+
+#. module: sales_forecast
+#: view:sales.forecast:0 field:sales.forecast,company_id:0
+msgid "Company"
+msgstr "Compañía"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Mar €"
+msgstr "Mar €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Set to Draft"
+msgstr "Volver a borrador"
+
+#. module: sales_forecast
+#: help:sales.forecast,is_merged:0
+msgid "When this field is checked, the price list will not be used for calculating the amounts."
+msgstr "Cuando este campo está marcado, la tarifa de precios no se usará para calcular los importes."
+
+#. module: sales_forecast
+#: view:sales.forecast:0 selection:sales.forecast,state:0
+msgid "Approved"
+msgstr "Aprobado"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Jan €"
+msgstr "Ene €"
+
+#. module: sales_forecast
+#: field:get.sales.forecast,account_id:0 field:sales.forecast,analytic_id:0
+msgid "Account"
+msgstr "Cuenta analítica"
+
+#. module: sales_forecast
+#: field:sales.forecast.line,apr_amount:0
+#: field:sales.forecast.line,aug_amount:0
+#: field:sales.forecast.line,dec_amount:0
+#: field:sales.forecast.line,feb_amount:0
+#: field:sales.forecast.line,jan_amount:0
+#: field:sales.forecast.line,jul_amount:0
+#: field:sales.forecast.line,jun_amount:0
+#: field:sales.forecast.line,mar_amount:0
+#: field:sales.forecast.line,may_amount:0
+#: field:sales.forecast.line,nov_amount:0
+#: field:sales.forecast.line,oct_amount:0
+#: field:sales.forecast.line,sep_amount:0
+msgid "€"
+msgstr "€"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Search Sales forecasts"
+msgstr "Buscar previsiones de ventas"
+
+#. module: sales_forecast
+#: model:res.groups,name:sales_forecast.group_approve_sale_forecast
+#: model:res.groups,name:sales_forecast.group_approve_sales_forecast
+msgid "Sales forecast / Manager"
+msgstr "Previsión de ventas / Manager"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Aug €"
+msgstr "Ago €"
+
+#. module: sales_forecast
+#: model:ir.model,name:sales_forecast.model_merge_sales_forecast
+msgid "Sales Forecast Merge"
+msgstr "Sales Forecast Merge"
+
+#. module: sales_forecast
+#: code:addons/sales_forecast/sales_forecast.py:80
+#: code:addons/sales_forecast/sales_forecast.py:88
+#, python-format
+msgid "Warning !"
+msgstr "¡Atención!"
+
+#. module: sales_forecast
+#: field:sales.forecast,pricelist_id:0
+msgid "Pricelist"
+msgstr "Tarifa de precios"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Origin"
+msgstr "Origen"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Mar       Qty"
+msgstr "Mar       Cant."
+
+#. module: sales_forecast
+#: code:addons/sales_forecast/wizard/merge_sales_forecast.py:42
+#, python-format
+msgid "Warning"
+msgstr "Atención"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Feb        €"
+msgstr "Feb        €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Jul €"
+msgstr "Jul €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Analytic account"
+msgstr "Cuenta analítica"
+
+#. module: sales_forecast
+#: view:sales.forecast:0 field:sales.forecast,state:0
+msgid "State"
+msgstr "Estado"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Dec        €"
+msgstr "Dic        €"
+
+#. module: sales_forecast
+#: model:ir.actions.act_window,name:sales_forecast.action_view_sales_forecast_scale
+#: view:scale.sales.forecast:0
+msgid "Scale sales forecast"
+msgstr "Escalar previsión de ventas"
+
+#. module: sales_forecast
+#: model:ir.model,name:sales_forecast.model_scale_sales_forecast
+msgid "Preload a scale sales forecast"
+msgstr "Precargar una previsión de ventas escalada"
+
+#. module: sales_forecast
+#: field:sales.forecast,merged_from_ids:0
+msgid "Merged from"
+msgstr "Fusionar desde"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Aug       Qty"
+msgstr "Ago       Cant."
+
+#. module: sales_forecast
+#: field:get.sales.forecast,percent_increase:0
+#: field:scale.sales.forecast,percent_increase:0
+msgid "% Increase"
+msgstr "% Incremento"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Mar        €"
+msgstr "Mar        €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "July"
+msgstr "Julio"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "May        €"
+msgstr "May        €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Nov €"
+msgstr "Nov €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0 field:sales.forecast.line,total_amount:0
+msgid "Total €"
+msgstr "Total €"
+
+#. module: sales_forecast
+#: field:sales.forecast,merged_into_id:0
+msgid "Merged into"
+msgstr "Fusionar en"
+
+#. module: sales_forecast
+#: model:ir.model,name:sales_forecast.model_get_sales_forecast
+msgid "Preload a sales forecast"
+msgstr "Precargar una previsión de ventas"
+
+#. module: sales_forecast
+#: model:ir.model,name:sales_forecast.model_sales_forecast_line
+msgid "Sales forecast lines"
+msgstr "Lineas previsión de ventas"
+
+#. module: sales_forecast
+#: view:scale.sales.forecast:0
+msgid "Are you sure you want to scale these forecasts?"
+msgstr "¿Seguro que desea escalar estas previsiones?"
+
+#. module: sales_forecast
+#: model:ir.actions.act_window,name:sales_forecast.action_view_sales_forecast_form
+#: model:ir.model,name:sales_forecast.model_sales_forecast
+#: view:sales.forecast:0 field:sales.forecast.line,sales_forecast_id:0
+msgid "Sales forecast"
+msgstr "Previsión de ventas"
+
+#. module: sales_forecast
+#: field:sales.forecast.line,total_qty:0
+msgid "Total Qty."
+msgstr "Cant. Total"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "April"
+msgstr "Abril"
+
+#. module: sales_forecast
+#: code:addons/sales_forecast/sales_forecast.py:144
+#, python-format
+msgid "Sales forecast MERGED. "
+msgstr "Sales forecast MERGED. "
+
+#. module: sales_forecast
+#: view:merge.sales.forecast:0
+msgid ""
+" Please note that: \n"
+" \n"
+" Sales forecasts will only be merged if: \n"
+" * Sales forecasts belong to the same company \n"
+" "
+msgstr ""
+"Tenga en cuenta que: \n"
+"\n"
+"Las previsiones de ventas sólo se fusionarán si: \n"
+"* Las previsiones de ventas pertenecen a la misma empresa \n"
+" "
+
+#. module: sales_forecast
+#: model:ir.ui.menu,name:sales_forecast.menu_sales_forecast
+#: model:ir.ui.menu,name:sales_forecast.menu_sales_forecast_all
+#: view:sales.forecast:0
+msgid "Sales forecasts"
+msgstr "Previsiones de ventas"
+
+#. module: sales_forecast
+#: view:scale.sales.forecast:0
+msgid ""
+" Please note that: \n"
+" \n"
+" * Only quantities are scaled. \n"
+" * The amounts will be filled to zeros \n"
+" "
+msgstr ""
+" Tenga en cuenta que: \n"
+" \n"
+" * Sólamente las cantidades serán escaladas. \n"
+" * Los importes se llenarán con ceros \n"
+" "
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Apr        €"
+msgstr "Abr       €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Jul        €"
+msgstr "Jul        €"
+
+#. module: sales_forecast
+#: view:merge.sales.forecast:0
+msgid "Are you sure you want to merge these forecasts?"
+msgstr "¿Está seguro de que quiere fusionar estas previsiones?"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "June"
+msgstr "Junio"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Totals"
+msgstr "Totales"
+
+#. module: sales_forecast
+#: view:sales.forecast:0 selection:sales.forecast,state:0
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Sep       Qty"
+msgstr "Sep       Cant."
+
+#. module: sales_forecast
+#: code:addons/sales_forecast/wizard/merge_sales_forecast.py:43
+#, python-format
+msgid "Please select multiple sales forecasts to merge in the list view."
+msgstr "Por favor, seleccionar multiples previsiones de ventas para fusionar."
+
+#. module: sales_forecast
+#: code:addons/sales_forecast/sales_forecast.py:88
+#, python-format
+msgid "The product [%s] %s is not in the selected pricelist !"
+msgstr "El producto [%s] %s no está en la tarifa de precios seleccionada!"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Oct        €"
+msgstr "Oct        €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "My sales forecasts"
+msgstr "Mis previsiones de ventas"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Oct       Qty"
+msgstr "Oct       Cant."
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "August"
+msgstr "Agosto"
+
+#. module: sales_forecast
+#: view:get.sales.forecast:0
+msgid "Get"
+msgstr "Obtener"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "May €"
+msgstr "May €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0 field:sales.forecast,commercial_id:0
+msgid "Commercial"
+msgstr "Comercial"
+
+#. module: sales_forecast
+#: field:sales.forecast,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "November"
+msgstr "Noviembre"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Jan        €"
+msgstr "Ene        €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "October"
+msgstr "Octubre"
+
+#. module: sales_forecast
+#: view:scale.sales.forecast:0
+msgid "Generate new scaled forecasts"
+msgstr "Generar nuevas previsiones escaladas"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "January"
+msgstr "Enero"
+
+#. module: sales_forecast
+#: code:addons/sales_forecast/sales_forecast.py:80
+#, python-format
+msgid ""
+"The pricelist has no active version !\n"
+"Please create or activate one."
+msgstr ""
+"La tarifa de precios no tiene versión activa!\n"
+"Por favor, crear o activar una."
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Nov       Qty"
+msgstr "Nov       Cant."
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Feb       Qty"
+msgstr "Feb       Cant."
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Dec       Qty"
+msgstr "Dic       Cant."
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Sep €"
+msgstr "Sep €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Apr       Qty"
+msgstr "Abr       Cant."
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Jun       Qty"
+msgstr "Jun       Cant."
+
+#. module: sales_forecast
+#: field:sales.forecast.line,apr_qty:0 field:sales.forecast.line,aug_qty:0
+#: field:sales.forecast.line,dec_qty:0 field:sales.forecast.line,feb_qty:0
+#: field:sales.forecast.line,jan_qty:0 field:sales.forecast.line,jul_qty:0
+#: field:sales.forecast.line,jun_qty:0 field:sales.forecast.line,mar_qty:0
+#: field:sales.forecast.line,may_qty:0 field:sales.forecast.line,nov_qty:0
+#: field:sales.forecast.line,oct_qty:0 field:sales.forecast.line,sep_qty:0
+msgid "Qty"
+msgstr "Cant."
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "September"
+msgstr "Septiembre"
+
+#. module: sales_forecast
+#: view:sales.forecast:0 selection:sales.forecast,state:0
+msgid "Done"
+msgstr "Realizado"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "December"
+msgstr "Diciembre"
+
+#. module: sales_forecast
+#: view:get.sales.forecast:0 view:merge.sales.forecast:0 view:sales.forecast:0
+#: selection:sales.forecast,state:0 view:scale.sales.forecast:0
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "May       Qty"
+msgstr "May       Cant."
+
+#. module: sales_forecast
+#: model:ir.actions.act_window,name:sales_forecast.action_view_sales_forecast_merge
+#: view:merge.sales.forecast:0
+msgid "Merge sales forecasts"
+msgstr "Fusionar previsiones de ventas"
+
+#. module: sales_forecast
+#: field:sales.forecast.line,product_id:0
+msgid "Product"
+msgstr "Producto"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "May"
+msgstr "Mayo"
+
+#. module: sales_forecast
+#: field:sales.forecast,is_merged:0
+msgid "Is Merged"
+msgstr "Fusionada"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Jun €"
+msgstr "Jun €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Jun        €"
+msgstr "Jun        €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Feb €"
+msgstr "Feb €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "February"
+msgstr "Febrero"
+
+#. module: sales_forecast
+#: field:get.sales.forecast,name:0 field:sales.forecast,name:0
+#: field:sales.forecast.line,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Nov        €"
+msgstr "Nov        €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0 field:sales.forecast,sales_forecast_lines:0
+msgid "Lines"
+msgstr "Líneas de previsión"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Aug        €"
+msgstr "Ago        €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Dec €"
+msgstr "Dic €"
+
+#. module: sales_forecast
+#: code:addons/sales_forecast/wizard/merge_sales_forecast.py:71
+#: code:addons/sales_forecast/wizard/scale_sales_forecast.py:73
+#: code:addons/sales_forecast/wizard/scale_sales_forecast.py:86
+#, python-format
+msgid "Sales Forecasts"
+msgstr "Previsiones de ventas"
+
+#. module: sales_forecast
+#: view:get.sales.forecast:0
+#: model:ir.actions.act_window,name:sales_forecast.get_sales_forecast_action
+#: model:ir.ui.menu,name:sales_forecast.menu_get_sales_forecast
+msgid "Get sales forecast"
+msgstr "Obtener previsión de ventas"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Approve"
+msgstr "Aprobar"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Jan       Qty"
+msgstr "Ene       Cant."
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Apr €"
+msgstr "Abr €"
+
+#. module: sales_forecast
+#: view:sales.forecast:0
+msgid "Jul       Qty"
+msgstr "Jul       Cant."
+
+#. module: sales_forecast
+#: field:sales.forecast,year:0
+msgid "Year"
+msgstr "Año"

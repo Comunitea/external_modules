@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+        <menuitem id="product_cost_management" parent="stock.menu_stock_root" name="Product Costs" sequence="5"/>
+        <menuitem id="update_product_costs" parent="product_cost_management" action="action_update_product_costs" name="Update product costs" sequence="1"/>
+        <menuitem id="product_costs_menu" parent="product_cost_management" action="action_cost_product" name="Product Costs" sequence="2"/>
+        <menuitem id="product_costs_configuration" parent="product_cost_management" name="Configuration" sequence="3"/>
+        <menuitem id="product_costs_management_cost_type" parent="product_costs_configuration" action="action_cost_types"/>
+        <menuitem id="product_costs_management_structure" parent="product_costs_configuration" action="action_cost_structure"/>
+    </data>
+</openerp>

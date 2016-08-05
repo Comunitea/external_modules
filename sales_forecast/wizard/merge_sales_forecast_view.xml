@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+         <record id="view_sales_forecast_merge" model="ir.ui.view">
+            <field name="name">Merge sales forecast</field>
+            <field name="model">merge.sales.forecast</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+               <form string="Merge sales forecasts">
+                    <separator string="Are you sure you want to merge these forecasts?" colspan="4"/>
+                       <newline/>
+                    <label string="
+Please note that: &#10; &#10;
+Sales forecasts will only be merged if: &#10;
+* Sales forecasts belong to the same company &#10;
+" colspan="4"/>
+                    <newline/>
+                    <separator string="" colspan="4" />
+                    <button special="cancel" string="Cancel" icon="gtk-cancel"/>
+                    <button name="merge_sales_forecast" string="Merge sales forecasts" type="object" icon="gtk-convert"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="Merge sales forecasts"
+            context="{'search_default_draft': 1, 'search_default_approved': False}"
+            res_model="merge.sales.forecast"
+            src_model="sales.forecast"
+            view_mode="form"
+            target="new"
+            multi="True"
+            key2="client_action_multi"
+
+            id="action_view_sales_forecast_merge"/>
+    </data>
+</openerp>
