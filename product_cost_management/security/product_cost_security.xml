@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="1">
+    <!-- Multi - Company Rules -->
+
+    <record model="ir.rule" id="cost_type_comp_rule">
+        <field name="name">Cost Type multi-company</field>
+        <field name="model_id" ref="model_cost_type"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+
+    <record model="ir.rule" id="cost_structure_comp_rule">
+        <field name="name">Cost Structure multi-company</field>
+        <field name="model_id" ref="model_cost_structure"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+    <!--<record model="ir.rule" id="cost_structure_elements_comp_rule">-->
+        <!--<field name="name">Cost Structure Elements multi-company</field>-->
+        <!--<field name="model_id" ref="model_cost_structure_elements"/>-->
+        <!--<field name="global" eval="True"/>-->
+        <!--<field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>-->
+    <!--</record>-->
+
+    <record model="ir.rule" id="product_cost_comp_rule">
+        <field name="name">Product Cost multi-company</field>
+        <field name="model_id" ref="model_product_cost"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+    <record model="ir.rule" id="product_cost_lines_comp_rule">
+        <field name="name">Product Cost Lines multi-company</field>
+        <field name="model_id" ref="model_product_cost_lines"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+
+</data>
+</openerp>

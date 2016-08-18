@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sales_forecast,sales.forecast,model_sales_forecast,base.group_user,1,0,0,0
+access_sales_forecast,sales.forecast,model_sales_forecast,base.group_sale_salesman,1,1,1,1
+access_sales_forecast_line,sales.forecast.line,model_sales_forecast_line,base.group_user,1,0,0,0
+access_sales_forecast_line,sales.forecast.line,model_sales_forecast_line,base.group_sale_salesman,1,1,1,1
+access_get_sales_forecast,get.sales.forecast,model_get_sales_forecast,base.group_user,1,0,0,0
+access_get_sales_forecast,get.sales.forecast,model_get_sales_forecast,base.group_sale_salesman,1,1,1,1

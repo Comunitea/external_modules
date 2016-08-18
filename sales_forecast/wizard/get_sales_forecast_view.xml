@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+         <record id="get_sales_forecast_wzd_view" model="ir.ui.view">
+            <field name="name">Get Sales Forecast</field>
+            <field name="model">get.sales.forecast</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Get sales forecast">
+                <group>
+                    <field name="name"/>
+                    <field name="account_id"/>
+                    <field name="percent_increase"/>
+                </group>
+                <newline/>
+                <footer>
+                    <button icon="gtk-cancel" special="cancel" string="Cancel"/>
+                    <button string='Get' icon="gtk-execute" name="get_sales_forecast" type="object"/>
+                </footer>
+            </form>
+            </field>
+         </record>
+
+        <record id="get_sales_forecast_action" model="ir.actions.act_window">
+            <field name="name">Get sales forecast</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">get.sales.forecast</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            action="get_sales_forecast_action" icon="STOCK_EXECUTE"
+            id="menu_get_sales_forecast" parent="menu_sales_forecast"
+            sequence="1"/>
+
+    </data>
+</openerp>
