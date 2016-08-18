@@ -75,9 +75,9 @@ class StockTransferDetailsItems(models.TransientModel):
         We change uos_qty field
         """
         t_uom = self.env['product.uom']
-        if self.env.context.get("skip_uos_qty_onchange"):
+        if self.env.context.get("skip_quantity_onchange"):
             self.env.context = self.with_context(
-                skip_uos_qty_onchange=False).env.context
+                skip_quantity_onchange=False).env.context
         else:
             if self.uos_id:
                 self.env.context = self.with_context(
@@ -98,7 +98,7 @@ class StockTransferDetailsItems(models.TransientModel):
         else:
             if self.product_uom_id:
                 self.env.context = self.with_context(
-                    skip_uos_qty_onchange=True).env.context
+                    skip_quantity_onchange=True).env.context
                 self.quantity = t_uom._compute_qty(self.uos_id.id,
                                                    self.uos_qty,
                                                    self.product_uom_id.id)
