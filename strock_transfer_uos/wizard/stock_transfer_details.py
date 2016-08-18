@@ -76,6 +76,7 @@ class StockTransferDetailsItems(models.TransientModel):
         """
         t_uom = self.env['product.uom']
         if self.uos_id:
+            self.env.context = self.with_context(skip_uos_qty_onchange=True).env.context
             self.uos_qty = t_uom._compute_qty(self.product_uom_id.id,
                                               self.quantity, self.uos_id.id)
 
@@ -85,6 +86,19 @@ class StockTransferDetailsItems(models.TransientModel):
         We change quantity field
         """
         t_uom = self.env['product.uom']
-        if self.product_uom_id:
-            self.quantity = t_uom._compute_qty(self.uos_id.id, self.uos_qty,
-                                               self.product_uom_id.id)
+        if not self.env.context.get("skip_uos_qty_onchange"):
+            if self.product_uom_id:
+                self.quantity = t_uom._compute_qty(self.uos_id.id, self.uos_qty,
+                                                   self.product_uom_id.id)
+        else:
+            self.env.context = self.with_context(skip_uos_qty_onchange=False).env.context
+
+    @api.multi
+    def write(self, vals):
+        """
+        We change uos_qty field when split_quantities divide the lines
+        """
+        res = super(StockTransferDetailsItems, self).write(vals)
+        if vals.get('quantity'):
+            self.quantity_onchange()
+        return res
