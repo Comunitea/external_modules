@@ -2,9 +2,9 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-=================
-Sales commissions
-=================
+==================
+Stock transfer UoS
+==================
 
 This module allows to use conversion between product unit of measure, and the
 second unit of the move if it exists
@@ -16,7 +16,7 @@ Credits
 Contributors
 ------------
 * Comunitea
-* Javier Colemenro <javier@comunitea.com>
+* Javier Colmenero <javier@comunitea.com>
 
 Maintainer
 ----------
