@@ -8,6 +8,7 @@
     'license': 'AGPL-3',
     'author': 'Comunitea',
     'website': 'https://github.com/OCA/bank-payment',
+    'description': "Allow to select out refund invoices on payments orders.",
     'category': 'Banking addons',
     'depends': ['account_direct_debit',
                 'account_banking_mandate'],
