@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-  <data>
-    <record id="view_picking_invoice_rel_form" model="ir.ui.view">
-      <field name="name">picking.invoice.rel.form</field>
-      <field name="model">stock.picking</field>
-      <field name="type">form</field>
-      <field name="inherit_id" ref="stock.view_picking_form"/>
-      <field name="arch" type="xml">
-        <page string="Additional Info" position="after">
-          <page string="Invoices" groups="picking_invoice_rel.group">
-            <field name="invoice_ids" colspan="4" nolabel="1"/>
-          </page>
-        </page>
-      </field>
-    </record>
+    <data>
+        <record id="view_picking_invoice_rel_form" model="ir.ui.view">
+            <field name="name">picking.invoice.rel.form</field>
+            <field name="model">stock.picking</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <page string="Additional Info" position="after">
+                    <page string="Invoices" groups="picking_invoice_rel.group">
+                        <field name="invoice_ids" colspan="4" nolabel="1"/>
+                    </page>
+                </page>
+            </field>
+        </record>
 
 <!-- Adding Sales Order Reference to internal picking -->
-<!-- COMENTADO PORRQUE FALLA POST-MIGRATION -->
         <record id="stock_picking_inherit_sale" model="ir.ui.view">
             <field name="name">Intern picking Inherited</field>
             <field name="model">stock.picking</field>
@@ -31,7 +30,6 @@
         </record>
 
 <!-- Adding Sales Client Order Reference to Delivery -->
-      <!-- COMENTADO PORRQUE FALLA POST-MIGRATION -->
         <record id="view_picking_out_tree_client_ref" model="ir.ui.view">
             <field name="name">view.picking.out.tree.client.ref</field>
             <field name="model">stock.picking</field>
@@ -44,5 +42,5 @@
             </field>
         </record>
 
-  </data>
+    </data>
 </openerp>
