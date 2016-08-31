@@ -8,7 +8,7 @@ from openerp import models, SUPERUSER_ID
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
-    def action_validated(self, cr, uid, ids, context=None):
+    def action_production_end(self, cr, uid, ids, context=None):
         t_move = self.pool.get('stock.move')
         t_quant = self.pool.get('stock.quant')
         for production in self.browse(cr, uid, ids, context=context):
@@ -19,6 +19,6 @@ class MrpProduction(models.Model):
                 t_quant.write(cr, SUPERUSER_ID, quant_ids,
                               {'cost': move.price_unit}, context=context)
                 move.update_product_price()  # Update price in product.template
-        res = super(MrpProduction, self).action_validated(cr, uid, ids,
+        res = super(MrpProduction, self).action_production_end(cr, uid, ids,
                                                           context=context)
         return res

@@ -30,7 +30,7 @@
                 "product",
                 "account",
                 "stock_account",
-                "eln_production"],
+                "mrp"],
     "category": "Product",
     "init_xml": [],
     "data": ["wizard/product_costs_view.xml",
