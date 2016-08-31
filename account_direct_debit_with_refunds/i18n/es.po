@@ -1,0 +1,26 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#       * account_direct_debit_with_refunds
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-31 11:52+0000\n"
+"PO-Revision-Date: 2016-08-31 11:52+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_direct_debit_with_refunds
+#: field:payment.line,not_change_date:0
+msgid "Not change date"
+msgstr "No cambiar fecha"
+
+#. module: account_direct_debit_with_refunds
+#: model:ir.model,name:account_direct_debit_with_refunds.model_payment_line
+msgid "Payment Line"
+msgstr "Línea de pago"
