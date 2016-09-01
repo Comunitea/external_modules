@@ -39,7 +39,6 @@
 , "data"         : 
 [ "invoice_view.xml"
 , "picking_view.xml"
-, "stock_view.xml"
 , "sale_view.xml"
 , "security/group.xml"
 , "security/ir.model.access.csv"

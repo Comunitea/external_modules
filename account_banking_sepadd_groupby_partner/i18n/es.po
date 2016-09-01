@@ -150,26 +150,54 @@ msgid "Aviso de recibo"
 msgstr "Aviso de recibo"
 
 #. module: account_banking_sepadd_groupby_partner
+#: help:payment.order,message_last_post:0
+msgid "Date of the last message posted on the record."
+msgstr "Fecha del último mensaje notificado en el registro."
+
+#. module: account_banking_sepadd_groupby_partner
 #: model:ir.model,name:account_banking_sepadd_groupby_partner.model_banking_export_sdd_wizard
 msgid "Export SEPA Direct Debit File"
 msgstr "Exportar archivo de adeudo directo SEPA"
 
 #. module: account_banking_sepadd_groupby_partner
-#: field:banking.export.sdd.wizard,group_by_partner:0
-msgid "Group by partner"
-msgstr "Agrupar por empresa"
+#: field:payment.order,message_follower_ids:0
+msgid "Followers"
+msgstr "Seguidores"
 
 #. module: account_banking_sepadd_groupby_partner
-#: code:addons/account_banking_sepadd_groupby_partner/wizard/export_sdd.py:51
-#, python-format
-msgid "Missing 'Structured Communication Type' on payment line with reference '%s'."
-msgstr "No se encuentra 'Tipo estructura comunicación' en lineas de pago con referencia '%s'."
+#: help:payment.order,message_summary:0
+msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+msgstr "Soporta el resumen de las conversaciones (número de mensajes, ...). Este resumen está directamente en formato html para poder ser insertado en las vistas kanban."
 
 #. module: account_banking_sepadd_groupby_partner
-#: code:addons/account_banking_sepadd_groupby_partner/wizard/export_sdd.py:155
-#, python-format
-msgid "Missing SEPA Direct Debit mandate on the payment line with partner '%s' and Invoice ref '%s'."
-msgstr "No se encuentra el mandato SEPA en la linea de pago asociada a la empresa '%s' y con referencia de factura'%s'."
+#: help:payment.order,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "Si está marcado los nuevos mensajes requerirán su atención."
+
+#. module: account_banking_sepadd_groupby_partner
+#: field:payment.order,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Es un seguidor"
+
+#. module: account_banking_sepadd_groupby_partner
+#: field:payment.order,message_last_post:0
+msgid "Last Message Date"
+msgstr "Última fecha de mensaje"
+
+#. module: account_banking_sepadd_groupby_partner
+#: field:payment.order,message_ids:0
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: account_banking_sepadd_groupby_partner
+#: help:payment.order,message_ids:0
+msgid "Messages and communication history"
+msgstr "Historial de mensajes y comunicación"
+
+#. module: account_banking_sepadd_groupby_partner
+#: field:payment.order,not_send_emails:0
+msgid "Not send emails"
+msgstr "No enviar emails"
 
 #. module: account_banking_sepadd_groupby_partner
 #: model:ir.model,name:account_banking_sepadd_groupby_partner.model_payment_order
@@ -177,19 +205,11 @@ msgid "Payment Order"
 msgstr "Orden de pago"
 
 #. module: account_banking_sepadd_groupby_partner
-#: code:addons/account_banking_sepadd_groupby_partner/wizard/export_sdd.py:111
-#, python-format
-msgid "Payment Type Code '%s' is not supported. The only Payment Type Code supported for SEPA Direct Debit are 'pain.008.001.02', 'pain.008.001.03' and 'pain.008.001.04'."
-msgstr "El tipo de pago '%s' no está soportado. Los únicos tipos de pagos soportados en SEPA son 'pain.008.001.02', 'pain.008.001.03' y 'pain.008.001.04'."
+#: field:payment.order,message_summary:0
+msgid "Summary"
+msgstr "Resumen"
 
 #. module: account_banking_sepadd_groupby_partner
-#: code:addons/account_banking_sepadd_groupby_partner/wizard/export_sdd.py:162
-#, python-format
-msgid "The SEPA Direct Debit mandate with reference '%s' for partner '%s' has expired."
-msgstr "El mandato SEPA con referencia '%s' para la empresa '%s' ha caducado."
-
-#. module: account_banking_sepadd_groupby_partner
-#: code:addons/account_banking_sepadd_groupby_partner/wizard/export_sdd.py:170
-#, python-format
-msgid "The mandate with reference '%s' for partner '%s' has type set to 'One-Off' and it has a last debit date set to '%s', so we can't use it."
-msgstr "El mandato con referencia '%s' para la empresa '%s' es de tipo 'Único' y tiene como última fecha de ejecución '%s', así que no podemos utilizarlo."
+#: field:payment.order,message_unread:0
+msgid "Unread Messages"
+msgstr "Mensajes no leídos"

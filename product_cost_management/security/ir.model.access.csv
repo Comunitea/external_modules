@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cost_type_manager,cost.type manager,model_cost_type,account.group_account_manager,1,0,0,0
+access_cost_type,cost.type,model_cost_type,account.group_account_invoice,1,1,1,1
+
+
+access_product_cost_manager,product.cost manager,model_product_cost,account.group_account_manager,1,0,0,0
+access_product_cost,product.cost,model_product_cost,account.group_account_invoice,1,1,1,1
+access_product_cost_lines_manager,product.cost.lines manager,model_product_cost_lines,account.group_account_manager,1,0,0,0
+access_product_cost_lines,product.cost.lines,model_product_cost_lines,account.group_account_invoice,1,1,1,1
+
+
+access_cost_structure_manager,cost.structure manager,model_cost_structure,account.group_account_manager,1,0,0,0
+access_cost_structure,cost.structure,model_cost_structure,account.group_account_invoice,1,1,1,1
+access_cost_structure_elements,access_cost_structure_elements,model_cost_structure_elements,account.group_account_invoice,1,1,1,1
