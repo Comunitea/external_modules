@@ -32,7 +32,7 @@
 "name"         : "Invoice to Picking Relation"
 , "description"  : """Adds reference between Invoice and Picking"""
 , "version"      : "0.9"
-, "depends"      : ["stock", "account", "purchase", "sale"]
+, "depends"      : ["stock", "account", "purchase", "sale", "sale_stock"]
 , "category"     : "Accounting & Finance"
 , "author"       : "ChriCar Beteiligungs- und Beratungs- GmbH"
 , "website"      : "http://www.camptocamp.com/"
