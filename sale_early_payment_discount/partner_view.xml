@@ -9,7 +9,7 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <field name="bank_ids" position="before">
-                    <field name="early_payment_discount_ids" colspan ="4" nolabel="1" context="{'partner_id': active_id}"/>
+                    <field name="early_payment_discount_ids" colspan ="4" nolabel="1" context="{'partner_id': active_id}" groups="account.group_account_invoice"/>
                 </field>
             </field>
         </record>
