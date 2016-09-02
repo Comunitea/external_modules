@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="0">
+        <!-- Type cost.structure -->
+        <record model="ir.sequence.type" id="seq_cost_structure">
+            <field name="name">Sequence Cost Structure</field>
+            <field name="code">cost.structure</field>
+        </record>
+
+        <!-- Sequence cost.structure-->
+        <record id="seq_cost_structure_action" model="ir.sequence">
+            <field name="name">Def. Cost Structure seq.</field>
+            <field name="code">cost.structure</field>
+            <field name="prefix">STR/</field>
+            <field name="padding">8</field>
+            <field name="company_id" eval="0"/>
+        </record>
+        <!-- Type cost.structure.elements -->
+        <record model="ir.sequence.type" id="seq_cost_structure_elements">
+            <field name="name">Sequence Cost Structure Elements</field>
+            <field name="code">cost.structure.elements</field>
+        </record>
+
+        <!-- Sequence cost.structure.elements-->
+        <record id="seq_cost_structure_elements_action" model="ir.sequence">
+            <field name="name">Def. Cost Structure Elementsseq.</field>
+            <field name="code">cost.structure.elements</field>
+            <field name="prefix">STRE/</field>
+            <field name="padding">8</field>
+            <field name="company_id" eval="0"/>
+        </record>
+    </data>
+</openerp>

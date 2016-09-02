@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_purchases_forecast_form" model="ir.ui.view">
+            <field name="name">purchases.forecast.form</field>
+            <field name="model">purchases.forecast</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Purchases Forecast">
+                    <header>
+                        <button name="action_cancel" states="draft,done" string="Cancel"  icon="gtk-cancel"/>
+                        <button name="action_draft" states="cancel,done,approve" string="Set to Draft"  icon="gtk-convert"/>
+                        <button name="action_done" states="draft" string="Confirm" icon="gtk-apply" />
+                        <button name="action_validate" states="done" string="Approve" icon="gtk-go-forward" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done, approve, cancel"
+                                       statusbar_colors='{"cancel":"red","draft":"blue"}'/>
+                    </header>
+                    <group col="6" colspan="4">
+                        <group col="4" colspan="4">
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="commercial_id"/>
+                            <field name="company_id" widget="selection"/>
+                            <field name="analytic_id"/>
+                            <field name="year"/>
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Lines">
+                            <field colspan="4" name="purchases_forecast_lines" nolabel="1" >
+                                <tree editable="top" string="">
+                                    <field name="product_id"/>
+                                    <field name="actual_stock"/>
+                                    <field name="actual_cost"/>
+                                    <field name="total_qty"/>
+                                    <field name="total_amount" sum="Total €" />
+
+                                    <field name="jan_qty" string="Jan       Qty"  on_change="on_change_qty(jan_qty,'jan',product_id)"/>
+
+                                    <field name="jan_amount_total" string="Jan        Tot. €" sum="Jan €"/>
+
+                                    <field name="feb_qty" string="Feb       Qty" on_change="on_change_qty(feb_qty,'feb',product_id)"/>
+
+                                    <field name="feb_amount_total" string="Feb        Tot. €" sum="Feb €"/>
+
+                                    <field name="mar_qty" string="Mar       Qty" on_change="on_change_qty(mar_qty,'mar',product_id)"/>
+
+                                    <field name="mar_amount_total" string="Mar        Tot. €" sum="Mar €" />
+
+                                    <field name="apr_qty" string="Apr       Qty"  on_change="on_change_qty(apr_qty,'apr',product_id)"/>
+
+                                    <field name="apr_amount_total" string="Apr        Tot. €" sum="Apr €" />
+
+                                    <field name="may_qty" string="May       Qty"  on_change="on_change_qty(may_qty,'may',product_id)"/>
+
+                                    <field name="may_amount_total" string="May        Tot. €" sum="May €"/>
+
+                                    <field name="jun_qty" string="Jun       Qty"  on_change="on_change_qty(jun_qty,'jun',product_id)"/>
+
+                                    <field name="jun_amount_total" string="Jun        Tot. €" sum="Jun €"/>
+
+                                    <field name="jul_qty" string="Jul       Qty"  on_change="on_change_qty(jul_qty,'jul',product_id)"/>
+
+                                    <field name="jul_amount_total" string="Jul        Tot. €" sum="Jul €" />
+
+                                    <field name="aug_qty" string="Aug       Qty"  on_change="on_change_qty(aug_qty,'aug',product_id)"/>
+
+                                    <field name="aug_amount_total" string="Aug        Tot. €" sum="Aug €" />
+
+                                    <field name="sep_qty" string="Sep       Qty" on_change="on_change_qty(sep_qty,'sep',product_id)"/>
+
+                                    <field name="sep_amount_total" string="Sep        Tot. €" sum="Sep €" />
+
+                                    <field name="oct_qty" string="Oct       Qty"  on_change="on_change_qty(oct_qty,'oct',product_id)"/>
+
+                                    <field name="oct_amount_total" string="Oct        Tot. €" sum="Oct €" />
+
+                                    <field name="nov_qty" string="Nov       Qty" on_change="on_change_qty(nov_qty,'nov',product_id)"/>
+
+                                    <field name="nov_amount_total" string="Nov        Tot. €" sum="Nov €" />
+
+                                    <field name="dec_qty" string="Dec       Qty"  on_change="on_change_qty(dec_qty,'dec',product_id)"/>
+
+                                    <field name="dec_amount_total" string="Dec        Tot. €" sum="Dec €" />
+                                </tree>
+                                <form string="">
+                                    <field name="product_id" colspan="2" />
+                                    <field name="actual_stock" colspan="2" />
+                                    <group colspan="2" col="2">
+                                        <separator string="January" colspan="2"/>
+                                        <field name="jan_qty" on_change="on_change_qty(jan_qty,'jan',product_id)"/>
+
+                                        <field name="jan_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="February" colspan="2"/>
+                                        <field name="feb_qty" on_change="on_change_qty(feb_qty,'feb',product_id)"/>
+
+                                        <field name="feb_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="March" colspan="2"/>
+                                        <field name="mar_qty" on_change="on_change_qty(mar_qty,'mar',product_id)"/>
+
+                                        <field name="mar_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="April" colspan="2"/>
+                                        <field name="apr_qty" on_change="on_change_qty(apr_qty,'apr',product_id)"/>
+
+                                        <field name="apr_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="May" colspan="2"/>
+                                        <field name="may_qty" on_change="on_change_qty(may_qty,'may',product_id)"/>
+
+                                        <field name="may_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="June" colspan="2"/>
+                                        <field name="jun_qty" on_change="on_change_qty(jun_qty,'jun',product_id)"/>
+
+                                        <field name="jun_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="July" colspan="2"/>
+                                        <field name="jul_qty" on_change="on_change_qty(jul_qty,'jul',product_id)"/>
+
+                                        <field name="jul_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="August" colspan="2"/>
+                                        <field name="aug_qty" on_change="on_change_qty(aug_qty,'aug',product_id)"/>
+
+                                        <field name="aug_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="September" colspan="2"/>
+                                        <field name="sep_qty" on_change="on_change_qty(sep_qty,'sep',product_id)"/>
+
+                                        <field name="sep_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="October" colspan="2"/>
+                                        <field name="oct_qty" on_change="on_change_qty(oct_qty,'oct',product_id)"/>
+
+                                        <field name="oct_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="November" colspan="2"/>
+                                        <field name="nov_qty" on_change="on_change_qty(nov_qty,'nov',product_id)"/>
+
+                                        <field name="nov_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="December" colspan="2"/>
+                                        <field name="dec_qty" on_change="on_change_qty(dec_qty,'dec',product_id)"/>
+
+                                        <field name="dec_amount_total"/>
+                                    </group>
+                                    <group colspan="2" col="2">
+                                        <separator string="Totals" colspan="2"/>
+                                        <field name="total_qty"/>
+                                        <field name="total_amount"/>
+                                    </group>
+                                </form>
+                            </field>
+
+                        </page>
+                        <page string="Origin" attrs="{'invisible':[('merged_from_ids', '=', False)]}">
+                             <field colspan="4" name="merged_from_ids" nolabel="1"/>
+                         </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_purchases_forecast_tree" model="ir.ui.view">
+             <field name="name">purchases.forecast.tree</field>
+            <field name="model">purchases.forecast</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Purchases Forecasts" colors="gray:state=='cancel';blue:state=='done';green:state=='approve';black:state=='draft'">
+                    <field name="name"/>
+                    <field name="analytic_id"/>
+                    <field name="commercial_id"/>
+                    <field name="company_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <menuitem id="menu_purchases_forecast" name="Purchases Forecasts"
+                parent="base.menu_purchase_root" sequence="6" />
+
+        <record id="view_purchases_forecast_filter" model="ir.ui.view">
+            <field name="name">purchases.forecast.list.select</field>
+            <field name="model">purchases.forecast</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search  Purchases Forecast">
+                    <filter icon="terp-document-new" string="Draft" domain="[('state','=','draft')]" />
+                    <filter icon="terp-check" string="Done" domain="[('state','=','done')]" />
+                    <filter icon="terp-camera_test" string="Approved" domain="[('state','=','approve')]" />
+                    <filter icon="terp-dialog-close" string="Cancel" domain="[('state','=','cancel')]" />
+                    <separator orientation="vertical"/>
+                    <field name="commercial_id">
+                        <filter domain="[('user_id','=',uid)]" help="My purchases Forecast" icon="terp-personal"/>
+                    </field>
+                    <field name="company_id"/>
+                    <field name="analytic_id"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Analytic account" icon="terp-personal" domain="[]" context="{'group_by':'analytic_id'}"/>
+                        <filter string="Commercial" icon="terp-personal" domain="[]" context="{'group_by':'commercial_id'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="State" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Company" icon="terp-go-home" domain="[]" context="{'group_by':'company_id'}"/>
+                    </group>
+              </search>
+            </field>
+        </record>
+
+        <record id="action_view_purchases_forecast_form" model="ir.actions.act_window">
+            <field name="name">Purchases Forecast</field>
+            <field name="res_model">purchases.forecast</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{"search_default_create_uid":uid}</field>
+
+        </record>
+
+        <menuitem id="menu_purchases_forecast_all"
+                  name="Purchases Forecasts"
+                  parent="menu_purchases_forecast"
+                  action="action_view_purchases_forecast_form"
+                  sequence="2"/>
+
+    </data>
+</openerp>

@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2015
-#    Comunitea Servicios Tecnológicos (http://www.comunitea.com)
+#    Copyright (c) 2015 be-cloud.be
+#                       Jerome Sonnet <jerome.sonnet@be-cloud.be>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,21 +20,24 @@
 ##############################################################################
 
 {
-    'name': 'Account Banking - Export sepa direct debit grouping by partner',
-    'version': '8.0.1.0.0',
+    'name': 'Google Drive Attachment',
+    'version': '1.0',
+    'category': 'Tools',
+    'description': """
+Module that allows to attach a Google Drive Document.
+    """,
+    'author': "be-cloud.be (Jerome Sonnet)",
+    'website': 'http://www.be-cloud.be',
     'license': 'AGPL-3',
-    'author': 'Comunitea',
-    'website': 'http://www.comunitea.com',
-    'category': 'Banking addons',
-    'depends': ['account_banking_sepa_direct_debit',
-                'account_banking_payment_export',
-                'account_payment',
-                'account_banking_payment_transfer'],
-    'data': ['payment_order_data.xml',
-             'payment_order_view.xml'],
-    'demo': [],
-    'description': '''
-Allow to export sepa direct debit files grouped by partner.
-Send email to partners when payment order is done''',
-    'installable': True,
+    'depends': [
+        'base_setup', 'google_account', 'document',
+    ],
+    'data': [
+        'res_config.xml',
+        'view/document_gdrive_view.xml',
+    ],
+    'qweb': [
+        'static/src/xml/gdrive.xml',
+    ],
+    "installable": True,
 }
