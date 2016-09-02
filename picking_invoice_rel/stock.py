@@ -38,8 +38,8 @@ class stock_picking(osv.osv):
     }
 
     def init(self, cr):
-    # This is a helper to guess "old" Relations between pickings and invoices
-    cr.execute("""
+        # This is a helper to guess "old" Relations between pickings and invoices
+        cr.execute("""
 insert into picking_invoice_rel(picking_id,invoice_id) select p.id,i.id from stock_picking p, account_invoice i
 where p.name = split_part(i.origin,':',1) and (p.id,i.id) not in (select picking_id,invoice_id from picking_invoice_rel);
 """)
