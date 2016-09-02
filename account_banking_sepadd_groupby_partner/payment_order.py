@@ -24,7 +24,10 @@ from openerp import models, api, fields
 
 class PaymentOrder(models.Model):
 
-    _inherit = "payment.order"
+    _name = 'payment.order'
+    _inherit = ["payment.order", 'mail.thread']
+
+    not_send_emails = fields.Boolean("Not send emails")
 
     @api.multi
     def action_sent(self):
@@ -32,6 +35,8 @@ class PaymentOrder(models.Model):
         mail_pool = self.env['mail.mail']
         mail_ids = self.env['mail.mail']
         for order in self:
+            if order.not_send_emails:
+                continue
             partners = {}
             for line in order.line_ids:
                 if line.partner_id.email:

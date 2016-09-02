@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2015
-#    Comunitea Servicios Tecnológicos (http://www.comunitea.com)
+#    Copyright (C) 2015 Pexego (<http://www.pexego.es>).
+#
+#    All other contributions are (C) by their respective contributors
+#
+#    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,21 +23,17 @@
 ##############################################################################
 
 {
-    'name': 'Account Banking - Export sepa direct debit grouping by partner',
-    'version': '8.0.1.0.0',
+    'name': 'Invoice bank usability',
+    'version': '0.1',
     'license': 'AGPL-3',
-    'author': 'Comunitea',
-    'website': 'http://www.comunitea.com',
+    'author': 'Banking addons community',
+    'website': 'https://github.com/OCA/banking',
     'category': 'Banking addons',
-    'depends': ['account_banking_sepa_direct_debit',
-                'account_banking_payment_export',
-                'account_payment',
-                'account_banking_payment_transfer'],
-    'data': ['payment_order_data.xml',
-             'payment_order_view.xml'],
-    'demo': [],
-    'description': '''
-Allow to export sepa direct debit files grouped by partner.
-Send email to partners when payment order is done''',
+    'depends': ['account', 'account_banking_mandate', 'stock_account',
+                'account_payment_sale_stock'],
+    'data': ['views/account_invoice_view.xml'],
+    'description': '''Allow to select customer bank accounts on customer
+    invoices.''',
+    'auto_install': False,
     'installable': True,
 }

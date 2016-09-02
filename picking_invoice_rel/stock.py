@@ -25,6 +25,7 @@ from openerp.osv import fields, osv
 class stock_move (osv.osv):
     _inherit = "stock.move"
     def _create_invoice_line_from_vals(self, cr, uid, move, invoice_line_vals, context=None):
+        res = super(stock_move, self)._create_invoice_line_from_vals(cr, uid, move, invoice_line_vals, context=context)
         invoice_line_vals['stock_move_id'] = move.id
         return self.pool.get('account.invoice.line').create(cr, uid, invoice_line_vals, context=context)
 
