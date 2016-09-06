@@ -20,10 +20,11 @@ class OAuthLogin(Home):
 
     no_list_providers = False
 
-    def list_providers(self, no_return=False):
+    def list_providers(self):
         providers = super(OAuthLogin, self).list_providers()
         if self.no_list_providers:
             providers = []
+        self.no_list_providers = False
         return providers
 
     @http.route('/web/signup', type='http', auth='public', website=True)
