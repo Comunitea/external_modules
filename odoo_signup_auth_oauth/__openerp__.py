@@ -17,6 +17,7 @@
         "Javier Colmenero <javier@comunitea.com>"
     ],
     "data": [
+        'views/odoo_auth_oauth_login.xml'
     ],
     "demo": [
     ],
