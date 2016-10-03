@@ -58,6 +58,9 @@ class account_invoice(models.Model):
             else:
                 total_net_price = 0.0
                 for invoice_line in self.invoice_line:
+                    if invoice_line.product_id and \
+                            invoice_line.product_id.without_early_payment:
+                        continue
                     total_net_price += invoice_line.price_subtotal
 
                 self.early_payment_discount_amount = float(total_net_price) - (float(total_net_price) * (1 - (self.early_payment_discount or 0.0) / 100.0))
@@ -71,6 +74,9 @@ class account_invoice(models.Model):
         total_net_price = 0.0
 
         for invoice_line in self.env['account.invoice.line'].browse(invoice_line_ids):
+            if invoice_line.product_id and \
+                    invoice_line.product_id.without_early_payment:
+                continue
             total_net_price += invoice_line.price_subtotal
 
         return float(total_net_price) - (float(total_net_price) * (1 - (float(early_payment_percentage) or 0.0) / 100.0))
@@ -82,6 +88,9 @@ class account_invoice(models.Model):
         inv_lines_out_vat = []
 
         for invoice_line in self.invoice_line:
+            if invoice_line.product_id and \
+                    invoice_line.product_id.without_early_payment:
+                continue
             if invoice_line.invoice_line_tax_id:
                 line_tax_ids = [x.id for x in invoice_line.invoice_line_tax_id]
                 found = False
@@ -181,7 +190,7 @@ class account_invoice(models.Model):
         if not partner_id:
             res['value']['early_payment_discount'] = False
             return res
-        
+
         partner = self.pool.get('res.partner').browse(cr, uid, partner_id, context)
         com_part_id = partner.commercial_partner_id.id
         early_discs = []
