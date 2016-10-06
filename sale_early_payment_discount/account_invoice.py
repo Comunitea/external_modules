@@ -140,7 +140,7 @@ class account_invoice(models.Model):
                         'invoice_id': self.id,
                         'product_id': prod_early_payment.id,
                         'account_id': int(account_id),
-                        'price_unit': 0.0 - (self.compute_early_payment_discount(group_account_line[early_payment_line][account_id], self.early_payment_discount)),
+                        'price_unit': self.currency_id.round(0.0 - (self.compute_early_payment_discount(group_account_line[early_payment_line][account_id], self.early_payment_discount))),
                         'quantity': 1,
                         'invoice_line_tax_id': [(6, 0, [int(x) for x in early_payment_line.split(',')])],
                         'account_analytic_id': analytic_id
@@ -152,7 +152,7 @@ class account_invoice(models.Model):
                         'invoice_id': self.id,
                         'product_id': prod_early_payment.id,
                         'account_id': prod_early_payment.categ_id and prod_early_payment.categ_id.property_account_sale_early_payment_disc.id or prod_early_payment.property_stock_account_output.id,
-                        'price_unit': 0.0 - (self.compute_early_payment_discount(inv_lines_out_vat, self.early_payment_discount)),
+                        'price_unit': self.currency_id.round(0.0 - (self.compute_early_payment_discount(inv_lines_out_vat, self.early_payment_discount))),
                         'quantity': 1,
                         'account_analytic_id': analytic_id
                         })
