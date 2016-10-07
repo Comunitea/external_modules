@@ -24,7 +24,7 @@
 
 {
     'name': 'Invoice bank usability',
-    'version': '0.1',
+    'version': '8.0.1.0.0',
     'license': 'AGPL-3',
     'author': 'Banking addons community',
     'website': 'https://github.com/OCA/banking',
