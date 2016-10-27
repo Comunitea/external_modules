@@ -193,7 +193,7 @@ class partner(osv.osv):
         for id in ids:
             sids = self.pool.get('sale.order').search( cr, uid, [
                 ('partner_id','child_of',[id]),
-                ('state','not in',['draft','cancel','wait_risk'])
+                ('state','not in',['draft','cancel','wait_risk','sent'])
             ], context=context )
             total = 0.0
             for order in self.pool.get('sale.order').browse(cr, uid, sids, context):

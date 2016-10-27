@@ -31,7 +31,7 @@ class ProductTemplate(models.Model):
         self.virtual_stock_conservative = self.qty_available - \
             self.outgoing_qty
 
-    virtual_stock_conservative = fields.Float(compute=_stock_conservative,
+    virtual_stock_conservative = fields.Float(compute="_stock_conservative",
                                               string='Virtual Stock '
                                                      'Conservative',
                                               readonly=True)
@@ -46,7 +46,7 @@ class ProductProduct(models.Model):
         self.virtual_stock_conservative = self.qty_available - \
             self.outgoing_qty
 
-    virtual_stock_conservative = fields.Float(compute=_stock_conservative,
+    virtual_stock_conservative = fields.Float(compute="_stock_conservative",
                                               string='Virtual Stock '
                                                      'Conservative',
                                               readonly=True)

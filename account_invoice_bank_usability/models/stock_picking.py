@@ -35,26 +35,26 @@ class StockPicking(models.Model):
             if sale_order.payment_mode_id and sale_order.payment_mode_id.\
                     payment_order_type == "debit":
                 invoice = self.env["account.invoice"].browse(invoice_id)
+                invoice_partner = invoice.partner_id.commercial_partner_id
                 mandate_obj = self.env["account.banking.mandate"]
                 mandates = mandate_obj.\
                     search([('partner_bank_id', 'in',
-                             invoice.partner_id.bank_ids.ids),
-                            ('default', '=', True), ('state', '=', 'valid')])
+                             invoice_partner.bank_ids.ids),
+                            ('default', '=', True),
+                            ('state', '=', 'valid')])
                 mandate_sel = False
                 if mandates:
                     mandate_sel = mandates[0]
                 else:
-                    mandates = mandate_obj.\
-                        search([('partner_bank_id', 'in',
-                                 invoice.partner_id.bank_ids.ids),
-                                ('state', '=', 'valid')])
+                    mandates = mandate_obj.search(
+                        [('partner_bank_id', 'in',
+                          invoice_partner.bank_ids.ids),
+                         ('state', '=', 'valid')])
                     if mandates:
                         mandate_sel = mandates[0]
                 if mandate_sel:
                     invoice.mandate_id = mandate_sel.id,
-                    invoice.partner_bank_id = \
-                        mandate_sel.partner_bank_id.id
-                elif invoice.partner_id.bank_ids:
-                    invoice.partner_bank_id = \
-                        invoice.partner_id.bank_ids[0].id
+                    invoice.partner_bank_id = mandate_sel.partner_bank_id.id
+                elif invoice_partner.bank_ids:
+                    invoice.partner_bank_id = invoice_partner.bank_ids[0].id
         return invoice_id

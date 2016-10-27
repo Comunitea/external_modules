@@ -31,3 +31,10 @@ class product_category(models.Model):
         'account.account', 'Sale early payment account',
         help='This account will be used to input the early payments discount \
              in sale', company_dependent=True)
+
+
+class ProductTemplate(models.Model):
+
+    _inherit = "product.template"
+
+    without_early_payment = fields.Boolean("Without early payment")
