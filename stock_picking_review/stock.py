@@ -139,9 +139,10 @@ class StockMove(models.Model):
             # albaranes  finalizados y revisados. Con esto nos aseguramios
             # el comportamiento normal en caso de no pasar por l proceso de
             # devolución
-            if move.product_uos and move.product_uos != move.product_uom and \
-                    move.accepted_qty:
+            if move.product_uos and move.accepted_qty:
                 res["quantity"] = move.accepted_qty
+            elif move.product_uom_acc_qty:
+                res["quantity"] = move.product_uom_acc_qty
         return res
 
 
@@ -264,12 +265,12 @@ class StockPicking(models.Model):
                 new_uom_qty = move.product_uom_qty - move.product_uom_acc_qty
                 if pick.invoice_state == '2binvoiced' and \
                         pick.state in ['done'] and \
-                        float_is_zero(move.accepted_qty, precision_digits=0):
+                        float_is_zero(move.product_uom_acc_qty, precision_digits=0):
                     # Si la cantidad aceptada es cero esta linea no debe
                     # facturarse
                     move.invoice_state = 'none'
 
-                if new_qty:
+                if new_uom_qty:
                     # The return of a return should be linked with
                     # the original's destination move if it was not cancelled
                     if move.origin_returned_move_id.move_dest_id.id and \
@@ -292,7 +293,7 @@ class StockPicking(models.Model):
                         'product_id': move.product_id.id,
                         'product_uom_qty': new_uom_qty,
                         'product_uos_qty': new_qty,
-                        # 'picking_id': new_picking,
+                        'picking_id': False,
                         'state': 'draft',
                         'accepted_qty': new_qty,
                         'product_uom_acc_qty': new_uom_qty,
