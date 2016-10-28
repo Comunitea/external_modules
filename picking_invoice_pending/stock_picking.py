@@ -178,8 +178,8 @@ class StockPicking(models.Model):
         res = super(StockPicking, self).\
             _prepare_values_extra_move(op, product, remaining_qty)
         if op.linked_move_operation_ids and \
-                op.linked_move_operation_ids.move_id.purchase_line_id:
-            res.update(purchase_line_id=op.linked_move_operation_ids.move_id.
+                op.linked_move_operation_ids[0].move_id.purchase_line_id:
+            res.update(purchase_line_id=op.linked_move_operation_ids[0].move_id.
                        purchase_line_id.id)
             t_uom = self.env['product.uom']
 
