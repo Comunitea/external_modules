@@ -1,0 +1,11 @@
+.img_grid img{
+    padding:0;
+    margin:0;
+    padding-left:15px;
+    padding-top:15px;
+}
+.carousel-caption {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+}

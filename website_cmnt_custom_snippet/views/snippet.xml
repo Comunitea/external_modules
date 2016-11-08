@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2016 Comunitea
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+    <data>
+
+        <template id="snippet_img_grid" name="Image grid">
+            <section class="s_img_grid">
+                <div class="container img_grid">
+                    <div class="row">
+                        <h2 style="text-align: center">Tittle</h2>
+                    </div>
+                    <div class="row">
+                        <img class="col-md-4 img img-responsive" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                        <img class="col-md-4 img img-responsive" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                        <img class="col-md-4 img img-responsive" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                        <img class="col-md-4 img img-responsive" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                        <img class="col-md-4 img img-responsive" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                        <img class="col-md-4 img img-responsive" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                        <img class="col-md-4 img img-responsive" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                        <img class="col-md-4 img img-responsive" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                        <img class="col-md-4 img img-responsive" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template id="snippet_img_grid_place_into_bar" inherit_id="website.snippets" name="Place image grid into bar">
+            <xpath expr="//div[@id='snippet_structure']" position="inside">
+                <t t-snippet="website_cmnt_custom_snippet.snippet_img_grid"/>
+            </xpath>
+        </template>
+
+        <template id="snippet_bootstrap_carousel" name="Bootstrap carousel">
+            <section class="bootstrap_carousel">
+                <div class="carousel slide" data-ride="carousel" id="myCarousel">
+                  <ol class="carousel-indicators">
+                    <li class="active" data-slide-to="0" data-target="#myCarousel"/>
+                    <li data-slide-to="1" data-target="#myCarousel"/>
+                  </ol>
+                  <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                      <img alt="img" src="/website/image/ir.attachment/201_eb0b0e0/datas"/>
+                      <div class="carousel-caption">
+                        <h3>Title</h3>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <img alt="img" src="/website/image/ir.attachment/199_809c555/datas"/>
+                      <div class="carousel-caption">
+                        <h3>Title</h3>
+                      </div>
+                    </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template id="snippet_bootstrap_carousel_place_into_bar" inherit_id="website.snippets" name="Place bootstrap carousel into bar">
+            <xpath expr="//div[@id='snippet_structure']" position="inside">
+                <t t-snippet="website_cmnt_custom_snippet.snippet_bootstrap_carousel"/>
+            </xpath>
+        </template>
+    </data>
+</openerp>
