@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2016 Comunitea
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+    <data>
+
+        <template id="snippet_img_grid" name="Image grid">
+            <section class="s_img_grid website_cmnt_theme">
+                <div class="container img_grid">
+                    <div class="row">
+                        <h2 style="text-align: center">Tittle</h2>
+                    </div>
+                    <div class="row">
+                        <img class="col-md-4 img img-responsive" src="" alt="image"/>
+                        <img class="col-md-4 img img-responsive" src="" alt="image"/>
+                        <img class="col-md-4 img img-responsive" src="" alt="image"/>
+                        <img class="col-md-4 img img-responsive" src="" alt="image"/>
+                        <img class="col-md-4 img img-responsive" src="" alt="image"/>
+                        <img class="col-md-4 img img-responsive" src="" alt="image"/>
+                        <img class="col-md-4 img img-responsive" src="" alt="image"/>
+                        <img class="col-md-4 img img-responsive" src="" alt="image"/>
+                        <img class="col-md-4 img img-responsive" src="" alt="image"/>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template id="snippet_bootstrap_carousel" name="Bootstrap carousel">
+            <section class="bootstrap_carousel website_cmnt_theme">
+                <div class="carousel slide" data-ride="carousel" id="myCarousel">
+                  <ol class="carousel-indicators">
+                    <li class="active" data-slide-to="0" data-target="#myCarousel"/>
+                    <li data-slide-to="1" data-target="#myCarousel"/>
+                  </ol>
+                  <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                      <img alt="img" src=""/>
+                      <div class="carousel-caption">
+                        <h3>Title</h3>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <img alt="img" src=""/>
+                      <div class="carousel-caption">
+                        <h3>Title</h3>
+                      </div>
+                    </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template id="snippet_center_tittle" name="Tittle centered">
+            <section class="s_center_tittle">
+                <div class="container">
+                    <div class="row">
+                        <h1>Tittle</h1>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template id="snippet_three_columns_img" name="Three columns">
+            <section class="s_three_col_img website_cmnt_theme">
+                <div class="container">
+                    <div class="row eq-height">
+                        <div class="col">
+                            <img src="" alt="img"/>
+                            <h5>Title</h5>
+                            <p>Subtitle</p>
+                        </div>
+                        <div class="col">
+                            <img src="" alt="img"/>
+                            <h5>Title</h5>
+                            <p>Subtitle</p>
+                        </div>
+                        <div class="col">
+                            <img src="" alt="img"/>
+                            <h5>Title</h5>
+                            <p>Subtitle</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template id="snippet_place_into_bar" inherit_id="website.snippets" name="Place snippets into bar">
+            <xpath expr='//ul/li/a[@href="#snippet_effect"]' position="after">
+                <li><a href="#snippet_comunitea" data-toggle="tab">Comunitea</a></li>
+            </xpath>
+            <xpath expr='//div[@id="snippet_effect"]' position="after">
+                <div id="snippet_comunitea" class="tab-pane fade">
+                    <t t-snippet="website_cmnt_custom_snippet.snippet_img_grid"/>
+                    <t t-snippet="website_cmnt_custom_snippet.snippet_bootstrap_carousel"/>
+                    <t t-snippet="website_cmnt_custom_snippet.snippet_center_tittle"/>
+                    <t t-snippet="website_cmnt_custom_snippet.snippet_three_columns_img"/>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</openerp>

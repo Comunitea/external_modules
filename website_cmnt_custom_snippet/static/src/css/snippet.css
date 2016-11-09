@@ -1,0 +1,39 @@
+.img_grid img{
+    padding:0;
+    margin:0;
+    padding-left:15px;
+    padding-top:15px;
+}
+.carousel-caption {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+}
+
+
+.s_center_tittle{
+    display: table-cell;
+    vertical-align: middle;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+}
+
+.s_center_tittle h1{
+    text-align:center;
+}
+
+.eq-height {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: hidden;
+}
+
+.eq-height .col {
+    flex: 1;
+    margin-left: 7px;
+    margin-right: 7px;
+    padding: 15px;
+    border: 1px solid black;
+    text-align: center;
+}
