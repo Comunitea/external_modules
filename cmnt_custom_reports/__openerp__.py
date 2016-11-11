@@ -12,6 +12,7 @@
         'base',
         'account',
         'account_payment_partner',
+        'report'
     ],
     'contributors': [
         "Comunitea ",
@@ -20,6 +21,7 @@
     "data": [
         "views/report_invoice.xml",
         "views/report_sale_order.xml",
+        "views/layouts.xml",
     ],
     "demo": [
     ],
