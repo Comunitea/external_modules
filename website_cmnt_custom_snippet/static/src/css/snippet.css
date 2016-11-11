@@ -1,9 +1,12 @@
 .img_grid img{
-    padding:0;
     margin:0;
-    padding-left:15px;
-    padding-top:15px;
+    padding: 7px; 
 }
+
+.img_grid > .row{
+	margin: 0 !important; 	
+}
+
 .carousel-caption {
     position: relative !important;
     left: auto !important;
