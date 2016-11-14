@@ -134,7 +134,10 @@ class partner(osv.osv):
                     sign = line.amount_currency < 0 and -1 or 1
                 else:
                     sign = (line.debit - line.credit) < 0 and -1 or 1
-                amount += sign * line.amount_residual
+                if line.reconcile_partial_id:
+                     amount += line.debit - line.credit
+                else:
+                    amount += sign * line.amount_residual
             res[partner.id] = amount
         return res
 
@@ -161,7 +164,10 @@ class partner(osv.osv):
                     sign = line.amount_currency < 0 and -1 or 1
                 else:
                     sign = (line.debit - line.credit) < 0 and -1 or 1
-                amount += sign * line.amount_residual
+                if line.reconcile_partial_id:
+                     amount += line.debit - line.credit
+                else:
+                    amount += sign * line.amount_residual
             res[partner.id] = amount
         return res
 
