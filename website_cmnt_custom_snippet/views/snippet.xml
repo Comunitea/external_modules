@@ -90,76 +90,76 @@
                 </div>
             </section>
         </template>
-	
-	
-		<template id="snippet_three_columns_img_3" name="Three columns 3">
+
+
+        <template id="snippet_three_columns_img_3" name="Three columns 3">
             <section class="s_three_col_img_2 website_cmnt_theme">
                 <div class="container">
                     <div class="eq-height">
                         <div class="col-md-4">
-							<img alt="img" src="/website/image/ir.attachment/615_9e5d599/datas"/>
-                            <div class="c1">                               
-                                <h4><span>RYOKU CHA - </span>TÉ VERDE</h4>
-                                <p>Descripción Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </p>
+                            <img alt="img" src=""/>
+                            <div class="c1">
+                                <h4><span>Title1 - </span>Title2</h4>
+                                <p>Description1</p>
                             </div>
-                            <div class="c2">                               
-                                <p><span>Declaración de ingredientes: </span></p>
-                                <p>Infusión de té ... Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.  </p>
+                            <div class="c2">
+                                <p><span>Description2: </span></p>
+                                <p>......</p>
                             </div>
-                            <div class="c3">                               
-                                <p><span>Información nutricional (por 100 ml):</span></p>
-                                <p>Valor energético.......... </p>
+                            <div class="c3">
+                                <p><span>list:</span></p>
+                                <p>test.......... </p>
                             </div>
-                            <div class="c4">                               
-                                <h4><span>SIN AZÚCAR</span></h4>
+                            <div class="c4">
+                                <h4><span>sub text</span></h4>
                             </div>
                         </div>
 
                         <div class="col-md-4">
-							<img alt="img" src="/website/image/ir.attachment/616_14bfe6c/datas"/>
-                            <div class="c1">                               
-                                <h4><span>HOUJI CHA - </span>TÉ VERDE TOSTADO</h4>
-                                <p>Descripción Descripción Lorem ipsum dolor sit amet, Descripción Lorem ipsum dolor sit amet, Descripción Lorem ipsum dolor sit amet, Descripción Lorem ipsum dolor sit amet, Descripción Lorem ipsum dolor sit amet, Descripción Lorem ipsum dolor sit amet, Descripción Lorem ipsum dolor sit amet, Descripción Lorem ipsum dolor sit amet, Descripción Lorem ipsum dolor sit amet, Descripción Lorem ipsum dolor sit amet, </p>
+                            <img alt="img" src=""/>
+                            <div class="c1">
+                                <h4><span>Title1 - </span>Title2</h4>
+                                <p>Description1</p>
                             </div>
-                            <div class="c2">                               
-                                <p><span>Declaración de ingredientes: </span></p>
-                                <p>Infusión de té ... as a dfas fsadfasdfadsfadfdf </p>
+                            <div class="c2">
+                                <p><span>Description2: </span></p>
+                                <p>......</p>
                             </div>
-                            <div class="c3">                               
-                                <p><span>Información nutricional (por 100 ml):</span></p>
-                                <p>Valor energético.......... </p>
+                            <div class="c3">
+                                <p><span>list:</span></p>
+                                <p>test.......... </p>
                             </div>
-                            <div class="c4">                               
-                                <h4><span>SIN AZÚCAR</span></h4>
+                            <div class="c4">
+                                <h4><span>sub text</span></h4>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
-							<img alt="img" src="/website/image/ir.attachment/617_1080f03/datas"/>
-                            <div class="c1">                               
-                                <h4><span>GENMAI CHA - </span>TÉ VERDE CON ARROZ INTEGRAL TOSTADO</h4>
-                                <p>Descripción </p>
+                            <img alt="img" src=""/>
+                            <div class="c1">
+                                <h4><span>Title1 - </span>Title2</h4>
+                                <p>Description1</p>
                             </div>
-                            <div class="c2">                               
-                                <p><span>Declaración de ingredientes: </span></p>
-                                <p>Infusión de té ... as a dfas fsadfasdfadsfadfdf </p>
+                            <div class="c2">
+                                <p><span>Description2: </span></p>
+                                <p>......</p>
                             </div>
-                            <div class="c3">                               
-                                <p><span>Información nutricional (por 100 ml):</span></p>
-                                <p>Valor energético.......... </p>
+                            <div class="c3">
+                                <p><span>list:</span></p>
+                                <p>test.......... </p>
                             </div>
-                            <div class="c4">                               
-                                <h4><span>SIN AZÚCAR</span></h4>
+                            <div class="c4">
+                                <h4><span>sub text</span></h4>
                             </div>
-                        </div>  
+                        </div>
                     </div>
                 </div>
             </section>
         </template>
-		
-		
-		
-		
+
+
+
+
         <template id="snippet_place_into_bar" inherit_id="website.snippets" name="Place snippets into bar">
             <xpath expr='//ul/li/a[@href="#snippet_effect"]' position="after">
                 <li><a href="#snippet_comunitea" data-toggle="tab">Comunitea</a></li>
