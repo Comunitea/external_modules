@@ -24,7 +24,6 @@
 		</record>
 
 		<menuitem id="menu_purchase_expense_type"
-				  name = "Expenses Types"
                   action="action_purchase_expense_type"
                   parent="menu_purchase_cost_control"
                   sequence="11" />
