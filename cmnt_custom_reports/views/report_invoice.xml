@@ -43,6 +43,13 @@
                 </div>
             </xpath>
 
+            <!-- Precio con dos decimales -->
+            <xpath expr="//table[1]/tbody/tr/td[3]" position="replace">
+                <td class="text-right">
+                    <span t-esc="('%.2f'%l.price_unit).replace('.',',')"/>
+                </td>
+            </xpath>
+
             <!-- Sacamos los vencimientos, dependencia account_payment_partner imprime antes de esto los modos de pago -->
             <xpath expr="//p[@t-if='o.payment_term.note']" position="after">
                 <p t-if="o.move_id">
