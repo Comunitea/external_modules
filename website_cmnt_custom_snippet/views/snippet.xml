@@ -91,6 +91,75 @@
             </section>
         </template>
 
+
+        <template id="snippet_three_columns_img_3" name="Three columns 3">
+            <section class="s_three_col_img_2 website_cmnt_theme">
+                <div class="container">
+                    <div class="eq-height">
+                        <div class="col-md-4">
+                            <img alt="img" src=""/>
+                            <div class="c1">
+                                <h4><span>Title1 - </span>Title2</h4>
+                                <p>Description1</p>
+                            </div>
+                            <div class="c2">
+                                <p><span>Description2: </span></p>
+                                <p>......</p>
+                            </div>
+                            <div class="c3">
+                                <p><span>list:</span></p>
+                                <p>test.......... </p>
+                            </div>
+                            <div class="c4">
+                                <h4><span>sub text</span></h4>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <img alt="img" src=""/>
+                            <div class="c1">
+                                <h4><span>Title1 - </span>Title2</h4>
+                                <p>Description1</p>
+                            </div>
+                            <div class="c2">
+                                <p><span>Description2: </span></p>
+                                <p>......</p>
+                            </div>
+                            <div class="c3">
+                                <p><span>list:</span></p>
+                                <p>test.......... </p>
+                            </div>
+                            <div class="c4">
+                                <h4><span>sub text</span></h4>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <img alt="img" src=""/>
+                            <div class="c1">
+                                <h4><span>Title1 - </span>Title2</h4>
+                                <p>Description1</p>
+                            </div>
+                            <div class="c2">
+                                <p><span>Description2: </span></p>
+                                <p>......</p>
+                            </div>
+                            <div class="c3">
+                                <p><span>list:</span></p>
+                                <p>test.......... </p>
+                            </div>
+                            <div class="c4">
+                                <h4><span>sub text</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+
+
+
         <template id="snippet_place_into_bar" inherit_id="website.snippets" name="Place snippets into bar">
             <xpath expr='//ul/li/a[@href="#snippet_effect"]' position="after">
                 <li><a href="#snippet_comunitea" data-toggle="tab">Comunitea</a></li>
@@ -101,6 +170,7 @@
                     <t t-snippet="website_cmnt_custom_snippet.snippet_bootstrap_carousel"/>
                     <t t-snippet="website_cmnt_custom_snippet.snippet_center_tittle"/>
                     <t t-snippet="website_cmnt_custom_snippet.snippet_three_columns_img"/>
+                    <t t-snippet="website_cmnt_custom_snippet.snippet_three_columns_img_3"/>
                 </div>
             </xpath>
         </template>
