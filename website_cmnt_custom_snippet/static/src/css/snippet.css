@@ -1,6 +1,8 @@
 .img_grid img{
     margin:0;
     padding: 7px;
+    display: block;
+	margin: 0 auto 0 auto; 
 }
 
 .img_grid > .row{
@@ -35,32 +37,20 @@
 
 .eq-height .col {
     display: flex;
-    margin-left: 7px;
-    margin-right: 7px;
     padding: 15px;
-    border: 1px solid black;
-    text-align: center;
-    width: 100%;
+    text-align: center;    
     margin-top: 5px;
 
 }
-
-
-
+.eq-height .col img{
+	display: block;
+	margin: 0 auto 0 auto; 
+}
 .eq-height .col p{
     flex: 1 0 auto;
 }
 
-@media all and (min-width: 40em) {
-  .eq-height .col {
-    width: 50%;
-  }
-}
-@media all and (min-width: 60em) {
-  .eq-height .col {
-    width: 32%;
-  }
-}
+
 
 .s_three_col_img_2 {
     padding-bottom: 45px;

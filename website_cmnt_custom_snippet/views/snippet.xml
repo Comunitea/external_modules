@@ -65,21 +65,21 @@
             <section class="s_three_col_img website_cmnt_theme">
                 <div class="container">
                     <ul class="eq-height">
-                        <li class="col">
+                        <li class="col col-md-4  col-lg-4 col-sm-12">
                             <div>
                                 <img alt="img" src=""/>
                                 <h5>Title</h5>
                                 <p>Subtitle</p>
                             </div>
                         </li>
-                        <li class="col">
+                        <li class="col col-md-4 col-lg-4 col-sm-12">
                             <div>
                                 <img alt="img" src=""/>
                                 <h5>Title</h5>
                                 <p>Subtitle</p>
                             </div>
                         </li>
-                        <li class="col">
+                        <li class="col col-md-4  col-lg-4 col-sm-12">
                             <div>
                                 <img alt="img" src=""/>
                                 <h5>Title</h5>
