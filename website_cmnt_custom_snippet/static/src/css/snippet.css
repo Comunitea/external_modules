@@ -17,10 +17,11 @@
 
 
 .s_center_tittle{
-    display: table-cell;
+    display: block;
     vertical-align: middle;
     margin-left: 15px !important;
     margin-right: 15px !important;
+    margin-bottom: 0px !important;
 }
 
 .s_center_tittle h1{
