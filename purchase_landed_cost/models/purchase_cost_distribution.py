@@ -236,22 +236,21 @@ class PurchaseCostDistribution(models.Model):
         if (move.location_id.usage == 'supplier' and
                 move.product_id.cost_method == 'average'):
             product = move.product_id
-            qty_available = product.product_tmpl_id.qty_available
-            product_avail = qty_available - move.product_qty
-            if product_avail <= 0:
+            domain_quant = [
+                ('product_id', 'in',
+                 product.product_tmpl_id.product_variant_ids.ids),
+                ('id', 'not in', move.quant_ids.ids),
+                ('location_id.usage', '=', 'internal')]
+            quants = self.env['stock.quant'].search(domain_quant)
+            current_valuation = sum([(q.cost * q.qty) for q in quants])
+            total_qty = sum([q.qty for q in quants]) + move.product_qty
+            # Get the standard price
+            if total_qty <= 0:
                 new_std_price = new_price
             else:
-                domain_quant = [
-                    ('product_id', 'in',
-                     product.product_tmpl_id.product_variant_ids.ids),
-                    ('id', 'not in', move.quant_ids.ids),
-                    ('location_id.usage', '=', 'internal')]
-                quants = self.env['stock.quant'].search(domain_quant)
-                current_valuation = sum([(q.cost * q.qty) for q in quants])
-                # Get the standard price
                 new_std_price = (
                     (current_valuation + new_price * move.product_qty) /
-                    qty_available)
+                    total_qty)
             # Write the standard price, as SUPERUSER_ID, because a
             # warehouse manager may not have the right to write on products
             c = self._context.copy()
