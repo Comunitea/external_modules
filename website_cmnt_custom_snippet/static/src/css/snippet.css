@@ -1,10 +1,12 @@
 .img_grid img{
     margin:0;
-    padding: 7px; 
+    padding: 7px;
+    display: block;
+	margin: 0 auto 0 auto; 
 }
 
 .img_grid > .row{
-	margin: 0 !important; 	
+    margin: 0 !important;
 }
 
 .carousel-caption {
@@ -15,10 +17,11 @@
 
 
 .s_center_tittle{
-    display: table-cell;
+    display: block;
     vertical-align: middle;
     margin-left: 15px !important;
     margin-right: 15px !important;
+    margin-bottom: 0px !important;
 }
 
 .s_center_tittle h1{
@@ -35,27 +38,46 @@
 
 .eq-height .col {
     display: flex;
-    margin-left: 7px;
-    margin-right: 7px;
     padding: 15px;
-    border: 1px solid black;
-    text-align: center;
-    width: 100%;
+    text-align: center;    
     margin-top: 5px;
 
 }
-
+.eq-height .col img{
+	display: block;
+	margin: 0 auto 0 auto; 
+}
 .eq-height .col p{
     flex: 1 0 auto;
 }
 
-@media all and (min-width: 40em) {
-  .eq-height .col {
-    width: 50%;
-  }
+
+
+.s_three_col_img_2 {
+    padding-bottom: 45px;
 }
-@media all and (min-width: 60em) {
-  .eq-height .col {
-    width: 32%;
-  }
+.s_three_col_img_2 p, .s_three_col_img_2 h4{
+    text-align: center;
+}
+.s_three_col_img_2 span{
+    font-weight: bold;
+}
+.s_three_col_img_2 h4{
+    font-weight: normal;
+}
+.s_three_col_img_2 img{
+    margin: auto;
+}
+
+.s_three_col_img_2 div[class="col-md-4"] > div {
+    border-left: 4px solid #002749 !important;
+    border-top: 4px solid #002749 !important;
+    border-right: 4px solid #002749 !important;
+    padding: 5px;
+    display: flex;
+    flex-flow: column;
+}
+
+.s_three_col_img_2 div[class="col-md-4"] > div:nth-last-child(1) {
+    border-bottom: 4px solid #002749 !important;
 }

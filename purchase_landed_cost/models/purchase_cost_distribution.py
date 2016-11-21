@@ -1,22 +1,12 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013 Joaquín Gutierrez
+# © 2014-2016 Pedro M. Baeza <pedro.baeza@tecnativa.com>
+# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3
+
 
 from openerp import models, fields, exceptions, api, _
+# NOTE: In v9, this should be `from openerp.tools.misc import formatLang`
+from .format_lang_wrapper import formatLang
 import openerp.addons.decimal_precision as dp
 
 
@@ -147,6 +137,72 @@ class PurchaseCostDistribution(models.Model):
                 'purchase.cost.distribution')
         return super(PurchaseCostDistribution, self).create(vals)
 
+    @api.model
+    def _prepare_expense_line(self, expense_line, cost_line):
+        distribution = cost_line.distribution
+        if expense_line.type.calculation_method == 'amount':
+            multiplier = cost_line.total_amount
+            if expense_line.affected_lines:
+                divisor = sum([x.total_amount for x in
+                               expense_line.affected_lines])
+            else:
+                divisor = distribution.total_purchase
+        elif expense_line.type.calculation_method == 'price':
+            multiplier = cost_line.product_price_unit
+            if expense_line.affected_lines:
+                divisor = sum([x.product_price_unit for x in
+                               expense_line.affected_lines])
+            else:
+                divisor = distribution.total_price_unit
+        elif expense_line.type.calculation_method == 'qty':
+            multiplier = cost_line.product_qty
+            if expense_line.affected_lines:
+                divisor = sum([x.product_qty for x in
+                               expense_line.affected_lines])
+            else:
+                divisor = distribution.total_uom_qty
+        elif expense_line.type.calculation_method == 'weight':
+            multiplier = cost_line.total_weight
+            if expense_line.affected_lines:
+                divisor = sum([x.total_weight for x in
+                               expense_line.affected_lines])
+            else:
+                divisor = distribution.total_weight
+        elif expense_line.type.calculation_method == 'weight_net':
+            multiplier = cost_line.total_weight_net
+            if expense_line.affected_lines:
+                divisor = sum([x.total_weight_net for x in
+                               expense_line.affected_lines])
+            else:
+                divisor = distribution.total_weight_net
+        elif expense_line.type.calculation_method == 'volume':
+            multiplier = cost_line.total_volume
+            if expense_line.affected_lines:
+                divisor = sum([x.total_volume for x in
+                               expense_line.affected_lines])
+            else:
+                divisor = distribution.total_volume
+        elif expense_line.type.calculation_method == 'equal':
+            multiplier = 1
+            divisor = (len(expense_line.affected_lines) or
+                       len(distribution.cost_lines))
+        else:
+            raise exceptions.Warning(
+                _('No valid distribution type.'))
+        if divisor:
+            expense_amount = (expense_line.expense_amount * multiplier /
+                              divisor)
+        else:
+            raise exceptions.Warning(
+                _("The cost for the line '%s' can't be "
+                  "distributed because the calculation method "
+                  "doesn't provide valid data" % cost_line.name))
+        return {
+            'distribution_expense': expense_line.id,
+            'expense_amount':       expense_amount,
+            'cost_ratio':           expense_amount / cost_line.product_qty,
+        }
+
     @api.multi
     def action_calculate(self):
         for distribution in self:
@@ -159,72 +215,16 @@ class PurchaseCostDistribution(models.Model):
                 raise exceptions.Warning(
                     _('There is no picking lines in the distribution'))
             # Calculating expense line
-            for line in distribution.cost_lines:
-                line.expense_lines.unlink()
+            for cost_line in distribution.cost_lines:
+                cost_line.expense_lines.unlink()
+                expense_lines = []
                 for expense in distribution.expense_lines:
                     if (expense.affected_lines and
-                            line.id not in expense.affected_lines.ids):
+                            cost_line not in expense.affected_lines):
                         continue
-                    if expense.type.calculation_method == 'amount':
-                        multiplier = line.total_amount
-                        if expense.affected_lines:
-                            divisor = sum([x.total_amount for x in
-                                           expense.affected_lines])
-                        else:
-                            divisor = distribution.total_purchase
-                    elif expense.type.calculation_method == 'price':
-                        multiplier = line.product_price_unit
-                        if expense.affected_lines:
-                            divisor = sum([x.product_price_unit for x in
-                                           expense.affected_lines])
-                        else:
-                            divisor = distribution.total_price_unit
-                    elif expense.type.calculation_method == 'qty':
-                        multiplier = line.product_qty
-                        if expense.affected_lines:
-                            divisor = sum([x.product_qty for x in
-                                           expense.affected_lines])
-                        else:
-                            divisor = distribution.total_uom_qty
-                    elif expense.type.calculation_method == 'weight':
-                        multiplier = line.total_weight
-                        if expense.affected_lines:
-                            divisor = sum([x.total_weight for x in
-                                           expense.affected_lines])
-                        else:
-                            divisor = distribution.total_weight
-                    elif expense.type.calculation_method == 'weight_net':
-                        multiplier = line.total_weight_net
-                        if expense.affected_lines:
-                            divisor = sum([x.total_weight_net for x in
-                                           expense.affected_lines])
-                        else:
-                            divisor = distribution.total_weight_net
-                    elif expense.type.calculation_method == 'volume':
-                        multiplier = line.total_volume
-                        if expense.affected_lines:
-                            divisor = sum([x.total_volume for x in expense.affected_lines])
-                        else:
-                            divisor = distribution.total_volume
-                    elif expense.type.calculation_method == 'equal':
-                        multiplier = 1
-                        divisor = (len(expense.affected_lines) or
-                                   len(distribution.cost_lines))
-                    else:
-                        raise exceptions.Warning(
-                            _('No valid distribution type.'))
-                    #para evitar division por 0
-                    if divisor != 0:
-                        expense_amount = (expense.expense_amount * multiplier /
-                                          divisor)
-                    else:
-                        expense_amount = expense.expense_amount
-                    expense_line = {
-                        'distribution_expense': expense.id,
-                        'expense_amount': expense_amount,
-                        'cost_ratio': expense_amount / line.product_qty,
-                    }
-                    line.write({'expense_lines': [(0, 0, expense_line)]})
+                    expense_lines.append(
+                        self._prepare_expense_line(expense, cost_line))
+                cost_line.expense_lines = [(0, 0, x) for x in expense_lines]
             distribution.state = 'calculated'
         return True
 
@@ -244,16 +244,21 @@ class PurchaseCostDistribution(models.Model):
                 domain_quant = [
                     ('product_id', 'in',
                      product.product_tmpl_id.product_variant_ids.ids),
-                    ('id', 'not in', move.quant_ids.ids)]
-                quants = self.env['stock.quant'].read_group(
-                    domain_quant, ['product_id', 'qty', 'cost'], [])[0]
+                    ('id', 'not in', move.quant_ids.ids),
+                    ('location_id.usage', '=', 'internal')]
+                quants = self.env['stock.quant'].search(domain_quant)
+                current_valuation = sum([(q.cost * q.qty) for q in quants])
                 # Get the standard price
-                new_std_price = ((quants['cost'] * quants['qty'] +
-                                  new_price * move.product_qty) /
-                                 qty_available)
+                new_std_price = (
+                    (current_valuation + new_price * move.product_qty) /
+                    qty_available)
             # Write the standard price, as SUPERUSER_ID, because a
             # warehouse manager may not have the right to write on products
-            product.sudo().write({'standard_price': new_std_price})
+            c = self._context.copy()
+            company_id = move.company_id.id
+            c.update(company_id=company_id,
+                     force_company=company_id)
+            product.sudo().with_context(c).write({'standard_price': new_std_price})
 
     @api.one
     def action_done(self):
@@ -291,7 +296,6 @@ class PurchaseCostDistribution(models.Model):
 class PurchaseCostDistributionLine(models.Model):
     _name = "purchase.cost.distribution.line"
     _description = "Purchase cost distribution Line"
-    _rec_name = 'picking_id'
 
     @api.one
     @api.depends('product_price_unit', 'product_qty')
@@ -311,7 +315,7 @@ class PurchaseCostDistributionLine(models.Model):
     @api.one
     @api.depends('product_id', 'product_qty')
     def _compute_total_volume(self):
-        self.total_volume = self.product_volume * self.product_qty or self.product_id.volume * self.product_qty
+        self.total_volume = self.product_volume * self.product_qty
 
     @api.one
     @api.depends('expense_lines', 'expense_lines.cost_ratio')
@@ -359,9 +363,10 @@ class PurchaseCostDistributionLine(models.Model):
         string='Name', compute='_compute_display_name')
     distribution = fields.Many2one(
         comodel_name='purchase.cost.distribution', string='Cost distribution',
-        ondelete='cascade')
+        ondelete='cascade', required=True)
     move_id = fields.Many2one(
-        comodel_name='stock.move', string='Picking line', ondelete="restrict")
+        comodel_name='stock.move', string='Picking line', ondelete="restrict",
+        required=True)
     purchase_line_id = fields.Many2one(
         comodel_name='purchase.order.line', string='Purchase order line',
         related='move_id.purchase_line_id')
@@ -391,8 +396,7 @@ class PurchaseCostDistributionLine(models.Model):
         string='Unit price', related='move_id.price_unit')
     expense_lines = fields.One2many(
         comodel_name='purchase.cost.distribution.line.expense',
-        inverse_name='distribution_line', string='Expenses distribution lines',
-        ondelete='cascade')
+        inverse_name='distribution_line', string='Expenses distribution lines')
     product_volume = fields.Float(
         string='Volume', help="The volume in m3.",
         related='product_id.product_tmpl_id.volume')
@@ -409,8 +413,7 @@ class PurchaseCostDistributionLine(models.Model):
         string='Cost amount', digits_compute=dp.get_precision('Account'),
         compute='_compute_expense_amount')
     cost_ratio = fields.Float(
-        string='Unit cost', digits_compute=dp.get_precision('Account'),
-        compute='_compute_cost_ratio')
+        string='Unit cost', compute='_compute_cost_ratio')
     standard_price_new = fields.Float(
         string='New cost', digits_compute=dp.get_precision('Product Price'),
         compute='_compute_standard_price_new')
@@ -428,6 +431,18 @@ class PurchaseCostDistributionLine(models.Model):
     total_volume = fields.Float(
         compute=_compute_total_volume, string='Line volume', store=True,
         help="The line volume in m3.")
+    company_id = fields.Many2one(
+        comodel_name="res.company", related="distribution.company_id",
+        store=True,
+    )
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for record in self:
+            res.append((record.id, "%s / %s" % (
+                record.picking_id.name, record.product_id.name_get()[0][1])))
+        return res
 
 
 class PurchaseCostDistributionLineExpense(models.Model):
@@ -446,15 +461,17 @@ class PurchaseCostDistributionLineExpense(models.Model):
     expense_amount = fields.Float(
         string='Expense amount', default=0.0,
         digits_compute=dp.get_precision('Account'))
-    cost_ratio = fields.Float(
-        'Unit cost', default=0.0,
-        digits_compute=dp.get_precision('Account'))
+    cost_ratio = fields.Float('Unit cost', default=0.0)
+    company_id = fields.Many2one(
+        comodel_name="res.company", related="distribution_line.company_id",
+        store=True,
+    )
 
 
 class PurchaseCostDistributionExpense(models.Model):
     _name = "purchase.cost.distribution.expense"
     _description = "Purchase cost distribution expense"
-    _rec_name = "type"
+    _rec_name = "display_name"
 
     @api.one
     @api.depends('distribution', 'distribution.cost_lines')
@@ -489,8 +506,33 @@ class PurchaseCostDistributionExpense(models.Model):
         comodel_name='account.invoice.line', string="Supplier invoice line",
         domain="[('invoice_id.type', '=', 'in_invoice'),"
                "('invoice_id.state', 'in', ('open', 'paid'))]")
+    invoice_id = fields.Many2one(
+        comodel_name='account.invoice', string="Invoice")
+    display_name = fields.Char(compute="_compute_display_name", store=True)
+    company_id = fields.Many2one(
+        comodel_name="res.company", related="distribution.company_id",
+        store=True,
+    )
+
+    @api.one
+    @api.depends('distribution', 'type', 'expense_amount')
+    def _compute_display_name(self):
+        self.display_name = "%s: %s (%s)" % (
+            self.distribution.name, self.type.name,
+            formatLang(self.env, self.expense_amount,
+                       currency_obj=self.distribution.currency_id))
 
     @api.onchange('type')
     def onchange_type(self):
         if self.type and self.type.default_amount:
             self.expense_amount = self.type.default_amount
+
+    @api.onchange('invoice_line')
+    def onchange_invoice_line(self):
+        self.invoice_id = self.invoice_line.invoice_id.id
+        self.expense_amount = self.invoice_line.price_subtotal
+
+    @api.multi
+    def button_duplicate(self):
+        for expense in self:
+            expense.copy()

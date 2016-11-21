@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 # For copyright and license notices, see __openerp__.py file in root directory
 ##############################################################################
@@ -10,7 +10,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def action_open_landed_cost(self):
-
         self.ensure_one()
         line_obj = self.env['purchase.cost.distribution.line']
         lines = line_obj.search([('picking_id', '=', self.id)])

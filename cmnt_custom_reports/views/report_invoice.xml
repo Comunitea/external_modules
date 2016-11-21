@@ -5,15 +5,17 @@
     <template id="report_invoice_document_custom" inherit_id="account.report_invoice_document">
             <!-- Sacamos la dirección fical a la izquiera y la de contacto a la derecha -->
             <xpath expr="//div[@class='col-xs-5 col-xs-offset-7']" position="replace">
-                <div class="col-xs-7">
-                    <strong>Fiscal address:</strong>
-                    <address t-field="o.partner_id.commercial_partner_id"
-                        t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
-                    <span t-if="o.partner_id.commercial_partner_id.vat">TIN: <span t-field="o.partner_id.commercial_partner_id.vat"/></span>
-                </div>
-                <div class="col-xs-5">
-                    <address t-field="o.partner_id"
-                        t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+                <div class="row">
+                    <div class="col-xs-7">
+                        <strong>Fiscal address:</strong>
+                        <address t-field="o.partner_id.commercial_partner_id"
+                            t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+                        <span t-if="o.partner_id.commercial_partner_id.vat">TIN: <span t-field="o.partner_id.commercial_partner_id.vat"/></span>
+                    </div>
+                    <div class="col-xs-5">
+                        <address t-field="o.partner_id"
+                            t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+                    </div>
                 </div>
             </xpath>
 
@@ -41,6 +43,20 @@
                         <p t-field="o.reference"/>
                     </div>
                 </div>
+            </xpath>
+
+            <!-- Cantidad con dos decimales -->
+            <xpath expr="//table[1]/tbody/tr/td[2]" position="replace">
+                <td>
+                    <span t-esc="('%.2f'%l.quantity).replace('.',',')"/>
+                    <span t-field="l.uos_id"  groups="product.group_uom"/>
+                </td>
+            </xpath>
+            <!-- Precio con dos decimales -->
+            <xpath expr="//table[1]/tbody/tr/td[3]" position="replace">
+                <td class="text-right">
+                    <span t-esc="('%.2f'%l.price_unit).replace('.',',')"/>
+                </td>
             </xpath>
 
             <!-- Sacamos los vencimientos, dependencia account_payment_partner imprime antes de esto los modos de pago -->
