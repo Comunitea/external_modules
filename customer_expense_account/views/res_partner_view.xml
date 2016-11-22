@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_partner_form_expense_account" model="ir.ui.view">
+            <field name="name">res.partner.form.expense.account</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <field name="website" position="after">
+                  <group string="Expense Structure">
+                      <field name="structure_id"/>
+                  </group>
+                  <newline/>
+                    <div>
+                        <button name="%(action_customer_expense_wzd)d" string="Compute" class="oe_inline oe_stat_button"
+                                context="{'customer_id': active_id}" icon="fa-money" type="action"/>
+                    </div>
+                </field>
+                 
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+
+       
+
+        <record id="view_expense_structure_tree" model="ir.ui.view">
+            <field name="name">expense.structure.tree</field>
+            <field name="model">expense.structure</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Expense Structures">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_expense_structure_form" model="ir.ui.view">
+            <field name="name">expense.structure.form</field>
+            <field name="model">expense.structure</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="expense Structure">
+                    <group>
+                        <field name="name"/>
+                        <field name="company_id"/>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Elements">
+                            <field name="element_ids" nolabel="1" colspan="4"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_expense_structure_filter" model="ir.ui.view">
+            <field name="name">expense.structure.list.select</field>
+            <field name="model">expense.structure</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Expense Structures">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_expense_structure" model="ir.actions.act_window">
+            <field name="name">expense Structures</field>
+             <field name="type">ir.actions.act_window</field>
+            <field name="res_model">expense.structure</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_expense_structure_filter"/>
+             <field name="context">{}</field>
+        </record>
+
+        <record id="view_expense_structure_elements_tree" model="ir.ui.view">
+            <field name="name">expense.structure.elements.tree</field>
+            <field name="model">expense.structure.elements</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Expense Structure Elements">
+                    <field name="sequence"/>
+                    <field name="expense_type_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_expense_structure_elements_form" model="ir.ui.view">
+            <field name="name">expense.structure.elements.form</field>
+            <field name="model">expense.structure.elements</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Expense Structure Elements">
+                    <group>
+                        <field name="sequence"/>
+                        <field name="expense_type_id"/>
+                    </group>  
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_expense_structure_elements_filter" model="ir.ui.view">
+            <field name="name">expense.structure.elements.list.select</field>
+            <field name="model">expense.structure.elements</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Expense Structure Elements">
+                    <field name="expense_type_id"/>
+                </search>
+            </field>
+        </record>
+
+         <record id="action_expense_structure_elements" model="ir.actions.act_window">
+            <field name="name">expense Structure Elements</field>
+             <field name="type">ir.actions.act_window</field>
+            <field name="res_model">expense.structure.elements</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_expense_structure_elements_filter"/>
+             <field name="context">{}</field>
+        </record>
+
+
+         <record id="view_expense_line_tree" model="ir.ui.view">
+            <field name="name">expense.line.tree</field>
+            <field name="model">expense.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Expense Line">
+                    <field name="name"/>
+                    <field name="sales"/>
+                    <field name="cost"/>
+                    <field name="margin"/>
+                    <field name="cost_per"/>
+                    <field name="margin_per"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>
