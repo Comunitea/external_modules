@@ -17,5 +17,5 @@ class ExpenseType(models.Model):
     compute_type = fields.Selection(COMPUTE_TYPES, 'Compute Type',
                                     required=True,
                                     default='analytic')
-    journal_id = fields.Many2one('account.journal', 'Journal')
+    journal_id = fields.Many2one('account.analytic.journal', 'Journal')
     ratio = fields.Float('Ratio')

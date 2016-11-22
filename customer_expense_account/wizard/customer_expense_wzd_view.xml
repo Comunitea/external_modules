@@ -32,6 +32,23 @@
             <field name="target">new</field>
             <field name="context">{}</field>
         </record>
+
+        
+        <record id="view_expense_line_tree" model="ir.ui.view">
+            <field name="name">expense.line.tree</field>
+            <field name="model">expense.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Expense Line">
+                    <field name="name"/>
+                    <field name="sales"/>
+                    <field name="cost"/>
+                    <field name="margin"/>
+                    <field name="cost_per"/>
+                    <field name="margin_per"/>
+                </tree>
+            </field>
+        </record>
        
     </data>
 </openerp>

@@ -2,8 +2,8 @@
    <data>
 
         <menuitem id="menu_expense_structure_root" name="Expense Structure" sequence="15" parent="base.menu_base_config"/>
-        <menuitem id="menu_expense_structure" action="action_expense_structure" name="Operationg Structure" sequence="1" parent="menu_expense_structure_root"/>
-        <menuitem id="menu_expense_types" action="action_expense_types" name="Operationg Types" sequence="1" parent="menu_expense_structure_root"/>
+        <menuitem id="menu_expense_structure" action="action_expense_structure" name="Expense Structure" sequence="1" parent="menu_expense_structure_root"/>
+        <menuitem id="menu_expense_types" action="action_expense_types" name="Expense Types" sequence="1" parent="menu_expense_structure_root"/>
        
    </data>
 </openerp>

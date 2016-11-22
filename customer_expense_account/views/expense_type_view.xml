@@ -43,7 +43,7 @@
                     </group>
                      <group string="Analytic Configuration"
                            attrs="{'invisible':[('compute_type', '!=', ['invoice', 'analytic'])]}">  
-                        <field name="journal_id"/>
+                        <field name="ratio"/>
                     </group>                       
                 </form>
             </field>
