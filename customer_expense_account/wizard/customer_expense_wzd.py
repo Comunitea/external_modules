@@ -42,7 +42,7 @@ class ExpenseLine(models.TransientModel):
 
     @api.model
     def show_expense_lines(self, date_start, date_end):
-        line_ids = line_values = []
+        line_ids = []
         res = {}
         if not self._context.get('active_id', False):
             return res
@@ -75,14 +75,13 @@ class ExpenseLine(models.TransientModel):
                     search([('partner_id', '=', partner.id)], limit=1)
                 if not aac:
                     continue
-                    # raise except_orm(_('Error'),
-                    #                  ('No Analytic account founded.'))
 
                 journal_id = e.expense_type_id.journal_id.id
                 query = """
-                select sum(amount) from account_analytic_line
-                where journal_id = %s and account_id = %s and date >= '%s' and
-                      date <= '%s'
+                select sum(amount)
+                from account_analytic_line
+                where journal_id = %s and account_id = %s and
+                      date >= '%s' and date <= '%s'
                 """ % (str(journal_id), str(aac.id), start_date, end_date)
                 self._cr.execute(query)
                 qres = self._cr.fetchall()
@@ -93,13 +92,14 @@ class ExpenseLine(models.TransientModel):
                 amount = qres[0][0] if qres[0][0] is not None else 0.0
                 if not res:  # First time
                     v[1] = last_margin = sales = amount
+                    v[2] = 0.0
+                    v[4] = (v[2] / (sales or 1.0)) * 100
                 else:
                     v[2] = amount * (-1) if amount else 0.0
-
                 if last_margin:
                     v[3] = last_margin - v[2]
-                    v[4] = (v[2] / sales or 1.0) * 100
-                    v[5] = (v[3] / sales or 1.0) * 100
+                    v[4] = (v[2] / (sales or 1.0)) * 100
+                    v[5] = (v[3] / (sales or 1.0)) * 100
                 last_margin = v[3]
                 res.append(v)
         return res

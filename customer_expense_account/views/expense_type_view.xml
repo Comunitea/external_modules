@@ -38,8 +38,9 @@
                         <field name="compute_type"/>
                     </group>
                     <group string="Analytic Configuration"
-                           attrs="{'invisible':[('compute_type', 'in', ['invoice', 'distribution'])]}">  
-                        <field name="journal_id"/>
+                           attrs="{'invisible':[('compute_type', 'in', ['invoice', 'distribution'])]">  
+                        <field name="journal_id" 
+                               attrs="{'required':[('compute_type', 'in', ['invoice', 'distribution'])]}"/>
                     </group>
                      <group string="Analytic Configuration"
                            attrs="{'invisible':[('compute_type', '!=', ['invoice', 'analytic'])]}">  
