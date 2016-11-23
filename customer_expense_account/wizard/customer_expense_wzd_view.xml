@@ -39,13 +39,14 @@
             <field name="model">expense.line</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Expense Line">
+                <tree string="Expense Line" colors="red:compute_type in ['total_cost', 'total_margin']; magenta:compute_type == 'ratio'">
                     <field name="name"/>
                     <field name="sales"/>
                     <field name="cost"/>
                     <field name="margin"/>
                     <field name="cost_per"/>
                     <field name="margin_per"/>
+                    <field name="compute_type" invisible="1"/>
                 </tree>
             </field>
         </record>

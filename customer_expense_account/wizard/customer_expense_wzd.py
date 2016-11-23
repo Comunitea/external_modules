@@ -6,6 +6,14 @@
 from openerp import models, api, fields, _
 from openerp.exceptions import except_orm
 import time
+# from models.expense_type import COMPUTE_TYPES
+COMPUTE_TYPES = [
+    ('analytic', 'Based on analytic account'),
+    ('ratio', 'Based on parent element'),
+    ('total_cost', 'Total Cost'),
+    ('total_margin', 'Total Margin'),
+    ('distribution', 'Based on analytic distribution'),
+]
 
 
 class CustomerExpenseWzd(models.TransientModel):
@@ -39,6 +47,11 @@ class ExpenseLine(models.TransientModel):
     margin = fields.Float('Margin')
     cost_per = fields.Float('% Costs')
     margin_per = fields.Float('% Margin')
+    totalizator = fields.Boolean('Totalizator')
+    compute_type = fields.Selection(COMPUTE_TYPES, 'Compute Type',
+                                    required=True,
+                                    readonly=True,
+                                    default='analytic')
 
     @api.model
     def show_expense_lines(self, date_start, date_end):
@@ -65,56 +78,108 @@ class ExpenseLine(models.TransientModel):
 
     @api.model
     def _compute_line_values(self, partner, start_date, end_date):
-        res = []
+        res = {}
+        values = []
         sales = 0.0
         last_margin = 0.0  # last line
+        first = True
         for e in partner.structure_id.element_ids:
-            v = [e.expense_type_id.name, 0.0, 0.0, 0.0, 0.0, 0.0]
-            if e.expense_type_id.compute_type == 'analytic':
-                aac = self.env['account.analytic.account'].\
-                    search([('partner_id', '=', partner.id)], limit=1)
-                if not aac:
-                    continue
-
-                journal_id = e.expense_type_id.journal_id.id
-                query = """
-                select sum(amount)
-                from account_analytic_line
-                where journal_id = %s and account_id = %s and
-                      date >= '%s' and date <= '%s'
-                """ % (str(journal_id), str(aac.id), start_date, end_date)
-                self._cr.execute(query)
-                qres = self._cr.fetchall()
-                if not qres:
-                    continue
-                print "QRES "
-                print qres
-                amount = qres[0][0] if qres[0][0] is not None else 0.0
-                if not res:  # First time
-                    v[1] = last_margin = sales = amount
-                    v[2] = 0.0
-                    v[4] = (v[2] / (sales or 1.0)) * 100
+            v = {
+                'name': e.expense_type_id.name,
+                'sales': 0.0,
+                'cost': 0.0,
+                'margin': 0.0,
+                'cost_per': 0.0,
+                'margin_per': 0.0,
+                'compute_type': e.compute_type
+            }
+            # Calcule expense amount
+            amount = 0.0
+            if e.compute_type == 'analytic':
+                amount = self._analytic_compute_amount(e, partner, start_date,
+                                                       end_date)
+            elif e.compute_type == 'ratio':
+                parent_id = e.parent_id.id
+                if res.get(parent_id, False):
+                    amount = res[parent_id]['cost'] * e.ratio
+            elif e.compute_type in ['total_cost', 'total_margin']:
+                if e.compute_type == 'total_cost':
+                    v['cost'] = self._totalizator(values, 'cost')
+                    v['cost_per'] = (v['cost'] / (sales or 1.0)) * 100
                 else:
-                    v[2] = amount * (-1) if amount else 0.0
-                if last_margin:
-                    v[3] = last_margin - v[2]
-                    v[4] = (v[2] / (sales or 1.0)) * 100
-                    v[5] = (v[3] / (sales or 1.0)) * 100
-                last_margin = v[3]
-                res.append(v)
-        return res
+                    v['margin'] = self._totalizator(values, 'margin')
+                    v['margin_per'] = (v['margin'] / (sales or 1.0)) * 100
+                res[e.id] = v
+                values.append(v)
+                continue
+
+            # Calcule columns
+            if first:  # First time
+                first = False
+                v['sales'] = last_margin = sales = amount * (-1)
+            else:
+                v['cost'] = amount if amount else 0.0
+
+            v['margin'] = last_margin - v['cost']
+            v['cost_per'] = (v['cost'] / (sales or 1.0)) * 100
+            if e.compute_type == 'ratio':
+                v['cost_per'] = e.ratio
+            v['margin_per'] = (v['sales'] / (sales or 1.0)) * 100
+            last_margin = v['margin']
+
+            # Adds result to final order list an aux dictionary
+            res[e.id] = v
+            values.append(v)
+        print res
+        return values
+
+    def _analytic_compute_amount(self, e, partner, start_date, end_date):
+        res = 0.0
+
+        aac = self.env['account.analytic.account'].\
+            search([('partner_id', '=', partner.id)], limit=1)
+        if not aac:
+            return 0.0
+
+        journal_id = e.expense_type_id.journal_id.id
+        query = """
+            SELECT sum(amount)
+            FROM account_analytic_line
+            WHERE journal_id = %s AND account_id = %s AND
+                  date >= '%s' AND date <= '%s'
+        """ % (str(journal_id), str(aac.id), start_date, end_date)
+        self._cr.execute(query)
+        qres = self._cr.fetchall()
+        if not qres:
+            return 0.0
+        print "QRES "
+        print qres
+        res = qres[0][0] if qres[0][0] is not None else 0.0
+        return res * (-1)
+
+    def _totalizator(self, values, mode):
+        total = 0.0
+        for v in values:
+            if v['compute_type'] in ['total_cost', 'total_margin']:
+                continue
+            if mode == 'cost':
+                total += v['cost']
+            else:
+                total += v['margin']
+        return total
 
     @api.model
     def _create_expense_lines(self, line_values):
         res = []
         for v in line_values:
             vals = {
-                'name': v[0],
-                'sales': round(v[1], 2),
-                'cost': round(v[2], 2),
-                'margin': round(v[3], 2),
-                'cost_per': round(v[4], 2),
-                'margin_per': round(v[5], 2),
+                'name': v['name'],
+                'compute_type': v['compute_type'],
+                'sales': round(v['sales'], 2),
+                'cost': round(v['cost'], 2),
+                'margin': round(v['margin'], 2),
+                'cost_per': round(v['cost_per'], 2),
+                'margin_per': round(v['margin_per'], 2),
             }
             expense_line = self.create(vals)
             res.append(expense_line.id)

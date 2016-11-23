@@ -37,13 +37,11 @@
                         <field name="name"/>
                         <field name="compute_type"/>
                     </group>
-                    <group string="Analytic Configuration"
-                           attrs="{'invisible':[('compute_type', 'in', ['invoice', 'distribution'])]">  
-                        <field name="journal_id" 
-                               attrs="{'required':[('compute_type', 'in', ['invoice', 'distribution'])]}"/>
+                    <group string="Analytic Configuration" attrs="{'invisible':[('compute_type', '!=', 'analytic')]}">  
+                        <field name="journal_id"/>
                     </group>
                      <group string="Analytic Configuration"
-                           attrs="{'invisible':[('compute_type', '!=', ['invoice', 'analytic'])]}">  
+                           attrs="{'invisible':[('compute_type', '!=', 'ratio')]}">  
                         <field name="ratio"/>
                     </group>                       
                 </form>

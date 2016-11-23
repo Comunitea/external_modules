@@ -5,8 +5,10 @@ from openerp import models, fields
 
 COMPUTE_TYPES = [
     ('analytic', 'Based on analytic account'),
-    ('invoice', 'Based on total invoicing'),
-    ('standard_price', 'Based on distribution'),
+    ('ratio', 'Based on parent element'),
+    ('total_cost', 'Total Cost'),
+    ('total_margin', 'Total Margin'),
+    ('distribution', 'Based on analytic distribution'),
 ]
 
 

@@ -64,6 +64,7 @@
                 <tree string="Expense Structure Elements">
                     <field name="sequence"/>
                     <field name="expense_type_id"/>
+                    <field name="compute_type"/>
                 </tree>
             </field>
         </record>
@@ -77,7 +78,14 @@
                     <group>
                         <field name="sequence"/>
                         <field name="expense_type_id"/>
+                        <field name="compute_type"/>
                     </group>  
+                      <group string="Select parent and ratio" attrs="{'invisible':[('compute_type', '!=', 'ratio')]}">
+                        <field name="structure_id" invisible="1"/>  
+                        <field name="ratio"/>
+                        <!-- Así hay que guardar primero y seleccionar el partner. -->
+                        <field name="parent_id" domain="[('structure_id', '=', structure_id), ('id', '!=', id)]"/>
+                    </group>
                 </form>
             </field>
         </record>
