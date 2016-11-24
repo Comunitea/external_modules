@@ -20,7 +20,7 @@ class CustomerExpenseWzd(models.TransientModel):
         res = super(CustomerExpenseWzd, self).default_get(fields)
         year = str(time.strftime("%Y"))
         date_start = year + '-' + '01' + '-' + '01'
-        date_end = year + '-' + '12' + '-' + '12'
+        date_end = year + '-' + '12' + '-' + '31'
         res.update(start_date=date_start, end_date=date_end)
         return res
 
@@ -97,7 +97,7 @@ class ExpenseLine(models.TransientModel):
                 parent_id = e.parent_id.id
                 if res.get(parent_id, False):
                     amount = res[parent_id]['cost'] * e.ratio
-                    if res[parent_id]['sales'] != '':
+                    if res[parent_id]['sales']:
                         amount = res[parent_id]['sales'] * e.ratio
             # TOTALIZATOR
             elif e.compute_type in ['total_cost', 'total_margin']:
@@ -112,10 +112,9 @@ class ExpenseLine(models.TransientModel):
                 continue
             # DISTRIBUTION
             elif e.compute_type == 'distribution':
-                amount = 572.33
                 if e.ratio_compute_type == 'fixed':
                     aac = e.expense_type_id.analytic_id
-                    amount = aac.balance * (-1)
+                    amount = aac.balance * (-1) * e.var_ratio
             # Calcule columns
             if first:  # First time
                 first = False

@@ -11,7 +11,7 @@ class ExpenseStructure(models.Model):
 
     name = fields.Char('Name', required=True)
     element_ids = fields.One2many('expense.structure.elements', 'structure_id',
-                                  string="Elements")
+                                  string="Elements", ondelete="cascade")
     company_id = fields.Many2one('res.company', 'Company', required=True,
                                  default=lambda self:
                                  self.env['res.company'].

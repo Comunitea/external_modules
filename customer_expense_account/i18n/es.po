@@ -94,7 +94,7 @@ msgstr "Calcular sobre horas"
 #. module: customer_expense_account
 #: selection:expense.type,ratio_compute_type:0
 msgid "Compute over invoices"
-msgstr "CAlcular sobre facturas"
+msgstr "Calcular sobre facturas"
 
 #. module: customer_expense_account
 #: field:expense.line,name:0
