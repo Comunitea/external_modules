@@ -7,7 +7,7 @@
             <field name="model">customer.expense.wzd</field>
             <field name="arch" type="xml">
                 <form>
-                    <group string="Period">
+                    <group string="Select Period">
                         <group>
                             <field name="start_date"/>
                         </group>
@@ -41,7 +41,7 @@
             <field name="arch" type="xml">
                 <tree string="Expense Line"
                        colors="red:compute_type in ['total_cost', 'total_margin'];
-                               magenta:compute_type == 'ratio';
+                               orange:compute_type == 'ratio';
                                blue:compute_type == 'distribution'">
                     <field name="name"/>
                     <field name="sales"/>

@@ -9,5 +9,5 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     structure_id = fields.Many2one('expense.structure',
-                                   string="Expense Account",
+                                   string="Expense Structure",
                                    company_dependent=True)

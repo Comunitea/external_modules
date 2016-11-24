@@ -4,16 +4,19 @@
 from openerp import models, fields
 
 COMPUTE_TYPES = [
-    ('analytic', 'Based on partner account'),
+    ('analytic', 'Based on partner analytic account'),
     ('ratio', 'Based on parent element'),
-    ('total_cost', 'Totalizator Cost'),
-    ('total_margin', 'Totalizator Margin'),
+    ('total_cost', 'Totalizator cost'),
+    ('total_margin', 'Totalizator margin'),
     ('distribution', 'Distribution over analytic account'),
 ]
 
 RATIO_COMPUTE_TYPES = [
-    ('fixed', 'Defined by user'),
-    ('invoices', 'Over Invoices'),
+    ('fixed', 'Fixed'),
+    ('invoices', 'Compute over invoices'),
+    ('kgs', 'Compute over Kg'),
+    ('units', 'Compute over Units'),
+    ('hours', 'Compute over hours'),
 ]
 
 
@@ -24,9 +27,11 @@ class ExpenseType(models.Model):
     compute_type = fields.Selection(COMPUTE_TYPES, 'Compute Type',
                                     required=True,
                                     default='analytic')
-    journal_id = fields.Many2one('account.analytic.journal', 'Journal')
+    journal_id = fields.Many2one('account.analytic.journal',
+                                 'Analytic Journal')
     ratio = fields.Float('Ratio')
     analytic_id = fields.Many2one('account.analytic.account',
                                   'Analytic Account')
-    ratio_compute_type = fields.Selection(RATIO_COMPUTE_TYPES, 'Compute Type',
+    ratio_compute_type = fields.Selection(RATIO_COMPUTE_TYPES,
+                                          string='Ratio Compute Type',
                                           default='fixed')

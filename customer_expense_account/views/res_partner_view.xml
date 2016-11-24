@@ -8,14 +8,16 @@
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
                 <field name="website" position="after">
-                  <group string="Expense Structure">
-                      <field name="structure_id"/>
+                  <group colspan="4" string="Expense Structure">
+           
+                        <field name="structure_id"/>
+
                   </group>
-                  <newline/>
-                    <div>
-                        <button name="%(action_customer_expense_wzd)d" string="Compute" class="oe_inline oe_stat_button"
-                                context="{'customer_id': active_id}" icon="fa-money" type="action"/>
-                    </div>
+                  <group colspan="4">
+                      <button name="%(action_customer_expense_wzd)d" string="Compute" class="oe_inline oe_stat_button"
+                              context="{'customer_id': active_id}" icon="fa-money" type="action"/>
+                  </group>
+                 
                 </field>
                  
             </field>

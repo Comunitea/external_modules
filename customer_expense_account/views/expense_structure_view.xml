@@ -2,9 +2,6 @@
 
 <openerp>
     <data>
-
-       
-
         <record id="view_expense_structure_tree" model="ir.ui.view">
             <field name="name">expense.structure.tree</field>
             <field name="model">expense.structure</field>
@@ -21,16 +18,19 @@
             <field name="model">expense.structure</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="expense Structure">
-                    <group>
-                        <field name="name"/>
-                        <field name="company_id"/>
+                <form string="Expense Structure">
+                    <group string="Expense Structure">
+                        <group>
+                           <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="company_id"/>
+                        </group>
                     </group>
-                    <notebook colspan="4">
-                        <page string="Elements">
+                    <group string="Structure Elements" colspan="4">
                             <field name="element_ids" nolabel="1" colspan="4"/>
-                        </page>
-                    </notebook>
+                    </group>
+            
                 </form>
             </field>
         </record>
@@ -47,7 +47,7 @@
         </record>
 
         <record id="action_expense_structure" model="ir.actions.act_window">
-            <field name="name">expense Structures</field>
+            <field name="name">Expense Structures</field>
              <field name="type">ir.actions.act_window</field>
             <field name="res_model">expense.structure</field>
             <field name="view_type">form</field>
@@ -63,7 +63,7 @@
             <field name="arch" type="xml">
                 <tree string="Expense Structure Elements"
                       colors="red:compute_type in ['total_cost', 'total_margin'];
-                               magenta:compute_type == 'ratio';
+                               orange:compute_type == 'ratio';
                                blue:compute_type == 'distribution'">
                     <field name="sequence"/>
                     <field name="name"/>
@@ -92,7 +92,7 @@
                         <!-- Así hay que guardar primero y seleccionar el partner. -->
                         <field name="parent_id" domain="[('structure_id', '=', structure_id), ('id', '!=', id)]"/>
                     </group>
-                    <group string="Select Customer ratios" attrs="{'invisible':['|', ('compute_type', '!=', 'distribution'),  ('ratio_compute_type', '!=', 'fixed')]}">
+                    <group string="Compute Ratio Options" attrs="{'invisible':['|', ('compute_type', '!=', 'distribution'),  ('ratio_compute_type', '!=', 'fixed')]}">
                         <field name="compute_type"/>
                         <field name="ratio"/>
                     </group>
@@ -113,7 +113,7 @@
         </record>
 
          <record id="action_expense_structure_elements" model="ir.actions.act_window">
-            <field name="name">expense Structure Elements</field>
+            <field name="name">Expense Structure Elements</field>
              <field name="type">ir.actions.act_window</field>
             <field name="res_model">expense.structure.elements</field>
             <field name="view_type">form</field>

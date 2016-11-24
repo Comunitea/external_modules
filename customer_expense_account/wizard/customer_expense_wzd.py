@@ -158,7 +158,6 @@ class ExpenseLine(models.TransientModel):
             return 0.0
         res = qres[0][0] if qres[0][0] is not None else 0.0
         return res * (-1)
-        # return aac.balance * (-1)
 
     def _totalizator_cost(self, values):
         total = 0.0
