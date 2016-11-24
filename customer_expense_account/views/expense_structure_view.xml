@@ -61,8 +61,12 @@
             <field name="model">expense.structure.elements</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Expense Structure Elements">
+                <tree string="Expense Structure Elements"
+                      colors="red:compute_type in ['total_cost', 'total_margin'];
+                               magenta:compute_type == 'ratio';
+                               blue:compute_type == 'distribution'">
                     <field name="sequence"/>
+                    <field name="name"/>
                     <field name="expense_type_id"/>
                     <field name="compute_type"/>
                 </tree>
@@ -78,13 +82,19 @@
                     <group>
                         <field name="sequence"/>
                         <field name="expense_type_id"/>
+                        <field name="name"/>
                         <field name="compute_type"/>
+                        <field name="ratio_compute_type" invisible="1"/>
                     </group>  
-                      <group string="Select parent and ratio" attrs="{'invisible':[('compute_type', '!=', 'ratio')]}">
+                    <group string="Select parent and ratio" attrs="{'invisible':[('compute_type', '!=', 'ratio')]}">
                         <field name="structure_id" invisible="1"/>  
                         <field name="ratio"/>
                         <!-- Así hay que guardar primero y seleccionar el partner. -->
                         <field name="parent_id" domain="[('structure_id', '=', structure_id), ('id', '!=', id)]"/>
+                    </group>
+                    <group string="Select Customer ratios" attrs="{'invisible':['|', ('compute_type', '!=', 'distribution'),  ('ratio_compute_type', '!=', 'fixed')]}">
+                        <field name="compute_type"/>
+                        <field name="ratio"/>
                     </group>
                 </form>
             </field>

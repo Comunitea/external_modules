@@ -41,8 +41,9 @@
                         <field name="journal_id"/>
                     </group>
                      <group string="Analytic Configuration"
-                           attrs="{'invisible':[('compute_type', '!=', 'ratio')]}">  
-                        <field name="ratio"/>
+                            attrs="{'invisible':[('compute_type', '!=', 'distribution')]}">  
+                        <field name="analytic_id"/>
+                        <field name="ratio_compute_type"/>
                     </group>                       
                 </form>
             </field>
