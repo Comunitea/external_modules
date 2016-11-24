@@ -149,9 +149,9 @@ class ExpenseLine(models.TransientModel):
             SELECT sum(amount)
             FROM account_analytic_line
             WHERE journal_id = %s AND account_id = %s AND
-                  date >= '%s' AND date <= '%s'
+                  date >= '%s' AND date <= '%s' AND company_id = %s
         """ % (str(journal_id), str(aac.id), self._context['from_date'],
-               self._context['to_date'])
+               self._context['to_date'], e.structure_id.company_id.id)
         self._cr.execute(query)
         qres = self._cr.fetchall()
         if not qres:
