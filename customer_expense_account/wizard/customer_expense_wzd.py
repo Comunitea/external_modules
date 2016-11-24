@@ -37,11 +37,11 @@ class ExpenseLine(models.TransientModel):
     _name = 'expense.line'
 
     name = fields.Char('Concept')
-    sales = fields.Float('Sales')
-    cost = fields.Float('Costs')
-    margin = fields.Float('Margin')
-    cost_per = fields.Float('% Costs')
-    margin_per = fields.Float('% Margin')
+    sales = fields.Char('Sales')
+    cost = fields.Char('Costs')
+    margin = fields.Char('Margin')
+    cost_per = fields.Char('% Costs')
+    margin_per = fields.Char('% Margin')
     totalizator = fields.Boolean('Totalizator')
     compute_type = fields.Selection(COMPUTE_TYPES, 'Compute Type',
                                     required=True,
@@ -97,6 +97,8 @@ class ExpenseLine(models.TransientModel):
                 parent_id = e.parent_id.id
                 if res.get(parent_id, False):
                     amount = res[parent_id]['cost'] * e.ratio
+                    if res[parent_id]['sales'] != '':
+                        amount = res[parent_id]['sales'] * e.ratio
             # TOTALIZATOR
             elif e.compute_type in ['total_cost', 'total_margin']:
                 if e.compute_type == 'total_cost':
@@ -123,10 +125,11 @@ class ExpenseLine(models.TransientModel):
 
             v['margin'] = last_margin - v['cost']
             v['cost_per'] = (v['cost'] / (sales or 1.0)) * 100
-            if e.compute_type == 'ratio' or \
-                    (e.compute_type == 'distribution'and
-                     e.ratio_compute_type == 'fixed'):
+            if e.compute_type == 'ratio':
                 v['cost_per'] = e.ratio
+            if (e.compute_type == 'distribution'and
+                    e.ratio_compute_type == 'fixed'):
+                v['cost_per'] = e.var_ratio
             v['margin_per'] = (v['margin'] / (sales or 1.0)) * 100
             last_margin = v['margin']
 
@@ -139,10 +142,11 @@ class ExpenseLine(models.TransientModel):
     def _analytic_compute_amount(self, e, partner):
         res = 0.0
 
-        aac = self.env['account.analytic.account'].\
+        aac = self.env['account.analytic.default'].\
             search([('partner_id', '=', partner.id)], limit=1)
         if not aac:
             return 0.0
+        aac = aac.analytic_id
 
         journal_id = e.expense_type_id.journal_id.id
         query = """
@@ -174,11 +178,13 @@ class ExpenseLine(models.TransientModel):
             vals = {
                 'name': v['name'],
                 'compute_type': v['compute_type'],
-                'sales': round(v['sales'], 2),
-                'cost': round(v['cost'], 2),
-                'margin': round(v['margin'], 2),
-                'cost_per': round(v['cost_per'], 2),
-                'margin_per': round(v['margin_per'], 2),
+                'sales': str(round(v['sales'], 2)) if v['sales'] else '',
+                'cost': str(round(v['cost'], 2)) if v['cost'] else '',
+                'margin': str(round(v['margin'], 2)) if v['margin'] else '',
+                'cost_per':
+                    str(round(v['cost_per'], 2)) if v['cost_per'] else '',
+                'margin_per':
+                    str(round(v['margin_per'], 2)) if v['margin_per'] else '',
             }
             expense_line = self.create(vals)
             res.append(expense_line.id)

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-24 15:27+0000\n"
-"PO-Revision-Date: 2016-11-24 15:27+0000\n"
+"POT-Creation-Date: 2016-11-24 18:18+0000\n"
+"PO-Revision-Date: 2016-11-24 18:18+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -36,6 +36,11 @@ msgid "Analytic Configuration"
 msgstr "Configuración analítica"
 
 #. module: customer_expense_account
+#: field:expense.type,journal_id:0
+msgid "Analytic Journal"
+msgstr "Diario analótico"
+
+#. module: customer_expense_account
 #: selection:expense.line,compute_type:0
 #: selection:expense.type,compute_type:0
 msgid "Based on parent element"
@@ -45,10 +50,11 @@ msgstr "Basado en elemento padre"
 #: selection:expense.line,compute_type:0
 #: selection:expense.type,compute_type:0
 msgid "Based on partner analytic account"
-msgstr "Basado en cuenta analítica del cliente"
+msgstr "Basado en cuenta análitica del cliente"
 
 #. module: customer_expense_account
 #: field:expense.structure,company_id:0
+#: field:expense.type,company_id:0
 msgid "Company"
 msgstr "Compañía"
 
@@ -56,6 +62,11 @@ msgstr "Compañía"
 #: view:res.partner:customer_expense_account.view_partner_form_expense_account
 msgid "Compute"
 msgstr "Calcular"
+
+#. module: customer_expense_account
+#: view:expense.structure.elements:customer_expense_account.view_expense_structure_elements_form
+msgid "Compute Ratio Options"
+msgstr "Opciones del cálculo de ratio"
 
 #. module: customer_expense_account
 #: field:expense.line,compute_type:0
@@ -145,11 +156,6 @@ msgid "Error"
 msgstr "Error"
 
 #. module: customer_expense_account
-#: field:res.partner,structure_id:0
-msgid "Expense Structure"
-msgstr "Estructura de gastos"
-
-#. module: customer_expense_account
 #: view:expense.line:customer_expense_account.view_expense_line_tree
 msgid "Expense Line"
 msgstr "Líneas de gasto"
@@ -159,6 +165,7 @@ msgstr "Líneas de gasto"
 #: model:ir.ui.menu,name:customer_expense_account.menu_expense_structure
 #: model:ir.ui.menu,name:customer_expense_account.menu_expense_structure_root
 #: view:res.partner:customer_expense_account.view_partner_form_expense_account
+#: field:res.partner,structure_id:0
 msgid "Expense Structure"
 msgstr "Estructura de gastos"
 
@@ -166,6 +173,7 @@ msgstr "Estructura de gastos"
 #: view:expense.structure.elements:customer_expense_account.view_expense_structure_elements_filter
 #: view:expense.structure.elements:customer_expense_account.view_expense_structure_elements_form
 #: view:expense.structure.elements:customer_expense_account.view_expense_structure_elements_tree
+#: model:ir.actions.act_window,name:customer_expense_account.action_expense_structure_elements
 msgid "Expense Structure Elements"
 msgstr "Elementos de estructura de gastos"
 
@@ -183,6 +191,10 @@ msgid "Expense Type"
 msgstr "Tipo gasto"
 
 #. module: customer_expense_account
+#: view:expense.type:customer_expense_account.view_compute_type_filter
+#: view:expense.type:customer_expense_account.view_compute_type_form
+#: view:expense.type:customer_expense_account.view_compute_type_tree
+#: model:ir.actions.act_window,name:customer_expense_account.action_expense_types
 #: model:ir.ui.menu,name:customer_expense_account.menu_expense_types
 msgid "Expense Types"
 msgstr "Tipos de gasto"
@@ -205,11 +217,6 @@ msgstr "Fijo"
 #: field:expense.type,id:0
 msgid "ID"
 msgstr "ID"
-
-#. module: customer_expense_account
-#: field:expense.type,journal_id:0
-msgid "Analytic Journal"
-msgstr "Diario analítico"
 
 #. module: customer_expense_account
 #: field:customer.expense.wzd,__last_update:0
@@ -276,11 +283,6 @@ msgid "Sales"
 msgstr "Ventas"
 
 #. module: customer_expense_account
-#: view:expense.structure.elements:customer_expense_account.view_expense_structure_elements_form
-msgid "Compute Ratio Options"
-msgstr "Opciones del cálculo de ratio"
-
-#. module: customer_expense_account
 #: view:customer.expense.wzd:customer_expense_account.customer_expense_wzd_form_view
 msgid "Select Period"
 msgstr "Selecciona período"
@@ -331,17 +333,4 @@ msgstr "Totalizador costes"
 #: selection:expense.type,compute_type:0
 msgid "Totalizator margin"
 msgstr "Totalizador margen"
-
-#. module: customer_expense_account
-#: model:ir.actions.act_window,name:customer_expense_account.action_expense_structure_elements
-msgid "Expense Structure Elements"
-msgstr "Elementos estructura de gastos"
-
-#. module: customer_expense_account
-#: view:expense.type:customer_expense_account.view_compute_type_filter
-#: view:expense.type:customer_expense_account.view_compute_type_form
-#: view:expense.type:customer_expense_account.view_compute_type_tree
-#: model:ir.actions.act_window,name:customer_expense_account.action_expense_types
-msgid "Expense Types"
-msgstr "Tipos de gasto"
 

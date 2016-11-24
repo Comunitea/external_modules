@@ -33,9 +33,10 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Expense Types">
-                    <group col="6" colspan="6">
+                    <group>
                         <field name="name"/>
                         <field name="compute_type"/>
+                        <field name="company_id"/>
                     </group>
                     <group string="Analytic Configuration" attrs="{'invisible':[('compute_type', '!=', 'analytic')]}">  
                         <field name="journal_id"/>

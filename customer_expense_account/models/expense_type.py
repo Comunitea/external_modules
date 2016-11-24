@@ -35,3 +35,7 @@ class ExpenseType(models.Model):
     ratio_compute_type = fields.Selection(RATIO_COMPUTE_TYPES,
                                           string='Ratio Compute Type',
                                           default='fixed')
+    company_id = fields.Many2one('res.company', 'Company',
+                                 default=lambda self:
+                                 self.env['res.company'].
+                                 _company_default_get('expense.type'))

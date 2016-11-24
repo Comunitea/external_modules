@@ -94,7 +94,7 @@
                     </group>
                     <group string="Compute Ratio Options" attrs="{'invisible':['|', ('compute_type', '!=', 'distribution'),  ('ratio_compute_type', '!=', 'fixed')]}">
                         <field name="compute_type"/>
-                        <field name="ratio"/>
+                        <field name="var_ratio"/>
                     </group>
                 </form>
             </field>

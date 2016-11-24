@@ -34,6 +34,7 @@ class ExpenseStructureElements(models.Model):
                                     default='analytic',
                                     related='expense_type_id.compute_type')
     ratio = fields.Float('Ratio')
+    var_ratio = fields.Float('Ratio')
     parent_id = fields.Many2one('expense.structure.elements', 'Parent Element')
     ratio_compute_type = \
         fields.Selection(RATIO_COMPUTE_TYPES, 'Compute Type',
