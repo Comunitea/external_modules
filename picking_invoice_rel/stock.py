@@ -25,9 +25,8 @@ from openerp.osv import fields, osv
 class stock_move (osv.osv):
     _inherit = "stock.move"
     def _create_invoice_line_from_vals(self, cr, uid, move, invoice_line_vals, context=None):
-        res = super(stock_move, self)._create_invoice_line_from_vals(cr, uid, move, invoice_line_vals, context=context)
         invoice_line_vals['stock_move_id'] = move.id
-        return self.pool.get('account.invoice.line').create(cr, uid, invoice_line_vals, context=context)
+        return super(stock_move, self)._create_invoice_line_from_vals(cr, uid, move, invoice_line_vals, context=context)
 
 
 class stock_picking(osv.osv):
@@ -36,12 +35,11 @@ class stock_picking(osv.osv):
     _columns = {
         'invoice_ids': fields.many2many('account.invoice', 'picking_invoice_rel', 'picking_id', 'invoice_id', 'Invoices'),
         'client_order_ref' : fields.related ('sale_id', 'client_order_ref', type="char", relation="sale.order", string="Client Ref", readonly = True ),
-
     }
 
     def init(self, cr):
-      # This is a helper to guess "old" Relations between pickings and invoices
-      cr.execute("""
+        # This is a helper to guess "old" Relations between pickings and invoices
+        cr.execute("""
 insert into picking_invoice_rel(picking_id,invoice_id) select p.id,i.id from stock_picking p, account_invoice i
 where p.name = split_part(i.origin,':',1) and (p.id,i.id) not in (select picking_id,invoice_id from picking_invoice_rel);
 """)

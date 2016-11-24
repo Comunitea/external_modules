@@ -134,7 +134,10 @@ class partner(osv.osv):
                     sign = line.amount_currency < 0 and -1 or 1
                 else:
                     sign = (line.debit - line.credit) < 0 and -1 or 1
-                amount += sign * line.amount_residual
+                if line.reconcile_partial_id:
+                     amount += line.debit - line.credit
+                else:
+                    amount += sign * line.amount_residual
             res[partner.id] = amount
         return res
 
@@ -161,7 +164,10 @@ class partner(osv.osv):
                     sign = line.amount_currency < 0 and -1 or 1
                 else:
                     sign = (line.debit - line.credit) < 0 and -1 or 1
-                amount += sign * line.amount_residual
+                if line.reconcile_partial_id:
+                     amount += line.debit - line.credit
+                else:
+                    amount += sign * line.amount_residual
             res[partner.id] = amount
         return res
 
@@ -193,7 +199,7 @@ class partner(osv.osv):
         for id in ids:
             sids = self.pool.get('sale.order').search( cr, uid, [
                 ('partner_id','child_of',[id]),
-                ('state','not in',['draft','cancel','wait_risk'])
+                ('state','not in',['draft','cancel','wait_risk','sent'])
             ], context=context )
             total = 0.0
             for order in self.pool.get('sale.order').browse(cr, uid, sids, context):

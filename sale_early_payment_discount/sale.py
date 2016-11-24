@@ -48,10 +48,24 @@ class sale_order(models.Model):
             self.early_payment_disc_tax = self.amount_tax
             self.early_payment_disc_untaxed = self.amount_untaxed
         else:
-            self.early_payment_disc_tax = self.amount_tax * (1.0 - (float(self.early_payment_discount or 0.0)) / 100.0)
-            self.early_payment_disc_untaxed = self.amount_untaxed * (1.0 - (float(self.early_payment_discount or 0.0)) / 100.0)
-            self.early_payment_disc_total = self.early_payment_disc_untaxed + self.early_payment_disc_tax
-            self.total_early_discount = self.early_payment_disc_untaxed - self.amount_untaxed
+            cur = self.pricelist_id.currency_id
+            val = val1 = 0
+            for line in self.order_line:
+                if line.product_id and line.product_id.without_early_payment:
+                    val1 += line.price_subtotal
+                    val += self._amount_line_tax(line)
+                else:
+                    val1 += line.price_subtotal * \
+                        (1.0 - (float(self.early_payment_discount or 0.0)) /
+                         100.0)
+                    val += self._amount_line_tax(line) * \
+                        (1.0 - (float(self.early_payment_discount or 0.0)) /
+                         100.0)
+            self.early_payment_disc_tax = cur.round(val)
+            self.early_payment_disc_untaxed = cur.round(val1)
+            self.early_payment_disc_total = cur.round(val+val1)
+            self.total_early_discount = self.early_payment_disc_untaxed - \
+                self.amount_untaxed
 
     def onchange_partner_id2(self, cr, uid, ids, part, early_payment_discount=False, payment_term=False, context=None):
         """extend this event for delete early payment discount if it isn't valid to new partner or add new early payment discount"""
