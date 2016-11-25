@@ -27,6 +27,7 @@ from dateutil.relativedelta import relativedelta
 class ResPartnerRappelRel(models.Model):
 
     _name = "res.partner.rappel.rel"
+    _rec_name = "partner_id"
 
     PERIODICITIES = [('monthly', 'Monthly'), ('quarterly', 'Quarterly'),
                      ('semiannual', 'Semiannual'), ('annual', 'Annual')]
@@ -89,10 +90,12 @@ class ResPartnerRappelRel(models.Model):
         # se buscan las rectificativas
         refund_lines = self.env['account.invoice.line'].search(
             [('invoice_id', 'in', [x.id for x in refunds]),
-             ('product_id', 'in', products)])
+             ('product_id', 'in', products),
+             ('no_rappel', '=', False)])
         invoice_lines = self.env['account.invoice.line'].search(
             [('invoice_id', 'in', [x.id for x in invoices]),
-             ('product_id', 'in', products)])
+             ('product_id', 'in', products),
+             ('no_rappel', '=', False)])
         return invoice_lines, refund_lines
 
     @api.model
