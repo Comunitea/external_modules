@@ -449,6 +449,11 @@ msgid "Section"
 msgstr "Tramo"
 
 #. module: rappel
+#: field:rappel.current.info,section_goal:0
+msgid "Section goal"
+msgstr "Objetivo tramo"
+
+#. module: rappel
 #: field:rappel,sections:0
 msgid "Sections"
 msgstr "Tramos"
@@ -497,6 +502,12 @@ msgstr "Valor"
 #: selection:rappel,calc_mode:0
 msgid "Variable"
 msgstr "Variable"
+
+#. module: rappel
+#: field:account.invoice.line,no_rappel:0
+#: field:sale.order.line,no_rappel:0
+msgid "W/O Rappel"
+msgstr "Sin rappel"
 
 #. module: rappel
 #: help:rappel.advice.email,advice_timing:0
