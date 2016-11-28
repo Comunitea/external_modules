@@ -15,6 +15,9 @@
                             <field name="end_date"/>
                         </group>
                     </group>
+                    <group>
+                        <field name="structure_id"/>
+                    </group>
                     <footer>
                         <button name="action_show_expense" string="Show Expenses" type="object" class="oe_inline oe_stat_button"
                                 context="{'customer_id': active_id}" icon="fa-eye"/>

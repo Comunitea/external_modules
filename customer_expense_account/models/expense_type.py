@@ -39,3 +39,5 @@ class ExpenseType(models.Model):
                                  default=lambda self:
                                  self.env['res.company'].
                                  _company_default_get('expense.type'))
+    product_id = fields.Many2one('product.product', 'Product')
+    categ_id = fields.Many2one('product.category', 'Product Category')
