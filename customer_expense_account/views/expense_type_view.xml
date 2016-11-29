@@ -38,8 +38,8 @@
                         <field name="compute_type"/>
                         <field name="company_id"/>
                     </group>
-                    <group string="Analytic Configuration" attrs="{'invisible':[('compute_type', '!=', 'analytic')]}">  
-                        <field name="journal_id"/>
+                    <group string="Analytic Configuration" attrs="{'invisible':[('compute_type', 'not in', ('analytic', 'invoicing') )]}">  
+                        <field name="journal_id" attrs="{'invisible':[('compute_type', 'not in', ('analytic') )]}"/>
                         <field name="product_id"/>
                         <field name="categ_id"/>
                     </group>

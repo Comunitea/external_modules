@@ -16,6 +16,7 @@ class CustomerExpenseWzd(models.TransientModel):
                                    required=True)
     start_date = fields.Date('Start Date', required=True)
     end_date = fields.Date('End Date', required=True)
+    company_id = fields.Many2one('res.company', 'Company')
 
     @api.model
     def default_get(self, fields):
@@ -24,19 +25,21 @@ class CustomerExpenseWzd(models.TransientModel):
         date_start = year + '-' + '01' + '-' + '01'
         date_end = year + '-' + '12' + '-' + '31'
 
-        structure_id = False
+        structure = False
         if self._context.get('active_id', False):
-            structure_id = \
+            structure = \
                 self.env['res.partner'].browse(self._context['active_id']).\
-                structure_id.id
+                structure_id
         res.update(start_date=date_start, end_date=date_end,
-                   structure_id=structure_id)
+                   structure_id=structure.id,
+                   company_id=structure.company_id.id)
         return res
 
     @api.multi
     def action_show_expense(self):
         ctx = self._context.copy()
-        ctx.update(from_date=self.start_date, to_date=self.end_date)
+        ctx.update(from_date=self.start_date, to_date=self.end_date,
+                   company_id=self.company_id.id)
         t_expense_line = self.env['expense.line'].with_context(ctx)
         value = t_expense_line.show_expense_lines(self.structure_id)
         return value
@@ -98,9 +101,12 @@ class ExpenseLine(models.TransientModel):
             }
             # Calcule expense amount
             amount = 0.0
-            # BASED ON ANALYTIC ACCOUNTç
+            # BASED ON ANALYTIC ACCOUNT
             if e.compute_type == 'analytic':
                 amount = self._analytic_compute_amount(e, partner)
+            # BASED ON INVOICING
+            elif e.compute_type == 'invoicing':
+                amount = self._invoicing_compute_amount(e, partner)
             # BASED ON RATIO OVER PARENT ELEMENT
             elif e.compute_type == 'ratio':
                 parent_id = e.parent_id.id
@@ -121,13 +127,20 @@ class ExpenseLine(models.TransientModel):
                 continue
             # DISTRIBUTION
             elif e.compute_type == 'distribution':
-                if e.ratio_compute_type == 'fixed':
-                    aac = e.expense_type_id.analytic_id
-                    amount = aac.balance * (-1) * e.var_ratio
+                var_ratio = self._get_var_ratio(partner, e,
+                                                e.ratio_compute_type)
+                aac = e.expense_type_id.analytic_id
+                amount = aac.balance * (-1) * var_ratio
+
             # Calcule columns
-            if first:  # First time
-                first = False
-                v['sales'] = last_margin = sales = amount * (-1)
+            if amount < 0:  # First time
+                if first:
+                    first = False
+                    v['sales'] = last_margin = sales = amount * (-1)
+                else:
+                    v['sales'] = amount * (-1)
+                    last_margin += v['sales']
+                    sales += v['sales']
             else:
                 v['cost'] = amount if amount else 0.0
 
@@ -147,6 +160,35 @@ class ExpenseLine(models.TransientModel):
         print res
         return values
 
+    def _get_var_ratio(self, partner, e, compute_type):
+        res = 0.0
+        if compute_type == 'fixed':
+            res = e.var_ratio
+        elif compute_type == 'invoicing':
+            query = self._get_invoice_query(e, False, 'out_invoice')
+            self._cr.execute(query)
+            qres = self._cr.fetchall()
+            q1 = qres[0][0] if qres[0][0] is not None else 0.0
+
+            query = self._get_invoice_query(e, False, 'out_refund')
+            self._cr.execute(query)
+            qres = self._cr.fetchall()
+            q2 = qres[0][0] if qres[0][0] is not None else 0.0
+            t1 = q1 - q2
+
+            query = self._get_invoice_query(e, partner, 'out_invoice')
+            self._cr.execute(query)
+            qres = self._cr.fetchall()
+            q1 = qres[0][0] if qres[0][0] is not None else 0.0
+
+            query = self._get_invoice_query(e, partner, 'out_refund')
+            self._cr.execute(query)
+            qres = self._cr.fetchall()
+            q2 = qres[0][0] if qres[0][0] is not None else 0.0
+            t2 = q1 - q2
+            res = t2 / t1
+        return res
+
     def _analytic_compute_amount(self, e, partner):
         res = 0.0
 
@@ -161,6 +203,56 @@ class ExpenseLine(models.TransientModel):
             return 0.0
         res = qres[0][0] if qres[0][0] is not None else 0.0
         return res * (-1)
+
+    def _invoicing_compute_amount(self, e, partner):
+        res = 0.0
+        query = self._get_invoice_query(e, partner, 'out_invoice')
+        print "QUERYYYY INVOICE"
+        print query
+        self._cr.execute(query)
+        qres = self._cr.fetchall()
+        print "QUERYYYY INVOICE RES"
+        print qres
+        q1 = qres[0][0] if qres[0][0] is not None else 0.0
+        query = self._get_invoice_query(e, partner, 'out_refund')
+        self._cr.execute(query)
+        qres = self._cr.fetchall()
+        q2 = qres[0][0] if qres[0][0] is not None else 0.0
+        res = q1 - q2
+        print "QUERYYYY INVOICE refund"
+        print query
+        print "QUERYYYY INVOICE RES"
+        print qres
+        return res * (-1)
+
+    def _get_invoice_query(self, e, partner, inv_type):
+        exp_type = e.expense_type_id
+        query = """
+            SELECT sum(price_subtotal)
+            FROM account_invoice_line ail
+            INNER JOIN account_invoice ai ON ai.id = ail.invoice_id
+            WHERE ai.date_invoice >= '%s' AND
+                  ai.date_invoice <= '%s' AND ai.company_id = %s AND
+                  ai.state in ('open', 'paid') AND
+                  type = '%s'
+        """ % (self._context['from_date'],
+               self._context['to_date'], self._context['company_id'], inv_type)
+        if partner:
+            query += """ AND ai.partner_id = %s """ % str(partner.id)
+
+        if exp_type.product_id:
+            query += """ AND ail.product_id = %s """ % exp_type.product_id.id
+        elif exp_type.categ_id:
+            domain = [('categ_id', '=', exp_type.categ_id.id)]
+            prod_objs = self.env['product.product'].search(domain)
+            product_ids = [p.id for p in prod_objs]
+            if product_ids:
+                if len(product_ids) == 1:
+                    query += """ AND ail.product_id = %s """ % product_ids[0]
+                else:
+                    query += """ AND ail.product_id in
+                    %s """ % str(tuple(product_ids))
+        return query
 
     def _get_query(self, e, partner):
         aac = self.env['account.analytic.default'].\

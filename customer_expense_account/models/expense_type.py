@@ -5,6 +5,7 @@ from openerp import models, fields
 
 COMPUTE_TYPES = [
     ('analytic', 'Based on partner analytic account'),
+    ('invoicing', 'Based on invoicing'),
     ('ratio', 'Based on parent element'),
     ('total_cost', 'Totalizator cost'),
     ('total_margin', 'Totalizator margin'),
@@ -13,10 +14,7 @@ COMPUTE_TYPES = [
 
 RATIO_COMPUTE_TYPES = [
     ('fixed', 'Fixed'),
-    ('invoices', 'Compute over invoices'),
-    ('kgs', 'Compute over Kg'),
-    ('units', 'Compute over Units'),
-    ('hours', 'Compute over hours'),
+    ('invoicing', 'Compute over invoices'),
 ]
 
 
