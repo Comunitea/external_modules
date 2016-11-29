@@ -7,7 +7,11 @@
             <field name="model">expense.type</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Expense Types">
+                <tree string="Expense Types"
+                      colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale'];
+                               green:compute_type == 'invoicing';
+                               orange:compute_type == 'ratio';
+                               blue:compute_type == 'distribution'">
                     <field name="name"/>
                     <field name="compute_type"/>
                 </tree>
@@ -38,12 +42,12 @@
                         <field name="compute_type"/>
                         <field name="company_id"/>
                     </group>
-                    <group string="Analytic Configuration" attrs="{'invisible':[('compute_type', 'not in', ('analytic', 'invoicing') )]}">  
+                    <group string="Options" attrs="{'invisible':[('compute_type', 'not in', ('analytic', 'invoicing') )]}">  
                         <field name="journal_id" attrs="{'invisible':[('compute_type', 'not in', ('analytic') )]}"/>
                         <field name="product_id"/>
                         <field name="categ_id"/>
                     </group>
-                     <group string="Analytic Configuration"
+                     <group string="Options"
                             attrs="{'invisible':[('compute_type', '!=', 'distribution')]}">  
                         <field name="analytic_id"/>
                         <field name="ratio_compute_type"/>

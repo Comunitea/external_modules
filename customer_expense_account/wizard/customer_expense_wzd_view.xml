@@ -43,7 +43,8 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Expense Line"
-                       colors="red:compute_type in ['total_cost', 'total_margin'];
+                       colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale'];
+                               green:compute_type == 'invoicing';
                                orange:compute_type == 'ratio';
                                blue:compute_type == 'distribution'">
                     <field name="name"/>

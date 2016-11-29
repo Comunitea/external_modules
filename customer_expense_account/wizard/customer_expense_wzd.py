@@ -104,9 +104,11 @@ class ExpenseLine(models.TransientModel):
             # BASED ON ANALYTIC ACCOUNT
             if e.compute_type == 'analytic':
                 amount = self._analytic_compute_amount(e, partner)
+
             # BASED ON INVOICING
             elif e.compute_type == 'invoicing':
                 amount = self._invoicing_compute_amount(e, partner)
+
             # BASED ON RATIO OVER PARENT ELEMENT
             elif e.compute_type == 'ratio':
                 parent_id = e.parent_id.id
@@ -114,25 +116,30 @@ class ExpenseLine(models.TransientModel):
                     amount = res[parent_id]['cost'] * e.ratio
                     if res[parent_id]['sales']:
                         amount = res[parent_id]['sales'] * e.ratio
-            # TOTALIZATOR
-            elif e.compute_type in ['total_cost', 'total_margin']:
-                if e.compute_type == 'total_cost':
-                    v['cost'] = self._totalizator_cost(values)
-                    v['cost_per'] = (v['cost'] / (sales or 1.0)) * 100
-                else:  # Print last margin info
-                    v['margin'] = last_margin
-                    v['margin_per'] = (v['margin'] / (sales or 1.0)) * 100
-                res[e.id] = v
-                values.append(v)
-                continue
-            # DISTRIBUTION
+
+            # BASED ON DISTRIBUTION
             elif e.compute_type == 'distribution':
                 var_ratio = self._get_var_ratio(partner, e,
                                                 e.ratio_compute_type)
                 aac = e.expense_type_id.analytic_id
                 amount = aac.balance * (-1) * var_ratio
 
-            # Calcule columns
+            # BASED ON TOTALIZATOR
+            elif e.compute_type in ['total_cost', 'total_margin',
+                                    'total_sale']:
+                if e.compute_type == 'total_cost':
+                    v['cost'] = self._totalizator(values, 'cost')
+                    v['cost_per'] = (v['cost'] / (sales or 1.0)) * 100
+                elif e.compute_type == 'total_margin':
+                    v['margin'] = last_margin
+                    v['margin_per'] = (v['margin'] / (sales or 1.0)) * 100
+                elif e.compute_type == 'total_sale':
+                    v['sales'] = self._totalizator(values, 'sales')
+                res[e.id] = v
+                values.append(v)
+                continue
+
+            # Compute columns
             if amount < 0:  # First time
                 if first:
                     first = False
@@ -146,11 +153,6 @@ class ExpenseLine(models.TransientModel):
 
             v['margin'] = last_margin - v['cost']
             v['cost_per'] = (v['cost'] / (sales or 1.0)) * 100
-            if e.compute_type == 'ratio':
-                v['cost_per'] = e.ratio
-            if (e.compute_type == 'distribution'and
-                    e.ratio_compute_type == 'fixed'):
-                v['cost_per'] = e.var_ratio
             v['margin_per'] = (v['margin'] / (sales or 1.0)) * 100
             last_margin = v['margin']
 
@@ -191,38 +193,23 @@ class ExpenseLine(models.TransientModel):
 
     def _analytic_compute_amount(self, e, partner):
         res = 0.0
-
-        query = self._get_query(e, partner)
-        print "QUERYYYY"
-        print query
+        query = self._get_analytic_query(e, partner)
         self._cr.execute(query)
         qres = self._cr.fetchall()
-        print "QUERYYYY res"
-        print qres
-        if not qres:
-            return 0.0
-        res = qres[0][0] if qres[0][0] is not None else 0.0
-        return res * (-1)
+        res = qres[0][0] * (-1) if qres[0][0] is not None else 0.0
+        return res
 
     def _invoicing_compute_amount(self, e, partner):
         res = 0.0
         query = self._get_invoice_query(e, partner, 'out_invoice')
-        print "QUERYYYY INVOICE"
-        print query
         self._cr.execute(query)
         qres = self._cr.fetchall()
-        print "QUERYYYY INVOICE RES"
-        print qres
         q1 = qres[0][0] if qres[0][0] is not None else 0.0
         query = self._get_invoice_query(e, partner, 'out_refund')
         self._cr.execute(query)
         qres = self._cr.fetchall()
         q2 = qres[0][0] if qres[0][0] is not None else 0.0
         res = q1 - q2
-        print "QUERYYYY INVOICE refund"
-        print query
-        print "QUERYYYY INVOICE RES"
-        print qres
         return res * (-1)
 
     def _get_invoice_query(self, e, partner, inv_type):
@@ -243,7 +230,7 @@ class ExpenseLine(models.TransientModel):
         if exp_type.product_id:
             query += """ AND ail.product_id = %s """ % exp_type.product_id.id
         elif exp_type.categ_id:
-            domain = [('categ_id', '=', exp_type.categ_id.id)]
+            domain = [('categ_id', 'child_of', exp_type.categ_id.id)]
             prod_objs = self.env['product.product'].search(domain)
             product_ids = [p.id for p in prod_objs]
             if product_ids:
@@ -254,7 +241,7 @@ class ExpenseLine(models.TransientModel):
                     %s """ % str(tuple(product_ids))
         return query
 
-    def _get_query(self, e, partner):
+    def _get_analytic_query(self, e, partner):
         aac = self.env['account.analytic.default'].\
             search([('partner_id', '=', partner.id)], limit=1)
         if not aac:
@@ -275,7 +262,7 @@ class ExpenseLine(models.TransientModel):
         if exp_type.product_id:
             query += """ AND product_id = %s """ % exp_type.product_id.id
         elif exp_type.categ_id:
-            domain = [('categ_id', '=', exp_type.categ_id.id)]
+            domain = [('categ_id', 'child_of', exp_type.categ_id.id)]
             prod_objs = self.env['product.product'].search(domain)
             product_ids = [p.id for p in prod_objs]
             if product_ids:
@@ -286,12 +273,13 @@ class ExpenseLine(models.TransientModel):
                     %s """ % str(tuple(product_ids))
         return query
 
-    def _totalizator_cost(self, values):
+    def _totalizator(self, values, key):
         total = 0.0
         for v in values:
-            if v['compute_type'] in ['total_cost', 'total_margin']:
+            if v['compute_type'] in ['total_cost', 'total_margin',
+                                     'total_sale']:
                 continue
-            total += v['cost']
+            total += v[key]
         return total
 
     @api.model
@@ -303,17 +291,17 @@ class ExpenseLine(models.TransientModel):
             vals = {
                 'name': v['name'],
                 'compute_type': v['compute_type'],
-                'sales': locale.format("%.2f", round(v['sales'], 2),
+                'sales': locale.format("%.4f", round(v['sales'], 4),
                                        grouping=True) if v['sales'] else '',
-                'cost': locale.format("%.2f", round(v['cost'], 2),
+                'cost': locale.format("%.4f", round(v['cost'], 4),
                                       grouping=True) if v['cost'] else '',
-                'margin': locale.format("%.2f", round(v['margin'], 2),
+                'margin': locale.format("%.4f", round(v['margin'], 4),
                                         grouping=True) if v['margin'] else '',
                 'cost_per':
-                    locale.format("%.2f", round(v['cost_per'], 2),
+                    locale.format("%.4f", round(v['cost_per'], 4),
                                   grouping=True) if v['cost_per'] else '',
                 'margin_per':
-                    locale.format("%.2f", round(v['margin_per'], 2),
+                    locale.format("%.4f", round(v['margin_per'], 4),
                                   grouping=True) if v['margin_per'] else '',
             }
             expense_line = self.create(vals)

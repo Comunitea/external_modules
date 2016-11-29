@@ -9,6 +9,7 @@ COMPUTE_TYPES = [
     ('ratio', 'Based on parent element'),
     ('total_cost', 'Totalizator cost'),
     ('total_margin', 'Totalizator margin'),
+    ('total_sale', 'Totalizator sales'),
     ('distribution', 'Distribution over analytic account'),
 ]
 
