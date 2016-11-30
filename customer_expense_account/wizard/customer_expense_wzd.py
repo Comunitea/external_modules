@@ -27,8 +27,9 @@ class CustomerExpenseWzd(models.TransientModel):
 
         structure = False
         if self._context.get('active_id', False):
+            model = self._context.get('active_model')
             structure = \
-                self.env['res.partner'].browse(self._context['active_id']).\
+                self.env[model].browse(self._context['active_id']).\
                 structure_id
         res.update(start_date=date_start, end_date=date_end,
                    structure_id=structure.id,
@@ -208,6 +209,8 @@ class ExpenseLine(models.TransientModel):
     def _analytic_compute_amount(self, e, partner):
         res = 0.0
         query = self._get_analytic_query(e, partner)
+        if not query:
+            return res
         self._cr.execute(query)
         qres = self._cr.fetchall()
         res = qres[0][0] * (-1) if qres[0][0] is not None else 0.0
@@ -259,7 +262,7 @@ class ExpenseLine(models.TransientModel):
         aac = self.env['account.analytic.default'].\
             search([('partner_id', '=', partner.id)], limit=1)
         if not aac:
-            return 0.0
+            return False
         aac = aac.analytic_id
         exp_type = e.expense_type_id
         journal_id = exp_type.journal_id.id if exp_type.journal_id else False
