@@ -37,12 +37,41 @@ class CustomerExpenseWzd(models.TransientModel):
 
     @api.multi
     def action_show_expense(self):
+        res = {}
         ctx = self._context.copy()
         ctx.update(from_date=self.start_date, to_date=self.end_date,
                    company_id=self.company_id.id)
         t_expense_line = self.env['expense.line'].with_context(ctx)
-        value = t_expense_line.show_expense_lines(self.structure_id)
-        return value
+        if not self._context.get('active_id', False):
+            return res
+        partner = self.env['res.partner'].browse(self._context['active_id'])
+        line_ids = t_expense_line.get_expense_lines(self.structure_id,
+                                                    partner)
+        res = {
+            'domain': str([('id', 'in', line_ids)]),
+            'view_type': 'tree',
+            'view_mode': 'tree',
+            'res_model': 'expense.line',
+            'type': 'ir.actions.act_window',
+            'nodestroy': True
+        }
+        return res
+
+    @api.multi
+    def action_print_expense(self):
+        rep_name = 'customer_expense_account.customer_expense_report'
+        rep_action = self.env["report"].get_action(self, rep_name)
+        ctx = self._context.copy()
+        ctx.update(from_date=self.start_date, to_date=self.end_date,
+                   company_id=self.company_id.id)
+        t_expense_line = self.env['expense.line'].with_context(ctx)
+        p_dic = {}
+        for partner in self.env['res.partner'].browse(self._context['active_ids']):
+            line_ids = t_expense_line.get_expense_lines(self.structure_id, partner)
+            p_dic[partner.id] = line_ids
+        custom_data = {'line_objs': p_dic}
+        rep_action['data'] = custom_data
+        return rep_action
 
 
 class ExpenseLine(models.TransientModel):
@@ -61,26 +90,11 @@ class ExpenseLine(models.TransientModel):
                                     default='analytic')
 
     @api.model
-    def show_expense_lines(self, structure_id):
+    def get_expense_lines(self, structure_id, partner):
         line_ids = []
-        res = {}
-        if not self._context.get('active_id', False):
-            return res
-        partner = self.env['res.partner'].browse(self._context['active_id'])
-        if not partner.structure_id:
-            raise except_orm(_('Error'), ('No expense structure founded.'))
-
         line_values_lst = self._compute_line_values(partner, structure_id)
         line_ids = self._create_expense_lines(line_values_lst)
-        res = {
-            'domain': str([('id', 'in', line_ids)]),
-            'view_type': 'tree',
-            'view_mode': 'tree',
-            'res_model': 'expense.line',
-            'type': 'ir.actions.act_window',
-            'nodestroy': True
-        }
-        return res
+        return line_ids
 
     @api.model
     def _compute_line_values(self, partner, structure):
@@ -291,17 +305,17 @@ class ExpenseLine(models.TransientModel):
             vals = {
                 'name': v['name'],
                 'compute_type': v['compute_type'],
-                'sales': locale.format("%.4f", round(v['sales'], 4),
+                'sales': locale.format("%.2f", round(v['sales'], 2),
                                        grouping=True) if v['sales'] else '',
-                'cost': locale.format("%.4f", round(v['cost'], 4),
+                'cost': locale.format("%.2f", round(v['cost'], 2),
                                       grouping=True) if v['cost'] else '',
-                'margin': locale.format("%.4f", round(v['margin'], 4),
+                'margin': locale.format("%.2f", round(v['margin'], 2),
                                         grouping=True) if v['margin'] else '',
                 'cost_per':
-                    locale.format("%.4f", round(v['cost_per'], 4),
+                    locale.format("%.2f", round(v['cost_per'], 2),
                                   grouping=True) if v['cost_per'] else '',
                 'margin_per':
-                    locale.format("%.4f", round(v['margin_per'], 4),
+                    locale.format("%.2f", round(v['margin_per'], 2),
                                   grouping=True) if v['margin_per'] else '',
             }
             expense_line = self.create(vals)

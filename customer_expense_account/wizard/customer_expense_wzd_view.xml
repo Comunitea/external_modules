@@ -20,22 +20,13 @@
                     </group>
                     <footer>
                         <button name="action_show_expense" string="Show Expenses" type="object" class="oe_inline oe_stat_button"
-                                context="{'customer_id': active_id}" icon="fa-eye"/>
+                                icon="fa-eye"/>
+                        <button name="action_print_expense" string="Print Expenses" type="object" class="oe_inline oe_stat_button"
+                                icon="fa-file-text-o"/>
                     </footer>
                 </form>
             </field>
         </record>
-
-        <record id="action_customer_expense_wzd" model="ir.actions.act_window">
-            <field name="name">Expense Wizard</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">customer.expense.wzd</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-            <field name="context">{}</field>
-        </record>
-
         
         <record id="view_expense_line_tree" model="ir.ui.view">
             <field name="name">expense.line.tree</field>
@@ -57,6 +48,16 @@
                 </tree>
             </field>
         </record>
+
+         <act_window id="customer_expense_wzd_action"
+             name="Print Customer Expense Account"
+             key2="client_action_multi"
+             src_model="res.partner"
+             res_model="customer.expense.wzd"
+             view_mode="form"
+             view_type="form"
+             target="new"
+            />
        
     </data>
 </openerp>

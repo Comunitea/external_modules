@@ -21,6 +21,8 @@
         "views/expense_structure_view.xml",
         "views/expense_type_view.xml",
         "views/expense_account_menu.xml",
+        "views/customer_expense_report.xml",
+        "views/report.xml",
         "security/ir.model.access.csv",
         "security/expense_structure_security.xml",
     ],
