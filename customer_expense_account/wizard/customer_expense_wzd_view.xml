@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="customer_expense_wzd_form_view" model="ir.ui.view">
+            <field name="name">customer.expense.wzd.form.view</field>
+            <field name="model">customer.expense.wzd</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group string="Select Period">
+                        <group>
+                            <field name="start_date"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_show_expense" string="Show Expenses" type="object" class="oe_inline oe_stat_button"
+                                context="{'customer_id': active_id}" icon="fa-eye"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_customer_expense_wzd" model="ir.actions.act_window">
+            <field name="name">Expense Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.expense.wzd</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{}</field>
+        </record>
+
+        
+        <record id="view_expense_line_tree" model="ir.ui.view">
+            <field name="name">expense.line.tree</field>
+            <field name="model">expense.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Expense Line"
+                       colors="red:compute_type in ['total_cost', 'total_margin'];
+                               orange:compute_type == 'ratio';
+                               blue:compute_type == 'distribution'">
+                    <field name="name"/>
+                    <field name="sales"/>
+                    <field name="cost"/>
+                    <field name="margin"/>
+                    <field name="cost_per"/>
+                    <field name="margin_per"/>
+                    <field name="compute_type" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+       
+    </data>
+</openerp>

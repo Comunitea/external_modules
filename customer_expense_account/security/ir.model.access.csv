@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_expense_type,expense.type,model_expense_type,account.group_account_invoice,1,1,1,1
+access_expense_structure,expense.structure,model_expense_structure,account.group_account_invoice,1,1,1,1
+access_expense_structure_elements,expense.structure.elements,model_expense_structure_elements,account.group_account_invoice,1,1,1,1

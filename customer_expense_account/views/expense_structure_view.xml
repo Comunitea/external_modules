@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+        <record id="view_expense_structure_tree" model="ir.ui.view">
+            <field name="name">expense.structure.tree</field>
+            <field name="model">expense.structure</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Expense Structures">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_expense_structure_form" model="ir.ui.view">
+            <field name="name">expense.structure.form</field>
+            <field name="model">expense.structure</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Expense Structure">
+                    <group string="Expense Structure">
+                        <group>
+                           <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <group string="Structure Elements" colspan="4">
+                            <field name="element_ids" nolabel="1" colspan="4"/>
+                    </group>
+            
+                </form>
+            </field>
+        </record>
+
+        <record id="view_expense_structure_filter" model="ir.ui.view">
+            <field name="name">expense.structure.list.select</field>
+            <field name="model">expense.structure</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Expense Structures">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_expense_structure" model="ir.actions.act_window">
+            <field name="name">Expense Structures</field>
+             <field name="type">ir.actions.act_window</field>
+            <field name="res_model">expense.structure</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_expense_structure_filter"/>
+             <field name="context">{}</field>
+        </record>
+
+        <record id="view_expense_structure_elements_tree" model="ir.ui.view">
+            <field name="name">expense.structure.elements.tree</field>
+            <field name="model">expense.structure.elements</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Expense Structure Elements"
+                      colors="red:compute_type in ['total_cost', 'total_margin'];
+                               orange:compute_type == 'ratio';
+                               blue:compute_type == 'distribution'">
+                    <field name="sequence"/>
+                    <field name="name"/>
+                    <field name="expense_type_id"/>
+                    <field name="compute_type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_expense_structure_elements_form" model="ir.ui.view">
+            <field name="name">expense.structure.elements.form</field>
+            <field name="model">expense.structure.elements</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Expense Structure Elements">
+                    <group>
+                        <field name="sequence"/>
+                        <field name="expense_type_id"/>
+                        <field name="name"/>
+                        <field name="compute_type"/>
+                        <field name="ratio_compute_type" invisible="1"/>
+                    </group>  
+                    <group string="Select parent and ratio" attrs="{'invisible':[('compute_type', '!=', 'ratio')]}">
+                        <field name="structure_id" invisible="1"/>  
+                        <field name="ratio"/>
+                        <!-- Así hay que guardar primero y seleccionar el partner. -->
+                        <field name="parent_id" domain="[('structure_id', '=', structure_id), ('id', '!=', id)]"/>
+                    </group>
+                    <group string="Compute Ratio Options" attrs="{'invisible':['|', ('compute_type', '!=', 'distribution'),  ('ratio_compute_type', '!=', 'fixed')]}">
+                        <field name="compute_type"/>
+                        <field name="var_ratio"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_expense_structure_elements_filter" model="ir.ui.view">
+            <field name="name">expense.structure.elements.list.select</field>
+            <field name="model">expense.structure.elements</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Expense Structure Elements">
+                    <field name="expense_type_id"/>
+                </search>
+            </field>
+        </record>
+
+         <record id="action_expense_structure_elements" model="ir.actions.act_window">
+            <field name="name">Expense Structure Elements</field>
+             <field name="type">ir.actions.act_window</field>
+            <field name="res_model">expense.structure.elements</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_expense_structure_elements_filter"/>
+             <field name="context">{}</field>
+        </record>
+    </data>
+</openerp>

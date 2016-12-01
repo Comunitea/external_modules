@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+        <record id="view_compute_type_tree" model="ir.ui.view">
+            <field name="name">expense.type.tree</field>
+            <field name="model">expense.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Expense Types">
+                    <field name="name"/>
+                    <field name="compute_type"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_compute_type_filter" model="ir.ui.view">
+            <field name="name">expense.type.list.select</field>
+            <field name="model">expense.type</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Expense Types">
+                    <field name="name"
+                        filter_domain="[('name','ilike',self)]"/>
+                    <field name="compute_type" />
+                </search>
+            </field>
+        </record>
+        
+        <record id="view_compute_type_form" model="ir.ui.view">
+            <field name="name">expense.type.form</field>
+            <field name="model">expense.type</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Expense Types">
+                    <group>
+                        <field name="name"/>
+                        <field name="compute_type"/>
+                        <field name="company_id"/>
+                    </group>
+                    <group string="Analytic Configuration" attrs="{'invisible':[('compute_type', '!=', 'analytic')]}">  
+                        <field name="journal_id"/>
+                    </group>
+                     <group string="Analytic Configuration"
+                            attrs="{'invisible':[('compute_type', '!=', 'distribution')]}">  
+                        <field name="analytic_id"/>
+                        <field name="ratio_compute_type"/>
+                    </group>                       
+                </form>
+            </field>
+        </record>
+
+        <record id="action_expense_types" model="ir.actions.act_window">
+            <field name="name">Expense Types</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">expense.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_compute_type_filter"/>
+            <field name="context">{}</field>
+        </record>
+        
+    </data>
+</openerp>
+     
