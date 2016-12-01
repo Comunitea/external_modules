@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2004-2015 Pexego Sistemas Informáticos All Rights Reserved
-#    $Jesús Ventosinos Mayor <jesus@pexego.es>$
+#    Copyright (C) 2016 Comunitea Servicios Tecnológicos All Rights Reserved
+#    $Omar Castiñeira Saaevdra <omar@comunitea.com>$
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published
@@ -18,11 +18,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import rappel_type
-from . import rappel
-from . import res_partner
-from . import rappel_customer_rel
-from . import rappel_info
-from . import wizard
-from . import sale
-from . import invoice
+
+from openerp import models, fields
+
+
+class AccountInvoiceLine(models.Model):
+
+    _inherit = "account.invoice.line"
+
+    no_rappel = fields.Boolean("W/O Rappel")

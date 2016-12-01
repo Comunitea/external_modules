@@ -33,7 +33,7 @@ class StockMove(models.Model):
     _inherit = "stock.move"
 
     accepted_qty = fields.Float(
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits=dp.get_precision('Product UoS'),
         string='Accepted qty (UoS)', copy=False)
     product_uom_acc_qty = fields.Float(
         digits=dp.get_precision('Product Unit of Measure'),
