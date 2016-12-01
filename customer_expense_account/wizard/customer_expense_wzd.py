@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-
-
-from openerp import models, api, fields, _
-from openerp.exceptions import except_orm
+from openerp import models, api, fields
 import time
 from ..models.expense_type import COMPUTE_TYPES
 
@@ -60,20 +57,25 @@ class CustomerExpenseWzd(models.TransientModel):
 
     @api.multi
     def action_print_expense(self):
-        rep_name = 'customer_expense_account.customer_expense_report'
-        rep_action = self.env["report"].get_action(self, rep_name)
         ctx = self._context.copy()
         ctx.update(from_date=self.start_date, to_date=self.end_date,
                    company_id=self.company_id.id)
         t_expense_line = self.env['expense.line'].with_context(ctx)
         p_dic = {}
-        for partner in self.env['res.partner'].browse(self._context['active_ids']):
-            line_ids = t_expense_line.get_expense_lines(self.structure_id, partner)
+        for partner in self.env['res.partner'].\
+                browse(self._context['active_ids']):
+            line_ids = t_expense_line.get_expense_lines(self.structure_id,
+                                                        partner)
             p_dic[partner.id] = line_ids
-        custom_data = {'line_objs': p_dic}
+        custom_data = {'lines_dic': p_dic,
+                       'start_date': self.start_date,
+                       'end_date': self.end_date,
+                       'structure_name': self.structure_id.name}
+
+        rep_name = 'customer_expense_account.customer_expense_report'
+        rep_action = self.env["report"].get_action(self, rep_name)
         rep_action['data'] = custom_data
         return rep_action
-
 
 class ExpenseLine(models.TransientModel):
     _name = 'expense.line'
@@ -174,7 +176,6 @@ class ExpenseLine(models.TransientModel):
             # Adds result to final order list an aux dictionary
             res[e.id] = v
             values.append(v)
-        print res
         return values
 
     def _get_var_ratio(self, partner, e, compute_type):
