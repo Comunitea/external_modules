@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-24 18:18+0000\n"
-"PO-Revision-Date: 2016-11-24 18:18+0000\n"
+"POT-Creation-Date: 2016-12-01 16:53+0000\n"
+"PO-Revision-Date: 2016-12-01 16:53+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,11 +17,13 @@ msgstr ""
 
 #. module: customer_expense_account
 #: field:expense.line,cost_per:0
+#: view:website:customer_expense_account.customer_expense_report
 msgid "% Costs"
 msgstr "% Costes"
 
 #. module: customer_expense_account
 #: field:expense.line,margin_per:0
+#: view:website:customer_expense_account.customer_expense_report
 msgid "% Margin"
 msgstr "% Margen"
 
@@ -31,14 +33,15 @@ msgid "Analytic Account"
 msgstr "Cuenta analítica"
 
 #. module: customer_expense_account
-#: view:expense.type:customer_expense_account.view_compute_type_form
-msgid "Analytic Configuration"
-msgstr "Configuración analítica"
-
-#. module: customer_expense_account
 #: field:expense.type,journal_id:0
 msgid "Analytic Journal"
-msgstr "Diario analótico"
+msgstr "Diario analítico"
+
+#. module: customer_expense_account
+#: selection:expense.line,compute_type:0
+#: selection:expense.type,compute_type:0
+msgid "Based on invoicing"
+msgstr "Basado en facturación"
 
 #. module: customer_expense_account
 #: selection:expense.line,compute_type:0
@@ -50,15 +53,22 @@ msgstr "Basado en elemento padre"
 #: selection:expense.line,compute_type:0
 #: selection:expense.type,compute_type:0
 msgid "Based on partner analytic account"
-msgstr "Basado en cuenta análitica del cliente"
+msgstr "Basado en cuenta anlítica del cliente"
 
 #. module: customer_expense_account
+#: model:ir.model,name:customer_expense_account.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: customer_expense_account
+#: field:customer.expense.wzd,company_id:0
 #: field:expense.structure,company_id:0
 #: field:expense.type,company_id:0
 msgid "Company"
 msgstr "Compañía"
 
 #. module: customer_expense_account
+#: view:res.company:customer_expense_account.view_company_form_expense_account
 #: view:res.partner:customer_expense_account.view_partner_form_expense_account
 msgid "Compute"
 msgstr "Calcular"
@@ -78,21 +88,6 @@ msgstr "Tipo de cálculo"
 
 #. module: customer_expense_account
 #: selection:expense.type,ratio_compute_type:0
-msgid "Compute over Kg"
-msgstr "Calcular sobre Kg"
-
-#. module: customer_expense_account
-#: selection:expense.type,ratio_compute_type:0
-msgid "Compute over Units"
-msgstr "Calcular sobre Units"
-
-#. module: customer_expense_account
-#: selection:expense.type,ratio_compute_type:0
-msgid "Compute over hours"
-msgstr "Calcular sobre horas"
-
-#. module: customer_expense_account
-#: selection:expense.type,ratio_compute_type:0
 msgid "Compute over invoices"
 msgstr "Calcular sobre facturas"
 
@@ -102,7 +97,13 @@ msgid "Concept"
 msgstr "Concepto"
 
 #. module: customer_expense_account
+#: view:website:customer_expense_account.customer_expense_report
+msgid "Concepts"
+msgstr "Concepto"
+
+#. module: customer_expense_account
 #: field:expense.line,cost:0
+#: view:website:customer_expense_account.customer_expense_report
 msgid "Costs"
 msgstr "Costes"
 
@@ -130,6 +131,7 @@ msgstr "Creado en"
 #: field:expense.structure,display_name:0
 #: field:expense.structure.elements,display_name:0
 #: field:expense.type,display_name:0
+#: field:report.customer_expense_account.customer_expense_report,display_name:0
 msgid "Display Name"
 msgstr "Display Name"
 
@@ -150,7 +152,7 @@ msgid "End Date"
 msgstr "Fecha fin"
 
 #. module: customer_expense_account
-#: code:addons/customer_expense_account/wizard/customer_expense_wzd.py:59
+#: code:addons/customer_expense_account/report/purchase_order_parser.py:20
 #, python-format
 msgid "Error"
 msgstr "Error"
@@ -161,9 +163,12 @@ msgid "Expense Line"
 msgstr "Líneas de gasto"
 
 #. module: customer_expense_account
+#: field:customer.expense.wzd,structure_id:0
 #: view:expense.structure:customer_expense_account.view_expense_structure_form
 #: model:ir.ui.menu,name:customer_expense_account.menu_expense_structure
 #: model:ir.ui.menu,name:customer_expense_account.menu_expense_structure_root
+#: view:res.company:customer_expense_account.view_company_form_expense_account
+#: field:res.company,structure_id:0
 #: view:res.partner:customer_expense_account.view_partner_form_expense_account
 #: field:res.partner,structure_id:0
 msgid "Expense Structure"
@@ -200,9 +205,9 @@ msgid "Expense Types"
 msgstr "Tipos de gasto"
 
 #. module: customer_expense_account
-#: model:ir.actions.act_window,name:customer_expense_account.action_customer_expense_wzd
-msgid "Expense Wizard"
-msgstr "Asistente gastos"
+#: view:website:customer_expense_account.customer_expense_report
+msgid "Expenses account"
+msgstr "Expenses account"
 
 #. module: customer_expense_account
 #: selection:expense.type,ratio_compute_type:0
@@ -210,11 +215,17 @@ msgid "Fixed"
 msgstr "Fijo"
 
 #. module: customer_expense_account
+#: view:website:customer_expense_account.customer_expense_report
+msgid "From:"
+msgstr "De:"
+
+#. module: customer_expense_account
 #: field:customer.expense.wzd,id:0
 #: field:expense.line,id:0
 #: field:expense.structure,id:0
 #: field:expense.structure.elements,id:0
 #: field:expense.type,id:0
+#: field:report.customer_expense_account.customer_expense_report,id:0
 msgid "ID"
 msgstr "ID"
 
@@ -224,6 +235,7 @@ msgstr "ID"
 #: field:expense.structure,__last_update:0
 #: field:expense.structure.elements,__last_update:0
 #: field:expense.type,__last_update:0
+#: field:report.customer_expense_account.customer_expense_report,__last_update:0
 msgid "Last Modified on"
 msgstr "Last Modified on"
 
@@ -247,6 +259,7 @@ msgstr "Last Updated on"
 
 #. module: customer_expense_account
 #: field:expense.line,margin:0
+#: view:website:customer_expense_account.customer_expense_report
 msgid "Margin"
 msgstr "Margen"
 
@@ -255,6 +268,11 @@ msgstr "Margen"
 #: field:expense.structure.elements,name:0
 msgid "Name"
 msgstr "Nombre"
+
+#. module: customer_expense_account
+#: view:expense.type:customer_expense_account.view_compute_type_form
+msgid "Options"
+msgstr "Opciones"
 
 #. module: customer_expense_account
 #: field:expense.structure.elements,parent_id:0
@@ -267,7 +285,29 @@ msgid "Partner"
 msgstr "Empresa"
 
 #. module: customer_expense_account
+#: model:ir.actions.act_window,name:customer_expense_account.customer_expense_wzd_action
+#: model:ir.actions.report.xml,name:customer_expense_account.report_print_customer_expense
+msgid "Print Customer Expense Account"
+msgstr "Print Customer Expense Account"
+
+#. module: customer_expense_account
+#: view:customer.expense.wzd:customer_expense_account.customer_expense_wzd_form_view
+msgid "Print Expenses"
+msgstr "Imprimir gastos"
+
+#. module: customer_expense_account
+#: field:expense.type,product_id:0
+msgid "Product"
+msgstr "Producto"
+
+#. module: customer_expense_account
+#: field:expense.type,categ_id:0
+msgid "Product Category"
+msgstr "Categoría de producto"
+
+#. module: customer_expense_account
 #: field:expense.structure.elements,ratio:0
+#: field:expense.structure.elements,var_ratio:0
 #: field:expense.type,ratio:0
 msgid "Ratio"
 msgstr "Ratio"
@@ -279,6 +319,7 @@ msgstr "Tipo cálculo ratio"
 
 #. module: customer_expense_account
 #: field:expense.line,sales:0
+#: view:website:customer_expense_account.customer_expense_report
 msgid "Sales"
 msgstr "Ventas"
 
@@ -318,6 +359,16 @@ msgid "Structure Elements"
 msgstr "Elementos de estructura"
 
 #. module: customer_expense_account
+#: view:website:customer_expense_account.customer_expense_report
+msgid "Structure:"
+msgstr "Structura:"
+
+#. module: customer_expense_account
+#: view:website:customer_expense_account.customer_expense_report
+msgid "To:"
+msgstr "Hasta:"
+
+#. module: customer_expense_account
 #: field:expense.line,totalizator:0
 msgid "Totalizator"
 msgstr "Totalizator"
@@ -333,4 +384,16 @@ msgstr "Totalizador costes"
 #: selection:expense.type,compute_type:0
 msgid "Totalizator margin"
 msgstr "Totalizador margen"
+
+#. module: customer_expense_account
+#: selection:expense.line,compute_type:0
+#: selection:expense.type,compute_type:0
+msgid "Totalizator sales"
+msgstr "Totalizator ventas"
+
+#. module: customer_expense_account
+#: code:addons/customer_expense_account/report/purchase_order_parser.py:21
+#, python-format
+msgid "You must print it from a wizard"
+msgstr "Debes imprimirlo desde un asistente"
 

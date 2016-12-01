@@ -4,6 +4,7 @@
 from openerp import models, api
 from openerp.exceptions import except_orm
 from openerp.tools.translate import _
+from datetime import datetime as DT
 
 
 class ExpenseReportParser(models.AbstractModel):
@@ -24,13 +25,21 @@ class ExpenseReportParser(models.AbstractModel):
             partner = self.env['res.partner'].browse(int(partner_id))
             line_ids = data['lines_dic'][partner_id]
             line_objs[partner] = self.env['expense.line'].browse(line_ids)
+
+        start = data.get('start_date', False)
+        end = data.get('start_date', False)
+        if start:
+            start = DT.strptime(start, "%Y-%m-%d").strftime("%d/%m/%Y")
+        if end:
+            end = DT.strptime(end, "%Y-%m-%d").strftime("%d/%m/%Y")
+
         docargs = {
             'doc_ids': [],
             'doc_model': 'res.partner',
             'docs': line_objs.keys(),
             'line_objs': line_objs,
             'structure_name': data.get('structure_name', False),
-            'start_date': data.get('start_date', False),
-            'end_date': data.get('end_date', False)
+            'start_date': start,
+            'end_date': end
         }
         return report_obj.render(report_name, docargs)
