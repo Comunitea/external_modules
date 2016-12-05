@@ -4,7 +4,7 @@
 from openerp import models, api
 from openerp.exceptions import except_orm
 from openerp.tools.translate import _
-from datetime import datetime as DT
+from datetime import datetime as dt
 
 
 class ExpenseReportParser(models.AbstractModel):
@@ -29,9 +29,9 @@ class ExpenseReportParser(models.AbstractModel):
         start = data.get('start_date', False)
         end = data.get('start_date', False)
         if start:
-            start = DT.strptime(start, "%Y-%m-%d").strftime("%d/%m/%Y")
+            start = dt.strptime(start, "%Y-%m-%d").strftime("%d/%m/%Y")
         if end:
-            end = DT.strptime(end, "%Y-%m-%d").strftime("%d/%m/%Y")
+            end = dt.strptime(end, "%Y-%m-%d").strftime("%d/%m/%Y")
 
         docargs = {
             'doc_ids': [],

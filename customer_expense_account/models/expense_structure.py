@@ -40,5 +40,8 @@ class ExpenseStructureElements(models.Model):
                          related='expense_type_id.ratio_compute_type')
 
     @api.onchange('expense_type_id')
-    def onchange_structure_id(self):
+    def onchange_expense_type_id(self):
+        """
+        Gets by default same name as expense type associed.
+        """
         self.name = self.expense_type_id.name
