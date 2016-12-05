@@ -24,6 +24,7 @@
         "views/account_invoice_view.xml",
         "views/report_invoice.xml",
         "views/report_sale_order.xml",
+        "views/res_partner_view.xml",
     ],
     "demo": [
     ],

@@ -80,3 +80,13 @@ class SaleOrder(models.Model):
         res['discount_type'] = self.discount_type
         res['discount_rate'] = self.discount_rate
         return res
+
+    @api.multi
+    def onchange_partner_id(self, part):
+        res = super(SaleOrder, self).onchange_partner_id(part)
+        partner = self.env['res.partner'].browse(part)
+        if partner.discount_type:
+            res['value']['discount_type'] = partner.discount_type
+        if partner.discount_rate:
+            res['value']['discount_rate'] = partner.discount_rate
+        return res
