@@ -71,12 +71,12 @@ class SaleOrder(models.Model):
             })
 
     @api.model
-    def _prepare_invoice(self):
+    def _prepare_invoice(self, order, lines):
         """
         This method send the discount_type, discount_rate and amount_discount
         to the account.invoice model
         """
-        res = super(SaleOrder, self)._prepare_invoice()
+        res = super(SaleOrder, self)._prepare_invoice(order, lines)
         res['discount_type'] = self.discount_type
         res['discount_rate'] = self.discount_rate
         return res
