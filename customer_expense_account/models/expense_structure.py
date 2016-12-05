@@ -29,9 +29,7 @@ class ExpenseStructureElements(models.Model):
     expense_type_id = fields.Many2one('expense.type', 'Expense Type',
                                       required=True)
     compute_type = fields.Selection(COMPUTE_TYPES, 'Compute Type',
-                                    required=True,
                                     readonly=True,
-                                    default='analytic',
                                     related='expense_type_id.compute_type')
     ratio = fields.Float('Ratio')
     var_ratio = fields.Float('Ratio')
@@ -42,5 +40,8 @@ class ExpenseStructureElements(models.Model):
                          related='expense_type_id.ratio_compute_type')
 
     @api.onchange('expense_type_id')
-    def onchange_structure_id(self):
+    def onchange_expense_type_id(self):
+        """
+        Gets by default same name as expense type associed.
+        """
         self.name = self.expense_type_id.name

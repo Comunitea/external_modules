@@ -62,7 +62,8 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Expense Structure Elements"
-                      colors="red:compute_type in ['total_cost', 'total_margin'];
+                      colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale'];
+                               green:compute_type == 'invoicing';
                                orange:compute_type == 'ratio';
                                blue:compute_type == 'distribution'">
                     <field name="sequence"/>
@@ -93,7 +94,7 @@
                         <field name="parent_id" domain="[('structure_id', '=', structure_id), ('id', '!=', id)]"/>
                     </group>
                     <group string="Compute Ratio Options" attrs="{'invisible':['|', ('compute_type', '!=', 'distribution'),  ('ratio_compute_type', '!=', 'fixed')]}">
-                        <field name="compute_type"/>
+                        <field name="ratio_compute_type"/>
                         <field name="var_ratio"/>
                     </group>
                 </form>

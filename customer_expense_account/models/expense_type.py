@@ -5,18 +5,17 @@ from openerp import models, fields
 
 COMPUTE_TYPES = [
     ('analytic', 'Based on partner analytic account'),
+    ('invoicing', 'Based on invoicing'),
     ('ratio', 'Based on parent element'),
     ('total_cost', 'Totalizator cost'),
     ('total_margin', 'Totalizator margin'),
+    ('total_sale', 'Totalizator sales'),
     ('distribution', 'Distribution over analytic account'),
 ]
 
 RATIO_COMPUTE_TYPES = [
     ('fixed', 'Fixed'),
-    ('invoices', 'Compute over invoices'),
-    ('kgs', 'Compute over Kg'),
-    ('units', 'Compute over Units'),
-    ('hours', 'Compute over hours'),
+    ('invoicing', 'Compute over invoices'),
 ]
 
 
@@ -39,3 +38,5 @@ class ExpenseType(models.Model):
                                  default=lambda self:
                                  self.env['res.company'].
                                  _company_default_get('expense.type'))
+    product_id = fields.Many2one('product.product', 'Product')
+    categ_id = fields.Many2one('product.category', 'Product Category')

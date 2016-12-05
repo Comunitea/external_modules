@@ -14,7 +14,7 @@
 
                   </group>
                   <group colspan="4">
-                      <button name="%(action_customer_expense_wzd)d" string="Compute" class="oe_inline oe_stat_button"
+                      <button name="%(customer_expense_wzd_action)d" string="Compute" class="oe_inline oe_stat_button"
                               context="{'customer_id': active_id}" icon="fa-money" type="action"/>
                   </group>
                  
