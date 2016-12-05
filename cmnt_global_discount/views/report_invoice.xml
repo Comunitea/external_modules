@@ -30,8 +30,6 @@
                         <tr>
                             <td>Global Discount</td>
                             <td class="text-right">
-                                <span t-field="o.discount_type"/>
-                                <span t-field="o.discount_rate"/>
                                 <span t-field="o.amount_discount"
                                     t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
