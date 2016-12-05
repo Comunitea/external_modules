@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
                 <xpath expr="//field[@name='invoice_line']" position="after">
                         <group name="discount" col="2" colspan="2">
+                            <field name="gd_id" onchange="compute_discount"/>
                             <field name="discount_type" onchange="compute_discount"/>
                             <field name="discount_rate" onchange="compute_discount"/>
                         </group>

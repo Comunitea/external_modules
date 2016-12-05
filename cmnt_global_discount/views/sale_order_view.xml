@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
                 <xpath expr="//group[@name='sale_total']" position="before">
                     <group name="discount" class="oe_left" colspan="2" col="2">
+                        <field name="gd_id" onchange="compute_discount"/>
                         <field name="discount_type" onchange="compute_discount"/>
                         <field name="discount_rate" onchange="compute_discount"/>
                     </group>

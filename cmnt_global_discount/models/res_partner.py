@@ -8,9 +8,14 @@ class ResPartner(models.Model):
 
     _inherit = 'res.partner'
 
+    gd_id = fields.Many2one('global.discount', 'Global Discount')
     discount_type = fields.Selection([('percent', _('Percentage')),
                                       ('amount', _('Amount'))],
                                      string='Discount Type',
                                      help='Select discount type',
-                                     default='percent')
-    discount_rate = fields.Float('Discount Rate')
+                                     default='percent',
+                                     related='gd_id.discount_type',
+                                     readonly=True)
+    discount_rate = fields.Float('Discount Rate',
+                                 related='gd_id.discount_rate',
+                                 readonly=True)

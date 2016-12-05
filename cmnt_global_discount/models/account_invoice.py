@@ -25,12 +25,18 @@ class AccountInvoice(models.Model):
                                 store=True,
                                 readonly=True,
                                 compute='_compute_amount')
+    gd_id = fields.Many2one('global.discount', 'Global Discount')
+
     discount_type = fields.Selection([('percent', 'Percentage'),
                                       ('amount', 'Amount')],
                                      string='Discount Type',
                                      help='Select discount type',
-                                     default='percent')
-    discount_rate = fields.Float('Discount Rate')
+                                     default='percent',
+                                     related='gd_id.discount_type',
+                                     readonly=True)
+    discount_rate = fields.Float('Discount Rate',
+                                 related='gd_id.discount_rate',
+                                 readonly=True)
     amount_subtotal = fields.Float(string='Subtotal',
                                    compute='_compute_amount',
                                    multi='sums',
@@ -44,14 +50,18 @@ class AccountInvoice(models.Model):
 
     @api.one
     @api.depends('invoice_line.price_subtotal', 'tax_line.amount',
-                 'discount_type')
+                 'gd_id')
     def _compute_amount(self):
         self.amount_subtotal = sum(line.price_subtotal for line in self.invoice_line)
         self.amount_tax = sum(line.amount for line in self.tax_line)
-        if self.discount_type == 'percent':
-            self.amount_discount = self.amount_subtotal * self.discount_rate / 100
-        else:
-            self.amount_discount = self.discount_rate
+        if self.gd_id:
+            if self.discount_type == 'percent':
+                self.amount_discount = self.amount_subtotal * self.discount_rate / 100
+                self.amount_tax = \
+                    self.amount_tax * (1 - self.discount_rate / 100)
+            else:
+                self.amount_discount = self.discount_rate
+                self.amount_tax = self.amount_tax - self.amount_discount
         self.amount_untaxed = self.amount_subtotal - self.amount_discount
         self.amount_total = self.amount_untaxed + self.amount_tax
 

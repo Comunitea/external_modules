@@ -8,6 +8,7 @@
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
                 <field name="website" position="after">
+                    <field name="gd_id"/>
                     <field name="discount_type"/>
                     <field name="discount_rate"/>
                 </field>
