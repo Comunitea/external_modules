@@ -16,6 +16,18 @@
                                     t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
                             </td>
                         </tr>
+                        <tr>
+                            <td>Discount Type</td>
+                            <td class="text-right">
+                                <span t-field="o.discount_type"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Discount Rate</td>
+                            <td class="text-right">
+                                <span t-field="o.discount_rate"/>
+                            </td>
+                        </tr>
                          <tr>
                             <td>Global Discount</td>
                             <td class="text-right">

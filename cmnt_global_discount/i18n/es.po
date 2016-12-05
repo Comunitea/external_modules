@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-05 12:49+0000\n"
-"PO-Revision-Date: 2016-12-05 12:49+0000\n"
+"POT-Creation-Date: 2016-12-05 13:34+0000\n"
+"PO-Revision-Date: 2016-12-05 13:34+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,10 @@ msgstr ""
 
 #. module: cmnt_global_discount
 #: selection:account.invoice,discount_type:0
+#: code:addons/cmnt_global_discount/models/res_partner.py:12
 #: selection:res.partner,discount_type:0
 #: selection:sale.order,discount_type:0
+#, python-format
 msgid "Amount"
 msgstr "Cantidad"
 
@@ -26,6 +28,8 @@ msgstr "Cantidad"
 #: field:account.invoice,discount_rate:0
 #: field:res.partner,discount_rate:0
 #: field:sale.order,discount_rate:0
+#: view:website:account.report_invoice_document
+#: view:website:sale.report_saleorder_document
 msgid "Discount Rate"
 msgstr "Tasa descuento"
 
@@ -33,6 +37,8 @@ msgstr "Tasa descuento"
 #: field:account.invoice,discount_type:0
 #: field:res.partner,discount_type:0
 #: field:sale.order,discount_type:0
+#: view:website:account.report_invoice_document
+#: view:website:sale.report_saleorder_document
 msgid "Discount Type"
 msgstr "Tipo descuento"
 
@@ -54,10 +60,12 @@ msgstr "Empresa"
 
 #. module: cmnt_global_discount
 #: selection:account.invoice,discount_type:0
+#: code:addons/cmnt_global_discount/models/res_partner.py:11
 #: selection:res.partner,discount_type:0
 #: selection:sale.order,discount_type:0
+#, python-format
 msgid "Percentage"
-msgstr "Percentage"
+msgstr "Porcentaje"
 
 #. module: cmnt_global_discount
 #: model:ir.model,name:cmnt_global_discount.model_stock_picking
