@@ -21,7 +21,6 @@ class CustomerExpenseWzd(models.TransientModel):
         year = str(time.strftime("%Y"))
         date_start = year + '-' + '01' + '-' + '01'
         date_end = year + '-' + '12' + '-' + '31'
-
         structure = False
         if self._context.get('active_id', False):
             model = self._context.get('active_model')
@@ -29,8 +28,8 @@ class CustomerExpenseWzd(models.TransientModel):
                 self.env[model].browse(self._context['active_id']).\
                 structure_id
         res.update(start_date=date_start, end_date=date_end,
-                   structure_id=structure.id,
-                   company_id=structure.company_id.id)
+                   structure_id=structure.id if structure else False,
+                   company_id=structure.company_id.id if structure else False)
         return res
 
     @api.multi
@@ -76,6 +75,7 @@ class CustomerExpenseWzd(models.TransientModel):
         rep_action = self.env["report"].get_action(self, rep_name)
         rep_action['data'] = custom_data
         return rep_action
+
 
 class ExpenseLine(models.TransientModel):
     _name = 'expense.line'

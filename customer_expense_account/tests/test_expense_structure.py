@@ -2,6 +2,7 @@
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp.tests.common import TransactionCase
+import time
 
 
 class TestExpenseStructure(TransactionCase):
@@ -45,4 +46,15 @@ class TestExpenseStructure(TransactionCase):
         self.assertEquals(element.name, 'Element Analytic Type')
         element.onchange_expense_type_id()
         self.assertEquals(element.name, element.expense_type_id.name)
-        assert True
+
+    def test_default_get(self):
+        year = str(time.strftime("%Y"))
+        date_start = year + '-' + '01' + '-' + '01'
+        date_end = year + '-' + '12' + '-' + '31'
+        ctx = {'active_id': self.partner1.id,
+               'active_model': 'res.partner'}
+        wzd = self.env['customer.expense.wzd'].\
+            with_context(ctx).create({})
+        self.assertEquals(wzd.start_date, date_start)
+        self.assertEquals(wzd.end_date, date_end)
+        self.assertEquals(wzd.company_id.id, self.structure1.company_id.id)
