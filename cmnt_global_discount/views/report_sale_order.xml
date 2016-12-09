@@ -16,8 +16,8 @@
                                     t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
                             </td>
                         </tr>
-                         <tr>
-                            <td>Global Discount</td>
+                         <tr t-if="o.gd_id">
+                            <td><span t-field="o.gd_id.name"/></td>
                             <td class="text-right">
                                 <span t-field="o.amount_discount"
                                     t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>

@@ -5,3 +5,4 @@ import sale
 import stock
 import account_invoice
 import res_partner
+import global_discount

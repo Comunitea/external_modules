@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+        <record id="view_global_discount_tree" model="ir.ui.view">
+            <field name="name">global.discount.tree</field>
+            <field name="model">global.discount</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Global Discounts">
+                    <field name="name"/>
+                    <field name="discount_type"/>
+                    <field name="discount_rate"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_global_discount_form" model="ir.ui.view">
+            <field name="name">global.discount.form</field>
+            <field name="model">global.discount</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Global Discounts">
+                    <group>
+                        <field name="name"/>
+                        <field name="discount_type"/>
+                        <field name="discount_rate"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_global_discount_filter" model="ir.ui.view">
+            <field name="name">global.discount.list.select</field>
+            <field name="model">global.discount</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Global Discounts">
+                    <field name="name" filter_domain="[('name','ilike',self)]"/>
+                    <field name="discount_type" />
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_global_discount" model="ir.actions.act_window">
+            <field name="name">Global Discounts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">global.discount</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_global_discount_filter"/>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_global_discounts" action="action_global_discount" name="Global Discounts" sequence="1" parent="base.menu_base_config"/>
+        
+    </data>
+</openerp>
+     

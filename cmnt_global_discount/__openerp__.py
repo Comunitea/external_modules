@@ -25,6 +25,9 @@
         "views/report_invoice.xml",
         "views/report_sale_order.xml",
         "views/res_partner_view.xml",
+        "views/global_discount_view.xml",
+        "security/ir.model.access.csv",
+
     ],
     "demo": [
     ],
