@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <!-- Create Struct types -->
+        <record id="expense_type1" model="expense.type">
+            <field name="name">Analytic type 1</field>
+            <field name="compute_type">analytic</field>
+            <field name="journal_id" ref="analytic_journal1"/>
+        </record>
+
+        <record id="expense_type2" model="expense.type">
+            <field name="name">Ratio type 1</field>
+            <field name="compute_type">ratio</field>
+        </record>
+
+        <!-- Create expense structure -->
+        <record id="expense_structure1" model="expense.structure">
+            <field name="name">Test Structure 1</field>
+        </record>
+
+        <!-- Create structure elements -->
+        <record id="expense_element1" model="expense.structure.elements">
+            <field name="name">Analytic type 1</field>
+            <field name="expense_type_id" ref="expense_type1"/>
+            <field name="structure_id" ref="expense_structure1"/>
+        </record>
+
+        <record id="expense_element2" model="expense.structure.elements">
+            <field name="name">Ratio element</field>
+            <field name="expense_type_id" ref="expense_type1"/>
+            <field name="structure_id" ref="expense_structure1"/>
+        </record>
+
+        <!-- Create partner 1 -->
+        <record id="partner1" model="res.partner">
+            <field name="name">Test Partner 1</field>
+            <field name="structure_id" ref="expense_structure1"/>
+        </record>
+
+        <!-- Create analytic account -->
+        <record id="analytic_account1" model="account.analytic.account">
+            <field name="name">Demo Analytic Account</field>
+            <field name="partner_id" ref="partner1"/>
+            <field name="type">normal</field>
+        </record>
+
+        <!-- Create Analytic Journal sales -->
+        <record id="analytic_journal1" model="account.analytic.journal">
+            <field name="name">Demo Journal Sales</field>
+            <field name="type">sale</field>
+        </record>
+
+        <!-- Create Analytic account type -->
+        <record id="account_type1" model="account.account.type">
+            <field name="name">Test Account type</field>
+            <field name="code">TEST</field>
+            <field name="close_method">unreconciled</field>
+        </record>
+
+        <!-- Create Account -->
+        <record id="account1" model="account.account">
+            <field name="name">Test Account</field>
+            <field name="type">payable</field>
+            <field name="code">Test</field>
+            <field name="user_type" ref="account_type1"/>
+        </record>
+
+        <!-- Create Account Analytic line -->
+        <record id="analytic_line1" model="account.analytic.line">
+            <field name="name">Test Account Analytic line</field>
+            <field name="type">payable</field>
+            <field name="code">Test</field>
+            <field name="amount">500.0</field>
+            <field name="account_id" ref="analytic_account1"/>
+            <field name="journal_id" ref="analytic_journal1"/>
+            <field name="general_account_id" ref="account1"/>
+        </record>
+
+
+
+    </data>
+</openerp>

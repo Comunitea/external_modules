@@ -10,6 +10,8 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
+        'account',
+        'account_analytic_default'
     ],
     'contributors': [
         "Comunitea ",
@@ -26,6 +28,7 @@
         "views/report.xml",
         "security/ir.model.access.csv",
         "security/expense_structure_security.xml",
+        "demo/data_demo.xml",
     ],
     "demo": [
     ],
