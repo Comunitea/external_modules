@@ -7,8 +7,8 @@ Custom partner sequence
 ==================
 
 Defines a model called partner types that lets you to define a sequence. 
-When you save the partner whit a new partner type, if reference field is empty 
-we set the reference number rhit the asociated sequence. 
+When you save the partner with a new partner type, if reference field is empty 
+we set the reference number to the asociated sequence. 
 
 
 Credits

@@ -24,12 +24,18 @@ class ResPartner(models.Model):
     @api.multi
     def write(self, vals):
         for partner in self:
-            if vals.get('partner_type_id', False):
+            if vals.get('partner_type_id', False) and \
+                    not vals.get('ref', False) and not partner.ref:
                 p_type = self.env['partner.type'].\
                     browse(vals['partner_type_id'])
-                if not vals.get('ref', False) and not partner.ref:
+                # If parent contact we take the parent reference:
+                new_ref = False
+                if partner.parent_id:
+                    new_ref = partner.parent_id.ref
+                else:
                     seq_id = p_type.sequence_id.id
-                    vals.update(ref=self.env['ir.sequence'].next_by_id(seq_id))
+                    new_ref = new_ref.next_by_id(seq_id)
+                vals.update(ref=new_ref)
         res = super(ResPartner, self).write(vals)
         return res
 
