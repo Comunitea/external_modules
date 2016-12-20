@@ -59,7 +59,6 @@ class SaleOrder(models.Model):
 
             if order.gd_id:
                 amount_discount = amount_subtotal * order.discount_rate / 100
-                amount_discount = order.discount_rate
             amount_untaxed = amount_subtotal - amount_discount
             amount_total = amount_untaxed + amount_tax
             order.update({
