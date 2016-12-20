@@ -9,7 +9,6 @@
             <field name="arch" type="xml">
                 <tree string="Global Discounts">
                     <field name="name"/>
-                    <field name="discount_type"/>
                     <field name="discount_rate"/>
                 </tree>
             </field>
@@ -23,7 +22,6 @@
                 <form string="Global Discounts">
                     <group>
                         <field name="name"/>
-                        <field name="discount_type"/>
                         <field name="discount_rate"/>
                     </group>
                 </form>
@@ -37,7 +35,6 @@
             <field name="arch" type="xml">
                 <search string="Global Discounts">
                     <field name="name" filter_domain="[('name','ilike',self)]"/>
-                    <field name="discount_type" />
                 </search>
             </field>
         </record>

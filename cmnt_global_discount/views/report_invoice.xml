@@ -3,11 +3,38 @@
   <data>
 
     <template id="report_invoice_document_custom" inherit_id="account.report_invoice_document">
+        <xpath expr="//tbody[@class='invoice_tbody']" position="replace">
+            <!-- Not show global_discount_lines -->
+             <tbody class="invoice_tbody">
+                    <tr t-foreach="o.invoice_line" t-as="l">
+                        <t t-if='not l.global_discount'>
+                            <td><span t-field="l.name"/></td>
+                            <td>
+                                <span t-field="l.quantity"/>
+                                <span t-field="l.uos_id"  groups="product.group_uom"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="l.price_unit"/>
+                            </td>
+                            <td class="text-right" groups="sale.group_discount_per_so_line"><span t-field="l.discount"/></td>
+                            <td class="text-right">
+                                <span t-esc="', '.join(map(lambda x: x.name, l.invoice_line_tax_id))"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="l.price_subtotal" 
+                                    t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                            </td>
+                        </t>
+                    </tr>
+                </tbody>
+        </xpath>
+
+
         <xpath expr="//div[@class='row'][2]" position="replace">
              <div class="row">
                 <div class="col-xs-4 pull-right">
                     <table class="table table-condensed">
-                        <!-- Añado campos nuevos -->
+                        <!-- Add New files -->
                         <tr class="border-black">
                             <td><strong>Subtotal</strong></td>
                             <td class="text-right">
@@ -15,14 +42,14 @@
                                     t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
                         </tr>
-                        <tr t_if='o.gd_id'>
+                        <tr t-if='o.gd_id'>
                             <td><span t-field="o.gd_id.name"/></td>
                             <td class="text-right">
                                 <span t-field="o.amount_discount"
                                     t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
                         </tr>
-                        <!-- Igual que el original -->
+                        <!-- Same like original -->
                         <tr class="border-black">
                             <td><strong>Total Without Taxes</strong></td>
                             <td class="text-right">

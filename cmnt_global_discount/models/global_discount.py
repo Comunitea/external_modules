@@ -9,9 +9,4 @@ class GlobalDiscount(models.Model):
     _name = 'global.discount'
 
     name = fields.Char('Discount Name')
-    discount_type = fields.Selection([('percent', _('Percentage')),
-                                      ('amount', _('Amount'))],
-                                     string='Discount Type',
-                                     help='Select discount type',
-                                     default='percent')
     discount_rate = fields.Float('Discount Rate')

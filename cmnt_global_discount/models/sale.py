@@ -9,13 +9,6 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     gd_id = fields.Many2one('global.discount', 'Global Discount')
-    discount_type = fields.Selection([('percent', 'Percentage'),
-                                      ('amount', 'Amount')],
-                                     string='Discount Type',
-                                     help='Select discount type',
-                                     default='percent',
-                                     related='gd_id.discount_type',
-                                     readonly=True)
     discount_rate = fields.Float('Discount Rate',
                                  related='gd_id.discount_rate',
                                  readonly=True)
@@ -61,19 +54,13 @@ class SaleOrder(models.Model):
                 amount_subtotal += line.price_subtotal
                 amount_tax += order._amount_line_tax(line)
                 if order.gd_id:
-                    if order.discount_type == 'percent':
-                        amount_tax = \
-                            amount_tax * (1 - order.discount_rate / 100)
-                    else:
-                        amount_tax = amount_tax - order.discount_rate
+                    amount_tax = amount_tax * (1 - order.discount_rate / 100)
+                    amount_tax = amount_tax - order.discount_rate
             amount_untaxed = amount_subtotal - amount_discount
 
             if order.gd_id:
-                if order.discount_type == 'percent':
-                    amount_discount = \
-                        amount_subtotal * order.discount_rate / 100
-                else:
-                    amount_discount = order.discount_rate
+                amount_discount = amount_subtotal * order.discount_rate / 100
+                amount_discount = order.discount_rate
             amount_untaxed = amount_subtotal - amount_discount
             amount_total = amount_untaxed + amount_tax
             order.update({
@@ -87,7 +74,7 @@ class SaleOrder(models.Model):
     @api.model
     def _prepare_invoice(self, order, lines):
         """
-        This method send the discount_type, discount_rate and amount_discount
+        This method send discount_rate and amount_discount
         to the account.invoice model
         """
         res = super(SaleOrder, self)._prepare_invoice(order, lines)

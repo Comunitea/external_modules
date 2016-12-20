@@ -16,14 +16,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: cmnt_global_discount
-#: code:addons/cmnt_global_discount/models/global_discount.py:13
-#: code:addons/cmnt_global_discount/models/res_partner.py:13
-#: selection:global.discount,discount_type:0
-#, python-format
-msgid "Amount"
-msgstr "Cantidad"
-
-#. module: cmnt_global_discount
 #: field:global.discount,create_uid:0
 msgid "Created by"
 msgstr "Created by"
@@ -47,14 +39,6 @@ msgid "Discount Rate"
 msgstr "Tasa descuento"
 
 #. module: cmnt_global_discount
-#: field:account.invoice,discount_type:0
-#: field:global.discount,discount_type:0
-#: field:res.partner,discount_type:0
-#: field:sale.order,discount_type:0
-msgid "Discount Type"
-msgstr "Tipo descuento"
-
-#. module: cmnt_global_discount
 #: field:global.discount,display_name:0
 msgid "Display Name"
 msgstr "Display Name"
@@ -76,6 +60,18 @@ msgid "Global Discounts"
 msgstr "Descuentos globales"
 
 #. module: cmnt_global_discount
+#: code:addons/cmnt_global_discount/models/account_invoice.py:89
+#, python-format
+msgid "Global discount line for tax %s"
+msgstr "Linea descuento global para impuesto %s"
+
+#. module: cmnt_global_discount
+#: code:addons/cmnt_global_discount/models/account_invoice.py:90
+#, python-format
+msgid "Global discount line no tax"
+msgstr "Linea descuento global sin impuesto"
+
+#. module: cmnt_global_discount
 #: field:global.discount,id:0
 msgid "ID"
 msgstr "ID"
@@ -84,6 +80,11 @@ msgstr "ID"
 #: model:ir.model,name:cmnt_global_discount.model_account_invoice
 msgid "Invoice"
 msgstr "Factura"
+
+#. module: cmnt_global_discount
+#: model:ir.model,name:cmnt_global_discount.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Línea de factura"
 
 #. module: cmnt_global_discount
 #: field:global.discount,__last_update:0
@@ -101,17 +102,14 @@ msgid "Last Updated on"
 msgstr "Last Updated on"
 
 #. module: cmnt_global_discount
+#: field:account.invoice.line,global_discount:0
+msgid "Line created by global discount"
+msgstr "Linea creada por descuento global"
+
+#. module: cmnt_global_discount
 #: model:ir.model,name:cmnt_global_discount.model_res_partner
 msgid "Partner"
 msgstr "Empresa"
-
-#. module: cmnt_global_discount
-#: code:addons/cmnt_global_discount/models/global_discount.py:12
-#: code:addons/cmnt_global_discount/models/res_partner.py:12
-#: selection:global.discount,discount_type:0
-#, python-format
-msgid "Percentage"
-msgstr "Porcentaje"
 
 #. module: cmnt_global_discount
 #: model:ir.model,name:cmnt_global_discount.model_stock_picking
@@ -124,20 +122,16 @@ msgid "Sales Order"
 msgstr "Pedido de venta"
 
 #. module: cmnt_global_discount
-#: help:account.invoice,discount_type:0
-#: help:global.discount,discount_type:0
-#: help:res.partner,discount_type:0
-#: help:sale.order,discount_type:0
-msgid "Select discount type"
-msgstr "Selecciona tipo descuento"
-
-#. module: cmnt_global_discount
 #: field:account.invoice,amount_subtotal:0
 #: field:sale.order,amount_subtotal:0
-#: view:website:account.report_invoice_document
 #: view:website:sale.report_saleorder_document
 msgid "Subtotal"
 msgstr "Subtotal"
+
+#. module: cmnt_global_discount
+#: view:website:account.report_invoice_document
+msgid "Subtotal"
+msgstr "Subtotal
 
 #. module: cmnt_global_discount
 #: view:website:account.report_invoice_document
@@ -162,5 +156,3 @@ msgstr "Descuento global"
 #: view:website:sale.report_saleorder_document
 msgid "Total Without Taxes"
 msgstr "Base imponible"
-
-

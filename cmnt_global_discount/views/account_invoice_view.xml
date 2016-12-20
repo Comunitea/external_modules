@@ -9,7 +9,6 @@
                 <xpath expr="//field[@name='invoice_line']" position="after">
                         <group name="discount" col="2" colspan="2">
                             <field name="gd_id" onchange="compute_discount"/>
-                            <field name="discount_type" onchange="compute_discount"/>
                             <field name="discount_rate" onchange="compute_discount"/>
                         </group>
                 </xpath>
@@ -17,6 +16,13 @@
                             <field name="amount_subtotal" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                             <field name="amount_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                 </xpath>
+
+<!--                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="after">
+                        <field name="global_discount"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']" position="attributes">
+                        <attribute name="domain">[('global_discount', '=', False)] </attribute>
+                </xpath> -->
         </field>
     </record>
 
