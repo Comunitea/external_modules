@@ -91,7 +91,8 @@ class AccountInvoice(models.Model):
                 'quantity': 1,
                 'price_unit': -(price_discounted),
                 'invoice_line_tax_id': [(6, 0, [tax.id])] if tax else False,
-                'global_discount': True
+                'global_discount': True,
+                'account_id': invoice.invoice_line[0].account_id.id
             }
             self.env['account.invoice.line'].create(vals)
         return
