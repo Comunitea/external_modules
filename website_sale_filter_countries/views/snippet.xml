@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2016 Comunitea
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+    <data>
+
+        <template id="country_dropdown_filter" inherit_id="website_snippet_country_dropdown.country_dropdown">
+            <xpath expr="//t[@t-set='countries']" position="replace">
+                <t t-set="countries" t-value="request.env['res.country'].search([('website_available', '=', True)])"/>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>
