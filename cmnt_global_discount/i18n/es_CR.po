@@ -130,8 +130,8 @@ msgstr "Subtotal"
 
 #. module: cmnt_global_discount
 #: view:website:account.report_invoice_document
-msgid "Subtotal no discount"
-msgstr "Subtotal sin descuento"
+msgid "Subtotal"
+msgstr "Subtotal
 
 #. module: cmnt_global_discount
 #: view:website:account.report_invoice_document
