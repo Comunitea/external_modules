@@ -16,5 +16,16 @@
             </field>
         </record>
 
+        <record id="view_country_state_form_add_website_available" model="ir.ui.view">
+            <field name="name">res.country.state.form</field>
+            <field name="model">res.country.state</field>
+            <field name="inherit_id" ref="base.view_country_state_form"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <field name="website_available"/>
+                </field>
+            </field>
+        </record>
+
     </data>
 </openerp>

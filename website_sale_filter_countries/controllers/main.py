@@ -18,4 +18,11 @@ class website_sale_filter_country(website_sale):
                                          context=context)
         countries = orm_country.browse(cr, SUPERUSER_ID, country_ids, context)
         res['countries'] = countries
+
+        orm_state = registry.get('res.country.state')
+        state_ids = orm_state.search(cr, SUPERUSER_ID,
+                                         [('website_available', '=', True)],
+                                         context=context)
+        states = orm_state.browse(cr, SUPERUSER_ID, state_ids, context)
+        res['states'] = states
         return res

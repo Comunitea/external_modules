@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* website_sale_filter_countries
+#   * website_sale_filter_countries
 #
 msgid ""
 msgstr ""
@@ -22,6 +22,6 @@ msgstr "País"
 
 #. module: website_sale_filter_countries
 #: field:res.country,website_available:0
+#: field:res.country.state,website_available:0
 msgid "Website available"
-msgstr "Website available"
-
+msgstr "Disponible en website"

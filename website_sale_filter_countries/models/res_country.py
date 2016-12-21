@@ -10,3 +10,10 @@ class ResCountry(models.Model):
     _inherit = 'res.country'
 
     website_available = fields.Boolean()
+
+
+class ResCountryState(models.Model):
+
+    _inherit = 'res.country.state'
+
+    website_available = fields.Boolean(default=True)
