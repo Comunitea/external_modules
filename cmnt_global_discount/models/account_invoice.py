@@ -44,7 +44,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def write(self, vals):
         res = super(AccountInvoice, self).write(vals)
-        if 'invoice_line' in vals:
+        if 'invoice_line' in vals or 'gd_id' in vals:
             for invoice in self:
                 if invoice.state == 'draft':
                     # Delete & recalculate discount lines
@@ -57,7 +57,7 @@ class AccountInvoice(models.Model):
     @api.model
     def create(self, vals):
         invoice = super(AccountInvoice, self).create(vals)
-        if 'invoice_line' in vals:
+        if 'invoice_line' in vals or 'gd_id' in vals:
             self._create_global_discount_lines(invoice)
         return invoice
 
