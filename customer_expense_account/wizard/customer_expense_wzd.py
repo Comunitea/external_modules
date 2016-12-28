@@ -101,6 +101,10 @@ class ExpenseLine(models.TransientModel):
 
     @api.model
     def _compute_line_values(self, partner, structure):
+        """
+        Return a dict to create a expense line that represents a row of the
+        computed table.
+        """
         res = {}
         values = []
         sales = 0.0
@@ -179,10 +183,16 @@ class ExpenseLine(models.TransientModel):
         return values
 
     def _get_var_ratio(self, partner, e, compute_type):
+        """
+        Returns the fixed ratio if selected in the element type, or compute
+        the total facturation and get the ration between partner facturation
+        and total facturation
+        """
         res = 0.0
         if compute_type == 'fixed':
             res = e.var_ratio
         elif compute_type == 'invoicing':
+
             query = self._get_invoice_query(e, False, 'out_invoice')
             self._cr.execute(query)
             qres = self._cr.fetchall()
@@ -192,6 +202,7 @@ class ExpenseLine(models.TransientModel):
             self._cr.execute(query)
             qres = self._cr.fetchall()
             q2 = qres[0][0] if qres[0][0] is not None else 0.0
+            # Invoiced - Returned
             t1 = q1 - q2
 
             query = self._get_invoice_query(e, partner, 'out_invoice')
@@ -203,11 +214,17 @@ class ExpenseLine(models.TransientModel):
             self._cr.execute(query)
             qres = self._cr.fetchall()
             q2 = qres[0][0] if qres[0][0] is not None else 0.0
+            # Invoiced - Returned
             t2 = q1 - q2
+            # The computed ratio
             res = t2 / t1
         return res
 
     def _analytic_compute_amount(self, e, partner):
+        """
+        Get the amount based on analytic account of a analytic journal if
+        a jornal is selected in the element type
+        """
         res = 0.0
         query = self._get_analytic_query(e, partner)
         if not query:
@@ -218,6 +235,9 @@ class ExpenseLine(models.TransientModel):
         return res
 
     def _invoicing_compute_amount(self, e, partner):
+        """
+        Gets the invoiced amount based on the open and draft invoices
+        """
         res = 0.0
         query = self._get_invoice_query(e, partner, 'out_invoice')
         self._cr.execute(query)
@@ -231,6 +251,10 @@ class ExpenseLine(models.TransientModel):
         return res * (-1)
 
     def _get_invoice_query(self, e, partner, inv_type):
+        """
+        Return query to get the invoiced between periods for a parter and
+        optionale by product and categories.
+        """
         exp_type = e.expense_type_id
         query = """
             SELECT sum(price_subtotal)

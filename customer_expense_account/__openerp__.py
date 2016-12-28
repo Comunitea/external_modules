@@ -28,11 +28,9 @@
         "views/report.xml",
         "security/ir.model.access.csv",
         "security/expense_structure_security.xml",
-        "demo/data_demo.xml",
     ],
     "demo": [
-    ],
-    'test': [
+        "demo/data_demo.xml",
     ],
     "installable": True
 }
