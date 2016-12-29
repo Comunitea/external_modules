@@ -14,13 +14,21 @@ You can aslo define generic type of expenses to use it in the elements of the
 structure.
 
 Expense types, field compute type to search the expense information:
+
 * Based on partner analytic account: Search int the analytic default attached.
+
 * Based on invoicing: Search in partner open and paid invoices.
+
 * Based on parent element: Getns a ratio of a referenced parent element.
+
 * Totalizator sales: Sum colum sales to the point of totalizator is located
-* Totalizato costs: Sum column costs an get % cost from the upper columns
-* Totalizato Margin: Repits the last and % margin, in order to remark them
+
+* Totalizator costs: Sum column costs an get % cost from the upper columns
+
+* Totalizator Margin: Repits the last and % margin, in order to remark them
+
 * Distribution: Select a analytic account and get a fixed of computed ratio.
+
 
 How to use
 ----------
