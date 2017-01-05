@@ -34,7 +34,7 @@ class ResPartner(models.Model):
                     new_ref = partner.parent_id.ref
                 else:
                     seq_id = p_type.sequence_id.id
-                    new_ref = new_ref.next_by_id(seq_id)
+                    new_ref = self.env['ir.sequence'].next_by_id(seq_id)
                 vals.update(ref=new_ref)
         res = super(ResPartner, self).write(vals)
         return res
