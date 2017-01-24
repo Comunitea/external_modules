@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2017 Comunitea
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+    <data>
+
+        <record id="view_website_add_hubspot" model="ir.ui.view">
+            <field name="name">website.form</field>
+            <field name="model">website</field>
+            <field name="inherit_id" ref="website.view_website_form"/>
+            <field name="arch" type="xml">
+                <field name="google_analytics_key" position="after">
+                    <field name="hubspot_url" placeholder="//js.hs-scripts.com/XXXXXXX.js"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_website_settings_add_hubspot" model="ir.ui.view">
+            <field name="name">Website settings</field>
+            <field name="model">website.config.settings</field>
+            <field name="inherit_id" ref="website.view_website_config_settings"/>
+            <field name="arch" type="xml">
+                <div name="google_analytics_key" position="after">
+                    <label for="hubspot_url"/>
+                    <div name="hubspot_url">
+                        <div class="oe_inline">
+                            <field name="hubspot_url" placeholder="//js.hs-scripts.com/XXXXXXX.js"/>
+                        </div>
+                    </div>
+                </div>
+            </field>
+        </record>
+
+        <template id="layout_hubspot" inherit_id="website.layout">
+            <xpath expr="//head" position="inside">
+                <t t-if="website and website.hubspot_url">
+                <!-- Start of HubSpot Embed Code -->
+                    <script type="text/javascript" id="hs-script-loader" async="async" defer="defer" t-att-src="website.hubspot_url"></script>
+                <!-- End of HubSpot Embed Code -->
+                </t>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>
