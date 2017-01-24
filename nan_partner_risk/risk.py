@@ -197,13 +197,27 @@ class partner(osv.osv):
     def _pending_orders_amount(self, cr, uid, ids, name, arg, context=None):
         res = {}
         for id in ids:
-            sids = self.pool.get('sale.order').search( cr, uid, [
-                ('partner_id','child_of',[id]),
-                ('state','not in',['draft','cancel','wait_risk','sent'])
-            ], context=context )
             total = 0.0
-            for order in self.pool.get('sale.order').browse(cr, uid, sids, context):
-                total += order.amount_total - order.amount_invoiced
+            mids = self.pool.get('stock.move').search(cr, uid, [
+                ('partner_id', 'child_of', [id]),
+                ('state', 'not in', ['draft', 'cancel']),
+                ('procurement_id.sale_line_id', '!=', False),
+                ('invoice_state', '=', '2binvoiced')], context=context)
+
+            for move in self.pool.get('stock.move').browse(cr, uid, mids):
+                line = move.procurement_id.sale_line_id
+                sign = move.picking_type_code == "outgoing" and 1 or -1
+                total += sign * (move.product_uom_qty * (line.price_unit * (1 - (line.discount or 0.0) / 100.0)))
+
+            sids = self.pool.get('sale.order.line').search(cr, uid, [
+                ('order_id.partner_id', 'child_of', [id]),
+                ('order_id.state', 'not in', ['draft','cancel','wait_risk','sent']),
+                ('invoiced', '=', False),
+                '|', ('product_id', '=', False),
+                ('product_id.type', '=', 'service')], context=context)
+            for sline in self.pool.get('sale.order.line').browse(cr, uid, sids):
+                total += sline.price_subtotal
+
             res[id] = total
         return res
 
