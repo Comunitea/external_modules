@@ -249,7 +249,7 @@ class partner(osv.osv):
                      amount += line.debit - line.credit
                 else:
                     amount += sign * line.amount_residual
-                res[id] = amount
+            res[id] = amount
 
         return res
 
