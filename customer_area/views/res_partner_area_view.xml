@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="res_partner_area_tree" model="ir.ui.view">
+        <field name="name">res.partner.area.tree</field>
+        <field name="model">res.partner.area</field>
+        <field name="arch" type="xml">
+            <tree string="Areas">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="res_partner_area_form" model="ir.ui.view">
+        <field name="name">res.partner.area.form</field>
+        <field name="model">res.partner.area</field>
+        <field name="arch" type="xml">
+            <form string="Area">
+                <sheet>
+                    <group>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="sales_team"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="res_partner_area_filter" model="ir.ui.view">
+        <field name="name">res.partner.area.filter</field>
+        <field name="model">res.partner.area</field>
+        <field name="arch" type="xml">
+            <search string="Areas">
+                <field name="name"/>
+                <field name="code"/>
+           </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_res_partner_area">
+        <field name="name">Areas</field>
+        <field name="res_model">res.partner.area</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="res_partner_area_tree"/>
+        <field name="search_view_id" ref="res_partner_area_filter"/>
+    </record>
+
+    <menuitem name="Areas" parent="sales_team.menu_localisation" action="action_res_partner_area" id="res_partner_area_menu"/>
+	
+</odoo>
