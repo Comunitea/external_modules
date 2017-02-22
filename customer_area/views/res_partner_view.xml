@@ -6,9 +6,9 @@
 	<field name="model">res.partner</field>
 	<field name="inherit_id" ref="base.view_res_partner_filter"/>
 	<field name="arch" type="xml">
-	    <filter string="Country" position="after">
+	    <group name="group_by" position="inside">
 		<filter string="Area" context="{'group_by': 'area_id'}"/>
-	    </filter>
+	    </group>
 	</field>
     </record>
 
@@ -20,6 +20,7 @@
 	    <field name="country_id" position="after">
 		<field name="area_id" placeholder="Area" options='{"no_open": True, "no_create": True}'
 		    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+	    </field>
 	</field>
     </record>
     

@@ -21,7 +21,6 @@
                     <group>
                     <field name="name"/>
                     <field name="code"/>
-                    <field name="sales_team"/>
                     </group>
                 </sheet>
             </form>
