@@ -29,5 +29,5 @@
     "depends" : ["base"],
     "category" : "Accounting",
     "data" : ["views/res_partner_bank_view.xml"],
-    'installable': True,
+    'installable': False,
 }
