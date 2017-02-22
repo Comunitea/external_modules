@@ -29,5 +29,5 @@
     "depends" : ["account_banking_mandate", "res_partner_bank_active"],
     "category" : "Accounting",
     "data" : [],
-    'installable': True,
+    'installable': False,
 }
