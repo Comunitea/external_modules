@@ -11,6 +11,7 @@
                         <field name="pending_amount"/>
                         <field name="draft_invoices_amount"/>
                         <field name="pending_orders_amount"/>
+                        <field name="circulating_amount"/>
                         <separator colspan="4"/>
                         <field name="total_debt"/>
                         <separator colspan="4"/>

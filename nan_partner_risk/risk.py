@@ -107,6 +107,16 @@ class sale_order(osv.osv):
 sale_order()
 
 
+class account_account(osv.osv):
+
+    _inherit = "account.account"
+
+    _columns = {
+        'circulating': fields.boolean("Circulating")}
+
+account_account()
+
+
 class partner(osv.osv):
     _name = 'res.partner'
     _inherit = 'res.partner'
@@ -197,14 +207,50 @@ class partner(osv.osv):
     def _pending_orders_amount(self, cr, uid, ids, name, arg, context=None):
         res = {}
         for id in ids:
-            sids = self.pool.get('sale.order').search( cr, uid, [
-                ('partner_id','child_of',[id]),
-                ('state','not in',['draft','cancel','wait_risk','sent'])
-            ], context=context )
             total = 0.0
-            for order in self.pool.get('sale.order').browse(cr, uid, sids, context):
-                total += order.amount_total - order.amount_invoiced
+            mids = self.pool.get('stock.move').search(cr, uid, [
+                ('partner_id', 'child_of', [id]),
+                ('state', 'not in', ['draft', 'cancel']),
+                ('procurement_id.sale_line_id', '!=', False),
+                ('invoice_state', '=', '2binvoiced')], context=context)
+
+            for move in self.pool.get('stock.move').browse(cr, uid, mids):
+                line = move.procurement_id.sale_line_id
+                sign = move.picking_type_code == "outgoing" and 1 or -1
+                total += sign * (move.product_uom_qty * (line.price_unit * (1 - (line.discount or 0.0) / 100.0)))
+
+            sids = self.pool.get('sale.order.line').search(cr, uid, [
+                ('order_id.partner_id', 'child_of', [id]),
+                ('order_id.state', 'not in', ['draft','cancel','wait_risk','sent']),
+                ('invoiced', '=', False),
+                '|', ('product_id', '=', False),
+                ('product_id.type', '=', 'service')], context=context)
+            for sline in self.pool.get('sale.order.line').browse(cr, uid, sids):
+                total += sline.price_subtotal
+
             res[id] = total
+        return res
+
+    def _get_circulating_amount(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        for id in ids:
+            amount = 0.0
+            move_ids = self.pool.get('account.move.line').\
+                search(cr, uid, [('partner_id', 'child_of', [id]),
+                                 ('account_id.circulating', '=', True),
+                                 ('reconcile_id','=',False)])
+
+            for line in self.pool.get('account.move.line').browse(cr, uid, move_ids, context):
+                if line.currency_id:
+                    sign = line.amount_currency < 0 and -1 or 1
+                else:
+                    sign = (line.debit - line.credit) < 0 and -1 or 1
+                if line.reconcile_partial_id:
+                     amount += line.debit - line.credit
+                else:
+                    amount += sign * line.amount_residual
+            res[id] = amount
+
         return res
 
     def _total_debt(self, cr, uid, ids, name, arg, context=None):
@@ -214,7 +260,8 @@ class partner(osv.osv):
             unpayed = partner.unpayed_amount or 0.0
             pending = partner.pending_amount or 0.0
             draft_invoices = partner.draft_invoices_amount or 0.0
-            res[partner.id] = pending_orders + unpayed + pending + draft_invoices
+            circulating = partner.circulating_amount or 0.0
+            res[partner.id] = pending_orders + unpayed + pending + draft_invoices + circulating
         return res
 
     def _available_risk(self, cr, uid, ids, name, arg, context=None):
@@ -235,11 +282,13 @@ class partner(osv.osv):
     _columns = {
         'unpayed_amount': fields.function(_unpayed_amount, method=True, string=_('Expired Unpaid Payments'), type='float'),
         'pending_amount': fields.function(_pending_amount, method=True, string=_('Unexpired Pending Payments'), type='float'),
+        'circulating_amount': fields.function(_get_circulating_amount, method=True, string="Circulating amount", type="float"),
         'draft_invoices_amount': fields.function(_draft_invoices_amount, method=True, string=_('Draft Invoices'), type='float'),
         'pending_orders_amount': fields.function(_pending_orders_amount, method=True, string=_('Uninvoiced Orders'), type='float'),
         'total_debt': fields.function(_total_debt, method=True, string=_('Total Debt'), type='float'),
         'available_risk': fields.function(_available_risk, method=True, string=_('Available Credit'), type='float'),
         'total_risk_percent': fields.function(_total_risk_percent, method=True, string=_('Credit Usage (%)'), type='float')
+
     }
 partner()
 

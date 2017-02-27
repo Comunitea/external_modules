@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-31 13:03+0000\n"
-"PO-Revision-Date: 2014-12-31 13:03+0000\n"
+"POT-Creation-Date: 2017-01-25 13:31+0000\n"
+"PO-Revision-Date: 2017-01-25 13:31+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,12 +16,17 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: nan_partner_risk
+#: model:ir.model,name:nan_partner_risk.model_account_account
+msgid "Account"
+msgstr "Cuenta"
+
+#. module: nan_partner_risk
 #: view:sale.order:nan_partner_risk.sale_order_form_risk
 msgid "Approve Order"
 msgstr "Aprobar el pedido"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:252
+#: code:addons/nan_partner_risk/risk.py:289
 #: field:open.risk.window,available_risk:0
 #: field:res.partner,available_risk:0
 #, python-format
@@ -34,9 +39,19 @@ msgid "Cancel Order"
 msgstr "Cancelar pedido"
 
 #. module: nan_partner_risk
+#: field:account.account,circulating:0
+msgid "Circulating"
+msgstr "Circulante"
+
+#. module: nan_partner_risk
+#: field:open.risk.window,circulating_amount:0
+msgid "Circulating amount"
+msgstr "Importe circulante"
+
+#. module: nan_partner_risk
 #: view:sale.order:nan_partner_risk.sale_order_form_risk
 msgid "Confirm Order"
-msgstr "Confirmar pedido"
+msgstr "Tramitar pedido"
 
 #. module: nan_partner_risk
 #: field:open.risk.window,create_uid:0
@@ -46,7 +61,7 @@ msgstr "Creado por"
 #. module: nan_partner_risk
 #: field:open.risk.window,create_date:0
 msgid "Created on"
-msgstr "Created en"
+msgstr "Creado el"
 
 #. module: nan_partner_risk
 #: field:open.risk.window,credit_limit:0
@@ -54,13 +69,13 @@ msgid "Credit Limit"
 msgstr "Límite de crédito"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:70
+#: code:addons/nan_partner_risk/risk.py:72
 #, python-format
 msgid "Credit Limit Exceeded"
 msgstr "Se ha excedido el crédito concedido"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:253
+#: code:addons/nan_partner_risk/risk.py:290
 #: field:open.risk.window,total_risk_percent:0
 #: field:res.partner,total_risk_percent:0
 #, python-format
@@ -68,7 +83,12 @@ msgid "Credit Usage (%)"
 msgstr "Uso del crédito (%)"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:248
+#: field:open.risk.window,display_name:0
+msgid "Display Name"
+msgstr "Nombre"
+
+#. module: nan_partner_risk
+#: code:addons/nan_partner_risk/risk.py:286
 #: field:open.risk.window,draft_invoices_amount:0
 #: field:res.partner,draft_invoices_amount:0
 #, python-format
@@ -76,7 +96,12 @@ msgid "Draft Invoices"
 msgstr "Facturas en borrador"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:246
+#: model:res.groups,comment:nan_partner_risk.group_risk_manager
+msgid "En ventas donde el cliente tenga el riesgo excedido, sólo un usuario con este permiso puede validarla, quizás este permiso de debe de marcar para responsables de ventas y financieros."
+msgstr "En ventas donde el cliente tenga el riesgo excedido, sólo un usuario con este permiso puede validarla, quizás este permiso de debe de marcar para responsables de ventas y financieros."
+
+#. module: nan_partner_risk
+#: code:addons/nan_partner_risk/risk.py:283
 #: field:open.risk.window,unpayed_amount:0
 #: field:res.partner,unpayed_amount:0
 #, python-format
@@ -84,7 +109,7 @@ msgid "Expired Unpaid Payments"
 msgstr "Efectos impagados vencidos"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:102
+#: code:addons/nan_partner_risk/risk.py:105
 #, python-format
 msgid "Gives the state of the quotation or sale order. The exception state is automatically set when a cancel operation occurs in the invoice validation (Invoice Exception) or in the packing list process (Shipping Exception). The 'Waiting Schedule' state is set when the invoice is confirmed but waiting for the scheduler to run on the date 'Date Ordered'."
 msgstr "Muestra el estado del presupuesto o pedido de venta. El estado 'Excepción' se da automáticamente cuando ocurre una operación de cancelación durante la validación de la factura (Excepción de Factura) o en el proceso de emitir el albarán (Excepción de Albarán). El estado 'Esperando planificación' se da cuando la factura está confirmada pero esperando por el planificador para lanzarla en la fecha 'Fecha pedido'."
@@ -101,14 +126,19 @@ msgid "Invoiced Amount"
 msgstr "Importe facturado"
 
 #. module: nan_partner_risk
+#: field:open.risk.window,__last_update:0
+msgid "Last Modified on"
+msgstr "Últ. modificación el"
+
+#. module: nan_partner_risk
 #: field:open.risk.window,write_uid:0
 msgid "Last Updated by"
-msgstr "Última actualización por"
+msgstr "Últ. actualización por"
 
 #. module: nan_partner_risk
 #: field:open.risk.window,write_date:0
 msgid "Last Updated on"
-msgstr "Última actualización en"
+msgstr "Últ. actualización el"
 
 #. module: nan_partner_risk
 #: model:ir.model,name:nan_partner_risk.model_res_partner
@@ -118,20 +148,12 @@ msgstr "Empresa"
 #. module: nan_partner_risk
 #: view:open.risk.window:nan_partner_risk.open_risk_window_view
 msgid "Partner Risk Information"
-msgstr "Información riesgo partner"
+msgstr "Información de riesgo"
 
 #. module: nan_partner_risk
 #: model:ir.model,name:nan_partner_risk.model_open_risk_window
 msgid "Partner's risk information"
-msgstr "Información riesgo partner"
-
-#. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:249
-#: field:open.risk.window,circulating_amount:0
-#: field:res.partner,circulating_amount:0
-#, python-format
-msgid "Payments Sent to Bank"
-msgstr "Efectos en circulación"
+msgstr "Información de riesgo"
 
 #. module: nan_partner_risk
 #: model:res.groups,name:nan_partner_risk.group_risk_manager
@@ -154,7 +176,7 @@ msgid "Show Partner Risk Information"
 msgstr "Muestra información del riesgo contable de una empresa"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:251
+#: code:addons/nan_partner_risk/risk.py:288
 #: field:open.risk.window,total_debt:0
 #: field:res.partner,total_debt:0
 #, python-format
@@ -162,7 +184,7 @@ msgid "Total Debt"
 msgstr "Deuda total"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:247
+#: code:addons/nan_partner_risk/risk.py:284
 #: field:res.partner,pending_amount:0
 #, python-format
 msgid "Unexpired Pending Payments"
@@ -174,7 +196,7 @@ msgid "Unexpired Unpaid Payments"
 msgstr "Efectos impagados no vencidos"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:250
+#: code:addons/nan_partner_risk/risk.py:287
 #: field:open.risk.window,pending_orders_amount:0
 #: field:res.partner,pending_orders_amount:0
 #, python-format
@@ -192,7 +214,7 @@ msgid "Waiting Risk Approval"
 msgstr "Esperando aprobación de riesgo"
 
 #. module: nan_partner_risk
-#: code:addons/nan_partner_risk/risk.py:71
+#: code:addons/nan_partner_risk/risk.py:73
 #, python-format
 msgid "Warning: Credit Limit Exceeded.\n"
 "\n"
@@ -200,4 +222,3 @@ msgid "Warning: Credit Limit Exceeded.\n"
 msgstr "Advertencia: Se ha excedido el crédito concedido.\n"
 "\n"
 "Esta empresa tiene un crédito concedido máximo de %(limit).2f y ya tiene una deuda de %(debt).2f."
-

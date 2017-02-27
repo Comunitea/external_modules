@@ -37,6 +37,7 @@ class open_risk_window(osv.osv_memory):
     _columns = {
         'unpayed_amount': fields.float('Expired Unpaid Payments', digits=(4,2), readonly="True"),
         'pending_amount': fields.float('Unexpired Unpaid Payments', digits=(4,2), readonly="True"),
+        'circulating_amount': fields.float('Circulating amount', digits=(4,2), readonly="True"),
         'draft_invoices_amount': fields.float('Draft Invoices', digits=(4,2), readonly="True"),
         'pending_orders_amount': fields.float('Uninvoiced Orders', digits=(4,2), readonly="True"),
         'total_debt': fields.float('Total Debt', digits=(4,2), readonly="True"),
@@ -53,6 +54,7 @@ class open_risk_window(osv.osv_memory):
         'credit_limit': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).credit_limit or 0.0,
         'available_risk': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).available_risk or 0.0,
         'total_risk_percent': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).total_risk_percent or 0.0,
+        'circulating_amount': lambda self, cr, uid, context: self.pool.get('res.partner').browse(cr,uid,context['active_id'],context).circulating_amount or 0.0,
     }
 
 
