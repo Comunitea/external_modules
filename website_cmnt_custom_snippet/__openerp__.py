@@ -14,7 +14,6 @@
     'depends': [
         'base',
         'website',
-        'website_crm',
         'web',
     ],
     'data': [
