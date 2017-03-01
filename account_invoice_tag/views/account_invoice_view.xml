@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="invoice_supplier_form_add_tags" model="ir.ui.view">
+        <field name="name">account.invoice.supplier.form.add_tags</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <field name="fiscal_position_id" position="after">
+                <field name="tag_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="invoice_form_add_tags" model="ir.ui.view">
+        <field name="name">account.invoice.form.add_tags</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <field name="fiscal_position_id" position="after">
+                <field name="tag_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_filter_add_tags" model="ir.ui.view">
+        <field name="name">account.invoice.select.add_tags</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <field name="journal_id" position="after">
+                <field name="tag_ids" string="Tag" filter_domain="[('tag_ids', 'ilike', self)]"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

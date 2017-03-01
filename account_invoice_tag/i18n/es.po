@@ -1,0 +1,103 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#       * account_invoice_tag
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-01 17:24+0000\n"
+"PO-Revision-Date: 2017-03-01 17:24+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag_active
+msgid "Active"
+msgstr "Activo"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag_id
+msgid "ID"
+msgstr "ID"
+
+#. module: account_invoice_tag
+#: model:ir.model,name:account_invoice_tag.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: account_invoice_tag
+#: model:ir.ui.view,arch_db:account_invoice_tag.account_invoice_tag_form
+msgid "Invoice Tag"
+msgstr "Etiqueta de factura"
+
+#. module: account_invoice_tag
+#: model:ir.actions.act_window,name:account_invoice_tag.account_invoice_tag_action
+#: model:ir.ui.menu,name:account_invoice_tag.account_invoice_tag_menu
+#: model:ir.ui.view,arch_db:account_invoice_tag.account_invoice_tag_tree
+msgid "Invoice Tags"
+msgstr "Etiquetas de facturas"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: account_invoice_tag
+#: model:ir.ui.view,arch_db:account_invoice_tag.view_account_invoice_filter_add_tags
+msgid "Tag"
+msgstr "Etiqueta"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag_name
+msgid "Tag Name"
+msgstr "Nombre de etiqueta"
+
+#. module: account_invoice_tag
+#: sql_constraint:account.invoice.tag:0
+msgid "Tag name already exists !"
+msgstr "¡El nombre de la etiqueta ya existe!"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,field_description:account_invoice_tag.field_account_invoice_tag_ids
+msgid "Tags"
+msgstr "Etiquetas"
+
+#. module: account_invoice_tag
+#: model:ir.model.fields,help:account_invoice_tag.field_account_invoice_tag_active
+msgid "The active field allows you to hide the tag without removing it."
+msgstr "El campo activo le permite esconder la etiqueta sin borrarla."
+
+#. module: account_invoice_tag
+#: model:ir.model,name:account_invoice_tag.model_account_invoice_tag
+msgid "account.invoice.tag"
+msgstr "account.invoice.tag"

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_invoice_tag_form" model="ir.ui.view">
+        <field name="name">account.invoice.tag.form</field>
+        <field name="model">account.invoice.tag</field>
+        <field name="arch" type="xml">
+            <form string="Invoice Tag">
+                <group>
+                    <field name="name"/>
+                    <field name="active"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="account_invoice_tag_tree" model="ir.ui.view">
+        <field name="name">account.invoice.tag.tree</field>
+        <field name="model">account.invoice.tag</field>
+        <field name="arch" type="xml">
+            <tree string="Invoice Tags">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="account_invoice_tag_action" model="ir.actions.act_window">
+        <field name="name">Invoice Tags</field>
+        <field name="res_model">account.invoice.tag</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="account_invoice_tag_tree"/>
+    </record>
+
+    <menuitem name="Invoice Tags" parent="account.account_account_menu" action="account_invoice_tag_action" id="account_invoice_tag_menu"/>
+    
+</odoo>
