@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   
+    <record model="ir.ui.view" id="ts_session_opening_form_view">
+        <field name="name">ts.session.opening.form.view</field>
+        <field name="model">ts.config</field>
+        <field name="arch" type="xml">
+            <form string="TeleSale Session Opening" version="7.0">
+                
+                <button name="open_ui" type="object" string="Start Session" 
+                    class="oe_highlight"/>
+                
+                <div class="oe_view_nocontent">
+                    <p class="oe_view_nocontent_create">
+                      Click to start a session.
+                    </p><p>
+                      Inicializate Tele Sale UI
+                    </p>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ts_session_opening" model="ir.actions.act_window">
+        <field name="name">Your Session</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ts.config</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+    </record>
+
+</odoo>
