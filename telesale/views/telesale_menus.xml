@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   
+    <!-- Top menu item -->
+    <menuitem
+        id="menu_telesale_root"
+        name="Telesale"
+        load_xmlid="True"
+        sequence="10"/>
+
+    <menuitem id="menu_telesale_session" 
+              action="action_ts_session_opening"
+              name="Session" parent="menu_telesale_root"
+              sequence="100"/>
+
+</odoo>
