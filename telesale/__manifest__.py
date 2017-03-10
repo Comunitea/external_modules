@@ -20,7 +20,10 @@
     "data": [
         'views/ts_config_view.xml',
         'views/telesale_menus.xml',
+        'views/telesale.xml',
+        'views/ts_templates.xml',
     ],
     "installable": True,
     'application': True,
+    'qweb': ['static/src/xml/ts.xml'],
 }

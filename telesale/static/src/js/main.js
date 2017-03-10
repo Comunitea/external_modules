@@ -1,10 +1,9 @@
 
-odoo.define('cmnt_telesale.main', function (require) {
+odoo.define('telesale.main', function (require) {
 "use strict";
-
-var chrome = require('point_of_sale.chrome');
+var ts_widget = require('telesale.BaseWidget');
 var core = require('web.core');
 
-core.action_registry.add('pos.ui', chrome.Chrome);
+core.action_registry.add('ts.ui', ts_widget);
 
 });
