@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="ts_assets" name="telesale assets">
+        <link rel="stylesheet" href="/telesale/static/src/css/telesale.css" id="ts-stylesheet"/>
+
+        <script type="text/javascript" src="/telesale/static/src/js/main.js"></script>
+        <script type="text/javascript" src="/telesale/static/src/js/base_widgets.js"></script>
+
+    </template>
+</odoo>
