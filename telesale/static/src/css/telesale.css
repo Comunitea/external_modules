@@ -1,0 +1,99 @@
+ /* Principal screen */
+.telesale {
+    font-size: 1.7vmin;
+    font-weight: bold;
+    /*position: absolute;*/
+    position: fixed; /*con los css explicitos en la carpeta views*/
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.telesale label{
+    display:block;
+    margin:0.1vmin
+}
+/*.telesale label{
+  display: block;
+}*/
+ /*  ********* The black loading screen ********* */
+.telesale .loader{
+    background-color: #222;
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:100%;
+    z-index: 999;
+    text-align: center;
+    font-family: Lato;
+    color: #555555;
+}
+
+.telesale .loader-feedback{
+    width: 400px;
+    height: 160px;
+    margin: -60px -200px;
+    position: absolute;
+    left: 50%; top: 50%;
+    text-align: center;
+}
+.telesale .loader-feedback h1{
+    font-weight: 300;
+}
+.telesale .loader-feedback .progressbar{
+    background: rgb(73,73,73);
+    height: 1px;
+}
+.telesale .loader-feedback .progressbar > .progress{
+    height: 100%;
+    background: black;
+    width: 0%;
+    box-shadow: 0px 0px 5px rgba(255,255,255,0.35);
+}
+.telesale .loader-feedback .button{
+    display: inline-block;
+    margin: 25px auto;
+    line-height: 42px;
+    padding: 0px 16px;
+    font-size: 20px;
+    font-weight: 300;
+    border: solid 1px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.telesale .loader-feedback .button:active{
+    color: #222;
+    background: #555555;
+}
+.telesale .not-supported-browser .message{
+    width:600px;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: #d3d3d3;
+    font-size: 14px;
+}
+/* Top Bar with principal buttons */
+.telesale #topheader {
+    position:relative;
+    width: 100%;
+    height: 4%;
+    color: gray;
+    background: #393939;
+    background: -moz-linear-gradient(#7b7979, #393939);
+    background: -webkit-gradient(linear, left top, left bottom, from(#7b7979), to(#393939));
+}
+/*Content of screens*/
+.telesale #content {
+    position: relative;
+    width: 100%;
+    height: 96%;
+    background: #F0EEEE;
+}
+
+.telesale #content button:focus{
+  background: linear-gradient(#F5DAD6, #FC1616);
+  }

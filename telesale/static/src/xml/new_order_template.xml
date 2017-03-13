@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!-- Main widget -->
+    <t t-name="TsWidget">
+        <div class="telesale">
+            <input id="clearfocus" style="display:none"></input>
+            <div id="topheader">
+                <div class="col-xs-10 fullheight">
+                  <div id="placeholder-screen-buttons">
+                  </div>
+                </div>
+                <div class="col-xs-2 fullheight">
+                    <div class="col-xs-4 fullheight">
+
+                    </div>
+                    <div class="col-xs-4 fullheight">
+                      <div id="placeholder-session-buttons1">
+                      </div>
+                    </div>
+                    <div class="col-xs-4 fullheight">
+                      <div id="placeholder-session-buttons2">
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+                <div class="loader">
+                    <div class='loader-feedback oe_hidden'>
+                        <h1 class='message'>Loading</h1>
+                        <div class='progressbar'>
+                            <div class='progress' width='50%'></div>
+                        </div>
+                        <div class='oe_hidden button skip'>
+                            Skip
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </t>
+
+    <t t-name="Synch-Notification-Widget">
+        <t t-if="widget.get_nbr_pending() > 0">
+            <div class="oe_ts_synch-notification">
+                <t   t-esc="widget.get_nbr_pending()"/>
+                <div class="oe_status_red"></div>
+            </div>
+        </t>
+        <t t-if="widget.get_nbr_pending() === 0">
+            <div class="oe_ts_synch-notification oe_inactive">
+                <div class="oe_status_green"></div>
+            </div>
+        </t>
+        <span t-esc="widget.ts_model.get('user_name')"/>
+    </t>
+
+</templates>
