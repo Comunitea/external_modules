@@ -48,7 +48,7 @@ var TsWidget = TsBaseWidget.extend({
             self.renderElement();  //Contruye la plantilla????
 
             self.build_widgets(); // BUILD ALL WIDGETS AND CREENS WIDGETS
-            // self.screen_selector.set_default_screen(); // set principal screen
+            self.screen_selector.set_default_screen(); // set principal screen
             self.$('.loader').animate({opacity:0},1500,'swing',function(){self.$('.loader').hide();});
             // self.add_shortkey_events();
             // self.ts_model.get_calls_by_date_state(self.ts_model.getCurrentDateStr()); // get call list for current date
