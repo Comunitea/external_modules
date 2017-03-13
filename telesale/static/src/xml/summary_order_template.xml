@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <templates id="template" xml:space="preserve">
+
+    <t t-name="Summary-Order-Screen-Widget">
+        <div class="summary-order-screen">
+            <div id="placeholder-summary-order-widget">
+            </div>
+        </div>
+    </t>
+
+    <t t-name="Summary-Order-Widget">
+            <div class="summary-order-search">
+              <div class="col-xs-4 fullheight centerinside textcenter">
+                <div class="centerthis">
+                        <label for="date_start">Date Start:</label>
+                        <input type="date" id='input-date_start2' name="date_start" t-att-value="widget.ts_model.getCurrentDateStr()" class="tab1"/>
+                </div>
+              </div>
+              <div class="col-xs-4 fullheight centerinside textcenter">
+                <div class="centerthis">
+                        <label for="date_end">Date End:</label>
+                        <input type="date" id='input-date_end2' name="date_end" t-att-value="widget.ts_model.getCurrentDateStr()"/>
+                </div>
+              </div>
+              <div class="col-xs-4 fullheight centerinside textcenter">
+                <div class="centerthis">
+                  <div class="col-xs-3 fullheight centerinside">
+                    <div class="centerthis">
+                        <button id="search-customer2">SEARCH</button>
+                    </div>
+                  </div>
+                  <div class="col-xs-3 fullheight centerinside">
+                    <div class="centerthis">
+                        <button id="search-customer2-week">Week</button>
+                    </div>
+                  </div>
+                  <div class="col-xs-3 fullheight centerinside">
+                    <div class="centerthis">
+                        <button id="search-customer2-month">Month</button>
+                    </div>
+                  </div>
+                  <div class="col-xs-3 fullheight centerinside">
+                    <div class="centerthis">
+                        <button id="search-customer2-trimester">Trimester</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="summary-order-content">
+              <div class="col-xs-12 fullheight centerinside">
+                <table class="summary-order-table">
+                    <thead>
+                        <th class="summary-head-name">Name</th>
+                        <th class="summary-head-name">Customer</th>
+                        <th class="summary-head-date">Date</th>
+                        <th class="summary-head-date">Date Planned</th>
+                        <th class="summary-head-total">Total</th>
+                        <th class="summary-head-state">State</th>
+                        <th class="summary-head-add">Add Lines</th>
+                        <th class="summary-head-show">Show Order</th>
+
+                    </thead>
+                    <tbody class="summary-lines">
+
+                    </tbody>
+                </table>
+              </div>
+            </div>
+
+    </t>
+
+    <t t-name="Summary-Line-Widget">
+        <tr>
+            <td class="summary-cell-name">
+                <span class="summary-cell"><t t-esc="widget.order.name"/></span>
+            </td>
+            <td class="summary-cell-partner">
+                <span class="summary-cell"><t t-esc="widget.order.partner_id[1]"/></span>
+            </td>
+            <td class="summary-cell-date">
+                <span class="summary-cell"><t t-esc="widget.ts_model.localFormatDateTime(widget.ts_model.parse_utc_to_str_date(widget.order.date_order))"/></span>
+            </td>
+            <td class="summary-cell-date">
+                <span class="summary-cell"><t t-esc="widget.ts_model.localFormatDateTime(widget.order.date_planned)"/></span>
+            </td>
+            <td class="summary-cell-total">
+                <span class="summary-cell"><t t-esc="widget.order.amount_total.toFixed(2)"/></span>
+            </td>
+            <td class="summary-cell-state">
+                <!-- <span class="summary-cell"><t t-esc="widget.order.state"/></span> -->
+                <span class="summary-cell">
+                    <t t-if="widget.order.state == 'draft'">
+                        Draft
+                    </t>
+                    <t t-if="widget.order.state == 'sent'">
+                        Quotation Sent
+                    </t>
+                    <t t-if="widget.order.state == 'cancel'">
+                        Canceled
+                    </t>
+                     <t t-if="widget.order.state == 'waiting_date'">
+                        Waiting Schedule
+                    </t>
+                    <t t-if="widget.order.state == 'progress'">
+                        Confirmed
+                    </t>
+                    <t t-if="widget.order.state == 'manual'">
+                        Sale to Invoice
+                    </t>
+                    <t t-if="widget.order.state == 'shipping_except'">
+                        Shipping Exception
+                    </t>
+                    <t t-if="widget.order.state == 'invoice_except'">
+                        Invoice Exception
+                    </t>
+                    <t t-if="widget.order.state == 'done'">
+                        Done
+                    </t>
+                    <t t-if="widget.order.state == 'wait_risk'">
+                        Waiting Risk Approval
+                    </t>
+                </span>
+            </td>
+            <td class="summary-cell-show">
+                <button id="button-adding-lines">+</button>
+            </td>
+            <td class="summary-cell-add">
+                <button id="button-show-order">Show</button>
+            </td>
+        </tr>
+    </t>
+
+</templates>

@@ -58,6 +58,13 @@ exports.TsModel = Backbone.Model.extend({
         this.ts_widget.loading_message(_t('Loading')+' '+model,this._load_progress);
         return new Model(model).query(fields).filter(domain).context(ctx).all()
     },
+    fetch_limited_ordered: function(model, fields, domain, limit, orderby, ctx){
+        return new instance.web.Model(model).query(fields).filter(domain).limit(limit).order_by(orderby).context(ctx).first()
+    },
+    fetch_ordered: function(model, fields, domain, orderby, ctx){
+        return new instance.web.Model(model).query(fields).filter(domain).order_by(orderby).context(ctx).all()
+    },
+    // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
     load_server_data: function(){
         var self=this;
 
@@ -81,7 +88,19 @@ exports.TsModel = Backbone.Model.extend({
                 [['id','=',users[0].company_id[0]]]);
                 })
         return loaded;
-    }
+    },
+    getCurrentDateStr: function() {
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        return today;
+    },
+
 });
 
 //**************************** PRODUCTS AND PRODUCT COLLECTION****************************************************
