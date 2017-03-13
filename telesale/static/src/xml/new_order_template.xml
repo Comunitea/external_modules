@@ -56,4 +56,50 @@
         <span t-esc="widget.ts_model.get('user_name')"/>
     </t>
 
+     <t t-name="HeaderButtonWidget">
+        <div class="header-button">
+            <t t-esc="widget.label" />
+        </div>
+        <div class="col-xs-1 fullheight">
+            <!-- Summary Orders -->
+            <button id="button_ks" class="select-screen"><t t-esc="widget.button_ks"/></button>
+        </div>
+    </t>
+
+    <t t-name="ScreenButtonWidget">
+        <div class="select-screen-buttons">
+
+                <div class="col-xs-2 fullheight">
+                    <!-- New Order -->
+                    <button id="button_no" class="selected-screen"><t t-esc="widget.button_no"/></button>
+                </div>
+                <div class="col-xs-2 fullheight">
+                    <!-- Order History -->
+                    <button id="button_oh" class="select-screen"><t t-esc="widget.button_oh"/></button>
+                </div>
+                 <div class="col-xs-2 fullheight">
+                    <!-- Call List -->
+                    <button id="button_cl" class="select-screen"><t t-esc="widget.button_cl"/></button>
+                </div>
+                <div class="col-xs-2 fullheight">
+                    <!-- Product Catalog -->
+                    <button id="button_pc" class="select-screen"><t t-esc="widget.button_pc"/></button>
+                </div>
+                 <div class="col-xs-2 fullheight">
+                    <!-- Ptroduct Reserved -->
+                    <button id="button_pr" class="select-screen"><t t-esc="widget.button_pr"/></button>
+                </div>
+                <!-- <div class="col-xs-2 fullheight">
+                    <button id="button_so" class="select-screen"><t t-esc="widget.button_so"/></button>
+                </div> -->
+                <div class="col-xs-1 fullheight">
+                    <button id="button_so" class="select-screen"><t t-esc="widget.button_so"/></button>
+                </div>
+                <div class="col-xs-1 fullheight">
+                  <button id="button_ks" class="select-screen"><t t-esc="widget.button_ks"/></button>
+                </div>
+
+        </div>
+    </t>
+
 </templates>
