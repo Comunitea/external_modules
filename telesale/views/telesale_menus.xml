@@ -13,4 +13,15 @@
               name="Session" parent="menu_telesale_root"
               sequence="100"/>
 
+    <!-- After installation of the module, open the related menu -->
+    <record id="action_client_ts_menu" model="ir.actions.client">
+        <field name="name">Open TS Menu</field>
+        <field name="tag">reload</field>
+        <field name="params" eval="{'menu_id': ref('menu_telesale_root')}"/>
+    </record>
+    <record id="base.open_menu" model="ir.actions.todo">
+        <field name="action_id" ref="action_client_ts_menu"/>
+        <field name="state">open</field>
+    </record>
+
 </odoo>

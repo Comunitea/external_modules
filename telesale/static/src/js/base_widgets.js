@@ -2,6 +2,8 @@ odoo.define('telesale.BaseWidget', function (require) {
 "use strict";
 
 var Widget = require('web.Widget');
+var Model = require('web.DataModel');
+
 var models = require('telesale.models');
 var core = require('web.core');
 var _t = core._t;
@@ -220,6 +222,30 @@ var TsWidget = TsBaseWidget.extend({
         this.$('.loader .message').text(msg);
         if(typeof progress !== 'undefined'){
             this.loading_progress(progress);
+        }
+    },
+    try_close: function() {
+            var self = this;
+            self.close();
+    },
+    close: function() {
+        var self = this;
+
+        function close(){
+            return new Model("ir.model.data").get_func("search_read")([['name', '=', 'action_client_ts_menu']], ['res_id']).pipe(function(res) {
+                window.location = '/web#action=' + res[0]['res_id'];
+            });
+        }
+        // var draft_order = _.find( self.ts_model.get('orders').models, function(order){
+        //     return order.get('orderLines').length !== 0
+        // });
+        var draft_order = true
+        if(draft_order){
+            if (confirm(_t("Pending orders will be lost.\nAre you sure you want to leave this session?"))) {
+                return close();
+            }
+        }else{
+            return close();
         }
     },
 });
