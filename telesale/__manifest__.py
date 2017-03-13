@@ -25,5 +25,5 @@
     ],
     "installable": True,
     'application': True,
-    'qweb': ['static/src/xml/ts.xml'],
+    'qweb': ['static/src/xml/new_order_template.xml'],
 }
