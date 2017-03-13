@@ -95,7 +95,6 @@ exports.SummaryOrderWidget = TsBaseWidget.extend({
 
     },
     renderElement: function () {
-        debugger;
         var self = this;
         this._super();
         this.$('#search-customer2').click(function (){ self.searchCustomerOrders() });

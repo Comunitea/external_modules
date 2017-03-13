@@ -171,7 +171,6 @@ exports.SummaryOrderScreenWidget = ScreenWidget.extend({
         this._super(parent,options)
     },
     start: function(){
-        debugger;
         this.summary_order_widget = new Summary.SummaryOrderWidget(this, {});
         this.summary_order_widget.replace($('#placeholder-summary-order-widget'));
     },
