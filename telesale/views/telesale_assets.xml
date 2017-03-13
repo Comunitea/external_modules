@@ -9,6 +9,7 @@
         <script type="text/javascript" src="/telesale/static/src/js/models.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/screens.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/buttons_widgets.js"></script>
+        <script type="text/javascript" src="/telesale/static/src/js/summary_orders_widgets.js"></script>
         
         <script type="text/javascript" src="/telesale/static/src/js/base_widgets.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/new_order_widgets.js"></script>

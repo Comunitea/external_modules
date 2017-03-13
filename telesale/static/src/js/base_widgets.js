@@ -67,11 +67,15 @@ var TsWidget = TsBaseWidget.extend({
         this.new_order_screen = new Screens.OrderScreenWidget(this, {});
         this.new_order_screen.appendTo(this.$('#content'));
 
+         //Summary Orders Screen
+        this.summary_order_screen = new Screens.SummaryOrderScreenWidget(this, {});
+        this.summary_order_screen.appendTo(this.$('#content'));
+
         // --------  SCREEN SELECTOR ---------
         this.screen_selector = new Screens.ScreenSelector({
             screen_set:{
                 'new_order': this.new_order_screen,
-                // 'summary_order': this.summary_order_screen,
+                'summary_order': this.summary_order_screen,
                 // 'call_list': this.call_list_screen,
                 // 'tele_analysis': this.tele_analysis_screen,
                 // 'product_reserved': this.product_reserved_screen,
