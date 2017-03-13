@@ -24,8 +24,8 @@
             };
         </script>
 
-        <t t-call-assets="web.assets_common" t-css="false"/>
-        <t t-call-assets="web.assets_backend" t-css="false"/>
+        <t t-call-assets="web.assets_common" t-css="true"/>
+        <t t-call-assets="web.assets_backend" t-css="true"/>
         <t t-call-assets="web_editor.summernote" t-css="false"/>
         <t t-call-assets="web_editor.assets_editor" t-css="false"/>
         <t t-call-assets="telesale.assets"/>

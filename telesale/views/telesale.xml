@@ -2,6 +2,7 @@
 <odoo>
     <template id="assets" name="telesale assets">
         <link rel="stylesheet" href="/telesale/static/src/css/telesale.css" id="ts-stylesheet"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/new_order.css" id="ts-stylesheet"/>
 
         <script type="text/javascript" src="/telesale/static/src/js/main.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/models.js"></script>
