@@ -4,26 +4,10 @@ odoo.define('telesale.BaseWidget', function (require) {
 var Widget = require('web.Widget');
 var Model = require('web.DataModel');
 
+var TsBaseWidget = require('telesale.BaseWidget0');
 var models = require('telesale.models');
 var core = require('web.core');
 var _t = core._t;
-
-// This is a base class for all Widgets in the TS.
-var TsBaseWidget = Widget.extend({
-    init:function(parent,options){
-        this._super(parent);
-        options = options || {}; //avoid options undefined
-        this.ts_model = options.ts_model || (parent ? parent.ts_model : undefined)
-        this.ts_widget = options.ts_widget || (parent ? parent.ts_widget : undefined);  // In order all child's can acces telesale widget
-    },
-   
-    show: function(){
-        this.$el.show();
-    },
-    hide: function(){
-        this.$el.hide();
-    },
-});
 
 
 var SynchIconWidget = TsBaseWidget.extend({
@@ -184,9 +168,10 @@ var TsWidget = TsBaseWidget.extend({
             self.renderElement();  //Contruye la plantilla????
 
 
+            debugger;
             self.build_widgets(); // BUILD ALL WIDGETS AND CREENS WIDGETS
             // self.screen_selector.set_default_screen(); // set principal screen
-            // self.$('.loader').animate({opacity:0},1500,'swing',function(){self.$('.loader').hide();});
+            self.$('.loader').animate({opacity:0},1500,'swing',function(){self.$('.loader').hide();});
             // self.add_shortkey_events();
             // self.ts_model.get_calls_by_date_state(self.ts_model.getCurrentDateStr()); // get call list for current date
             // self.$("#partner").focus();

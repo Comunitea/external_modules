@@ -6,6 +6,7 @@
 
         <script type="text/javascript" src="/telesale/static/src/js/main.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/models.js"></script>
+        <script type="text/javascript" src="/telesale/static/src/js/base_widgets0.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/base_widgets.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/new_order_widgets.js"></script>
 
