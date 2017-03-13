@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <templates id="template" xml:space="preserve">
+
+    <t t-name="Product-Catalog-Screen-Widget">
+        <div class="product-catalog-screen">
+             <div class="search-box">
+               <div class="center"><input id="search-product" placeholder="Search Products" class="tab1"/></div>
+               <!-- <img class="search-clear" src="/telesale/static/src/img/search_reset.gif" /> -->
+            </div>
+            <div id="placeholder-product-catalog-widget">
+            </div>
+        </div>
+    </t>
+
+    <t t-name="Product-Catalog-Widget">
+            <div class="product-catalog-content">
+                <table class="catalog-table">
+                    <thead>
+                        <th class="pc-head-name">Name</th>
+                        <th class="pc-head-code">Code</th>
+                        <th class="pc-head-stock">Stock</th>
+                        <th class="pc-head-add">Add</th>
+                        <th class="pc-head-show">show</th>
+                    </thead>
+                    <tbody class="productlines">
+
+                    </tbody>
+                </table>
+            </div>
+
+    </t>
+
+    <t t-name="Product-Line-Widget">
+        <tr>
+            <td class="pc-cell-name">
+                <span class="product-cell"><t t-esc="widget.product.name"/></span>
+            </td>
+            <td class="pc-cell-code">
+                <span class="product-cell">
+                    <t t-if="widget.product.default_code !== false">
+                         <t t-esc="widget.product.default_code"/>
+                    </t>
+                </span>
+            </td>
+            <td class="pc-cell-stock">
+              <t t-if="widget.product.virtual_stock_conservative">
+                  <span class="product-cell" t-esc="widget.product.virtual_stock_conservative.toFixed(2)"/>
+              </t>
+
+            </td>
+            <td class="pc-cell-add">
+                <button class="add-product fullwidth">+</button>
+            </td>
+            <td class="pc-cell-show">
+                <button class="show-product fullwidth">show</button>
+            </td>
+        </tr>
+    </t>
+
+</templates>

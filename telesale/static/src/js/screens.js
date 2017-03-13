@@ -3,11 +3,14 @@ odoo.define('telesale.Screens', function (require) {
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var NewOrder = require('telesale.new_order_widgets');
+var Summary = require('telesale.Summary');
 var models = require('telesale.models');
 var core = require('web.core');
 var _t = core._t;
 
-var ScreenSelector = core.Class.extend({
+var exports = {}
+
+exports.ScreenSelector = core.Class.extend({
     init: function(options){
         // options is a dict with screens instances passed in build_widgets in TsWidget
         this.screen_set = options.screen_set || {};
@@ -93,8 +96,9 @@ var ScreenWidget = TsBaseWidget.extend({
         }
     },
 });
+exports.ScreenWidget = ScreenWidget;
 
-var PopUpWidget = TsBaseWidget.extend({
+exports.PopUpWidget = TsBaseWidget.extend({
     show: function(){
         if(this.$el){
             this.$el.show();
@@ -109,7 +113,7 @@ var PopUpWidget = TsBaseWidget.extend({
     },
 });
 
-var OrderScreenWidget = ScreenWidget.extend({
+exports.OrderScreenWidget = ScreenWidget.extend({
     template: 'Order-Screen-Widget',
     init: function(parent,options){
         this._super(parent,options)
@@ -161,11 +165,18 @@ var OrderScreenWidget = ScreenWidget.extend({
     }
 });
 
-return {
-     ScreenSelector: ScreenSelector,
-     ScreenWidget: ScreenWidget,
-     PopUpWidget: PopUpWidget,
-     OrderScreenWidget: OrderScreenWidget,
-};
+exports.SummaryOrderScreenWidget = ScreenWidget.extend({
+    template: 'Summary-Order-Screen-Widget',
+    init: function(parent,options){
+        this._super(parent,options)
+    },
+    start: function(){
+        debugger;
+        this.summary_order_widget = new Summary.SummaryOrderWidget(this, {});
+        this.summary_order_widget.replace($('#placeholder-summary-order-widget'));
+    },
+});
+
+return exports;
 
 });

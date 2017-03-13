@@ -25,5 +25,11 @@
     ],
     "installable": True,
     'application': True,
-    'qweb': ['static/src/xml/new_order_template.xml'],
+    'qweb': [
+        'static/src/xml/key_shorts_template.xml',
+        'static/src/xml/new_order_template.xml',
+        'static/src/xml/order_history_template.xml',
+        'static/src/xml/product_catalog_template.xml',
+        'static/src/xml/summary_order_template.xml',
+    ],
 }
