@@ -20,7 +20,7 @@
     "data": [
         'views/ts_config_view.xml',
         'views/telesale_menus.xml',
-        'views/telesale.xml',
+        'views/telesale_assets.xml',
         'views/ts_templates.xml',
     ],
     "installable": True,

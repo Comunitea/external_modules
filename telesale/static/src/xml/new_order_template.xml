@@ -102,4 +102,213 @@
         </div>
     </t>
 
+    <!-- ********************************************** SCREENS ***************************************************************** -->
+    <t t-name="Order-Screen-Widget">
+        <div class="order-screen-content">
+            <div id="pagespart">
+                <div id="order-selector" class="fullheight">
+                    <button class="neworder-button">+</button>
+                    <button class="removeorder-button">-</button>
+                    <ol id="orders"></ol>
+                </div>
+            </div>
+            <div id="toppart">
+                <div id="placeholder-toppart">
+                </div>
+            </div>
+            <div id="middlepart">
+
+              <div id="leftpart" class="col-xs-9 fullheight">
+                  <div id="placeholder-order-widget">
+                  </div>
+
+              </div>
+
+              <div id="rightpart" class="col-xs-3 fullheight">
+                <div id="placeholder-rightpart">
+                </div>
+            </div>
+            </div>
+            <div id="bottompart">
+                <div class="bottomleft col-xs-4 fullheight">
+                    <div id="placeholder-bottompart-left">
+                    </div>
+                </div>
+                <div class="bottomright col-xs-8 fullheight">
+                    <div id="placeholder-bottompart">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="Order-Button-Widget">
+        <li class="order-selector-button">
+            <button t-att-id="widget.bo_id" class="select-order"><t t-esc="(widget.order.get('partner') ? widget.order.get('partner').split(' | ', 1) +' - ':'') + widget.order.get('creationDate').toString('t')"/></button>
+        </li>
+    </t>
+
+     <t t-name="Order-line-Widget">
+        <tr>
+             <td class="cell-nline">
+                <!-- <span class='col-nline'> <t t-esc="widget.model.get('n_line')"/> </span> -->
+                <input type="text" class='col-nline' t-att-value="widget.model.get('n_line')" readonly="readonly" tabIndex="-1"/>
+            </td>
+            <td class="cell-code">
+                <input type="text" class='col-code mandatory' t-att-value="widget.model.get('code')"/>
+            </td>
+             <td class="cell-product">
+                <input type="search" class='col-product mandatory' t-att-value="widget.model.get('product')"/>
+            </td>
+            <td class="cell-qty">
+                <input id="inputuosqty" type="text" class='col-product_uos_qty mandatory' t-att-value="widget.model.get('product_uos_qty').toFixed(4)"/>
+            </td>
+            <td class="cell-unit">
+                <!-- <select class='col-product_uos mandatory' t-att-value="widget.model.get('product_uos')"/> -->
+                <!-- <input type="text" class='col-product_uos mandatory' t-att-value="widget.model.get('product_uos')"/> -->
+                <select class="col-product_uos mandatory">
+
+                </select>
+            </td>
+            <td class="cell-pvp">
+                <input type="text" class='col-price_udv mandatory' t-att-value="widget.model.get('price_udv').toFixed(2)" />
+            </td>
+             <td class="cell-qty">
+                <input type="text" class='col-qty' t-att-value="widget.model.get('qty').toFixed(4)" readonly="readonly" tabIndex="-1"/>
+            </td>
+             <td class="cell-unit">
+                <input type="text" class='col-unit' t-att-value="widget.model.get('unit')" readonly="readonly" tabIndex="-1"/>
+            </td>
+            <td class="cell-pvp">
+                <input type="text" class='col-pvp mandatory' t-att-value="widget.model.get('pvp').toFixed(2)"/>
+            </td>
+             <td class="cell-discount">
+                <input type="text" class='col-discount mandatory' t-att-value="widget.model.get('specific_discount') || widget.model.get('discount')"/>
+            </td>
+             <td class="cell-total">
+                <input type="text" class='col-total' t-att-value="widget.model.get('total').toFixed(2)" readonly="readonly" tabIndex="-1"/>
+            </td>
+            <!--td class="cell-temp">
+                <input type="text" class='col-temp' t-att-value="widget.model.get('temperature')" readonly="readonly" tabIndex="-1"/>
+            </td>
+            <td class="cell-qnote">
+                <input type="text" class='col-qnote' t-att-value="widget</td>
+            <td class="cell-deta">
+                <input type="text" class='col-detail' t-att-value="widget.model.get('detail')"/>
+            </td-->
+
+        </tr>
+    </t>
+
+    <t t-name="Order-Widget">
+        <div class="button-order-container fullheight">
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+                <button class="add-line-button" tabIndex="9">ADD</button>
+              </div>
+            </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+              <button class="remove-line-button" tabIndex="10">REMOVE</button>
+            </div>
+            </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+              <button id="ult-button" tabIndex="11">ULT</button>
+            </div>
+            </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+              <button id="vua-button" tabIndex="12">VUA</button>
+            </div>
+            </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+              <button id="so-button" tabIndex="13">SO</button>
+            </div>
+            </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+              <button id="promo-button" tabIndex="14">PROMO</button>
+            </div>
+            </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+              <button id="sust-button" tabIndex="15">SUST</button>
+            </div>
+            </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+              <button id="info-button" tabIndex="16">INFO</button>
+            </div>
+            </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+              <button id="show-client" tabIndex="17">CUSTOMER</button>
+            </div>
+            </div>
+            <div class="col-xs-3 fullheight centerinside">
+              <div class="centerthis">
+
+                <div class="span-state fullwidth">
+
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'sent'">
+                      Draft
+                  </t>
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'draft'">
+                      Quotation Sent
+                  </t>
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'cancel'">
+                      Canceled
+                  </t>
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'waiting_date'">
+                      Waiting Schedule
+                  </t>
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'progress'">
+                      Confirmed
+                  </t>
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'manual'">
+                      Sale to Invoice
+                  </t>
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'shipping_except'">
+                      Shipping Exception
+                  </t>
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'invoice_except'">
+                      Invoice Exception
+                  </t>
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'done'">
+                      Done
+                  </t>
+                   <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'wait_risk'">
+                      Waiting Risk Approval
+                  </t>
+
+                  <span t-esc="widget.ts_model.get('selectedOrder').get('num_order')"/>
+                  <!-- <input class=" " type="text" id='num_order' name="num_order" t-att-value="widget.order_model.get('num_order')" readonly="readonly" tabIndex="-1"/> -->
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="order-container">
+            <table class="order-line-table">
+                <thead>
+                    <th class="header-nline">Nº</th>
+                    <th class="header-code">Code</th>
+                    <th class="header-product">Product</th>
+                    <th class="header-qty">UoS Qty</th>
+                    <th class="header-unit">UoS</th>
+                    <th class="header-pvp">UoS Price</th>
+                    <th class="header-qty">Qty</th>
+                    <th class="header-unit">Unit</th>
+                    <th class="header-pvp">PVP</th>
+                    <th class="header-disc">Disc.</th>
+                    <th class="header-pvp">Total</th>
+                </thead>
+                <tbody class="orderlines">
+
+                </tbody>
+            </table>
+        </div>
+    </t>
+
 </templates>

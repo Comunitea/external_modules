@@ -1,11 +1,11 @@
 odoo.define('telesale.BaseWidget', function (require) {
 "use strict";
 
-var Widget = require('web.Widget');
 var Model = require('web.DataModel');
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var Buttons = require('telesale.ButtonsWidgets');
+var Screens = require('telesale.Screens');
 var models = require('telesale.models');
 var core = require('web.core');
 var _t = core._t;
@@ -35,127 +35,6 @@ var SynchIconWidget = TsBaseWidget.extend({
     },
 });
 
-//Generic Buttons whitch actions are part of TsWidget, like close button
-// var HeaderButtonWidget = TsBaseWidget.extend({
-//     template: 'HeaderButtonWidget',
-//     init: function(parent, options){
-//         options = options || {};
-//         this._super(parent, options);
-//         this.action = options.action;
-//         this.label   = options.label;
-
-//     },
-//     renderElement: function(){
-//         var self = this;
-//         this._super();
-//         if(this.action){
-//             this.$el.click(function(){ self.action(); });
-//         }
-//     },
-//     show: function(){ this.$el.show(); },
-//     hide: function(){ this.$el.hide(); },
-// });
-
-// var ButtonBlockWidget = TsBaseWidget.extend({
-//     init: function(parent,options){
-//         this._super(parent,options);
-//         this.hidden = false;
-//     },
-//     show: function(){
-//         var self = this;
-//         this.hidden = false;
-//         if(this.$el){
-//             this.$el.show();
-//         }
-//     },
-//     hide: function(){
-//         this.hidden = true;
-//         if (this.$el){
-//             this.$el.hide();
-//         }
-//     },
-//     renderElement: function(){
-//         // we need this because some screens re-render themselves when they are hidden
-//         // (due to some events, or magic, or both...)  we must make sure they remain hidden.
-//         this._super();
-//         if(this.hidden){
-//             if(this.$el){
-//                 this.$el.hide();
-//             }
-//         }
-//     },
-//     select_screen: function(screen_name){
-//         var self = this;
-//         this.ts_widget.screen_selector.set_current_screen(screen_name);
-//     },
-//     select_button_block: function(block_name){
-//         var self = this;
-//         this.ts_widget.button_block_selector.set_current_block(block_name);
-//         // if (this.$('.selected-screen'))
-//         //      this.$('.selected-screen').removeClass('selected-screen');
-//         // this.$el.addClass('selected-screen');
-//     },
-//     // close: function(){
-
-    // },
-// });
-
-// Buttons block to change between principal screens
-// var ScreenButtonWidget = ButtonBlockWidget.extend({
-//     template: 'ScreenButtonWidget',
-//     init: function(parent,options){
-//         this._super(parent,options);
-//         this.button_no = _t("New Order");
-//         this.button_so = _t("My Orders");
-//         this.button_pc = _t("Product Catalog");
-//         this.button_pr = _t("Product Reserved");
-//         this.button_cl = _t("Call List");
-//         this.button_oh = _t("Order History");
-//         this.button_ks = _t("Key Shorts");
-//     },
-//     renderElement: function(){
-//         var self = this;
-//         this._super();
-//         this.$el.find('button#button_no').click(function(){ self.select_screen('new_order');
-//                                                           // self.select_button_block('order_buttons');
-//                                                           self.setButtonSelected('button#button_no');
-//                                                          });
-//         this.$el.find('button#button_so').click(function(){ self.select_screen('summary_order');
-//                                                           self.setButtonSelected('button#button_so');
-//                                                              });
-//         this.$el.find('button#button_cl').click(function(){ self.select_screen('call_list');
-//                                                           self.setButtonSelected('button#button_cl');
-//                                                              });
-//         this.$el.find('button#button_oh').click(function(){ self.select_screen('order_history')
-//                                                           self.setButtonSelected('button#button_oh');
-//                                                              });
-//         this.$el.find('button#button_pc').click(function(){ self.select_screen('product_catalog');
-//                                                             var upd = self.ts_model.get('update_catalog')
-//                                                             if (upd === 'a'){
-//                                                                 upd = 'b'
-//                                                             }
-//                                                             else{
-//                                                                 upd = 'a'
-//                                                             }
-//                                                             self.ts_model.set('update_catalog', upd)
-//                                                           self.setButtonSelected('button#button_pc');
-//                                                          });
-//         this.$el.find('button#button_pr').click(function(){ self.select_screen('product_reserved');
-//                                                            self.setButtonSelected('button#button_pr');
-//                                                          });
-//         this.$el.find('button#button_ks').click(function(){ self.select_screen('key_shorts');
-//                                                            self.setButtonSelected('button#button_ks');
-//                                                          });
-
-
-//     },
-//     setButtonSelected: function(button_selector) {
-//         $('.selected-screen').removeClass('selected-screen');
-//         $(button_selector).addClass('selected-screen');
-//         $('.tab1').focus();
-//     },
-// });
-
 var TsWidget = TsBaseWidget.extend({
     template: 'TsWidget',
     init: function() {
@@ -181,6 +60,33 @@ var TsWidget = TsBaseWidget.extend({
         });
     },
     build_widgets: function() {
+
+         // --------  SCREEN WIDGETS ---------
+
+        //New Order Screen (default)
+        this.new_order_screen = new Screens.OrderScreenWidget(this, {});
+        this.new_order_screen.appendTo(this.$('#content'));
+
+        // --------  SCREEN SELECTOR ---------
+        this.screen_selector = new Screens.ScreenSelector({
+            screen_set:{
+                'new_order': this.new_order_screen,
+                // 'summary_order': this.summary_order_screen,
+                // 'call_list': this.call_list_screen,
+                // 'tele_analysis': this.tele_analysis_screen,
+                // 'product_reserved': this.product_reserved_screen,
+                // 'order_history': this.order_history_screen,
+                // 'product_catalog': this.product_catalog_screen,
+                // 'key_shorts': this.key_shorts_screen,
+            },
+            popup_set:{
+                // 'product_sust_popup': this.product_sust_popup,
+                // 'add_call_popup': this.add_call_popup,
+                // 'finish_call_popup': this.finish_call_popup,
+                // 'create_reserve_popup': this.create_reserve_popup,
+            },
+            default_client_screen: 'new_order',
+         });
         //  // --------  BUTTON WIDGETS ---------
         this.notification = new Buttons.SynchIconWidget(this,{});
         this.notification.replace(this.$('#placeholder-session-buttons1'));
