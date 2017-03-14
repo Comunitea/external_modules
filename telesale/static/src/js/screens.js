@@ -153,16 +153,16 @@ exports.OrderScreenWidget = ScreenWidget.extend({
         this.order_widget= new NewOrder.OrderWidget(this, {});
         this.order_widget.replace(this.$('#placeholder-order-widget'));
         //top part
-        // this.data_order_widget = new NewOrder.DataOrderWidget(this, {});
-        // this.data_order_widget.replace($('#placeholder-toppart'));
+        this.data_order_widget = new NewOrder.DataOrderWidget(this, {});
+        this.data_order_widget.replace(this.$('#placeholder-toppart'));
         //bottom part
-        // this.totals_order_widget = new NewOrder.TotalsOrderWidget(this, {});
-        // this.totals_order_widget.replace($('#placeholder-bottompart'));
+        this.totals_order_widget = new NewOrder.TotalsOrderWidget(this, {});
+        this.totals_order_widget.replace(this.$('#placeholder-bottompart'));
         //right part
-        // this.productinfo_order_widget = new NewOrder.ProductInfoOrderWidget(this, {});
-        // this.productinfo_order_widget.replace($('#placeholder-bottompart-left'));
-        // this.sold_product_line_widget = new NewOrder.SoldProductWidget(this, {});
-        // this.sold_product_line_widget.replace($('#placeholder-rightpart'));
+        this.productinfo_order_widget = new NewOrder.ProductInfoOrderWidget(this, {});
+        this.productinfo_order_widget.replace(this.$('#placeholder-bottompart-left'));
+        this.sold_product_line_widget = new NewOrder.SoldProductWidget(this, {});
+        this.sold_product_line_widget.replace(this.$('#placeholder-rightpart'));
 
     }
 });

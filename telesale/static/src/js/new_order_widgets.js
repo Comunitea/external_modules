@@ -52,6 +52,212 @@ exports.OrderButtonWidget = TsBaseWidget.extend({
     },
 });
 
+exports.DataOrderWidget = TsBaseWidget.extend({
+    template:'Data-Order-Widget',
+    init: function(parent, options) {
+        this._super(parent,options);
+        this.ts_model.bind('change:selectedOrder', this.change_selected_order, this);
+        this.order_model = this.ts_model.get('selectedOrder');
+    },
+    change_selected_order: function() {
+        this.renderElement();
+        // this.$('#partner_code').focus();
+    },
+    renderElement: function () {
+        var self = this;
+        this.order_model = this.ts_model.get('selectedOrder');
+        this._super();
+        // this.$('#partner_code').blur(_.bind(this.set_value, this, 'partner_code'))
+//            this.$('#partner').change(_.bind(this.set_value, this, 'partner'))
+        this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
+        this.$('#date_invoice').blur(_.bind(this.set_value, this, 'date_invoice'))
+        this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
+        this.$('#date_planned').blur(_.bind(this.set_value, this, 'date_planned'))
+        this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
+        this.$('#customer_comment').blur(_.bind(this.set_value, this, 'customer_comment'))
+        this.$('#client_order_ref').blur(_.bind(this.set_value, this, 'client_order_ref'))
+        this.$('#supplier').blur(_.bind(this.set_value, this, 'supplier'))
+
+        //autocomplete products and units from array of names
+        this.$('#partner').autocomplete({
+            source: this.ts_model.get('customer_names'),
+        });
+        // TODO ???
+        // this.get_supplier_names()
+        this.$('#supplier').autocomplete({
+            source: this.ts_model.get('supplier_names'),
+        });
+        // this.$('#partner_code').autocomplete({
+        //     source: this.ts_model.get('customer_codes'),
+        // });
+
+    },
+    set_value: function(key) {
+        var value = this.$('#'+key).val();;
+        if (value == self.order_model.get('partner') ) {
+            return;
+         }
+        this.order_model.set(key, value);
+        this.perform_onchange(key, value);
+    },
+    check_partner_routes: function(partner_id) {
+        self = this
+        var model = new instance.web.Model('res.partner');
+        model.call("any_detail_founded",[partner_id])  //TODO revisar:devuelve ids que no estan activos (proceso de baja)
+         .then(function(result){
+             if (!result){
+//                     alert(_t("Customer has no assigned any delivery route"));
+//                     self.order_model.set('partner', "");
+//                     self.order_model.set('partner_code', "");
+//                     self.refresh();
+
+                   var tomorrow_date = self.ts_model.getCurrentDatePlannedStr()
+                   self.order_model.set('date_planned', tomorrow_date)
+                   self.order_model.set('date_invoice', tomorrow_date)
+                   self.refresh();
+             }
+             else{;
+                self.order_model.set('date_planned', result['detail_date'])
+                self.order_model.set('date_invoice', result['detail_date'])
+                self.refresh();
+             }
+         });
+    },
+    get_supplier_names: function(partner_obj) {
+        self = this
+        var partner_name = this.ts_model.get('selectedOrder').get('partner');
+        var partner_id = this.ts_model.db.partner_name_id[partner_name];
+        var partner_obj = this.ts_model.db.get_partner_by_id(partner_id)
+        if (partner_obj && partner_obj.supplier_ids) {
+          var supplier_names = [];
+            for (var i = 0, len = partner_obj.supplier_ids.length; i < len; i++){
+            var key = partner_obj.supplier_ids[i]
+            if(self.ts_model.db.suppliers_name_id[key]){
+              supplier_names.push(self.ts_model.db.suppliers_name_id[key])
+            }
+          }
+          self.ts_model.set('supplier_names', supplier_names)
+      }
+    },
+    perform_onchange: function(key, value) {
+        var self=this;
+        if (!value) {return;}
+        if (key == "partner_code" || key == "partner"){
+          console.log("ONCHANGE DEL PARTNER")
+          $.when( self.ts_widget.product_catalog_screen.product_catalog_widget.search_products_to_sell() )
+          .done(function(){
+                console.log("YA HE ENCONTRADO LOS PRODUCTOS")
+                partner_id = (key == "partner_code") ? self.ts_model.db.partner_ref_id[value] : self.ts_model.db.partner_name_id[value];
+                if (!partner_id){
+                    var alert_msg = (key == "partner_code") ? _t("Customer code '" + value + "' does not exist") : _t("Customer name '" + value + "' does not exist");
+                    alert(alert_msg);
+                    self.order_model.set('partner', "");
+                    // self.order_model.set('partner_code', "");
+                    self.refresh();
+                }
+                else{
+                    partner_obj = self.ts_model.db.get_partner_by_id(partner_id);
+                    var model = new instance.web.Model('sale.order');
+                    model.call("check_not_in_picking_order",[partner_id],{context:new instance.web.CompoundContext()})
+                    .then(function(order_id){
+                        var do_onchange = true
+                        if (order_id){
+//                                var r = confirm(_t("There is a order for client " + partner_obj.name + "¿Do you want open the order?"))
+                            var r = confirm(_t("Ya hay un pedido para el cliente " + partner_obj.name + "¿Deseas abrir el pedido?"))
+                            if (r == true){
+                                do_onchange = false
+                                $.when( self.load_order_from_server(order_id) )
+                                .done(function(){
+                                });
+                            }
+                        }
+                        if (do_onchange){
+                            var cus_name = self.ts_model.getComplexName(partner_obj);
+                            self.order_model.set('partner', cus_name);
+                            self.order_model.set('partner_code', partner_obj.ref ? partner_obj.ref : "");
+                            var sup_name = ''
+                            if (partner_obj.indirect_customer && !$.isEmptyObject(partner_obj.supplier_ids)){
+                              sup_name = self.ts_model.db.get_supplier_by_id(partner_obj.supplier_ids[0]);
+                            }
+                            self.order_model.set('supplier', sup_name);
+                            self.order_model.set('customer_comment', partner_obj.comment);
+                            self.order_model.set('limit_credit', my_round(partner_obj.credit_limit,2));
+                            self.order_model.set('customer_debt', my_round(partner_obj.credit,2));
+                            contact_obj = self.ts_model.db.get_partner_contact(partner_id); //If no contacts return itself
+                            self.order_model.set('comercial', partner_obj.user_id ? partner_obj.user_id[1] : "");
+                            self.order_model.set('contact_name', contact_obj.name);
+                            self.check_partner_routes(partner_id);
+
+                            // else{
+                            //     if (key == "partner") {
+                            //       self.$('#partner_code').focus();
+                            //     }
+                            self.refresh();
+                            $('#vua-button').click();
+                            if(self.order_model.get('orderLines').length == 0){
+                                $('.add-line-button').click()
+                            }
+                            else{
+                                self.$('#date_order').focus();
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+        if (key == "date_planned"){
+            self.order_model.set('date_invoice', value)
+            self.refresh()
+         }
+        // if (key == "date_invoice"){
+        //   this.$('#date_planed').focus();
+        // }
+        // if (key == "date_planed"){
+        //   this.$('#date_order').focus();
+        // }
+        // if (key == "date_order"){
+        //   this.$('#partner_code').focus();
+        // }
+    },
+    load_order_from_server: function(order_id){
+        var self=this;
+      //  if (!flag){
+          //  this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model}));
+        //}
+        this.open_order =  this.ts_model.get('selectedOrder')
+        var loaded = self.ts_model.fetch('sale.order',
+                                        ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice'],
+                                        [
+                                            ['id', '=', order_id]
+                                        ])
+            .then(function(orders){
+                var order = orders[0];
+                self.order_fetch = order;
+                return self.ts_model.fetch('sale.order.line',
+                                            ['product_id','product_uom',
+                                            'product_uom_qty',
+                                            'product_uos',
+                                            'product_uos_qty',
+                                            'price_udv','price_unit',
+                                            'price_subtotal','tax_id',
+                                            'pvp_ref','current_pvp',
+                                            'q_note', 'detail_note',
+                                            'discount', 'tourism'],
+                                            [
+                                                ['order_id', '=', order_id],
+                                             ]);
+            }).then(function(order_lines){
+                    self.ts_model.build_order(self.order_fetch, self.open_order, order_lines); //build de order model
+                    self.ts_widget.new_order_screen.data_order_widget.refresh();
+            })
+        return loaded
+    },
+    refresh: function(){
+        this.renderElement();
+    },
+});
+
 exports.OrderlineWidget = TsBaseWidget.extend({
     template: 'Order-line-Widget',
     init: function(parent, options) {
@@ -1001,7 +1207,7 @@ exports.OrderWidget = TsBaseWidget.extend({
         load_order_from_server: function(order_id){
             var self=this;
           //  if (!flag){
-              //  this.ts_model.get('orders').add(new module.Order({ ts_model: self.ts_model}));
+              //  this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model}));
             //}
             this.open_order =  this.ts_model.get('selectedOrder')
             var loaded = self.ts_model.fetch('sale.order',
@@ -1024,6 +1230,397 @@ exports.OrderWidget = TsBaseWidget.extend({
             return loaded
         },
     });   
+
+exports.TotalsOrderWidget = TsBaseWidget.extend({
+        template:'Totals-Order-Widget',
+        init: function(parent, options) {
+            this._super(parent,options);
+            this.ts_model.bind('change:selectedOrder', this.change_selected_order, this);
+            this.bind_orderline_events();
+        },
+        bind_orderline_events: function() {
+            this.order_model = this.ts_model.get('selectedOrder');
+            this.order_model.bind('change:selected_line', this.bind_selectedline_events, this);
+
+            this.currentOrderLines = (this.ts_model.get('selectedOrder')).get('orderLines');
+            this.currentOrderLines.bind('add', this.changeTotals, this);
+            this.currentOrderLines.bind('remove', this.changeTotals, this);
+        },
+        bind_selectedline_events: function () {
+            var self = this;
+
+            this.selected_line = this.ts_model.get('selectedOrder').get('selected_line');
+            this.selected_line.unbind('change:total');
+            this.selected_line.unbind('change:weight');
+            this.selected_line.unbind('change:boxes');
+            this.selected_line.bind('change:total', this.changeTotals, this);
+            this.selected_line.bind('change:weight', this.changeTotals, this);
+            this.selected_line.bind('change:boxes', this.changeTotals, this);
+        },
+        change_selected_order: function() {
+            this.order_model.unbind('change:selected_line');
+            this.currentOrderLines.unbind();
+            this.bind_orderline_events();
+            this.renderElement();
+        },
+        renderElement: function () {
+            var self = this;
+
+            this.order_model = this.ts_model.get('selectedOrder');
+            this._super();
+
+            this.$('.confirm-button').click(function (){ self.confirmCurrentOrder() });
+            this.$('.cancel-button').click(function (){ self.cancelCurrentOrder() });
+            this.$('.save-button').click(function (){ self.saveCurrentOrder() });
+        },
+        changeTotals: function(){
+            var self = this;
+            this.base = 0;
+            this.discount = 0;
+            this.margin = 0;
+            this.weight = 0;
+            this.iva = 0;
+            this.total = 0;
+            this.pvp_ref = 0;
+            this.sum_cost = 0;
+            this.sum_box = 0;
+            this.sum_fresh = 0;
+            (this.currentOrderLines).each(_.bind( function(line) {
+                var product_id = self.ts_model.db.product_name_id[line.get('product')]
+                if (product_id){
+                    var product_obj = self.ts_model.db.get_product_by_id(product_id)
+                    // if (product_obj.product_class == 'normal'){
+                      self.sum_cost += product_obj.standard_price * line.get('qty');
+                      self.sum_box += line.get('boxes');
+                      self.weight += line.get('weight');
+                    //   self.discount += line.get('pvp_ref') != 0 ? (line.get('pvp_ref') - line.get('pvp')) * line.get('qty') : 0;
+                      self.discount += line.get('qty') * line.get('pvp') * (line.get('discount') / 100)
+                      var price_disc = line.get('pvp') * (1 - (line.get('discount') / 100))
+                      self.margin += (price_disc -  product_obj.standard_price) * line.get('qty');
+                      self.pvp_ref += line.get('pvp_ref') * line.get('qty');
+                      self.base += line.get_price_without_tax('total');
+                      self.iva += line.get_tax();
+                      // self.total += line.get_price_with_tax();
+                      // self.margin += (line.get('pvp') - product_obj.standard_price) * line.get('qty');
+                    // }
+                    // else{
+                    //     self.sum_fresh += line.get_price_without_tax('total');
+                    // }
+
+                }
+            }, this));
+            self.total += my_round(self.base, 2) + my_round(self.iva, 2);
+            self.base = my_round(self.base, 2);
+            this.order_model.set('total_base',self.base);
+            this.order_model.set('total_iva', self.iva);
+            this.order_model.set('total', self.total);
+            this.order_model.set('total_weight', self.weight);
+            this.order_model.set('total_discount', self.discount);
+            var discount_per = (0) + "%";
+            // if (self.pvp_ref != 0){
+            //     var discount_num = (self.discount/self.pvp_ref) * 100 ;
+            //     if (discount_num < 0)
+            //         var discount_per = "+" + my_round( discount_num * (-1) , 2).toFixed(2) + "%";
+            //     else
+            //         var discount_per = my_round( discount_num , 2).toFixed(2) + "%";
+            // }
+            if (self.base != 0){
+              // Le volvemos a sumamos el descuento porque la base viene sin el
+                var discount_num = (self.discount/(self.base + self.discount) ) * 100 ;
+                if (discount_num < 0)
+                    var discount_per = "+" +  discount_num * (-1)  + "%";
+                else
+                    var discount_per =  discount_num.toFixed(2)  + "%";
+            }
+            this.order_model.set('total_discount_per', discount_per);
+            this.order_model.set('total_margin', self.margin);
+            var margin_per = (0) + "%";
+            var margin_per_num = 0
+            if (self.base != 0) {
+                margin_per_num = ((self.base - self.sum_cost) / self.base) * 100
+                margin_per = my_round(margin_per_num, 2).toFixed(2) + "%"
+            }
+            this.order_model.set('total_margin_per', margin_per);
+            this.order_model.set('total_boxes', self.sum_box); //integer
+            this.order_model.set('total_fresh', self.sum_fresh);
+
+            var min_limit = this.ts_model.get('company').min_limit
+            var min_margin = this.ts_model.get('company').min_margin
+            this.renderElement();
+            if (margin_per_num < min_margin)
+               this.$('#total_margin').addClass('warning-red');
+            else
+               $('#total_margin').removeClass('warning-red');
+            if (self.total < min_limit)
+                $('#total_order').addClass('warning-red');
+            else
+               $('#total_order').removeClass('warning-red');
+        },
+        // confirmCurrentOrder: function() {
+        //     var currentOrder = this.order_model;
+        //     //currentOrder.set('action_button', 'confirm')
+        //     currentOrder.set('action_button', 'confirm_background')
+        //     // if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
+        //     //     alert(_t('You cant confirm an order which state is diferent than draft.'));
+        //     // }
+        //     // else  if (currentOrder.get('limit_credit')*1 != 0 && currentOrder.get('customer_debt')*1 + currentOrder.get('total')*1 > currentOrder.get('limit_credit')*1){
+        //     if (currentOrder.get('limit_credit')*1 != 0 && currentOrder.get('customer_debt')*1 + currentOrder.get('total')*1 > currentOrder.get('limit_credit')*1){
+        //             alert(_t('You cant confirm this order because you are exceeding customer limit credit. Please save as draft'));
+        //     }
+        //    else if ( currentOrder.check() ){
+        //         var partner_id = this.ts_model.db.partner_name_id[currentOrder.get('partner')]
+        //         delete this.ts_model.db.cache_sold_lines[partner_id];
+        //         this.ts_model.push_order(currentOrder.exportAsJSON());
+        //     }
+        // },
+        confirmCurrentOrder: function() {
+          var self = this;
+            var currentOrder = this.order_model;
+            currentOrder.set('set_promotion', true)  // Aplicar promociones al confirmar
+            self.saveCurrentOrder()
+            $.when( self.ts_model.ready2 )
+            .done(function(){
+                var loaded = self.ts_model.fetch('sale.order',
+                                                ['id', 'name'],
+                                                [
+                                                    ['chanel', '=', 'telesale']
+                                                ])
+                    .then(function(orders){
+                       console.log('Entro')
+                        if (orders[0]) {
+                          // var my_id = orders[0].id
+                          (new instance.web.Model('sale.order')).call('confirm_order_background',[orders[0].id],{context:new instance.web.CompoundContext()})
+                              .fail(function(unused, event){
+                                  //don't show error popup if it fails
+                                  console.error('Failed confirm order: ',orders[0].name);
+                              })
+                              .done(function(){
+                                    console.log('Confirmado en segundo plano Yeeeeeah');
+                              });
+
+                        }
+                    });
+             });
+        },
+        cancelCurrentOrder: function() {
+            var currentOrder = this.order_model;
+            currentOrder.set('action_button', 'cancel')
+            if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ||  !currentOrder.get('erp_id')){
+                alert(_t('You cant cancel an order which state is diferent than draft.'));
+            }
+            else if ( currentOrder.check() ){
+                this.ts_model.cancel_order(currentOrder.get('erp_id'));
+            }
+        },
+        saveCurrentOrder: function() {
+            var currentOrder = this.order_model;
+            currentOrder.set('action_button', 'save')
+            // if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
+            //     alert(_t('You cant save as draft an order which state is diferent than draft.'));
+            // }
+            // else if ( currentOrder.check() ){
+            if ( currentOrder.check() ){
+//                this.ts_model.push_order(currentOrder.exportAsJSON());
+//               NO HACEMOS QUE PASE POR EL FLUJO DE LA BOLITA ROJA, ESTÁ DESABILITADA
+                this.ts_model._flush2(currentOrder.exportAsJSON());
+            }
+        },
+
+});
+
+exports.ProductInfoOrderWidget = TsBaseWidget.extend({
+    template:'ProductInfo-Order-Widget',
+    init: function(parent, options) {
+        this._super(parent,options);
+        this.ts_model.bind('change:selectedOrder', this.change_selected_order, this);
+        this.order_model = this.ts_model.get('selectedOrder');
+        this.selected_line = undefined;
+        this.bind_selectedline_events();
+        this.set_default_values();
+    },
+    set_default_values: function(){
+        this.stock = "";
+        this.date = "";
+        this.qty = "";
+        this.price = "";
+        this.mark = "";
+        this.unit_weight = "";
+        this.min_price = "";
+        this.margin = "";
+        this.discount = "";
+        this.max_discount = "";
+        this.n_line = "";
+        this.class = "";
+    },
+    bind_selectedline_events: function(){
+        this.order_model = this.ts_model.get('selectedOrder');
+        this.order_model.bind('change:selected_line', this.calcProductInfo, this);
+    },
+    change_selected_order: function() {
+        this.order_model.unbind('change:selected_line');
+        this.bind_selectedline_events()
+        this.set_default_values();
+        this.renderElement();
+    },
+    renderElement: function () {
+        var self = this;
+        this.order_model = this.ts_model.get('selectedOrder');
+        this._super();
+        if(this.stock <= 0){
+          this.$('#stock-info').addClass('warning-red')
+        }
+    },
+    calcProductInfo: function () {
+        var self = this;
+        this.selected_line = this.ts_model.get('selectedOrder').get('selected_line');
+        if (!this.selected_line.get("product")){
+            this.set_default_values();
+            this.renderElement();
+        }
+        // this.selected_line.unbind('change:discount');
+        this.selected_line.unbind('change:product');
+        // this.selected_line.unbind('change:margin');
+        // this.selected_line.bind('change:discount', this.change_discount, this);
+        this.selected_line.bind('change:product', this.change_product, this);
+        // this.selected_line.bind('change:margin', this.change_margin, this);
+        this.selected_line.trigger('change:product');
+        // if (this.selected_line){
+        //     this.change_discount();
+        //     this.change_margin();
+        // }
+
+    },
+    change_product: function(){
+        var self = this;
+        var line_product = this.selected_line.get("product")
+        self.n_line = self.selected_line.get('n_line') + " / " + self.ts_model.get('selectedOrder').get('orderLines').length;
+        if (line_product != ""){
+            var product_id = this.ts_model.db.product_name_id[line_product]
+            var partner_name = this.ts_model.get('selectedOrder').get('partner');
+            var partner_id = this.ts_model.db.partner_name_id[partner_name];
+            if (product_id && partner_id){
+                var product_obj = this.ts_model.db.get_product_by_id(product_id)
+                var partner_obj = this.ts_model.db.get_partner_by_id(partner_id)
+                var pricelist_id = partner_obj.property_product_pricelist
+                var model = new instance.web.Model('product.product');
+                model.call("get_product_info",[product_id,partner_id,pricelist_id],{context:new instance.web.CompoundContext()})
+                    .then(function(result){
+                        self.stock = my_round(result.stock,2).toFixed(2);
+                        self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
+                        self.qty = my_round(result.last_qty,4).toFixed(4);
+                        self.price = my_round(result.last_price,2).toFixed(2);
+                        self.min_price = my_round(result.min_price,2).toFixed(2);
+                        self.mark = result.product_mark;
+                        self.class = result.product_class;
+                        self.max_discount = my_round(result.max_discount,2).toFixed(2) + "%";
+                        self.unit_weight = my_round(result.weight_unit,2).toFixed(2);
+                        self.renderElement();
+                    });
+            }
+            else{
+                this.set_default_values();
+                this.renderElement();
+            }
+        }
+    },
+    // change_discount: function(){
+    //     var discount = this.selected_line.get('discount');
+    //     discount = discount * 100
+    //     var discount_str = ""
+    //     //check type?
+    //     if (discount < 0){
+    //         discount = discount * (-1); //remove negative sign
+    //         discount_str = "+" + discount.toFixed(2) + "%";
+    //     }else{
+    //         discount_str = discount.toFixed(2) + "%";
+    //     }
+    //     this.discount = discount_str
+    //     this.renderElement();
+    // },
+    // change_margin: function(){
+    //     var margin = this.selected_line.get('margin');
+    //     margin = margin * 100
+    //     this.margin = margin.toFixed(2) + "%";
+    //     this.renderElement();
+    // },
+});
+
+
+exports.SoldProductLineWidget = TsBaseWidget.extend({
+    template:'Sold-Product-Line-Widget',
+    init: function(parent, options){
+        this._super(parent,options);
+        this.sold_line = options.sold_line;
+    },
+
+    renderElement: function() {
+        var self=this;
+        this._super();
+        // this.$('#add-line').off("click").click(_.bind(this.add_line_to_order, this));
+        this.$('#add-line').off("click").click(_.bind(this.add_product_to_order, this));
+
+    },
+    // add_line_to_order: function() {
+    //     var self=this;
+    //     self.ts_model.get('selectedOrder').add_lines_to_current_order([self.sold_line], true)
+    //     //in get_last_order_lines we unbid add event of currentOrderLines to render faster
+    //     self.ts_widget.new_order_screen.order_widget.bind_orderline_events();
+    //     self.ts_widget.new_order_screen.order_widget.renderElement()
+    //     self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
+    //
+    // },
+    add_product_to_order: function() {
+        // this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model, contact_name: 'aaa' }));
+        var self=this;
+        var product_id = this.sold_line.product_id[0]
+        if (product_id){
+            var current_order= this.ts_model.get('selectedOrder')
+            current_order.addProductLine(product_id);
+            // this.ts_widget.screen_selector.set_current_screen('new_order');
+            // $('button#button_no').click();
+            // current_order.selectLine(current_order.get('orderLines').last());
+        }
+    },
+});
+
+exports.SoldProductWidget = TsBaseWidget.extend({
+    template:'Sold-Product-Widget',
+    init: function(parent, options){
+        var self = this;
+        this._super(parent,options);
+        // TODO ???
+        // this.ts_model.get('sold_lines').bind('reset', function(){
+            self.renderElement();
+        // });
+        this.line_widgets = [];
+    },
+
+    renderElement: function() {
+        var self=this;
+        this._super();
+        // free subwidgets  memory from previous renders
+        // todo lenght undefined
+        // for(var i = 0, len = this.line_widgets.length; i < len; i++){
+        //     this.line_widgets[i].destroy();
+        // }
+        this.line_widgets = [];
+        // TODO sold lines tiene ahora objetos con info de producto
+        // var sold_lines = this.ts_model.get("sold_lines").models || []
+
+        var $lines_content = this.$('.soldproductlines');
+        // TODO
+        // for (var i=0, len = sold_lines.length; i < len; i++){
+        //     var line_obj = sold_lines[i].attributes;
+        //     var sold_line = new SoldProductLineWidget(self, {sold_line: line_obj})
+        //     this.line_widgets.push(sold_line)
+        //     sold_line.appendTo($lines_content)
+        // }
+    },
+});
+
+
+
+
 
     return exports; 
 
