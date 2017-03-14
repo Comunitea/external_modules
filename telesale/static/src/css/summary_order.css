@@ -1,0 +1,111 @@
+
+.telesale .summary-order-screen{
+    width: 100%;
+    height:100%;
+    position: relative;
+}
+
+.telesale .summary-order-search{
+    width: 100%;
+    height: 10%;
+    border-bottom: solid 1px #CECBCB;
+}
+
+.telesale .summary-order-search .input-column2{
+    width: 33%;
+    height: 100%;
+    float:left;
+    display:table;
+    text-align: center;
+}
+
+.telesale .summary-order-search .input-search2 input{
+    width: 20%;
+    margin: auto;
+}
+
+
+.telesale .summary-order-content{
+    width: 100%;
+    height:90%;
+    overflow:auto;
+}
+
+
+
+/*TABLE WITH ORDERS*/
+
+.telesale .summary-order-table {
+    margin-top: 0.2%;
+    width: 99%;
+    border: 1px solid #000;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    font-size: 1.7vmin;
+}
+
+.telesale .summary-order-table th{
+    border: 1px solid #000;
+    height: 9%;
+    background: #7f82ac;
+    text-align: center;
+    color:black;
+}
+.telesale .summary-order-table th.summary-head-name{
+    width: 10%;
+}
+.telesale .summary-order-table th.summary-head-date{
+    width: 15%;
+}
+.telesale .summary-order-table th.summary-head-total{
+    width: 15%;
+}
+.telesale .summary-order-table th.summary-head-state{
+    width: 10%;
+}
+.telesale .summary-order-table th.summary-head-show{
+    width: 12.5%;
+}
+.telesale .summary-order-table th.summary-head-add{
+    width: 12.5%;
+}
+
+.telesale .summary-order-table td{
+    border: 1px solid #000;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+.telesale .summary-order-table td.summary-cell-name{
+    width: 10%;
+}
+.telesale .summary-order-table td.summary-cell-date{
+    width: 15%;
+}
+.telesale .summary-order-table td.summary-cell-total{
+    width: 15%;
+}
+.telesale .summary-order-table td.summary-cell-state{
+    width: 10%;
+}
+.telesale .summary-order-table td.summary-cell-show{
+    width: 12.5%;
+}
+.telesale .summary-order-table td.summary-head-add{
+    width: 12.5;
+}
+
+.telesale .summary-order-screen button {
+    color: black;
+    vertical-align: middle;
+    margin-right:0px;
+    border: 1px solid #353A7E;
+    background: #7f82ac;
+    background: -webkit-gradient(linear, left top, left bottom, from(#b2b3d7), to(#7f82ac));
+    background: -moz-linear-gradient(#b2b3d7, #7f82ac);
+    background:  -ms-linear-gradient(#b2b3d7, #7f82ac);
+    background:      linear-gradient(#b2b3d7, #7f82ac);
+    width: 100%;
+    padding: 0px;
+    font-size: 1.7vmin;
+}

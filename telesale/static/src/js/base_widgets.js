@@ -67,21 +67,30 @@ var TsWidget = TsBaseWidget.extend({
         this.new_order_screen = new Screens.OrderScreenWidget(this, {});
         this.new_order_screen.appendTo(this.$('#content'));
 
+        //Order History Screen
+        this.order_history_screen = new Screens.OrderHistoryScreenWidget(this, {});
+        this.order_history_screen.appendTo(this.$('#content'));
+
          //Summary Orders Screen
         this.summary_order_screen = new Screens.SummaryOrderScreenWidget(this, {});
         this.summary_order_screen.appendTo(this.$('#content'));
+
+        //Product Catalog Screen
+        this.product_catalog_screen = new Screens.ProductCatalogScreenWidget(this, {});
+        this.product_catalog_screen.appendTo(this.$('#content'));
+
+        //Key Shorts Screen
+        this.key_shorts_screen = new Screens.KeyShortsScreenWidget(this, {});
+        this.key_shorts_screen.appendTo(this.$('#content'));
 
         // --------  SCREEN SELECTOR ---------
         this.screen_selector = new Screens.ScreenSelector({
             screen_set:{
                 'new_order': this.new_order_screen,
+                'order_history': this.order_history_screen,
+                'product_catalog': this.product_catalog_screen,
                 'summary_order': this.summary_order_screen,
-                // 'call_list': this.call_list_screen,
-                // 'tele_analysis': this.tele_analysis_screen,
-                // 'product_reserved': this.product_reserved_screen,
-                // 'order_history': this.order_history_screen,
-                // 'product_catalog': this.product_catalog_screen,
-                // 'key_shorts': this.key_shorts_screen,
+                'key_shorts': this.key_shorts_screen,
             },
             popup_set:{
                 // 'product_sust_popup': this.product_sust_popup,

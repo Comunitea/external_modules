@@ -4,6 +4,8 @@ odoo.define('telesale.Screens', function (require) {
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var NewOrder = require('telesale.new_order_widgets');
 var Summary = require('telesale.Summary');
+var OrderHistory = require('telesale.OrderHistory');
+var ProductCatalog = require('telesale.ProductCatalog');
 var models = require('telesale.models');
 var core = require('web.core');
 var _t = core._t;
@@ -149,7 +151,7 @@ exports.OrderScreenWidget = ScreenWidget.extend({
         // Also creates first order when is loaded for dirst time
         this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model }));
         this.order_widget= new NewOrder.OrderWidget(this, {});
-        this.order_widget.replace($('#placeholder-order-widget'));
+        this.order_widget.replace(this.$('#placeholder-order-widget'));
         //top part
         // this.data_order_widget = new NewOrder.DataOrderWidget(this, {});
         // this.data_order_widget.replace($('#placeholder-toppart'));
@@ -172,7 +174,78 @@ exports.SummaryOrderScreenWidget = ScreenWidget.extend({
     },
     start: function(){
         this.summary_order_widget = new Summary.SummaryOrderWidget(this, {});
-        this.summary_order_widget.replace($('#placeholder-summary-order-widget'));
+        this.summary_order_widget.replace(this.$('#placeholder-summary-order-widget'));
+    },
+});
+
+exports.ProductCatalogScreenWidget = ScreenWidget.extend({
+    template: 'Product-Catalog-Screen-Widget',
+    init: function(parent,options){
+        this._super(parent,options)
+    },
+    search_customer_products: function(query,string){
+        var re = RegExp("([0-9]+):.*?"+query,"gi");
+        var results = [];
+        for(var i = 0; i < 100; i++){
+            r = re.exec(string);
+            if(r){
+                var id = Number(r[1]);
+                results.push(this.ts_model.db.get_product_by_id(id));
+            }else{
+                break;
+            }
+        }
+        return results;
+    },
+    start: function(){
+        var self = this;
+        this.product_catalog_widget = new ProductCatalog.ProductCatalogWidget(this, {});
+        this.product_catalog_widget.replace(this.$('#placeholder-product-catalog-widget'));
+        this.$("#search-product").keyup(function(event){
+            var query = $(this).val().toLowerCase();
+            if(query && self.ts_model.get("product_search_string")){
+                if(event.which === 13){
+                    if( self.ts_model.get('products').size() === 1 ){
+                        self.ts_model.get('selectedOrder').addProductLine(self.ts_model.get('products').at(0).id);
+                        // self.clear_search();
+                    }
+                }else{
+                    var products = self.search_customer_products(query,self.ts_model.get("product_search_string"));
+                    self.ts_model.get('products').reset(products);
+                    var upd = self.ts_model.get('update_catalog')
+                    if (upd === 'a'){
+                        upd = 'b'
+                    }
+                    else{
+                        upd = 'a'
+                    }
+                    self.ts_model.set('update_catalog', upd)
+                    // self.$('.search-clear').fadeIn();
+                }
+            }else{
+                // var products = self.ts_model.db.get_product_by_category(self.category.id);
+                // self.ts_model.get('products').reset(products);
+                // self.$('.search-clear').fadeOut();
+            }
+        });
+    }
+});
+
+exports.OrderHistoryScreenWidget = ScreenWidget.extend({
+    template: 'Order-History-Screen-Widget',
+    init: function(parent,options){
+        this._super(parent,options)
+    },
+    start: function(){
+        this.order_history_widget = new OrderHistory.OrderHistoryWidget(this, {});
+        this.order_history_widget.replace(this.$('#placeholder-order-history-widget'));
+    },
+});
+
+exports.KeyShortsScreenWidget = ScreenWidget.extend({
+    template: 'Key-Shorts-Screen-Widget',
+    init: function(parent,options){
+        this._super(parent,options)
     },
 });
 

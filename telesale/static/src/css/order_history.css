@@ -1,0 +1,119 @@
+
+.telesale .textcenter{
+    text-align: center;
+}
+
+.telesale .order-history-screen{
+    width: 100%;
+    height:100%;
+    position:relative;
+}
+
+.telesale .order-history-search{
+    width: 100%;
+    height: 10%;
+    border-bottom: solid 1px #CECBCB;
+}
+
+.telesale .order-history-search .input-column{
+    width: 24%;
+    height: 100%;
+    float:left;
+    display:table;
+    text-align: center;
+}
+
+.telesale .order-history-search .input-search input{
+    width: 20%;
+    margin: auto;
+}
+
+
+
+.telesale .order-history-content{
+    width: 100%;
+    height:90%;
+    overflow: auto;
+}
+
+.telesale .customer{
+    width: 97%;
+}
+
+/*TABLE WITH ORDERS*/
+
+.telesale .history-line-table {
+    margin-top: 0.2%;
+    width: 99%;
+    border: 1px solid #000;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    font-size: 1.7vmin;
+}
+
+.telesale .history-line-table th{
+    border: 1px solid #000;
+    height: 9%;
+    background: #7f82ac;
+    text-align: center;
+    color:black;
+}
+.telesale .history-line-table th.head-name{
+    width: 10%;
+}
+.telesale .history-line-table th.head-date{
+    width: 20%;
+}
+.telesale .history-line-table th.head-total{
+    width: 15%;
+}
+.telesale .history-line-table th.head-state{
+    width: 10%;
+}
+.telesale .history-line-table th.head-add{
+    width: 12.5%;
+}
+.telesale .history-line-table th.head-create{
+    width: 12.5%;
+}
+
+.telesale .history-line-table td{
+    border: 1px solid #000;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.telesale .history-line-table td.cell-name{
+    width: 10%;
+}
+.telesale .history-line-table td.cell-date{
+    width: 20%;
+}
+.telesale .history-line-table td.cell-total{
+    width: 15%;
+}
+.telesale .history-line-table td.cell-state{
+    width: 10%;
+}
+.telesale .history-line-table td.cell-add{
+    width: 12.5%;
+}
+.telesale .history-line-table td.cell-create{
+    width: 12.5%;
+}
+
+.telesale .order-history-screen button {
+    color: black;
+    vertical-align: middle;
+    margin-right:0px;
+    border: 1px solid #353A7E;
+    background: #7f82ac;
+    background: -webkit-gradient(linear, left top, left bottom, from(#b2b3d7), to(#7f82ac));
+    background: -moz-linear-gradient(#b2b3d7, #7f82ac);
+    background:  -ms-linear-gradient(#b2b3d7, #7f82ac);
+    background:      linear-gradient(#b2b3d7, #7f82ac);
+    width: 100%;
+    padding: 0px;
+    font-size: 1.7vmin;
+}
