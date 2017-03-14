@@ -60,7 +60,7 @@ var TsWidget = TsBaseWidget.extend({
         });
     },
     build_widgets: function() {
-
+        var self = this;
          // --------  SCREEN WIDGETS ---------
 
         //New Order Screen (default)
