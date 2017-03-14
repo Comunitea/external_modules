@@ -7,19 +7,17 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
-                <field name="website" position="after">
-                  <group colspan="4" string="Expense Structure">
-           
-                        <field name="structure_id"/>
-
+                <field name="date" position="after">
+                  <group colspan="4" string="Expense Structure" attrs="{'invisible': [('customer', '=', False)]}">
+                      <group colspan="4">
+                          <field name="structure_id"/>
+                      </group>
+                      <group colspan="4">
+                          <button name="%(customer_expense_wzd_action)d" string="Compute" class="oe_inline oe_stat_button"
+                                  context="{'customer_id': active_id}" icon="fa-money" type="action"/>
+                      </group>
                   </group>
-                  <group colspan="4">
-                      <button name="%(customer_expense_wzd_action)d" string="Compute" class="oe_inline oe_stat_button"
-                              context="{'customer_id': active_id}" icon="fa-money" type="action"/>
-                  </group>
-                 
                 </field>
-                 
             </field>
         </record>
 

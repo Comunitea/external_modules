@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+
         <record id="view_expense_structure_tree" model="ir.ui.view">
             <field name="name">expense.structure.tree</field>
             <field name="model">expense.structure</field>
@@ -30,7 +30,6 @@
                     <group string="Structure Elements" colspan="4">
                             <field name="element_ids" nolabel="1" colspan="4"/>
                     </group>
-            
                 </form>
             </field>
         </record>
@@ -62,10 +61,10 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Expense Structure Elements"
-                      colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale'];
-                               green:compute_type == 'invoicing';
-                               orange:compute_type == 'ratio';
-                               blue:compute_type == 'distribution'">
+                      colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale', 'total_general'];
+                              green:compute_type == 'invoicing';
+                              orange:compute_type == 'ratio';
+                              blue:compute_type == 'distribution'">
                     <field name="sequence"/>
                     <field name="name"/>
                     <field name="expense_type_id"/>
@@ -89,7 +88,7 @@
                     </group>  
                     <group string="Select parent and ratio" attrs="{'invisible':[('compute_type', '!=', 'ratio')]}">
                         <field name="structure_id" invisible="1"/>  
-                        <field name="ratio"/>
+                        <field name="ratio" digits="(14, 4)"/>
                         <!-- Así hay que guardar primero y seleccionar el partner. -->
                         <field name="parent_id" domain="[('structure_id', '=', structure_id), ('id', '!=', id)]"/>
                     </group>
@@ -115,12 +114,13 @@
 
          <record id="action_expense_structure_elements" model="ir.actions.act_window">
             <field name="name">Expense Structure Elements</field>
-             <field name="type">ir.actions.act_window</field>
+            <field name="type">ir.actions.act_window</field>
             <field name="res_model">expense.structure.elements</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="view_expense_structure_elements_filter"/>
-             <field name="context">{}</field>
+            <field name="context">{}</field>
         </record>
+
     </data>
 </openerp>
