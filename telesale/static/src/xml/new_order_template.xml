@@ -307,13 +307,7 @@
                     <div class="col-xs-12 fullheight">
                       <div class="fullheight centerinside fullwidth">
                         <div class="centerthis">
-                            <!-- TODO QUITAR -->
-                          <!-- <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == true">
-                              <label for="customer" class="red" id="labelpartner">Indirect Customer:</label>
-                          </t>
-                          <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == false">
-                              <label for="customer" id="labelpartner">Customer:</label>
-                          </t> -->
+                            <label for="customer" id="labelpartner">Customer:</label>
                             <input class="mandatory tab1" type="text" id="partner" name="customer" t-att-value="widget.order_model.get('partner')" tabIndex="1"/>
                         </div>
                       </div>
@@ -407,14 +401,11 @@
                             <div class="fullheight centerinside fullwidth">
                               <div class="centerthis">
                                 <!-- TODO QUIT -->
-                                <!-- <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == true">
+
                                   <label for="client_order_ref_lbl" class="red">Client Order Ref.:</label>
                                   <input class="mandatory" type="text" id="client_order_ref" name="client_order_ref" t-att-value="widget.order_model.get('client_order_ref')" tabIndex="7"/>
-                                </t>
-                                <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == false">
-                                  <label for="client_order_ref_lbl">Client Order Ref.:</label>
-                                  <input class="" readonly="true" type="text" id="client_order_ref" name="client_order_ref" t-att-value="widget.order_model.get('client_order_ref')"/>
-                                </t> -->
+
+
                               </div>
                             </div>
                           </div>
@@ -455,58 +446,6 @@
                     </div>
               </div>
       </div>
-          <!-- <div class="col-xs-2 fullheight">
-              <div class="row semiheight">
-                  <div class="fullheight centerinside fullwidth">
-                      <div class="centerthis">
-                          <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == true">
-                              <label for="customer" class="red" id="labelpartner">Indirect Customer:</label>
-                          </t>
-                          <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == false">
-                              <label for="customer" id="labelpartner">Customer:</label>
-                          </t>
-                            <input class="mandatory" type="text" id="partner" name="customer" t-att-value="widget.order_model.get('partner')" tabIndex="1"/>
-                      </div>
-                  </div>
-                </div>
-              <div class="row semiheight">
-                  <div class="fullheight centerinside fullwidth">
-                    <div class="centerthis">
-                      <label for="partner_code">Customer Code</label>
-                      <input class="mandatory" type="text" id='partner_code' name="partner_code" t-att-value="widget.order_model.get('partner_code')" tabIndex="7"/>
-
-                    </div>
-                  </div>
-              </div>
-          </div>
-
-          <div class="col-xs-2 fullheight">
-              <div class="row semiheight">
-                  <div class="fullheight centerinside fullwidth">
-                    <div class="centerthis">
-                      <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == true">
-                        <label class="red" for="total">Suppliers:</label>
-                        <input type="text" class='total mandatory' id="supplier"
-                            t-att-value="widget.order_model.get('supplier')" tabIndex="2"/>
-                      </t>
-                      <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == false">
-                        <label for="total">Suppliers:</label>
-                        <input type="text" class='total' id="supplier"
-                            value="" readonly="True" tabIndex="-1"/>
-                      </t>
-                    </div>
-                  </div>
-              </div>
-              <div class="row semiheight">
-                  <div class="fullheight centerinside fullwidth">
-                    <div class="centerthis">
-                      <label for="contact_name">Contact Name:</label>
-                     <input class=" " type="text" id='contact_name' name="contact_name" t-att-value="widget.order_model.get('contact_name')" readonly="readonly" tabIndex="-1"/>
-                  </div>
-                </div>
-              </div>
-        </div> -->
-
     </t>
 
     <t t-name="Totals-Order-Widget">
@@ -524,10 +463,8 @@
               <div class="row semiheight">
                   <div class="fullheight centerinside fullwidth">
                       <div class="centerthis">
-                        <!-- <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == true">
                           <label for="client_order_ref_lbl" class="red">Client Order Reference:</label>
                           <input class="mandatory" type="text" id="client_order_ref" name="client_order_ref" t-att-value="widget.order_model.get('client_order_ref')"/>
-                        </t> -->
                       </div>
                   </div>
               </div>
@@ -632,74 +569,6 @@
 
 
         </div>
-
-
-
-
-            <!-- <div class="bottompart-form"> -->
-                <!-- <div class="form-col">
-
-                        <label for="total_boxes">Total Boxes:</label>
-                        <input type="text" id='total_boxes' name="total_boxes"
-                            t-att-value="widget.order_model.get('total_boxes').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-                        <br/>
-                        <br/>
-
-                        <label for="total_weight">Total Weight:</label>
-                        <input type="numeric" id='total_weight' name="total_weight"
-                            t-att-value="widget.order_model.get('total_weight').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-                        <br/>
-                        <br/>
-
-                        <label for="total_base">Total Base:</label>
-                        <input type="text" id='total_base' name="total_base"
-                            t-att-value="widget.order_model.get('total_base').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-                </div>
-                <div class="form-col">
-
-                        <label for="total_discount">Discount:</label>
-                        <input type="numeric" id='total_discount' name="total_discount"
-                            t-att-value="widget.order_model.get('total_discount').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-                        <br/>
-                        <br/>
-
-                        <label for="total_margin">Total Margin:</label>
-                        <input type="numeric" t-att-value="widget.order_model.get('total_margin').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-                        <br/>
-                        <br/>
-                        <label for="total_iva">Total Iva:</label>
-                        <input type="numeric" id='total_iva' name="total_discount"
-                            t-att-value="widget.order_model.get('total_iva').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-                </div>
-                <div class="form-col">
-
-                        <label for="total">Discount (%):</label>
-                        <input type="text" class='total' name="discount_total"
-                            t-att-value="widget.order_model.get('total_discount').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-
-                        <br/>
-                        <br/>
-                        <label for="total">Margin (%):</label>
-                        <input type="text" class='total' id='total_margin'
-                            t-att-value="widget.order_model.get('total_margin').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-
-                        <br/>
-                        <br/>
-                        <label for="total">Total Order:</label>
-                        <input type="text" class='total' id="total_order"
-                            t-att-value="widget.order_model.get('total').toFixed(2)" tabIndex="-1" readonly="readonly"/>
-                        <label for="total">Total Fresh:</label>
-                        <input type="text" class='total' id="total_fresh"
-                            t-att-value="widget.order_model.get('total_fresh').toFixed(2)" tabIndex="-1" readonly="readonly"/>
-
-                </div>
-                <div class="form-col">
-                    <t t-if="widget.order_model.get('state') == 'draft'">
-                        <button class="save-button">SAVE</button>
-                        <button class="cancel-button">CANCEL</button>
-                        <button class="confirm-button">CONFIRM</button>
-                    </t>
-                </div> -->
     </t>
 
     <t t-name="ProductInfo-Order-Widget">
