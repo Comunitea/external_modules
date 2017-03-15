@@ -8,6 +8,10 @@ var _t = core._t;
 var TsBaseWidget = require('telesale.TsBaseWidget');
 
 
+
+// **************************************************************************************************************************
+// ************************************************ORDER BUTTON WIDGET*******************************************************
+// **************************************************************************************************************************
 var OrderButtonWidget = TsBaseWidget.extend({
     template:'Order-Button-Widget',
     init: function(parentautocomplete, options) {
@@ -54,6 +58,11 @@ var OrderButtonWidget = TsBaseWidget.extend({
     },
 });
 
+
+
+// **************************************************************************************************************************
+// ************************************************DATA ORDER WIDGET*********************************************************
+// **************************************************************************************************************************
 var DataOrderWidget = TsBaseWidget.extend({
     template:'Data-Order-Widget',
     init: function(parent, options) {
@@ -101,7 +110,6 @@ var DataOrderWidget = TsBaseWidget.extend({
                 self.order_model.set('partner', "");
                 self.refresh();
             }
-
             else {
                 var partner_obj = self.ts_model.db.get_partner_by_id(partner_id);
               
@@ -137,7 +145,8 @@ var DataOrderWidget = TsBaseWidget.extend({
         var self=this;
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice'],
+                                        ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id',
+                                         'date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice'],
                                         [
                                             ['id', '=', order_id]
                                         ])
@@ -168,6 +177,11 @@ var DataOrderWidget = TsBaseWidget.extend({
     },
 });
 
+
+
+// **************************************************************************************************************************
+// ************************************************ORDER LINE WIDGET*********************************************************
+// **************************************************************************************************************************
 var OrderlineWidget = TsBaseWidget.extend({
     template: 'Order-line-Widget',
     init: function(parent, options) {
@@ -189,38 +203,6 @@ var OrderlineWidget = TsBaseWidget.extend({
     },
     control_arrow_keys: function(){
       var self=this;
-        this.$('.col-product_uos_qty').keydown(function(event){
-          var keyCode = event.keyCode || event.which;
-          if (keyCode == 40 || keyCode == 38) {  // KEY DOWWN (40) up (38)
-            var selected_line = self.order.selected_orderline;
-            if (selected_line){
-                var n_line = selected_line.get('n_line');
-                var idx =(keyCode == 40) ? n_line + 1 : n_line - 1;
-                var next_line = self.order_widget.orderlinewidgets[idx - 1]
-                if (next_line) {
-
-                  self.order.selectLine(next_line.model);
-                  next_line.$el.find('.col-product_uos_qty').focus();
-                }
-            }
-          }
-        });
-        this.$('.col-price_udv').keydown(function(event){
-          var keyCode = event.keyCode || event.which;
-          if (keyCode == 40 || keyCode == 38) {  // KEY DOWWN (40) up (38)
-            var selected_line = self.order.selected_orderline;
-            if (selected_line){
-                var n_line = selected_line.get('n_line');
-                var idx =(keyCode == 40) ? n_line + 1 : n_line - 1;
-                var next_line = self.order_widget.orderlinewidgets[idx - 1]
-                if (next_line) {
-
-                  self.order.selectLine(next_line.model);
-                  next_line.$el.find('.col-price_udv').focus();
-                }
-            }
-          }
-        });
         this.$('.col-pvp').keydown(function(event){
           var keyCode = event.keyCode || event.which;
           if (keyCode == 40 || keyCode == 38) {  // KEY DOWWN (40) up (38)
@@ -253,47 +235,14 @@ var OrderlineWidget = TsBaseWidget.extend({
             }
           }
         });
-        // my_shift = false
-        // this.$('.col-discount').keydown(function(event){
-        //  var keyCode = event.keyCode || event.which;
-        //   if (event.shiftKey){
-        //       my_shift = true
-        //   }
-        //   if (keyCode == 9 && !my_shift){
-        //       self.$('.col-total').focus()
-        //       my_shift = false
-        //    }
-        // });
-        // my_shift = false
-        // this.$('.col-discount').keydown(function(event){
-        //      var keyCode = event.keyCode || event.which;
-        //      if (keyCode == 13){ //INTRO TAB
-        //         //  Añadir nueva linea o cambiar el foco a la de abajo si la hubiera
-        //          var selected_line = self.order.selected_orderline;
-        //          if (selected_line){
-        //              var n_line = selected_line.get('n_line');
-        //              if (n_line == self.order_widget.orderlinewidgets.length){
-        //                  $('.add-line-button').click()
-        //              }
-        //              else{
-        //                  var next_line = self.order_widget.orderlinewidgets[n_line]
-        //                  if(next_line){
-        //                 //    self.order.selectLine(next_line.model);
-        //                    next_line.$el.find('.col-code').focus();
-        //                  }
-        //              }
-        //          }
-        //      }
-        // });
     },
     renderElement: function() {
         var self=this;
         this._super();
         this.$el.unbind()
-        // this.$el.click(_.bind(this.click_handler, this));
+
         if(this.model.is_selected()){
             this.$('.col-nline').addClass('selected');
-            // this.$el.addClass('selected');
         }
         // Si el campo se rellena con autocomplete se debe usar blur
         this.$('.col-code').blur(_.bind(this.set_value, this, 'code'));
@@ -302,26 +251,12 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.$('.col-product').blur(_.bind(this.set_value, this, 'product'));
         this.$('.col-product').focus(_.bind(this.click_handler, this, 'product'));
 
-        this.$('.col-product_uos_qty').change(_.bind(this.set_value, this, 'product_uos_qty'));
-        this.$('.col-product_uos_qty').focus(_.bind(this.click_handler, this, 'product_uos_qty'));
-
-        this.$('.col-product_uos').blur(_.bind(this.set_value, this, 'product_uos'));
-        this.$('.col-product_uos').focus(_.bind(this.click_handler, this, 'product_uos'));
-
-        this.$('.col-price_udv').change(_.bind(this.set_value, this, 'price_udv'));
-        this.$('.col-price_udv').focus(_.bind(this.click_handler, this, 'price_udv'));
-
+       
         this.$('.col-qty').change(_.bind(this.set_value, this, 'qty'));
         this.$('.col-qty').focus(_.bind(this.click_handler, this, 'qty'));
 
-        this.$('.col-unit').blur(_.bind(this.set_value, this, 'unit'));
-        this.$('.col-unit').focus(_.bind(this.click_handler, this, 'unit'));
-
-        this.$('.col-qnote').blur(_.bind(this.set_value, this, 'qnote'));
-        this.$('.col-qnote').focus(_.bind(this.click_handler, this, 'qnote'));
-
-        this.$('.col-qty').change(_.bind(this.set_value, this, 'qty'));
-        this.$('.col-qty').focus(_.bind(this.click_handler, this, 'qty'));
+        this.$('.col-product_uom').blur(_.bind(this.set_value, this, 'unit'));
+        this.$('.col-product_uom').focus(_.bind(this.click_handler, this, 'unit'));
 
         this.$('.col-pvp').change(_.bind(this.set_value, this, 'pvp'));
         this.$('.col-pvp').focus(_.bind(this.click_handler, this, 'pvp'));
@@ -332,13 +267,13 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.$('.col-total').change(_.bind(this.set_value, this, 'total'));
         this.$('.col-total').focus(_.bind(this.click_handler, this, 'total'));
 
-        this.$('.col-detail').change(_.bind(this.set_value, this, 'detail'));
-        this.$('.col-detail').focus(_.bind(this.click_handler, this, 'detail'));
+
 
         // Mapeo de teclas para moverse por la tabla con las flechas
         this.control_arrow_keys()
         // Creamos nueva linea al tabular la última columna de descuento
 
+        // Cargo todas las unidades en la linea
         for (var unit in self.ts_model.db.unit_name_id){
             var dic = { value: unit,
                         text: unit}
@@ -347,33 +282,7 @@ var OrderlineWidget = TsBaseWidget.extend({
             }
             self.$('.col-product_uom').append($('<option>', dic))
         }
-        if(this.model.get('product')){
-            var uos = [];
-            var product_id = this.ts_model.db.product_name_id[this.model.get('product')]
-            var product_obj = this.ts_model.db.product_by_id[product_id]
-            if(product_obj.base_use_sale){
-                uos.push(product_obj.log_base_id[1]);
-            }
-            if(product_obj.unit_use_sale){
-                uos.push(product_obj.log_unit_id[1]);
-            }
-            if(product_obj.box_use_sale){
-                uos.push(product_obj.log_box_id[1]);
-            }
-            // self.$('.col-product_uos').autocomplete({
-            //     source: uos
-            // });
-            for (unit in uos){
-                dic = {
-                    value: uos[unit],
-                    text: uos[unit],
-                }
-                if (uos[unit] == self.model.get('product_uos')){
-                    dic['selected'] =  "selected"
-                }
-                self.$('.col-product_uos').append($('<option>',dic))
-            }
-        }
+
        //autocomplete products and units from array of names
         var products_ref = this.ts_model.get('products_codes')
 
@@ -384,18 +293,9 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.$('.col-product').autocomplete({
             source: product_names,
         });
-        console.log("ACTUALIZADO LINEA PRODUCTOS")
-        console.log(product_names)
-        /*this.$('.col-unit').autocomplete({
-            source:this.ts_model.get('units_names')
-        });*/
-        this.$('.col-qnote').autocomplete({
-            source:this.ts_model.get('qnotes_names')
-        });
-
-
     },
     set_value: function(key) {
+        var self = this;
         var value = this.$('.col-'+key).val();
         var set=true;
         if (key == 'qty' || key == 'pvp' || key == 'total' || key == 'discount' ){
@@ -445,14 +345,14 @@ var OrderlineWidget = TsBaseWidget.extend({
                 self.model.set('taxes_ids', result.tax_id || []); //TODO poner impuestos de producto o vacio
                 self.model.set('unit', self.model.ts_model.db.unit_by_id[result.product_uom].name);
                 self.model.set('qty', result.product_uom_qty);
+                self.model.set('discount', 0.0);
                 self.model.set('pvp', self.ts_model.my_round( result.price_unit));
                
                 var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
                 self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
                 self.refresh();
-                self.$('.col-product_uos_qty').focus()
-                self.$('.col-product_uos_qty').select()
-
+                self.$('.col-product_uom_qty').focus()
+                self.$('.col-product_uom_qty').select()
             });
         })
         .fail(function(){
@@ -507,7 +407,7 @@ var OrderlineWidget = TsBaseWidget.extend({
             //         this.refresh();
             //         break;
             //     }
-            //     var uom_name = this.$('.col-unit').val();
+            //     var uom_name = this.$('.col-product_uom').val();
             //     var uom_id = this.ts_model.db.unit_name_id[uom_name];
             //     if (!uom_id){
             //         alert(_t("Unit of measure '" + uom_name + "' does not exist"));
@@ -687,6 +587,11 @@ var OrderlineWidget = TsBaseWidget.extend({
     },
 });
 
+
+
+// **************************************************************************************************************************
+// ************************************************ORDER WIDGET**************************************************************
+// **************************************************************************************************************************
 
 var OrderWidget = TsBaseWidget.extend({
         template:'Order-Widget',
