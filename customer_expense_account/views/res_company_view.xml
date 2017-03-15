@@ -7,18 +7,17 @@
             <field name="model">res.company</field>
             <field name="inherit_id" ref="base.view_company_form" />
             <field name="arch" type="xml">
-                <notebook position="inside">ç
-                  <page string="Expense Structure">
-                      <group colspan="4" string="Expense Structure">
+                <notebook position="inside">
+                    <page string="Expense Structure">
+                        <group colspan="4" string="Expense Structure">
                             <field name="structure_id"/>
-                      </group>
-                      <group colspan="4">
-                          <button name="%(customer_expense_wzd_action)d" string="Compute" class="oe_inline oe_stat_button"
-                                  context="{'customer_id': active_id}" icon="fa-money" type="action"/>
-                      </group>
-                </page>
+                        </group>
+                        <group colspan="4">
+                            <button name="%(customer_expense_wzd_action)d" string="Compute" class="oe_inline oe_stat_button"
+                                    context="{'all_company': True}" icon="fa-money" type="action"/>
+                        </group>
+                    </page>
                 </notebook>
-                 
             </field>
         </record>
 

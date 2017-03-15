@@ -5,7 +5,6 @@ from openerp import models, fields
 
 
 class ResCompany(models.Model):
-
     _inherit = 'res.company'
 
     structure_id = fields.Many2one('expense.structure',

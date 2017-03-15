@@ -48,13 +48,18 @@
         </record>
 
         <record id="expense_type7" model="expense.type">
+            <field name="name">Total General</field>
+            <field name="compute_type">total_general</field>
+        </record>
+
+        <record id="expense_type8" model="expense.type">
             <field name="name">Fixed Distribution</field>
             <field name="compute_type">distribution</field>
             <field name="analytic_id" ref="analytic_account1"/>
             <field name="ratio_compute_type">fixed</field>
         </record>
 
-         <record id="expense_type8" model="expense.type">
+         <record id="expense_type9" model="expense.type">
             <field name="name">Invoicing Distribution</field>
             <field name="compute_type">distribution</field>
             <field name="ratio_compute_type">invoicing</field>
@@ -111,17 +116,26 @@
             <field name="expense_type_id" ref="expense_type6"/>
             <field name="structure_id" ref="expense_structure1"/>
         </record>
+
         <record id="expense_element7" model="expense.structure.elements">
             <field name="sequence">7</field>
-            <field name="name">Fixed Distribution</field>
+            <field name="name">Total General</field>
             <field name="expense_type_id" ref="expense_type7"/>
+            <field name="structure_id" ref="expense_structure1"/>
+        </record>
+
+        <record id="expense_element8" model="expense.structure.elements">
+            <field name="sequence">8</field>
+            <field name="name">Fixed Distribution</field>
+            <field name="expense_type_id" ref="expense_type8"/>
             <field name="structure_id" ref="expense_structure1"/>
             <field name="var_ratio">0.10</field>
         </record>
-        <record id="expense_element8" model="expense.structure.elements">
-            <field name="sequence">7</field>
+
+        <record id="expense_element9" model="expense.structure.elements">
+            <field name="sequence">9</field>
             <field name="name">Invoicing Distribution</field>
-            <field name="expense_type_id" ref="expense_type8"/>
+            <field name="expense_type_id" ref="expense_type9"/>
             <field name="structure_id" ref="expense_structure1"/>
         </record>
 

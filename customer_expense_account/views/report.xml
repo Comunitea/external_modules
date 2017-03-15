@@ -11,5 +11,6 @@
           file="customer_expense_account.customer_expense_report"
           menu="False"
       />
+
     </data>
 </openerp>

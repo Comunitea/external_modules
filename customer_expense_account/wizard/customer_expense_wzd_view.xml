@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
 
@@ -17,10 +17,13 @@
                     </group>
                     <group>
                         <field name="structure_id"/>
+                        <field name="use_partner_structure"
+                               invisible="[context.get('active_id')]==context.get('active_ids')"/>
                     </group>
                     <footer>
                         <button name="action_show_expense" string="Show Expenses" type="object" class="oe_inline oe_stat_button"
-                                icon="fa-eye"/>
+                                icon="fa-eye"
+                                invisible="[context.get('active_id')]!=context.get('active_ids')"/>
                         <button name="action_print_expense" string="Print Expenses" type="object" class="oe_inline oe_stat_button"
                                 icon="fa-file-text-o"/>
                     </footer>
@@ -34,23 +37,23 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Expense Line"
-                       colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale'];
+                       colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale', 'total_general'];
                                green:compute_type == 'invoicing';
                                orange:compute_type == 'ratio';
                                blue:compute_type == 'distribution'">
                     <field name="name"/>
-                    <field name="sales"/>
-                    <field name="cost"/>
-                    <field name="margin"/>
-                    <field name="cost_per"/>
-                    <field name="margin_per"/>
-                    <field name="compute_type" invisible="1"/>
+                    <field name="sales" attrs="{'invisible':[('sales','=',0)]}"/>
+                    <field name="cost" attrs="{'invisible':[('cost','=',0)]}"/>
+                    <field name="margin" attrs="{'invisible':[('margin','=',0)]}"/>
+                    <field name="cost_per" attrs="{'invisible':[('cost_per','=',0)]}"/>
+                    <field name="margin_per" attrs="{'invisible':[('margin_per','=',0)]}"/>
+                    <field name="compute_type" invisible="0"/> <!-- Visible only for esthetic reasons -->
                 </tree>
             </field>
         </record>
 
          <act_window id="customer_expense_wzd_action"
-             name="Print Customer Expense Account"
+             name="Customer Expense Account"
              key2="client_action_multi"
              src_model="res.partner"
              res_model="customer.expense.wzd"

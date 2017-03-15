@@ -106,8 +106,9 @@ class TestExpenseStructure(TransactionCase):
                  50,00   450,00     10,00    90,00
         100,00           550,00              91,67
         600,00
-        50,00                       8,33
+                 50,00              8,33
                          550,00              91,67
+        600,00   50,00   550,00     8,33     91,67
         50,00            600,00              92,31
         """
         if num_line == 1:
@@ -159,6 +160,14 @@ class TestExpenseStructure(TransactionCase):
             self.assertEquals(l.cost_per, '')
             self.assertEquals(l.margin_per, '91,67')
         elif num_line == 7:
+            self.assertEquals(l.name, 'Total General')
+            self.assertEquals(l.compute_type, 'total_general')
+            self.assertEquals(l.sales, '600,00')
+            self.assertEquals(l.cost, '50,00')
+            self.assertEquals(l.margin, '550,00')
+            self.assertEquals(l.cost_per, '8,33')
+            self.assertEquals(l.margin_per, '91,67')
+        elif num_line == 8:
             self.assertEquals(l.name, 'Fixed Distribution')
             self.assertEquals(l.compute_type, 'distribution')
             self.assertEquals(l.sales, '50,00')
@@ -166,7 +175,7 @@ class TestExpenseStructure(TransactionCase):
             self.assertEquals(l.margin, '600,00')
             self.assertEquals(l.cost_per, '')
             self.assertEquals(l.margin_per, '92,31')
-        elif num_line == 8:
+        elif num_line == 9:
             self.assertEquals(l.name, 'Invoicing Distribution')
             self.assertEquals(l.compute_type, 'distribution')
             # Imposible Know the total invoice of the launched test enviroment

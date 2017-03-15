@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+
         <record id="view_compute_type_tree" model="ir.ui.view">
             <field name="name">expense.type.tree</field>
             <field name="model">expense.type</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Expense Types"
-                      colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale'];
-                               green:compute_type == 'invoicing';
-                               orange:compute_type == 'ratio';
-                               blue:compute_type == 'distribution'">
+                      colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale', 'total_general'];
+                              green:compute_type == 'invoicing';
+                              orange:compute_type == 'ratio';
+                              blue:compute_type == 'distribution'">
                     <field name="name"/>
                     <field name="compute_type"/>
                 </tree>
@@ -43,11 +43,13 @@
                         <field name="company_id"/>
                     </group>
                     <group string="Options" attrs="{'invisible':[('compute_type', 'not in', ('analytic', 'invoicing') )]}">  
-                        <field name="journal_id" attrs="{'invisible':[('compute_type', 'not in', ('analytic') )]}"/>
+                        <field name="col_type" attrs="{'invisible':[('compute_type', 'not in', ('analytic'))]}"/>
+                        <field name="journal_id" attrs="{'invisible':[('compute_type', 'not in', ('analytic'))]}"/>
                         <field name="product_id"/>
                         <field name="categ_id"/>
+                        <field name="restrict_partner" attrs="{'invisible':[('compute_type', 'not in', ('analytic'))]}"/>
                     </group>
-                     <group string="Options"
+                    <group string="Options"
                             attrs="{'invisible':[('compute_type', '!=', 'distribution')]}">  
                         <field name="analytic_id"/>
                         <field name="ratio_compute_type"/>

@@ -25,7 +25,9 @@ Expense types, field compute type to search the expense information:
 
 * Totalizator costs: Sum column costs an get % cost from the upper columns
 
-* Totalizator Margin: Repits the last and % margin, in order to remark them
+* Totalizator margin: Repits the last and % margin, in order to remark them
+
+* Totalizator general: Equivlent to the sales, cost and margin in one
 
 * Distribution: Select a analytic account and get a fixed of computed ratio.
 
