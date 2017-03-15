@@ -99,7 +99,7 @@ exports.TS_LS = core.Class.extend({
             var product = products[i];
             // var search_string = this._product_search_string(product);
             this.product_by_id[product.id] = product;
-            this.product_by_tmp_id[product.product_tmpl_id[0]] = product;
+            // this.product_by_tmp_id[product.product_tmpl_id[0]] = product;
             this.product_name_id[product.name] = product.id;
             if(product.default_code){
                 this.product_code_id[product.default_code] = product.id;
@@ -148,8 +148,9 @@ exports.TS_LS = core.Class.extend({
         }
         for(var i = 0, len = partners.length; i < len; i++){
             var partner = partners[i];
-            partner.property_account_position = partner.property_account_position[0];
-            partner.property_product_pricelist = partner.property_product_pricelist[0];
+            // TODO QUE QUE son estos properties??
+            // partner.property_account_position = partner.property_account_position[0];
+            // partner.property_product_pricelist = partner.property_product_pricelist[0];
             this.partner_by_id[partner.id] = partner;
             // var cus_name = partner.comercial || partner.name
             var cus_name = partner.comercial + ' | ' + partner.name + ' | ' + partner.ref
