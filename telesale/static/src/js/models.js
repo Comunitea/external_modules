@@ -474,7 +474,14 @@ var TsModel = Backbone.Model.extend({
           res =  partner_obj.name + ' | ' + partner_obj.ref
         }
         return res;
-    }
+    },
+    my_round: function(number, decimals){
+        var n = number || 0;
+        if (typeof n === "string"){
+            n = n * 1;
+        }
+        return n.toFixed(decimals) * 1
+    },
 
 });
 
