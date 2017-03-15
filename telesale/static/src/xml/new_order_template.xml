@@ -263,10 +263,10 @@
                 <input type="text" class='col-price_udv mandatory' t-att-value="widget.model.get('price_udv').toFixed(2)" />
             </td> -->
              <td class="cell-qty">
-                <input type="text" class='col-qty' t-att-value="widget.model.get('qty').toFixed(4)" readonly="readonly" tabIndex="-1"/>
+                <input type="text" class='col-qty' t-att-value="widget.model.get('qty').toFixed(4)"/>
             </td>
              <td class="cell-unit">
-                <!-- <input type="text" class='col-unit' t-att-value="widget.model.get('unit')" readonly="readonly" tabIndex="-1"/> -->
+                <!-- <input type="text" class='col-product_uom' t-att-value="widget.model.get('unit')" readonly="readonly" tabIndex="-1"/> -->
                 <select class="col-product_uom mandatory" t-att-value="widget.model.get('unit')">
                 </select>
             </td>
