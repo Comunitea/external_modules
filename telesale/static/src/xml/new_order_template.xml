@@ -322,16 +322,6 @@
             </div>
             <div class="col-xs-1 fullheight centerinside">
               <div class="centerthis">
-              <button id="promo-button" tabIndex="14">PROMO</button>
-            </div>
-            </div>
-            <div class="col-xs-1 fullheight centerinside">
-              <div class="centerthis">
-              <button id="sust-button" tabIndex="15">SUST</button>
-            </div>
-            </div>
-            <div class="col-xs-1 fullheight centerinside">
-              <div class="centerthis">
               <button id="info-button" tabIndex="16">INFO</button>
             </div>
             </div>
@@ -345,10 +335,10 @@
 
                 <div class="span-state fullwidth">
 
-                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'sent'">
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'draft'">
                       Draft
                   </t>
-                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'draft'">
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'sent'">
                       Quotation Sent
                   </t>
                   <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'cancel'">

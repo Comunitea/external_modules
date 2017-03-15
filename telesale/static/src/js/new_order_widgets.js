@@ -6,9 +6,17 @@ var Model = require('web.DataModel');
 var _t = core._t;
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
-var exports = {}
 
-exports.OrderButtonWidget = TsBaseWidget.extend({
+
+// var self.ts_model.my_round = function(number, decimals){
+//         var n = number || 0;
+//         if (typeof n === "string"){
+//             n = n * 1;
+//         }
+//         return n.toFixed(decimals) * 1
+//     };
+
+var OrderButtonWidget = TsBaseWidget.extend({
     template:'Order-Button-Widget',
     init: function(parentautocomplete, options) {
 
@@ -56,7 +64,7 @@ exports.OrderButtonWidget = TsBaseWidget.extend({
     },
 });
 
-exports.DataOrderWidget = TsBaseWidget.extend({
+var DataOrderWidget = TsBaseWidget.extend({
     template:'Data-Order-Widget',
     init: function(parent, options) {
         this._super(parent,options);
@@ -121,8 +129,8 @@ exports.DataOrderWidget = TsBaseWidget.extend({
                     
                     self.order_model.set('customer_comment', partner_obj.comment);
                     // TODO nan_partner_risk migrar a la 10
-                    // self.order_model.set('limit_credit', my_round(partner_obj.credit_limit,2));
-                    // self.order_model.set('customer_debt', my_round(partner_obj.credit,2));
+                    // self.order_model.set('limit_credit', self.ts_model.my_round(partner_obj.credit_limit,2));
+                    // self.order_model.set('customer_debt', self.ts_model.my_round(partner_obj.credit,2));
                     var contact_obj = self.ts_model.db.get_partner_contact(partner_id); //If no contacts return itself
                     self.order_model.set('comercial', partner_obj.user_id ? partner_obj.user_id[1] : "");
                     self.order_model.set('contact_name', contact_obj.name);
@@ -182,7 +190,7 @@ exports.DataOrderWidget = TsBaseWidget.extend({
     },
 });
 
-exports.OrderlineWidget = TsBaseWidget.extend({
+var OrderlineWidget = TsBaseWidget.extend({
     template: 'Order-line-Widget',
     init: function(parent, options) {
         this._super(parent,options);
@@ -411,7 +419,7 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                 set=false;
             }
             else
-                value = my_round(value,2);
+                value = self.ts_model.my_round(value,2);
         }
         if (set){
             if ( this.model.get(key) != value || key == "discount"){
@@ -449,7 +457,7 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                             console.log(result)
                             var product_obj = self.ts_model.db.get_product_by_id(product_id);
                             var uom_obj = self.ts_model.db.get_unit_by_id(product_obj.uom_id[0])
-                            self.model.set('fresh_price', my_round(result.value.last_price_fresh || 0,2));
+                            self.model.set('fresh_price', self.ts_model.my_round(result.value.last_price_fresh || 0,2));
                             self.model.set('code', product_obj.default_code || "");
                             self.model.set('product', product_obj.name || "");
                             self.model.set('taxes_ids', result.value.tax_id || []); //TODO poner impuestos de producto o vacio
@@ -457,13 +465,13 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                             self.model.set('product_uos', (result.value.product_uos) ? self.model.ts_model.db.unit_by_id[result.value.product_uos].name : self.model.get('unit'));
                             self.model.set('qty', 0);
                             self.model.set('specific_discount', result.value.discount || 0);
-                            self.model.set('weight', my_round(product_obj.weight || 0,2));
+                            self.model.set('weight', self.ts_model.my_round(product_obj.weight || 0,2));
                             if (!result.value.price_unit || result.value.price_unit == 'warn') {
                                 result.value.price_unit = 0;
                             }
-                            self.model.set('pvp_ref', my_round( (result.value.price_unit != 0 && product_obj.product_class == "normal") ? result.value.price_unit : 0,2 ));
-                            self.model.set('pvp', my_round( (product_obj.product_class == "normal") ? (result.value.price_unit || 0) : (result.value.last_price_fresh || 0), 2));
-                            self.model.set('margin', my_round( (result.value.price_unit != 0 && product_obj.product_class == "normal") ? ( (result.value.price_unit - product_obj.standard_price) / result.value.price_unit) : 0 , 2));
+                            self.model.set('pvp_ref', self.ts_model.my_round( (result.value.price_unit != 0 && product_obj.product_class == "normal") ? result.value.price_unit : 0,2 ));
+                            self.model.set('pvp', self.ts_model.my_round( (product_obj.product_class == "normal") ? (result.value.price_unit || 0) : (result.value.last_price_fresh || 0), 2));
+                            self.model.set('margin', self.ts_model.my_round( (result.value.price_unit != 0 && product_obj.product_class == "normal") ? ( (result.value.price_unit - product_obj.standard_price) / result.value.price_unit) : 0 , 2));
                             self.model.set('tourism', result.value.tourism || false);
 
 
@@ -476,7 +484,7 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                             // }
                             self.inicialize_unit_values()
                             var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
-                            self.model.set('total', my_round(subtotal || 0,2));
+                            self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
                             self.refresh();
                             self.$('.col-product_uos_qty').focus()
                             self.$('.col-product_uos_qty').select()
@@ -495,15 +503,15 @@ exports.OrderlineWidget = TsBaseWidget.extend({
         var product_obj = this.ts_model.db.get_product_by_id(product_id);
         var setted_discount = this.model.get('specific_discount')
         if (!setted_discount){
-            this.model.set('specific_discount', my_round(0.00, 2))
+            this.model.set('specific_discount', self.ts_model.my_round(0.00, 2))
             if(uos_name == product_obj.log_base_id[1]){
-                this.model.set('discount', my_round(product_obj.log_base_discount, 2))
+                this.model.set('discount', self.ts_model.my_round(product_obj.log_base_discount, 2))
             }
             else if(uos_name == product_obj.log_unit_id[1]){
-                this.model.set('discount', my_round(product_obj.log_unit_discount, 2))
+                this.model.set('discount', self.ts_model.my_round(product_obj.log_unit_discount, 2))
             }
             else if(uos_name == product_obj.log_box_id[1]){
-                this.model.set('discount', my_round(product_obj.log_box_discount, 2))
+                this.model.set('discount', self.ts_model.my_round(product_obj.log_box_discount, 2))
             }
         }
     },
@@ -515,11 +523,11 @@ exports.OrderlineWidget = TsBaseWidget.extend({
         var price_unit = this.model.get('pvp')
         conv = this.getUnitConversions(prod_name, uos_qty, uos_name)
         log_unit = this.getUomLogisticUnit(prod_name)
-        this.model.set('qty', my_round(conv[log_unit], 4));
+        this.model.set('qty', self.ts_model.my_round(conv[log_unit], 4));
         // SET DISCOUNTS
         this.set_discounts()
         uos_pu = this.getUomUosPrices(prod_name, uos_name,  price_unit)
-        this.model.set('price_udv', my_round(uos_pu, 2))
+        this.model.set('price_udv', self.ts_model.my_round(uos_pu, 2))
     },
     // Funciones relacionadas con el producto necesarias para los calculos de unidades
     getUnitConversions: function(product_name, qty_uos, uos_name){
@@ -539,18 +547,18 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                'box': 0.0}
         if(uos_id == product_obj.log_base_id[0]){
             res['base'] = qty_uos
-            res['unit'] = my_round(res['base'] / product_obj.kg_un, 4)
-            res['box'] = my_round(res['unit'] / product_obj.un_ca, 4)
+            res['unit'] = self.ts_model.my_round(res['base'] / product_obj.kg_un, 4)
+            res['box'] = self.ts_model.my_round(res['unit'] / product_obj.un_ca, 4)
         }
         else if(uos_id == product_obj.log_unit_id[0]){
             res['unit'] = qty_uos
-            res['box'] = my_round(res['unit'] / product_obj.un_ca, 4)
-            res['base'] = my_round(res['unit'] * product_obj.kg_un, 4)
+            res['box'] = self.ts_model.my_round(res['unit'] / product_obj.un_ca, 4)
+            res['base'] = self.ts_model.my_round(res['unit'] * product_obj.kg_un, 4)
         }
         else if(uos_id == product_obj.log_box_id[0]){
             res['box'] = qty_uos
-            res['unit'] = my_round(res['box'] * product_obj.un_ca, 4)
-            res['base'] = my_round(res['unit'] * product_obj.kg_un, 4)
+            res['unit'] = self.ts_model.my_round(res['box'] * product_obj.un_ca, 4)
+            res['base'] = self.ts_model.my_round(res['unit'] * product_obj.kg_un, 4)
         }
         return res
     },
@@ -592,7 +600,7 @@ exports.OrderlineWidget = TsBaseWidget.extend({
             }
             else if(uos_id == product_obj.log_unit_id[0]){
                 if(log_unit == 'base'){
-                    price_unit = my_round(price_udv / product_obj.kg_un, 2);
+                    price_unit = self.ts_model.my_round(price_udv / product_obj.kg_un, 2);
                 }
                 if(log_unit == 'unit'){
                     price_unit = price_udv;
@@ -603,10 +611,10 @@ exports.OrderlineWidget = TsBaseWidget.extend({
             }
             else if(uos_id == product_obj.log_box_id[0]){
                 if(log_unit == 'base'){
-                    price_unit =  my_round(price_udv / (product_obj.kg_un * product_obj.un_ca), 2);
+                    price_unit =  self.ts_model.my_round(price_udv / (product_obj.kg_un * product_obj.un_ca), 2);
                 }
                 if(log_unit == 'unit'){
-                    price_unit = my_round(price_udv / product_obj.un_ca, 2);
+                    price_unit = self.ts_model.my_round(price_udv / product_obj.un_ca, 2);
                 }
                 if(log_unit == 'box'){
                     price_unit = price_udv;
@@ -623,30 +631,30 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                     price_udv = price_unit;
                 }
                 if(log_unit == 'unit'){
-                    price_udv =  my_round(price_unit / (product_obj.kg_un || 1) , 2);
+                    price_udv =  self.ts_model.my_round(price_unit / (product_obj.kg_un || 1) , 2);
                 }
                 if(log_unit == 'box'){
-                    price_udv =  my_round( (price_unit / (product_obj.un_ca || 1) ) / (product_obj.kg_un || 1) , 2);
+                    price_udv =  self.ts_model.my_round( (price_unit / (product_obj.un_ca || 1) ) / (product_obj.kg_un || 1) , 2);
                 }
             }
             else if(uos_id == product_obj.log_unit_id[0]){
                 if(log_unit == 'base'){
-                    price_udv = my_round(price_unit * product_obj.kg_un, 2);
+                    price_udv = self.ts_model.my_round(price_unit * product_obj.kg_un, 2);
                 }
                 if(log_unit == 'unit'){
                     price_udv = price_unit;
                 }
                 if(log_unit == 'box'){
-                    price_udv = my_round( price_unit / (product_obj.un_ca || 1) ,2);
+                    price_udv = self.ts_model.my_round( price_unit / (product_obj.un_ca || 1) ,2);
                 }
             }
 
             else if(uos_id == product_obj.log_box_id[0]){
                 if(log_unit == 'base'){
-                    price_udv = my_round(price_unit * product_obj.kg_un * product_obj.un_ca, 2);
+                    price_udv = self.ts_model.my_round(price_unit * product_obj.kg_un * product_obj.un_ca, 2);
                 }
                 if(log_unit == 'unit'){
-                    price_udv = my_round(price_unit * product_obj.un_ca, 2);
+                    price_udv = self.ts_model.my_round(price_unit * product_obj.un_ca, 2);
                 }
                 if(log_unit == 'box'){
                     price_udv = price_unit;
@@ -722,7 +730,7 @@ exports.OrderlineWidget = TsBaseWidget.extend({
             //
             //     //change weight
             //     var weight =  this.model.get('weight')
-            //     this.model.set('weight', my_round(value * weight,2));
+            //     this.model.set('weight', self.ts_model.my_round(value * weight,2));
             //     this.refresh();
             //     break;
 
@@ -740,8 +748,8 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                     var uos_name = this.$('.col-product_uos').val();
                     conv = this.getUnitConversions(prod_name, value, uos_name)
                     log_unit = this.getUomLogisticUnit(prod_name)
-                    this.model.set('product_uos_qty', my_round(value, 4));
-                    this.model.set('qty', my_round(conv[log_unit], 4));
+                    this.model.set('product_uos_qty', self.ts_model.my_round(value, 4));
+                    this.model.set('qty', self.ts_model.my_round(conv[log_unit], 4));
                     // Se calculan las cajas
                     var boxes = 0.0
                     var product_id = this.ts_model.db.product_name_id[prod_name];
@@ -757,7 +765,7 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                         else if(uos_id == product_obj.log_box_id[0]){
                             boxes = value
                         }
-                        this.model.set('boxes', my_round(boxes, 4));
+                        this.model.set('boxes', self.ts_model.my_round(boxes, 4));
                         $('#stock-info').removeClass('warning-red');
                     }
                     else{
@@ -784,12 +792,12 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                     var price_unit = this.$('.col-pvp').val();
                     conv = this.getUnitConversions(prod_name, uos_qty, uos_name)
                     log_unit = this.getUomLogisticUnit(prod_name)
-                    this.model.set('qty', my_round(conv[log_unit], 4));
+                    this.model.set('qty', self.ts_model.my_round(conv[log_unit], 4));
                     this.model.set('product_uos', value);
                     // SET DISCOUNTS
                     this.set_discounts()
                     uos_pu = this.getUomUosPrices(prod_name, uos_name,  price_unit)
-                    this.model.set('price_udv', my_round(uos_pu, 2))
+                    this.model.set('price_udv', self.ts_model.my_round(uos_pu, 2))
                     this.refresh('price_udv')
                   }
                 }
@@ -807,8 +815,8 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                   else{
                     var uos_name = this.$('.col-product_uos').val();
                     var uom_pu = this.getUomUosPrices(prod_name, uos_name, 0, value)
-                    this.model.set('price_udv', my_round(value, 2));
-                    this.model.set('pvp', my_round(uom_pu, 2));
+                    this.model.set('price_udv', self.ts_model.my_round(value, 2));
+                    this.model.set('pvp', self.ts_model.my_round(uom_pu, 2));
                     // this.refresh('pvp');
                   }
                 }
@@ -826,8 +834,8 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                   else{
                     var uos_name = this.$('.col-product_uos').val();
                     uos_pu = this.getUomUosPrices(prod_name, uos_name,  value)
-                    this.model.set('price_udv', my_round(uos_pu, 2));
-                    this.model.set('pvp', my_round(value, 2));
+                    this.model.set('price_udv', self.ts_model.my_round(uos_pu, 2));
+                    this.model.set('pvp', self.ts_model.my_round(value, 2));
                     // this.refresh('discount');
                   }
                 }
@@ -909,7 +917,7 @@ exports.OrderlineWidget = TsBaseWidget.extend({
 });
 
 
-exports.OrderWidget = TsBaseWidget.extend({
+var OrderWidget = TsBaseWidget.extend({
         template:'Order-Widget',
         init: function(parent, options) {
             this._super(parent,options);
@@ -1155,7 +1163,7 @@ exports.OrderWidget = TsBaseWidget.extend({
         },
     });   
 
-exports.TotalsOrderWidget = TsBaseWidget.extend({
+var TotalsOrderWidget = TsBaseWidget.extend({
         template:'Totals-Order-Widget',
         init: function(parent, options) {
             this._super(parent,options);
@@ -1233,8 +1241,8 @@ exports.TotalsOrderWidget = TsBaseWidget.extend({
 
                 }
             }, this));
-            self.total += my_round(self.base, 2) + my_round(self.iva, 2);
-            self.base = my_round(self.base, 2);
+            self.total += self.ts_model.my_round(self.base, 2) + self.ts_model.my_round(self.iva, 2);
+            self.base = self.ts_model.my_round(self.base, 2);
             this.order_model.set('total_base',self.base);
             this.order_model.set('total_iva', self.iva);
             this.order_model.set('total', self.total);
@@ -1244,9 +1252,9 @@ exports.TotalsOrderWidget = TsBaseWidget.extend({
             // if (self.pvp_ref != 0){
             //     var discount_num = (self.discount/self.pvp_ref) * 100 ;
             //     if (discount_num < 0)
-            //         var discount_per = "+" + my_round( discount_num * (-1) , 2).toFixed(2) + "%";
+            //         var discount_per = "+" + self.ts_model.my_round( discount_num * (-1) , 2).toFixed(2) + "%";
             //     else
-            //         var discount_per = my_round( discount_num , 2).toFixed(2) + "%";
+            //         var discount_per = self.ts_model.my_round( discount_num , 2).toFixed(2) + "%";
             // }
             if (self.base != 0){
               // Le volvemos a sumamos el descuento porque la base viene sin el
@@ -1262,7 +1270,7 @@ exports.TotalsOrderWidget = TsBaseWidget.extend({
             var margin_per_num = 0
             if (self.base != 0) {
                 margin_per_num = ((self.base - self.sum_cost) / self.base) * 100
-                margin_per = my_round(margin_per_num, 2).toFixed(2) + "%"
+                margin_per = self.ts_model.my_round(margin_per_num, 2).toFixed(2) + "%"
             }
             this.order_model.set('total_margin_per', margin_per);
             this.order_model.set('total_boxes', self.sum_box); //integer
@@ -1352,7 +1360,7 @@ exports.TotalsOrderWidget = TsBaseWidget.extend({
 
 });
 
-exports.ProductInfoOrderWidget = TsBaseWidget.extend({
+var ProductInfoOrderWidget = TsBaseWidget.extend({
     template:'ProductInfo-Order-Widget',
     init: function(parent, options) {
         this._super(parent,options);
@@ -1429,15 +1437,15 @@ exports.ProductInfoOrderWidget = TsBaseWidget.extend({
                 var model = new instance.web.Model('product.product');
                 model.call("get_product_info",[product_id,partner_id,pricelist_id],{context:new instance.web.CompoundContext()})
                     .then(function(result){
-                        self.stock = my_round(result.stock,2).toFixed(2);
+                        self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
                         self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
-                        self.qty = my_round(result.last_qty,4).toFixed(4);
-                        self.price = my_round(result.last_price,2).toFixed(2);
-                        self.min_price = my_round(result.min_price,2).toFixed(2);
+                        self.qty = self.ts_model.my_round(result.last_qty,4).toFixed(4);
+                        self.price = self.ts_model.my_round(result.last_price,2).toFixed(2);
+                        self.min_price = self.ts_model.my_round(result.min_price,2).toFixed(2);
                         self.mark = result.product_mark;
                         self.class = result.product_class;
-                        self.max_discount = my_round(result.max_discount,2).toFixed(2) + "%";
-                        self.unit_weight = my_round(result.weight_unit,2).toFixed(2);
+                        self.max_discount = self.ts_model.my_round(result.max_discount,2).toFixed(2) + "%";
+                        self.unit_weight = self.ts_model.my_round(result.weight_unit,2).toFixed(2);
                         self.renderElement();
                     });
             }
@@ -1470,7 +1478,7 @@ exports.ProductInfoOrderWidget = TsBaseWidget.extend({
 });
 
 
-exports.SoldProductLineWidget = TsBaseWidget.extend({
+var SoldProductLineWidget = TsBaseWidget.extend({
     template:'Sold-Product-Line-Widget',
     init: function(parent, options){
         this._super(parent,options);
@@ -1507,7 +1515,7 @@ exports.SoldProductLineWidget = TsBaseWidget.extend({
     },
 });
 
-exports.SoldProductWidget = TsBaseWidget.extend({
+var SoldProductWidget = TsBaseWidget.extend({
     template:'Sold-Product-Widget',
     init: function(parent, options){
         var self = this;
@@ -1541,12 +1549,15 @@ exports.SoldProductWidget = TsBaseWidget.extend({
         // }
     },
 });
-
-
-
-
-
-    return exports; 
+    return {
+        OrderButtonWidget: OrderButtonWidget,
+        DataOrderWidget: DataOrderWidget,
+        OrderlineWidget: OrderlineWidget,
+        OrderWidget: OrderWidget,
+        TotalsOrderWidget: TotalsOrderWidget,
+        ProductInfoOrderWidget: ProductInfoOrderWidget,
+        SoldProductWidget: SoldProductWidget
+    }; 
 
 });
 
