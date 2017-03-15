@@ -1,6 +1,10 @@
 odoo.define('telesale.new_order_widgets', function (require) {
 "use strict";
 
+var core = require('web.core');
+var Model = require('web.DataModel');
+var _t = core._t;
+
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var exports = {}
 
@@ -61,14 +65,12 @@ exports.DataOrderWidget = TsBaseWidget.extend({
     },
     change_selected_order: function() {
         this.renderElement();
-        // this.$('#partner_code').focus();
     },
     renderElement: function () {
         var self = this;
         this.order_model = this.ts_model.get('selectedOrder');
         this._super();
-        // this.$('#partner_code').blur(_.bind(this.set_value, this, 'partner_code'))
-//            this.$('#partner').change(_.bind(this.set_value, this, 'partner'))
+
         this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
         this.$('#date_invoice').blur(_.bind(this.set_value, this, 'date_invoice'))
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
@@ -78,147 +80,69 @@ exports.DataOrderWidget = TsBaseWidget.extend({
         this.$('#client_order_ref').blur(_.bind(this.set_value, this, 'client_order_ref'))
         this.$('#supplier').blur(_.bind(this.set_value, this, 'supplier'))
 
-        //autocomplete products and units from array of names
+        // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
             source: this.ts_model.get('customer_names'),
         });
-        // TODO ???
-        // this.get_supplier_names()
-        this.$('#supplier').autocomplete({
-            source: this.ts_model.get('supplier_names'),
-        });
-        // this.$('#partner_code').autocomplete({
-        //     source: this.ts_model.get('customer_codes'),
-        // });
-
     },
     set_value: function(key) {
-        var value = this.$('#'+key).val();;
-        if (value == self.order_model.get('partner') ) {
+        var value = this.$('#' + key).val();;
+        if (value == this.order_model.get('partner') ) {
             return;
          }
         this.order_model.set(key, value);
         this.perform_onchange(key, value);
     },
-    check_partner_routes: function(partner_id) {
-        self = this
-        var model = new instance.web.Model('res.partner');
-        model.call("any_detail_founded",[partner_id])  //TODO revisar:devuelve ids que no estan activos (proceso de baja)
-         .then(function(result){
-             if (!result){
-//                     alert(_t("Customer has no assigned any delivery route"));
-//                     self.order_model.set('partner', "");
-//                     self.order_model.set('partner_code', "");
-//                     self.refresh();
-
-                   var tomorrow_date = self.ts_model.getCurrentDatePlannedStr()
-                   self.order_model.set('date_planned', tomorrow_date)
-                   self.order_model.set('date_invoice', tomorrow_date)
-                   self.refresh();
-             }
-             else{;
-                self.order_model.set('date_planned', result['detail_date'])
-                self.order_model.set('date_invoice', result['detail_date'])
-                self.refresh();
-             }
-         });
-    },
-    get_supplier_names: function(partner_obj) {
-        self = this
-        var partner_name = this.ts_model.get('selectedOrder').get('partner');
-        var partner_id = this.ts_model.db.partner_name_id[partner_name];
-        var partner_obj = this.ts_model.db.get_partner_by_id(partner_id)
-        if (partner_obj && partner_obj.supplier_ids) {
-          var supplier_names = [];
-            for (var i = 0, len = partner_obj.supplier_ids.length; i < len; i++){
-            var key = partner_obj.supplier_ids[i]
-            if(self.ts_model.db.suppliers_name_id[key]){
-              supplier_names.push(self.ts_model.db.suppliers_name_id[key])
-            }
-          }
-          self.ts_model.set('supplier_names', supplier_names)
-      }
-    },
     perform_onchange: function(key, value) {
         var self=this;
         if (!value) {return;}
-        if (key == "partner_code" || key == "partner"){
-          console.log("ONCHANGE DEL PARTNER")
-          $.when( self.ts_widget.product_catalog_screen.product_catalog_widget.search_products_to_sell() )
-          .done(function(){
-                console.log("YA HE ENCONTRADO LOS PRODUCTOS")
-                partner_id = (key == "partner_code") ? self.ts_model.db.partner_ref_id[value] : self.ts_model.db.partner_name_id[value];
-                if (!partner_id){
-                    var alert_msg = (key == "partner_code") ? _t("Customer code '" + value + "' does not exist") : _t("Customer name '" + value + "' does not exist");
-                    alert(alert_msg);
-                    self.order_model.set('partner', "");
-                    // self.order_model.set('partner_code', "");
+        if (key == "partner"){
+            console.log("ONCHANGE DEL PARTNER")
+
+            var partner_id = self.ts_model.db.partner_name_id[value];
+
+            // Not partner found in backbone model
+            if (!partner_id){
+                var alert_msg = _t("Customer name '" + value + "' does not exist");
+                alert(alert_msg);
+                self.order_model.set('partner', "");
+                self.refresh();
+            }
+
+            else {
+                var partner_obj = self.ts_model.db.get_partner_by_id(partner_id);
+              
+                var do_onchange = true
+                
+                if (do_onchange){
+                    var cus_name = self.ts_model.getComplexName(partner_obj);
+                    self.order_model.set('partner', cus_name);
+                    self.order_model.set('partner_code', partner_obj.ref ? partner_obj.ref : "");
+                    
+                    self.order_model.set('customer_comment', partner_obj.comment);
+                    // TODO nan_partner_risk migrar a la 10
+                    // self.order_model.set('limit_credit', my_round(partner_obj.credit_limit,2));
+                    // self.order_model.set('customer_debt', my_round(partner_obj.credit,2));
+                    var contact_obj = self.ts_model.db.get_partner_contact(partner_id); //If no contacts return itself
+                    self.order_model.set('comercial', partner_obj.user_id ? partner_obj.user_id[1] : "");
+                    self.order_model.set('contact_name', contact_obj.name);
+
                     self.refresh();
+                    // TODO LO DE ABAJO YA VEREMOS
+                    // $('#vua-button').click();
+                    // if(self.order_model.get('orderLines').length == 0){
+                    //     $('.add-line-button').click()
+                    // }
+                    // else{
+                    //     self.$('#date_order').focus();
+                    // }
                 }
-                else{
-                    partner_obj = self.ts_model.db.get_partner_by_id(partner_id);
-                    var model = new instance.web.Model('sale.order');
-                    model.call("check_not_in_picking_order",[partner_id],{context:new instance.web.CompoundContext()})
-                    .then(function(order_id){
-                        var do_onchange = true
-                        if (order_id){
-//                                var r = confirm(_t("There is a order for client " + partner_obj.name + "¿Do you want open the order?"))
-                            var r = confirm(_t("Ya hay un pedido para el cliente " + partner_obj.name + "¿Deseas abrir el pedido?"))
-                            if (r == true){
-                                do_onchange = false
-                                $.when( self.load_order_from_server(order_id) )
-                                .done(function(){
-                                });
-                            }
-                        }
-                        if (do_onchange){
-                            var cus_name = self.ts_model.getComplexName(partner_obj);
-                            self.order_model.set('partner', cus_name);
-                            self.order_model.set('partner_code', partner_obj.ref ? partner_obj.ref : "");
-                            var sup_name = ''
-                            if (partner_obj.indirect_customer && !$.isEmptyObject(partner_obj.supplier_ids)){
-                              sup_name = self.ts_model.db.get_supplier_by_id(partner_obj.supplier_ids[0]);
-                            }
-                            self.order_model.set('supplier', sup_name);
-                            self.order_model.set('customer_comment', partner_obj.comment);
-                            self.order_model.set('limit_credit', my_round(partner_obj.credit_limit,2));
-                            self.order_model.set('customer_debt', my_round(partner_obj.credit,2));
-                            contact_obj = self.ts_model.db.get_partner_contact(partner_id); //If no contacts return itself
-                            self.order_model.set('comercial', partner_obj.user_id ? partner_obj.user_id[1] : "");
-                            self.order_model.set('contact_name', contact_obj.name);
-                            self.check_partner_routes(partner_id);
-
-                            // else{
-                            //     if (key == "partner") {
-                            //       self.$('#partner_code').focus();
-                            //     }
-                            self.refresh();
-                            $('#vua-button').click();
-                            if(self.order_model.get('orderLines').length == 0){
-                                $('.add-line-button').click()
-                            }
-                            else{
-                                self.$('#date_order').focus();
-                            }
-
-                        }
-                    });
-                }
-            });
+            }
         }
-        if (key == "date_planned"){
-            self.order_model.set('date_invoice', value)
-            self.refresh()
-         }
-        // if (key == "date_invoice"){
-        //   this.$('#date_planed').focus();
-        // }
-        // if (key == "date_planed"){
-        //   this.$('#date_order').focus();
-        // }
-        // if (key == "date_order"){
-        //   this.$('#partner_code').focus();
-        // }
+        // if (key == "date_planned"){
+        //     self.order_model.set('date_invoice', value)
+        //     self.refresh()
+        //  }
     },
     load_order_from_server: function(order_id){
         var self=this;
@@ -560,7 +484,7 @@ exports.OrderlineWidget = TsBaseWidget.extend({
                         });
                     })
                     .fail(function(){
-                        alert(_t("NOT WORKING"));
+                        // alert(_t("NOT WORKING"));
                     })
     },
     set_discounts: function(){
