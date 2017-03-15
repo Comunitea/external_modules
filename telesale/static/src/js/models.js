@@ -508,25 +508,14 @@ var Orderline = Backbone.Model.extend({
         n_line: '',
         code: '',
         product: '',
-        unit: '',
-        qnote: '',
-        detail: '',
         qty: 1,
+        unit: '',
         pvp: 0,
-        pvp_ref: 0, //in order to change the discount
         total: 0,
-        product_uos: '',
-        product_uos_qty: 0,
-        price_uos_qty: 0,
-        price_udv: 0,
         //to calc totals
-        discount: 0,
-        specific_discount: 0,
-        weight: 0,
         margin: 0,
         taxes_ids: [],
-        temperature: 0,
-        tourism: false,
+
     },
     initialize: function(options){
         this.ts_model = options.ts_model;
