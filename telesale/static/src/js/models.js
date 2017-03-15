@@ -105,10 +105,20 @@ var TsModel = Backbone.Model.extend({
                         ['name', 'default_code', 'list_price', 'standard_price', 'uom_id', 'taxes_id', 'weight'],
                         [['sale_ok', '=', true]]
                     );
-                    // var model = new instance.web.Model('product.product');
-                    // return model.call("load_products",[],{context:new instance.web.CompoundContext()});
                 }).then(function(products){
+                    // TODO OPTIMIZAR
                     self.db.add_products(products);
+                    var products_list = [];
+                    var search_string = ""
+                    for (var key in products){
+                        var product_obj = self.db.get_product_by_id(products[key].id)
+                         products_list.push(product_obj);
+                         search_string += self.db._product_search_string(product_obj)
+                         self.get('products_names').push(product_obj.name);
+                         self.get('products_codes').push(product_obj.default_code);
+                    }
+                    self.set('product_search_string', search_string)
+                    self.get('products').reset(products_list)
 
                     // PARTNERS
                     return self.fetch(
@@ -166,7 +176,6 @@ var TsModel = Backbone.Model.extend({
         }
     },
     push_order: function(record) {
-        debugger;
         this.db.add_order(record);
         this.flush();
     },
