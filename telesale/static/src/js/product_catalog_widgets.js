@@ -7,9 +7,8 @@ var Model = require('web.DataModel');
 var core = require('web.core');
 var _t = core._t;
 
-var exports = {};
 
-exports.ProductLineWidget = TsBaseWidget.extend({
+var ProductLineWidget = TsBaseWidget.extend({
     template:'Product-Line-Widget',
     init: function(parent, options){
         this._super(parent,options);
@@ -48,7 +47,7 @@ exports.ProductLineWidget = TsBaseWidget.extend({
     },
 });
 
-exports.ProductCatalogWidget = TsBaseWidget.extend({
+var ProductCatalogWidget = TsBaseWidget.extend({
     template:'Product-Catalog-Widget',
     init: function(parent, options) {
         var self = this;
@@ -92,8 +91,8 @@ exports.ProductCatalogWidget = TsBaseWidget.extend({
     },
 });
 
-
-
-
-return exports;
+return {
+    ProductCatalogWidget: ProductCatalogWidget,
+    ProductLineWidget: ProductLineWidget
+}
 });

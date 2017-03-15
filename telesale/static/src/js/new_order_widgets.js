@@ -8,14 +8,6 @@ var _t = core._t;
 var TsBaseWidget = require('telesale.TsBaseWidget');
 
 
-// var self.ts_model.my_round = function(number, decimals){
-//         var n = number || 0;
-//         if (typeof n === "string"){
-//             n = n * 1;
-//         }
-//         return n.toFixed(decimals) * 1
-//     };
-
 var OrderButtonWidget = TsBaseWidget.extend({
     template:'Order-Button-Widget',
     init: function(parentautocomplete, options) {
@@ -26,9 +18,7 @@ var OrderButtonWidget = TsBaseWidget.extend({
         this.bo_id = this.ts_model.get('bo_id');
         this.order.bind('destroy',function(){ self.destroy(); });
         this.ts_model.bind('change:selectedOrder', _.bind( function(ts_model) {
-
            self.selectedOrder = ts_model.get('selectedOrder');
-           /* self.selectedOrder.unbind('change:partner');*/ //comentado para que no destruya el bind de product catalog
             self.selectedOrder.bind('change:partner', function(){ self.renderElement(); });
             if (self.order === self.selectedOrder) {
                 self.setButtonSelected();
@@ -80,13 +70,10 @@ var DataOrderWidget = TsBaseWidget.extend({
         this._super();
 
         this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
-        this.$('#date_invoice').blur(_.bind(this.set_value, this, 'date_invoice'))
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
         this.$('#date_planned').blur(_.bind(this.set_value, this, 'date_planned'))
         this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
         this.$('#customer_comment').blur(_.bind(this.set_value, this, 'customer_comment'))
-        this.$('#client_order_ref').blur(_.bind(this.set_value, this, 'client_order_ref'))
-        this.$('#supplier').blur(_.bind(this.set_value, this, 'supplier'))
 
         // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
@@ -105,8 +92,6 @@ var DataOrderWidget = TsBaseWidget.extend({
         var self=this;
         if (!value) {return;}
         if (key == "partner"){
-            console.log("ONCHANGE DEL PARTNER")
-
             var partner_id = self.ts_model.db.partner_name_id[value];
 
             // Not partner found in backbone model
@@ -147,16 +132,9 @@ var DataOrderWidget = TsBaseWidget.extend({
                 }
             }
         }
-        // if (key == "date_planned"){
-        //     self.order_model.set('date_invoice', value)
-        //     self.refresh()
-        //  }
     },
     load_order_from_server: function(order_id){
         var self=this;
-      //  if (!flag){
-          //  this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model}));
-        //}
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
                                         ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice'],
@@ -197,12 +175,11 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.order_widget = parent
         this.model = options.model;
         this.order = options.order;
-        this.price_and_min = false;
 
         this.model.bind('change_line', this.refresh, this); //#TODO entra demasiadas veces por la parte esta
     },
     click_handler: function(key) {
-        var selector = '.col-'+key
+        var selector = '.col-' + key
         this.order.selectLine(this.model);
         this.$(selector).unbind('focus')
         this.$(selector).focus()
@@ -361,6 +338,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         // Mapeo de teclas para moverse por la tabla con las flechas
         this.control_arrow_keys()
         // Creamos nueva linea al tabular la última columna de descuento
+
         if(this.model.get('product')){
             var uos = [];
             var product_id = this.ts_model.db.product_name_id[this.model.get('product')]
@@ -438,230 +416,47 @@ var OrderlineWidget = TsBaseWidget.extend({
                                         )
             .then(function(products){
                 self.ts_model.db.add_products(products);
+                // TODO FALTA REPETIR LO MISMO QUE EN EL MODELS???
             })
         return loaded
     },
     call_product_id_change: function(product_id){
         var self = this;
+        $.when( self.update_stock_product(product_id) ).done(function(){
+            var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
+            var pricelist_id = (self.ts_model.db.get_partner_by_id(customer_id)).property_product_pricelist;
+            var model = new Model("sale.order.line");
+            // model.call("product_id_change_with_wh",[[],pricelist_id,product_id])
+            model.call("ts_product_id_change", [product_id, customer_id])
+            .then(function(result){
+                var product_obj = self.ts_model.db.get_product_by_id(product_id);
+                var uom_obj = self.ts_model.db.get_unit_by_id(product_obj.uom_id[0])
+            
+                self.model.set('code', product_obj.default_code || "");
+                self.model.set('product', product_obj.name || "");
+                self.model.set('taxes_ids', result.tax_id || []); //TODO poner impuestos de producto o vacio
+                self.model.set('unit', self.model.ts_model.db.unit_by_id[result.product_uom].name);
+                self.model.set('qty', result.product_uom_qty);
+                self.model.set('pvp', self.ts_model.my_round( result.price_unit));
+               
+                // COMENTADO PARA QUE NO SAQUE EL AVISO SIEMPRE
+                // if ( (1 > product_obj.virtual_stock_conservative) && (product_obj.product_class == "normal")){
+                //     alert(_t("You want sale 1 " + " " + product_obj.uom_id[1] + " but only " +  product_obj.virtual_stock_conservative + " available."))
+                //     var new_qty = (product_obj.virtual_stock_conservative < 0) ? 0.0 : product_obj.virtual_stock_conservative
+                //     self.model.set('qty', new_qty);
+                //     self.refresh();
+                // }
+                var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
+                self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
+                self.refresh();
+                self.$('.col-product_uos_qty').focus()
+                self.$('.col-product_uos_qty').select()
 
-        $.when( self.update_stock_product(product_id) )
-                    .done(function(){
-                        var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
-                        var kwargs = {context: new instance.web.CompoundContext({}),partner_id: customer_id}
-                        var pricelist_id = (self.ts_model.db.get_partner_by_id(customer_id)).property_product_pricelist;
-                        var model = new instance.web.Model("sale.order.line");
-                        model.call("product_id_change_with_wh",[[],pricelist_id,product_id],kwargs)
-                        .then(function(result){
-                            console.log
-                            ("tuuuuuuuuuuuuuuuuuuuuuuuuuuuuuurusmo")
-                            console.log(result)
-                            var product_obj = self.ts_model.db.get_product_by_id(product_id);
-                            var uom_obj = self.ts_model.db.get_unit_by_id(product_obj.uom_id[0])
-                            self.model.set('fresh_price', self.ts_model.my_round(result.value.last_price_fresh || 0,2));
-                            self.model.set('code', product_obj.default_code || "");
-                            self.model.set('product', product_obj.name || "");
-                            self.model.set('taxes_ids', result.value.tax_id || []); //TODO poner impuestos de producto o vacio
-                            self.model.set('unit', self.model.ts_model.db.unit_by_id[result.value.product_uom].name);
-                            self.model.set('product_uos', (result.value.product_uos) ? self.model.ts_model.db.unit_by_id[result.value.product_uos].name : self.model.get('unit'));
-                            self.model.set('qty', 0);
-                            self.model.set('specific_discount', result.value.discount || 0);
-                            self.model.set('weight', self.ts_model.my_round(product_obj.weight || 0,2));
-                            if (!result.value.price_unit || result.value.price_unit == 'warn') {
-                                result.value.price_unit = 0;
-                            }
-                            self.model.set('pvp_ref', self.ts_model.my_round( (result.value.price_unit != 0 && product_obj.product_class == "normal") ? result.value.price_unit : 0,2 ));
-                            self.model.set('pvp', self.ts_model.my_round( (product_obj.product_class == "normal") ? (result.value.price_unit || 0) : (result.value.last_price_fresh || 0), 2));
-                            self.model.set('margin', self.ts_model.my_round( (result.value.price_unit != 0 && product_obj.product_class == "normal") ? ( (result.value.price_unit - product_obj.standard_price) / result.value.price_unit) : 0 , 2));
-                            self.model.set('tourism', result.value.tourism || false);
-
-
-                            // COMENTADO PARA QUE NO SAQUE EL AVISO SIEMPRE
-                            // if ( (1 > product_obj.virtual_stock_conservative) && (product_obj.product_class == "normal")){
-                            //     alert(_t("You want sale 1 " + " " + product_obj.uom_id[1] + " but only " +  product_obj.virtual_stock_conservative + " available."))
-                            //     var new_qty = (product_obj.virtual_stock_conservative < 0) ? 0.0 : product_obj.virtual_stock_conservative
-                            //     self.model.set('qty', new_qty);
-                            //     self.refresh();
-                            // }
-                            self.inicialize_unit_values()
-                            var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
-                            self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
-                            self.refresh();
-                            self.$('.col-product_uos_qty').focus()
-                            self.$('.col-product_uos_qty').select()
-
-                        });
-                    })
-                    .fail(function(){
-                        // alert(_t("NOT WORKING"));
-                    })
-    },
-    set_discounts: function(){
-        var self=this
-        var prod_name = this.model.get('product')
-        var uos_name = this.model.get('product_uos')
-        var product_id = this.ts_model.db.product_name_id[prod_name];
-        var product_obj = this.ts_model.db.get_product_by_id(product_id);
-        var setted_discount = this.model.get('specific_discount')
-        if (!setted_discount){
-            this.model.set('specific_discount', self.ts_model.my_round(0.00, 2))
-            if(uos_name == product_obj.log_base_id[1]){
-                this.model.set('discount', self.ts_model.my_round(product_obj.log_base_discount, 2))
-            }
-            else if(uos_name == product_obj.log_unit_id[1]){
-                this.model.set('discount', self.ts_model.my_round(product_obj.log_unit_discount, 2))
-            }
-            else if(uos_name == product_obj.log_box_id[1]){
-                this.model.set('discount', self.ts_model.my_round(product_obj.log_box_discount, 2))
-            }
-        }
-    },
-    inicialize_unit_values: function(){
-        var prod_name = this.model.get('product')
-        var uos_name = this.model.get('product_uos')
-        this.model.set('product_uos_qty', 1)
-        var uos_qty = 1
-        var price_unit = this.model.get('pvp')
-        conv = this.getUnitConversions(prod_name, uos_qty, uos_name)
-        log_unit = this.getUomLogisticUnit(prod_name)
-        this.model.set('qty', self.ts_model.my_round(conv[log_unit], 4));
-        // SET DISCOUNTS
-        this.set_discounts()
-        uos_pu = this.getUomUosPrices(prod_name, uos_name,  price_unit)
-        this.model.set('price_udv', self.ts_model.my_round(uos_pu, 2))
-    },
-    // Funciones relacionadas con el producto necesarias para los calculos de unidades
-    getUnitConversions: function(product_name, qty_uos, uos_name){
-        var product_id = this.ts_model.db.product_name_id[product_name];
-        var product_obj = this.ts_model.db.get_product_by_id(product_id);
-        if (!product_obj){
-            alert(_t("Product "+ product_name, + " not found"));
-            return false
-        }
-        var uos_id = this.ts_model.db.unit_name_id[uos_name];
-        if (!uos_id){
-            alert(_t("Unit " + uos_name + " not found"));
-            return false
-        }
-        res = {'base': 0.0,
-               'unit': 0.0,
-               'box': 0.0}
-        if(uos_id == product_obj.log_base_id[0]){
-            res['base'] = qty_uos
-            res['unit'] = self.ts_model.my_round(res['base'] / product_obj.kg_un, 4)
-            res['box'] = self.ts_model.my_round(res['unit'] / product_obj.un_ca, 4)
-        }
-        else if(uos_id == product_obj.log_unit_id[0]){
-            res['unit'] = qty_uos
-            res['box'] = self.ts_model.my_round(res['unit'] / product_obj.un_ca, 4)
-            res['base'] = self.ts_model.my_round(res['unit'] * product_obj.kg_un, 4)
-        }
-        else if(uos_id == product_obj.log_box_id[0]){
-            res['box'] = qty_uos
-            res['unit'] = self.ts_model.my_round(res['box'] * product_obj.un_ca, 4)
-            res['base'] = self.ts_model.my_round(res['unit'] * product_obj.kg_un, 4)
-        }
-        return res
-    },
-    getUomLogisticUnit: function(product_name){
-        var product_id = this.ts_model.db.product_name_id[product_name];
-        var product_obj = this.ts_model.db.get_product_by_id(product_id);
-        if(product_obj.uom_id[0] == product_obj.log_base_id[0]){
-            return 'base'
-        }
-        else if(product_obj.uom_id[0] == product_obj.log_unit_id[0]){
-            return 'unit'
-        }
-        else if(product_obj.uom_id[0] == product_obj.log_box_id[0]){
-            return 'box'
-        }
-    },
-
-    getUomUosPrices: function(product_name, uos_name, custom_price_unit, custom_price_udv){
-        var product_id = this.ts_model.db.product_name_id[product_name];
-        var product_obj = this.ts_model.db.get_product_by_id(product_id);
-        var uos_id = this.ts_model.db.unit_name_id[uos_name];
-        custom_price_unit = typeof custom_price_unit !== 'undefined' ? custom_price_unit : 0.0;
-        custom_price_udv = typeof custom_price_udv !== 'undefined' ? custom_price_udv : 0.0;
-        var price_unit = 0.0
-        if(custom_price_udv){
-            price_udv = custom_price_udv;
-            log_unit = this.getUomLogisticUnit(product_name);
-            if(uos_id == product_obj.log_base_id[0]){
-                if(log_unit == 'base'){
-                    price_unit = price_udv;
-                }
-                if(log_unit == 'unit'){
-                    price_unit = price_udv * product_obj.kg_un;
-                }
-                if(log_unit == 'box'){
-                    price_unit =  price_udv * product_obj.kg_un * product_obj.un_ca;
-                }
-                price_unit = price_unit
-            }
-            else if(uos_id == product_obj.log_unit_id[0]){
-                if(log_unit == 'base'){
-                    price_unit = self.ts_model.my_round(price_udv / product_obj.kg_un, 2);
-                }
-                if(log_unit == 'unit'){
-                    price_unit = price_udv;
-                }
-                if(log_unit == 'box'){
-                    price_unit = price_udv * product_obj.un_ca;
-                }
-            }
-            else if(uos_id == product_obj.log_box_id[0]){
-                if(log_unit == 'base'){
-                    price_unit =  self.ts_model.my_round(price_udv / (product_obj.kg_un * product_obj.un_ca), 2);
-                }
-                if(log_unit == 'unit'){
-                    price_unit = self.ts_model.my_round(price_udv / product_obj.un_ca, 2);
-                }
-                if(log_unit == 'box'){
-                    price_unit = price_udv;
-                }
-            }
-            return price_unit;
-        }
-        else{
-            var price_unit = custom_price_unit != 0.0 ? custom_price_unit : product_obj.list_price;
-            var price_udv = 0.0;
-            log_unit = this.getUomLogisticUnit(product_name);
-            if (uos_id == product_obj.log_base_id[0]){
-                if(log_unit == 'base'){
-                    price_udv = price_unit;
-                }
-                if(log_unit == 'unit'){
-                    price_udv =  self.ts_model.my_round(price_unit / (product_obj.kg_un || 1) , 2);
-                }
-                if(log_unit == 'box'){
-                    price_udv =  self.ts_model.my_round( (price_unit / (product_obj.un_ca || 1) ) / (product_obj.kg_un || 1) , 2);
-                }
-            }
-            else if(uos_id == product_obj.log_unit_id[0]){
-                if(log_unit == 'base'){
-                    price_udv = self.ts_model.my_round(price_unit * product_obj.kg_un, 2);
-                }
-                if(log_unit == 'unit'){
-                    price_udv = price_unit;
-                }
-                if(log_unit == 'box'){
-                    price_udv = self.ts_model.my_round( price_unit / (product_obj.un_ca || 1) ,2);
-                }
-            }
-
-            else if(uos_id == product_obj.log_box_id[0]){
-                if(log_unit == 'base'){
-                    price_udv = self.ts_model.my_round(price_unit * product_obj.kg_un * product_obj.un_ca, 2);
-                }
-                if(log_unit == 'unit'){
-                    price_udv = self.ts_model.my_round(price_unit * product_obj.un_ca, 2);
-                }
-                if(log_unit == 'box'){
-                    price_udv = price_unit;
-                }
-            }
-            return price_udv;
-        }
+            });
+        })
+        .fail(function(){
+            // alert(_t("NOT WORKING"));
+        })
     },
     perform_onchange: function(key) {
         var self=this;
@@ -774,31 +569,6 @@ var OrderlineWidget = TsBaseWidget.extend({
                         this.refresh();
                     }
                   this.refresh('product_uos');
-                  }
-                }
-                break;
-            case "product_uos":
-                var prod_name = this.$('.col-product').val();
-                if(prod_name == ""){
-                    alert(_t("Product is not selected"));
-                }
-                else{
-                  if(!value){
-                    alert(_t("Value mustn't be empty"));
-                  }
-                  else{
-                    var uos_name = value;
-                    var uos_qty = this.$('.col-product_uos_qty').val();
-                    var price_unit = this.$('.col-pvp').val();
-                    conv = this.getUnitConversions(prod_name, uos_qty, uos_name)
-                    log_unit = this.getUomLogisticUnit(prod_name)
-                    this.model.set('qty', self.ts_model.my_round(conv[log_unit], 4));
-                    this.model.set('product_uos', value);
-                    // SET DISCOUNTS
-                    this.set_discounts()
-                    uos_pu = this.getUomUosPrices(prod_name, uos_name,  price_unit)
-                    this.model.set('price_udv', self.ts_model.my_round(uos_pu, 2))
-                    this.refresh('price_udv')
                   }
                 }
                 break;
@@ -1207,86 +977,87 @@ var TotalsOrderWidget = TsBaseWidget.extend({
         },
         changeTotals: function(){
             var self = this;
-            this.base = 0;
-            this.discount = 0;
-            this.margin = 0;
-            this.weight = 0;
-            this.iva = 0;
-            this.total = 0;
-            this.pvp_ref = 0;
-            this.sum_cost = 0;
-            this.sum_box = 0;
-            this.sum_fresh = 0;
-            (this.currentOrderLines).each(_.bind( function(line) {
-                var product_id = self.ts_model.db.product_name_id[line.get('product')]
-                if (product_id){
-                    var product_obj = self.ts_model.db.get_product_by_id(product_id)
-                    // if (product_obj.product_class == 'normal'){
-                      self.sum_cost += product_obj.standard_price * line.get('qty');
-                      self.sum_box += line.get('boxes');
-                      self.weight += line.get('weight');
-                    //   self.discount += line.get('pvp_ref') != 0 ? (line.get('pvp_ref') - line.get('pvp')) * line.get('qty') : 0;
-                      self.discount += line.get('qty') * line.get('pvp') * (line.get('discount') / 100)
-                      var price_disc = line.get('pvp') * (1 - (line.get('discount') / 100))
-                      self.margin += (price_disc -  product_obj.standard_price) * line.get('qty');
-                      self.pvp_ref += line.get('pvp_ref') * line.get('qty');
-                      self.base += line.get_price_without_tax('total');
-                      self.iva += line.get_tax();
-                      // self.total += line.get_price_with_tax();
-                      // self.margin += (line.get('pvp') - product_obj.standard_price) * line.get('qty');
-                    // }
-                    // else{
-                    //     self.sum_fresh += line.get_price_without_tax('total');
-                    // }
+            // TODO A VEER
+            // this.base = 0;
+            // this.discount = 0;
+            // this.margin = 0;
+            // this.weight = 0;
+            // this.iva = 0;
+            // this.total = 0;
+            // this.pvp_ref = 0;
+            // this.sum_cost = 0;
+            // this.sum_box = 0;
+            // this.sum_fresh = 0;
+            // (this.currentOrderLines).each(_.bind( function(line) {
+            //     var product_id = self.ts_model.db.product_name_id[line.get('product')]
+            //     if (product_id){
+            //         var product_obj = self.ts_model.db.get_product_by_id(product_id)
+            //         // if (product_obj.product_class == 'normal'){
+            //           self.sum_cost += product_obj.standard_price * line.get('qty');
+            //           self.sum_box += line.get('boxes');
+            //           self.weight += line.get('weight');
+            //         //   self.discount += line.get('pvp_ref') != 0 ? (line.get('pvp_ref') - line.get('pvp')) * line.get('qty') : 0;
+            //           self.discount += line.get('qty') * line.get('pvp') * (line.get('discount') / 100)
+            //           var price_disc = line.get('pvp') * (1 - (line.get('discount') / 100))
+            //           self.margin += (price_disc -  product_obj.standard_price) * line.get('qty');
+            //           self.pvp_ref += line.get('pvp_ref') * line.get('qty');
+            //           self.base += line.get_price_without_tax('total');
+            //           self.iva += line.get_tax();
+            //           // self.total += line.get_price_with_tax();
+            //           // self.margin += (line.get('pvp') - product_obj.standard_price) * line.get('qty');
+            //         // }
+            //         // else{
+            //         //     self.sum_fresh += line.get_price_without_tax('total');
+            //         // }
 
-                }
-            }, this));
-            self.total += self.ts_model.my_round(self.base, 2) + self.ts_model.my_round(self.iva, 2);
-            self.base = self.ts_model.my_round(self.base, 2);
-            this.order_model.set('total_base',self.base);
-            this.order_model.set('total_iva', self.iva);
-            this.order_model.set('total', self.total);
-            this.order_model.set('total_weight', self.weight);
-            this.order_model.set('total_discount', self.discount);
-            var discount_per = (0) + "%";
-            // if (self.pvp_ref != 0){
-            //     var discount_num = (self.discount/self.pvp_ref) * 100 ;
+            //     }
+            // }, this));
+            // self.total += self.ts_model.my_round(self.base, 2) + self.ts_model.my_round(self.iva, 2);
+            // self.base = self.ts_model.my_round(self.base, 2);
+            // this.order_model.set('total_base',self.base);
+            // this.order_model.set('total_iva', self.iva);
+            // this.order_model.set('total', self.total);
+            // this.order_model.set('total_weight', self.weight);
+            // this.order_model.set('total_discount', self.discount);
+            // var discount_per = (0) + "%";
+            // // if (self.pvp_ref != 0){
+            // //     var discount_num = (self.discount/self.pvp_ref) * 100 ;
+            // //     if (discount_num < 0)
+            // //         var discount_per = "+" + self.ts_model.my_round( discount_num * (-1) , 2).toFixed(2) + "%";
+            // //     else
+            // //         var discount_per = self.ts_model.my_round( discount_num , 2).toFixed(2) + "%";
+            // // }
+            // if (self.base != 0){
+            //   // Le volvemos a sumamos el descuento porque la base viene sin el
+            //     var discount_num = (self.discount/(self.base + self.discount) ) * 100 ;
             //     if (discount_num < 0)
-            //         var discount_per = "+" + self.ts_model.my_round( discount_num * (-1) , 2).toFixed(2) + "%";
+            //         var discount_per = "+" +  discount_num * (-1)  + "%";
             //     else
-            //         var discount_per = self.ts_model.my_round( discount_num , 2).toFixed(2) + "%";
+            //         var discount_per =  discount_num.toFixed(2)  + "%";
             // }
-            if (self.base != 0){
-              // Le volvemos a sumamos el descuento porque la base viene sin el
-                var discount_num = (self.discount/(self.base + self.discount) ) * 100 ;
-                if (discount_num < 0)
-                    var discount_per = "+" +  discount_num * (-1)  + "%";
-                else
-                    var discount_per =  discount_num.toFixed(2)  + "%";
-            }
-            this.order_model.set('total_discount_per', discount_per);
-            this.order_model.set('total_margin', self.margin);
-            var margin_per = (0) + "%";
-            var margin_per_num = 0
-            if (self.base != 0) {
-                margin_per_num = ((self.base - self.sum_cost) / self.base) * 100
-                margin_per = self.ts_model.my_round(margin_per_num, 2).toFixed(2) + "%"
-            }
-            this.order_model.set('total_margin_per', margin_per);
-            this.order_model.set('total_boxes', self.sum_box); //integer
-            this.order_model.set('total_fresh', self.sum_fresh);
+            // this.order_model.set('total_discount_per', discount_per);
+            // this.order_model.set('total_margin', self.margin);
+            // var margin_per = (0) + "%";
+            // var margin_per_num = 0
+            // if (self.base != 0) {
+            //     margin_per_num = ((self.base - self.sum_cost) / self.base) * 100
+            //     margin_per = self.ts_model.my_round(margin_per_num, 2).toFixed(2) + "%"
+            // }
+            // this.order_model.set('total_margin_per', margin_per);
+            // this.order_model.set('total_boxes', self.sum_box); //integer
+            // this.order_model.set('total_fresh', self.sum_fresh);
 
-            var min_limit = this.ts_model.get('company').min_limit
-            var min_margin = this.ts_model.get('company').min_margin
-            this.renderElement();
-            if (margin_per_num < min_margin)
-               this.$('#total_margin').addClass('warning-red');
-            else
-               $('#total_margin').removeClass('warning-red');
-            if (self.total < min_limit)
-                $('#total_order').addClass('warning-red');
-            else
-               $('#total_order').removeClass('warning-red');
+            // var min_limit = this.ts_model.get('company').min_limit
+            // var min_margin = this.ts_model.get('company').min_margin
+            // this.renderElement();
+            // if (margin_per_num < min_margin)
+            //    this.$('#total_margin').addClass('warning-red');
+            // else
+            //    $('#total_margin').removeClass('warning-red');
+            // if (self.total < min_limit)
+            //     $('#total_order').addClass('warning-red');
+            // else
+            //    $('#total_order').removeClass('warning-red');
         },
         // confirmCurrentOrder: function() {
         //     var currentOrder = this.order_model;
@@ -1424,36 +1195,37 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
     },
     change_product: function(){
         var self = this;
-        var line_product = this.selected_line.get("product")
-        self.n_line = self.selected_line.get('n_line') + " / " + self.ts_model.get('selectedOrder').get('orderLines').length;
-        if (line_product != ""){
-            var product_id = this.ts_model.db.product_name_id[line_product]
-            var partner_name = this.ts_model.get('selectedOrder').get('partner');
-            var partner_id = this.ts_model.db.partner_name_id[partner_name];
-            if (product_id && partner_id){
-                var product_obj = this.ts_model.db.get_product_by_id(product_id)
-                var partner_obj = this.ts_model.db.get_partner_by_id(partner_id)
-                var pricelist_id = partner_obj.property_product_pricelist
-                var model = new instance.web.Model('product.product');
-                model.call("get_product_info",[product_id,partner_id,pricelist_id],{context:new instance.web.CompoundContext()})
-                    .then(function(result){
-                        self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
-                        self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
-                        self.qty = self.ts_model.my_round(result.last_qty,4).toFixed(4);
-                        self.price = self.ts_model.my_round(result.last_price,2).toFixed(2);
-                        self.min_price = self.ts_model.my_round(result.min_price,2).toFixed(2);
-                        self.mark = result.product_mark;
-                        self.class = result.product_class;
-                        self.max_discount = self.ts_model.my_round(result.max_discount,2).toFixed(2) + "%";
-                        self.unit_weight = self.ts_model.my_round(result.weight_unit,2).toFixed(2);
-                        self.renderElement();
-                    });
-            }
-            else{
-                this.set_default_values();
-                this.renderElement();
-            }
-        }
+        // TODO A VER QUE PASA
+        // var line_product = this.selected_line.get("product")
+        // self.n_line = self.selected_line.get('n_line') + " / " + self.ts_model.get('selectedOrder').get('orderLines').length;
+        // if (line_product != ""){
+        //     var product_id = this.ts_model.db.product_name_id[line_product]
+        //     var partner_name = this.ts_model.get('selectedOrder').get('partner');
+        //     var partner_id = this.ts_model.db.partner_name_id[partner_name];
+        //     if (product_id && partner_id){
+        //         var product_obj = this.ts_model.db.get_product_by_id(product_id)
+        //         var partner_obj = this.ts_model.db.get_partner_by_id(partner_id)
+        //         var pricelist_id = partner_obj.property_product_pricelist
+        //         var model = Model('product.product');
+        //         model.call("get_product_info",[product_id,partner_id,pricelist_id],{context:new instance.web.CompoundContext()})
+        //             .then(function(result){
+        //                 self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
+        //                 self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
+        //                 self.qty = self.ts_model.my_round(result.last_qty,4).toFixed(4);
+        //                 self.price = self.ts_model.my_round(result.last_price,2).toFixed(2);
+        //                 self.min_price = self.ts_model.my_round(result.min_price,2).toFixed(2);
+        //                 self.mark = result.product_mark;
+        //                 self.class = result.product_class;
+        //                 self.max_discount = self.ts_model.my_round(result.max_discount,2).toFixed(2) + "%";
+        //                 self.unit_weight = self.ts_model.my_round(result.weight_unit,2).toFixed(2);
+        //                 self.renderElement();
+        //             });
+        //     }
+        //     else{
+        //         this.set_default_values();
+        //         this.renderElement();
+        //     }
+        // }
     },
     // change_discount: function(){
     //     var discount = this.selected_line.get('discount');
