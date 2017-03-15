@@ -47,12 +47,12 @@
 
         <record id="action_expense_structure" model="ir.actions.act_window">
             <field name="name">Expense Structures</field>
-             <field name="type">ir.actions.act_window</field>
+            <field name="type">ir.actions.act_window</field>
             <field name="res_model">expense.structure</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="view_expense_structure_filter"/>
-             <field name="context">{}</field>
+            <field name="context">{}</field>
         </record>
 
         <record id="view_expense_structure_elements_tree" model="ir.ui.view">

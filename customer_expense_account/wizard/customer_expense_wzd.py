@@ -27,14 +27,19 @@ class CustomerExpenseWzd(models.TransientModel):
         date_start = year + '-' + '01' + '-' + '01'
         date_end = year + '-' + '12' + '-' + '31'
         structure = False
+        model = self._context.get('active_model')
         if self._context.get('active_id', False):
-            model = self._context.get('active_model')
-            structure = \
-                self.env[model].browse(self._context['active_id']).\
-                structure_id
-            structure = structure or \
-                self.env[model].browse(self._context['active_id']).\
-                commercial_partner_id.structure_id
+            if not self._context.get('all_company', False):
+                structure = \
+                    self.env[model].browse(self._context['active_id']).\
+                    structure_id
+                structure = structure or \
+                    self.env[model].browse(self._context['active_id']).\
+                    commercial_partner_id.structure_id
+            else:
+                structure = \
+                    self.env[model].browse(self._context['active_id']).\
+                    partner_id.structure_id
         res.update(start_date=date_start, end_date=date_end,
                    structure_id=structure.id if structure else False,
                    company_id=structure.company_id.id if structure else False)
@@ -46,10 +51,16 @@ class CustomerExpenseWzd(models.TransientModel):
         ctx = self._context.copy()
         ctx.update(from_date=self.start_date, to_date=self.end_date)
         t_expense_line = self.env['expense.line'].with_context(ctx)
+        t_partner = self.env['res.partner']
+        t_company = self.env['res.company']
         if not self._context.get('active_id', False):
             return res
-        partner = self.env['res.partner'].browse(self._context['active_id'])
-        partner = partner.commercial_partner_id
+        if not self._context.get('all_company', False):
+            partner = t_partner.browse(self._context['active_id'])
+            partner = partner.commercial_partner_id
+        else:
+            partner = t_company.browse(self._context['active_id']).\
+                      partner_id
         line_ids = t_expense_line.get_expense_lines(self.structure_id,
                                                     partner)
         date_from = datetime.strptime(
@@ -57,7 +68,7 @@ class CustomerExpenseWzd(models.TransientModel):
         date_to = datetime.strptime(
                     self.end_date, "%Y-%m-%d").strftime('%d-%m-%Y')
         view_name = _("%s (from: %s, to: %s)") \
-                     % (partner.name, date_from, date_to)
+                    % (partner.name, date_from, date_to)
         res = {
             'domain': str([('id', 'in', line_ids)]),
             'name': view_name,
@@ -75,11 +86,16 @@ class CustomerExpenseWzd(models.TransientModel):
         ctx.update(from_date=self.start_date, to_date=self.end_date)
         t_expense_line = self.env['expense.line'].with_context(ctx)
         t_partner = self.env['res.partner']
+        t_company = self.env['res.company']
         p_dic = {}
-        partner_ids = [partner.commercial_partner_id 
-               for partner in t_partner.browse(self._context['active_ids'])
-               if partner.commercial_partner_id]
-        partner_ids = list(set(partner_ids))
+        if not self._context.get('all_company', False):
+            partner_ids = [partner.commercial_partner_id
+                for partner in t_partner.browse(self._context['active_ids'])
+                if partner.commercial_partner_id]
+            partner_ids = list(set(partner_ids))
+        else:
+            partner_ids = [t_company.browse(self._context['active_id']).\
+                           partner_id]
         use_partner_structure = self.use_partner_structure \
                                 if len(partner_ids) > 1 else False
         for partner in partner_ids:
@@ -224,7 +240,6 @@ class ExpenseLine(models.TransientModel):
         if compute_type == 'fixed':
             res = e.var_ratio
         elif compute_type == 'invoicing':
-
             query = self._get_invoice_query(e, False, 'out_invoice')
             self._cr.execute(query)
             qres = self._cr.fetchall()
@@ -298,9 +313,8 @@ class ExpenseLine(models.TransientModel):
                   type = '%s'
         """ % (self._context['from_date'], self._context['to_date'], 
                e.structure_id.company_id.id, inv_type)
-        if partner:
+        if partner and not self._context.get('all_company', False):
             query += """ AND ai.commercial_partner_id = %s """ % str(partner.id)
-
         if exp_type.product_id:
             query += """ AND ail.product_id = %s """ % exp_type.product_id.id
         elif exp_type.categ_id:
@@ -319,7 +333,7 @@ class ExpenseLine(models.TransientModel):
     def _get_analytic_query(self, e, partner):
         aac = self.env['account.analytic.default'].\
             search([('partner_id', '=', partner.id)], limit=1)
-        if not aac:
+        if not aac and not self._context.get('all_company', False):
             return False
         analytic_obj = self.env['account.analytic.account']
         #aac = aac.analytic_id
@@ -341,7 +355,7 @@ class ExpenseLine(models.TransientModel):
                             [child for child in account.child_ids
                              if child.state != 'template'])
         
-        if exp_type.restrict_partner:
+        if exp_type.restrict_partner and not self._context.get('all_company', False):
             query = """
                 SELECT sum(aal.amount) 
                 FROM account_analytic_line aal
@@ -359,11 +373,11 @@ class ExpenseLine(models.TransientModel):
                   AND aal.company_id = %s
             """ % (self._context['from_date'], self._context['to_date'], 
                    e.structure_id.company_id.id)
-            
-        if len(aac_ids) == 1:
-            query += """ AND aal.account_id = %s """ % str(aac_ids[0])
-        else:
-            query += """ AND aal.account_id in %s """ % str(tuple(aac_ids))
+        if not self._context.get('all_company', False):
+            if len(aac_ids) == 1:
+                query += """ AND aal.account_id = %s """ % str(aac_ids[0])
+            else:
+                query += """ AND aal.account_id in %s """ % str(tuple(aac_ids))
         if journal_id:
             query += """ AND aal.journal_id = %s """ % str(exp_type.journal_id.id)
         if exp_type.product_id:
