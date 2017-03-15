@@ -244,7 +244,6 @@
      <t t-name="Order-line-Widget">
         <tr>
              <td class="cell-nline">
-                <!-- <span class='col-nline'> <t t-esc="widget.model.get('n_line')"/> </span> -->
                 <input type="text" class='col-nline' t-att-value="widget.model.get('n_line')" readonly="readonly" tabIndex="-1"/>
             </td>
             <td class="cell-code">
@@ -253,24 +252,23 @@
              <td class="cell-product">
                 <input type="search" class='col-product mandatory' t-att-value="widget.model.get('product')"/>
             </td>
-            <td class="cell-qty">
+            <!-- <td class="cell-qty">
                 <input id="inputuosqty" type="text" class='col-product_uos_qty mandatory' t-att-value="widget.model.get('product_uos_qty').toFixed(4)"/>
             </td>
             <td class="cell-unit">
-                <!-- <select class='col-product_uos mandatory' t-att-value="widget.model.get('product_uos')"/> -->
-                <!-- <input type="text" class='col-product_uos mandatory' t-att-value="widget.model.get('product_uos')"/> -->
                 <select class="col-product_uos mandatory">
-
                 </select>
-            </td>
-            <td class="cell-pvp">
+            </td> -->
+<!--             <td class="cell-pvp">
                 <input type="text" class='col-price_udv mandatory' t-att-value="widget.model.get('price_udv').toFixed(2)" />
-            </td>
+            </td> -->
              <td class="cell-qty">
                 <input type="text" class='col-qty' t-att-value="widget.model.get('qty').toFixed(4)" readonly="readonly" tabIndex="-1"/>
             </td>
              <td class="cell-unit">
-                <input type="text" class='col-unit' t-att-value="widget.model.get('unit')" readonly="readonly" tabIndex="-1"/>
+                <!-- <input type="text" class='col-unit' t-att-value="widget.model.get('unit')" readonly="readonly" tabIndex="-1"/> -->
+                <select class="col-product_uom mandatory" t-att-value="widget.model.get('unit')">
+                </select>
             </td>
             <td class="cell-pvp">
                 <input type="text" class='col-pvp mandatory' t-att-value="widget.model.get('pvp').toFixed(2)"/>
@@ -281,14 +279,7 @@
              <td class="cell-total">
                 <input type="text" class='col-total' t-att-value="widget.model.get('total').toFixed(2)" readonly="readonly" tabIndex="-1"/>
             </td>
-            <!--td class="cell-temp">
-                <input type="text" class='col-temp' t-att-value="widget.model.get('temperature')" readonly="readonly" tabIndex="-1"/>
-            </td>
-            <td class="cell-qnote">
-                <input type="text" class='col-qnote' t-att-value="widget</td>
-            <td class="cell-deta">
-                <input type="text" class='col-detail' t-att-value="widget.model.get('detail')"/>
-            </td-->
+
 
         </tr>
     </t>
@@ -378,9 +369,9 @@
                     <th class="header-nline">Nº</th>
                     <th class="header-code">Code</th>
                     <th class="header-product">Product</th>
-                    <th class="header-qty">UoS Qty</th>
-                    <th class="header-unit">UoS</th>
-                    <th class="header-pvp">UoS Price</th>
+<!--                     <th class="header-qty">UoS Qty</th>
+                    <th class="header-unit">UoS</th> -->
+ <!--                    <th class="header-pvp">UoS Price</th> -->
                     <th class="header-qty">Qty</th>
                     <th class="header-unit">Unit</th>
                     <th class="header-pvp">PVP</th>

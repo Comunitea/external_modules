@@ -339,6 +339,14 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.control_arrow_keys()
         // Creamos nueva linea al tabular la última columna de descuento
 
+        for (var unit in self.ts_model.db.unit_name_id){
+            var dic = { value: unit,
+                        text: unit}
+             if (unit == self.model.get('product_uom')){
+                    dic['selected'] =  "selected"
+            }
+            self.$('.col-product_uom').append($('<option>', dic))
+        }
         if(this.model.get('product')){
             var uos = [];
             var product_id = this.ts_model.db.product_name_id[this.model.get('product')]
@@ -439,13 +447,6 @@ var OrderlineWidget = TsBaseWidget.extend({
                 self.model.set('qty', result.product_uom_qty);
                 self.model.set('pvp', self.ts_model.my_round( result.price_unit));
                
-                // COMENTADO PARA QUE NO SAQUE EL AVISO SIEMPRE
-                // if ( (1 > product_obj.virtual_stock_conservative) && (product_obj.product_class == "normal")){
-                //     alert(_t("You want sale 1 " + " " + product_obj.uom_id[1] + " but only " +  product_obj.virtual_stock_conservative + " available."))
-                //     var new_qty = (product_obj.virtual_stock_conservative < 0) ? 0.0 : product_obj.virtual_stock_conservative
-                //     self.model.set('qty', new_qty);
-                //     self.refresh();
-                // }
                 var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
                 self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
                 self.refresh();
