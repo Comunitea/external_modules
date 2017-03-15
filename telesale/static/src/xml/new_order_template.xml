@@ -132,6 +132,7 @@
     </t>
 
     <t t-name="Data-Order-Widget">
+        <!-- FIRST ROW -->
         <div class="row semiheight fullwidth">
               <div class="col-xs-4 fullheight">
                   <div class="row semiheight">
@@ -165,52 +166,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-2 fullheight">
-                    <div class="row semiheight">
-                        <div class="fullheight centerinside fullwidth">
-                          <div class="centerthis">
-                            <label for="date_invoice">Date invoice:</label>
-                            <input  class="  mandatory" type="date" id='date_invoice' name="date_invoice" t-att-value="widget.order_model.get('date_invoice')" tabIndex="4"/>
-                          </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-2 fullheight">
+                <div class="col-xs-4 fullheight">
                       <div class="fullheight centerinside">
                           <div class="centerthis">
                             <label for="coment">Notes:</label>
-                            <textarea class="semiheight notes mandatory" rows="2" cols="22" id='coment' name="coment" tabIndex="5"><t t-esc="widget.order_model.get('coment')"/></textarea>
-                            <!-- <label for="customer_note">Customer Notes:</label>
-                            <textarea class="semiheight notes mandatory" rows="2" cols="22" id='customer_comment' name="customer_comment" tabIndex="8"><t t-esc="widget.order_model.get('customer_comment')" t-if="widget.order_model.get('customer_comment')"/></textarea> -->
+                            <textarea class="semiheight notes mandatory" rows="2" cols="82" id='coment' name="coment" tabIndex="5"><t t-esc="widget.order_model.get('coment')"/></textarea>
                           </div>
                       </div>
                 </div>
         </div>
+        <!-- SECOND ROW -->
         <div class="row semiheight fullwidth">
                 <div class="col-xs-4 fullheight">
                   <div class="row semiheight">
                     <div class="col-xs-6 fullheight">
                       <div class="fullheight centerinside fullwidth">
                         <div class="centerthis">
-                            <!-- todo quit -->
-                          <!-- <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == true">
-                            <label class="red" for="total">Suppliers:</label>
-                            <input type="text" class='total mandatory' id="supplier"
-                                t-att-value="widget.order_model.get('supplier')" tabIndex="6"/>
-                          </t>
-                          <t t-if="widget.ts_model.db.is_indirect_customer_by_name(widget.order_model.get('partner')) == false">
-                            <label for="total">Suppliers:</label>
-                            <input type="text" class='total' id="supplier"
-                                value="" readonly="True" tabIndex="-1"/>
-                          </t> -->
+                          <label for="contact_name">Contact Name:</label>
+                          <input class=" " type="text" id='contact_name' name="contact_name" t-att-value="widget.order_model.get('contact_name')" readonly="readonly" tabIndex="-1"/>
                         </div>
                       </div>
                     </div>
                     <div class="col-xs-6 fullheight">
                       <div class="fullheight centerinside fullwidth">
+                        
                         <div class="centerthis">
-                          <label for="contact_name">Contact Name:</label>
-                          <input class=" " type="text" id='contact_name' name="contact_name" t-att-value="widget.order_model.get('contact_name')" readonly="readonly" tabIndex="-1"/>
+                            <label for="comercial">Comercial:</label>
+                            <input class=" " type="text" id='comercial' name="comercial" t-att-value="widget.order_model.get('comercial')" readonly="readonly" tabIndex="-1"/>
                         </div>
                       </div>
                     </div>
@@ -220,59 +202,33 @@
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
-                            <label for="comercial">Comercial:</label>
-                            <input class=" " type="text" id='comercial' name="comercial" t-att-value="widget.order_model.get('comercial')" readonly="readonly" tabIndex="-1"/>
-                        </div>
+                              <label for="limit_credit">Limit Credit:</label>
+                              <input class=" " type="numeric" id='limit_credit' name="limit_credit"
+                                  t-att-value="widget.order_model.get('limit_credit').toFixed(2)" readonly="readonly" tabIndex="-1"/>
+                          </div>
                       </div>
                     </div>
                 </div>
-              <div class="col-xs-4 fullheight">
-                      <div class="col-xs-4 fullheight">
-                          <div class="row semiheight">
-                            <div class="fullheight centerinside fullwidth">
-                              <div class="centerthis">
-                                <!-- TODO QUIT -->
-
-                                  <label for="client_order_ref_lbl" class="red">Client Order Ref.:</label>
-                                  <input class="mandatory" type="text" id="client_order_ref" name="client_order_ref" t-att-value="widget.order_model.get('client_order_ref')" tabIndex="7"/>
-
-
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="col-xs-4 fullheight">
-                          <div class="row semiheight">
-                              <div class="fullheight centerinside fullwidth">
-                                <div class="centerthis">
-                                  <label for="limit_credit">Limit Credit:</label>
-                                  <input class=" " type="numeric" id='limit_credit' name="limit_credit"
-                                      t-att-value="widget.order_model.get('limit_credit').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="col-xs-4 fullheight">
-                          <div class="row semiheight">
-                              <div class="fullheight centerinside fullwidth">
-                                <div class="centerthis">
-                                  <label for="customer_debt">Customer Debt:</label>
+                <div class="col-xs-2 fullheight">
+                    <div class="row semiheight">
+                        <div class="fullheight centerinside fullwidth">
+                          <div class="centerthis">
+                              <label for="customer_debt">Customer Debt:</label>
                                   <input class="red" type="numeric" id='customer_debt' name="customer_debt"
                                       t-att-value="widget.order_model.get('customer_debt').toFixed(2)" readonly="readonly" tabIndex="-1"
                                       t-if="widget.order_model.get('customer_debt').toFixed(2) > 0"/>
                                   <input class="" type="numeric" id='customer_debt' name="customer_debt"
                                       t-att-value="widget.order_model.get('customer_debt').toFixed(2)" readonly="readonly" tabIndex="-1"
                                       t-if="widget.order_model.get('customer_debt').toFixed(2) == 0"/>
-                              </div>
-                            </div>
                           </div>
                       </div>
-              </div>
-              <div class="col-xs-2 fullheight">
+                    </div>
+                </div>
+              <div class="col-xs-4 fullheight">
                     <div class="fullheight centerinside">
                         <div class="centerthis">
                           <label for="customer_note">Customer Notes:</label>
-                          <textarea class="semiheight notes mandatory" rows="2" cols="22" id='customer_comment' name="customer_comment" tabIndex="8"><t t-esc="widget.order_model.get('customer_comment')" t-if="widget.order_model.get('customer_comment')"/></textarea>
+                          <textarea class="semiheight notes mandatory" rows="2" cols="82" id='customer_comment' name="customer_comment" tabIndex="8"><t t-esc="widget.order_model.get('customer_comment')" t-if="widget.order_model.get('customer_comment')"/></textarea>
                         </div>
                     </div>
               </div>

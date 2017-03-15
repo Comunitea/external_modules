@@ -38,7 +38,7 @@ var TsModel = Backbone.Model.extend({
             'units':                  [], // Array of units
             'units_names':            [], // Array of units names
            
-            'customer_names':         [], // Array of customer names
+            'customer_names':            [], // Array of customer names
             'customer_codes':         [], // Array of customer refs
 
             'pricelist':              null,
@@ -77,7 +77,7 @@ var TsModel = Backbone.Model.extend({
         var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', this.session.uid]])
             .then(function(users){
                 self.set('user', users[0]);
-                // COMPANY
+                    // COMPANY
                 return self.fetch('res.company',
                 [
                     'currency_id',
@@ -471,7 +471,7 @@ var TsModel = Backbone.Model.extend({
     getComplexName: function(partner_obj){
         var res = '';
         if (partner_obj){
-          res = partner_obj.comercial + ' | ' + partner_obj.name + ' | ' + partner_obj.ref
+          res =  partner_obj.name + ' | ' + partner_obj.ref
         }
         return res;
     }
@@ -825,25 +825,27 @@ var Order = Backbone.Model.extend({
         };
     },
     get_last_line_by: function(period, client_id){
-      var model = new instance.web.Model('sale.order.line');
-      var cache_sold_lines = self.ts_model.db.cache_sold_lines[client_id]
-      if (cache_sold_lines && period == 'year'){
-          self.ts_model.get('sold_lines').reset(cache_sold_lines)
-      }
-      else{
-          var loaded = model.call("get_last_lines_by",[period, client_id],{context:new instance.web.CompoundContext()})
-              .then(function(order_lines){
-                      if (!order_lines){
-                        order_lines = []
-                      }
-                        // self.add_lines_to_current_order(order_lines);
-                      if(period == 'year'){
-                          self.ts_model.db.cache_sold_lines[client_id] = order_lines;
-                      }
-                      self.ts_model.get('sold_lines').reset(order_lines)
-              });
-            return loaded
-      }
+      var self = this;
+      // TODO TODA ESTA PARTE
+      // var model = new Model('sale.order.line');
+      // var cache_sold_lines = self.ts_model.db.cache_sold_lines[client_id]
+      // if (cache_sold_lines && period == 'year'){
+      //     self.ts_model.get('sold_lines').reset(cache_sold_lines)
+      // }
+      // else{
+      //     var loaded = model.call("get_last_lines_by",[period, client_id])
+      //         .then(function(order_lines){
+      //                 if (!order_lines){
+      //                   order_lines = []
+      //                 }
+      //                   // self.add_lines_to_current_order(order_lines);
+      //                 if(period == 'year'){
+      //                     self.ts_model.db.cache_sold_lines[client_id] = order_lines;
+      //                 }
+      //                 self.ts_model.get('sold_lines').reset(order_lines)
+      //         });
+      //       return loaded
+      // }
     },
     add_lines_to_current_order: function(order_lines, fromsoldprodhistory){
         this.get('orderLines').unbind();  //unbind to render all the lines once, then in OrderWideget we bind again

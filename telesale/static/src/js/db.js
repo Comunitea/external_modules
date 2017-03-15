@@ -37,14 +37,7 @@ exports.TS_LS = core.Class.extend({
         this.unit_by_id = {};
         this.unit_name_id = {};
         this.all_units = {};
-        this.qnote_by_id = {};
-        this.qnote_name_id = {};
-        this.all_qnotes = {};
-
-        this.all_routes = {};
-        this.route_by_id = {};
-        this.route_name_id = {};
-
+      
         this.cache_sold_lines = {};
     },
 
@@ -76,17 +69,9 @@ exports.TS_LS = core.Class.extend({
         return str + '\n';
     },
     _partner_search_string: function(partner){
-        // var str = '' + partner.id + ':' + partner.name;
-        // if(partner.ref){
-        //     str += '|' + partner.ref;
-        // }
-        // return str + '\n';
         var str = partner.name;
         if (partner.ref){
             str += '|' + partner.ref;
-        }
-        if (partner.comercial){
-            str += '|' + partner.comercial;
         }
         str = '' + partner.id + ':' + str.replace(':','') + '\n';
         return str
@@ -118,30 +103,6 @@ exports.TS_LS = core.Class.extend({
         }
         this.all_units = units
     },
-    add_qnotes: function(qnotes){
-        if(!qnotes instanceof Array){
-            qnotes = [qnotes];
-        }
-        for(var i = 0, len = qnotes.length; i < len; i++){
-            var qnote = qnotes[i];
-
-            this.qnote_by_id[qnote.id] = qnote;
-            this.qnote_name_id[qnote.code] = qnote.id;
-        }
-        this.all_qnotes = qnotes
-    },
-    add_routes: function(routes){
-        if(!routes instanceof Array){
-            routes = [routes];
-        }
-        for(var i = 0, len = routes.length; i < len; i++){
-            var route = routes[i];
-
-            this.route_by_id[route.id] = route;
-            this.route_name_id[route.code] = route.id;
-        }
-        this.all_routes = routes
-    },
     add_partners: function(partners){
         if(!partners instanceof Array){
             partners = [partners];
@@ -153,7 +114,7 @@ exports.TS_LS = core.Class.extend({
             // partner.property_product_pricelist = partner.property_product_pricelist[0];
             this.partner_by_id[partner.id] = partner;
             // var cus_name = partner.comercial || partner.name
-            var cus_name = partner.comercial + ' | ' + partner.name + ' | ' + partner.ref
+            var cus_name = partner.name + ' | ' + partner.ref
             // var cus_name = this.ts_model.getComplexName(partner)
             this.partner_name_id[cus_name] = partner.id;
             if(partner.ref){
@@ -161,16 +122,6 @@ exports.TS_LS = core.Class.extend({
             }
             var search_string = this._partner_search_string(partner);
             this.partner_search_string += search_string
-        }
-    },
-    add_suppliers: function(suppliers){
-        if(!suppliers instanceof Array){
-            suppliers = [suppliers];
-        }
-        for(var i = 0, len = suppliers.length; i < len; i++){
-            var supplier = suppliers[i];
-            this.suppliers_name_id[supplier.id] = supplier.name;
-            this.supplier_from_name_to_id[supplier.name] = supplier.id;
         }
     },
     add_taxes: function(taxes){
