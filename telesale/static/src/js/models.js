@@ -4,7 +4,7 @@ odoo.define('telesale.models', function (require) {
 var Backbone = window.Backbone;
 var Model = require('web.DataModel');
 var core = require('web.core');
-// var DB = require('telesale.db');
+var DB = require('telesale.db');
 var _t = core._t;
 
 var exports = {};
@@ -17,38 +17,34 @@ var TsModel = Backbone.Model.extend({
         this.ready = $.Deferred(); // used to notify the GUI that the PosModel has loaded all resources
         this.ready2 = $.Deferred(); // used to notify the GUI that thepromotion has writed in the server
         // this.flush_mutex = new $.Mutex();  // used to make sure the orders are sent to the server once at time
-        // this.db = new DB.TS_LS();                       // a database used to store the products and categories
+        this.db = new DB.TS_LS();                       // a database used to store the products and categories
         // this.db.clear('products','partners');
         this.ts_widget = attributes.ts_widget;
         this.set({
-            'currency': {symbol: $, position: 'after'},
-            'shop':                 null,
-            'user':                 null,
-            'company':              null,
-            'orders':               new OrderCollection(),
-            'products':             new ProductCollection(),
-            // 'calls':                new CallsCollection(),
-            'sold_lines':           new SoldLinesCollection(),
+            'currency':              {symbol: $, position: 'after'},
+            'shop':                  null,
+            'user':                  null,
+            'company':               null,
+            'orders':                new OrderCollection(),
+            'products':              new ProductCollection(),
+            'sold_lines':            new SoldLinesCollection(),
             'product_search_string': "",
-            'products_names':            [], // Array of products names
-            'products_codes':            [], // Array of products code
-            'sust_products':            [], // Array of products sustitutes
-            'taxes':                null,
-            'ts_session':           null,
-            'ts_config':            null,
-            'units':                [], // Array of units
-            'units_names':          [], // Array of units names
-            'qnotes':                [], // Array of qualitative note
-            'qnotes_names':          [], // Array of qualitative note names
-            'routes_names':          [], // Array of route names
-            'customer_names':          [], // Array of customer names
-            'customer_codes':          [], // Array of customer refs
-            'supplier_names':          [], // Array of supplier refs
-            'pricelist':            null,
-            'selectedOrder':        null,
+            'products_names':        [], // Array of products names
+            'products_codes':        [], // Array of products code
+
+            'taxes':                  null,
+            'ts_session':             null,
+            'ts_config':              null,
+            'units':                  [], // Array of units
+            'units_names':            [], // Array of units names
+           
+            'customer_names':         [], // Array of customer names
+            'customer_codes':         [], // Array of customer refs
+
+            'pricelist':              null,
+            'selectedOrder':          null,
             'nbr_pending_operations': 0,
-            'visible_products': {},
-            'call_id': false,
+
             'update_catalog': 'a',  //value to detect changes between a and b to update the catalog only when click in label
             'bo_id': 0 //it's a counter to assign to the buttons when you do click on '+'
         });
@@ -80,23 +76,69 @@ var TsModel = Backbone.Model.extend({
 
         var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', this.session.uid]])
             .then(function(users){
-                self.set('user',users[0]);
-                console.time('Test performance company');
+                self.set('user', users[0]);
+                // COMPANY
                 return self.fetch('res.company',
                 [
                     'currency_id',
-                    'email',
-                    'website',
-                    'company_registry',
-                    'vat',
                     'name',
                     'phone',
                     'partner_id',
-                    'min_limit',
-                    'min_margin',
                 ],
                 [['id','=',users[0].company_id[0]]]);
-                })
+                }).then(function(companies){
+                    self.set('company',companies[0]);
+
+                    // UNITS
+                    return self.fetch('product.uom', ['name'], []);
+                }).then(function(units){
+                    for (var key in units){
+                        self.get('units_names').push(units[key].name)
+                    }
+
+                    self.db.add_units(units);
+                    console.time('Test performance products');
+
+                    // PRODUCTS
+                    return self.fetch(
+                        'product.product',
+                        ['name', 'default_code', 'list_price', 'standard_price', 'uom_id', 'taxes_id', 'weight'],
+                        [['sale_ok', '=', true]]
+                    );
+                    // var model = new instance.web.Model('product.product');
+                    // return model.call("load_products",[],{context:new instance.web.CompoundContext()});
+                }).then(function(products){
+                    self.db.add_products(products);
+
+                    // PARTNERS
+                    return self.fetch(
+                        'res.partner',
+                        ['name', 'comercial', 'ref', 'property_account_position', 'property_product_pricelist', 'child_ids', 'phone', 'user_id',  'comment'],
+                        [['customer','=',true]])
+                }).then(function(customers){
+                    for (var key in customers){
+                        var customer_name = self.getComplexName(customers[key]);
+                        self.get('customer_names').push(customer_name);
+                        self.get('customer_codes').push(customers[key].ref);
+                    }
+                    self.db.add_partners(customers);
+
+                    // TAXES
+                    return self.fetch('account.tax', ['amount', 'price_include', 'type'], [['type_tax_use','=','sale']]);
+                }).then(function(taxes) {
+                    self.set('taxes', taxes);
+                    self.db.add_taxes(taxes);
+
+                    // FISCAL POSITION TAX
+                    return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id']);
+                }).then(function(fposition_map) {
+                    self.db.add_taxes_map(fposition_map);
+
+                    // FISCAL POSITION
+                    return self.fetch('account.fiscal.position', ['name', 'tax_ids']);
+                }).then(function(fposition) {
+                    self.db.add_fiscal_position(fposition);
+                });
         return loaded;
     },
     getCurrentDateStr: function() {
