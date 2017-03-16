@@ -126,7 +126,7 @@ class PurchaseCostDistribution(models.Model):
     def unlink(self):
         for c in self:
             if c.state not in ('draft', 'calculated'):
-                raise exceptions.UserError(
+                raise exceptions.Warning(
                     _("You can't delete a confirmed cost distribution"))
         return super(PurchaseCostDistribution, self).unlink()
 
@@ -187,13 +187,13 @@ class PurchaseCostDistribution(models.Model):
             divisor = (len(expense_line.affected_lines) or
                        len(distribution.cost_lines))
         else:
-            raise exceptions.UserError(
+            raise exceptions.Warning(
                 _('No valid distribution type.'))
         if divisor:
             expense_amount = (expense_line.expense_amount * multiplier /
                               divisor)
         else:
-            raise exceptions.UserError(
+            raise exceptions.Warning(
                 _("The cost for the line '%s' can't be "
                   "distributed because the calculation method "
                   "doesn't provide valid data" % cost_line.type.name))
@@ -208,11 +208,11 @@ class PurchaseCostDistribution(models.Model):
         for distribution in self:
             # Check expense lines for amount 0
             if any([not x.expense_amount for x in distribution.expense_lines]):
-                raise exceptions.UserError(
+                raise exceptions.Warning(
                     _('Please enter an amount for all the expenses'))
             # Check if exist lines in distribution
             if not distribution.cost_lines:
-                raise exceptions.UserError(
+                raise exceptions.Warning(
                     _('There is no picking lines in the distribution'))
             # Calculating expense line
             for cost_line in distribution.cost_lines:
@@ -281,7 +281,7 @@ class PurchaseCostDistribution(models.Model):
                 if self.currency_id.compare_amounts(
                         line.move_id.quant_ids[0].cost,
                         line.standard_price_new) != 0:
-                    raise exceptions.UserError(
+                    raise exceptions.Warning(
                         _('Cost update cannot be undone because there has '
                           'been a later update. Restore correct price and try '
                           'again.'))
