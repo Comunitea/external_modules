@@ -609,7 +609,6 @@ var OrderWidget = TsBaseWidget.extend({
 var ProductInfoOrderWidget = TsBaseWidget.extend({
     template:'ProductInfo-Order-Widget',
     init: function(parent, options) {
-        debugger;
         this._super(parent,options);
         this.ts_model.bind('change:selectedOrder', this.change_selected_order, this);
         this.order_model = this.ts_model.get('selectedOrder');

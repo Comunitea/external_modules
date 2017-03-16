@@ -8,7 +8,7 @@ var _t = core._t;
 
 var exports = {};
 
-exports.HistorylineWidget = TsBaseWidget.extend({
+var HistorylineWidget = TsBaseWidget.extend({
     template:'History-Line-Widget',
     init: function(parent, options){
         this._super(parent,options);
@@ -23,9 +23,10 @@ exports.HistorylineWidget = TsBaseWidget.extend({
         }
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice'],
+                                        ['contact_id','note','comercial','customer_comment','name','partner_id','date_order',
+                                         'state','amount_total','date_planned'],
                                         [
-                                            ['id', '=', order_id]
+                                        ['id', '=', order_id]
                                         ])
             .then(function(orders){
                 var order = orders[0];
@@ -33,13 +34,10 @@ exports.HistorylineWidget = TsBaseWidget.extend({
                 return self.ts_model.fetch('sale.order.line',
                                             ['product_id','product_uom',
                                             'product_uom_qty',
-                                            'product_uos',
-                                            'product_uos_qty',
-                                            'price_udv','price_unit',
-                                            'price_subtotal','tax_id',
-                                            'pvp_ref','current_pvp',
-                                            'q_note', 'detail_note',
-                                            'discount', 'tourism'],
+                                            'price_unit',
+                                            'tax_id',
+                                            'price_subtotal',
+                                            'discount'],
                                             [
                                                 ['order_id', '=', order_id],
                                              ]);
@@ -79,13 +77,12 @@ exports.HistorylineWidget = TsBaseWidget.extend({
     renderElement: function() {
         var self=this;
         this._super();
-        // this.$el.click(_.bind(this.click_handler, this));
         this.$("#button-line-adding").click(_.bind(this.click_handler2, this));
         this.$("#button-order-creating").click(_.bind(this.click_handler, this));
     },
 });
 
-exports.OrderHistoryWidget = TsBaseWidget.extend({
+var OrderHistoryWidget = TsBaseWidget.extend({
     template:'Order-History-Widget',
     init: function(parent, options) {
         this._super(parent,options);
@@ -103,13 +100,13 @@ exports.OrderHistoryWidget = TsBaseWidget.extend({
         this.$('#search-customer-month').click(function (){ self.searchCustomerOrdersBy('month') });
         this.$('#search-customer-trimester').click(function (){ self.searchCustomerOrdersBy('trimester') });
         var $history_content = this.$('.historylines');
-        for (key in this.partner_orders){
+        for (var key in this.partner_orders){
             var history_order = this.partner_orders[key];
             var history_line = new HistorylineWidget(this, {order: history_order});
             history_line.appendTo($history_content);
         }
     },
-    load_partner_orders: function(partner_id,date_start,date_end){
+    load_partner_orders: function(partner_id, date_start, date_end){
         var self=this;
         var domain =   [['partner_id', '=', partner_id]]
         if (date_start != ""){
@@ -119,7 +116,7 @@ exports.OrderHistoryWidget = TsBaseWidget.extend({
             domain.push(['date_order', '<=', date_end])
         }
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['name','partner_id','date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice',],  //faltan los impuestos etc
+                                        ['name','partner_id','date_order','state','date_planned', 'amount_total'],
                                         domain)
             .then(function(orders){
              self.partner_orders = orders;
@@ -170,14 +167,13 @@ exports.OrderHistoryWidget = TsBaseWidget.extend({
                 self.renderElement();
                 self.$('#input-customer').val(partner_name);
             }).fail(function(){
-                //?????
             });
         }
     },
 });
 
-
-
-
-return exports;
+return {
+    HistorylineWidget: HistorylineWidget,
+    OrderHistoryWidget: OrderHistoryWidget
+};
 });
