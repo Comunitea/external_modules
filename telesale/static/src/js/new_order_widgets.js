@@ -451,17 +451,17 @@ var OrderWidget = TsBaseWidget.extend({
             this.currentOrderLines.bind('add', this.renderElement, this);
             this.currentOrderLines.bind('remove', this.renderElement, this);
         },
-        show_client: function(){//"SIGIENTE LINEA"
+        show_client: function(){
             var client_id = this.check_customer_get_id()
             if (client_id){
-                context = new instance.web.CompoundContext()
-                var pop = new instance.web.form.FormOpenPopup(this);
-                pop.show_element('res.partner',client_id,context,
-                    {target:'new',
-                     title: "Ver Cliente",
-                     readonly: true,
-               })
-
+                this.do_action({
+                    type: 'ir.actions.act_window',
+                    res_model: "res.partner",
+                    res_id: client_id,
+                    views: [[false, 'form']],
+                    target: 'new',
+                    context: {},
+                });
             }
             else{
               alert(_t('You must select a customer'));
@@ -469,13 +469,14 @@ var OrderWidget = TsBaseWidget.extend({
         },
         show_product: function(product_id){
             if (product_id){
-                context = new instance.web.CompoundContext()
-                var pop = new instance.web.form.FormOpenPopup(this);
-                pop.show_element('product.product',product_id,context,
-                    {target:'new',
-                     title: "Ver Producto",
-                     readonly: true,
-               })
+                this.do_action({
+                    type: 'ir.actions.act_window',
+                    res_model: "product.product",
+                    res_id: product_id,
+                    views: [[false, 'form']],
+                    target: 'new',
+                    context: {},
+                });
             }
         },
         renderElement: function () {
@@ -958,7 +959,6 @@ var TotalsOrderWidget = TsBaseWidget.extend({
         confirmCurrentOrder: function() {
           var self = this;
             var currentOrder = this.order_model;
-            currentOrder.set('set_promotion', true)  // Aplicar promociones al confirmar
             self.saveCurrentOrder()
             $.when( self.ts_model.ready2 )
             .done(function(){
@@ -971,7 +971,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                        console.log('Entro')
                         if (orders[0]) {
                           // var my_id = orders[0].id
-                          (new Model('sale.order')).call('confirm_order_background',[orders[0].id],{context:new instance.web.CompoundContext()})
+                          (new Model('sale.order')).call('confirm_order_background',[orders[0].id])
                               .fail(function(unused, event){
                                   //don't show error popup if it fails
                                   console.error('Failed confirm order: ',orders[0].name);
