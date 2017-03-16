@@ -88,6 +88,10 @@ class SaleOrder(models.Model):
         #                                   context=context)
         self.browse(order_id).action_confirm()
 
+    @api.model
+    def cancel_order_from_ui(self, order_id):
+        self.browse(order_id).action_cancel()
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
