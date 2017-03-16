@@ -12,6 +12,7 @@
         'base',
         'sale',
         'web',
+        'stock'  # stock_available ProductInfoWifget, move to other module?
     ],
     'contributors': [
         "Comunitea ",

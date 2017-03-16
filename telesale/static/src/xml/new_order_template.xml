@@ -390,34 +390,14 @@
     <t t-name="Totals-Order-Widget">
         <div class="col-xs-2 fullheight">
             <div class="row semiheight">
-                <div class="fullheight centerinside fullwidth">
+               <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
                     <label for="total_discount">Discount:</label>
                     <input type="numeric" id='total_discount' name="total_discount"
                         t-att-value="widget.order_model.get('total_discount').toFixed(2)" readonly="readonly" tabIndex="-1"/>
                 </div>
-                </div>
-              </div>
-
-              <div class="row semiheight">
-                  <div class="fullheight centerinside fullwidth">
-                      <!-- <div class="centerthis">
-                          <label for="client_order_ref_lbl" class="red">Client Order Reference:</label>
-                          <input class="mandatory" type="text" id="client_order_ref" name="client_order_ref" t-att-value="widget.order_model.get('client_order_ref')"/>
-                      </div> -->
-                  </div>
-              </div>
-        </div>
-        <div class="col-xs-2 fullheight">
-            <div class="row semiheight">
-                <div class="fullheight centerinside fullwidth">
-                  <div class="centerthis">
-                    <label for="total">Discount (%):</label>
-                    <input type="text" class='total' name="discount_total"
-                        t-att-value="widget.order_model.get('total_discount_per')" readonly="readonly" tabIndex="-1"/>
-                  </div>
-              </div>
-              </div>
+                </div> 
+            </div>
 
               <div class="row semiheight">
                   <div class="fullheight centerinside fullwidth">
@@ -470,6 +450,8 @@
                   </div>
               </div>
         </div>
+        <div class="col-xs-2 fullheight">
+        </div>
         <div class="col-xs-4 fullheight centerinside">
           <div class="fullheight centerinside fullwidth">
               <div class="order-button">
@@ -521,18 +503,6 @@
                 <tr>
                     <th scope="row">Last Price</th>
                     <td><t t-esc="widget.price"/></td>
-                </tr>
-                <tr>
-                    <th scope="row">Mark</th>
-                    <td><t t-esc="widget.mark"/></td>
-                </tr>
-                <tr>
-                  <th scope="row">Max Discount</th>
-                    <td><t t-esc="widget.max_discount"/></td>
-                </tr>
-                <tr>
-                    <th scope="row">Weight Unit</th>
-                    <td><t t-esc="widget.unit_weight"/></td>
                 </tr>
             </table>
     </t>
