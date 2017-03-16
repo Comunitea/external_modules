@@ -106,7 +106,7 @@ exports.SummaryOrderWidget = TsBaseWidget.extend({
             this.summary_line_widgets[i].destroy();
         }
         this.summary_line_widgets = [];
-        for (key in this.partner_orders){
+        for (var key in this.partner_orders){
             var summary_order = this.partner_orders[key];
             var summary_line = new SummarylineWidget(this, {order: summary_order});
             summary_line.appendTo($summary_content);

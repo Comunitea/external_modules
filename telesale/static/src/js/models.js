@@ -4,6 +4,7 @@ odoo.define('telesale.models', function (require) {
 var Backbone = window.Backbone;
 var Model = require('web.DataModel');
 var core = require('web.core');
+var time = require('web.time');
 var DB = require('telesale.db');
 var _t = core._t;
 
@@ -255,19 +256,19 @@ var TsModel = Backbone.Model.extend({
                 self.ready2.resolve()
             });
     },
-    // build a order loaded from the server as order_obj the selected order_model
+    // Build a order loaded from the server as order_obj the selected order_model
     build_order: function(order_obj, order_model, order_lines){
         var partner_obj = this.db.get_partner_by_id(order_obj.partner_id[0]);
         var cus_name = this.getComplexName(partner_obj);
         order_model.set('partner', cus_name);
         order_model.set('partner_code', partner_obj.ref || "");
-        order_model.set('customer_debt', my_round(partner_obj.credit,2));
-        order_model.set('limit_credit', my_round(partner_obj.credit_limit,2));
+        // order_model.set('customer_debt', my_round(partner_obj.credit,2));
+        // order_model.set('limit_credit', my_round(partner_obj.credit_limit,2));
         order_model.set('erp_id', order_obj.id);
         order_model.set('erp_state', order_obj.state);
         var state = order_obj.state
         order_model.set('state', state);
-        order_model.set('date_invoice', order_obj.date_invoice);
+      
         if (order_obj.date_planned){
             var only_date = order_obj.date_planned.split(' ');
             if(only_date.length > 1){
@@ -276,26 +277,17 @@ var TsModel = Backbone.Model.extend({
               order_model.set('date_planned', order_obj.date_planned);
             }
         }
-        // order_model.set('date_planned', order_obj.date_planned);
         order_model.set('num_order',order_obj.name);
+        // TODO SACARLO DEL CLIENTE
         order_model.set('customer_comment',order_obj.customer_comment || '');
-        order_model.set('client_order_ref',order_obj.client_order_ref || '');
         order_model.set('comercial',partner_obj.user_id[1]);
         order_model.set('coment',order_obj.note || '');
 
-        var supplier_name = ''
-        if (order_obj.supplier_id){
-            supplier_name = this.db.get_supplier_by_id(order_obj.supplier_id[0]);
-            if (!supplier_name){
-              supplier_name = ''
-            }
-        }
-        order_model.set('supplier', supplier_name);
-
+    
         var contact = this.db.get_partner_contact(order_obj.partner_id[0])
         order_model.set('contact_name',contact.name);
 
-        for (key in order_lines){
+        for (var key in order_lines){
             var line = order_lines[key];
             var prod_obj = this.db.get_product_by_id(line.product_id[0]);
             //TODO: Calculo de los impuestos en la linea para tener en cuenta tarifa a domicilio
@@ -305,21 +297,9 @@ var TsModel = Backbone.Model.extend({
                              unit:line.product_uom[1],
                              qty:line.product_uom_qty,
                              pvp:my_round(line.price_unit,2), //TODO poner precio del producto???
-//                                 total: my_round(line.current_pvp ? (line.product_uom_qty * line.current_pvp) * (1 - line.discount /100) : 0 ,2),
                              total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
-                            //  discount: my_round( ((line.pvp_ref == 0) ? 0: 1 - (line.price_unit / line.pvp_ref)), 2 ),
                              discount: my_round(line.discount, 2) || 0.0,
-                             weight: my_round(prod_obj.weight * line.product_uom_qty,2),
-                             margin: my_round( ( (line.price_unit != 0 && prod_obj.product_class == "normal") ? ( (line.price_unit - prod_obj.standard_price) / line.price_unit) : 0 ), 2),
                              taxes_ids: line.tax_id || prod_obj.taxes_id || [],
-                             pvp_ref: line.pvp_ref,
-                             qnote: line.q_note[1] || "",
-                             detail: line.detail_note || "",
-                             product_uos: line['product_uos'][1] || "",
-                             product_uos_qty: line['product_uos_qty'] || 0.0,
-                             price_udv: line['price_udv'] || 0.0,
-                             tourism: line['tourism'] ? line['tourism'][0]
-                              : false
                             }
             var line = new Orderline(line_vals);
             order_model.get('orderLines').add(line);
@@ -357,7 +337,7 @@ var TsModel = Backbone.Model.extend({
         self.fetch('crm.phonecall',['date','partner_id','name','partner_phone','customer_phone', 'state','duration','route_id'],domain)
         .then(function(calls){
             if (!$.isEmptyObject(calls)){
-                for (key in calls){
+                for (var key in calls){
                     calls[key].date = self.parse_utc_to_str_date(calls[key].date); //set dates in browser timezone
                     calls[key].duration = self.parse_duration_watch_format(calls[key].duration); //set dates in browser timezone
                     var contact = self.db.get_partner_contact(calls[key].partner_id[0])
@@ -460,7 +440,7 @@ var TsModel = Backbone.Model.extend({
         return new_str
     },
     parse_utc_to_str_date: function(str_date){
-        return this.datetimeToStr(instance.web.str_to_datetime(str_date));
+        return this.datetimeToStr(time.str_to_datetime(str_date));
     },
     dateToStr: function(date) {
         var day = date.getDate();
@@ -827,24 +807,18 @@ var Order = Backbone.Model.extend({
         if(this.selected_orderline && this.selected_orderline.get('code') == "" && this.selected_orderline.get('product') == "" ){
           $('.remove-line-button').click()
         }
-        for (key in order_lines){
+        for (var key in order_lines){
             var line = order_lines[key];
             var prod_obj = this.ts_model.db.get_product_by_id(line.product_id[0]);
             if  (!prod_obj){
               alert(_t('This product can not be loaded, becouse is not registerd'))
               return
             }
-            current_olines = this.get('orderLines').models
-            // var product_exist = false;
-            for (key2 in current_olines){
+            var current_olines = this.get('orderLines').models
+            for (var key2 in current_olines){
                 var o_line = current_olines[key2];
                 var line_product_id =  this.ts_model.db.product_name_id[o_line.get('product')];
-
-                // if (line_product_id == prod_obj.id)
-                //     product_exist = true;
             }
-
-            // if (!product_exist){
             var l_qty = line.product_uom_qty
             if(fromsoldprodhistory){
               l_qty = 1.0;
@@ -852,30 +826,15 @@ var Order = Backbone.Model.extend({
             var line_vals = {ts_model: this.ts_model, order:this,
                              code:prod_obj.default_code || "" ,
                              product:prod_obj.name,
-                             unit:prod_obj.uom_id[1] || line.product_uom[1], //current product unit
-                             qty:my_round(l_qty), //order line qty
-                             pvp: my_round(line.current_pvp ? line.current_pvp : 0, 2), //current pvp
-//                                 total: my_round(line.current_pvp ? (line.product_uom_qty * line.current_pvp) * (1 - line.discount /100) : 0 ,2),
+                             unit:prod_obj.uom_id[1] || line.product_uom[1], 
+                             qty:my_round(l_qty),
+                             pvp: my_round(line.current_pvp ? line.current_pvp : 0, 2),
                              total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
                              discount: my_round( line.discount || 0.0, 2 ),
-                             weight: my_round(line.product_uom_qty * prod_obj.weight,2),
-                             margin: my_round(( (line.current_pvp != 0 && prod_obj.product_class == "normal") ? ( (line.current_pvp - prod_obj.standard_price) / line.current_pvp)  : 0 ), 2),
                              taxes_ids: line.tax_id || product_obj.taxes_id || [],
-                             pvp_ref: line.current_pvp ? line.current_pvp : 0, //#TODO CUIDADO PUEDE NO ESTAR BIEN
-                             qnote: line['q_note'][1] || "",
-                             detail: line["detail_note"] || "",
-                             product_uos: line['product_uos'][1] || "",
-                             product_uos_qty: line['product_uos_qty'] || 0.0,
-                             price_udv: line['price_udv'] || 0.0,
-                             tourism: line['tourism'] ? line[tourism][0]
-                              : false
                             }
             var line = new Orderline(line_vals);
             this.get('orderLines').add(line);
-            // }
-            // else{
-            //   alert(_t("This product is already in the order"));
-            // }
         }
         $('.col-code').focus(); //si no, al añadir línea desde resumen de pedidos, no existe foco y si añade más líneas da error
     },
