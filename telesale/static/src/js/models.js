@@ -746,7 +746,7 @@ var Order = Backbone.Model.extend({
     getSelectedLine: function(){
         var order_lines = this.get('orderLines').models;
         var res = false
-        for (key in order_lines){
+        for (var key in order_lines){
             var line = order_lines[key];
             if (line.is_selected())
                 res = line;

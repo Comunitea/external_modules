@@ -277,7 +277,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         for (var unit in self.ts_model.db.unit_name_id){
             var dic = { value: unit,
                         text: unit}
-             if (unit == self.model.get('product_uom')){
+             if (unit == self.model.get('unit')){
                     dic['selected'] =  "selected"
             }
             self.$('.col-product_uom').append($('<option>', dic))
@@ -351,8 +351,8 @@ var OrderlineWidget = TsBaseWidget.extend({
                 var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
                 self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
                 self.refresh();
-                self.$('.col-product_uom_qty').focus()
-                self.$('.col-product_uom_qty').select()
+                self.$('.col-qty').focus()
+                self.$('.col-qty').select()
             });
         })
         .fail(function(){
@@ -362,12 +362,6 @@ var OrderlineWidget = TsBaseWidget.extend({
     perform_onchange: function(key) {
         var self=this;
         var value = this.$('.col-'+key).val();
-        // if (!value) {
-        //   return;
-        //   alert(_t("Value mustn't be empty"));
-        //   value = 1.0;
-        // }
-
         switch (key) {
             case "code":
                 // comprobar que clave está en el array
@@ -377,7 +371,7 @@ var OrderlineWidget = TsBaseWidget.extend({
                     this.model.set('code', "");
                     this.model.set('product', "");
                     this.model.set('product_uos_qty', 0.0);
-                    this.refresh('product_uos_qty');
+                    this.refresh('qty');
                     break;
                 }
                 this.call_product_id_change(product_id);
@@ -392,167 +386,19 @@ var OrderlineWidget = TsBaseWidget.extend({
                     this.model.set('code', "");
                     this.model.set('product', "");
                     this.model.set('product_uos_qty', 0.0);
-                    this.refresh('product_uos_qty');
+                    this.refresh('qty');
                     break;
                 }
                 this.call_product_id_change(product_id);
                 break;
-
-            // case "qty":
-            //     var prod_name = this.$('.col-product').val();
-            //     var product_id = this.ts_model.db.product_name_id[prod_name];
-            //     if (!product_id){
-            //         alert(_t("Product name '" + prod_name + "' does not exist"));
-            //         this.model.set('qty', "1");
-            //         this.refresh();
-            //         break;
-            //     }
-            //     var uom_name = this.$('.col-product_uom').val();
-            //     var uom_id = this.ts_model.db.unit_name_id[uom_name];
-            //     if (!uom_id){
-            //         alert(_t("Unit of measure '" + uom_name + "' does not exist"));
-            //         this.model.set('qty', 1);
-            //         this.refresh();
-            //         break;
-            //     }
-            //     var product_obj = this.ts_model.db.get_product_by_id(product_id);
-            //     if ( (value > product_obj.virtual_stock_conservative) && (product_obj.product_class == "normal")){
-            //         alert(_t("You want sale " + value + " " + uom_name + " but only " +  product_obj.virtual_stock_conservative + " available."))
-            //         var new_qty = (product_obj.virtual_stock_conservative < 0) ? 0.0 : product_obj.virtual_stock_conservative
-            //         this.model.set('qty', new_qty);
-            //         this.refresh();
-            //         break;
-            //     }
-            //
-            //     //change weight
-            //     var weight =  this.model.get('weight')
-            //     this.model.set('weight', self.ts_model.my_round(value * weight,2));
-            //     this.refresh();
-            //     break;
-
-            case "product_uos_qty":
-                var prod_name = this.$('.col-product').val();
-                if(prod_name == ""){
-                  alert(_t("Product is not selected"));
-                }
-                else{
-                  if(!value){
-                    alert(_t("Value mustn't be empty"));
-                    value = 1.0;
-                  }
-                  else{
-                    var uos_name = this.$('.col-product_uos').val();
-                    conv = this.getUnitConversions(prod_name, value, uos_name)
-                    log_unit = this.getUomLogisticUnit(prod_name)
-                    this.model.set('product_uos_qty', self.ts_model.my_round(value, 4));
-                    this.model.set('qty', self.ts_model.my_round(conv[log_unit], 4));
-                    // Se calculan las cajas
-                    var boxes = 0.0
-                    var product_id = this.ts_model.db.product_name_id[prod_name];
-                    var product_obj = this.ts_model.db.get_product_by_id(product_id);
-                    if(value < product_obj.virtual_stock_conservative){
-                        var uos_id = this.ts_model.db.unit_name_id[uos_name];
-                        if(uos_id == product_obj.log_base_id[0]){
-                            boxes = (value / product_obj.kg_un) / product_obj.un_ca
-                        }
-                        else if(uos_id == product_obj.log_unit_id[0]){
-                            boxes = value / product_obj.un_ca
-                        }
-                        else if(uos_id == product_obj.log_box_id[0]){
-                            boxes = value
-                        }
-                        this.model.set('boxes', self.ts_model.my_round(boxes, 4));
-                        $('#stock-info').removeClass('warning-red');
-                    }
-                    else{
-                        alert(_t("Value must be lower than Stock"));
-                        $('#stock-info').addClass('warning-red');
-                        this.refresh();
-                    }
-                  this.refresh('product_uos');
-                  }
-                }
+            case "qty":
+                this.refresh('qty');
                 break;
-            case "price_udv":
-                var prod_name = this.$('.col-product').val();
-                if(prod_name == ""){
-                    alert(_t("Product is not selected"));
-                }
-                else{
-                  if(!value){
-                    alert(_t("Value mustn't be empty"));
-                    value = 0.0;
-                  }
-                  else{
-                    var uos_name = this.$('.col-product_uos').val();
-                    var uom_pu = this.getUomUosPrices(prod_name, uos_name, 0, value)
-                    this.model.set('price_udv', self.ts_model.my_round(value, 2));
-                    this.model.set('pvp', self.ts_model.my_round(uom_pu, 2));
-                    // this.refresh('pvp');
-                  }
-                }
+            case "unit":
+                this.refresh('discount');
                 break;
-            case "pvp":
-                var prod_name = this.$('.col-product').val();
-                if(prod_name == ""){
-                  alert(_t("Product is not selected"));
-                }
-                else{
-                  if(!value){
-                    alert(_t("Value mustn't be empty"));
-                    value = 0.0;
-                  }
-                  else{
-                    var uos_name = this.$('.col-product_uos').val();
-                    uos_pu = this.getUomUosPrices(prod_name, uos_name,  value)
-                    this.model.set('price_udv', self.ts_model.my_round(uos_pu, 2));
-                    this.model.set('pvp', self.ts_model.my_round(value, 2));
-                    // this.refresh('discount');
-                  }
-                }
-                break;
-
-            // case "product_uos":
-            //     this.model.set('product_uos', value);
-            //     this.refresh();
-            //     break;
-            // case "unit":
-            //     this.model.set('unit', value);
-            //     this.refresh();
-            //     break;
-            // case "qnote":
-            //     var qnote_id = this.ts_model.db.qnote_name_id[value]
-            //     if (!qnote_id){
-            //         alert(_t("Qnote name '" + value + "' does not exist"));
-            //         this.model.set('qnote', "");
-            //         this.refresh();
-            //         break;
-            //     }
-            //     var qnote_obj = this.ts_model.db.get_qnote_by_id(qnote_id);
-            //     this.model.set('qnote', qnote_obj.code);
-            //     this.refresh();
-            //     break;
-            // case "detail":
-            //     this.model.set('detail', value);
-            //     this.refresh();
-            //     break;
             case "discount":
-                var prod_name = this.$('.col-product').val();
-                if(prod_name == ""){
-                  alert(_t("Product is not selected"))
-                }
-                else{
-                  if(!value){
-                    alert(_t("Value mustn't be empty"));
-                    value = 0;
-                  }
-                  else{
-                    this.model.set('discount', value);
-                    if (this.model.get('n_line') == this.order_widget.orderlinewidgets.length){
-                        this.refresh('code');
-                    }
-                  }
-                }
+                this.refresh('code');
                 break;
         }
     },
@@ -564,26 +410,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.model.set('total',subtotal);
 
         this.renderElement();
-        //Añadir color rojo al descuento en caso de superar el máximo
-        if(this.model.get('product')){
-            var product_id = this.ts_model.db.product_name_id[this.model.get('product')]
-            var product_obj = this.ts_model.db.product_by_id[product_id]
-            var max_discount = 0.0
-
-            if(product_obj.max_discount){
-              max_discount = product_obj.max_discount
-            }
-            else{
-              max_discount = product_obj.category_max_discount || 0.0
-            }
-            if (max_discount){
-                if(disc > max_discount){
-                  this.$('.col-discount').addClass('warning-red')
-                }
-            }
-        }
         this.$('.col-'+ focus_key).focus()
-        // this.trigger('order_line_refreshed');
     },
 });
 
