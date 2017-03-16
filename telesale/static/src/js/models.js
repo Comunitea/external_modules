@@ -144,7 +144,7 @@ var TsModel = Backbone.Model.extend({
                     self.db.add_partners(customers);
 
                     // TAXES
-                    return self.fetch('account.tax', ['amount', 'price_include', 'type'], [['type_tax_use','=','sale']]);
+                    return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']]);
                 }).then(function(taxes) {
                     self.set('taxes', taxes);
                     self.db.add_taxes(taxes);
@@ -565,31 +565,29 @@ var Orderline = Backbone.Model.extend({
         var product =  this.get_product();
 
         if (product){
-
             var taxes_ids = self.get('taxes_ids')
             var taxes =  self.ts_model.get('taxes');
             var tmp;
             _.each(taxes_ids, function(el) {
                 var tax = _.detect(taxes, function(t) {return t.id === el;});
-
                 if (tax.price_include) {
-                    if (tax.type === "percent") {
+                    if (tax.amount_type === "percent") {
                         tmp =  base - base / (1 + tax.amount);
-                    } else if (tax.type === "fixed") {
+                    } else if (tax.amount_type === "fixed") {
                         tmp = tax.amount * self.get('qty');
                     } else {
-                        throw "This type of tax is not supported by the telesale system: " + tax.type;
+                        throw "This type of tax is not supported by the telesale system: " + tax.amount_type;
                     }
                     // tmp = round_dc(tmp,2);
                     taxtotal += tmp;
                     totalNoTax -= tmp;
                 } else {
-                    if (tax.type === "percent") {
+                    if (tax.amount_type === "percent") {
                         tmp = tax.amount * base;
-                    } else if (tax.type === "fixed") {
+                    } else if (tax.amount_type === "fixed") {
                         tmp = tax.amount * self.get('qty');
                     } else {
-                        throw "This type of tax is not supported by the telesale system: " + tax.type;
+                        throw "This type of tax is not supported by the telesale system: " + tax.amount_type;
                     }
                     // tmp = round_dc(tmp,2);
                     taxtotal += tmp;
