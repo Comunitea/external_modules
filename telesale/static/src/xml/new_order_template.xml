@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <!-- Main widget -->
+    <!-- *********************************************************************************************************************************** -->
+    <!-- *************************************************************** TS WIDGET ***************************************************** -->
+    <!-- *********************************************************************************************************************************** -->
     <t t-name="TsWidget">
         <div class="telesale">
             <input id="clearfocus" style="display:none"></input>
@@ -91,7 +93,9 @@
         </div>
     </t>
 
-    <!-- ********************************************** SCREENS ***************************************************************** -->
+    <!-- *********************************************************************************************************************************** -->
+    <!-- *************************************************************** SCREEN WIDGET ***************************************************** -->
+    <!-- *********************************************************************************************************************************** -->
     <t t-name="Order-Screen-Widget">
         <div class="order-screen-content">
             <div id="pagespart">
@@ -131,6 +135,9 @@
         </div>
     </t>
 
+    <!-- *********************************************************************************************************************************** -->
+    <!-- *********************************************************** DATA ORDER WIDGET ***************************************************** -->
+    <!-- *********************************************************************************************************************************** -->
     <t t-name="Data-Order-Widget">
         <!-- FIRST ROW -->
         <div class="row semiheight fullwidth">
@@ -241,49 +248,9 @@
         </li>
     </t>
 
-     <t t-name="Order-line-Widget">
-        <tr>
-             <td class="cell-nline">
-                <input type="text" class='col-nline' t-att-value="widget.model.get('n_line')" readonly="readonly" tabIndex="-1"/>
-            </td>
-            <td class="cell-code">
-                <input type="text" class='col-code mandatory' t-att-value="widget.model.get('code')"/>
-            </td>
-             <td class="cell-product">
-                <input type="search" class='col-product mandatory' t-att-value="widget.model.get('product')"/>
-            </td>
-            <!-- <td class="cell-qty">
-                <input id="inputuosqty" type="text" class='col-product_uos_qty mandatory' t-att-value="widget.model.get('product_uos_qty').toFixed(4)"/>
-            </td>
-            <td class="cell-unit">
-                <select class="col-product_uos mandatory">
-                </select>
-            </td> -->
-<!--             <td class="cell-pvp">
-                <input type="text" class='col-price_udv mandatory' t-att-value="widget.model.get('price_udv').toFixed(2)" />
-            </td> -->
-             <td class="cell-qty">
-                <input type="text" class='col-qty' t-att-value="widget.model.get('qty').toFixed(4)"/>
-            </td>
-             <td class="cell-unit">
-                <!-- <input type="text" class='col-product_uom' t-att-value="widget.model.get('unit')" readonly="readonly" tabIndex="-1"/> -->
-                <select class="col-product_uom mandatory" t-att-value="widget.model.get('unit')">
-                </select>
-            </td>
-            <td class="cell-pvp">
-                <input type="text" class='col-pvp mandatory' t-att-value="widget.model.get('pvp').toFixed(2)"/>
-            </td>
-             <td class="cell-discount">
-                <input type="text" class='col-discount mandatory' t-att-value="widget.model.get('specific_discount') || widget.model.get('discount')"/>
-            </td>
-             <td class="cell-total">
-                <input type="text" class='col-total' t-att-value="widget.model.get('total').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-            </td>
-
-
-        </tr>
-    </t>
-
+    <!-- *********************************************************************************************************************************** -->
+    <!-- *********************************************************** ORDER WIDGET ********************************************************** -->
+    <!-- *********************************************************************************************************************************** -->
     <t t-name="Order-Widget">
         <div class="button-order-container fullheight">
             <div class="col-xs-1 fullheight centerinside">
@@ -358,7 +325,6 @@
                   </t>
 
                   <span t-esc="widget.ts_model.get('selectedOrder').get('num_order')"/>
-                  <!-- <input class=" " type="text" id='num_order' name="num_order" t-att-value="widget.order_model.get('num_order')" readonly="readonly" tabIndex="-1"/> -->
                 </div>
               </div>
             </div>
@@ -369,9 +335,6 @@
                     <th class="header-nline">Nº</th>
                     <th class="header-code">Code</th>
                     <th class="header-product">Product</th>
-<!--                     <th class="header-qty">UoS Qty</th>
-                    <th class="header-unit">UoS</th> -->
- <!--                    <th class="header-pvp">UoS Price</th> -->
                     <th class="header-qty">Qty</th>
                     <th class="header-unit">Unit</th>
                     <th class="header-pvp">PVP</th>
@@ -385,6 +348,45 @@
         </div>
     </t>
 
+    <!-- *********************************************************************************************************************************** -->
+    <!-- *********************************************************** ORDER LINE WIDGET ***************************************************** -->
+    <!-- *********************************************************************************************************************************** -->
+     <t t-name="Order-line-Widget">
+        <tr>
+             <td class="cell-nline">
+                <input type="text" class='col-nline' t-att-value="widget.model.get('n_line')" readonly="readonly" tabIndex="-1"/>
+            </td>
+            <td class="cell-code">
+                <input type="text" class='col-code mandatory' t-att-value="widget.model.get('code')"/>
+            </td>
+             <td class="cell-product">
+                <input type="search" class='col-product mandatory' t-att-value="widget.model.get('product')"/>
+            </td>
+             <td class="cell-qty">
+                <input type="text" class='col-qty' t-att-value="widget.model.get('qty').toFixed(4)"/>
+            </td>
+             <td class="cell-unit">
+                <select class="col-product_uom mandatory" t-att-value="widget.model.get('unit')">
+                </select>
+            </td>
+            <td class="cell-pvp">
+                <input type="text" class='col-pvp mandatory' t-att-value="widget.model.get('pvp').toFixed(2)"/>
+            </td>
+             <td class="cell-discount">
+                <input type="text" class='col-discount mandatory' t-att-value="widget.model.get('specific_discount') || widget.model.get('discount')"/>
+            </td>
+             <td class="cell-total">
+                <input type="text" class='col-total' t-att-value="widget.model.get('total').toFixed(2)" readonly="readonly" tabIndex="-1"/>
+            </td>
+
+
+        </tr>
+    </t>
+
+
+    <!-- *********************************************************************************************************************************** -->
+    <!-- *********************************************************** TOTALS ORDER WIDGET *************************************************** -->
+    <!-- *********************************************************************************************************************************** -->
     <t t-name="Totals-Order-Widget">
         <div class="col-xs-2 fullheight">
             <div class="row semiheight">
@@ -399,10 +401,10 @@
 
               <div class="row semiheight">
                   <div class="fullheight centerinside fullwidth">
-                      <div class="centerthis">
+                      <!-- <div class="centerthis">
                           <label for="client_order_ref_lbl" class="red">Client Order Reference:</label>
                           <input class="mandatory" type="text" id="client_order_ref" name="client_order_ref" t-att-value="widget.order_model.get('client_order_ref')"/>
-                      </div>
+                      </div> -->
                   </div>
               </div>
         </div>
@@ -443,9 +445,6 @@
                       <label for="total_iva">Total Iva:</label>
                       <input type="numeric" id='total_iva' name="total_discount"
                           t-att-value="widget.order_model.get('total_iva').toFixed(2)" readonly="readonly" tabIndex="-1"/>
-                        <!-- <label for="total">Total Fresh:</label>
-                        <input type="text" class='total' id="total_fresh"
-                            t-att-value="widget.order_model.get('total_fresh').toFixed(2)" tabIndex="-1" readonly="readonly"/> -->
                       </div>
                   </div>
               </div>
@@ -457,9 +456,6 @@
                     <label for="total">Margin (%):</label>
                     <input type="text" class='total' id='total_margin'
                         t-att-value="widget.order_model.get('total_margin_per')" readonly="readonly" tabIndex="-1"/>
-                  <!-- <label for="total">Suppliers:</label>
-                  <input type="text" class='total mandatory' id="total_order"
-                      t-att-value="widget.order_model.get('partner_code')" tabIndex="-1"/> -->
                 </div>
               </div>
               </div>
@@ -470,16 +466,12 @@
                       <label for="total" class="totalorder">Total Order:</label>
                       <input type="text" class='total totalorder' id="total_order"
                           t-att-value="widget.order_model.get('total').toFixed(2)" tabIndex="-1" readonly="readonly"/>
-                        <!-- <label for="total">Total Fresh:</label>
-                        <input type="text" class='total' id="total_fresh"
-                            t-att-value="widget.order_model.get('total_fresh').toFixed(2)" tabIndex="-1" readonly="readonly"/> -->
                       </div>
                   </div>
               </div>
         </div>
         <div class="col-xs-4 fullheight centerinside">
           <div class="fullheight centerinside fullwidth">
-            <!-- <t t-if="widget.order_model.get('state') == 'draft'"> -->
               <div class="order-button">
                 <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
@@ -501,20 +493,20 @@
                        </div>
                   </div>
               </div>
-            <!-- </t> -->
           </div>
 
 
         </div>
     </t>
 
+    <!-- *********************************************************************************************************************************** -->
+    <!-- *********************************************************** PRODUCT INFO WIDGET *************************************************** -->
+    <!-- *********************************************************************************************************************************** -->
     <t t-name="ProductInfo-Order-Widget">
             <table class="product-info-table">
                 <tr>
                     <th scope="row">Stock Product</th>
                     <td>
-                      <!-- <span t-if="widget.stock <= 0" class="red" t-esc="widget.stock"/>
-                      <span t-if="widget.stock > 0" t-esc="widget.stock"/> -->
                       <span id="stock-info"><t t-esc="widget.stock"/></span>
                     </td>
                 </tr>
@@ -538,50 +530,20 @@
                   <th scope="row">Max Discount</th>
                     <td><t t-esc="widget.max_discount"/></td>
                 </tr>
-                <!-- <tr>
-                    <th scope="row">Class</th>
-
-                    <td>
-                    <t t-if="widget.class == 'fresh'">
-                        Fresh
-                    </t>
-                    <t t-if="widget.class == 'normal'">
-                        Normal
-                    </t>
-                    <t t-if="widget.class == 'ultrafresh'">
-                        Ultra Fresh
-                    </t>
-                    </td>
-                </tr> -->
                 <tr>
                     <th scope="row">Weight Unit</th>
                     <td><t t-esc="widget.unit_weight"/></td>
                 </tr>
-                <!-- <tr>
-                    <th scope="row">Minimum Price</th>
-                    <td><t t-esc="widget.min_price"/></td>
-                </tr> -->
-                <!-- <tr>
-                    <th scope="row">Product Margin</th>
-                    <td><t t-esc="widget.margin"/></td>
-                </tr>
-                <tr>
-                    <th scope="row">Discount</th>
-                    <td><t t-esc="widget.discount"/></td>
-                </tr>
-                <tr>
-                    <th scope="row">Line Number</th>
-                    <td><t t-esc="widget.n_line"/></td>
-                </tr> -->
             </table>
     </t>
 
-
+    <!-- *********************************************************************************************************************************** -->
+    <!-- *********************************************************** SOLD PRODUCT WIDGET ***************************************************** -->
+    <!-- *********************************************************************************************************************************** -->
     <t t-name="Sold-Product-Widget">
             <div class="fullheight overflow">
                 <table class="sold-product-table">
                     <thead>
-                        <!-- <th class="">Code</th> -->
                         <th class="pc-header-name">Name</th>
                         <th class="pc-header-price">Price</th>
                         <th class="pc-header-add">Add</th>
@@ -596,16 +558,7 @@
 
     <t t-name="Sold-Product-Line-Widget">
         <tr>
-          <!-- <td class="pc-cell-name">
-            <t t-if="widget.ts_model.db.get_product_by_id(widget.sold_line.product_id[0])">
-              <span class="product-cell"><t t-esc="widget.ts_model.db.get_product_by_id(widget.sold_line.product_id[0]).default_code"/></span>
-            </t>
-          </td> -->
           <td class="pc-cell-name">
-            <!-- <t t-set="code_part" t-value=""/>
-            <t t-if="widget.ts_model.db.get_product_by_id(widget.sold_line.product_id[0])">
-              <t t-set="code_part" t-value="'[' + widget.ts_model.db.get_product_by_id(widget.sold_line.product_id[0]).default_code + '] ' "/>
-            </t> -->
               <span class="product-cell"><t t-esc="'[' + widget.sold_line.default_code + '] ' + widget.sold_line.product_id[1]"/></span>
           </td>
           <td class="pc-cell-code">

@@ -22,6 +22,7 @@
         'views/telesale_menus.xml',
         'views/telesale_assets.xml',
         'views/ts_templates.xml',
+        'views/sale_view.xml',
     ],
     "installable": True,
     'application': True,
