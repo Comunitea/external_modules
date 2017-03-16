@@ -97,29 +97,14 @@
                     <t t-if="widget.order.state == 'sent'">
                         Quotation Sent
                     </t>
-                    <t t-if="widget.order.state == 'cancel'">
-                        Canceled
-                    </t>
-                     <t t-if="widget.order.state == 'waiting_date'">
-                        Waiting Schedule
-                    </t>
-                    <t t-if="widget.order.state == 'progress'">
+                    <t t-if="widget.order.state == 'sale'">
                         Confirmed
-                    </t>
-                    <t t-if="widget.order.state == 'manual'">
-                        Sale to Invoice
-                    </t>
-                    <t t-if="widget.order.state == 'shipping_except'">
-                        Shipping Exception
-                    </t>
-                    <t t-if="widget.order.state == 'invoice_except'">
-                        Invoice Exception
                     </t>
                     <t t-if="widget.order.state == 'done'">
                         Done
                     </t>
-                    <t t-if="widget.order.state == 'wait_risk'">
-                        Waiting Risk Approval
+                    <t t-if="widget.order.state == 'cancel'">
+                        Canceled
                     </t>
                 </span>
             </td>
