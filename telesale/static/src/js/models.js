@@ -191,7 +191,7 @@ var TsModel = Backbone.Model.extend({
     cancel_order: function(erp_id){
         var self = this;
         // (new Model('sale.order')).call('cancel_order_from_ui',,undefined,{shadow:true})
-        (new Model('sale.order')).call('cancel_order_from_ui', [[erp_id]], {context:new instance.web.CompoundContext()})
+        (new Model('sale.order')).call('cancel_order_from_ui', [[erp_id]])
             .fail(function(unused, event){
                 //don't show error popup if it fails
                 console.error('Failed to cancel order:',erp_id);
@@ -217,7 +217,7 @@ var TsModel = Backbone.Model.extend({
         self.ready2 = $.Deferred();
         //try to push an order to the server
         // shadow : true is to prevent a spinner to appear in case of timeout
-        (new Model('sale.order')).call('create_order_from_ui',[[order]],{context:new instance.web.CompoundContext()})
+        (new Model('sale.order')).call('create_order_from_ui',[[order]])
             .fail(function(unused, event){
                 //don't show error popup if it fails
                 console.error('Failed to send order:',order);
@@ -246,7 +246,6 @@ var TsModel = Backbone.Model.extend({
         // shadow : true is to prevent a spinner to appear in case of timeout
         (new Model('sale.order')).call('create_order_from_ui',[[order]],{})
             .fail(function(unused, event){
-                //don't show error popup if it fails
                 alert('Ocurrió un fallo en al mandar el pedido al servidor');
                 self.ready2.reject()
             })
@@ -355,8 +354,7 @@ var TsModel = Backbone.Model.extend({
         if (route != "0"){
           domain.push(['route_id', '=', parseInt(route)])
         }
-        var context = new instance.web.CompoundContext()
-        self.fetch('crm.phonecall',['date','partner_id','name','partner_phone','customer_phone', 'state','duration','route_id'],domain,context)
+        self.fetch('crm.phonecall',['date','partner_id','name','partner_phone','customer_phone', 'state','duration','route_id'],domain)
         .then(function(calls){
             if (!$.isEmptyObject(calls)){
                 for (key in calls){

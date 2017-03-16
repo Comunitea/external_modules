@@ -81,6 +81,13 @@ class SaleOrder(models.Model):
                 order_obj.action_button_confirm()
         return order_ids
 
+    @api.model
+    def confirm_order_background(self, order_id):
+        # TODO DEPENDENCIA DEL MODULO PARA PONER EL HILO
+        # self.action_button_confirm_thread(cr, uid, [order_id],
+        #                                   context=context)
+        self.browse(order_id).action_confirm()
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -156,7 +163,7 @@ class SaleOrderLine(models.Model):
                 l.product_id.default_code2
             }
             res.append(dic)
-        # print "**************************************"
-        # print res
-        # print "**************************************"
+        print "**************************************"
+        print res
+        print "**************************************"
         return res
