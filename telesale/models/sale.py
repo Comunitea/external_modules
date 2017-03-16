@@ -163,7 +163,4 @@ class SaleOrderLine(models.Model):
                 l.product_id.default_code2
             }
             res.append(dic)
-        print "**************************************"
-        print res
-        print "**************************************"
         return res
