@@ -6,9 +6,8 @@ var models = require('telesale.models');
 var core = require('web.core');
 var _t = core._t;
 
-var exports = {};
 
-exports.SummarylineWidget = TsBaseWidget.extend({
+var SummarylineWidget = TsBaseWidget.extend({
     template:'Summary-Line-Widget',
     init: function(parent, options){
         this._super(parent,options);
@@ -23,7 +22,7 @@ exports.SummarylineWidget = TsBaseWidget.extend({
         }
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice'],  //faltan los impuestos etc
+                                        ['contact_id','note','comercial','customer_comment','name','partner_id','date_order','state','amount_total','date_planned'],  //faltan los impuestos etc
                                         [
                                             ['id', '=', order_id]
                                         ])
@@ -33,13 +32,9 @@ exports.SummarylineWidget = TsBaseWidget.extend({
                 return self.ts_model.fetch('sale.order.line',
                                             ['product_id','product_uom',
                                             'product_uom_qty',
-                                            'price_unit','product_uos',
-                                            'product_uos_qty',
-                                            'price_udv',
+                                            'price_unit',
                                             'price_subtotal','tax_id',
-                                            'pvp_ref','current_pvp',
-                                            'q_note', 'detail_note',
-                                            'discount', 'tourism'],
+                                            'discount'],
                                             [
                                                 ['order_id', '=', order_id],
                                              ]);
@@ -52,7 +47,6 @@ exports.SummarylineWidget = TsBaseWidget.extend({
                 }else{
                     self.ts_model.build_order(self.order_fetch, self.open_order, order_lines); //build de order model
                     self.ts_widget.new_order_screen.data_order_widget.refresh();  // show screen and order model refreshed.
-//                        self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
                 }
             })
     },
@@ -80,13 +74,12 @@ exports.SummarylineWidget = TsBaseWidget.extend({
     renderElement: function() {
         var self=this;
         this._super();
-        // this.$el.click(_.bind(this.click_handler, this));
         this.$("#button-show-order").click(_.bind(this.click_handler, this));
         this.$("#button-adding-lines").click(_.bind(this.click_handler2, this));
     },
 });
 
-exports.SummaryOrderWidget = TsBaseWidget.extend({
+var SummaryOrderWidget = TsBaseWidget.extend({
     template:'Summary-Order-Widget',
     init: function(parent, options) {
         this._super(parent,options);
@@ -116,18 +109,17 @@ exports.SummaryOrderWidget = TsBaseWidget.extend({
     load_partner_orders: function(date_start,date_end){
        // HAY QUE CONTROLAR LAS FECHAS CON UTC, HORARIO DE INVIERNO -1H VERANO -2H
         var self=this;
-    //            var domain =   [['create_uid', '=', this.ts_model.get('user').id],['chanel', '=', 'telesale']]
         var domain =   [['create_uid', '=', this.ts_model.get('user').id]]
         if (date_start != ""){
-            utc_date_start = self.ts_model.parse_str_date_to_utc(date_start + " 00:00:00")
+            var utc_date_start = self.ts_model.parse_str_date_to_utc(date_start + " 00:00:00")
             domain.push(['date_order', '>=', utc_date_start])
         }
         if (date_end != ""){
-            utc_date_end = self.ts_model.parse_str_date_to_utc(date_end + " 23:59:59")
+            var utc_date_end = self.ts_model.parse_str_date_to_utc(date_end + " 23:59:59")
             domain.push(['date_order', '<=', utc_date_end])
         }
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['name','partner_id','date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice'],  //faltan los impuestos etc
+                                        ['name','partner_id','date_order','state','amount_total', 'date_planned',],  //faltan los impuestos etc
                                         domain)
             .then(function(orders){
             self.partner_orders = orders;
@@ -137,7 +129,6 @@ exports.SummaryOrderWidget = TsBaseWidget.extend({
     },
     searchCustomerOrders: function () {
         var self=this;
-        // var partner_name = this.$('#input-customer2').val();
         var date_start = this.$('#input-date_start2').val();
         var date_end = this.$('#input-date_end2').val();
 
@@ -145,9 +136,7 @@ exports.SummaryOrderWidget = TsBaseWidget.extend({
             .done(function(){
                 self.renderElement();
             }).fail(function(){
-                //?????
             });
-        // };
     },
     searchCustomerOrdersBy: function (period){
         var self=this;
@@ -165,10 +154,13 @@ exports.SummaryOrderWidget = TsBaseWidget.extend({
             .done(function(){
                 self.renderElement();
             }).fail(function(){
-                //?????
             });
 
         }
     });
-return exports;
+return{
+    SummarylineWidget: SummarylineWidget,
+    SummaryOrderWidget: SummaryOrderWidget
+};
+
 });
