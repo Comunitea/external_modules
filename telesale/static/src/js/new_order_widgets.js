@@ -199,7 +199,6 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.$(selector).focus()
         this.$(selector).select()
         this.$(selector).focus(_.bind(this.click_handler, this, key));
-        this.trigger('order_line_selected');
     },
     control_arrow_keys: function(){
       var self=this;
@@ -510,9 +509,6 @@ var OrderWidget = TsBaseWidget.extend({
                 if (client_id){
                     $.when(self.ts_model.get('selectedOrder').get_last_line_by('ult', client_id))
                         .done(function(){
-                            // self.bind_orderline_events(); //in get_last_order_lines we unbid add event of currentOrderLines to render faster
-                            // self.renderElement();
-                            // self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
                         })
                         .fail(function(){
                             alert(_t("NOT WORKING"));
@@ -524,10 +520,6 @@ var OrderWidget = TsBaseWidget.extend({
                 if (client_id){
                     $.when(self.ts_model.get('selectedOrder').get_last_line_by('year', client_id))
                         .done(function(){
-                            // self.bind_orderline_events(); //in get_last_line_by we unbid add event of currentOrderLines to render faster
-                            // self.renderElement();
-                            // self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
-
                         })
                         .fail(function(){
                             alert(_t("NOT WORKING"));
@@ -539,64 +531,11 @@ var OrderWidget = TsBaseWidget.extend({
                 if (client_id){
                     $.when(self.ts_model.get('selectedOrder').get_last_line_by('3month', client_id))
                         .done(function(){
-                            // self.bind_orderline_events(); //in get_last_line_by we unbid add event of currentOrderLines to render faster
-                            // self.renderElement();
-                            // self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
                         })
                         .fail(function(){
                             alert(_t("NOT WORKING"));
                         })
                 }
-            });
-            this.$('#promo-button').click(function(){
-//                var current_order = self.ts_model.get('selectedOrder')
-//                current_order.set('set_promotion', true)
-//                self.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
-//                $.when( self.ts_model.ready2 )
-//                .done(function(){
-//                var loaded = self.ts_model.fetch('sale.order',
-//                                                ['id', 'name'],
-//                                                [
-//                                                    ['chanel', '=', 'telesale']
-//                                                ])
-//                    .then(function(orders){
-//                        if (orders[0]) {
-//                        var my_id = orders[0].id
-//                        $.when( self.load_order_from_server(my_id) )
-//                        .done(function(){
-//                        });
-//
-//                      }
-//                    });
-//                 });
-            alert("Esta funcionalidad está desabilitada. Las promociones se aplicarán cuando confirmes el pedido")
-            });
-            this.$('#sust-button').click(function(){
-                var current_order = self.ts_model.get('selectedOrder')
-                var selected_line = current_order.selected_orderline;
-                if (!selected_line){
-                    alert(_t("You must select a product line."));
-                }else{
-                    var product_id = self.ts_model.db.product_name_id[selected_line.get('product')];
-                    if (!product_id){
-                        alert(_t("This line has not a product defined."));
-                    }
-                    else{
-                        var product_obj = self.ts_model.db.get_product_by_id(product_id);
-                        if ($.isEmptyObject(product_obj.products_substitute_ids))
-                            alert(_t("This product have not substitutes"));
-                        else{
-                            self.ts_model.set('sust_products', []);
-                            for (key in product_obj.products_substitute_ids){
-                                var sust_id = product_obj.products_substitute_ids[key];
-                                var sust_obj = self.ts_model.db.get_product_by_tmp_id(sust_id);
-                                self.ts_model.get('sust_products').push(sust_obj)
-                            }
-                            self.ts_widget.screen_selector.show_popup('product_sust_popup', false);
-                        }
-                    }
-                }
-
             });
             this.$('#info-button').click(function(){
                 var current_order = self.ts_model.get('selectedOrder')
@@ -614,16 +553,15 @@ var OrderWidget = TsBaseWidget.extend({
                 }
             });
             this.$('#show-client').click(function(){
-
                 self.show_client();
             });
+
             for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
                 this.orderlinewidgets[i].destroy();
             }
             this.orderlinewidgets = [];
 
             var $content = this.$('.orderlines');
-            // var $content = this.$('#effective-append'); #TODO NO CREO QUE SEA POSIBLE POR LO DE ELIMINAR
             var nline = 1
             this.currentOrderLines.each(_.bind( function(orderLine) {
                 orderLine.set('n_line', nline++);
@@ -631,16 +569,10 @@ var OrderWidget = TsBaseWidget.extend({
                     model: orderLine,
                     order: this.ts_model.get('selectedOrder'),
                 });
-                // line.on('order_line_selected', self, self.order_line_selected);
-                // line.on('order_line_refreshed', self, self.order_line_refreshed);
                 line.appendTo($content);
                 self.orderlinewidgets.push(line);
             }, this));
 
-        },
-        order_line_selected: function(){
-        },
-        order_line_refreshed: function(){
         },
         load_order_from_server: function(order_id){
             var self=this;
@@ -669,9 +601,15 @@ var OrderWidget = TsBaseWidget.extend({
         },
     });   
 
+
+
+// **************************************************************************************************************************
+// *********************************************** PRODUCT INFO ORDER WIDGET ************************************************
+// **************************************************************************************************************************
 var ProductInfoOrderWidget = TsBaseWidget.extend({
     template:'ProductInfo-Order-Widget',
     init: function(parent, options) {
+        debugger;
         this._super(parent,options);
         this.ts_model.bind('change:selectedOrder', this.change_selected_order, this);
         this.order_model = this.ts_model.get('selectedOrder');
@@ -683,15 +621,8 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
         this.stock = "";
         this.date = "";
         this.qty = "";
-        this.price = "";
-        this.mark = "";
-        this.unit_weight = "";
-        this.min_price = "";
-        this.margin = "";
-        this.discount = "";
-        this.max_discount = "";
+        this.price = ""; 
         this.n_line = "";
-        this.class = "";
     },
     bind_selectedline_events: function(){
         this.order_model = this.ts_model.get('selectedOrder');
@@ -734,57 +665,32 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
     change_product: function(){
         var self = this;
         // TODO A VER QUE PASA
-        // var line_product = this.selected_line.get("product")
-        // self.n_line = self.selected_line.get('n_line') + " / " + self.ts_model.get('selectedOrder').get('orderLines').length;
-        // if (line_product != ""){
-        //     var product_id = this.ts_model.db.product_name_id[line_product]
-        //     var partner_name = this.ts_model.get('selectedOrder').get('partner');
-        //     var partner_id = this.ts_model.db.partner_name_id[partner_name];
-        //     if (product_id && partner_id){
-        //         var product_obj = this.ts_model.db.get_product_by_id(product_id)
-        //         var partner_obj = this.ts_model.db.get_partner_by_id(partner_id)
-        //         var pricelist_id = partner_obj.property_product_pricelist
-        //         var model = Model('product.product');
-        //         model.call("get_product_info",[product_id,partner_id,pricelist_id],{context:new instance.web.CompoundContext()})
-        //             .then(function(result){
-        //                 self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
-        //                 self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
-        //                 self.qty = self.ts_model.my_round(result.last_qty,4).toFixed(4);
-        //                 self.price = self.ts_model.my_round(result.last_price,2).toFixed(2);
-        //                 self.min_price = self.ts_model.my_round(result.min_price,2).toFixed(2);
-        //                 self.mark = result.product_mark;
-        //                 self.class = result.product_class;
-        //                 self.max_discount = self.ts_model.my_round(result.max_discount,2).toFixed(2) + "%";
-        //                 self.unit_weight = self.ts_model.my_round(result.weight_unit,2).toFixed(2);
-        //                 self.renderElement();
-        //             });
-        //     }
-        //     else{
-        //         this.set_default_values();
-        //         this.renderElement();
-        //     }
-        // }
+        var line_product = this.selected_line.get("product")
+        self.n_line = self.selected_line.get('n_line') + " / " + self.ts_model.get('selectedOrder').get('orderLines').length;
+        if (line_product != ""){
+            var product_id = this.ts_model.db.product_name_id[line_product]
+            var partner_name = this.ts_model.get('selectedOrder').get('partner');
+            var partner_id = this.ts_model.db.partner_name_id[partner_name];
+            if (product_id && partner_id){
+                var product_obj = this.ts_model.db.get_product_by_id(product_id)
+                var partner_obj = this.ts_model.db.get_partner_by_id(partner_id)
+                var pricelist_id = partner_obj.property_product_pricelist
+                var model = new Model('product.product');
+                model.call("get_product_info",[product_id,partner_id,pricelist_id])
+                    .then(function(result){
+                        self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
+                        self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
+                        self.qty = self.ts_model.my_round(result.last_qty,4).toFixed(4);
+                        self.price = self.ts_model.my_round(result.last_price,2).toFixed(2);
+                        self.renderElement();
+                    });
+            }
+            else{
+                this.set_default_values();
+                this.renderElement();
+            }
+        }
     },
-    // change_discount: function(){
-    //     var discount = this.selected_line.get('discount');
-    //     discount = discount * 100
-    //     var discount_str = ""
-    //     //check type?
-    //     if (discount < 0){
-    //         discount = discount * (-1); //remove negative sign
-    //         discount_str = "+" + discount.toFixed(2) + "%";
-    //     }else{
-    //         discount_str = discount.toFixed(2) + "%";
-    //     }
-    //     this.discount = discount_str
-    //     this.renderElement();
-    // },
-    // change_margin: function(){
-    //     var margin = this.selected_line.get('margin');
-    //     margin = margin * 100
-    //     this.margin = margin.toFixed(2) + "%";
-    //     this.renderElement();
-    // },
 });
 
 

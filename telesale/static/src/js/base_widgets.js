@@ -45,15 +45,11 @@ var TsWidget = TsBaseWidget.extend({
     start: function() {
         var self = this;
         return self.ts_model.ready.done(function(){
-            self.renderElement();  //Contruye la plantilla????
+            self.renderElement();
 
             self.build_widgets(); // BUILD ALL WIDGETS AND CREENS WIDGETS
             self.screen_selector.set_default_screen(); // set principal screen
             self.$('.loader').animate({opacity:0},1500,'swing',function(){self.$('.loader').hide();});
-            // self.add_shortkey_events();
-            // self.ts_model.get_calls_by_date_state(self.ts_model.getCurrentDateStr()); // get call list for current date
-            // self.$("#partner").focus();
-
 
         }).fail(function(){   // error when loading models data from the backend
             self.try_close();
@@ -114,7 +110,6 @@ var TsWidget = TsBaseWidget.extend({
         // Buttons navigation screens
         this.screen_buttons = new Buttons.ScreenButtonWidget(this, {});
         this.screen_buttons.replace(this.$('#placeholder-screen-buttons'));
-        // var self = this;
     },
     loading_progress: function(fac){
             this.$('.loader .loader-feedback').removeClass('oe_hidden');
@@ -139,9 +134,6 @@ var TsWidget = TsBaseWidget.extend({
                 window.location = '/web#action=' + res[0]['res_id'];
             });
         }
-        // var draft_order = _.find( self.ts_model.get('orders').models, function(order){
-        //     return order.get('orderLines').length !== 0
-        // });
         var draft_order = true
         if(draft_order){
             if (confirm(_t("Pending orders will be lost.\nAre you sure you want to leave this session?"))) {

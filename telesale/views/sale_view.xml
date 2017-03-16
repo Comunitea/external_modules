@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Form View Purchase order: Adding boolean field to purchase order lines -->
+        
+        <!-- Add chanel field to sale order tree and search views -->
+
         <record id="sale_view_order_form_telesale" model="ir.ui.view">
             <field name="name">sale.view.order.form.telesale</field>
             <field name="model">sale.order</field>
@@ -45,7 +47,8 @@
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
                 <filter name="my_sale_orders_filter" position="after">
-                     <filter string="From telesale" domain="[('chanel', '=' , 'telesale')]" name="telesale_filter"/>
+                     <filter name="erp_chanel_filter" string="From ERP" domain="[('chanel', '=' , 'erp')]"/>
+                     <filter name="telesale_chanel_filter" string="From Telesale" domain="[('chanel', '=' , 'telesale')]"/>
                 </filter>
             </field>
         </record>
