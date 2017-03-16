@@ -804,25 +804,25 @@ var Order = Backbone.Model.extend({
     get_last_line_by: function(period, client_id){
       var self = this;
       // TODO TODA ESTA PARTE
-      // var model = new Model('sale.order.line');
-      // var cache_sold_lines = self.ts_model.db.cache_sold_lines[client_id]
-      // if (cache_sold_lines && period == 'year'){
-      //     self.ts_model.get('sold_lines').reset(cache_sold_lines)
-      // }
-      // else{
-      //     var loaded = model.call("get_last_lines_by",[period, client_id])
-      //         .then(function(order_lines){
-      //                 if (!order_lines){
-      //                   order_lines = []
-      //                 }
-      //                   // self.add_lines_to_current_order(order_lines);
-      //                 if(period == 'year'){
-      //                     self.ts_model.db.cache_sold_lines[client_id] = order_lines;
-      //                 }
-      //                 self.ts_model.get('sold_lines').reset(order_lines)
-      //         });
-      //       return loaded
-      // }
+      var model = new Model('sale.order.line');
+      var cache_sold_lines = self.ts_model.db.cache_sold_lines[client_id]
+      if (cache_sold_lines && period == 'year'){
+          self.ts_model.get('sold_lines').reset(cache_sold_lines)
+      }
+      else{
+          var loaded = model.call("get_last_lines_by",[period, client_id])
+              .then(function(order_lines){
+                      if (!order_lines){
+                        order_lines = []
+                      }
+                        // self.add_lines_to_current_order(order_lines);
+                      if(period == 'year'){
+                          self.ts_model.db.cache_sold_lines[client_id] = order_lines;
+                      }
+                      self.ts_model.get('sold_lines').reset(order_lines)
+              });
+            return loaded
+      }
     },
     add_lines_to_current_order: function(order_lines, fromsoldprodhistory){
         this.get('orderLines').unbind();  //unbind to render all the lines once, then in OrderWideget we bind again

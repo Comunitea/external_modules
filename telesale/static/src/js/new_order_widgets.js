@@ -787,6 +787,10 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
 });
 
 
+
+// **************************************************************************************************************************
+// ****************************************** SOLD PRODUCT WIDGET ***********************************************************
+// **************************************************************************************************************************
 var SoldProductLineWidget = TsBaseWidget.extend({
     template:'Sold-Product-Line-Widget',
     init: function(parent, options){
@@ -797,29 +801,15 @@ var SoldProductLineWidget = TsBaseWidget.extend({
     renderElement: function() {
         var self=this;
         this._super();
-        // this.$('#add-line').off("click").click(_.bind(this.add_line_to_order, this));
         this.$('#add-line').off("click").click(_.bind(this.add_product_to_order, this));
 
     },
-    // add_line_to_order: function() {
-    //     var self=this;
-    //     self.ts_model.get('selectedOrder').add_lines_to_current_order([self.sold_line], true)
-    //     //in get_last_order_lines we unbid add event of currentOrderLines to render faster
-    //     self.ts_widget.new_order_screen.order_widget.bind_orderline_events();
-    //     self.ts_widget.new_order_screen.order_widget.renderElement()
-    //     self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
-    //
-    // },
     add_product_to_order: function() {
-        // this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model, contact_name: 'aaa' }));
         var self=this;
         var product_id = this.sold_line.product_id[0]
         if (product_id){
             var current_order= this.ts_model.get('selectedOrder')
             current_order.addProductLine(product_id);
-            // this.ts_widget.screen_selector.set_current_screen('new_order');
-            // $('button#button_no').click();
-            // current_order.selectLine(current_order.get('orderLines').last());
         }
     },
 });
@@ -830,9 +820,9 @@ var SoldProductWidget = TsBaseWidget.extend({
         var self = this;
         this._super(parent,options);
         // TODO ???
-        // this.ts_model.get('sold_lines').bind('reset', function(){
+        this.ts_model.get('sold_lines').bind('reset', function(){
             self.renderElement();
-        // });
+        });
         this.line_widgets = [];
     },
 
@@ -840,22 +830,20 @@ var SoldProductWidget = TsBaseWidget.extend({
         var self=this;
         this._super();
         // free subwidgets  memory from previous renders
-        // todo lenght undefined
-        // for(var i = 0, len = this.line_widgets.length; i < len; i++){
-        //     this.line_widgets[i].destroy();
-        // }
+        for(var i = 0, len = this.line_widgets.length; i < len; i++){
+            this.line_widgets[i].destroy();
+        }
         this.line_widgets = [];
-        // TODO sold lines tiene ahora objetos con info de producto
-        // var sold_lines = this.ts_model.get("sold_lines").models || []
+        // sold lines tiene ahora objetos con info de producto
+        var sold_lines = this.ts_model.get("sold_lines").models || []
 
         var $lines_content = this.$('.soldproductlines');
-        // TODO
-        // for (var i=0, len = sold_lines.length; i < len; i++){
-        //     var line_obj = sold_lines[i].attributes;
-        //     var sold_line = new SoldProductLineWidget(self, {sold_line: line_obj})
-        //     this.line_widgets.push(sold_line)
-        //     sold_line.appendTo($lines_content)
-        // }
+        for (var i=0, len = sold_lines.length; i < len; i++){
+            var line_obj = sold_lines[i].attributes;
+            var sold_line = new SoldProductLineWidget(self, {sold_line: line_obj})
+            this.line_widgets.push(sold_line)
+            sold_line.appendTo($lines_content)
+        }
     },
 });
 

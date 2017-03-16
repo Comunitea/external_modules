@@ -3,6 +3,7 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from odoo import models, fields, api
 import time
+from datetime import date, timedelta
 
 
 class SaleOrder(models.Model):
@@ -105,4 +106,57 @@ class SaleOrderLine(models.Model):
             'tax_id': [x.id for x in line.tax_id]
 
         })
+        return res
+
+    @api.model
+    def get_last_lines_by(self, period, client_id):
+        """
+        """
+        cr = self._cr
+        date_str = date.today()
+        if period == "ult":
+            sq = """ SELECT id
+                     FROM sale_order_line sol
+                     WHERE order_id in
+                        (SELECT id
+                         FROM sale_order WHERE
+                         state in ('sale','done')
+                         and partner_id = %s order by id desc limit 1)
+                    ORDER BY id desc"""
+
+        else:
+            if period == "3month":
+                date_str = date.today() - timedelta(90)
+            elif period == "year":
+                date_str = date.today() - timedelta(365)
+            date_str = date_str.strftime("%Y-%m-%d %H:%M:%S")
+            sq = """ SELECT * FROM
+                        (SELECT distinct on (product_id) sol.id
+                         FROM sale_order_line sol
+                         INNER JOIN sale_order so ON so.id = sol.order_id
+                         WHERE so.state in
+                            ('sale','done')
+                         AND so.partner_id = %s
+                         AND so.date_order >= %s
+                         ORDER BY product_id desc, id desc) AS sq
+                    ORDER BY id desc"""
+
+        if period != 'ult':
+            cr.execute(sq, (client_id, date_str))
+        else:
+            cr.execute(sq, (client_id,))
+        fetch = cr.fetchall()
+        prod_ids = [x[0] for x in fetch]
+        res = []
+        for l in self.browse(prod_ids):
+            dic = {
+                'product_id': (l.product_id.id, l.product_id.name),
+                'price_unit': l.product_id.list_price,
+                'default_code': l.product_id.default_code or
+                l.product_id.default_code2
+            }
+            res.append(dic)
+        # print "**************************************"
+        # print res
+        # print "**************************************"
         return res
