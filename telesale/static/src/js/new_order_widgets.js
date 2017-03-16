@@ -350,8 +350,7 @@ var OrderlineWidget = TsBaseWidget.extend({
                
                 var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
                 self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
-                self.refresh();
-                self.$('.col-qty').focus()
+                self.refresh('qty');
                 self.$('.col-qty').select()
             });
         })
@@ -392,9 +391,13 @@ var OrderlineWidget = TsBaseWidget.extend({
                 this.call_product_id_change(product_id);
                 break;
             case "qty":
-                this.refresh('qty');
+                this.refresh('unit');
+                this.$('.col-unit').focus()
                 break;
             case "unit":
+                this.refresh('pvp');
+                break;
+            case "pvp":
                 this.refresh('discount');
                 break;
             case "discount":
@@ -408,7 +411,6 @@ var OrderlineWidget = TsBaseWidget.extend({
         var disc = this.model.get("discount")
         var subtotal = price * qty * (1 - (disc/ 100.0))
         this.model.set('total',subtotal);
-
         this.renderElement();
         this.$('.col-'+ focus_key).focus()
     },
@@ -432,7 +434,7 @@ var OrderWidget = TsBaseWidget.extend({
             var client_name = this.ts_model.get('selectedOrder').get('partner')
             var client_id = this.ts_model.db.partner_name_id[client_name];
             if (!client_id){
-                // alert(_t('No customer defined'));
+                alert(_t('No customer defined'));
                 return false
             }
             else{
@@ -568,7 +570,7 @@ var OrderWidget = TsBaseWidget.extend({
 //                 });
             alert("Esta funcionalidad está desabilitada. Las promociones se aplicarán cuando confirmes el pedido")
             });
-             this.$('#sust-button').click(function(){
+            this.$('#sust-button').click(function(){
                 var current_order = self.ts_model.get('selectedOrder')
                 var selected_line = current_order.selected_orderline;
                 if (!selected_line){
@@ -665,204 +667,6 @@ var OrderWidget = TsBaseWidget.extend({
             return loaded
         },
     });   
-
-var TotalsOrderWidget = TsBaseWidget.extend({
-        template:'Totals-Order-Widget',
-        init: function(parent, options) {
-            this._super(parent,options);
-            this.ts_model.bind('change:selectedOrder', this.change_selected_order, this);
-            this.bind_orderline_events();
-        },
-        bind_orderline_events: function() {
-            this.order_model = this.ts_model.get('selectedOrder');
-            this.order_model.bind('change:selected_line', this.bind_selectedline_events, this);
-
-            this.currentOrderLines = (this.ts_model.get('selectedOrder')).get('orderLines');
-            this.currentOrderLines.bind('add', this.changeTotals, this);
-            this.currentOrderLines.bind('remove', this.changeTotals, this);
-        },
-        bind_selectedline_events: function () {
-            var self = this;
-
-            this.selected_line = this.ts_model.get('selectedOrder').get('selected_line');
-            this.selected_line.unbind('change:total');
-            this.selected_line.unbind('change:weight');
-            this.selected_line.unbind('change:boxes');
-            this.selected_line.bind('change:total', this.changeTotals, this);
-            this.selected_line.bind('change:weight', this.changeTotals, this);
-            this.selected_line.bind('change:boxes', this.changeTotals, this);
-        },
-        change_selected_order: function() {
-            this.order_model.unbind('change:selected_line');
-            this.currentOrderLines.unbind();
-            this.bind_orderline_events();
-            this.renderElement();
-        },
-        renderElement: function () {
-            var self = this;
-
-            this.order_model = this.ts_model.get('selectedOrder');
-            this._super();
-
-            this.$('.confirm-button').click(function (){ self.confirmCurrentOrder() });
-            this.$('.cancel-button').click(function (){ self.cancelCurrentOrder() });
-            this.$('.save-button').click(function (){ self.saveCurrentOrder() });
-        },
-        changeTotals: function(){
-            var self = this;
-            // TODO A VEER
-            // this.base = 0;
-            // this.discount = 0;
-            // this.margin = 0;
-            // this.weight = 0;
-            // this.iva = 0;
-            // this.total = 0;
-            // this.pvp_ref = 0;
-            // this.sum_cost = 0;
-            // this.sum_box = 0;
-            // this.sum_fresh = 0;
-            // (this.currentOrderLines).each(_.bind( function(line) {
-            //     var product_id = self.ts_model.db.product_name_id[line.get('product')]
-            //     if (product_id){
-            //         var product_obj = self.ts_model.db.get_product_by_id(product_id)
-            //         // if (product_obj.product_class == 'normal'){
-            //           self.sum_cost += product_obj.standard_price * line.get('qty');
-            //           self.sum_box += line.get('boxes');
-            //           self.weight += line.get('weight');
-            //         //   self.discount += line.get('pvp_ref') != 0 ? (line.get('pvp_ref') - line.get('pvp')) * line.get('qty') : 0;
-            //           self.discount += line.get('qty') * line.get('pvp') * (line.get('discount') / 100)
-            //           var price_disc = line.get('pvp') * (1 - (line.get('discount') / 100))
-            //           self.margin += (price_disc -  product_obj.standard_price) * line.get('qty');
-            //           self.pvp_ref += line.get('pvp_ref') * line.get('qty');
-            //           self.base += line.get_price_without_tax('total');
-            //           self.iva += line.get_tax();
-            //           // self.total += line.get_price_with_tax();
-            //           // self.margin += (line.get('pvp') - product_obj.standard_price) * line.get('qty');
-            //         // }
-            //         // else{
-            //         //     self.sum_fresh += line.get_price_without_tax('total');
-            //         // }
-
-            //     }
-            // }, this));
-            // self.total += self.ts_model.my_round(self.base, 2) + self.ts_model.my_round(self.iva, 2);
-            // self.base = self.ts_model.my_round(self.base, 2);
-            // this.order_model.set('total_base',self.base);
-            // this.order_model.set('total_iva', self.iva);
-            // this.order_model.set('total', self.total);
-            // this.order_model.set('total_weight', self.weight);
-            // this.order_model.set('total_discount', self.discount);
-            // var discount_per = (0) + "%";
-            // // if (self.pvp_ref != 0){
-            // //     var discount_num = (self.discount/self.pvp_ref) * 100 ;
-            // //     if (discount_num < 0)
-            // //         var discount_per = "+" + self.ts_model.my_round( discount_num * (-1) , 2).toFixed(2) + "%";
-            // //     else
-            // //         var discount_per = self.ts_model.my_round( discount_num , 2).toFixed(2) + "%";
-            // // }
-            // if (self.base != 0){
-            //   // Le volvemos a sumamos el descuento porque la base viene sin el
-            //     var discount_num = (self.discount/(self.base + self.discount) ) * 100 ;
-            //     if (discount_num < 0)
-            //         var discount_per = "+" +  discount_num * (-1)  + "%";
-            //     else
-            //         var discount_per =  discount_num.toFixed(2)  + "%";
-            // }
-            // this.order_model.set('total_discount_per', discount_per);
-            // this.order_model.set('total_margin', self.margin);
-            // var margin_per = (0) + "%";
-            // var margin_per_num = 0
-            // if (self.base != 0) {
-            //     margin_per_num = ((self.base - self.sum_cost) / self.base) * 100
-            //     margin_per = self.ts_model.my_round(margin_per_num, 2).toFixed(2) + "%"
-            // }
-            // this.order_model.set('total_margin_per', margin_per);
-            // this.order_model.set('total_boxes', self.sum_box); //integer
-            // this.order_model.set('total_fresh', self.sum_fresh);
-
-            // var min_limit = this.ts_model.get('company').min_limit
-            // var min_margin = this.ts_model.get('company').min_margin
-            // this.renderElement();
-            // if (margin_per_num < min_margin)
-            //    this.$('#total_margin').addClass('warning-red');
-            // else
-            //    $('#total_margin').removeClass('warning-red');
-            // if (self.total < min_limit)
-            //     $('#total_order').addClass('warning-red');
-            // else
-            //    $('#total_order').removeClass('warning-red');
-        },
-        // confirmCurrentOrder: function() {
-        //     var currentOrder = this.order_model;
-        //     //currentOrder.set('action_button', 'confirm')
-        //     currentOrder.set('action_button', 'confirm_background')
-        //     // if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
-        //     //     alert(_t('You cant confirm an order which state is diferent than draft.'));
-        //     // }
-        //     // else  if (currentOrder.get('limit_credit')*1 != 0 && currentOrder.get('customer_debt')*1 + currentOrder.get('total')*1 > currentOrder.get('limit_credit')*1){
-        //     if (currentOrder.get('limit_credit')*1 != 0 && currentOrder.get('customer_debt')*1 + currentOrder.get('total')*1 > currentOrder.get('limit_credit')*1){
-        //             alert(_t('You cant confirm this order because you are exceeding customer limit credit. Please save as draft'));
-        //     }
-        //    else if ( currentOrder.check() ){
-        //         var partner_id = this.ts_model.db.partner_name_id[currentOrder.get('partner')]
-        //         delete this.ts_model.db.cache_sold_lines[partner_id];
-        //         this.ts_model.push_order(currentOrder.exportAsJSON());
-        //     }
-        // },
-        confirmCurrentOrder: function() {
-          var self = this;
-            var currentOrder = this.order_model;
-            currentOrder.set('set_promotion', true)  // Aplicar promociones al confirmar
-            self.saveCurrentOrder()
-            $.when( self.ts_model.ready2 )
-            .done(function(){
-                var loaded = self.ts_model.fetch('sale.order',
-                                                ['id', 'name'],
-                                                [
-                                                    ['chanel', '=', 'telesale']
-                                                ])
-                    .then(function(orders){
-                       console.log('Entro')
-                        if (orders[0]) {
-                          // var my_id = orders[0].id
-                          (new instance.web.Model('sale.order')).call('confirm_order_background',[orders[0].id],{context:new instance.web.CompoundContext()})
-                              .fail(function(unused, event){
-                                  //don't show error popup if it fails
-                                  console.error('Failed confirm order: ',orders[0].name);
-                              })
-                              .done(function(){
-                                    console.log('Confirmado en segundo plano Yeeeeeah');
-                              });
-
-                        }
-                    });
-             });
-        },
-        cancelCurrentOrder: function() {
-            var currentOrder = this.order_model;
-            currentOrder.set('action_button', 'cancel')
-            if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ||  !currentOrder.get('erp_id')){
-                alert(_t('You cant cancel an order which state is diferent than draft.'));
-            }
-            else if ( currentOrder.check() ){
-                this.ts_model.cancel_order(currentOrder.get('erp_id'));
-            }
-        },
-        saveCurrentOrder: function() {
-            var currentOrder = this.order_model;
-            currentOrder.set('action_button', 'save')
-            // if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
-            //     alert(_t('You cant save as draft an order which state is diferent than draft.'));
-            // }
-            // else if ( currentOrder.check() ){
-            if ( currentOrder.check() ){
-//                this.ts_model.push_order(currentOrder.exportAsJSON());
-//               NO HACEMOS QUE PASE POR EL FLUJO DE LA BOLITA ROJA, ESTÁ DESABILITADA
-                this.ts_model._flush2(currentOrder.exportAsJSON());
-            }
-        },
-
-});
 
 var ProductInfoOrderWidget = TsBaseWidget.extend({
     template:'ProductInfo-Order-Widget',
@@ -1054,6 +858,170 @@ var SoldProductWidget = TsBaseWidget.extend({
         // }
     },
 });
+
+
+
+// **************************************************************************************************************************
+// *********************************************** TOTALS ORDER WIDGET ******************************************************
+// **************************************************************************************************************************
+var TotalsOrderWidget = TsBaseWidget.extend({
+        template:'Totals-Order-Widget',
+        init: function(parent, options) {
+            this._super(parent,options);
+            this.ts_model.bind('change:selectedOrder', this.change_selected_order, this);
+            this.bind_orderline_events();
+        },
+        bind_orderline_events: function() {
+            this.order_model = this.ts_model.get('selectedOrder');
+            this.order_model.bind('change:selected_line', this.bind_selectedline_events, this);
+
+            this.currentOrderLines = (this.ts_model.get('selectedOrder')).get('orderLines');
+            this.currentOrderLines.bind('add', this.changeTotals, this);
+            this.currentOrderLines.bind('remove', this.changeTotals, this);
+        },
+        bind_selectedline_events: function () {
+            var self = this;
+
+            this.selected_line = this.ts_model.get('selectedOrder').get('selected_line');
+            this.selected_line.unbind('change:total');
+            this.selected_line.unbind('change:weight');
+            this.selected_line.unbind('change:boxes');
+            this.selected_line.bind('change:total', this.changeTotals, this);
+            this.selected_line.bind('change:weight', this.changeTotals, this);
+            this.selected_line.bind('change:boxes', this.changeTotals, this);
+        },
+        change_selected_order: function() {
+            this.order_model.unbind('change:selected_line');
+            this.currentOrderLines.unbind();
+            this.bind_orderline_events();
+            this.renderElement();
+        },
+        renderElement: function () {
+            var self = this;
+
+            this.order_model = this.ts_model.get('selectedOrder');
+            this._super();
+
+            this.$('.confirm-button').click(function (){ self.confirmCurrentOrder() });
+            this.$('.cancel-button').click(function (){ self.cancelCurrentOrder() });
+            this.$('.save-button').click(function (){ self.saveCurrentOrder() });
+        },
+        changeTotals: function(){
+            var self = this;
+            this.base = 0;
+            this.discount = 0;
+            this.margin = 0;
+            this.weight = 0;
+            this.iva = 0;
+            this.total = 0;
+
+            this.sum_cost = 0;
+
+            (this.currentOrderLines).each(_.bind( function(line) {
+                var product_id = self.ts_model.db.product_name_id[line.get('product')]
+                if (product_id){
+                    var product_obj = self.ts_model.db.get_product_by_id(product_id)
+                      self.sum_cost += product_obj.standard_price * line.get('qty');
+                      self.discount += line.get('qty') * line.get('pvp') * (line.get('discount') / 100)
+                      var price_disc = line.get('pvp') * (1 - (line.get('discount') / 100))
+                      self.margin += (price_disc -  product_obj.standard_price) * line.get('qty');
+                      self.base += line.get_price_without_tax('total');
+                      self.iva += line.get_tax();
+                }
+            }, this));
+            self.total += self.ts_model.my_round(self.base, 2) + self.ts_model.my_round(self.iva, 2);
+            self.base = self.ts_model.my_round(self.base, 2);
+            this.order_model.set('total_base',self.base);
+            this.order_model.set('total_iva', self.iva);
+            this.order_model.set('total', self.total);
+            this.order_model.set('total_discount', self.discount);
+            var discount_per = (0) + "%";
+            if (self.base != 0){
+              // Le volvemos a sumamar el descuento porque la base viene sin el
+                var discount_num = (self.discount/(self.base + self.discount) ) * 100 ;
+                if (discount_num < 0)
+                    var discount_per = "+" +  discount_num * (-1)  + "%";
+                else
+                    var discount_per =  discount_num.toFixed(2)  + "%";
+            }
+            this.order_model.set('total_discount_per', discount_per);
+            this.order_model.set('total_margin', self.margin);
+            var margin_per = (0) + "%";
+            var margin_per_num = 0
+            if (self.base != 0) {
+                margin_per_num = ((self.base - self.sum_cost) / self.base) * 100
+                margin_per = self.ts_model.my_round(margin_per_num, 2).toFixed(2) + "%"
+            }
+            this.order_model.set('total_margin_per', margin_per);
+            this.renderElement();
+
+
+            // var min_limit = this.ts_model.get('company').min_limit
+            // var min_margin = this.ts_model.get('company').min_margin
+            // if (margin_per_num < min_margin)
+            //    this.$('#total_margin').addClass('warning-red');
+            // else
+            //    $('#total_margin').removeClass('warning-red');
+            // if (self.total < min_limit)
+            //     $('#total_order').addClass('warning-red');
+            // else
+            //    $('#total_order').removeClass('warning-red');
+        },
+        confirmCurrentOrder: function() {
+          var self = this;
+            var currentOrder = this.order_model;
+            currentOrder.set('set_promotion', true)  // Aplicar promociones al confirmar
+            self.saveCurrentOrder()
+            $.when( self.ts_model.ready2 )
+            .done(function(){
+                var loaded = self.ts_model.fetch('sale.order',
+                                                ['id', 'name'],
+                                                [
+                                                    ['chanel', '=', 'telesale']
+                                                ])
+                    .then(function(orders){
+                       console.log('Entro')
+                        if (orders[0]) {
+                          // var my_id = orders[0].id
+                          (new Model('sale.order')).call('confirm_order_background',[orders[0].id],{context:new instance.web.CompoundContext()})
+                              .fail(function(unused, event){
+                                  //don't show error popup if it fails
+                                  console.error('Failed confirm order: ',orders[0].name);
+                              })
+                              .done(function(){
+                                    console.log('Confirmado en segundo plano Yeeeeeah');
+                              });
+
+                        }
+                    });
+             });
+        },
+        cancelCurrentOrder: function() {
+            var currentOrder = this.order_model;
+            currentOrder.set('action_button', 'cancel')
+            if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ||  !currentOrder.get('erp_id')){
+                alert(_t('You cant cancel an order which state is diferent than draft.'));
+            }
+            else if ( currentOrder.check() ){
+                this.ts_model.cancel_order(currentOrder.get('erp_id'));
+            }
+        },
+        saveCurrentOrder: function() {
+            var currentOrder = this.order_model;
+            currentOrder.set('action_button', 'save')
+            // if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
+            //     alert(_t('You cant save as draft an order which state is diferent than draft.'));
+            // }
+            // else if ( currentOrder.check() ){
+            if ( currentOrder.check() ){
+//                this.ts_model.push_order(currentOrder.exportAsJSON());
+//               NO HACEMOS QUE PASE POR EL FLUJO DE LA BOLITA ROJA, ESTÁ DESABILITADA
+                this.ts_model._flush2(currentOrder.exportAsJSON());
+            }
+        },
+
+});
+
     return {
         OrderButtonWidget: OrderButtonWidget,
         DataOrderWidget: DataOrderWidget,
@@ -1063,7 +1031,6 @@ var SoldProductWidget = TsBaseWidget.extend({
         ProductInfoOrderWidget: ProductInfoOrderWidget,
         SoldProductWidget: SoldProductWidget
     }; 
-
 });
 
 

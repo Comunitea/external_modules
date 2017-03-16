@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Form View Purchase order: Adding boolean field to purchase order lines -->
+        <record id="sale_view_order_form_telesale" model="ir.ui.view">
+            <field name="name">sale.view.order.form.telesale</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="payment_term_id" position="before">
+                    <field name="chanel"/>
+                </field>
+                <field name="date_order" position="after">
+                    <field name="date_planned"/>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="view_quotation_tree_telesale" model="ir.ui.view">
+            <field name="name">view.quotation.tree.telesale</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="chanel" class="oe_inline"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_order_tree_add_telesale" model="ir.ui.view">
+            <field name="name">view.order.tree.telesale</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="chanel" class="oe_inline" invisible="0"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_sales_order_filter_telesale" model="ir.ui.view">
+            <field name="name">view.sales.order.filter</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <filter name="my_sale_orders_filter" position="after">
+                     <filter string="From telesale" domain="[('chanel', '=' , 'telesale')]" name="telesale_filter"/>
+                </filter>
+            </field>
+        </record>
+    </data>
+
+</openerp>

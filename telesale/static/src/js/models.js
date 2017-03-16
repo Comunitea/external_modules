@@ -9,6 +9,15 @@ var _t = core._t;
 
 var exports = {};
 
+
+var my_round = function(number, decimals){
+        var n = number || 0;
+        if (typeof n === "string"){
+            n = n * 1;
+        }
+        return n.toFixed(decimals) * 1
+}
+
 var TsModel = Backbone.Model.extend({
     initialize: function(session, attributes) {
     Backbone.Model.prototype.initialize.call(this, attributes);
@@ -65,10 +74,10 @@ var TsModel = Backbone.Model.extend({
         return new Model(model).query(fields).filter(domain).context(ctx).all()
     },
     fetch_limited_ordered: function(model, fields, domain, limit, orderby, ctx){
-        return new instance.web.Model(model).query(fields).filter(domain).limit(limit).order_by(orderby).context(ctx).first()
+        return new Model(model).query(fields).filter(domain).limit(limit).order_by(orderby).context(ctx).first()
     },
     fetch_ordered: function(model, fields, domain, orderby, ctx){
-        return new instance.web.Model(model).query(fields).filter(domain).order_by(orderby).context(ctx).all()
+        return new Model(model).query(fields).filter(domain).order_by(orderby).context(ctx).all()
     },
     // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
     load_server_data: function(){
@@ -181,8 +190,8 @@ var TsModel = Backbone.Model.extend({
     },
     cancel_order: function(erp_id){
         var self = this;
-        // (new instance.web.Model('sale.order')).call('cancel_order_from_ui',,undefined,{shadow:true})
-        (new instance.web.Model('sale.order')).call('cancel_order_from_ui', [[erp_id]], {context:new instance.web.CompoundContext()})
+        // (new Model('sale.order')).call('cancel_order_from_ui',,undefined,{shadow:true})
+        (new Model('sale.order')).call('cancel_order_from_ui', [[erp_id]], {context:new instance.web.CompoundContext()})
             .fail(function(unused, event){
                 //don't show error popup if it fails
                 console.error('Failed to cancel order:',erp_id);
@@ -208,7 +217,7 @@ var TsModel = Backbone.Model.extend({
         self.ready2 = $.Deferred();
         //try to push an order to the server
         // shadow : true is to prevent a spinner to appear in case of timeout
-        (new instance.web.Model('sale.order')).call('create_order_from_ui',[[order]],{context:new instance.web.CompoundContext()})
+        (new Model('sale.order')).call('create_order_from_ui',[[order]],{context:new instance.web.CompoundContext()})
             .fail(function(unused, event){
                 //don't show error popup if it fails
                 console.error('Failed to send order:',order);
@@ -235,7 +244,7 @@ var TsModel = Backbone.Model.extend({
         self.ready2 = $.Deferred();
         //try to push an order to the server
         // shadow : true is to prevent a spinner to appear in case of timeout
-        (new instance.web.Model('sale.order')).call('create_order_from_ui',[[order]],{context:new instance.web.CompoundContext()})
+        (new Model('sale.order')).call('create_order_from_ui',[[order]],{})
             .fail(function(unused, event){
                 //don't show error popup if it fails
                 alert('Ocurrió un fallo en al mandar el pedido al servidor');
@@ -494,7 +503,9 @@ var TsModel = Backbone.Model.extend({
 
 });
 
-//**************************** PRODUCTS AND PRODUCT COLLECTION****************************************************
+// ****************************************************************************************************************
+// ******************************************** PRODUCT MODEL **************************************************
+// ****************************************************************************************************************
 var Product = Backbone.Model.extend({
 });
 
@@ -502,7 +513,9 @@ var ProductCollection = Backbone.Collection.extend({
     model: Product,
 });
 
-// **************************** ORDER LINE AND ORDER LINE COLLECTION***********************************************
+// ****************************************************************************************************************
+// ******************************************** ORDER LINE MODEL **************************************************
+// ****************************************************************************************************************
 var Orderline = Backbone.Model.extend({
     defaults: {
         n_line: '',
@@ -520,10 +533,8 @@ var Orderline = Backbone.Model.extend({
     initialize: function(options){
         this.ts_model = options.ts_model;
         this.order = options.order;
-
         this.selected = false;
     },
-
     set_selected: function(selected){
         this.selected = selected;
     },
@@ -549,22 +560,13 @@ var Orderline = Backbone.Model.extend({
     export_as_JSON: function() {
         var product_id = this.ts_model.db.product_name_id[this.get('product')];
         var uom_id = this.ts_model.db.unit_name_id[this.get('unit')];
-        var uos_id = this.ts_model.db.unit_name_id[this.get('product_uos')];
-        var qnote_id = this.ts_model.db.qnote_name_id[this.get('qnote')];
         return {
+            product_id:  product_id,
             qty: this.get('qty'),
             product_uom: uom_id,
-            product_uos_qty: this.get('product_uos_qty'),
-            product_uos: uos_id,
             price_unit: this.get('pvp'),
-            price_udv: this.get('price_udv'),
-            product_id:  product_id,
-            qnote: qnote_id,
             tax_ids: this.get('taxes_ids'),
-            pvp_ref: this.get('pvp_ref'),
-            detail_note: this.get('detail') || "",
             discount: this.get('discount') || 0.0,
-            tourism: this.get('tourism') || false
         };
     },
     get_price_without_tax: function(){
@@ -578,7 +580,6 @@ var Orderline = Backbone.Model.extend({
     },
     get_all_prices: function(){
         var self = this;
-        // var base = round_dc(this.get('qty') * this.get('pvp') * (1 - (this.get('discount') / 100.0)), 2);
         var base = this.get('qty') * this.get('pvp') * (1 - (this.get('discount') / 100.0));
         var totalTax = base;
         var totalNoTax = base;
@@ -590,8 +591,6 @@ var Orderline = Backbone.Model.extend({
             var taxes_ids = self.get('taxes_ids')
             var taxes =  self.ts_model.get('taxes');
             var tmp;
-                // var taxtotal;
-                // var totalTax;
             _.each(taxes_ids, function(el) {
                 var tax = _.detect(taxes, function(t) {return t.id === el;});
 
@@ -626,29 +625,15 @@ var Orderline = Backbone.Model.extend({
             "tax": my_round(taxtotal,2),
         };
     },
-    // update_pvp: function(){
-    //     // No se tiene en cuenta descuento
-    //     var self = this;
-    //     var customer_id = this.ts_model.db.partner_name_id[this.order.get('partner')];
-    //     var pricelist_id = (this.ts_model.db.get_partner_by_id(customer_id)).property_product_pricelist;
-    //     var model = new instance.web.Model("product.pricelist");
-    //     var product_id = this.ts_model.db.product_name_id[this.get('product')];
-    //     var loaded = model.call("ts_get_product_pvp",[product_id,pricelist_id])
-    //     .then(function(result){
-    //         if (result[0])
-    //             self.set('pvp', result[0])
-    //             self.set('total', my_round(self.get('qty') * result[0]),2);
-    //     })
-    //     return loaded;
-    // }
-
 });
 var OrderlineCollection = Backbone.Collection.extend({
     model: Orderline,
 });
 
 
-// **************************** ORDER AND ORDER COLLECTION***********************************************
+// ****************************************************************************************************************
+// ******************************************** ORDER MODEL **************************************************
+// ****************************************************************************************************************
 var counter = 0;
 var Order = Backbone.Model.extend({
     initialize: function(attributes){
@@ -661,18 +646,13 @@ var Order = Backbone.Model.extend({
             num_order: this.generateNumOrder(),
             partner_code: '',
             partner: '',
-            supplier: '',
             customer_comment: '',
-            client_order_ref: '',
             contact_name: '',
             date_order: this.getStrDate(),
-            date_invoice: this.getStrDatePlanned(),
             date_planned: this.getStrDatePlanned(),
             limit_credit: (0),
             customer_debt: (0),
             //order #bottompart values
-            total_boxes: (0),
-            total_weight: (0),
             total_discount: (0),
             total_discount_per: (0).toFixed(2)+" %",
             total_margin_per: (0).toFixed(2)+" %",
@@ -680,7 +660,6 @@ var Order = Backbone.Model.extend({
             total_base: (0),
             total_iva: (0),
             total_margin: (0),
-            total_fresh: (0),
             selected_line: null,
             //to pas the button action to the server
             action_button: null,
@@ -690,18 +669,15 @@ var Order = Backbone.Model.extend({
             state:"draft",
             comercial: '',
             coment: '',
-            set_promotion: false // if true in the server we create a promotion, and recover again the order
         });
-
-        this.ts_model =     attributes.ts_model;
+        this.ts_model = attributes.ts_model;
         this.selected_orderline = undefined;
         this.screen_data = {};  // see ScreenSelector
         return this;
     },
     generateNumOrder: function(){
         counter += 1;
-        return "TStmp"+counter
-
+        return "TStmp "+counter
     },
     getStrDate: function() {
         var date = new Date();
@@ -819,14 +795,10 @@ var Order = Backbone.Model.extend({
             action_button: this.get('action_button'),
             erp_id: this.get('erp_id'),
             erp_state: this.get('erp_state'),
-            date_invoice: this.get('date_invoice'),
             date_order: this.get('date_order'),
             date_planned: this.get('date_planned'),
             note: this.get('coment'),
             customer_comment: this.get('customer_comment'),
-            client_order_ref: this.get('client_order_ref'),
-            supplier_id : this.ts_model.db.supplier_from_name_to_id[this.get('supplier')],
-            set_promotion: this.get('set_promotion')
         };
     },
     get_last_line_by: function(period, client_id){
@@ -933,7 +905,7 @@ var Order = Backbone.Model.extend({
         //                   partner_id: customer_id,
         //                  }
         //     var pricelist_id = (this.ts_model.db.get_partner_by_id(customer_id)).property_product_pricelist;
-        //     var model = new instance.web.Model("sale.order.line");
+        //     var model = new Model("sale.order.line");
         //     model.call("product_id_change_with_wh",[[],pricelist_id,product_id],kwargs)
         //         .then(function(result){
         //             var product_obj = self.ts_model.db.get_product_by_id(product_id);
