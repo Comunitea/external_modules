@@ -133,7 +133,7 @@ var TsModel = Backbone.Model.extend({
                     // PARTNERS
                     return self.fetch(
                         'res.partner',
-                        ['name', 'comercial', 'ref', 'property_account_position', 'property_product_pricelist', 'child_ids', 'phone', 'user_id',  'comment'],
+                        ['name', 'comercial', 'ref', 'child_ids', 'phone', 'user_id',  'comment'],
                         [['customer','=',true]])
                 }).then(function(customers){
                     for (var key in customers){
@@ -855,42 +855,6 @@ var Order = Backbone.Model.extend({
         else{
             alert(_t('Please select a customer before adding a order line'));
         }
-        // if (customer_id){
-        //     var kwargs = {context: new instance.web.CompoundContext({}),
-        //                   partner_id: customer_id,
-        //                  }
-        //     var pricelist_id = (this.ts_model.db.get_partner_by_id(customer_id)).property_product_pricelist;
-        //     var model = new Model("sale.order.line");
-        //     model.call("product_id_change_with_wh",[[],pricelist_id,product_id],kwargs)
-        //         .then(function(result){
-        //             var product_obj = self.ts_model.db.get_product_by_id(product_id);
-        //             var line_vals = {ts_model: self.ts_model, order:self,
-        //                  code:product_obj.default_code || "" ,
-        //                  product:product_obj.name,
-        //                  product_uos_qty:1,
-        //                  product_uos:product_obj.uom_id[1],
-        //                  product_uos:(result.value.product_uos) ? self.model.ts_model.db.unit_by_id[result.value.product_uos].name : product_obj.uom_id[1]);
-        //                  price_udv: my_round(result.value.price_unit || 0, 2),
-        //                  unit:product_obj.uom_id[1],
-        //                  qty:1,
-        //                  pvp: my_round(result.value.price_unit || 0,2), //TODO poner impuestos de producto o vacio
-        //                  total: my_round(result.value.price_unit || 0,2), //TODO poner impuestos de producto o vacio
-        //                  discount: 0,
-        //                  weight: product_obj.weight || 0.0,
-        //                  margin: my_round( (result.value.price_unit != 0 && product_obj.product_class == "normal") ? ( (result.value.price_unit - product_obj.standard_price) / result.value.price_unit) : 0 , 2),
-        //                  taxes_ids: result.value.tax_id || [],
-        //                  pvp_ref: my_round(result.value.price_unit || 0,2), //TODO poner impuestos de producto o vacio
-        //                 }
-        //             var line = new Orderline(line_vals);
-        //             line.call_product_id_change(product_obj.id)
-        //             self.get('orderLines').add(line);
-        //         });
-        // }
-        // else{
-        //     alert(_t("No Customer defined in current order"));
-        // }
-
-        // var pricelist_id = (this.ts_model.db.get_partner_by_id(partner_id)).property_product_pricelist;
     },
 
 });

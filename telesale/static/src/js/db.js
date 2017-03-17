@@ -109,9 +109,7 @@ exports.TS_LS = core.Class.extend({
         }
         for(var i = 0, len = partners.length; i < len; i++){
             var partner = partners[i];
-            // TODO QUE QUE son estos properties??
-            // partner.property_account_position = partner.property_account_position[0];
-            // partner.property_product_pricelist = partner.property_product_pricelist[0];
+
             this.partner_by_id[partner.id] = partner;
             // var cus_name = partner.comercial || partner.name
             var cus_name = partner.name + ' | ' + partner.ref

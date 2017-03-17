@@ -342,9 +342,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         var self = this;
         $.when( self.update_stock_product(product_id) ).done(function(){
             var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
-            var pricelist_id = (self.ts_model.db.get_partner_by_id(customer_id)).property_product_pricelist;
             var model = new Model("sale.order.line");
-            // model.call("product_id_change_with_wh",[[],pricelist_id,product_id])
             model.call("ts_product_id_change", [product_id, customer_id])
             .then(function(result){
                 var product_obj = self.ts_model.db.get_product_by_id(product_id);
@@ -684,9 +682,8 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
             if (product_id && partner_id){
                 var product_obj = this.ts_model.db.get_product_by_id(product_id)
                 var partner_obj = this.ts_model.db.get_partner_by_id(partner_id)
-                var pricelist_id = partner_obj.property_product_pricelist
                 var model = new Model('product.product');
-                model.call("get_product_info",[product_id,partner_id,pricelist_id])
+                model.call("get_product_info",[product_id,partner_id])
                     .then(function(result){
                         self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
                         self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
