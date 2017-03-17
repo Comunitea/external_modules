@@ -84,9 +84,15 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
         this.$('#customer_comment').blur(_.bind(this.set_value, this, 'customer_comment'))
 
+        var array_names = self.ts_model.get('customer_names');
         // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
-            source: this.ts_model.get('customer_names'),
+            // source: this.ts_model.get('customer_names'),
+            // max: 10,
+            source: function(request, response) {
+                var results = $.ui.autocomplete.filter(array_names, request.term);
+                response(results.slice(0, 20));
+            }
         });
     },
     set_value: function(key) {
@@ -282,15 +288,20 @@ var OrderlineWidget = TsBaseWidget.extend({
             self.$('.col-product_uom').append($('<option>', dic))
         }
 
-       //autocomplete products and units from array of names
+        //autocomplete products and units from array of names
         var products_ref = this.ts_model.get('products_codes')
-
         this.$('.col-code').autocomplete({
-            source: products_ref,
+            source: function(request, response) {
+                var results = $.ui.autocomplete.filter(products_ref, request.term);
+                response(results.slice(0, 20));
+            }
         });
         var product_names = this.ts_model.get('products_names')
         this.$('.col-product').autocomplete({
-            source: product_names,
+            source: function(request, response) {
+                var results = $.ui.autocomplete.filter(product_names, request.term);
+                response(results.slice(0, 20));
+            }
         });
     },
     set_value: function(key) {
