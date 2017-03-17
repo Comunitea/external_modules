@@ -9,7 +9,7 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     @api.model
-    def get_product_info(self, product_id, partner_id, pricelist_id):
+    def get_product_info(self, product_id, partner_id):
         """ Return data of widget productInfo """
 
         res = {
