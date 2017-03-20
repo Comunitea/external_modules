@@ -228,7 +228,7 @@ class PurchaseCostDistribution(models.Model):
             distribution.state = 'calculated'
         return True
 
-    def _product_price_update(self, move, new_price): # [FIX] CMNT
+    def _product_price_update(self, move, new_price): # [FIX] CMNT ELN
         """Method that mimicks stock.move's product_price_update_before_done
         method behaviour, but taking into account that calculations are made
         on an already done move, and prices sources are given as parameters.
@@ -444,25 +444,46 @@ class PurchaseCostDistributionLineExpense(models.Model):
     _name = "purchase.cost.distribution.line.expense"
     _description = "Purchase cost distribution line expense"
 
+    @api.one
+    @api.depends('distribution_line', 'distribution_line.picking_id')
+    def _get_picking_id(self): # [FIX] CMNT ELN
+        # Cannot be done via related field due to strange bug in update chain
+        self.picking_id = self.distribution_line.picking_id.id
+
+    @api.one
+    @api.depends('distribution_line', 'distribution_line.distribution')
+    def _get_distribution(self): # [IMP] CMNT ELN
+        # Cannot be done via related field due to strange bug in update chain
+        self.distribution = self.distribution_line.distribution.id
+
+    @api.one
+    @api.depends('distribution_line', 'distribution_line.product_id')
+    def _get_product_id(self): # [IMP] CMNT ELN
+        # Cannot be done via related field due to strange bug in update chain
+        self.product_id = self.distribution_line.product_id.id
+
+    @api.one
+    @api.depends('distribution_line', 'distribution_line.company_id')
+    def _get_company_id(self): # [FIX] CMNT ELN
+        # Cannot be done via related field due to strange bug in update chain
+        self.company_id = self.distribution_line.company_id.id
+
     distribution_line = fields.Many2one(
         comodel_name='purchase.cost.distribution.line',
         string='Cost distribution line', ondelete="cascade",
     )
-    picking_id = fields.Many2one(
-        comodel_name="stock.picking", store=True, readonly=True,
-        related="distribution_line.picking_id",
-    )
+    picking_id = fields.Many2one( # [FIX] CMNT ELN
+        comodel_name='stock.picking', string='Picking', store=True,
+        compute='_get_picking_id')
     picking_date_done = fields.Datetime(
         related="picking_id.date_done", store=True, readonly=True,
     )
-    distribution = fields.Many2one( # [IMP] CMNT
-        comodel_name="purchase.cost.distribution", related="distribution_expense.distribution",
-		store=True, readonly=True,
-    )
-    product_id = fields.Many2one( # [IMP] CMNT
-        comodel_name="product.product", related="distribution_line.product_id",
-        store=True, readonly=True,
-    )
+    distribution = fields.Many2one( # [IMP] CMNT ELN
+        comodel_name='purchase.cost.distribution', string='Cost distribution', store=True,
+        compute='_get_distribution')
+    product_id = fields.Many2one( # [IMP] CMNT ELN
+        comodel_name='product.product', string='Product', store=True,
+        compute='_get_product_id')
     distribution_expense = fields.Many2one(
         comodel_name='purchase.cost.distribution.expense',
         string='Distribution expense', ondelete="cascade",
@@ -475,13 +496,12 @@ class PurchaseCostDistributionLineExpense(models.Model):
         string='Expense amount', digits_compute=dp.get_precision('Account'),
     )
     cost_ratio = fields.Float('Unit cost')
-    company_id = fields.Many2one(
-        comodel_name="res.company", related="distribution_line.company_id",
-        store=True, readonly=True,
-    )
+    company_id = fields.Many2one( # [FIX] CMNT ELN
+        comodel_name='res.company', string='Company', store=True,
+        compute='_get_company_id')
 
     @api.multi
-    def action_open_distribution(self): # [IMP] CMNT
+    def action_open_distribution(self): # [IMP] CMNT ELN
         res = {
             'view_type': 'form',
             'view_mode': 'form',
