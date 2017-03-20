@@ -6,15 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-16 17:38+0000\n"
-"PO-Revision-Date: 2017-03-16 18:42+0100\n"
+"POT-Creation-Date: 2017-03-20 09:05+0000\n"
+"PO-Revision-Date: 2017-03-20 10:15+0100\n"
 "Last-Translator: Pedro Gómez <pegomez@elnogal.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: \n"
-"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_ES\n"
 "X-Generator: Poedit 1.8.6\n"
 
 #. module: purchase_landed_cost
@@ -238,12 +238,12 @@ msgstr "Fecha"
 #. module: purchase_landed_cost
 #: help:purchase.cost.distribution.line.expense,picking_date_done:0
 msgid "Date of Completion"
-msgstr "Date of Completion"
+msgstr "Fecha de realización"
 
 #. module: purchase_landed_cost
 #: field:purchase.cost.distribution.line.expense,picking_date_done:0
 msgid "Date of Transfer"
-msgstr "Date of Transfer"
+msgstr "Fecha de transferencia"
 
 #. module: purchase_landed_cost
 #: field:purchase.expense.type,default_expense:0
@@ -269,7 +269,7 @@ msgstr "Actualización directa"
 #: field:purchase.cost.distribution.line.expense,display_name:0
 #: field:purchase.expense.type,display_name:0
 msgid "Display Name"
-msgstr "Nombre mostrado"
+msgstr "Display Name"
 
 #. module: purchase_landed_cost
 #: field:purchase.cost.distribution.expense,display_name:0
