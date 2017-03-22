@@ -341,10 +341,12 @@ class ExpenseLine(models.TransientModel):
             for partner_id in partner:
                 aad = self.env['account.analytic.default'].\
                     search([('partner_id', '=', partner_id.id)], limit=1)
-                if not aad:
-                    return False
+                if not aad or len(aad) == 0:
+                    continue
                 aac += aad.analytic_id
-        aac = list(set(aac))
+            aac = list(set(aac))
+            if not aac:
+                return False
         aac_ids = get_analytic_recursive(aac)
         exp_type = e.expense_type_id
         journal_id = exp_type.journal_id.id if exp_type.journal_id else False
