@@ -9,7 +9,13 @@
                 <div class="row">
                     <h5 align="right"><t t-usertime="%d-%m-%Y %H:%M:%S"/> </h5>
                     <h1 align="center">Expenses account</h1>
-                    <h3 align="center"><span class="span-title" t-esc="partner.name"/></h3>
+                    <h3 align="center" t-if="partner"><span class="span-title" t-esc="partner.name"/></h3>
+                    <h3 align="center" t-if="not partner">
+                        <span>Summary</span>
+                        <t t-if="summary_description">-
+                            <span t-esc="summary_description"/>
+                        </t>
+                    </h3>
                 </div>
 
                 <div class="row mt32 mb32">

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-14 16:26+0000\n"
-"PO-Revision-Date: 2017-03-14 17:29+0100\n"
+"POT-Creation-Date: 2017-03-22 15:15+0000\n"
+"PO-Revision-Date: 2017-03-22 16:22+0100\n"
 "Last-Translator: Pedro Gómez <pegomez@elnogal.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgid "% Margin"
 msgstr "% Margen"
 
 #. module: customer_expense_account
-#: code:addons/customer_expense_account/wizard/customer_expense_wzd.py:59
+#: code:addons/customer_expense_account/wizard/customer_expense_wzd.py:77
 #, python-format
 msgid "%s (from: %s, to: %s)"
 msgstr "%s (desde: %s, hasta: %s)"
@@ -287,9 +287,19 @@ msgid "Only analytic moves of customer"
 msgstr "Sólo apuntes analíticos del cliente"
 
 #. module: customer_expense_account
+#: view:customer.expense.wzd:customer_expense_account.customer_expense_wzd_form_view
+msgid "Optional summary description..."
+msgstr "Descripción opcional para el resumen..."
+
+#. module: customer_expense_account
 #: view:expense.type:customer_expense_account.view_compute_type_form
 msgid "Options"
 msgstr "Opciones"
+
+#. module: customer_expense_account
+#: view:customer.expense.wzd:customer_expense_account.customer_expense_wzd_form_view
+msgid "Options for printing only"
+msgstr "Opciones sólo para impresión"
 
 #. module: customer_expense_account
 #: field:expense.structure.elements,parent_id:0
@@ -310,6 +320,16 @@ msgstr "Imprimir Cuenta de Explotación de Cliente"
 #: view:customer.expense.wzd:customer_expense_account.customer_expense_wzd_form_view
 msgid "Print Expenses"
 msgstr "Imprimir gastos"
+
+#. module: customer_expense_account
+#: help:customer.expense.wzd,only_summary:0
+msgid "Print only the summary of the report."
+msgstr "Imprimir sólo el resumen del informe."
+
+#. module: customer_expense_account
+#: field:customer.expense.wzd,only_summary:0
+msgid "Print summary only"
+msgstr "Imprimir sólo el resumen"
 
 #. module: customer_expense_account
 #: field:expense.type,product_id:0
@@ -377,6 +397,22 @@ msgstr "Elementos de estructura"
 #: view:website:customer_expense_account.customer_expense_report
 msgid "Structure:"
 msgstr "Estructura:"
+
+#. module: customer_expense_account
+#: view:website:customer_expense_account.customer_expense_report
+msgid "Summary"
+msgstr "Resumen"
+
+#. module: customer_expense_account
+#: field:customer.expense.wzd,summary_description:0
+msgid "Summary description"
+msgstr "Descripción del resumen"
+
+#. module: customer_expense_account
+#: code:addons/customer_expense_account/wizard/customer_expense_wzd.py:76
+#, python-format
+msgid "Summary-> %s"
+msgstr "Resumen-> %s"
 
 #. module: customer_expense_account
 #: help:customer.expense.wzd,use_partner_structure:0

@@ -20,15 +20,16 @@ class ExpenseReportParser(models.AbstractModel):
         if not data:
             raise except_orm(_('Error'),
                              _('You must print it from a wizard'))
-
         line_objs = {}
         for partner_id in data['lines_dic']:
-            partner = self.env['res.partner'].browse(int(partner_id))
+            partner = self.env['res.partner'].browse(int(partner_id)) \
+                if partner_id != 'summary' else False
             line_ids = data['lines_dic'][partner_id][1]
             line_objs[partner] = (data['lines_dic'][partner_id][0], 
                                   self.env['expense.line'].browse(line_ids))
         start = data.get('start_date', False)
         end = data.get('end_date', False)
+        summary_description = data.get('summary_description', False)
         if start:
             start = dt.strptime(start, "%Y-%m-%d").strftime("%d/%m/%Y")
         if end:
@@ -40,6 +41,7 @@ class ExpenseReportParser(models.AbstractModel):
             'docs': line_objs.keys(),
             'line_objs': line_objs,
             'start_date': start,
-            'end_date': end
+            'end_date': end,
+            'summary_description': summary_description
         }
         return report_obj.render(report_name, docargs)
