@@ -68,7 +68,7 @@ class account_invoice(models.Model):
                 mandate_obj = self.env["account.banking.mandate"]
                 mandates = mandate_obj.\
                     search([('partner_bank_id', 'in', partner.bank_ids.ids),
-                            ('default', '=', True),('state', '=', 'valid')])
+                            ('state', '=', 'valid')])
                 mandate_sel = False
                 if mandates:
                     mandate_sel = mandates[0]
@@ -101,7 +101,7 @@ class account_invoice(models.Model):
                 mandate_obj = self.env["account.banking.mandate"]
                 mandates = mandate_obj.\
                     search([('partner_bank_id', '=', vals['partner_bank_id']),
-                            ('default', '=', True),('state', '=', 'valid')])
+                            ('state', '=', 'valid')])
                 mandate_sel = False
                 if mandates:
                     mandate_sel = mandates[0]
@@ -133,7 +133,6 @@ class account_invoice(models.Model):
                     mandates = mandate_obj.\
                         search([('partner_bank_id', '=',
                                  vals['partner_bank_id']),
-                                ('default', '=', True),
                                 ('state', '=', 'valid')])
                     mandate_sel = False
                     if mandates:
