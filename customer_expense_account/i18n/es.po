@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-22 15:15+0000\n"
-"PO-Revision-Date: 2017-03-22 16:22+0100\n"
-"Last-Translator: Pedro Gómez <pegomez@elnogal.com>\n"
+"POT-Creation-Date: 2017-03-22 20:32+0000\n"
+"PO-Revision-Date: 2017-03-22 21:35+0100\n"
+"Last-Translator: Pedro <pegomez@elnogal.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
 "Language: es\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.12\n"
 
 #. module: customer_expense_account
 #: field:expense.line,cost_per:0
@@ -28,6 +28,12 @@ msgstr "% Costes"
 #: view:website:customer_expense_account.customer_expense_report
 msgid "% Margin"
 msgstr "% Margen"
+
+#. module: customer_expense_account
+#: code:addons/customer_expense_account/models/expense_structure.py:24
+#, python-format
+msgid "%s (copy)"
+msgstr "%s (copia)"
 
 #. module: customer_expense_account
 #: code:addons/customer_expense_account/wizard/customer_expense_wzd.py:77
