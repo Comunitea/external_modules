@@ -17,13 +17,19 @@
                     </group>
                     <group>
                         <field name="structure_id"/>
-                        <field name="use_partner_structure"
-                               invisible="[context.get('active_id')]==context.get('active_ids')"/>
+                    </group>
+                    <group string="Options for printing only" invisible="[context.get('active_id')]==context.get('active_ids')">
+                        <group>
+                            <field name="use_partner_structure"/>
+                            <field name="only_summary"/>
+                        </group>
+                        <group colspan="2" col="2">
+                            <field name="summary_description" placeholder="Optional summary description..." nolabel="1"/>
+                        </group>
                     </group>
                     <footer>
                         <button name="action_show_expense" string="Show Expenses" type="object" class="oe_inline oe_stat_button"
-                                icon="fa-eye"
-                                invisible="[context.get('active_id')]!=context.get('active_ids')"/>
+                                icon="fa-eye"/>
                         <button name="action_print_expense" string="Print Expenses" type="object" class="oe_inline oe_stat_button"
                                 icon="fa-file-text-o"/>
                     </footer>
