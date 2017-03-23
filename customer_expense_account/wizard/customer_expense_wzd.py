@@ -3,6 +3,7 @@
 # © 2017 El Nogal  - Pedro Gómez <pegomez@elnogal.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, api, fields, _
+from openerp.addons import decimal_precision as dp
 from datetime import datetime
 import time
 from ..models.expense_type import COMPUTE_TYPES
@@ -134,11 +135,11 @@ class ExpenseLine(models.TransientModel):
     _name = 'expense.line'
 
     name = fields.Char('Concept')
-    sales = fields.Float('Sales')
-    cost = fields.Float('Costs')
-    margin = fields.Float('Margin')
-    cost_per = fields.Float('% Costs')
-    margin_per = fields.Float('% Margin')
+    sales = fields.Float('Sales', digits=dp.get_precision('Account'))
+    cost = fields.Float('Costs', digits=dp.get_precision('Account'))
+    margin = fields.Float('Margin', digits=dp.get_precision('Account'))
+    cost_per = fields.Float('% Costs', digits=(12,2))
+    margin_per = fields.Float('% Margin', digits=(12,2))
     totalizator = fields.Boolean('Totalizator')
     compute_type = fields.Selection(COMPUTE_TYPES, 'Compute Type',
                                     required=True,
@@ -349,7 +350,6 @@ class ExpenseLine(models.TransientModel):
                 return False
         aac_ids = get_analytic_recursive(aac)
         exp_type = e.expense_type_id
-        journal_id = exp_type.journal_id.id if exp_type.journal_id else False
 
         if partner and exp_type.restrict_partner:
             query = """
@@ -375,12 +375,13 @@ class ExpenseLine(models.TransientModel):
         if partner:
             query += """ AND aal.account_id in %s """
             params += (tuple(aac_ids),)
-        if journal_id:
-            query += """ AND aal.journal_id = %s """
-            params += (exp_type.journal_id.id,)
-        if exp_type.product_id:
-            query += """ AND aal.product_id = %s """
-            params += (exp_type.product_id.id,)
+        if exp_type.journal_ids:
+            query += """ AND aal.journal_id in %s """
+            params += (tuple(x.id for x in exp_type.journal_ids),)
+        if exp_type.product_ids:
+            product_ids = [p.id for p in exp_type.product_ids]
+            query += """ AND aal.product_id in %s """
+            params += (tuple(product_ids),)
         elif exp_type.categ_id:
             domain = [('categ_id', 'child_of', exp_type.categ_id.id)]
             prod_objs = self.env['product.product'].search(domain)
@@ -403,16 +404,17 @@ class ExpenseLine(models.TransientModel):
             WHERE ai.date_invoice >= %s AND
                   ai.date_invoice <= %s AND ai.company_id = %s AND
                   ai.state in ('open', 'paid') AND
-                  type = '%s'
+                  type = %s
         """
         params = (self._context['from_date'], self._context['to_date'],
                   e.structure_id.company_id.id, inv_type,)
         if partner:
             query += """ AND ai.commercial_partner_id in %s """
             params += (tuple(x.id for x in partner),)
-        if exp_type.product_id:
-            query += """ AND ail.product_id = %s """
-            params += (exp_type.product_id.id,)
+        if exp_type.product_ids:
+            product_ids = [p.id for p in exp_type.product_ids]
+            query += """ AND ail.product_id in %s """
+            params += (tuple(product_ids),)
         elif exp_type.categ_id:
             domain = [('categ_id', 'child_of', exp_type.categ_id.id)]
             prod_objs = self.env['product.product'].search(domain)
@@ -438,11 +440,11 @@ class ExpenseLine(models.TransientModel):
             vals = {
                 'name': v['name'],
                 'compute_type': v['compute_type'],
-                'sales': round(v['sales'], 2),
-                'cost': round(v['cost'], 2),
-                'margin': round(v['margin'], 2),
-                'cost_per': round(v['cost_per'], 2),
-                'margin_per': round(v['margin_per'], 2),
+                'sales': v['sales'],
+                'cost': v['cost'],
+                'margin': v['margin'],
+                'cost_per': v['cost_per'],
+                'margin_per': v['margin_per'],
             }
             expense_line = self.create(vals)
             res.append(expense_line.id)

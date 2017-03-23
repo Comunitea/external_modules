@@ -30,11 +30,12 @@ class ExpenseType(models.Model):
     _name = 'expense.type'
 
     name = fields.Char('Expense Type', required=True)
-    compute_type = fields.Selection(COMPUTE_TYPES, 'Compute Type',
+    compute_type = fields.Selection(COMPUTE_TYPES,
+                                    string='Compute Type',
                                     required=True,
                                     default='analytic')
-    journal_id = fields.Many2one('account.analytic.journal',
-                                 'Analytic Journal')
+    journal_ids = fields.Many2many('account.analytic.journal',
+                                   string='Analytic Journals')
     ratio = fields.Float('Ratio')
     analytic_id = fields.Many2one('account.analytic.account',
                                   'Analytic Account')
@@ -45,7 +46,8 @@ class ExpenseType(models.Model):
                                  default=lambda self:
                                  self.env['res.company'].
                                  _company_default_get('expense.type'))
-    product_id = fields.Many2one('product.product', 'Product')
+    product_ids = fields.Many2many('product.product',
+                                   string='Products')
     categ_id = fields.Many2one('product.category', 'Product Category')
     restrict_partner = fields.Boolean('Only analytic moves of customer', 
             help='If check, only the analytic moves in which the customer '
