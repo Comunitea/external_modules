@@ -680,8 +680,6 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
             var partner_name = this.ts_model.get('selectedOrder').get('partner');
             var partner_id = this.ts_model.db.partner_name_id[partner_name];
             if (product_id && partner_id){
-                var product_obj = this.ts_model.db.get_product_by_id(product_id)
-                var partner_obj = this.ts_model.db.get_partner_by_id(partner_id)
                 var model = new Model('product.product');
                 model.call("get_product_info",[product_id,partner_id])
                     .then(function(result){

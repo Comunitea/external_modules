@@ -11,7 +11,7 @@ class SaleOrder(models.Model):
 
     chanel = fields.Selection([('erp', 'ERP'),
                                ('telesale', 'Telesale')],
-                              string='Is a telesale order',
+                              string='Chanel',
                               default='erp',
                               readonly=True)
     date_planned = fields.Datetime('Date Planed')
