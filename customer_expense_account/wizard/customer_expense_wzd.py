@@ -3,6 +3,7 @@
 # © 2017 El Nogal  - Pedro Gómez <pegomez@elnogal.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, api, fields, _
+from openerp.addons import decimal_precision as dp
 from datetime import datetime
 import time
 from ..models.expense_type import COMPUTE_TYPES
@@ -134,11 +135,11 @@ class ExpenseLine(models.TransientModel):
     _name = 'expense.line'
 
     name = fields.Char('Concept')
-    sales = fields.Float('Sales')
-    cost = fields.Float('Costs')
-    margin = fields.Float('Margin')
-    cost_per = fields.Float('% Costs')
-    margin_per = fields.Float('% Margin')
+    sales = fields.Float('Sales', digits=dp.get_precision('Account'))
+    cost = fields.Float('Costs', digits=dp.get_precision('Account'))
+    margin = fields.Float('Margin', digits=dp.get_precision('Account'))
+    cost_per = fields.Float('% Costs', digits=(12,2))
+    margin_per = fields.Float('% Margin', digits=(12,2))
     totalizator = fields.Boolean('Totalizator')
     compute_type = fields.Selection(COMPUTE_TYPES, 'Compute Type',
                                     required=True,
@@ -258,25 +259,25 @@ class ExpenseLine(models.TransientModel):
         if compute_type == 'fixed':
             res = e.var_ratio
         elif compute_type == 'invoicing':
-            query = self._get_invoice_query(e, False, 'out_invoice')
-            self._cr.execute(query)
+            query, params = self._get_invoice_query(e, False, 'out_invoice')
+            self._cr.execute(query, params)
             qres = self._cr.fetchall()
             q1 = qres[0][0] if qres[0][0] is not None else 0.0
 
-            query = self._get_invoice_query(e, False, 'out_refund')
-            self._cr.execute(query)
+            query, params = self._get_invoice_query(e, False, 'out_refund')
+            self._cr.execute(query, params)
             qres = self._cr.fetchall()
             q2 = qres[0][0] if qres[0][0] is not None else 0.0
             # Invoiced - Returned
             t1 = q1 - q2
 
-            query = self._get_invoice_query(e, partner, 'out_invoice')
-            self._cr.execute(query)
+            query, params = self._get_invoice_query(e, partner, 'out_invoice')
+            self._cr.execute(query, params)
             qres = self._cr.fetchall()
             q1 = qres[0][0] if qres[0][0] is not None else 0.0
 
-            query = self._get_invoice_query(e, partner, 'out_refund')
-            self._cr.execute(query)
+            query, params = self._get_invoice_query(e, partner, 'out_refund')
+            self._cr.execute(query, params)
             qres = self._cr.fetchall()
             q2 = qres[0][0] if qres[0][0] is not None else 0.0
             # Invoiced - Returned
@@ -291,10 +292,10 @@ class ExpenseLine(models.TransientModel):
         a journal is selected in the element type
         """
         res = 0.0
-        query = self._get_analytic_query(e, partner)
+        query, params = self._get_analytic_query(e, partner)
         if not query:
             return res
-        self._cr.execute(query)
+        self._cr.execute(query, params)
         qres = self._cr.fetchall()
         res = qres[0][0] * (-1) if qres[0][0] is not None else 0.0
         return res
@@ -304,12 +305,12 @@ class ExpenseLine(models.TransientModel):
         Gets the invoiced amount based on the open and draft invoices
         """
         res = 0.0
-        query = self._get_invoice_query(e, partner, 'out_invoice')
-        self._cr.execute(query)
+        query, params = self._get_invoice_query(e, partner, 'out_invoice')
+        self._cr.execute(query, params)
         qres = self._cr.fetchall()
         q1 = qres[0][0] if qres[0][0] is not None else 0.0
-        query = self._get_invoice_query(e, partner, 'out_refund')
-        self._cr.execute(query)
+        query, params = self._get_invoice_query(e, partner, 'out_refund')
+        self._cr.execute(query, params)
         qres = self._cr.fetchall()
         q2 = qres[0][0] if qres[0][0] is not None else 0.0
         res = q1 - q2
@@ -349,7 +350,6 @@ class ExpenseLine(models.TransientModel):
                 return False
         aac_ids = get_analytic_recursive(aac)
         exp_type = e.expense_type_id
-        journal_id = exp_type.journal_id.id if exp_type.journal_id else False
 
         if partner and exp_type.restrict_partner:
             query = """
@@ -357,42 +357,39 @@ class ExpenseLine(models.TransientModel):
                 FROM account_analytic_line aal
                 INNER JOIN account_move_line aml ON aal.move_id = aml.id
                 INNER JOIN res_partner rp ON aml.partner_id = rp.id
-                WHERE aal.date >= '%s' AND aal.date <= '%s'
-                  AND aal.company_id = %s
-            """ % (self._context['from_date'], self._context['to_date'], 
-                   e.structure_id.company_id.id)
-            if len(partner) == 1:
-                query += """ AND rp.commercial_partner_id = %s """ % str(partner[0].id)
-            else:
-                query += """ AND rp.commercial_partner_id in %s """ % str(tuple([x.id for x in partner]))
+                WHERE aal.date >= %s AND aal.date <= %s
+                  AND aal.company_id = %s AND rp.commercial_partner_id in %s
+            """
+            params = (self._context['from_date'], self._context['to_date'],
+                      e.structure_id.company_id.id,
+                      tuple(x.id for x in partner),)
         else:
             query = """
                 SELECT sum(aal.amount)
                 FROM account_analytic_line aal
-                WHERE aal.date >= '%s' AND aal.date <= '%s'
+                WHERE aal.date >= %s AND aal.date <= %s
                   AND aal.company_id = %s
-            """ % (self._context['from_date'], self._context['to_date'], 
-                   e.structure_id.company_id.id)
+            """
+            params = (self._context['from_date'], self._context['to_date'],
+                      e.structure_id.company_id.id,)
         if partner:
-            if len(aac_ids) == 1:
-                query += """ AND aal.account_id = %s """ % str(aac_ids[0])
-            else:
-                query += """ AND aal.account_id in %s """ % str(tuple(aac_ids))
-        if journal_id:
-            query += """ AND aal.journal_id = %s """ % str(exp_type.journal_id.id)
-        if exp_type.product_id:
-            query += """ AND aal.product_id = %s """ % exp_type.product_id.id
+            query += """ AND aal.account_id in %s """
+            params += (tuple(aac_ids),)
+        if exp_type.journal_ids:
+            query += """ AND aal.journal_id in %s """
+            params += (tuple(x.id for x in exp_type.journal_ids),)
+        if exp_type.product_ids:
+            product_ids = [p.id for p in exp_type.product_ids]
+            query += """ AND aal.product_id in %s """
+            params += (tuple(product_ids),)
         elif exp_type.categ_id:
             domain = [('categ_id', 'child_of', exp_type.categ_id.id)]
             prod_objs = self.env['product.product'].search(domain)
             product_ids = [p.id for p in prod_objs]
             if product_ids:
-                if len(product_ids) == 1:
-                    query += """ AND aal.product_id = %s """ % product_ids[0]
-                else:
-                    query += """ AND aal.product_id in
-                    %s """ % str(tuple(product_ids))
-        return query
+                query += """ AND aal.product_id in %s """
+                params += (tuple(product_ids),)
+        return query, params
 
     def _get_invoice_query(self, e, partner, inv_type):
         """
@@ -404,31 +401,28 @@ class ExpenseLine(models.TransientModel):
             SELECT sum(price_subtotal)
             FROM account_invoice_line ail
             INNER JOIN account_invoice ai ON ai.id = ail.invoice_id
-            WHERE ai.date_invoice >= '%s' AND
-                  ai.date_invoice <= '%s' AND ai.company_id = %s AND
+            WHERE ai.date_invoice >= %s AND
+                  ai.date_invoice <= %s AND ai.company_id = %s AND
                   ai.state in ('open', 'paid') AND
-                  type = '%s'
-        """ % (self._context['from_date'], self._context['to_date'], 
-               e.structure_id.company_id.id, inv_type)
+                  type = %s
+        """
+        params = (self._context['from_date'], self._context['to_date'],
+                  e.structure_id.company_id.id, inv_type,)
         if partner:
-            if len(partner) == 1:
-                query += """ AND ai.commercial_partner_id = %s """ % str(partner[0].id)
-            else:
-                query += """ AND ai.commercial_partner_id in %s """ % str(tuple([x.id for x in partner]))
-        if exp_type.product_id:
-            query += """ AND ail.product_id = %s """ % exp_type.product_id.id
+            query += """ AND ai.commercial_partner_id in %s """
+            params += (tuple(x.id for x in partner),)
+        if exp_type.product_ids:
+            product_ids = [p.id for p in exp_type.product_ids]
+            query += """ AND ail.product_id in %s """
+            params += (tuple(product_ids),)
         elif exp_type.categ_id:
             domain = [('categ_id', 'child_of', exp_type.categ_id.id)]
             prod_objs = self.env['product.product'].search(domain)
             product_ids = [p.id for p in prod_objs]
             if product_ids:
-                if len(product_ids) == 1:
-                    query += """ AND ail.product_id = %s """ \
-                    % product_ids[0]
-                else:
-                    query += """ AND ail.product_id in %s """ \
-                    % str(tuple(product_ids))
-        return query
+                query += """AND ail.product_id in %s """
+                params += (tuple(product_ids),)
+        return query, params
 
     def _totalizator(self, values, key):
         total = 0.0
@@ -446,11 +440,11 @@ class ExpenseLine(models.TransientModel):
             vals = {
                 'name': v['name'],
                 'compute_type': v['compute_type'],
-                'sales': round(v['sales'], 2),
-                'cost': round(v['cost'], 2),
-                'margin': round(v['margin'], 2),
-                'cost_per': round(v['cost_per'], 2),
-                'margin_per': round(v['margin_per'], 2),
+                'sales': v['sales'],
+                'cost': v['cost'],
+                'margin': v['margin'],
+                'cost_per': v['cost_per'],
+                'margin_per': v['margin_per'],
             }
             expense_line = self.create(vals)
             res.append(expense_line.id)

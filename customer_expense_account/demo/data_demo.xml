@@ -19,7 +19,7 @@
         <record id="expense_type1" model="expense.type">
             <field name="name">Analytic type 1</field>
             <field name="compute_type">analytic</field>
-            <field name="journal_id" ref="analytic_journal1"/>
+            <field name="journal_ids" ref="analytic_journal1"/>
         </record>
 
         <record id="expense_type2" model="expense.type">

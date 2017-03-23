@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-22 15:15+0000\n"
-"PO-Revision-Date: 2017-03-22 16:22+0100\n"
+"POT-Creation-Date: 2017-03-23 14:56+0000\n"
+"PO-Revision-Date: 2017-03-23 15:57+0100\n"
 "Last-Translator: Pedro Gómez <pegomez@elnogal.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,12 @@ msgid "% Margin"
 msgstr "% Margen"
 
 #. module: customer_expense_account
+#: code:addons/customer_expense_account/models/expense_structure.py:24
+#, python-format
+msgid "%s (copy)"
+msgstr "%s (copia)"
+
+#. module: customer_expense_account
 #: code:addons/customer_expense_account/wizard/customer_expense_wzd.py:77
 #, python-format
 msgid "%s (from: %s, to: %s)"
@@ -41,9 +47,9 @@ msgid "Analytic Account"
 msgstr "Cuenta analítica"
 
 #. module: customer_expense_account
-#: field:expense.type,journal_id:0
-msgid "Analytic Journal"
-msgstr "Diario analítico"
+#: field:expense.type,journal_ids:0
+msgid "Analytic Journals"
+msgstr "Diarios analíticos"
 
 #. module: customer_expense_account
 #: selection:expense.line,compute_type:0 selection:expense.type,compute_type:0
@@ -210,9 +216,9 @@ msgid "Expense Type"
 msgstr "Tipo de gasto"
 
 #. module: customer_expense_account
-#: view:expense.type:customer_expense_account.view_compute_type_filter
-#: view:expense.type:customer_expense_account.view_compute_type_form
-#: view:expense.type:customer_expense_account.view_compute_type_tree
+#: view:expense.type:customer_expense_account.view_expense_type_filter
+#: view:expense.type:customer_expense_account.view_expense_type_form
+#: view:expense.type:customer_expense_account.view_expense_type_tree
 #: model:ir.actions.act_window,name:customer_expense_account.action_expense_types
 #: model:ir.ui.menu,name:customer_expense_account.menu_expense_types
 msgid "Expense Types"
@@ -292,7 +298,7 @@ msgid "Optional summary description..."
 msgstr "Descripción opcional para el resumen..."
 
 #. module: customer_expense_account
-#: view:expense.type:customer_expense_account.view_compute_type_form
+#: view:expense.type:customer_expense_account.view_expense_type_form
 msgid "Options"
 msgstr "Opciones"
 
@@ -332,14 +338,14 @@ msgid "Print summary only"
 msgstr "Imprimir sólo el resumen"
 
 #. module: customer_expense_account
-#: field:expense.type,product_id:0
-msgid "Product"
-msgstr "Producto"
-
-#. module: customer_expense_account
 #: field:expense.type,categ_id:0
 msgid "Product Category"
 msgstr "Categoría de producto"
+
+#. module: customer_expense_account
+#: field:expense.type,product_ids:0
+msgid "Products"
+msgstr "Productos"
 
 #. module: customer_expense_account
 #: field:expense.structure.elements,ratio:0

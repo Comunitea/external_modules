@@ -2,6 +2,7 @@
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api
+from openerp.tools.translate import _
 from expense_type import COMPUTE_TYPES
 from expense_type import RATIO_COMPUTE_TYPES
 
@@ -11,11 +12,17 @@ class ExpenseStructure(models.Model):
 
     name = fields.Char('Name', required=True)
     element_ids = fields.One2many('expense.structure.elements', 'structure_id',
-                                  string="Elements", ondelete="cascade")
+                                  string="Elements", copy=True)
     company_id = fields.Many2one('res.company', 'Company', required=True,
                                  default=lambda self:
                                  self.env['res.company'].
                                  _company_default_get('expense.structure'))
+
+    @api.one
+    def copy(self, default=None):
+        default = dict(default or {})
+        default['name'] = _('%s (copy)') % self.name
+        return super(ExpenseStructure, self).copy(default)
 
 
 class ExpenseStructureElements(models.Model):
@@ -24,7 +31,8 @@ class ExpenseStructureElements(models.Model):
     _order = 'sequence'
 
     name = fields.Char('Name')
-    structure_id = fields.Many2one('expense.structure', 'Structure')
+    structure_id = fields.Many2one('expense.structure', 'Structure',
+                                   ondelete="cascade")
     sequence = fields.Integer('Sequence', require=True)
     expense_type_id = fields.Many2one('expense.type', 'Expense Type',
                                       required=True)
