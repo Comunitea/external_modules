@@ -709,7 +709,7 @@ msgstr "El cliente no puede estár vacío"
 #, python-format
 msgid "Pending orders will be lost.\n"
 "Are you sure you want to leave this session?"
-msgstr "Pending orders will be lost.\n"
+msgstr "Los pedidos pendientes se perderán.\n"
 "¿Estás seguro de que deseas abandonar la sesión?"
 
 #. module: telesale
