@@ -92,8 +92,13 @@ var OrderHistoryWidget = TsBaseWidget.extend({
     renderElement: function () {
         var self = this;
         this._super();
+        var array_names = self.ts_model.get('customer_names');
+        // Autocomplete products and units from array of names
         this.$('#input-customer').autocomplete({
-            source: this.ts_model.get('customer_names'),
+            source: function(request, response) {
+                var results = $.ui.autocomplete.filter(array_names, request.term);
+                response(results.slice(0, 20));
+            }
         });
         this.$('#search-customer').click(function (){ self.searchCustomerOrders() });
         this.$('#search-customer-week').click(function (){ self.searchCustomerOrdersBy('week') });
