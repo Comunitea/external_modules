@@ -163,8 +163,7 @@ class SaleOrderLine(models.Model):
             dic = {
                 'product_id': (l.product_id.id, l.product_id.name),
                 'price_unit': l.product_id.list_price,
-                'default_code': l.product_id.default_code or
-                l.product_id.default_code2
+                'default_code': l.product_id.default_code
             }
             res.append(dic)
         return res
