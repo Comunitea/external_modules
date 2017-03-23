@@ -572,9 +572,9 @@ var Orderline = Backbone.Model.extend({
                 var tax = _.detect(taxes, function(t) {return t.id === el;});
                 if (tax.price_include) {
                     if (tax.amount_type === "percent") {
-                        tmp =  base - base / (1 + tax.amount);
+                        tmp =  base - base / (1 + (tax.amount / 100.0));
                     } else if (tax.amount_type === "fixed") {
-                        tmp = tax.amount * self.get('qty');
+                        tmp = (tax.amount / 100.0) * self.get('qty');
                     } else {
                         throw "This type of tax is not supported by the telesale system: " + tax.amount_type;
                     }
@@ -583,9 +583,9 @@ var Orderline = Backbone.Model.extend({
                     totalNoTax -= tmp;
                 } else {
                     if (tax.amount_type === "percent") {
-                        tmp = tax.amount * base;
+                        tmp = (tax.amount / 100.0) * base;
                     } else if (tax.amount_type === "fixed") {
-                        tmp = tax.amount * self.get('qty');
+                        tmp = (tax.amount / 100.0) * self.get('qty');
                     } else {
                         throw "This type of tax is not supported by the telesale system: " + tax.amount_type;
                     }
