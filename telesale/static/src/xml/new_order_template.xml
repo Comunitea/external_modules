@@ -294,36 +294,21 @@
                 <div class="span-state fullwidth">
 
                   <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'draft'">
-                      Draft
+                      (Draft)
                   </t>
                   <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'sent'">
-                      Quotation Sent
+                      (Quotation Sent)
                   </t>
-                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'cancel'">
-                      Canceled
-                  </t>
-                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'waiting_date'">
-                      Waiting Schedule
-                  </t>
-                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'progress'">
-                      Confirmed
-                  </t>
-                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'manual'">
-                      Sale to Invoice
-                  </t>
-                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'shipping_except'">
-                      Shipping Exception
-                  </t>
-                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'invoice_except'">
-                      Invoice Exception
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'sale'">
+                      (Confirmed)
                   </t>
                   <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'done'">
-                      Done
+                      (Done)
                   </t>
-                   <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'wait_risk'">
-                      Waiting Risk Approval
+                  <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'cancel'">
+                      (Canceled)
                   </t>
-
+                  
                   <span t-esc="widget.ts_model.get('selectedOrder').get('num_order')"/>
                 </div>
               </div>

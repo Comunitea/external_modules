@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
- <templates id="template" xml:space="preserve">
+ <templates id="template_summary_order" xml:space="preserve">
 
     <t t-name="Summary-Order-Screen-Widget">
         <div class="summary-order-screen">
