@@ -20,6 +20,7 @@
         "Javier Colmenero <javier@comunitea.com>"
     ],
     "data": [
+        'security/ir.model.access.csv',
         'views/ts_config_view.xml',
         'views/telesale_menus.xml',
         'views/telesale_assets.xml',
