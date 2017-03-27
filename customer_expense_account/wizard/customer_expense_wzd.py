@@ -33,14 +33,10 @@ class CustomerExpenseWzd(models.TransientModel):
         structure = False
         model = self._context.get('active_model')
         if self._context.get('active_id', False):
-            if self._context.get('all_company', False):
-                structure = \
-                    self.env[model].browse(self._context['active_id']).\
-                    partner_id.structure_id
-            else:
-                structure = \
-                    self.env[model].browse(self._context['active_id']).\
-                    structure_id
+            structure = \
+                self.env[model].browse(self._context['active_id']).\
+                structure_id
+            if not self._context.get('all_company', False):
                 structure = structure or \
                     self.env[model].browse(self._context['active_id']).\
                     commercial_partner_id.structure_id
@@ -196,8 +192,10 @@ class ExpenseLine(models.TransientModel):
             elif e.compute_type == 'distribution':
                 var_ratio = self._get_var_ratio(partner, e,
                                                 e.ratio_compute_type)
+                ctx = {'from_date': self._context.get('from_date', False),
+                       'to_date': self._context.get('to_date', False)}
                 aac = e.expense_type_id.analytic_id
-                amount = aac.balance * (-1) * var_ratio
+                amount = aac.with_context(ctx).balance * (-1) * var_ratio
 
             # BASED ON TOTALIZATOR
             elif e.compute_type in ['total_cost', 'total_margin',
