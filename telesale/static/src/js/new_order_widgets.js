@@ -118,10 +118,10 @@ var DataOrderWidget = TsBaseWidget.extend({
             }
             else {
                 var partner_obj = self.ts_model.db.get_partner_by_id(partner_id);
-              
-                var do_onchange = true
-                
-                if (do_onchange){
+                var model = new Model("sale.order");
+                model.call("ts_onchange_partner_id", [partner_id])
+                .then(function(result){
+
                     var cus_name = self.ts_model.getComplexName(partner_obj);
                     self.order_model.set('partner', cus_name);
                     self.order_model.set('partner_code', partner_obj.ref ? partner_obj.ref : "");
@@ -132,18 +132,20 @@ var DataOrderWidget = TsBaseWidget.extend({
                     // self.order_model.set('customer_debt', self.ts_model.my_round(partner_obj.credit,2));
                     var contact_obj = self.ts_model.db.get_partner_contact(partner_id); //If no contacts return itself
                     self.order_model.set('comercial', partner_obj.user_id ? partner_obj.user_id[1] : "");
-                    self.order_model.set('contact_name', contact_obj.name);
+                    debugger;
+                    var partner_shipp_obj = self.ts_model.db.get_partner_by_id(result.partner_shipping_id);
+                    self.order_model.set('contact_name', partner_shipp_obj.name);
 
                     self.refresh();
-                    // TODO LO DE ABAJO YA VEREMOS
-                    // $('#vua-button').click();
-                    // if(self.order_model.get('orderLines').length == 0){
-                    //     $('.add-line-button').click()
-                    // }
-                    // else{
-                    //     self.$('#date_order').focus();
-                    // }
-                }
+                    // New line and VUA button when change
+                    $('#vua-button').click();
+                    if(self.order_model.get('orderLines').length == 0){
+                        $('.add-line-button').click()
+                    }
+                    else{
+                        self.$('#date_order').focus();
+                    }
+                });
             }
         }
     },

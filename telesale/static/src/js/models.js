@@ -134,7 +134,7 @@ var TsModel = Backbone.Model.extend({
                     return self.fetch(
                         'res.partner',
                         ['name', 'comercial', 'ref', 'child_ids', 'phone', 'user_id',  'comment'],
-                        [['customer','=',true]])
+                        [])
                 }).then(function(customers){
                     for (var key in customers){
                         var customer_name = self.getComplexName(customers[key]);
