@@ -34,7 +34,7 @@
     <t t-name="Product-Line-Widget">
         <tr>
             <td class="pc-cell-name">
-                <span class="product-cell"><t t-esc="widget.product.name"/></span>
+                <span class="product-cell"><t t-esc="widget.product.display_name"/></span>
             </td>
             <td class="pc-cell-code">
                 <span class="product-cell">
