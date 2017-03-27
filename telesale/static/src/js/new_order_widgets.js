@@ -80,7 +80,7 @@ var DataOrderWidget = TsBaseWidget.extend({
 
         this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
-        this.$('#date_planned').blur(_.bind(this.set_value, this, 'date_planned'))
+        this.$('#requested_date').blur(_.bind(this.set_value, this, 'requested_date'))
         this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
         this.$('#customer_comment').blur(_.bind(this.set_value, this, 'customer_comment'))
 
@@ -153,7 +153,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
                                         ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id',
-                                         'date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice'],
+                                         'date_order','state','amount_total','date_invoice', 'requested_date', 'date_invoice'],
                                         [
                                             ['id', '=', order_id]
                                         ])
@@ -509,7 +509,7 @@ var OrderWidget = TsBaseWidget.extend({
                 self.ts_model.get('selectedOrder').removeLine();
                 var selected_line = self.ts_model.get('selectedOrder').getSelectedLine();
                 if (selected_line){
-                    n_line = selected_line.get('n_line')
+                    var n_line = selected_line.get('n_line')
                     self.orderlinewidgets[n_line-1].$el.find('.col-code').focus();
                 }
 
@@ -591,7 +591,7 @@ var OrderWidget = TsBaseWidget.extend({
             //}
             this.open_order =  this.ts_model.get('selectedOrder')
             var loaded = self.ts_model.fetch('sale.order',
-                                            ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'date_planned', 'date_invoice'],
+                                            ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'requested_date', 'date_invoice'],
                                             [
                                                 ['id', '=', order_id]
                                             ])
