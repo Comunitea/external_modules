@@ -22,7 +22,14 @@ class ExpenseStructure(models.Model):
     def copy(self, default=None):
         default = dict(default or {})
         default['name'] = _('%s (copy)') % self.name
-        return super(ExpenseStructure, self).copy(default)
+        res = super(ExpenseStructure, self).copy(default)
+        # Elements based on parent elements, must be mapped to new copied ids
+        old_new_ids = dict(zip([x.id for x in self.element_ids],
+                               [x.id for x in res.element_ids]))
+        for element_id in res.element_ids.filtered(lambda r: r.parent_id):
+            element_id.parent_id = old_new_ids.get(element_id.parent_id.id,
+                                                   False)
+        return res
 
 
 class ExpenseStructureElements(models.Model):

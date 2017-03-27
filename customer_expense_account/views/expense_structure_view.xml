@@ -63,7 +63,7 @@
                 <tree string="Expense Structure Elements"
                       colors="red:compute_type in ['total_cost', 'total_margin', 'total_sale', 'total_general'];
                               green:compute_type == 'invoicing';
-                              orange:compute_type == 'ratio';
+                              darkorange:compute_type == 'ratio';
                               blue:compute_type == 'distribution'">
                     <field name="sequence"/>
                     <field name="name"/>
