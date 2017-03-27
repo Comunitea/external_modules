@@ -269,12 +269,12 @@ var TsModel = Backbone.Model.extend({
         var state = order_obj.state
         order_model.set('state', state);
       
-        if (order_obj.date_planned){
-            var only_date = order_obj.date_planned.split(' ');
+        if (order_obj.requested_date){
+            var only_date = order_obj.requested_date.split(' ');
             if(only_date.length > 1){
-              order_model.set('date_planned', only_date[0]);
+              order_model.set('requested_date', only_date[0]);
             }else {
-              order_model.set('date_planned', order_obj.date_planned);
+              order_model.set('requested_date', order_obj.requested_date);
             }
         }
         order_model.set('num_order',order_obj.name);
@@ -625,7 +625,7 @@ var Order = Backbone.Model.extend({
             customer_comment: '',
             contact_name: '',
             date_order: this.getStrDate(),
-            date_planned: this.getStrDatePlanned(),
+            requested_date: this.getStrDatePlanned(),
             limit_credit: (0),
             customer_debt: (0),
             //order #bottompart values
@@ -772,7 +772,7 @@ var Order = Backbone.Model.extend({
             erp_id: this.get('erp_id'),
             erp_state: this.get('erp_state'),
             date_order: this.get('date_order'),
-            date_planned: this.get('date_planned'),
+            requested_date: this.get('requested_date'),
             note: this.get('coment'),
             customer_comment: this.get('customer_comment'),
         };

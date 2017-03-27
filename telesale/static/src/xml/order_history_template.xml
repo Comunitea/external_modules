@@ -84,7 +84,7 @@
                 <span class="history-cell"><t t-esc="widget.ts_model.localFormatDateTime(widget.ts_model.parse_utc_to_str_date(widget.order.date_order))"/></span>
             </td>
             <td class="cell-date">
-                <span class="history-cell"><t t-esc="widget.ts_model.localFormatDateTime(widget.order.date_planned)"/></span>
+                <span class="history-cell"><t t-esc="widget.ts_model.localFormatDateTime(widget.order.requested_date)"/></span>
             </td>
             <td class="cell-total">
                 <span class="history-cell"><t t-esc="widget.order.amount_total.toFixed(2)"/></span>

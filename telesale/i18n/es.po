@@ -436,7 +436,7 @@ msgid "Date Order:"
 msgstr "Fecha pedido:"
 
 #. module: telesale
-#: model:ir.model.fields,field_description:telesale.field_sale_order_date_planned
+#: model:ir.model.fields,field_description:telesale.field_sale_order_requested_date
 msgid "Date Planed"
 msgstr "Fecha planificada"
 
