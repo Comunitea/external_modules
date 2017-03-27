@@ -112,7 +112,7 @@ var TsModel = Backbone.Model.extend({
                     // PRODUCTS
                     return self.fetch(
                         'product.product',
-                        ['name', 'default_code', 'list_price', 'standard_price', 'uom_id', 'taxes_id', 'weight'],
+                        ['display_name', 'default_code', 'list_price', 'standard_price', 'uom_id', 'taxes_id', 'weight'],
                         [['sale_ok', '=', true]]
                     );
                 }).then(function(products){
@@ -124,7 +124,7 @@ var TsModel = Backbone.Model.extend({
                         var product_obj = self.db.get_product_by_id(products[key].id)
                          products_list.push(product_obj);
                          search_string += self.db._product_search_string(product_obj)
-                         self.get('products_names').push(product_obj.name);
+                         self.get('products_names').push(product_obj.display_name);
                          self.get('products_codes').push(product_obj.default_code);
                     }
                     self.set('product_search_string', search_string)
@@ -293,7 +293,7 @@ var TsModel = Backbone.Model.extend({
             //TODO: Calculo de los impuestos en la linea para tener en cuenta tarifa a domicilio
             var line_vals = {ts_model: this, order:order_model,
                              code:prod_obj.default_code || "" ,
-                             product:prod_obj.name,
+                             product:prod_obj.display_name,
                              unit:line.product_uom[1],
                              qty:line.product_uom_qty,
                              pvp:my_round(line.price_unit,2), //TODO poner precio del producto???
@@ -823,7 +823,7 @@ var Order = Backbone.Model.extend({
             }
             var line_vals = {ts_model: this.ts_model, order:this,
                              code:prod_obj.default_code || "" ,
-                             product:prod_obj.name,
+                             product:prod_obj.display_name,
                              unit:prod_obj.uom_id[1] || line.product_uom[1], 
                              qty:my_round(l_qty),
                              pvp: my_round(line.current_pvp ? line.current_pvp : 0, 2),
