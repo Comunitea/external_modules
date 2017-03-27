@@ -92,6 +92,24 @@ class SaleOrder(models.Model):
     def cancel_order_from_ui(self, order_id):
         self.browse(order_id).action_cancel()
 
+    @api.model
+    def ts_onchange_partner_id(self, partner_id):
+        res = {}
+        order_t = self.env['sale.order']
+        partner = self.env['res.partner'].browse(partner_id)
+
+        order = order_t.new({'partner_id': partner_id,
+                             'date_order': time.strftime("%Y-%m-%d"),
+                             'pricelist_id':
+                             partner.property_product_pricelist.id})
+        order.onchange_partner_id()
+        res.update({
+            'pricelist_id': order.pricelist_id.id,
+            'partner_shipping_id': order.partner_shipping_id.id,
+
+        })
+        return res
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
