@@ -22,7 +22,7 @@ var SummarylineWidget = TsBaseWidget.extend({
         }
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['contact_id','note','comercial','customer_comment','name','partner_id','date_order','state','amount_total','date_planned'],  //faltan los impuestos etc
+                                        ['contact_id','note','comercial','customer_comment','name','partner_id','date_order','state','amount_total','requested_date'],  //faltan los impuestos etc
                                         [
                                             ['id', '=', order_id]
                                         ])
@@ -119,7 +119,7 @@ var SummaryOrderWidget = TsBaseWidget.extend({
             domain.push(['date_order', '<=', utc_date_end])
         }
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['name','partner_id','date_order','state','amount_total', 'date_planned',],  //faltan los impuestos etc
+                                        ['name','partner_id','date_order','state','amount_total', 'requested_date',],  //faltan los impuestos etc
                                         domain)
             .then(function(orders){
             self.partner_orders = orders;

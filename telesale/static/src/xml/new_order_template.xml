@@ -167,8 +167,8 @@
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
-                            <label for="date_planned">Date Planned:</label>
-                            <input class="mandatory"  type="date" id='date_planned' name="date_planned" t-att-value="widget.order_model.get('date_planned')" tabIndex="3"/>
+                            <label for="requested_date">Date Planned:</label>
+                            <input class="mandatory"  type="date" id='requested_date' name="requested_date" t-att-value="widget.order_model.get('requested_date')" tabIndex="3"/>
                           </div>
                         </div>
                     </div>

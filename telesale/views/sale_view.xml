@@ -12,10 +12,6 @@
                 <field name="payment_term_id" position="before">
                     <field name="chanel"/>
                 </field>
-                <field name="date_order" position="after">
-                    <field name="date_planned"/>
-                </field>
-
             </field>
         </record>
 

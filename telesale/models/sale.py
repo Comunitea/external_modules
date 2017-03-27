@@ -14,7 +14,6 @@ class SaleOrder(models.Model):
                               string='Chanel',
                               default='erp',
                               readonly=True)
-    date_planned = fields.Datetime('Date Planed')
 
     @api.model
     def create_order_from_ui(self, orders):
@@ -35,6 +34,8 @@ class SaleOrder(models.Model):
 
             partner_obj = t_partner.browse(order['partner_id'])
 
+            # TODO, BUSCAR VALORES POR DEFECTO WAREHOUSE ID SINO PONER EL DE LA
+            # COMPAÑÍA
             vals = {
                 # 'name': '/',
                 'partner_id': partner_obj.id,
@@ -44,8 +45,9 @@ class SaleOrder(models.Model):
                 'chanel': 'telesale',
                 'order_policy': 'picking',
                 'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
-                'date_planned': order['date_planned'] + " 19:00:00" or False,
-                'note': order['note']
+                'requested_date': order['requested_date'] + " 19:00:00" or False,
+                'note': order['note'],
+                # 'warwhouse_id':
             }
             if order['erp_id'] and order['erp_state'] == 'draft':
                 order_obj = t_order.browse(order['erp_id'])

@@ -83,7 +83,7 @@
                 <span class="summary-cell"><t t-esc="widget.ts_model.localFormatDateTime(widget.ts_model.parse_utc_to_str_date(widget.order.date_order))"/></span>
             </td>
             <td class="summary-cell-date">
-                <span class="summary-cell"><t t-esc="widget.ts_model.localFormatDateTime(widget.order.date_planned)"/></span>
+                <span class="summary-cell"><t t-esc="widget.ts_model.localFormatDateTime(widget.order.requested_date)"/></span>
             </td>
             <td class="summary-cell-total">
                 <span class="summary-cell"><t t-esc="widget.order.amount_total.toFixed(2)"/></span>

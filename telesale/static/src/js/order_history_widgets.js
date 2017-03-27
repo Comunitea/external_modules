@@ -24,7 +24,7 @@ var HistorylineWidget = TsBaseWidget.extend({
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
                                         ['contact_id','note','comercial','customer_comment','name','partner_id','date_order',
-                                         'state','amount_total','date_planned'],
+                                         'state','amount_total','requested_date'],
                                         [
                                         ['id', '=', order_id]
                                         ])
@@ -121,7 +121,7 @@ var OrderHistoryWidget = TsBaseWidget.extend({
             domain.push(['date_order', '<=', date_end])
         }
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['name','partner_id','date_order','state','date_planned', 'amount_total'],
+                                        ['name','partner_id','date_order','state','requested_date', 'amount_total'],
                                         domain)
             .then(function(orders){
              self.partner_orders = orders;
