@@ -132,7 +132,6 @@ var DataOrderWidget = TsBaseWidget.extend({
                     // self.order_model.set('customer_debt', self.ts_model.my_round(partner_obj.credit,2));
                     var contact_obj = self.ts_model.db.get_partner_contact(partner_id); //If no contacts return itself
                     self.order_model.set('comercial', partner_obj.user_id ? partner_obj.user_id[1] : "");
-                    debugger;
                     var partner_shipp_obj = self.ts_model.db.get_partner_by_id(result.partner_shipping_id);
                     self.order_model.set('contact_name', partner_shipp_obj.name);
 
@@ -331,7 +330,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         var self=this;
         var domain = [['id', '=', product_id]]
         var loaded = self.ts_model.fetch('product.product',
-                                        ['name','product_class','list_price','standard_price','default_code','uom_id', 'log_base_id', 'log_base_discount', 'log_unit_discount','log_box_discount', 'log_unit_id', 'log_box_id', 'base_use_sale', 'unit_use_sale', 'box_use_sale','virtual_stock_conservative','taxes_id', 'weight', 'kg_un', 'un_ca', 'ca_ma', 'ma_pa', 'max_discount', 'category_max_discount', 'product_tmpl_id','products_substitute_ids'],
+                                        ['display_name','product_class','list_price','standard_price','default_code','uom_id', 'log_base_id', 'log_base_discount', 'log_unit_discount','log_box_discount', 'log_unit_id', 'log_box_id', 'base_use_sale', 'unit_use_sale', 'box_use_sale','virtual_stock_conservative','taxes_id', 'weight', 'kg_un', 'un_ca', 'ca_ma', 'ma_pa', 'max_discount', 'category_max_discount', 'product_tmpl_id','products_substitute_ids'],
                                         domain
                                         )
             .then(function(products){
@@ -351,7 +350,7 @@ var OrderlineWidget = TsBaseWidget.extend({
                 var uom_obj = self.ts_model.db.get_unit_by_id(product_obj.uom_id[0])
             
                 self.model.set('code', product_obj.default_code || "");
-                self.model.set('product', product_obj.name || "");
+                self.model.set('product', product_obj.display_name || "");
                 self.model.set('taxes_ids', result.tax_id || []); //TODO poner impuestos de producto o vacio
                 self.model.set('unit', self.model.ts_model.db.unit_by_id[result.product_uom].name);
                 self.model.set('qty', result.product_uom_qty);

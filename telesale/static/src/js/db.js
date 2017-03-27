@@ -62,7 +62,7 @@ exports.TS_LS = core.Class.extend({
         this.cache[store] = data;
     },
     _product_search_string: function(product){
-        var str = '' + product.id + ':' + product.name;
+        var str = '' + product.id + ':' + product.display_name;
         if(product.default_code){
             str += '|' + product.default_code;
         }
@@ -85,7 +85,7 @@ exports.TS_LS = core.Class.extend({
             // var search_string = this._product_search_string(product);
             this.product_by_id[product.id] = product;
             // this.product_by_tmp_id[product.product_tmpl_id[0]] = product;
-            this.product_name_id[product.name] = product.id;
+            this.product_name_id[product.display_name] = product.id;
             if(product.default_code){
                 this.product_code_id[product.default_code] = product.id;
             }
