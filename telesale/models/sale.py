@@ -21,6 +21,7 @@ class SaleOrder(models.Model):
         t_order = self.env['sale.order']
         t_order_line = self.env['sale.order.line']
         t_product = self.env['product.product']
+        t_irvalue = self.env['ir.values']
 
         order_ids = []
 
@@ -33,6 +34,15 @@ class SaleOrder(models.Model):
             #     order['erp_state'] = 'draft'
 
             partner_obj = t_partner.browse(order['partner_id'])
+            warehouse_id = False
+            domain = [('name', '=', 'warehouse_id'),
+                      ('model', '=', 'sale.order')]
+            default_value = t_irvalue.search(domain, limit=1)
+            if default_value:
+                warehouse_id = int(default_value.value_unpickle)
+            else:
+                warehouse_id = self._default_warehouse_id() and \
+                    self._default_warehouse_id()[0].id or 1
 
             # TODO, BUSCAR VALORES POR DEFECTO WAREHOUSE ID SINO PONER EL DE LA
             # COMPAÑÍA
@@ -45,9 +55,10 @@ class SaleOrder(models.Model):
                 'chanel': 'telesale',
                 'order_policy': 'picking',
                 'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
-                'requested_date': order['requested_date'] + " 19:00:00" or False,
+                'requested_date': order['requested_date'] + " 19:00:00" or
+                False,
                 'note': order['note'],
-                # 'warwhouse_id':
+                'warwhouse_id': warehouse_id
             }
             if order['erp_id'] and order['erp_state'] == 'draft':
                 order_obj = t_order.browse(order['erp_id'])
