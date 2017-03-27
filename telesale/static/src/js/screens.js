@@ -187,7 +187,7 @@ exports.ProductCatalogScreenWidget = ScreenWidget.extend({
         var re = RegExp("([0-9]+):.*?"+query,"gi");
         var results = [];
         for(var i = 0; i < 100; i++){
-            r = re.exec(string);
+            var r = re.exec(string);
             if(r){
                 var id = Number(r[1]);
                 results.push(this.ts_model.db.get_product_by_id(id));
