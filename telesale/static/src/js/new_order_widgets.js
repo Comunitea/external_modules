@@ -79,6 +79,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this._super();
 
         this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
+        this.$('#shipp_addr').blur(_.bind(this.set_value, this, 'shipp_addr'))
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
         this.$('#requested_date').blur(_.bind(this.set_value, this, 'requested_date'))
         this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
@@ -87,6 +88,14 @@ var DataOrderWidget = TsBaseWidget.extend({
         var array_names = self.ts_model.get('customer_names');
         // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
+            // source: this.ts_model.get('customer_names'),
+            // max: 10,
+            source: function(request, response) {
+                var results = $.ui.autocomplete.filter(array_names, request.term);
+                response(results.slice(0, 20));
+            }
+        });
+        this.$('#shipp_addr').autocomplete({
             // source: this.ts_model.get('customer_names'),
             // max: 10,
             source: function(request, response) {
@@ -130,10 +139,11 @@ var DataOrderWidget = TsBaseWidget.extend({
                     // TODO nan_partner_risk migrar a la 10
                     // self.order_model.set('limit_credit', self.ts_model.my_round(partner_obj.credit_limit,2));
                     // self.order_model.set('customer_debt', self.ts_model.my_round(partner_obj.credit,2));
-                    var contact_obj = self.ts_model.db.get_partner_contact(partner_id); //If no contacts return itself
+
                     self.order_model.set('comercial', partner_obj.user_id ? partner_obj.user_id[1] : "");
                     var partner_shipp_obj = self.ts_model.db.get_partner_by_id(result.partner_shipping_id);
-                    self.order_model.set('contact_name', partner_shipp_obj.name);
+                    var shipp_addr =self.ts_model.getComplexName(partner_shipp_obj);
+                    self.order_model.set('shipp_addr', shipp_addr);
 
                     self.refresh();
                     // New line and VUA button when change
@@ -152,8 +162,8 @@ var DataOrderWidget = TsBaseWidget.extend({
         var self=this;
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id',
-                                         'date_order','state','amount_total','date_invoice', 'requested_date', 'date_invoice'],
+                                        ['partner_shipping_id','note','comercial','customer_comment','client_order_ref','name','partner_id',
+                                         'date_order','state','amount_total','date_invoice', 'requested_date'],
                                         [
                                             ['id', '=', order_id]
                                         ])
@@ -591,7 +601,7 @@ var OrderWidget = TsBaseWidget.extend({
             //}
             this.open_order =  this.ts_model.get('selectedOrder')
             var loaded = self.ts_model.fetch('sale.order',
-                                            ['supplier_id','contact_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'requested_date', 'date_invoice'],
+                                            ['partner_shipping_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'requested_date', 'date_invoice'],
                                             [
                                                 ['id', '=', order_id]
                                             ])

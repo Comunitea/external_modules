@@ -294,7 +294,7 @@ msgstr "CTRL + up-------------------------> Selecionar línea de arriba"
 #: code:addons/telesale/static/src/xml/new_order_template.xml:288
 #, python-format
 msgid "CUSTOMER"
-msgstr "CUSTOMER"
+msgstr "CLIENTE"
 
 #. module: telesale
 #. openerp-web
@@ -898,7 +898,7 @@ msgstr "Stock"
 #: code:addons/telesale/static/src/xml/new_order_template.xml:475
 #, python-format
 msgid "Stock Product"
-msgstr "Stoxk Producto"
+msgstr "Stock Producto"
 
 #. module: telesale
 #: model:ir.ui.view,arch_db:telesale.ts_session_opening_form_view

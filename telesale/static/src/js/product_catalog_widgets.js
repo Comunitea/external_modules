@@ -28,7 +28,7 @@ var ProductLineWidget = TsBaseWidget.extend({
         }
     },
     add_product_to_order: function() {
-        // this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model, contact_name: 'aaa' }));
+        // this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model, shipp_addr: 'aaa' }));
         // var self=this;
         var product_id = this.product.id
         if (product_id){

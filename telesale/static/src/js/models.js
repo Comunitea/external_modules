@@ -283,9 +283,9 @@ var TsModel = Backbone.Model.extend({
         order_model.set('comercial',partner_obj.user_id[1]);
         order_model.set('coment',order_obj.note || '');
 
-    
-        var contact = this.db.get_partner_contact(order_obj.partner_id[0])
-        order_model.set('contact_name',contact.name);
+        var partner_shipp_obj = this.db.get_partner_by_id(order_obj.partner_shipping_id[0]);
+        var shipp_addr = this.getComplexName(partner_shipp_obj);
+        order_model.set('shipp_addr',shipp_addr);
 
         for (var key in order_lines){
             var line = order_lines[key];
@@ -316,40 +316,6 @@ var TsModel = Backbone.Model.extend({
             res = int_part + ":" + seconds
         }
         return res;
-    },
-    get_calls_by_date_state: function(date, state, route){
-        var self=this;
-        if (!state){state = $('#state-select').val()}
-        if (!date){date = $('#date-call-search').val()}
-        if (!route){route = $('#route_search').val()}
-        if(date == ""){
-          var domain = [['partner_id', '!=', false]]
-        }else{
-          var domain = [['date', '>=', date + " 00:00:00"],['date', '<=', date + " 23:59:59"], ['partner_id', '!=', false]]
-        }
-        if (state){
-            if (state != "any")
-                domain.push(['state','=',state])
-        }
-        if (route != "0"){
-          domain.push(['route_id', '=', parseInt(route)])
-        }
-        self.fetch('crm.phonecall',['date','partner_id','name','partner_phone','customer_phone', 'state','duration','route_id'],domain)
-        .then(function(calls){
-            if (!$.isEmptyObject(calls)){
-                for (var key in calls){
-                    calls[key].date = self.parse_utc_to_str_date(calls[key].date); //set dates in browser timezone
-                    calls[key].duration = self.parse_duration_watch_format(calls[key].duration); //set dates in browser timezone
-                    var contact = self.db.get_partner_contact(calls[key].partner_id[0])
-                    if (contact){
-                        calls[key].partner_phone = contact.phone|| "-" //set phone of contact
-                        calls[key].contact_name = contact.name //add contact name to phone
-                    }
-                }
-            }
-            self.get('calls').reset(calls);
-        });
-
     },
     getCurrentFullDateStr: function() {
         var date = new Date();
@@ -623,7 +589,7 @@ var Order = Backbone.Model.extend({
             partner_code: '',
             partner: '',
             customer_comment: '',
-            contact_name: '',
+            shipp_addr: '',
             date_order: this.getStrDate(),
             requested_date: this.getStrDatePlanned(),
             limit_credit: (0),
@@ -768,6 +734,7 @@ var Order = Backbone.Model.extend({
             lines: orderLines,
             name: this.get('num_order'),
             partner_id: this.ts_model.db.partner_name_id[this.get('partner')],
+            partner_shipping_id: this.ts_model.db.partner_name_id[this.get('shipp_addr')],
             action_button: this.get('action_button'),
             erp_id: this.get('erp_id'),
             erp_state: this.get('erp_state'),

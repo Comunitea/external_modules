@@ -23,7 +23,7 @@ var HistorylineWidget = TsBaseWidget.extend({
         }
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['contact_id','note','comercial','customer_comment','name','partner_id','date_order',
+                                        ['partner_shipping_id','note','comercial','customer_comment','name','partner_id','date_order',
                                          'state','amount_total','requested_date'],
                                         [
                                         ['id', '=', order_id]
