@@ -174,7 +174,7 @@
                     </div>
                 </div>
                 <div class="col-xs-4 fullheight">
-                      <div class="fullheight centerinside">
+                      <div class="row semiheight">
                           <div class="centerthis">
                             <label for="coment">Notes:</label>
                             <textarea class="semiheight notes mandatory" rows="2" cols="82" id='coment' name="coment" tabIndex="5"><t t-esc="widget.order_model.get('coment')"/></textarea>
@@ -232,7 +232,7 @@
                     </div>
                 </div>
               <div class="col-xs-4 fullheight">
-                    <div class="fullheight centerinside">
+                    <div class="row semiheight">
                         <div class="centerthis">
                           <label for="customer_note">Customer Notes:</label>
                           <textarea class="semiheight notes mandatory" rows="2" cols="82" id='customer_comment' name="customer_comment" tabIndex="8"><t t-esc="widget.order_model.get('customer_comment')" t-if="widget.order_model.get('customer_comment')"/></textarea>
@@ -388,7 +388,7 @@
                   <div class="fullheight centerinside fullwidth">
                       <div class="centerthis">
                         <label for="total_base">Total Base:</label>
-                        <input type="text" id='total_base' name="total_base"
+                        <input type="numeric" id='total_base' name="total_base"
                         t-att-value="widget.order_model.get('total_base').toFixed(2)" readonly="readonly" tabIndex="-1"/>
                       </div>
                   </div>
@@ -419,7 +419,7 @@
                 <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
                     <label for="total">Margin (%):</label>
-                    <input type="text" class='total' id='total_margin'
+                    <input type="numeric" class='total' id='total_margin'
                         t-att-value="widget.order_model.get('total_margin_per')" readonly="readonly" tabIndex="-1"/>
                 </div>
               </div>
@@ -429,7 +429,7 @@
                   <div class="fullheight centerinside fullwidth">
                       <div class="centerthis">
                       <label for="total" class="totalorder">Total Order:</label>
-                      <input type="text" class='total totalorder' id="total_order"
+                      <input type="numeric" class='total totalorder' id="total_order"
                           t-att-value="widget.order_model.get('total').toFixed(2)" tabIndex="-1" readonly="readonly"/>
                       </div>
                   </div>
