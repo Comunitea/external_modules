@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="/telesale/static/src/css/summary_order.css" id="ts-stylesheet"/>
         <link rel="stylesheet" href="/telesale/static/src/css/order_history.css" id="ts-stylesheet"/>
         <link rel="stylesheet" href="/telesale/static/src/css/product_content.css" id="ts-stylesheet"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/popups.css" id="ts-stylesheet"/>
 
         <script type="text/javascript" src="/telesale/static/src/js/main.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/mousetrap.js"></script>
@@ -13,6 +14,7 @@
         <script type="text/javascript" src="/telesale/static/src/js/db.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/models.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/screens.js"></script>
+        <script type="text/javascript" src="/telesale/static/src/js/popups.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/buttons_widgets.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/base_widgets.js"></script> 
         <script type="text/javascript" src="/telesale/static/src/js/new_order_widgets.js"></script>

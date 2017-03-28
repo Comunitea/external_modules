@@ -8,6 +8,7 @@ var Model = require('web.DataModel');
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var Buttons = require('telesale.ButtonsWidgets');
 var Screens = require('telesale.Screens');
+var PopUps = require('telesale.PopUps');
 var models = require('telesale.models');
 var core = require('web.core');
 // var Mousetrap = require('telesale.Mousetrap')
@@ -61,7 +62,7 @@ var TsWidget = TsBaseWidget.extend({
     },
     build_widgets: function() {
         var self = this;
-         // --------  SCREEN WIDGETS ---------
+        // --------  SCREEN WIDGETS ---------
 
         //New Order Screen (default)
         this.new_order_screen = new Screens.OrderScreenWidget(this, {});
@@ -83,6 +84,10 @@ var TsWidget = TsBaseWidget.extend({
         this.key_shorts_screen = new Screens.KeyShortsScreenWidget(this, {});
         this.key_shorts_screen.appendTo(this.$('#content'));
 
+        // --------  POP UP WIDGETS ---------
+        this.filter_customer_popup = new PopUps.FilterCustomerPopUp(this, {});
+        this.filter_customer_popup.appendTo(this.$('#content'));
+
         // --------  SCREEN SELECTOR ---------
         this.screen_selector = new Screens.ScreenSelector({
             screen_set:{
@@ -97,6 +102,7 @@ var TsWidget = TsBaseWidget.extend({
                 // 'add_call_popup': this.add_call_popup,
                 // 'finish_call_popup': this.finish_call_popup,
                 // 'create_reserve_popup': this.create_reserve_popup,
+                'filter_customer_popup': this.filter_customer_popup,
             },
             default_client_screen: 'new_order',
          });
