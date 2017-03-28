@@ -446,7 +446,7 @@ msgstr "Fecha planificada"
 #: code:addons/telesale/static/src/xml/summary_order_template.xml:58
 #, python-format
 msgid "Date Planned"
-msgstr "DFecha planificada"
+msgstr "Fecha planificada"
 
 #. module: telesale
 #. openerp-web
@@ -567,7 +567,7 @@ msgstr "Última modificación en"
 #: code:addons/telesale/static/src/xml/new_order_template.xml:489
 #, python-format
 msgid "Last Price"
-msgstr "ültimo precio"
+msgstr "Último precio"
 
 #. module: telesale
 #. openerp-web
