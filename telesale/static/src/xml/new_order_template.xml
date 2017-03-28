@@ -260,34 +260,40 @@
             </div>
             <div class="col-xs-1 fullheight centerinside">
               <div class="centerthis">
-              <button class="remove-line-button" tabIndex="10">REMOVE</button>
-            </div>
-            </div>
-            <div class="col-xs-1 fullheight centerinside">
-              <div class="centerthis">
-              <button id="ult-button" tabIndex="11">ULT</button>
-            </div>
+                <button class="remove-line-button" tabIndex="10">REMOVE</button>
+              </div>
             </div>
             <div class="col-xs-1 fullheight centerinside">
               <div class="centerthis">
-              <button id="vua-button" tabIndex="12">VUA</button>
-            </div>
-            </div>
-            <div class="col-xs-1 fullheight centerinside">
-              <div class="centerthis">
-              <button id="so-button" tabIndex="13">SO</button>
-            </div>
+                <button id="ult-button" tabIndex="11">ULT</button>
+              </div>
             </div>
             <div class="col-xs-1 fullheight centerinside">
               <div class="centerthis">
-              <button id="info-button" tabIndex="16">INFO</button>
-            </div>
+                <button id="vua-button" tabIndex="12">VUA</button>
+              </div>
             </div>
             <div class="col-xs-1 fullheight centerinside">
               <div class="centerthis">
-              <button id="show-client" tabIndex="17">CUSTOMER</button>
+                <button id="so-button" tabIndex="13">SO</button>
+              </div>
             </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+                <button id="info-button" tabIndex="16">INFO</button>
+              </div>
             </div>
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+                <button id="show-client" tabIndex="17">CUSTOMER</button>
+              </div>
+            </div>
+            <!-- POP UP GENERIC EXAMPLE -->
+            <!-- <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+                <button id="filter-client" tabIndex="18">FILTER CUSTOMER</button>
+              </div>
+            </div> -->
             <div class="col-xs-3 fullheight centerinside">
               <div class="centerthis">
 

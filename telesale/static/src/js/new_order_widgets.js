@@ -89,7 +89,6 @@ var DataOrderWidget = TsBaseWidget.extend({
         // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
             // source: this.ts_model.get('customer_names'),
-            // max: 10,
             source: function(request, response) {
                 var results = $.ui.autocomplete.filter(array_names, request.term);
                 response(results.slice(0, 20));
@@ -97,7 +96,6 @@ var DataOrderWidget = TsBaseWidget.extend({
         });
         this.$('#shipp_addr').autocomplete({
             // source: this.ts_model.get('customer_names'),
-            // max: 10,
             source: function(request, response) {
                 var results = $.ui.autocomplete.filter(array_names, request.term);
                 response(results.slice(0, 20));
@@ -575,7 +573,11 @@ var OrderWidget = TsBaseWidget.extend({
             this.$('#show-client').click(function(){
                 self.show_client();
             });
+            this.$('#filter-client').click(function(){
+                self.ts_widget.screen_selector.show_popup('filter_customer_popup', false);
+            });
 
+            // TODO ¿No borrar líneas y añadir a la última?
             for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
                 this.orderlinewidgets[i].destroy();
             }
@@ -865,18 +867,6 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             }
             this.order_model.set('total_margin_per', margin_per);
             this.renderElement();
-
-
-            // var min_limit = this.ts_model.get('company').min_limit
-            // var min_margin = this.ts_model.get('company').min_margin
-            // if (margin_per_num < min_margin)
-            //    this.$('#total_margin').addClass('warning-red');
-            // else
-            //    $('#total_margin').removeClass('warning-red');
-            // if (self.total < min_limit)
-            //     $('#total_order').addClass('warning-red');
-            // else
-            //    $('#total_order').removeClass('warning-red');
         },
         confirmCurrentOrder: function() {
           var self = this;

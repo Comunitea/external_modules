@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <templates id="template_popups" xml:space="preserve">
+
+    <t t-name="Filter-Customer-PopUp">
+
+        <div class="filter-customer-pop-up">
+            <div id="placeholder-sust-widget">
+            </div>
+            <div class="close-block">
+                <div class="col-xs-12 fullheight centerinside">
+                  <div class="centerthis">
+                    <button id="close-filter">Close</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
