@@ -43,7 +43,6 @@ class SaleOrder(models.Model):
             else:
                 warehouse_id = self._default_warehouse_id() and \
                     self._default_warehouse_id()[0].id or 1
-
             # TODO, BUSCAR VALORES POR DEFECTO WAREHOUSE ID SINO PONER EL DE LA
             # COMPAÑÍA
             vals = {
@@ -51,7 +50,8 @@ class SaleOrder(models.Model):
                 'partner_id': partner_obj.id,
                 'pricelist_id': partner_obj.property_product_pricelist.id,
                 'partner_invoice_id': partner_obj.id,
-                'partner_shipping_id': partner_obj.id,
+                'partner_shipping_id': order.get('partner_shipping_id',
+                                                 partner_obj.id),
                 'chanel': 'telesale',
                 'order_policy': 'picking',
                 'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
