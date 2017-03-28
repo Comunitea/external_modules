@@ -884,7 +884,7 @@ msgstr "Empezar sesión"
 #: code:addons/telesale/static/src/xml/summary_order_template.xml:60
 #, python-format
 msgid "State"
-msgstr "Stado"
+msgstr "Estado"
 
 #. module: telesale
 #. openerp-web
