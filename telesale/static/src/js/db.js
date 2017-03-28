@@ -189,21 +189,6 @@ exports.TS_LS = core.Class.extend({
         }
         return undefined;
     },
-    get_partner_contact: function(partner_id){
-        res = undefined
-        var partner_obj = this.get_partner_by_id(partner_id);
-        if (partner_obj) {
-        var res = partner_obj;
-        for(var i = 0, len = partner_obj.child_ids.length; i < len; i++){
-            var contact = this.get_partner_by_id(partner_obj.child_ids[i]);
-            if (contact && contact.type == 'contact'){
-                res = contact
-                break;
-            }
-        }
-        }
-        return res;
-    },
     get_unit_by_id: function(id){
         return this.unit_by_id[id];
     },
