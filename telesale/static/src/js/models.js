@@ -804,7 +804,7 @@ var Order = Backbone.Model.extend({
             var line = new Orderline(line_vals);
             this.get('orderLines').add(line);
         }
-        $('.col-code').focus(); //si no, al añadir línea desde resumen de pedidos, no existe foco y si añade más líneas da error
+        $('.col-product').focus(); //si no, al añadir línea desde resumen de pedidos, no existe foco y si añade más líneas da error
     },
     deleteProductLine: function(id_line){
       var self=this;

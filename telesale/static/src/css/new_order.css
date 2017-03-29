@@ -275,11 +275,11 @@
 .telesale  #leftpart .order-container .order-line-table th.header-nline{
     width: 4%;
 }
-.telesale  #leftpart .order-container .order-line-table th.header-code{
+/*.telesale  #leftpart .order-container .order-line-table th.header-code{
     width: 10%;
-}
+}*/
 .telesale  #leftpart .order-container .order-line-table th.header-product{
-    width: 20%;
+    width: 30%;
 }
 .telesale  #leftpart .order-container .order-line-table th.header-qty{
     width: 9%;

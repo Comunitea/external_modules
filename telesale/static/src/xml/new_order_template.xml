@@ -335,7 +335,7 @@
             <table class="order-line-table">
                 <thead>
                     <th class="header-nline">Nº</th>
-                    <th class="header-code">Code</th>
+   <!--                  <th class="header-code">Code</th> -->
                     <th class="header-product">Product</th>
                     <th class="header-qty">Qty</th>
                     <th class="header-unit">Unit</th>
@@ -358,9 +358,9 @@
              <td class="cell-nline">
                 <input type="text" class='col-nline' t-att-value="widget.model.get('n_line')" readonly="readonly" tabIndex="-1"/>
             </td>
-            <td class="cell-code">
+            <!-- <td class="cell-code">
                 <input type="text" class='col-code mandatory' t-att-value="widget.model.get('code')"/>
-            </td>
+            </td> -->
              <td class="cell-product">
                 <input type="search" class='col-product mandatory' t-att-value="widget.model.get('product')"/>
             </td>
