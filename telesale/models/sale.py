@@ -58,7 +58,8 @@ class SaleOrder(models.Model):
                 'requested_date': order['requested_date'] + " 19:00:00" or
                 False,
                 'note': order['note'],
-                'warwhouse_id': warehouse_id
+                'warwhouse_id': warehouse_id,
+                'client_order_ref': order.get('client_order_ref', False)
             }
             if order['erp_id'] and order['erp_state'] == 'draft':
                 order_obj = t_order.browse(order['erp_id'])

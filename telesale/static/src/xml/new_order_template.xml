@@ -177,7 +177,7 @@
                       <div class="row semiheight">
                           <div class="centerthis">
                             <label for="coment">Notes:</label>
-                            <textarea class="semiheight notes mandatory" rows="2" cols="82" id='coment' name="coment" tabIndex="5"><t t-esc="widget.order_model.get('coment')"/></textarea>
+                            <textarea class="semiheight notes mandatory" rows="2" cols="82" id='coment' name="coment" tabIndex="4"><t t-esc="widget.order_model.get('coment')"/></textarea>
                           </div>
                       </div>
                 </div>
@@ -186,24 +186,35 @@
         <div class="row semiheight fullwidth">
                 <div class="col-xs-4 fullheight">
                   <div class="row semiheight">
-                    <div class="col-xs-6 fullheight">
+                    <div class="col-xs-12 fullheight">
                       <div class="fullheight centerinside fullwidth">
                         <div class="centerthis">
                           <label for="shipp_addr">Shipp Addr:</label>
-                          <input class="mandatory" type="text" id='shipp_addr' name="shipp_addr" t-att-value="widget.order_model.get('shipp_addr')" tabIndex="4"/>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xs-6 fullheight">
-                      <div class="fullheight centerinside fullwidth">
-                        
-                        <div class="centerthis">
-                            <label for="comercial">Comercial:</label>
-                            <input class=" " type="text" id='comercial' name="comercial" t-att-value="widget.order_model.get('comercial')" readonly="readonly" tabIndex="-1"/>
+                          <input class="mandatory" type="text" id='shipp_addr' name="shipp_addr" t-att-value="widget.order_model.get('shipp_addr')" tabIndex="5"/>
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="col-xs-2 fullheight">
+                    <div class="row semiheight">
+                        <div class="fullheight centerinside fullwidth">
+                          <div class="centerthis">
+                            <label for="client_order_ref">Customer Ref:</label>
+                            <input class="mandatory" type="text" id='client_order_ref' name="client_order_ref" t-att-value="widget.order_model.get('client_order_ref')" tabIndex="6"/>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-xs-2 fullheight">
+                    <div class="row semiheight">
+                        <div class="fullheight centerinside fullwidth">
+                         <div class="centerthis">
+                          <label for="comercial">Comercial:</label>
+                          <input class=" " type="text" id='comercial' name="comercial" t-att-value="widget.order_model.get('comercial')" readonly="readonly" tabIndex="-1"/>
+                      </div>
+                      </div>
+                    </div>
                 </div>
                 <div class="col-xs-2 fullheight">
                     <div class="row semiheight">
@@ -231,14 +242,14 @@
                       </div>
                     </div>
                 </div>
-              <div class="col-xs-4 fullheight">
+             <!--  <div class="col-xs-2 fullheight">
                     <div class="row semiheight">
                         <div class="centerthis">
                           <label for="customer_note">Customer Notes:</label>
                           <textarea class="semiheight notes mandatory" rows="2" cols="82" id='customer_comment' name="customer_comment" tabIndex="8"><t t-esc="widget.order_model.get('customer_comment')" t-if="widget.order_model.get('customer_comment')"/></textarea>
                         </div>
                     </div>
-              </div>
+              </div> -->
       </div>
     </t>
 
