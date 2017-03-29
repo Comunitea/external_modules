@@ -282,6 +282,7 @@ var TsModel = Backbone.Model.extend({
         order_model.set('customer_comment',order_obj.customer_comment || '');
         order_model.set('comercial',partner_obj.user_id[1]);
         order_model.set('coment',order_obj.note || '');
+        order_model.set('client_order_ref',order_obj.client_order_ref || '');
 
         var partner_shipp_obj = this.db.get_partner_by_id(order_obj.partner_shipping_id[0]);
         var shipp_addr = this.getComplexName(partner_shipp_obj);
@@ -611,6 +612,7 @@ var Order = Backbone.Model.extend({
             state:"draft",
             comercial: '',
             coment: '',
+            client_order_ref: ''
         });
         this.ts_model = attributes.ts_model;
         this.selected_orderline = undefined;
@@ -742,6 +744,7 @@ var Order = Backbone.Model.extend({
             requested_date: this.get('requested_date'),
             note: this.get('coment'),
             customer_comment: this.get('customer_comment'),
+            client_order_ref: this.get('client_order_ref'),
         };
     },
     get_last_line_by: function(period, client_id){
