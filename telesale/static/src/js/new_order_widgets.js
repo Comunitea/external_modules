@@ -83,6 +83,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
         this.$('#requested_date').blur(_.bind(this.set_value, this, 'requested_date'))
         this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
+        this.$('#client_order_ref').blur(_.bind(this.set_value, this, 'client_order_ref'))
         this.$('#customer_comment').blur(_.bind(this.set_value, this, 'customer_comment'))
 
         var array_names = self.ts_model.get('customer_names');
@@ -160,7 +161,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         var self=this;
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['partner_shipping_id','note','comercial','customer_comment','client_order_ref','name','partner_id',
+                                        ['partner_shipping_id','note','comercial','client_order_ref','client_order_ref','name','partner_id',
                                          'date_order','state','amount_total','date_invoice', 'requested_date'],
                                         [
                                             ['id', '=', order_id]
@@ -603,7 +604,7 @@ var OrderWidget = TsBaseWidget.extend({
             //}
             this.open_order =  this.ts_model.get('selectedOrder')
             var loaded = self.ts_model.fetch('sale.order',
-                                            ['partner_shipping_id','note','comercial','customer_comment','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'requested_date', 'date_invoice'],
+                                            ['partner_shipping_id','note','comercial','client_order_ref','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'requested_date', 'date_invoice'],
                                             [
                                                 ['id', '=', order_id]
                                             ])
