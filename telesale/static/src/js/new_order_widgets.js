@@ -260,8 +260,8 @@ var OrderlineWidget = TsBaseWidget.extend({
             this.$('.col-nline').addClass('selected');
         }
         // Si el campo se rellena con autocomplete se debe usar blur
-        this.$('.col-code').blur(_.bind(this.set_value, this, 'code'));
-        this.$('.col-code').focus(_.bind(this.click_handler, this, 'code'));
+        // this.$('.col-code').blur(_.bind(this.set_value, this, 'code'));
+        // this.$('.col-code').focus(_.bind(this.click_handler, this, 'code'));
 
         this.$('.col-product').blur(_.bind(this.set_value, this, 'product'));
         this.$('.col-product').focus(_.bind(this.click_handler, this, 'product'));
@@ -299,13 +299,13 @@ var OrderlineWidget = TsBaseWidget.extend({
         }
 
         //autocomplete products and units from array of names
-        var products_ref = this.ts_model.get('products_codes')
-        this.$('.col-code').autocomplete({
-            source: function(request, response) {
-                var results = $.ui.autocomplete.filter(products_ref, request.term);
-                response(results.slice(0, 20));
-            }
-        });
+        // var products_ref = this.ts_model.get('products_codes')
+        // this.$('.col-code').autocomplete({
+        //     source: function(request, response) {
+        //         var results = $.ui.autocomplete.filter(products_ref, request.term);
+        //         response(results.slice(0, 20));
+        //     }
+        // });
         var product_names = this.ts_model.get('products_names')
         this.$('.col-product').autocomplete({
             source: function(request, response) {
@@ -511,7 +511,7 @@ var OrderWidget = TsBaseWidget.extend({
                     self.ts_model.get('selectedOrder').addLine();
                     var added_line = self.ts_model.get('selectedOrder').getLastOrderline();
                     self.ts_model.get('selectedOrder').selectLine(added_line);
-                    self.orderlinewidgets[self.orderlinewidgets.length - 1].$el.find('.col-code').focus(); //set focus on line when we add one
+                    self.orderlinewidgets[self.orderlinewidgets.length - 1].$el.find('.col-product').focus(); //set focus on line when we add one
                 }
             });
             this.$('.remove-line-button').click(function(){
@@ -519,7 +519,7 @@ var OrderWidget = TsBaseWidget.extend({
                 var selected_line = self.ts_model.get('selectedOrder').getSelectedLine();
                 if (selected_line){
                     var n_line = selected_line.get('n_line')
-                    self.orderlinewidgets[n_line-1].$el.find('.col-code').focus();
+                    self.orderlinewidgets[n_line-1].$el.find('.col-product').focus();
                 }
 
             });
