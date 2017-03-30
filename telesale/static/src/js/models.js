@@ -473,7 +473,8 @@ var Orderline = Backbone.Model.extend({
         //to calc totals
         margin: 0,
         taxes_ids: [],
-
+        // TODO LEARN TO ADD IN A INITHERANCE, SEEMS NO TRIVIAL
+        global_available_stock: 0
     },
     initialize: function(options){
         this.ts_model = options.ts_model;
@@ -842,7 +843,8 @@ var SoldLinesCollection = Backbone.Collection.extend({
     });
 exports = {
     Order: Order,
-    TsModel: TsModel
+    TsModel: TsModel,
+    Orderline: Orderline
 }; 
 return exports;
 });

@@ -8,19 +8,16 @@
         <div class="telesale">
             <input id="clearfocus" style="display:none"></input>
             <div id="topheader">
-                <div class="col-xs-10 fullheight">
+                <div class="col-xs-9 fullheight">
                   <div id="placeholder-screen-buttons">
                   </div>
                 </div>
-                <div class="col-xs-2 fullheight">
-                    <div class="col-xs-4 fullheight">
-
+                <div class="col-xs-3 fullheight">
+                    <div class="col-xs-10 fullheight">
+                        <div id="placeholder-switch-company">
+                        </div>
                     </div>
-                    <div class="col-xs-4 fullheight">
-                      <div id="placeholder-session-buttons1">
-                      </div>
-                    </div>
-                    <div class="col-xs-4 fullheight">
+                    <div class="col-xs-2 fullheight">
                       <div id="placeholder-session-buttons2">
                       </div>
                     </div>
@@ -365,7 +362,7 @@
                 <input type="search" class='col-product mandatory' t-att-value="widget.model.get('product')"/>
             </td>
              <td class="cell-qty">
-                <input type="text" class='col-qty' t-att-value="widget.model.get('qty').toFixed(4)"/>
+                <input type="text" class='col-qty mandatory' t-att-value="widget.model.get('qty').toFixed(4)"/>
             </td>
              <td class="cell-unit">
                 <select class="col-product_uom mandatory" t-att-value="widget.model.get('unit')">
