@@ -11,6 +11,9 @@ var Screens = require('telesale.Screens');
 var PopUps = require('telesale.PopUps');
 var models = require('telesale.models');
 var core = require('web.core');
+
+// web.SwitchCompanyMenu is definded in the list of SystrayMenu.Items
+var SystrayMenu = require('web.SystrayMenu');
 // var Mousetrap = require('telesale.Mousetrap')
 var _t = core._t;
 
@@ -107,8 +110,8 @@ var TsWidget = TsBaseWidget.extend({
             default_client_screen: 'new_order',
          });
         //  // --------  BUTTON WIDGETS ---------
-        this.notification = new Buttons.SynchIconWidget(this,{});
-        this.notification.replace(this.$('#placeholder-session-buttons1'));
+        // this.notification = new Buttons.SynchIconWidget(this,{});
+        // this.notification.replace(this.$('#placeholder-session-buttons1'));
 
         // Close button --> Close the session
         this.close_button = new Buttons.HeaderButtonWidget(this,{
@@ -116,6 +119,14 @@ var TsWidget = TsBaseWidget.extend({
             action: function(){ self.try_close(); },
         });
         this.close_button.replace(this.$('#placeholder-session-buttons2'));
+
+        // Switch company
+        // web.SwitchCompanyMenu is definded in the list of SystrayMenu.Items
+        // We use the original widget defined in the web framework and change
+        // the css to customice it
+        var ChangeCompany= SystrayMenu.Items[0]
+        this.switch_company = new ChangeCompany(this, {});
+        this.switch_company.appendTo(this.$('#placeholder-switch-company'));
 
         // Buttons navigation screens
         this.screen_buttons = new Buttons.ScreenButtonWidget(this, {});
