@@ -174,7 +174,7 @@
                       <div class="row semiheight">
                           <div class="centerthis">
                             <label for="coment">Notes:</label>
-                            <textarea class="semiheight notes mandatory" rows="2" cols="82" id='coment' name="coment" tabIndex="4"><t t-esc="widget.order_model.get('coment')"/></textarea>
+                            <textarea class="semiheight notes mandatory" rows="2" cols="91" id='coment' name="coment" tabIndex="4"><t t-esc="widget.order_model.get('coment')"/></textarea>
                           </div>
                       </div>
                 </div>
