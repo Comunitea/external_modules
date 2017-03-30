@@ -131,7 +131,6 @@ class SaleOrderLine(models.Model):
     @api.model
     def ts_product_id_change(self, product_id, partner_id):
         res = {}
-
         order_t = self.env['sale.order']
         partner = self.env['res.partner'].browse(partner_id)
 
