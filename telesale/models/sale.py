@@ -20,7 +20,7 @@ class SaleOrder(models.Model):
         t_partner = self.env['res.partner']
         t_order = self.env['sale.order']
         t_order_line = self.env['sale.order.line']
-        t_product = self.env['product.product']
+       
         t_irvalue = self.env['ir.values']
 
         order_ids = []
@@ -77,23 +77,28 @@ class SaleOrder(models.Model):
                 line_objs = t_order_line.search(domain)
                 line_objs.unlink()
             for line in order_lines:
-                product_obj = t_product.browse(line['product_id'])
-                product_uom_id = line.get('product_uom', False)
-                product_uom_qty = line.get('qty', 0.0)
-                vals = {
-                    'order_id': order_obj.id,
-                    'name': product_obj.name,
-                    'product_id': product_obj.id,
-                    'price_unit': line.get('price_unit', 0.0),
-                    'product_uom': product_uom_id,
-                    'product_uom_qty': product_uom_qty,
-                    'tax_id': [(6, 0, line.get('tax_ids', False))],
-                    'discount': line.get('discount', 0.0),
-                }
+                vals = self._get_ts_line_vals(order_obj, line)
                 t_order_line.create(vals)
             if order['action_button'] == 'confirm':
                 order_obj.action_button_confirm()
         return order_ids
+
+    def _get_ts_line_vals(self, order_obj, line):
+        t_product = self.env['product.product']
+        product_obj = t_product.browse(line['product_id'])
+        product_uom_id = line.get('product_uom', False)
+        product_uom_qty = line.get('qty', 0.0)
+        vals = {
+            'order_id': order_obj.id,
+            'name': product_obj.name,
+            'product_id': product_obj.id,
+            'price_unit': line.get('price_unit', 0.0),
+            'product_uom': product_uom_id,
+            'product_uom_qty': product_uom_qty,
+            'tax_id': [(6, 0, line.get('tax_ids', False))],
+            'discount': line.get('discount', 0.0),
+        }
+        return vals
 
     @api.model
     def confirm_order_background(self, order_id):
