@@ -161,6 +161,9 @@ class SaleOrderLine(models.Model):
         """
         cr = self._cr
         date_str = date.today()
+
+        user = self.env['res.users'].browse(self._uid)
+        company_id = user.company_id.id
         if period == "ult":
             sq = """ SELECT id
                      FROM sale_order_line sol
@@ -168,6 +171,7 @@ class SaleOrderLine(models.Model):
                         (SELECT id
                          FROM sale_order WHERE
                          state in ('sale','done')
+                         and company_id = %s
                          and partner_id = %s order by id desc limit 1)
                     ORDER BY id desc"""
 
@@ -185,13 +189,14 @@ class SaleOrderLine(models.Model):
                             ('sale','done')
                          AND so.partner_id = %s
                          AND so.date_order >= %s
+                         and so.company_id = %s
                          ORDER BY product_id desc, id desc) AS sq
                     ORDER BY id desc"""
 
         if period != 'ult':
-            cr.execute(sq, (client_id, date_str))
+            cr.execute(sq, (client_id, date_str, company_id))
         else:
-            cr.execute(sq, (client_id,))
+            cr.execute(sq, (client_id, company_id))
         fetch = cr.fetchall()
         prod_ids = [x[0] for x in fetch]
         res = []
