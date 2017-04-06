@@ -1,0 +1,7 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_promos_rules","sale_promotions_promos_rules","model_promos_rules","sales_team.group_sale_manager",1,1,1,1
+"access_promos_rules_conditions_exps","sale_promotions_promos_rules_conditions_exps","model_promos_rules_conditions_exps","sales_team.group_sale_manager",1,1,1,1
+"access_promos_rules_actions","sale_promotions_promos_rules_actions","model_promos_rules_actions","sales_team.group_sale_manager",1,1,1,1
+"access_promos_rules_user","sale_promotions_promos_rules","model_promos_rules","sales_team.group_sale_salesman",1,1,1,1
+"access_promos_rules_conditions_exps_user","sale_promotions_promos_rules_conditions_exps","model_promos_rules_conditions_exps","sales_team.group_sale_salesman",1,1,1,1
+"access_promos_rules_actions_user","sale_promotions_promos_rules_actions","model_promos_rules_actions","sales_team.group_sale_salesman",1,1,1,1
