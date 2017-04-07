@@ -81,21 +81,21 @@ class SaleOrderLine(models.Model):
                                      'line_id2', 'From lines',
                                      copy=False)
 
-    def invoice_line_create(self, invoice_id, qty):
-        """
-        No crear lineas de factura si son promociones de descuento, que agrupan
-        lineas del mismo precio unitario. Facturaremos las cantidades de las
-        entregas de los albaranes parciales después.
-        Las promociones que no tienen campo orig_line_ids, o si no son
-        promociones, se facturan normalmente.
-        """
-        no_promo_ids = []
-        lines_rec = self.env['sale.order.line']
-        for l in self:
-            if l.promotion_line and l.orig_line_ids:
-                continue
-            no_promo_ids.append(l.id)
-            lines_rec.add(l)
-        res = super(SaleOrderLine, lines_rec).invoice_line_create(invoice_id,
-                                                                  qty)
-        return res
+    # def invoice_line_create(self, invoice_id, qty):
+    #     """
+    #     No crear lineas de factura si son promociones de descuento, que agrupan
+    #     lineas del mismo precio unitario. Facturaremos las cantidades de las
+    #     entregas de los albaranes parciales después.
+    #     Las promociones que no tienen campo orig_line_ids, o si no son
+    #     promociones, se facturan normalmente.
+    #     """
+    #     no_promo_ids = []
+    #     lines_rec = self.env['sale.order.line']
+    #     for l in self:
+    #         if l.promotion_line and l.orig_line_ids:
+    #             continue
+    #         no_promo_ids.append(l.id)
+    #         lines_rec.add(l)
+    #     res = super(SaleOrderLine, lines_rec).invoice_line_create(invoice_id,
+    #                                                               qty)
+    #     return res
