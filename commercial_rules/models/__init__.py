@@ -4,5 +4,4 @@
 import rules
 import product
 import sale
-import stock
 import res_partner
