@@ -216,7 +216,7 @@ class partner(osv.osv):
 
             for move in self.pool.get('stock.move').browse(cr, uid, mids):
                 line = move.procurement_id.sale_line_id
-                sign = move.picking_type_code == "outgoing" and 1 or -1
+                sign = move.picking_id.picking_type_code == "outgoing" and 1 or -1
                 total += sign * (move.product_uom_qty * (line.price_unit * (1 - (line.discount or 0.0) / 100.0)))
 
             sids = self.pool.get('sale.order.line').search(cr, uid, [
