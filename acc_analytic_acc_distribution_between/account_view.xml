@@ -75,6 +75,19 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="invoice_form_inherit">
+        <field name="name">account.invoice.form.inherit</field>
+        <field name="model">account.invoice</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <field name="account_analytic_id" position="after">
+                <field name="analytics_id" domain="[('plan_id','&lt;&gt;',False)]" context="{'journal_id':parent.journal_id}" groups="analytic.group_analytic_accounting"/>
+            </field>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="account_analytic_plans.view_default_inherit_form">
         <field name="name">account.analytic.default.form.plans</field>
         <field name="model">account.analytic.default</field>
