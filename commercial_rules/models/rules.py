@@ -252,10 +252,10 @@ class PromotionsRules(models.Model):
                   ('partner_categories', 'in', categ_ids),
                   '|',
                   ('from_date', '=', False),
-                  ('from_date', '>=', order.date_order),
+                  ('from_date', '<=', order.date_order),
                   '|',
                   ('to_date', '=', False),
-                  ('to_date', '<=', order.date_order)]
+                  ('to_date', '>=', order.date_order)]
 
         if categ_ids:
             domain += ['|', ('partner_categories', 'in', categ_ids),
@@ -272,8 +272,11 @@ class PromotionsRules(models.Model):
         """
         order = self.env['sale.order'].browse(order_id)
         domain = self._get_promotions_domain(order)
+        print "*******************************"
+        print domain
         active_promos = self.search(domain)
-
+        print active_promos
+        print "*******************************"
         for promotion_rule in active_promos:
             result = promotion_rule.evaluate(order)
             if result:
@@ -504,7 +507,8 @@ class PromotionsRulesConditionsExprs(models.Model):
                 prod_discount[product_code] = \
                     prod_discount.get(product_code, 0.00) + line.discount
                 prod_weight[product_code] = \
-                    prod_weight.get(product_code, 0.00) + line.product_id.weight
+                    prod_weight.get(product_code, 0.00) + \
+                    line.product_id.weight
 
                 # Get number of entire pallets
                 entire_pallets = 0

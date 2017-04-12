@@ -6,23 +6,26 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Commercial Rules">
-                <group col="8" colspan="4">
-                    <field name="name" colspan="2" select="1"/>
-                    <field name="sequence" colspan="2" />
-                    <field name="active" colspan="2" select="1"/>
-                    <field name="stop_further" colspan="2" />
+                <group string="General">
+                    <group>
+                        <field name="name"/>
+                        
+                        <field name="active"/>
+                    </group>
+                    <group>
+                        <field name="sequence"/>
+                        <field name="stop_further"/>
+                    </group>
                 </group>
-                <group col="4" colspan="4">
-                    <separator string="Description"
-                        colspan="4" />
-                    <field name="description" colspan="4"
-                        nolabel="1" />
-
+                <group string="Descriptiojn">
+                    <field name="description" colspan="4" nolabel="1" />
                 </group>
-                <group colspan="6">
-                    <group colspan="2">
-                        <separator colspan="4"
-                            string="Coupon/Voucher Settings" />
+                <group>
+                    <group string="Applicable Period">
+                        <field name="from_date" />
+                        <field name="to_date" />
+                    </group>
+                    <group string="Coupon/Voucher Settings" >
                         <field name="coupon_code" />
                         <field name="coupon_used" />
                         <field name="uses_per_coupon"
@@ -30,14 +33,9 @@
                         <field name="uses_per_partner"
                             attrs="{'required':[('coupon_code','!=',False)]}" />
                     </group>
-                    <group col="2" colspan="2">
-                        <separator colspan="4" string="Applicable Period" />
-                        <field name="from_date" />
-                        <field name="to_date" />
-                    </group>
-                    <group col="2" colspan="2" string="Restrict partners">
-                        <field name="partner_ids" widget="many2many_tags"/>
-                    </group>
+                </group>
+                <group string="Restrict partners">
+                    <field name="partner_ids" widget="many2many_tags"/>
                 </group>
                 <notebook colspan="4">
                     <page string="Conditions">

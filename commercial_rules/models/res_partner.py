@@ -56,10 +56,10 @@ class ResPartner(models.Model):
                   ('partner_categories', 'in', categ_ids),
                   '|',
                   ('from_date', '=', False),
-                  ('from_date', '>=', today),
+                  ('from_date', '<=', today),
                   '|',
                   ('to_date', '=', False),
-                  ('to_date', '<=', today)]
+                  ('to_date', '>=', today)]
         promo_objs = t_promo.search(domain)
         return promo_objs
 
