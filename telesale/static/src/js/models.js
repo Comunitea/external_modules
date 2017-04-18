@@ -80,6 +80,9 @@ var TsModel = Backbone.Model.extend({
     fetch_ordered: function(model, fields, domain, orderby, ctx){
         return new Model(model).query(fields).filter(domain).order_by(orderby).context(ctx).all()
     },
+    _get_product_fields: function(){
+        return  ['display_name', 'default_code', 'list_price', 'standard_price', 'uom_id', 'taxes_id', 'weight']
+    },
     // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
     load_server_data: function(){
         var self=this;
@@ -110,9 +113,10 @@ var TsModel = Backbone.Model.extend({
                     console.time('Test performance products');
 
                     // PRODUCTS
+                    var product_fields = self._get_product_fields();
                     return self.fetch(
                         'product.product',
-                        ['display_name', 'default_code', 'list_price', 'standard_price', 'uom_id', 'taxes_id', 'weight'],
+                        product_fields,
                         [['sale_ok', '=', true]]
                     );
                 }).then(function(products){
@@ -473,8 +477,6 @@ var Orderline = Backbone.Model.extend({
         //to calc totals
         margin: 0,
         taxes_ids: [],
-        // TODO LEARN TO ADD IN A INITHERANCE, SEEMS NO TRIVIAL
-        global_available_stock: 0
     },
     initialize: function(options){
         this.ts_model = options.ts_model;
