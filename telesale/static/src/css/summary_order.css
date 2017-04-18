@@ -77,22 +77,17 @@
     vertical-align: middle;
 }
 .telesale .summary-order-table td.summary-cell-name{
-    width: 10%;
 }
 .telesale .summary-order-table td.summary-cell-date{
-    width: 15%;
 }
 .telesale .summary-order-table td.summary-cell-total{
-    width: 15%;
+
 }
 .telesale .summary-order-table td.summary-cell-state{
-    width: 10%;
 }
 .telesale .summary-order-table td.summary-cell-show{
-    width: 12.5%;
 }
 .telesale .summary-order-table td.summary-head-add{
-    width: 12.5;
 }
 
 .telesale .summary-order-screen button {
