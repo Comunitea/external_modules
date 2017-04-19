@@ -478,6 +478,7 @@ var Orderline = Backbone.Model.extend({
             //to calc totals
             margin: 0,
             taxes_ids: [],
+            discount: 0.0
         }),
         this.ts_model = options.ts_model;
         this.order = options.order;
