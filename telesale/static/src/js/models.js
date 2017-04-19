@@ -465,20 +465,20 @@ var ProductCollection = Backbone.Collection.extend({
 // ****************************************************************************************************************
 // ******************************************** ORDER LINE MODEL **************************************************
 // ****************************************************************************************************************
-var Orderline = Backbone.Model.extend({
-    defaults: {
-        n_line: '',
-        code: '',
-        product: '',
-        qty: 1,
-        unit: '',
-        pvp: 0,
-        total: 0,
-        //to calc totals
-        margin: 0,
-        taxes_ids: [],
-    },
+var Orderline = Backbone.Model.extend({,
     initialize: function(options){
+        this.set({
+            n_line: '',
+            code: '',
+            product: '',
+            qty: 1,
+            unit: '',
+            pvp: 0,
+            total: 0,
+            //to calc totals
+            margin: 0,
+            taxes_ids: [],
+        }),
         this.ts_model = options.ts_model;
         this.order = options.order;
         this.selected = false;
