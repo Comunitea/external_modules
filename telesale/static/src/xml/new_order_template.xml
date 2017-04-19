@@ -372,7 +372,7 @@
                 <input type="text" class='col-pvp mandatory' t-att-value="widget.model.get('pvp').toFixed(2)"/>
             </td>
              <td class="cell-discount">
-                <input type="text" class='col-discount mandatory' t-att-value="widget.model.get('specific_discount') || widget.model.get('discount')"/>
+                <input type="text" class='col-discount mandatory' t-att-value="widget.model.get('specific_discount') || widget.model.get('discount').toFixed(2)"/>
             </td>
              <td class="cell-total">
                 <input type="text" class='col-total' t-att-value="widget.model.get('total').toFixed(2)" readonly="readonly" tabIndex="-1"/>
