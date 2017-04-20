@@ -16,42 +16,41 @@ var HistorylineWidget = TsBaseWidget.extend({
         this.open_order = undefined;
         this.order_fetch = undefined;
     },
+    get_order_fields: function(){
+        return ['partner_shipping_id','note','comercial','client_order_ref','name',
+                'partner_id','date_order','state','amount_total','requested_date']
+
+    },
+    get_line_fields: function(){
+        var line_fields = ['product_id','product_uom','product_uom_qty','price_unit',
+                           'tax_id', 'price_subtotal', 'discount'];
+        return line_fields;
+
+    },
     load_order_from_server: function(order_id, flag){
         var self=this;
         if (!flag){
             this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model}));
         }
         this.open_order =  this.ts_model.get('selectedOrder')
-        var loaded = self.ts_model.fetch('sale.order',
-                                        ['partner_shipping_id','note','comercial','client_order_ref','name','partner_id','date_order',
-                                         'state','amount_total','requested_date'],
-                                        [
-                                        ['id', '=', order_id]
-                                        ])
-            .then(function(orders){
-                var order = orders[0];
-                self.order_fetch = order;
-                return self.ts_model.fetch('sale.order.line',
-                                            ['product_id','product_uom',
-                                            'product_uom_qty',
-                                            'price_unit',
-                                            'tax_id',
-                                            'price_subtotal',
-                                            'discount'],
-                                            [
-                                                ['order_id', '=', order_id],
-                                             ]);
-            }).then(function(order_lines){
-                if (flag =='add_lines'){
-                    self.open_order.add_lines_to_current_order(order_lines);
-                    self.ts_widget.new_order_screen.data_order_widget.refresh();
-                    self.ts_widget.new_order_screen.order_widget.change_selected_order()
-                    self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
-                }else{
-                    self.ts_model.build_order(self.order_fetch, self.open_order, order_lines); //build de order model
-                    self.ts_widget.new_order_screen.data_order_widget.refresh();
-                }
-            })
+        var order_fields = this.get_order_fields();
+        var loaded = self.ts_model.fetch('sale.order', order_fields, [['id', '=', order_id]])
+        .then(function(orders){
+            var order = orders[0];
+            self.order_fetch = order;
+            var line_fields = self.get_line_fields();
+            return self.ts_model.fetch('sale.order.line', line_fields, [['order_id', '=', order_id]]);
+        }).then(function(order_lines){
+            if (flag =='add_lines'){
+                self.open_order.add_lines_to_current_order(order_lines);
+                self.ts_widget.new_order_screen.data_order_widget.refresh();
+                self.ts_widget.new_order_screen.order_widget.change_selected_order()
+                self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
+            }else{
+                self.ts_model.build_order(self.order_fetch, self.open_order, order_lines); //build de order model
+                self.ts_widget.new_order_screen.data_order_widget.refresh();
+            }
+        })
         return loaded
     },
     click_handler: function() {
@@ -101,9 +100,9 @@ var OrderHistoryWidget = TsBaseWidget.extend({
             }
         });
         this.$('#search-customer').click(function (){ self.searchCustomerOrders() });
-        this.$('#search-customer-week').click(function (){ self.searchCustomerOrdersBy('week') });
-        this.$('#search-customer-month').click(function (){ self.searchCustomerOrdersBy('month') });
-        this.$('#search-customer-trimester').click(function (){ self.searchCustomerOrdersBy('trimester') });
+        this.$('#search-customer-week').click(function (){ self.searchCustomerOrders('week') });
+        this.$('#search-customer-month').click(function (){ self.searchCustomerOrders('month') });
+        this.$('#search-customer-trimester').click(function (){ self.searchCustomerOrders('trimester') });
         var $history_content = this.$('.historylines');
         for (var key in this.partner_orders){
             var history_order = this.partner_orders[key];
@@ -111,69 +110,77 @@ var OrderHistoryWidget = TsBaseWidget.extend({
             history_line.appendTo($history_content);
         }
     },
-    load_partner_orders: function(partner_id, date_start, date_end){
-        var self=this;
-        var domain =   [['partner_id', '=', partner_id]]
+    get_order_fields: function(){
+        var field_list = ['name', 'partner_id','date_order','state', 'requested_date', 'amount_total']
+        return field_list
+    },
+    get_order_domain: function(partner_id, date_start, date_end, my_filter){
+        var domain = []
+        if (partner_id != ""){
+            domain.push(['partner_id', '=', partner_id])
+        }
         if (date_start != ""){
             domain.push(['date_order', '>=', date_start])
         }
         if (date_end != ""){
             domain.push(['date_order', '<=', date_end])
         }
-        var loaded = self.ts_model.fetch('sale.order',
-                                        ['name','partner_id','date_order','state','requested_date', 'amount_total'],
-                                        domain)
-            .then(function(orders){
+        if (my_filter){
+            domain.push(['create_uid', '=', this.ts_model.get('user').id])
+        }
+        return domain
+    },
+    load_partner_orders: function(partner_id, date_start, date_end, my_filter){
+        var self=this;
+        var domain = this.get_order_domain(partner_id, date_start, date_end, my_filter);
+        var field_list = this.get_order_fields();
+        var loaded = self.ts_model.fetch('sale.order', field_list, domain)
+        .then(function(orders){
              self.partner_orders = orders;
-             })
-
+        })
         return loaded;
     },
-    searchCustomerOrders: function () {
+    searchCustomerOrders: function (period) {
         var self=this;
-        var partner_name = this.$('#input-customer').val();
-        var date_start = this.$('#input-date_start').val();
-        var date_end = this.$('#input-date_end').val();
-        var partner_id = this.ts_model.db.partner_name_id[partner_name];
-        if (!partner_id){
-            alert(_t("Customer " + "'"+partner_name+"'" + " does not exist."));
-            this.$('#input-customer').focus();
+        // Geting dates filter
+        if (!period){
+            var date_start = this.$('#input-date_start').val();
+            var date_end = this.$('#input-date_end').val();
         }
         else{
-            $.when(this.load_partner_orders(partner_id,date_start,date_end))
-            .done(function(){
-                self.renderElement();
-                self.$('#input-customer').val(partner_name);
-            }).fail(function(){
-                //?????
-            });
-        };
-    },
-    searchCustomerOrdersBy: function (period){
-        var self=this;
-        var start_date = new Date();
-        var end_date_str = this.ts_model.getCurrentDateStr();
-        var partner_name = this.$('#input-customer').val();
-        if (period == 'week')
-            start_date.setDate(start_date.getDate() - 30);
-        else if (period == 'month')
-            start_date.setDate(start_date.getDate() - 30);
-        else if (period == 'trimester')
-            start_date.setDate(start_date.getDate() - 90);
-        var start_date_str = this.ts_model.dateToStr(start_date);
-        var partner_name = this.$('#input-customer').val();
-        var partner_id = this.ts_model.db.partner_name_id[partner_name];
-        if (!partner_id){
-            alert(_t("Customer " + "'"+partner_name+"'" + " does not exist."));
+             var start_date = new Date();
+             var end_date_str = this.ts_model.getCurrentDateStr();
+            if (period == 'week')
+                start_date.setDate(start_date.getDate() - 30);
+            else if (period == 'month')
+                start_date.setDate(start_date.getDate() - 30);
+            else if (period == 'trimester')
+                start_date.setDate(start_date.getDate() - 90);
+            var start_date_str = this.ts_model.dateToStr(start_date);
+            date_start = start_date_str
+            date_end = end_date_str
         }
-        else{
-            $.when(this.load_partner_orders(partner_id,start_date_str,end_date_str))
-            .done(function(){
-                self.renderElement();
-                self.$('#input-customer').val(partner_name);
-            }).fail(function(){
-            });
+        // Geting partner
+        var partner_name = this.$('#input-customer').val();
+        var partner_id = false;
+        if (partner_name != ""){
+            partner_id = this.ts_model.db.partner_name_id[partner_name];
+            if (!partner_id){
+                alert(_t("Customer " + "'"+partner_name+"'" + " does not exist."));
+                this.$('#input-customer').focus();
+            }
         }
+
+        // Geting my orders filter
+        var my_orders = this.$('#my_orders').is(":checked");
+        $.when(this.load_partner_orders(partner_id,date_start,date_end, my_orders))
+        .done(function(){
+            self.renderElement();
+            self.$('#input-customer').val(partner_name);
+        }).fail(function(){
+           alert("Error fetching orders from server");
+           this.$('#input-customer').focus();
+        });
     },
 });
 

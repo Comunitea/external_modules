@@ -101,7 +101,7 @@ var ScreenButtonWidget = ButtonBlockWidget.extend({
     init: function(parent,options){
         this._super(parent,options);
         this.button_no = _t("New Order");
-        this.button_so = _t("My Orders");
+        this.button_so = _t("My Customers");
         this.button_pc = _t("Product Catalog");
         this.button_pr = _t("Product Reserved");
         this.button_cl = _t("Call List");
