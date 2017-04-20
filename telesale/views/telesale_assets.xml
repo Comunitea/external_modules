@@ -3,7 +3,7 @@
     <template id="assets" name="telesale assets">
         <link rel="stylesheet" href="/telesale/static/src/css/telesale.css" id="ts-stylesheet"/>
         <link rel="stylesheet" href="/telesale/static/src/css/new_order.css" id="ts-stylesheet"/>
-        <link rel="stylesheet" href="/telesale/static/src/css/summary_order.css" id="ts-stylesheet"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/customer_list.css" id="ts-stylesheet"/>
         <link rel="stylesheet" href="/telesale/static/src/css/order_history.css" id="ts-stylesheet"/>
         <link rel="stylesheet" href="/telesale/static/src/css/product_content.css" id="ts-stylesheet"/>
         <link rel="stylesheet" href="/telesale/static/src/css/popups.css" id="ts-stylesheet"/>
@@ -20,6 +20,6 @@
         <script type="text/javascript" src="/telesale/static/src/js/new_order_widgets.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/order_history_widgets.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/product_catalog_widgets.js"></script>
-        <script type="text/javascript" src="/telesale/static/src/js/summary_orders_widgets.js"></script>
+        <script type="text/javascript" src="/telesale/static/src/js/customer_list_widgets.js"></script>
     </template>
 </odoo>

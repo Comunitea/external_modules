@@ -34,7 +34,7 @@
         'static/src/xml/new_order_template.xml',
         'static/src/xml/order_history_template.xml',
         'static/src/xml/product_catalog_template.xml',
-        'static/src/xml/summary_order_template.xml',
+        'static/src/xml/customer_list_template.xml',
         'static/src/xml/popups_template.xml',
     ],
 }

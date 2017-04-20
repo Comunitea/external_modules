@@ -3,7 +3,7 @@ odoo.define('telesale.PopUps', function (require) {
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
 // var NewOrder = require('telesale.new_order_widgets');
-// var Summary = require('telesale.Summary');
+// var Summary = require('telesale.CustomerList');
 // var OrderHistory = require('telesale.OrderHistory');
 // var ProductCatalog = require('telesale.ProductCatalog');
 // var models = require('telesale.models');
