@@ -75,9 +75,9 @@ var TsWidget = TsBaseWidget.extend({
         this.order_history_screen = new Screens.OrderHistoryScreenWidget(this, {});
         this.order_history_screen.appendTo(this.$('#content'));
 
-         //Summary Orders Screen
-        this.summary_order_screen = new Screens.CustomerListScreenWidget(this, {});
-        this.summary_order_screen.appendTo(this.$('#content'));
+         //Customer List Screen
+        this.customer_list_screen = new Screens.CustomerListScreenWidget(this, {});
+        this.customer_list_screen.appendTo(this.$('#content'));
 
         //Product Catalog Screen
         this.product_catalog_screen = new Screens.ProductCatalogScreenWidget(this, {});
@@ -97,7 +97,7 @@ var TsWidget = TsBaseWidget.extend({
                 'new_order': this.new_order_screen,
                 'order_history': this.order_history_screen,
                 'product_catalog': this.product_catalog_screen,
-                'summary_order': this.summary_order_screen,
+                'customer_list': this.customer_list_screen,
                 'key_shorts': this.key_shorts_screen,
             },
             popup_set:{
@@ -171,8 +171,6 @@ var TsWidget = TsBaseWidget.extend({
             else e.returnValue = false;
             self.$('#button_oh').click(); //Order history page
             self.$('.ui-autocomplete-input').focus();
-            // self.$('#button2').click(); //Summary orders page
-            // self.$("#input-date_start2").focus();
         });
         Mousetrap.bind('alt+e', function(e){
             $( document.activeElement ).blur();
@@ -199,7 +197,7 @@ var TsWidget = TsBaseWidget.extend({
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-             self.$('#button_so').click(); //Summary orders page
+             self.$('#button_so').click(); //Customer list page
             self.$("#input-date_start2").focus();
         });
         Mousetrap.bind('alt+f12', function(e){

@@ -3,7 +3,7 @@ odoo.define('telesale.Screens', function (require) {
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var NewOrder = require('telesale.new_order_widgets');
-var Summary = require('telesale.CustomerList');
+var CustomerList = require('telesale.CustomerList');
 var OrderHistory = require('telesale.OrderHistory');
 var ProductCatalog = require('telesale.ProductCatalog');
 var models = require('telesale.models');
@@ -168,13 +168,13 @@ exports.OrderScreenWidget = ScreenWidget.extend({
 });
 
 exports.CustomerListScreenWidget = ScreenWidget.extend({
-    template: 'Summary-Order-Screen-Widget',
+    template: 'CustomerListScreenWidget',
     init: function(parent,options){
         this._super(parent,options)
     },
     start: function(){
-        this.summary_order_widget = new Summary.SummaryOrderWidget(this, {});
-        this.summary_order_widget.replace(this.$('#placeholder-summary-order-widget'));
+        this.customer_list_widget = new CustomerList.CustomerListWidget(this, {});
+        this.customer_list_widget.replace(this.$('#placeholder-customer-list-widget'));
     },
 });
 

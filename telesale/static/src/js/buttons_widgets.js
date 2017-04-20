@@ -101,7 +101,7 @@ var ScreenButtonWidget = ButtonBlockWidget.extend({
     init: function(parent,options){
         this._super(parent,options);
         this.button_no = _t("New Order");
-        this.button_so = _t("My Customers");
+        this.button_so = _t("Customer List");
         this.button_pc = _t("Product Catalog");
         this.button_pr = _t("Product Reserved");
         this.button_cl = _t("Call List");
@@ -115,7 +115,7 @@ var ScreenButtonWidget = ButtonBlockWidget.extend({
                                                           // self.select_button_block('order_buttons');
                                                           self.setButtonSelected('button#button_no');
                                                          });
-        this.$el.find('button#button_so').click(function(){ self.select_screen('summary_order');
+        this.$el.find('button#button_so').click(function(){ self.select_screen('customer_list');
                                                           self.setButtonSelected('button#button_so');
                                                              });
         this.$el.find('button#button_cl').click(function(){ self.select_screen('call_list');
