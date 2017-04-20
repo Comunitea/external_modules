@@ -1,4 +1,4 @@
-odoo.define('telesale.Summary', function (require) {
+odoo.define('telesale.CustomerList', function (require) {
 "use strict";
 
 var TsBaseWidget = require('telesale.TsBaseWidget');

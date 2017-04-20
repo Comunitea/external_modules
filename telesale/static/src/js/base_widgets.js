@@ -76,7 +76,7 @@ var TsWidget = TsBaseWidget.extend({
         this.order_history_screen.appendTo(this.$('#content'));
 
          //Summary Orders Screen
-        this.summary_order_screen = new Screens.SummaryOrderScreenWidget(this, {});
+        this.summary_order_screen = new Screens.CustomerListScreenWidget(this, {});
         this.summary_order_screen.appendTo(this.$('#content'));
 
         //Product Catalog Screen
