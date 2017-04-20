@@ -261,6 +261,21 @@ var TsModel = Backbone.Model.extend({
             });
     },
     // Build a order loaded from the server as order_obj the selected order_model
+    get_line_vals: function(line, order_model){
+        var prod_obj = this.db.get_product_by_id(line.product_id[0]);
+        var vals = {
+            ts_model: this, order:order_model,
+            code:prod_obj.default_code || "" ,
+            product:prod_obj.display_name,
+            unit:line.product_uom[1],
+            qty:line.product_uom_qty,
+            pvp:my_round(line.price_unit,2), //TODO poner precio del producto???
+            total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
+            discount: my_round(line.discount, 2) || 0.0,
+            taxes_ids: line.tax_id || prod_obj.taxes_id || [],
+        }
+        return vals
+    },
     build_order: function(order_obj, order_model, order_lines){
         var partner_obj = this.db.get_partner_by_id(order_obj.partner_id[0]);
         var cus_name = this.getComplexName(partner_obj);
@@ -296,16 +311,17 @@ var TsModel = Backbone.Model.extend({
             var line = order_lines[key];
             var prod_obj = this.db.get_product_by_id(line.product_id[0]);
             //TODO: Calculo de los impuestos en la linea para tener en cuenta tarifa a domicilio
-            var line_vals = {ts_model: this, order:order_model,
-                             code:prod_obj.default_code || "" ,
-                             product:prod_obj.display_name,
-                             unit:line.product_uom[1],
-                             qty:line.product_uom_qty,
-                             pvp:my_round(line.price_unit,2), //TODO poner precio del producto???
-                             total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
-                             discount: my_round(line.discount, 2) || 0.0,
-                             taxes_ids: line.tax_id || prod_obj.taxes_id || [],
-                            }
+            var line_vals = this.get_line_vals(line, order_model)
+            // var line_vals = {ts_model: this, order:order_model,
+            //                  code:prod_obj.default_code || "" ,
+            //                  product:prod_obj.display_name,
+            //                  unit:line.product_uom[1],
+            //                  qty:line.product_uom_qty,
+            //                  pvp:my_round(line.price_unit,2), //TODO poner precio del producto???
+            //                  total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
+            //                  discount: my_round(line.discount, 2) || 0.0,
+            //                  taxes_ids: line.tax_id || prod_obj.taxes_id || [],
+            //                 }
             var line = new Orderline(line_vals);
             order_model.get('orderLines').add(line);
         }
@@ -468,17 +484,17 @@ var ProductCollection = Backbone.Collection.extend({
 var Orderline = Backbone.Model.extend({
     initialize: function(options){
         this.set({
-            n_line: '',
-            code: '',
-            product: '',
-            qty: 1,
-            unit: '',
-            pvp: 0,
-            total: 0,
+            n_line: options.n_line || '',
+            code: options.code || '',
+            product: options.product || '',
+            qty: options.qty || 1,
+            unit: options.unit || '',
+            pvp: options.pvp || 0,
+            total: options.total || 0,
             //to calc totals
-            margin: 0,
-            taxes_ids: [],
-            discount: 0.0
+            margin: options.margin || 0,
+            taxes_ids:  options.taxes_ids || [],
+            discount:  options.discount ||0.0,
         }),
         this.ts_model = options.ts_model;
         this.order = options.order;

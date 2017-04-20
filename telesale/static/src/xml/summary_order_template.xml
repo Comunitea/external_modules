@@ -4,6 +4,7 @@
 
     <t t-name="Summary-Order-Screen-Widget">
         <div class="summary-order-screen">
+            Poner clientes
             <div id="placeholder-summary-order-widget">
             </div>
         </div>

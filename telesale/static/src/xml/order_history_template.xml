@@ -11,7 +11,13 @@
 
     <t t-name="Order-History-Widget">
             <div class="order-history-search">
-                <div class="col-xs-4 fullheight centerinside textcenter ">
+                <div class="col-xs-1 fullheight centerinside textcenter ">
+                    <div class="centerthis">
+                        <label for="customer">My orders:</label>
+                        <input type="checkbox" id="my_orders" name="my"/>
+                    </div>
+                </div>
+                <div class="col-xs-3 fullheight centerinside textcenter ">
                     <div class="centerthis">
                         <label for="customer">Customer:</label>
                         <input type="text" id="input-customer" name="customer" class="tab1 customer"/>
@@ -59,6 +65,7 @@
                 <table class="history-line-table">
                     <thead>
                         <th class="head-name">Name</th>
+                        <th class="head-name">Customer</th>
                         <th class="head-date">Date</th>
                         <th class="head-date">Date Planned</th>
                         <th class="head-total">Total</th>
@@ -79,6 +86,9 @@
         <tr>
             <td class="cell-name">
                 <span class="history-cell"><t t-esc="widget.order.name"/></span>
+            </td>
+            <td class="cell-name">
+                <span class="history-cell"><t t-esc="widget.order.partner_id[1]"/></span>
             </td>
             <td class="cell-date">
                 <span class="history-cell"><t t-esc="widget.ts_model.localFormatDateTime(widget.ts_model.parse_utc_to_str_date(widget.order.date_order))"/></span>
