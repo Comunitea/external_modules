@@ -23,10 +23,12 @@
     left: 50%;
 }
 
+.telesale .customer-list-content input {
+    width: 100%;
+}
+
 .telesale .customer-list-content .button {
     position: relative;
-    top: 0px;
-    line-height: 32px;
     padding: 3px 13px;
     font-size: 20px;
     background: rgb(230, 230, 230);
@@ -40,4 +42,8 @@
 .telesale .customer-list-content .button.next {
     right: 0px;
     margin-right: 16px;
+}
+
+.telesale .customer-list-content .button.new-customer {
+
 }

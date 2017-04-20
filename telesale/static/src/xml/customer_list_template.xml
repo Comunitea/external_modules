@@ -13,12 +13,20 @@
         <div class="customer-list-content">
             <section class="top-content">
 
-                <div class= "col-xs-9 centerinside fullheight">
+                <div class= "col-xs-8 centerinside fullheight">
                     <div class='centerthis searchbox'>
                         <input placeholder='Search Customers' />
                         <span class='search-clear'></span>
                     </div>
                     <span class='searchbox'></span>
+                </div>
+                <div class="col-xs-1 centerinside fullheight">
+                    <div class='centerthis searchbox'>
+                        <span class='button new-customer'>
+                            <i class='fa fa-user'></i>
+                            <i class='fa fa-plus'></i>
+                        </span>
+                    </div>
                 </div>
                 <div class= "col-xs-3 centerinside fullheight">
                     <div class= "centerthis">
