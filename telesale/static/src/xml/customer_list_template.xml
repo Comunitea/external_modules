@@ -10,9 +10,27 @@
     </t>
 
     <t t-name="CustomerListWidget">
-            <div class="customer-list-content">
-                <h1>CUSTOMER LIST</h1>
-            </div>
+        <div class="customer-list-content">
+            <section class="top-content">
+
+                <div class= "col-xs-9 centerinside fullheight">
+                    <div class='centerthis searchbox'>
+                        <input placeholder='Search Customers' />
+                        <span class='search-clear'></span>
+                    </div>
+                    <span class='searchbox'></span>
+                </div>
+                <div class= "col-xs-3 centerinside fullheight">
+                    <div class= "centerthis">
+                        <span class='button next oe_hidden highlight'>
+                            Select Customer
+                            <i class='fa fa-angle-double-right'></i>
+                        </span>
+                    </div>
+                </div>
+
+            </section>
+        </div>
     </t>
 
 </templates>
