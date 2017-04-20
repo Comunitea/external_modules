@@ -30,7 +30,7 @@
 .telesale .customer-list-content .button {
     position: relative;
     padding: 3px 13px;
-    font-size: 20px;
+    font-size: 3vh;
     background: rgb(230, 230, 230);
     margin: 12px;
     border-radius: 3px;
@@ -46,4 +46,159 @@
 
 .telesale .customer-list-content .button.new-customer {
 
+}
+
+/* firefox seems to ignore the relative positionning of the subwindow-container
+ * putting this inside subwindow-container fixes it.
+ */ 
+.telesale .customer-list-content .subwindow-container-fix{
+    height: 100%;
+    position: relative;
+}
+
+.telesale .customer-list-content .window,
+.telesale .customer-list-content .full-content .subwindow{
+    display: block;
+}
+.telesale .customer-list-content .full-content .subwindow-container{
+    display: block;
+    height: 100%;
+}
+.telesale .customer-list-content .full-content .subwindow.collapsed,
+.telesale .customer-list-content .full-content .subwindow-container.collapsed{
+    height: auto;
+}
+
+
+/* e) The Client List Screen */
+
+.telesale .customer-list-content .client-list{
+    font-size: 16px;
+    width: 100%;
+    line-height: 40px;
+}
+.telesale .customer-list-content .client-list th,
+.telesale .customer-list-content .client-list td {
+    padding: 0px 8px;
+}
+.telesale .customer-list-content .client-list tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+}
+.telesale .customer-list-content .client-list thead > tr,
+.telesale .customer-list-content .client-list tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.telesale .customer-list-content .client-list tr.highlight{
+    transition: all 150ms linear;
+    background: rgb(110,200,155) !important;
+    color: white;
+}
+.telesale .customer-list-content .client-list tr.lowlight{
+    transition: all 150ms linear;
+    background: rgb(216, 238, 227);
+}
+.telesale .customer-list-content .client-list tr.lowlight:nth-child(even){
+    transition: all 150ms linear;
+    background: rgb(227, 246, 237);
+}
+.telesale .customer-list-content .client-details{
+    padding: 16px;
+    border-bottom: solid 5px rgb(110,200,155);
+}
+.telesale .customer-list-content .client-picture{
+    height: 64px;
+    width: 64px;
+    border-radius: 32px;
+    overflow: hidden;
+    text-align: center;
+    float: left;
+    margin-right: 16px;
+    background: white;
+    position: relative;
+}
+.telesale .customer-list-content .client-picture > img {
+    position: absolute;
+    top: -9999px;
+    bottom: -9999px;
+    right: -9999px;
+    left: -9999px;
+    max-height: 64px;
+    margin: auto;
+}
+.telesale .customer-list-content .client-picture > .fa {
+    line-height: 64px;
+    font-size: 32px;
+}
+.telesale .customer-list-content .client-picture .image-uploader {
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.telesale .customer-list-content .client-name {
+    font-size: 32px;
+    line-height: 64px;
+    margin-bottom:16px;
+}
+.telesale .customer-list-content .edit-buttons {
+    position: absolute;
+    right: 16px;
+    top: 10px;
+}
+.telesale .customer-list-content .edit-buttons .button{
+    display: inline-block;
+    margin-left: 16px;
+    color: rgb(128,128,128);
+    cursor: pointer;
+    font-size: 36px;
+}
+.telesale .customer-list-content .client-details-box{
+    position: relative;
+    font-size: 16px;
+}
+.telesale .customer-list-content .client-details-left{
+    width: 50%;
+    float: left;
+}
+.telesale .customer-list-content .client-details-right{
+    width: 50%;
+    float: right;
+}
+.telesale .customer-list-content .client-detail{
+    line-height: 24px;
+}
+.telesale .customer-list-content .client-detail > .label{
+    font-weight: bold;
+    display: inline-block;
+    width: 75px;
+    text-align: right;
+    margin-right: 8px;
+}
+.telesale .customer-list-content .client-details input,
+.telesale .customer-list-content .client-details select
+{
+    padding: 4px;
+    border-radius: 3px;
+    border: solid 1px #cecbcb;
+    margin-bottom: 4px;
+    background: white;
+    font-family: "Lato","Lucida Grande", Helvetica, Verdana, Arial;
+    color: #555555;
+    width: 340px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+.telesale .customer-list-content .client-details input.client-name {
+    font-size: 24px;
+    line-height: 24px;
+    margin: 18px 6px;
+    width: 340px;
+}
+.telesale .customer-list-content .client-detail > .empty{
+    opacity: 0.3;
 }
