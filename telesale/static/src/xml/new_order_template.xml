@@ -71,17 +71,17 @@
             <div class="col-xs-2 fullheight">
                 <button id="button_no" class="selected-screen"><t t-esc="widget.button_no"/></button>
             </div>
-            <!-- Order History -->
-            <div class="col-xs-2 fullheight">
-                <button id="button_oh" class="select-screen"><t t-esc="widget.button_oh"/></button>
-            </div>
             <!-- Product Catalog -->
             <div class="col-xs-2 fullheight">
                 <button id="button_pc" class="select-screen"><t t-esc="widget.button_pc"/></button>
             </div>
-            <!-- My orders -->
+            <!-- Customers -->
             <div class="col-xs-2 fullheight">
                 <button id="button_so" class="select-screen"><t t-esc="widget.button_so"/></button>
+            </div>
+            <!-- Order History -->
+            <div class="col-xs-2 fullheight">
+                <button id="button_oh" class="select-screen"><t t-esc="widget.button_oh"/></button>
             </div>
             <!-- Key shorts -->
             <div class="col-xs-2 fullheight">
