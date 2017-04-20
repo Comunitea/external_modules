@@ -174,7 +174,7 @@ msgstr "Añadir"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:66
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:61
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:61
 #, python-format
 msgid "Add Lines"
 msgstr "Añadir líneas"
@@ -306,7 +306,7 @@ msgstr "Lista llamadas"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:106
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:106
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:106
 #, python-format
 msgid "Canceled"
 msgstr "Cancelado"
@@ -353,7 +353,7 @@ msgstr "Comercial:"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:100
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:100
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:100
 #, python-format
 msgid "Confirmed"
 msgstr "Confirmado"
@@ -370,7 +370,7 @@ msgstr "Creado el"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:56
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:56
 #, python-format
 msgid "Customer"
 msgstr "Cliente"
@@ -415,7 +415,7 @@ msgstr "Cliente:"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:62
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:57
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:57
 #, python-format
 msgid "Date"
 msgstr "Fecha"
@@ -423,7 +423,7 @@ msgstr "Fecha"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:28
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:22
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:22
 #, python-format
 msgid "Date End:"
 msgstr "Fecha fin:"
@@ -438,7 +438,7 @@ msgstr "Fecha pedido:"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:63
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:58
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:58
 #, python-format
 msgid "Date Planned"
 msgstr "Fecha planificada"
@@ -453,7 +453,7 @@ msgstr "Fecha planificada:"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:22
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:16
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:16
 #, python-format
 msgid "Date Start:"
 msgstr "Fecha inicio:"
@@ -487,7 +487,7 @@ msgstr "¿Quieres eliminar este pedido?"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:103
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:103
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:103
 #, python-format
 msgid "Done"
 msgstr "Realizado"
@@ -495,7 +495,7 @@ msgstr "Realizado"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:94
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:94
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:94
 #, python-format
 msgid "Draft"
 msgstr "Presupuesto"
@@ -606,7 +606,7 @@ msgstr "Margin (%):"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:46
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:40
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:40
 #, python-format
 msgid "Month"
 msgstr "Mes"
@@ -632,7 +632,7 @@ msgstr "NO ESTÁ FUNCIONANDO"
 #: code:addons/telesale/static/src/xml/new_order_template.xml:516
 #: code:addons/telesale/static/src/xml/order_history_template.xml:61
 #: code:addons/telesale/static/src/xml/product_catalog_template.xml:20
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:55
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:55
 #, python-format
 msgid "Name"
 msgstr "Nombre"
@@ -705,7 +705,7 @@ msgstr "Pending orders will be lost.\n"
 #: code:addons/telesale/static/src/js/models.js:827
 #: code:addons/telesale/static/src/js/new_order_widgets.js:508
 #: code:addons/telesale/static/src/js/order_history_widgets.js:69
-#: code:addons/telesale/static/src/js/summary_orders_widgets.js:66
+#: code:addons/telesale/static/src/js/customer_lists_widgets.js:66
 #, python-format
 msgid "Please select a customer before adding a order line"
 msgstr "Por favor, selecciona un cliente antes de añadir una línea de pedido"
@@ -776,7 +776,7 @@ msgstr "Cantidad"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:97
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:97
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:97
 #, python-format
 msgid "Quotation Sent"
 msgstr "Presupuesto envíado"
@@ -798,7 +798,7 @@ msgstr "GUARDAR"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:36
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:30
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:30
 #, python-format
 msgid "SEARCH"
 msgstr "BUSCAR"
@@ -842,14 +842,14 @@ msgstr "Dirección de entrega:"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:115
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:115
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:115
 #, python-format
 msgid "Show"
 msgstr "Mostrar"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:62
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:62
 #, python-format
 msgid "Show Order"
 msgstr "Mostrar Pedido"
@@ -876,7 +876,7 @@ msgstr "Empezar sesión"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:65
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:60
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:60
 #, python-format
 msgid "State"
 msgstr "Estado"
@@ -929,7 +929,7 @@ msgstr "Este producto no puede ser cargado, porque no está registrado"
 #. openerp-web
 #: code:addons/telesale/static/src/xml/new_order_template.xml:341
 #: code:addons/telesale/static/src/xml/order_history_template.xml:64
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:59
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:59
 #, python-format
 msgid "Total"
 msgstr "Total"
@@ -965,7 +965,7 @@ msgstr "Total pedido:"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:51
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:45
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:45
 #, python-format
 msgid "Trimester"
 msgstr "Trimestre"
@@ -994,7 +994,7 @@ msgstr "VUA"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:41
-#: code:addons/telesale/static/src/xml/summary_order_template.xml:35
+#: code:addons/telesale/static/src/xml/customer_list_template.xml:35
 #, python-format
 msgid "Week"
 msgstr "Semana"
