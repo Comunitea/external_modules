@@ -60,7 +60,6 @@
             <t t-esc="widget.label" />
         </div>
         <div class="col-xs-1 fullheight">
-            <!-- Summary Orders -->
             <button id="button_ks" class="select-screen"><t t-esc="widget.button_ks"/></button>
         </div>
     </t>
