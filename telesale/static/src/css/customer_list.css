@@ -175,9 +175,9 @@
 .telesale .customer-list-content .client-detail > .label{
     font-weight: bold;
     display: inline-block;
-    width: 75px;
     text-align: right;
     margin-right: 8px;
+    color: black;
 }
 .telesale .customer-list-content .client-details input,
 .telesale .customer-list-content .client-details select

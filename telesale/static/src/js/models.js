@@ -137,7 +137,7 @@ var TsModel = Backbone.Model.extend({
                     // PARTNERS
                     return self.fetch(
                         'res.partner',
-                        ['name', 'comercial', 'ref', 'child_ids', 'phone', 'user_id',  'comment'],
+                        ['name', 'comercial', 'ref', 'child_ids', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'vat'],
                         [['customer', '=', true]])
                 }).then(function(customers){
                     for (var key in customers){
