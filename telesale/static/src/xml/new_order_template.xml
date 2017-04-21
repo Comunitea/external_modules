@@ -361,7 +361,7 @@
                 <input type="search" class='col-product mandatory' t-att-value="widget.model.get('product')"/>
             </td>
              <td class="cell-qty">
-                <input type="text" class='col-qty mandatory' t-att-value="widget.model.get('qty').toFixed(4)"/>
+                <input type="text" class='col-qty mandatory' t-att-value="widget.model.get('qty').toFixed(2)"/>
             </td>
              <td class="cell-unit">
                 <select class="col-product_uom mandatory" t-att-value="widget.model.get('unit')">

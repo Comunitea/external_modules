@@ -28,15 +28,18 @@ var ProductLineWidget = TsBaseWidget.extend({
         }
     },
     add_product_to_order: function() {
-        // this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model, shipp_addr: 'aaa' }));
-        // var self=this;
         var product_id = this.product.id
+        var add_qty = this.$('#add-qty').val();
+
+        if (isNaN(add_qty)){
+            alert(_t(add_qty + " is not a valid number"));
+            add_qty = 1.0
+        }
         if (product_id){
             var current_order= this.ts_model.get('selectedOrder')
-            current_order.addProductLine(product_id);
-            // this.ts_widget.screen_selector.set_current_screen('new_order');
-            $('button#button_no').click();
-            // current_order.selectLine(current_order.get('orderLines').last());
+            add_qty = this.ts_model.my_round(add_qty,2);
+            current_order.addProductLine(product_id, add_qty);
+            // $('button#button_no').click();
         }
     },
     renderElement: function() {
