@@ -8,7 +8,6 @@
     position: relative;
     width: 100%;
     height:100%;
-    overflow: auto;
 
 }
 .telesale .customer-list-content .top-content {
@@ -60,6 +59,7 @@
 .telesale .customer-list-content .window,
 .telesale .customer-list-content .full-content .subwindow{
     display: block;
+    overflow: auto;
 }
 .telesale .customer-list-content .full-content .subwindow-container{
     display: block;
