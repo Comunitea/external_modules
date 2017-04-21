@@ -856,9 +856,11 @@ var Order = Backbone.Model.extend({
       var self=this;
       // self.get('orderLines')
     },
-    addProductLine: function(product_id){
+    addProductLine: function(product_id, add_qty){
         var self=this;
-        // var customer_id = this.ts_model.db.partner_name_id[this.get('partner')];
+        if (!add_qty){
+            add_qty = 1.0
+        }        
         if($('#partner').val()){
             if(this.selected_orderline && this.selected_orderline.get('code') == "" && this.selected_orderline.get('product') == "" ){
               $('.remove-line-button').click()
@@ -866,7 +868,7 @@ var Order = Backbone.Model.extend({
             $('.add-line-button').click()
             var added_line = self.ts_model.get('selectedOrder').getLastOrderline();
             var lines_widgets = self.ts_model.ts_widget.new_order_screen.order_widget.orderlinewidgets
-            lines_widgets[lines_widgets.length - 1].call_product_id_change(product_id)
+            lines_widgets[lines_widgets.length - 1].call_product_id_change(product_id, add_qty)
         }
         else{
             alert(_t('Please select a customer before adding a order line'));

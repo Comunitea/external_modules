@@ -20,6 +20,7 @@
                         <th class="pc-head-name">Name</th>
                         <th class="pc-head-code">Code</th>
                         <th class="pc-head-stock">Stock</th>
+                        <th class="pc-head-stock">Add qty</th>
                         <th class="pc-head-add">Add</th>
                         <th class="pc-head-show">show</th>
                     </thead>
@@ -48,6 +49,9 @@
                   <span class="product-cell" t-esc="widget.product.virtual_stock_conservative.toFixed(2)"/>
               </t>
 
+            </td>
+             <td class="pc-cell-qty">
+               <input type="text" id="add-qty" class='mandatory' t-att-value="2.0.toFixed(2)"/>
             </td>
             <td class="pc-cell-add">
                 <button class="add-product fullwidth">+</button>
