@@ -101,6 +101,10 @@ var CustomerListWidget = TsBaseWidget.extend({
         //     this.display_client_details('show',this.old_client,0);
         // }
 
+        this.$('.client-list-contents').delegate('.client-line','click',function(event){
+            self.line_select(event,$(this),parseInt($(this).data('id')));
+        });
+
         // Search customers implementation
         var search_timeout = null;
         this.$('.searchbox input').on('keypress',function(event){
@@ -119,6 +123,24 @@ var CustomerListWidget = TsBaseWidget.extend({
         });
 
 
+    },
+    line_select: function(event,$line,id){
+        var partner = this.ts_model.db.get_partner_by_id(id);
+        this.$('.client-list .lowlight').removeClass('lowlight');
+        if ( $line.hasClass('highlight') ){
+            $line.removeClass('highlight');
+            $line.addClass('lowlight');
+            this.display_customer_details('hide',partner);
+            this.new_client = null;
+            this.toggle_save_button();
+        }else{
+            this.$('.client-list .highlight').removeClass('highlight');
+            $line.addClass('highlight');
+            var y = event.pageY - $line.parent().offset().top;
+            this.display_customer_details('show',partner,y);
+            this.new_client = partner;
+            this.toggle_save_button();
+        }
     },
     perform_search: function(query, associate_result){
         var customers;
@@ -169,7 +191,7 @@ var CustomerListWidget = TsBaseWidget.extend({
         var self = this;
         return this.ts_model.load_new_partners()
         .then(function(){
-            self.render_list(self.pos.db.get_partners_sorted(1000));
+            self.render_list(self.ts_model.db.get_partners_sorted(1000));
             // update the currently assigned client if it has been changed in db.
             // TODO ADAPTAR
             // var curr_client = self.pos.get_order().get_client();
@@ -194,7 +216,6 @@ var CustomerListWidget = TsBaseWidget.extend({
         this.editing_client = false;
         this.uploaded_picture = null;
 
-        var partner = this.ts_model.db.partner_by_id[1]
         if(visibility === 'show'){
             contents.empty();
             contents.append($(QWeb.render('CustomerDetails',{widget:this, partner:partner})));
@@ -215,7 +236,7 @@ var CustomerListWidget = TsBaseWidget.extend({
             }
 
             this.details_visible = true;
-            // this.toggle_save_button();
+            this.toggle_save_button();
         } else if (visibility === 'edit') {
             this.editing_client = true;
             contents.empty();
