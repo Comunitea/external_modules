@@ -59,6 +59,8 @@
 .telesale .customer-list-content .window,
 .telesale .customer-list-content .full-content .subwindow{
     display: block;
+    position: relative;
+    height: 100%;
     overflow: auto;
 }
 .telesale .customer-list-content .full-content .subwindow-container{
@@ -140,6 +142,10 @@
     bottom: 0;
     opacity: 0;
     cursor: pointer;
+}
+.telesale .customer-list-content .full-content{
+    height: 100%;
+    position: relative;
 }
 .telesale .customer-list-content .client-name {
     font-size: 32px;
