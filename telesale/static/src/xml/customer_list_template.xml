@@ -9,6 +9,16 @@
         </div>
     </t>
 
+    <t t-name="CustomerLine">
+        <tr class='client-line' t-att-data-id='partner.id'>
+            <td><t t-esc='partner.name' /></td>
+            <!-- <td><t t-esc='partner.address' /></td> -->
+            <td><t t-esc='partner.street' /></td>
+            <td><t t-esc='partner.zip and partner.zip or ""' /></td>
+            <td><t t-esc='partner.state_id and partner.state_id[1] or ""' /></td>
+            <td><t t-esc='partner.phone or partner.mobile or ""' /></td>
+        </tr>
+    </t>
 
      <t t-name="CustomerDetails">
         <section class='client-details'>
@@ -117,7 +127,7 @@
                     </section>
                     <section class='subwindow'>
                         <div class='subwindow-container'>
-                            <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                          <!--   <div class='subwindow-container-fix touch-scrollable scrollable-y'> -->
                                 <table class='client-list'>
                                     <thead>
                                         <tr>
@@ -131,7 +141,7 @@
                                     <tbody class='client-list-contents'>
                                     </tbody>
                                 </table>
-                            </div>
+                            <!-- </div> -->
                         </div>
                     </section>
                 </div>
