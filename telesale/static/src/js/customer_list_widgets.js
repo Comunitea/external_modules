@@ -7,17 +7,130 @@ var core = require('web.core');
 var _t = core._t;
 var QWeb = core.qweb;
 
+
+/*--------------------------------------*\
+ |          THE DOM CACHE               |
+\*======================================*/
+
+// The Dom Cache is used by various screens to improve
+// their performances when displaying many time the 
+// same piece of DOM.
+//
+// It is a simple map from string 'keys' to DOM Nodes.
+//
+// The cache empties itself based on usage frequency 
+// stats, so you may not always get back what
+// you put in.
+
+var DomCache = core.Class.extend({
+    init: function(options){
+        options = options || {};
+        this.max_size = options.max_size || 2000;
+
+        this.cache = {};
+        this.access_time = {};
+        this.size = 0;
+    },
+    cache_node: function(key,node){
+        var cached = this.cache[key];
+        this.cache[key] = node;
+        this.access_time[key] = new Date().getTime();
+        if(!cached){
+            this.size++;
+            while(this.size >= this.max_size){
+                var oldest_key = null;
+                var oldest_time = new Date().getTime();
+                for(key in this.cache){
+                    var time = this.access_time[key];
+                    if(time <= oldest_time){
+                        oldest_time = time;
+                        oldest_key  = key;
+                    }
+                }
+                if(oldest_key){
+                    delete this.cache[oldest_key];
+                    delete this.access_time[oldest_key];
+                }
+                this.size--;
+            }
+        }
+        return node;
+    },
+    clear_node: function(key) {
+        var cached = this.cache[key];
+        if (cached) {
+            delete this.cache[key];
+            delete this.access_time[key];
+            this.size --;
+        }
+    },
+    get_node: function(key){
+        var cached = this.cache[key];
+        if(cached){
+            this.access_time[key] = new Date().getTime();
+        }
+        return cached;
+    },
+});
+
 var CustomerListWidget = TsBaseWidget.extend({
     template:'CustomerListWidget',
+    init: function(parent, options){
+        this._super(parent, options);
+        this.partner_cache = new DomCache();
+    },
     renderElement: function(){
         this._super();
         var self=this;
+
+        this.details_visible = false;
+        this.old_client = this.ts_model.get_order().get_client();
+        // Button new customer, TODO Change to edit.
+
+        var partners = this.ts_model.db.get_partners_stored(1000);
+        this.render_list(partners);
+        this.reload_partners();
         this.$('.new-customer').click(function(){
             self.display_customer_details('show');
         });
     },
+    render_list: function(partners){
+        var contents = this.$el[0].querySelector('.client-list-contents');
+        contents.innerHTML = "";
+        for(var i = 0, len = Math.min(partners.length,1000); i < len; i++){
+            var partner    = partners[i];
+            var clientline = this.partner_cache.get_node(partner.id);
+            if(!clientline){
+                var clientline_html = QWeb.render('CustomerLine',{widget: this, partner:partners[i]});
+                var clientline = document.createElement('tbody');
+                clientline.innerHTML = clientline_html;
+                clientline = clientline.childNodes[1];
+                this.partner_cache.cache_node(partner.id,clientline);
+            }
+            if( partner === this.old_client ){
+                clientline.classList.add('highlight');
+            }else{
+                clientline.classList.remove('highlight');
+            }
+            contents.appendChild(clientline);
+        }
+    },
+    // This fetches partner changes on the server, and in case of changes, 
+    // rerenders the affected views
+    reload_partners: function(){
+        var self = this;
+        return this.ts_model.load_new_partners()
+        .then(function(){
+            self.render_list(self.pos.db.get_partners_sorted(1000));
+            // update the currently assigned client if it has been changed in db.
+            // TODO ADAPTAR
+            // var curr_client = self.pos.get_order().get_client();
+            // if (curr_client) {
+            //     self.pos.get_order().set_client(self.pos.db.get_partner_by_id(curr_client.id));
+            // }
+        });
+    },
     display_customer_details: function(visibility,partner,clickpos){
-        debugger;
         var self = this;
         var contents = this.$('.client-details-contents');
         var parent   = this.$('.client-list').parent();
