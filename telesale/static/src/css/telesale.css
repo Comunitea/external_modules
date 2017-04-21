@@ -24,7 +24,7 @@
     color: #555555;
 }
 .telesale .scrollable-y{
-    overflow: hidden !important;
+overflow: hidden !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
 }
