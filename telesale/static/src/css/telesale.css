@@ -23,7 +23,11 @@
     font-family: Lato;
     color: #555555;
 }
-
+.telesale .scrollable-y{
+    overflow: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
 .telesale .loader-feedback{
     width: 400px;
     height: 160px;

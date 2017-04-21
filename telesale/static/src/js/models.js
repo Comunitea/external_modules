@@ -83,6 +83,9 @@ var TsModel = Backbone.Model.extend({
     _get_product_fields: function(){
         return  ['display_name', 'default_code', 'list_price', 'standard_price', 'uom_id', 'taxes_id', 'weight']
     },
+    _get_partner_fields: function(){
+        return  ['name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date']
+    },
     // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
     load_server_data: function(){
         var self=this;
@@ -135,10 +138,8 @@ var TsModel = Backbone.Model.extend({
                     self.get('products').reset(products_list)
 
                     // PARTNERS
-                    return self.fetch(
-                        'res.partner',
-                        ['name', 'comercial', 'ref', 'child_ids', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'vat'],
-                        [['customer', '=', true]])
+                    var partner_fields = self._get_partner_fields();
+                    return self.fetch('res.partner', partner_fields, [['customer', '=', true]])
                 }).then(function(customers){
                     for (var key in customers){
                         var customer_name = self.getComplexName(customers[key]);
@@ -164,6 +165,31 @@ var TsModel = Backbone.Model.extend({
                     self.db.add_fiscal_position(fposition);
                 });
         return loaded;
+    },
+    load_new_partners: function(){
+        var self = this;
+        var def  = new $.Deferred();
+        // var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
+        var partner_fields = self._get_partner_fields();
+        self.fetch('res.partner', partner_fields, [['customer','=',true],['write_date','>', self.db.get_partner_write_date()]])
+
+        // TODO MEJOR CON FETCH
+        new Model('res.partner')
+            .query(partner_fields)
+            .filter([['customer','=',true],['write_date','>',this.db.get_partner_write_date()]])
+            .all({'timeout':3000, 'shadow': true})
+            .then(function(partners){
+                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
+                    def.resolve();
+                } else {
+                    def.reject();
+                }
+            }, function(err,event){ event.preventDefault(); def.reject(); });    
+        return def;
+    },
+    // return the current order
+    get_order: function(){
+        return this.get('selectedOrder');
     },
     getCurrentDateStr: function() {
         var date = new Date();
@@ -845,6 +871,11 @@ var Order = Backbone.Model.extend({
         else{
             alert(_t('Please select a customer before adding a order line'));
         }
+    },
+    get_client: function(){
+        var partner_name = this.get('partner')
+        var partner_obj = this.ts_model.db.partner_name_id[partner_name]
+        return partner_obj
     },
 
 });
