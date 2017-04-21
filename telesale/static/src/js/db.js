@@ -172,6 +172,9 @@ exports.TS_LS = core.Class.extend({
         if(partner.state_id){
             str += '|' + partner.email;
         }
+        if(partner.zip){
+            str += '|' + partner.zip;
+        }
         str = '' + partner.id + ':' + str.replace(':','') + '\n';
         return str
     },
@@ -199,6 +202,26 @@ exports.TS_LS = core.Class.extend({
             partners.push(this.partner_by_id[this.partner_sorted[i]]);
         }
         return partners;
+    },
+    search_partner: function(query){
+        try {
+            query = query.replace(/[\[\]\(\)\+\*\?\.\-\!\&\^\$\|\~\_\{\}\:\,\\\/]/g,'.');
+            query = query.replace(' ','.+');
+            var re = RegExp("([0-9]+):.*?"+query,"gi");
+        }catch(e){
+            return [];
+        }
+        var results = [];
+        for(var i = 0; i < this.limit; i++){
+            var r = re.exec(this.partner_search_string);
+            if(r){
+                var id = Number(r[1]);
+                results.push(this.get_partner_by_id(id));
+            }else{
+                break;
+            }
+        }
+        return results;
     },
     add_partners: function(partners){
         var updated_count = 0;

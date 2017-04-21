@@ -85,14 +85,62 @@ var CustomerListWidget = TsBaseWidget.extend({
 
         this.details_visible = false;
         this.old_client = this.ts_model.get_order().get_client();
-        // Button new customer, TODO Change to edit.
 
-        var partners = this.ts_model.db.get_partners_stored(1000);
-        this.render_list(partners);
-        this.reload_partners();
+        // Button new customer, TODO Change to edit.
         this.$('.new-customer').click(function(){
             self.display_customer_details('show');
         });
+
+        // Get partners
+        var partners = this.ts_model.db.get_partners_stored(1000);
+        this.render_list(partners);
+        this.reload_partners();
+
+
+        // if( this.old_client ){
+        //     this.display_client_details('show',this.old_client,0);
+        // }
+
+        // Search customers implementation
+        var search_timeout = null;
+        this.$('.searchbox input').on('keypress',function(event){
+            clearTimeout(search_timeout);
+
+            var query = this.value;
+
+            search_timeout = setTimeout(function(){
+                self.perform_search(query,event.which === 13);
+            },70);
+        });
+
+        // Clear search
+        this.$('.searchbox .search-clear').click(function(){
+            self.clear_search();
+        });
+
+
+    },
+    perform_search: function(query, associate_result){
+        var customers;
+        if(query){
+            customers = this.ts_model.db.search_partner(query);
+            this.display_customer_details('hide');
+            if ( associate_result && customers.length === 1){
+                this.new_client = customers[0];
+                // this.save_changes();
+                // this.gui.back();
+            }
+            this.render_list(customers);
+        }else{
+            customers = this.ts_model.db.get_partners_stored();
+            this.render_list(customers);
+        }
+    },
+    clear_search: function(){
+        var customers = this.ts_model.db.get_partners_stored(1000);
+        this.render_list(customers);
+        this.$('.searchbox input')[0].value = '';
+        this.$('.searchbox input').focus();
     },
     render_list: function(partners){
         var contents = this.$el[0].querySelector('.client-list-contents');
@@ -208,7 +256,30 @@ var CustomerListWidget = TsBaseWidget.extend({
             this.details_visible = false;
             this.toggle_save_button();
         }
-    }
+    },
+    toggle_save_button: function(){
+        var $button = this.$('.button.next');
+        if (this.editing_client) {
+            $button.addClass('oe_hidden');
+            return;
+        } else if( this.new_client ){
+            if( !this.old_client){
+                $button.text(_t('Set Customer'));
+            }else{
+                $button.text(_t('Change Customer'));
+            }
+        }else{
+            $button.text(_t('Deselect Customer'));
+        }
+        $button.toggleClass('oe_hidden',!this.has_client_changed());
+    },
+    has_client_changed: function(){
+        if( this.old_client && this.new_client ){
+            return this.old_client.id !== this.new_client.id;
+        }else{
+            return !!this.old_client !== !!this.new_client;
+        }
+    },
 
 });
 
