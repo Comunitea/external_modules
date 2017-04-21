@@ -349,7 +349,7 @@ var OrderlineWidget = TsBaseWidget.extend({
             })
         return loaded
     },
-    call_product_id_change: function(product_id){
+    call_product_id_change: function(product_id, add_qty){
         var self = this;
         // $.when( self.update_stock_product(product_id) ).done(function(){
         //     var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
@@ -376,6 +376,10 @@ var OrderlineWidget = TsBaseWidget.extend({
         // .fail(function(){
         //     // alert(_t("NOT WORKING"));
         // })
+        if (!add_qty){
+            add_qty = 1.0
+        }
+
         var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
         var model = new Model("sale.order.line");
         model.call("ts_product_id_change", [product_id, customer_id])
@@ -387,7 +391,7 @@ var OrderlineWidget = TsBaseWidget.extend({
             self.model.set('product', product_obj.display_name || "");
             self.model.set('taxes_ids', result.tax_id || []); //TODO poner impuestos de producto o vacio
             self.model.set('unit', self.model.ts_model.db.unit_by_id[result.product_uom].name);
-            self.model.set('qty', result.product_uom_qty);
+            self.model.set('qty', add_qty);
             self.model.set('discount', 0.0);
             self.model.set('pvp', self.ts_model.my_round( result.price_unit));
            
@@ -720,7 +724,7 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
                     .then(function(result){
                         self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
                         self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
-                        self.qty = self.ts_model.my_round(result.last_qty,4).toFixed(4);
+                        self.qty = self.ts_model.my_round(result.last_qty,4).toFixed(2);
                         self.price = self.ts_model.my_round(result.last_price,2).toFixed(2);
                         self.renderElement();
                     });
