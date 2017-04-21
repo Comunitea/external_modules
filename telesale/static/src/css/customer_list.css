@@ -63,6 +63,14 @@
     height: 100%;
     overflow: auto;
 }
+.telesale .customer-list-content .search-clear {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 11px;
+    left: 11px;
+    cursor: pointer;
+}
 .telesale .customer-list-content .full-content .subwindow-container{
     display: block;
     height: 100%;
