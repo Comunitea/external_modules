@@ -4,6 +4,7 @@ odoo.define('telesale.CustomerList', function (require) {
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var models = require('telesale.models');
 var core = require('web.core');
+var Model = require('web.DataModel');
 var _t = core._t;
 var QWeb = core.qweb;
 
@@ -86,9 +87,22 @@ var CustomerListWidget = TsBaseWidget.extend({
         this.details_visible = false;
         this.old_client = this.ts_model.get_order().get_client();
 
-        // Button new customer, TODO Change to edit.
+        // SHOW CREATE NEW CUSTOMER
         this.$('.new-customer').click(function(){
-            self.display_customer_details('show');
+            self.display_customer_details('edit',{
+                'country_id': self.ts_model.get('company').country_id,
+            });
+        });
+
+        // Set customer
+        this.$('.next').click(function(){   
+            self.save_changes();
+            // self.gui.back();    // FIXME HUH ?
+        });
+        // Set shipp addr
+        this.$('.next2').click(function(){   
+            self.set_partner_shipp();
+            // self.gui.back();    // FIXME HUH ?
         });
 
         // Get partners
@@ -97,9 +111,9 @@ var CustomerListWidget = TsBaseWidget.extend({
         this.reload_partners();
 
 
-        // if( this.old_client ){
-        //     this.display_client_details('show',this.old_client,0);
-        // }
+        if( this.old_client ){
+            this.display_customer_details('show',this.old_client,0);
+        }
 
         this.$('.client-list-contents').delegate('.client-line','click',function(event){
             self.line_select(event,$(this),parseInt($(this).data('id')));
@@ -124,6 +138,45 @@ var CustomerListWidget = TsBaseWidget.extend({
 
 
     },
+    save_changes: function(){
+        var self = this;
+        var order = this.ts_model.get_order();
+        if( this.has_client_changed() ){
+            // if ( this.new_client ) {
+            //     order.fiscal_position = _.find(this.pos.fiscal_positions, function (fp) {
+            //         return fp.id === self.new_client.property_account_position_id[0];
+            //     });
+            // } else {
+            //     order.fiscal_position = undefined;
+            // }
+
+            // order.set_client(this.new_client);
+            // $('#partner').blur();
+            // self.ts_widget.new_order_screen.data_order_widget.refresh();
+            $('#partner').val(this.new_client.name + ' | ' + this.new_client.ref);
+            $('button#button_no').click();
+        }
+    },
+    set_partner_shipp: function(){
+        var self = this;
+        var order = this.ts_model.get_order();
+        if( this.has_client_changed() ){
+            // if ( this.new_client ) {
+            //     order.fiscal_position = _.find(this.pos.fiscal_positions, function (fp) {
+            //         return fp.id === self.new_client.property_account_position_id[0];
+            //     });
+            // } else {
+            //     order.fiscal_position = undefined;
+            // }
+
+            // order.set_client(this.new_client);
+            // $('#partner').blur();
+            // self.ts_widget.new_order_screen.data_order_widget.refresh();
+            $('#shipp_addr').val(this.new_client.name + ' | ' + this.new_client.ref);
+            $('button#button_no').click();
+            $('#shipp_addr').focus();
+        }
+    },
     line_select: function(event,$line,id){
         var partner = this.ts_model.db.get_partner_by_id(id);
         this.$('.client-list .lowlight').removeClass('lowlight');
@@ -140,6 +193,14 @@ var CustomerListWidget = TsBaseWidget.extend({
             this.display_customer_details('show',partner,y);
             this.new_client = partner;
             this.toggle_save_button();
+        }
+    },
+    // ui handle for the 'cancel customer edit changes' action
+    undo_client_details: function(partner) {
+        if (!partner.id) {
+            this.display_customer_details('hide');
+        } else {
+            this.display_customer_details('show',partner);
         }
     },
     perform_search: function(query, associate_result){
@@ -191,7 +252,7 @@ var CustomerListWidget = TsBaseWidget.extend({
         var self = this;
         return this.ts_model.load_new_partners()
         .then(function(){
-            self.render_list(self.ts_model.db.get_partners_sorted(1000));
+            self.render_list(self.ts_model.db.get_partners_stored(1000));
             // update the currently assigned client if it has been changed in db.
             // TODO ADAPTAR
             // var curr_client = self.pos.get_order().get_client();
@@ -207,15 +268,14 @@ var CustomerListWidget = TsBaseWidget.extend({
         var scroll   = parent.scrollTop();
         var height   = contents.height();
 
-        // contents.off('click','.button.edit'); 
-        // contents.off('click','.button.save'); 
-        // contents.off('click','.button.undo'); 
-        // contents.on('click','.button.edit',function(){ self.edit_client_details(partner); });
-        // contents.on('click','.button.save',function(){ self.save_client_details(partner); });
-        // contents.on('click','.button.undo',function(){ self.undo_client_details(partner); });
+        contents.off('click','.button.edit'); 
+        contents.off('click','.button.save'); 
+        contents.off('click','.button.undo'); 
+        contents.on('click','.button.edit',function(){ self.edit_client_details(partner); });
+        contents.on('click','.button.save',function(){ self.save_client_details(partner); });
+        contents.on('click','.button.undo',function(){ self.undo_client_details(partner); });
         this.editing_client = false;
         this.uploaded_picture = null;
-
         if(visibility === 'show'){
             contents.empty();
             contents.append($(QWeb.render('CustomerDetails',{widget:this, partner:partner})));
@@ -240,7 +300,7 @@ var CustomerListWidget = TsBaseWidget.extend({
         } else if (visibility === 'edit') {
             this.editing_client = true;
             contents.empty();
-            contents.append($(QWeb.render('ClientDetailsEdit',{widget:this,partner:partner})));
+            contents.append($(QWeb.render('CustomerDetailsEdit',{widget:this,partner:partner})));
             this.toggle_save_button();
 
             // Browsers attempt to scroll invisible input elements
@@ -301,7 +361,62 @@ var CustomerListWidget = TsBaseWidget.extend({
             return !!this.old_client !== !!this.new_client;
         }
     },
+    // what happens when we save the changes on the client edit form -> we fetch the fields, sanitize them,
+    // send them to the backend for update, and call saved_client_details() when the server tells us the
+    // save was successfull.
+    save_client_details: function(partner) {
+        var self = this;
+        
+        var fields = {};
+        this.$('.client-details-contents .detail').each(function(idx,el){
+            fields[el.name] = el.value || false;
+        });
 
+        if (!fields.name) {
+            // this.gui.show_popup('error',_t('A Customer Name Is Required'));
+            alert(_t('A Customer Name Is Required'));
+            return;
+        }
+        
+        // if (this.uploaded_picture) {
+        //     fields.image = this.uploaded_picture;
+        // }
+
+        fields.id           = partner.id || false;
+        // fields.country_id   = fields.country_id || false;
+
+        new Model('res.partner').call('update_partner_from_ui',[fields]).then(function(partner_id){
+            self.saved_client_details(partner_id);
+        },function(err,event){
+            event.preventDefault();
+            // self.gui.show_popup('error',{
+            //     'title': _t('Error: Could not Save Changes'),
+            //     'body': _t('Your Internet connection is probably down.'),
+            // });
+            alert(_('Error saving partner to the server'))
+        });
+    },
+    
+    // what happens when we've just pushed modifications for a partner of id partner_id
+    saved_client_details: function(partner_id){
+        var self = this;
+        this.reload_partners().then(function(){
+            var partner = self.ts_model.db.get_partner_by_id(partner_id);
+            if (partner) {
+                self.new_client = partner;
+                self.toggle_save_button();
+                self.display_customer_details('show',partner);
+            } else {
+                // should never happen, because create_from_ui must return the id of the partner it
+                // has created, and reload_partner() must have loaded the newly created partner. 
+                self.display_customer_details('hide');
+            }
+        });
+    },
+    // ui handle for the 'edit selected customer' action
+    edit_client_details: function(partner) {
+        this.display_customer_details('edit',partner);
+    },
 });
 
 return{

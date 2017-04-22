@@ -100,6 +100,7 @@ var TsModel = Backbone.Model.extend({
                     'name',
                     'phone',
                     'partner_id',
+                    'country_id'
                 ],
                 [['id','=',users[0].company_id[0]]]);
                 }).then(function(companies){
@@ -878,6 +879,10 @@ var Order = Backbone.Model.extend({
         var partner_name = this.get('partner')
         var partner_obj = this.ts_model.db.partner_name_id[partner_name]
         return partner_obj
+    },
+    set_client: function(partner){
+        var cus_name = partner.name + ' | ' + partner.ref
+        this.set('partner', cus_name);
     },
 
 });
