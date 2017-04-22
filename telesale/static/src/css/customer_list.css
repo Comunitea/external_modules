@@ -86,7 +86,7 @@
 .telesale .customer-list-content .client-list{
     font-size: 16px;
     width: 100%;
-    line-height: 40px;
+    line-height: 3vh;
 }
 .telesale .customer-list-content .client-list th,
 .telesale .customer-list-content .client-list td {
@@ -115,7 +115,7 @@
 }
 .telesale .customer-list-content .client-details{
     padding: 16px;
-    border-bottom: solid 5px rgb(110,200,155);
+    border-bottom: solid 4px rgb(0,0,0);
 }
 .telesale .customer-list-content .client-picture{
     height: 64px;

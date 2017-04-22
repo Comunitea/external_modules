@@ -260,17 +260,52 @@
 .telesale #leftpart .order-container .order-line-table {
     margin-top: 1vh;
     width: 100%;
-    border: 1px solid #000;
-    font-weight: bold;
+/*    border: 1px solid #000;
+*/    font-weight: bold;
     color:black;
 }
-
+/*
 .telesale  #leftpart .order-container .order-line-table th{
     border: 1px solid #000;
     height: 3vh;
     background: #7f82ac;
     text-align: center;
     font-weight: bold;
+/*}*/
+/*.telesale  #leftpart .order-container .order-line-table button {
+    color: black;
+    vertical-align: middle;
+    margin-right: 0px;
+    border: 1px solid #000000;
+    background: #c7c7c7;
+    width: 100%;
+    padding: 0px;
+    font-size: 1.7vmin;
+}*/
+
+.telesale  #leftpart .order-container .order-line-table th, .telesale  #leftpart .order-container .order-line-table td {
+    padding: 0px 8px;
+}
+.telesale  #leftpart .order-container .order-line-table tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+}
+
+.telesale  #leftpart .order-container .order-line-table thead > tr,
+.telesale  #leftpart .order-container .order-line-table tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.telesale  #leftpart .order-container .order-line-table tr.highlight{
+    transition: all 150ms linear;
+    background: rgb(110,200,155) !important;
+    color: white;
+}
+.telesale  #leftpart .order-container .order-line-table tr.lowlight{
+    transition: all 150ms linear;
+    background: rgb(216, 238, 227);
+}
+.telesale  #leftpart .order-container .order-line-table tr.lowlight:nth-child(even){
+    transition: all 150ms linear;
 }
 
 .telesale  #leftpart .order-container .order-line-table th.header-nline{
@@ -295,11 +330,11 @@
     width: 8%;
 }
 
-.telesale  #leftpart .order-container .order-line-table td{
+/*.telesale  #leftpart .order-container .order-line-table td{
     border: 1px solid #000;
     cursor:pointer;
     text-align: center;
-}
+}*/
 /*fix intput to cell width*/
 .telesale  #leftpart .order-container .order-line-table td input{
     width: 100%;
