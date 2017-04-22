@@ -723,7 +723,7 @@ var Order = Backbone.Model.extend({
     removeLine: function(){
         var index = 0;
         (this.get('orderLines')).each(_.bind( function(item) {
-            if ( item.is_selected() ){
+            if ( item && item.is_selected() ){
                 this.get('orderLines').remove(item)
                 index = item.get('n_line') - 1;
             }
