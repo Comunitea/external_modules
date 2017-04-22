@@ -3,6 +3,7 @@ odoo.define('telesale.new_order_widgets', function (require) {
 
 var core = require('web.core');
 var Model = require('web.DataModel');
+var models = require('telesale.models');
 var _t = core._t;
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
@@ -523,6 +524,43 @@ var OrderWidget = TsBaseWidget.extend({
                 });
             }
         },
+        get_order_fields: function(){
+            return ['partner_shipping_id','note','comercial','client_order_ref','name',
+                    'partner_id','date_order','state','amount_total','requested_date']
+
+        },
+        get_line_fields: function(){
+            var line_fields = ['product_id','product_uom','product_uom_qty','price_unit',
+                               'tax_id', 'price_subtotal', 'discount'];
+            return line_fields;
+
+        },
+        load_order_from_server: function(order_id, flag){
+            var self=this;
+            if (!flag){
+                this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model}));
+            }
+            this.open_order =  this.ts_model.get('selectedOrder')
+            var order_fields = this.get_order_fields();
+            var loaded = self.ts_model.fetch('sale.order', order_fields, [['id', '=', order_id]])
+            .then(function(orders){
+                var order = orders[0];
+                self.order_fetch = order;
+                var line_fields = self.get_line_fields();
+                return self.ts_model.fetch('sale.order.line', line_fields, [['order_id', '=', order_id]]);
+            }).then(function(order_lines){
+                if (flag =='add_lines'){
+                    self.open_order.add_lines_to_current_order(order_lines);
+                    self.ts_widget.new_order_screen.data_order_widget.refresh();
+                    self.ts_widget.new_order_screen.order_widget.change_selected_order()
+                    self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
+                }else{
+                    self.ts_model.build_order(self.order_fetch, self.open_order, order_lines); //build de order model
+                    self.ts_widget.new_order_screen.data_order_widget.refresh();
+                }
+            })
+            return loaded
+        },
         renderElement: function () {
             var self = this;
             this._super();
@@ -582,6 +620,28 @@ var OrderWidget = TsBaseWidget.extend({
                         })
                 }
             });
+            this.$('#promo-button').click(function(){
+               var current_order = self.ts_model.get('selectedOrder')
+               current_order.set('set_promotion', true)
+               self.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
+               $.when( self.ts_model.ready2 )
+               .done(function(){
+               var loaded = self.ts_model.fetch('sale.order',
+                                               ['id', 'name'],
+                                               [
+                                                   ['chanel', '=', 'telesale']
+                                               ])
+                   .then(function(orders){
+                       if (orders[0]) {
+                       var my_id = orders[0].id
+                       $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
+                       .done(function(){
+                       });
+
+                     }
+                   });
+                });
+            });
             this.$('#info-button').click(function(){
                 var current_order = self.ts_model.get('selectedOrder')
                 var selected_line = current_order.selected_orderline;
@@ -622,31 +682,6 @@ var OrderWidget = TsBaseWidget.extend({
                 self.orderlinewidgets.push(line);
             }, this));
 
-        },
-        load_order_from_server: function(order_id){
-            var self=this;
-          //  if (!flag){
-              //  this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model}));
-            //}
-            this.open_order =  this.ts_model.get('selectedOrder')
-            var loaded = self.ts_model.fetch('sale.order',
-                                            ['partner_shipping_id','note','comercial','client_order_ref','client_order_ref','name','partner_id','date_order','state','amount_total','date_invoice', 'requested_date', 'date_invoice'],
-                                            [
-                                                ['id', '=', order_id]
-                                            ])
-                .then(function(orders){
-                    var order = orders[0];
-                    self.order_fetch = order;
-                    return self.ts_model.fetch('sale.order.line',
-                                                ['product_id','product_uom','product_uom_qty','product_uos', 'product_uos_qty','price_udv','price_unit','price_subtotal','tax_id','pvp_ref','current_pvp', 'q_note', 'detail_note', 'discount'],
-                                                [
-                                                    ['order_id', '=', order_id],
-                                                 ]);
-                }).then(function(order_lines){
-                        self.ts_model.build_order(self.order_fetch, self.open_order, order_lines); //build de order model
-                        self.ts_widget.new_order_screen.data_order_widget.refresh();
-                })
-            return loaded
         },
     });   
 

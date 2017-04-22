@@ -251,8 +251,7 @@
 
     <t t-name="Order-Button-Widget">
         <li class="order-selector-button">
-<!--             <button t-att-id="widget.bo_id" class="select-order"><t t-esc="(widget.order.get('partner') ? widget.order.get('partner').split(' | ', 1) +' - ':'') + widget.order.get('creationDate').toString('t')"/></button> -->
-            <button t-att-id="widget.bo_id" class="select-order"><t t-esc="widget.bo_id"/></button>
+            <button t-att-id="widget.bo_id" class="select-order"><t t-esc="(widget.order.get('partner') ? widget.order.get('partner').split(' | ', 1) +' - ':'') + widget.order.get('creationDate').toString('t')"/></button>
         </li>
     </t>
 
@@ -284,6 +283,11 @@
             <div class="col-xs-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="so-button" tabIndex="13">SO</button>
+              </div>
+            </div>
+             <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+                <button id="promo-button" tabIndex="13">CR</button>
               </div>
             </div>
             <div class="col-xs-1 fullheight centerinside">

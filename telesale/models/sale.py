@@ -81,6 +81,14 @@ class SaleOrder(models.Model):
                 t_order_line.create(vals)
             if order['action_button'] == 'confirm':
                 order_obj.action_button_confirm()
+            # elif order['action_button'] == 'confirm_background':
+            #     # wf_service = netsvc.LocalService('workflow')
+            #     # wf_service.trg_validate(uid, 'sale.order', order_id,
+            #     #                         'order_confirm', cr)
+            #     self.action_button_confirm_thread(cr, uid, [order_id],
+            #                                       context=context)
+            if 'set_promotion' in order and order['set_promotion']:
+                order_obj.apply_commercial_rules()
         return order_ids
 
     def _get_ts_line_vals(self, order_obj, line):

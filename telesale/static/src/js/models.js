@@ -659,7 +659,8 @@ var Order = Backbone.Model.extend({
             state:"draft",
             comercial: '',
             coment: '',
-            client_order_ref: ''
+            client_order_ref: '',
+            set_promotion: false  // Used to apply promotions on server
         });
         this.ts_model = attributes.ts_model;
         this.selected_orderline = undefined;
@@ -792,6 +793,7 @@ var Order = Backbone.Model.extend({
             note: this.get('coment'),
             customer_comment: this.get('customer_comment'),
             client_order_ref: this.get('client_order_ref'),
+            set_promotion: this.get('set_promotion'),
         };
     },
     get_last_line_by: function(period, client_id){
