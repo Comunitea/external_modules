@@ -28,24 +28,24 @@
 .telesale .catalog-table{
     margin-top: 0.2%;
     width: 99%;
-    border: 1px solid #000;
-    margin-left: 0.5%;
+/*    border: 1px solid #000;
+*/    margin-left: 0.5%;
     margin-right:0.5%;
 }
 
-.telesale .catalog-table th{
+/*.telesale .catalog-table th{
     border: 1px solid #000;
     height: 9%;
     background: #7f82ac;
     font-size: 1.7vmin;
     text-align: center;
     color:black;
-}
+}*/
 .telesale .catalog-table th.pc-head-name{
-    width: 45%;
+    width: 50%;
 }
 .telesale .catalog-table th.pc-head-code{
-    width: 20%;
+    width: 15%;
 }
 .telesale .catalog-table th.pc-head-stock{
     width: 15%;
@@ -56,28 +56,18 @@
 .telesale .catalog-table th.pc-head-show{
     width: 10%;
 }
-.telesale .catalog-table td{
+/*.telesale .catalog-table td{
     border: 1px solid #000;
     height: 100%;
     text-align: center;
     font-size: 1.7vmin;
     vertical-align: middle
-}
-.telesale .catalog-table td.pc-cell-name{
-    width: 45%;
-    text-align: left;
-    padding-left:0.5%;
-}.telesale .catalog-table td.pc-cell-code{
-    width: 20%;
+}*/
 }.telesale .catalog-table td.pc-cell-stock{
-    width: 15%;
-}.telesale .catalog-table td.pc-cell-add{
-    width: 10%;
-}.telesale .catalog-table td.pc-cell-show{
-    width: 10%;
+     text-align: right;
 }
 
-.telesale .catalog-table button {
+/*.telesale .catalog-table button {
     color: black;
     font-size: 1.5vmin;
     vertical-align: middle;
@@ -88,4 +78,49 @@
     background: -moz-linear-gradient(#b2b3d7, #7f82ac);
     background:  -ms-linear-gradient(#b2b3d7, #7f82ac);
     background:      linear-gradient(#b2b3d7, #7f82ac);
+}*/
+
+/*.telesale .catalog-table button {
+    color: black;
+    vertical-align: middle;
+    margin-right: 0px;
+    border: 1px solid #ffffff;
+    background: #9ba3ff;
+    width: 100%;
+    padding: 0px;
+    font-size: 1.7vmin;
+}*/
+.telesale .catalog-table button {
+    color: black;
+    vertical-align: middle;
+    margin-right: 0px;
+    border: 1px solid #000000;
+    background: #c7c7c7;
+    width: 100%;
+    padding: 0px;
+    font-size: 1.7vmin;
+}
+.telesale .catalog-table th, .telesale .catalog-table td {
+    padding: 0px 8px;
+}
+.telesale .catalog-table tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+}
+
+.telesale .catalog-table thead > tr,
+.telesale .catalog-table tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.telesale .catalog-table tr.highlight{
+    transition: all 150ms linear;
+    background: rgb(110,200,155) !important;
+    color: white;
+}
+.telesale .catalog-table tr.lowlight{
+    transition: all 150ms linear;
+    background: rgb(216, 238, 227);
+}
+.telesale .catalog-table tr.lowlight:nth-child(even){
+    transition: all 150ms linear;
 }

@@ -65,7 +65,7 @@
                 <table class="history-line-table">
                     <thead>
                         <th class="head-name">Name</th>
-                        <th class="head-name">Customer</th>
+                        <th class="head-customer">Customer</th>
                         <th class="head-date">Date</th>
                         <th class="head-date">Date Planned</th>
                         <th class="head-total">Total</th>

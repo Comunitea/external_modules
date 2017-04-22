@@ -45,46 +45,29 @@
 .telesale .history-line-table {
     margin-top: 0.2%;
     width: 99%;
-    border: 1px solid #000;
     margin-left: 0.5%;
     margin-right: 0.5%;
     font-size: 1.7vmin;
+    font-size: 1.7vmin;
+    line-height: 3vh;
 }
-
-.telesale .history-line-table th{
+/*OLD STYLE */
+/*.telesale .history-line-table th{
     border: 1px solid #000;
     height: 9%;
     background: #7f82ac;
     text-align: center;
     color:black;
-}
-.telesale .history-line-table th.head-name{
-    width: 10%;
-}
-.telesale .history-line-table th.head-date{
-    width: 20%;
-}
-.telesale .history-line-table th.head-total{
-    width: 15%;
-}
-.telesale .history-line-table th.head-state{
-    width: 10%;
-}
-.telesale .history-line-table th.head-add{
-    width: 12.5%;
-}
-.telesale .history-line-table th.head-create{
-    width: 12.5%;
-}
+}*/
 
-.telesale .history-line-table td{
+/*.telesale .history-line-table td{
     border: 1px solid #000;
     height: 100%;
     text-align: center;
     vertical-align: middle;
-}
+}*/
 
-.telesale .history-line-table td.cell-name{
+/*.telesale .history-line-table td.cell-name{
     width: 10%;
 }
 .telesale .history-line-table td.cell-date{
@@ -102,8 +85,8 @@
 .telesale .history-line-table td.cell-create{
     width: 12.5%;
 }
-
-.telesale .order-history-screen button {
+*/
+/*.telesale .order-history-screen button {
     color: black;
     vertical-align: middle;
     margin-right:0px;
@@ -116,4 +99,75 @@
     width: 100%;
     padding: 0px;
     font-size: 1.7vmin;
+}*/
+
+/*NEW STYLE */
+.telesale .order-history-screen button {
+    color: black;
+    vertical-align: middle;
+    margin-right: 0px;
+    border: 1px solid #ffffff;
+    background: #9ba3ff;
+    width: 100%;
+    padding: 0px;
+    font-size: 1.7vmin;
 }
+.telesale .order-history-screen button {
+    color: black;
+    vertical-align: middle;
+    margin-right: 0px;
+    border: 1px solid #000000;
+    background: #c7c7c7;
+    width: 100%;
+    padding: 0px;
+    font-size: 1.7vmin;
+}
+.telesale .history-line-table th,
+.telesale .history-line-table td {
+    padding: 0px 8px;
+}
+.telesale .history-line-table tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+}
+
+.telesale .history-line-table thead > tr,
+.telesale .history-line-table tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.telesale .history-line-table tr.highlight{
+    transition: all 150ms linear;
+    background: rgb(110,200,155) !important;
+    color: white;
+}
+.telesale .history-line-table tr.lowlight{
+    transition: all 150ms linear;
+    background: rgb(216, 238, 227);
+}
+.telesale .history-line-table tr.lowlight:nth-child(even){
+    transition: all 150ms linear;
+}
+.telesale .history-line-table th.head-name{
+    width: 5%;
+}
+.telesale .history-line-table th.head-customer{
+    width: 40%;
+}
+/* x2 */
+.telesale .history-line-table th.head-date{
+    width: 10%;
+}
+.telesale .history-line-table th.head-total{
+    width: 10%;
+}
+.telesale .history-line-table th.head-state{
+    width: 5%;
+}
+.telesale .history-line-table th.head-add{
+    width: 10%;
+}
+.telesale .history-line-table th.head-create{
+    width: 10%;
+}
+
+
