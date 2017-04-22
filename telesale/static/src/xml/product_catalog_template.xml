@@ -45,8 +45,8 @@
                 </span>
             </td>
             <td class="pc-cell-stock">
-              <t t-if="widget.product.virtual_stock_conservative">
-                  <span class="product-cell" t-esc="widget.product.virtual_stock_conservative.toFixed(2)"/>
+              <t t-if="widget.stock">
+                  <span class="product-cell" t-esc="widget.stock.toFixed(2)"/>
               </t>
 
             </td>
