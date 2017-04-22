@@ -207,7 +207,7 @@
                         <div class="fullheight centerinside fullwidth">
                          <div class="centerthis">
                           <label for="comercial">Comercial:</label>
-                          <input class=" " type="text" id='comercial' name="comercial" t-att-value="widget.order_model.get('comercial')" readonly="readonly" tabIndex="-1"/>
+                          <span t-esc="widget.order_model.get('comercial')"/>
                       </div>
                       </div>
                     </div>
@@ -217,8 +217,9 @@
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
                               <label for="limit_credit">Limit Credit:</label>
-                              <input class=" " type="numeric" id='limit_credit' name="limit_credit"
-                                  t-att-value="widget.order_model.get('limit_credit').toFixed(2)" readonly="readonly" tabIndex="-1"/>
+                            <!--   <input class=" " type="numeric" id='limit_credit' name="limit_credit"
+                                  t-att-value="widget.order_model.get('limit_credit').toFixed(2)" readonly="readonly" tabIndex="-1"/> -->
+                              <span t-esc="widget.order_model.get('limit_credit').toFixed(2)"/>
                           </div>
                       </div>
                     </div>
@@ -228,12 +229,14 @@
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
                               <label for="customer_debt">Customer Debt:</label>
-                                  <input class="red" type="numeric" id='customer_debt' name="customer_debt"
+                             <!--      <input class="red" type="numeric" id='customer_debt' name="customer_debt"
                                       t-att-value="widget.order_model.get('customer_debt').toFixed(2)" readonly="readonly" tabIndex="-1"
                                       t-if="widget.order_model.get('customer_debt').toFixed(2) > 0"/>
                                   <input class="" type="numeric" id='customer_debt' name="customer_debt"
                                       t-att-value="widget.order_model.get('customer_debt').toFixed(2)" readonly="readonly" tabIndex="-1"
-                                      t-if="widget.order_model.get('customer_debt').toFixed(2) == 0"/>
+                                      t-if="widget.order_model.get('customer_debt').toFixed(2) == 0"/> -->
+                                   <span t-esc="widget.order_model.get('limit_credit').toFixed(2)" t-if="widget.order_model.get('customer_debt').toFixed(2) > 0"/>
+                                    <span t-esc="widget.order_model.get('limit_credit').toFixed(2)" t-if="widget.order_model.get('customer_debt').toFixed(2) == 0"/>
                           </div>
                       </div>
                     </div>
@@ -357,7 +360,8 @@
      <t t-name="Order-line-Widget">
         <tr>
              <td class="cell-nline">
-                <input type="text" class='col-nline' t-att-value="widget.model.get('n_line')" readonly="readonly" tabIndex="-1"/>
+                <!-- <input type="text" class='col-nline' t-att-value="widget.model.get('n_line')" readonly="readonly" tabIndex="-1"/> -->
+                <span t-esc="widget.model.get('n_line')"/>
             </td>
             <!-- <td class="cell-code">
                 <input type="text" class='col-code mandatory' t-att-value="widget.model.get('code')"/>
@@ -379,7 +383,8 @@
                 <input type="text" class='col-discount mandatory' t-att-value="widget.model.get('specific_discount') || widget.model.get('discount').toFixed(2)"/>
             </td>
              <td class="cell-total">
-                <input type="text" class='col-total' t-att-value="widget.model.get('total').toFixed(2)" readonly="readonly" tabIndex="-1"/>
+                <!-- <input type="text" class='col-total' t-att-value="widget.model.get('total').toFixed(2)" readonly="readonly" tabIndex="-1"/> -->
+                <span t-esc="widget.model.get('total')"/>
             </td>
 
 
@@ -396,8 +401,9 @@
                <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
                     <label for="total_discount">Discount:</label>
-                    <input type="numeric" id='total_discount' name="total_discount"
-                        t-att-value="widget.order_model.get('total_discount').toFixed(2)" readonly="readonly" tabIndex="-1"/>
+                   <!--  <input type="numeric" id='total_discount' name="total_discount"
+                        t-att-value="widget.order_model.get('total_discount').toFixed(2)" readonly="readonly" tabIndex="-1"/> -->
+                    <span t-esc="widget.order_model.get('total_discount').toFixed(2)"/>
                 </div>
                 </div> 
             </div>
@@ -406,8 +412,9 @@
                   <div class="fullheight centerinside fullwidth">
                       <div class="centerthis">
                         <label for="total_base">Total Base:</label>
-                        <input type="numeric" id='total_base' name="total_base"
-                        t-att-value="widget.order_model.get('total_base').toFixed(2)" readonly="readonly" tabIndex="-1"/>
+<!--                         <input type="numeric" id='total_base' name="total_base"
+                        t-att-value="widget.order_model.get('total_base').toFixed(2)" readonly="readonly" tabIndex="-1"/> -->
+                         <span t-esc="widget.order_model.get('total_base').toFixed(2)"/>
                       </div>
                   </div>
               </div>
@@ -417,7 +424,8 @@
                 <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
                   <label for="total_margin">Total Margin:</label>
-                  <input type="numeric" t-att-value="widget.order_model.get('total_margin').toFixed(2)" readonly="readonly" tabIndex="-1"/>
+       <!--           <input type="numeric" t-att-value="widget.order_model.get('total_margin').toFixed(2)" readonly="readonly" tabIndex="-1"/> -->
+                   <span t-esc="widget.order_model.get('total_margin').toFixed(2)"/>
                 </div>
               </div>
               </div>
@@ -426,8 +434,9 @@
                   <div class="fullheight centerinside fullwidth">
                       <div class="centerthis">
                       <label for="total_iva">Total Iva:</label>
-                      <input type="numeric" id='total_iva' name="total_discount"
-                          t-att-value="widget.order_model.get('total_iva').toFixed(2)" readonly="readonly" tabIndex="-1"/>
+                     <!--  <input type="numeric" id='total_iva' name="total_discount"
+                          t-att-value="widget.order_model.get('total_iva').toFixed(2)" readonly="readonly" tabIndex="-1"/> -->
+                      <span t-esc="widget.order_model.get('total_iva').toFixed(2)"/>
                       </div>
                   </div>
               </div>
@@ -437,8 +446,9 @@
                 <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
                     <label for="total">Margin (%):</label>
-                    <input type="numeric" class='total' id='total_margin'
-                        t-att-value="widget.order_model.get('total_margin_per')" readonly="readonly" tabIndex="-1"/>
+<!--                     <input type="numeric" class='total' id='total_margin'
+                        t-att-value="widget.order_model.get('total_margin_per')" readonly="readonly" tabIndex="-1"/> -->
+                    <span t-esc="widget.order_model.get('total_margin_per')"/>    
                 </div>
               </div>
               </div>
@@ -447,8 +457,9 @@
                   <div class="fullheight centerinside fullwidth">
                       <div class="centerthis">
                       <label for="total" class="totalorder">Total Order:</label>
-                      <input type="numeric" class='total totalorder' id="total_order"
-                          t-att-value="widget.order_model.get('total').toFixed(2)" tabIndex="-1" readonly="readonly"/>
+                    <!--   <input type="numeric" class='total totalorder' id="total_order"
+                          t-att-value="widget.order_model.get('total').toFixed(2)" tabIndex="-1" readonly="readonly"/> -->
+                       <span t-esc="widget.order_model.get('total').toFixed(2)"/>   
                       </div>
                   </div>
               </div>
