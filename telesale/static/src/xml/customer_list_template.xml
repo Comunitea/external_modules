@@ -20,7 +20,8 @@
         </tr>
     </t>
 
-     <t t-name="CustomerDetails">
+    <!-- VIEW DETAILS -->
+    <t t-name="CustomerDetails">
         <section class='client-details'>
             <div class='client-name'><t t-esc='partner.name' /></div>
             <div class='edit-buttons'>
@@ -75,7 +76,7 @@
                             <span class='detail client-id empty'>N/A</span>
                         </t>
                     </div>
-                    <div class='client-detail'>
+      <!--               <div class='client-detail'>
                         <span class='label'>NIF</span>
                         <t t-if='partner.vat'>
                             <span class='detail vat'><t t-esc='partner.vat'/></span>
@@ -83,6 +84,85 @@
                         <t t-if='!partner.vat'>
                             <span class='detail vat empty'>N/A</span>
                         </t>
+                    </div> -->
+                    <div class='client-detail'>
+                        <span class='label'>Reference</span>
+                        <t t-if='partner.ref'>
+                            <span class='detail ref'><t t-esc='partner.ref'/></span>
+                        </t>
+                        <t t-if='!partner.ref'>
+                            <span class='detail ref empty'>N/A</span>
+                        </t>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </t>
+
+    <!-- EDIT OR CREATE -->
+    <t t-name="CustomerDetailsEdit">
+        <section class='client-details edit'>
+            <div class='client-picture'>
+                <t t-if='!partner.id'>
+                    <i class='fa fa-camera'></i>
+                </t>
+                <!-- <t t-if='partner.id'>
+                    <img t-att-src='widget.partner_icon_url(partner.id)' />
+                </t> -->
+<!--                 <input type='file' class='image-uploader'></input>   
+ -->            </div>
+            <input class='detail client-name' name='name' t-att-value='partner.name' placeholder='Name'></input>
+            <div class='edit-buttons'>
+                <div class='button undo'><i class='fa fa-undo' /></div>
+                <div class='button save'><i class='fa fa-floppy-o' /></div>
+            </div>
+            <div class='client-details-box clearfix'>
+                <div class='client-details-left'>
+                    <div class='client-detail'>
+                        <span class='label'>Street</span>
+                        <input class='detail client-address-street' name='street'       t-att-value='partner.street || ""' placeholder='Street'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>City</span>
+                        <input class='detail client-address-city'   name='city'         t-att-value='partner.city || ""' placeholder='City'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Postcode</span>
+                        <input class='detail client-address-zip'    name='zip'          t-att-value='partner.zip || ""' placeholder='ZIP'></input>
+                    </div>
+                   <!--  <div class='client-detail'>
+                        <span class='label'>Country</span>
+                        <select class='detail client-address-country needsclick' name='country_id'>
+                            <option value=''>None</option>
+                            <t t-foreach='widget.pos.countries' t-as='country'>
+                                <option t-att-value='country.id' t-att-selected="partner.country_id ? ((country.id === partner.country_id[0]) ? true : undefined) : undefined"> 
+                                    <t t-esc='country.name'/>
+                                </option>
+                            </t>
+                        </select>
+                    </div> -->
+                </div>
+                <div class='client-details-right'>
+                    <div class='client-detail'>
+                        <span class='label'>Email</span>
+                        <input class='detail client-email'  name='email'    type='email'    t-att-value='partner.email || ""'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Phone</span>
+                        <input class='detail client-phone'  name='phone'    type='tel'      t-att-value='partner.phone || ""'></input>
+                    </div>
+                   <!--  <div class='client-detail'>
+                        <span class='label'>Barcode</span>
+                        <input class='detail barcode'       name='barcode'    t-att-value='partner.barcode || ""'></input>
+                    </div> -->
+              <!--       <div class='client-detail'>
+                        <span class='label'>Tax ID</span>
+                        <input class='detail vat'           name='vat'     t-att-value='partner.vat || ""'></input>
+                    </div>   -->    
+                    <div class='client-detail'>
+                        <span class='label'>Reference: </span>
+                        <input class='detail ref'           name='ref'     t-att-value='partner.ref || ""'></input>
                     </div>
                 </div>
             </div>
@@ -92,7 +172,7 @@
     <t t-name="CustomerListWidget">
         <div class="customer-list-content">
             <section class="top-content">
-                <div class= "col-xs-8 centerinside fullheight">
+                <div class= "col-xs-7 centerinside fullheight">
                     <div class='centerthis searchbox'>
                         <input placeholder='Search Customers' />
                         <span class='search-clear'></span>
@@ -107,10 +187,18 @@
                         </span>
                     </div>
                 </div>
-                <div class= "col-xs-3 centerinside fullheight">
+                <div class= "col-xs-2 centerinside fullheight">
                     <div class= "centerthis">
                         <span class='button next oe_hidden highlight'>
                             Select Customer
+                            <i class='fa fa-angle-double-right'></i>
+                        </span>
+                    </div>
+                </div>
+                <div class= "col-xs-2 centerinside fullheight">
+                    <div class= "centerthis">
+                        <span class='button next2 oe_hidden highlight'>
+                            Set Delivery Address
                             <i class='fa fa-angle-double-right'></i>
                         </span>
                     </div>
@@ -127,7 +215,7 @@
                     </section>
                     <section class='subwindow'>
                         <div class='subwindow-container'>
-                          <!--   <div class='subwindow-container-fix touch-scrollable scrollable-y'> -->
+                            <div class='subwindow-container-fix touch-scrollable scrollable-y'>
                                 <table class='client-list'>
                                     <thead>
                                         <tr>
@@ -141,7 +229,7 @@
                                     <tbody class='client-list-contents'>
                                     </tbody>
                                 </table>
-                            <!-- </div> -->
+                            </div>
                         </div>
                     </section>
                 </div>

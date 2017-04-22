@@ -115,6 +115,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         var self=this;
         if (!value) {return;}
         if (key == "partner"){
+            debugger;
             var partner_id = self.ts_model.db.partner_name_id[value];
 
             // Not partner found in backbone model
