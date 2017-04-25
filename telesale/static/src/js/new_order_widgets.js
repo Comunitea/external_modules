@@ -254,6 +254,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         });
     },
     renderElement: function() {
+        console.log('RENDER ORDER_LINE WIDGET');
         var self=this;
         this._super();
         this.$el.unbind()
@@ -299,15 +300,6 @@ var OrderlineWidget = TsBaseWidget.extend({
             }
             self.$('.col-product_uom').append($('<option>', dic))
         }
-
-        //autocomplete products and units from array of names
-        // var products_ref = this.ts_model.get('products_codes')
-        // this.$('.col-code').autocomplete({
-        //     source: function(request, response) {
-        //         var results = $.ui.autocomplete.filter(products_ref, request.term);
-        //         response(results.slice(0, 20));
-        //     }
-        // });
         var product_names = this.ts_model.get('products_names')
         this.$('.col-product').autocomplete({
             source: function(request, response) {
@@ -469,34 +461,151 @@ var OrderlineWidget = TsBaseWidget.extend({
 
 var OrderWidget = TsBaseWidget.extend({
         template:'Order-Widget',
+        events: {
+            'click .add-line-button': 'button_add_line',
+            'click .remove-line-button': 'button_remove_line',
+            'click  #ult-button': 'button_ult',
+            'click  #vua-button': 'button_vua',
+            'click  #so-button': 'button_so',
+            'click  #promo-button': 'button_promo',
+            'click  #info-button': 'button_info',
+            'click  #show-client': 'button_show_client',
+            // 'click  #filter-client': 'button_filter_client',
+        },
         init: function(parent, options) {
             this._super(parent,options);
             this.ts_model.bind('change:selectedOrder', this.change_selected_order, this);
             this.bind_orderline_events();
             this.orderlinewidgets = [];
         },
-        check_customer_get_id: function(){
-            var client_name = this.ts_model.get('selectedOrder').get('partner')
-            var client_id = this.ts_model.db.partner_name_id[client_name];
-            if (!client_id){
-                alert(_t('No customer defined'));
-                return false
-            }
-            else{
-                return client_id
-            }
-        },
         change_selected_order: function() {
+            // Called when cahange selectedOrder, 
+            // Unbind current order linds and bind the new ones. 
             this.currentOrderLines.unbind();
             this.bind_orderline_events();
             this.renderElement();
         },
         bind_orderline_events: function() {
+            // Called when cahange selectedOrder, 
+            // Get SelectedOrder orderlines from model, and bind add and remove lines events
+            // When we renderElement, we recalculate the orderlines
             this.currentOrderLines = (this.ts_model.get('selectedOrder')).get('orderLines');
             this.currentOrderLines.bind('add', this.renderElement, this);
             this.currentOrderLines.bind('remove', this.renderElement, this);
         },
-        show_client: function(){
+        show_product: function(product_id){
+            // Shows Product form view in a PopUp
+            if (product_id){
+                this.do_action({
+                    type: 'ir.actions.act_window',
+                    res_model: "product.product",
+                    res_id: product_id,
+                    views: [[false, 'form']],
+                    target: 'new',
+                    context: {},
+                });
+            }
+        },
+        button_add_line: function(){
+            // click add line event function
+            var order =  this.ts_model.get('selectedOrder')
+            var partner_id = this.ts_model.db.partner_name_id[order.get('partner')]
+            if (!partner_id){
+                alert(_t('Please select a customer before adding a order line'));
+                $('#partner').focus();
+            }else{
+                this.ts_model.get('selectedOrder').addLine();
+                var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
+                this.ts_model.get('selectedOrder').selectLine(added_line);
+                this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product').focus(); //set focus on line when we add one
+            }
+        },
+        button_remove_line: function(){
+            this.ts_model.get('selectedOrder').removeLine();
+            var selected_line = this.ts_model.get('selectedOrder').getSelectedLine();
+            if (selected_line){
+                var n_line = selected_line.get('n_line')
+                this.orderlinewidgets[n_line-1].$('.col-product').focus();
+            }
+        },
+        button_ult: function(){
+            // Get last line sold.
+            var self=this;
+            var client_id = this.check_customer_get_id();
+            if (client_id){
+                $.when(self.ts_model.get('selectedOrder').get_last_line_by('ult', client_id))
+                .done(function(){
+                })
+                .fail(function(){
+                    alert(_t("NOT WORKING"));
+                })
+            }
+        },
+        button_vua: function(){
+            var self=this;
+            var client_id = this.check_customer_get_id();
+            if (client_id){
+                $.when(self.ts_model.get('selectedOrder').get_last_line_by('year', client_id))
+                .done(function(){
+                })
+                .fail(function(){
+                    alert(_t("NOT WORKING"));
+                })
+            }
+        },
+       button_so: function(){
+            var self = this;
+            var client_id = this.check_customer_get_id();
+            if (client_id){
+            $.when(self.ts_model.get('selectedOrder').get_last_line_by('3month', client_id))
+            .done(function(){
+            })
+            .fail(function(){
+                alert(_t("NOT WORKING"));
+            })
+            }
+        },
+        button_promo: function(){
+           var self = this;
+           var current_order = this.ts_model.get('selectedOrder')
+           current_order.set('set_promotion', true)
+           this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
+           $.when( self.ts_model.ready2 )
+           .done(function(){
+           var loaded = self.ts_model.fetch('sale.order',
+                                           ['id', 'name'],
+                                           [
+                                               ['chanel', '=', 'telesale']
+                                           ])
+               .then(function(orders){
+                   if (orders[0]) {
+                   var my_id = orders[0].id
+                   $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
+                   .done(function(){
+                   });
+
+                 }
+               });
+            });
+            
+        },
+        button_info: function(){
+            var current_order = this.ts_model.get('selectedOrder')
+            var selected_line = current_order.selected_orderline;
+            if (!selected_line){
+                alert(("You must select a product line."));
+            }else{
+                var product_id = this.ts_model.db.product_name_id[selected_line.get('product')];
+                if (!product_id){
+                    alert(_t("This line has not a product defined."));
+                }
+                else{
+                    this.show_product(product_id)
+                }
+            }
+            
+        },
+        button_show_client: function(){
             var client_id = this.check_customer_get_id()
             if (client_id){
                 this.do_action({
@@ -512,30 +621,37 @@ var OrderWidget = TsBaseWidget.extend({
               alert(_t('You must select a customer'));
             }
         },
-        show_product: function(product_id){
-            if (product_id){
-                this.do_action({
-                    type: 'ir.actions.act_window',
-                    res_model: "product.product",
-                    res_id: product_id,
-                    views: [[false, 'form']],
-                    target: 'new',
-                    context: {},
-                });
+        // button_filter_client: function(){
+        //     // Opens a PopUp
+        //     this.ts_widget.screen_selector.show_popup('filter_customer_popup', false);
+        // },
+        check_customer_get_id: function(){
+            var client_name = this.ts_model.get('selectedOrder').get('partner')
+            var client_id = this.ts_model.db.partner_name_id[client_name];
+            if (!client_id){
+                alert(_t('No customer defined'));
+                return false
+            }
+            else{
+                return client_id
             }
         },
+        
         get_order_fields: function(){
+        // Called when load an order from server
             return ['partner_shipping_id','note','comercial','client_order_ref','name',
                     'partner_id','date_order','state','amount_total','requested_date']
 
         },
         get_line_fields: function(){
+        // Called when load the order lines from server
             var line_fields = ['product_id','product_uom','product_uom_qty','price_unit',
                                'tax_id', 'price_subtotal', 'discount'];
             return line_fields;
 
         },
         load_order_from_server: function(order_id, flag){
+            // Gets and order_id from server, and shows it.
             var self=this;
             if (!flag){
                 this.ts_model.get('orders').add(new models.Order({ ts_model: self.ts_model}));
@@ -562,114 +678,20 @@ var OrderWidget = TsBaseWidget.extend({
             return loaded
         },
         renderElement: function () {
+            console.log('RENDER ORDER WIDGET')
+            // Delete lines widgets and read models to get the news ones.
             var self = this;
+            // Events linked
+
             this._super();
-            // #  Habría que hacer unbind??
-            this.$('.add-line-button').click(function(){
-                var order =  self.ts_model.get('selectedOrder')
-                var partner_id = self.ts_model.db.partner_name_id[order.get('partner')]
-                if (!partner_id){
-                    alert(_t('Please select a customer before adding a order line'));
-                    $('#partner').focus();
-                }else{
-                    self.ts_model.get('selectedOrder').addLine();
-                    var added_line = self.ts_model.get('selectedOrder').getLastOrderline();
-                    self.ts_model.get('selectedOrder').selectLine(added_line);
-                    self.orderlinewidgets[self.orderlinewidgets.length - 1].$el.find('.col-product').focus(); //set focus on line when we add one
-                }
-            });
-            this.$('.remove-line-button').click(function(){
-                self.ts_model.get('selectedOrder').removeLine();
-                var selected_line = self.ts_model.get('selectedOrder').getSelectedLine();
-                if (selected_line){
-                    var n_line = selected_line.get('n_line')
-                    self.orderlinewidgets[n_line-1].$el.find('.col-product').focus();
-                }
 
-            });
-            this.$('#ult-button').click(function(){
-                var client_id = self.check_customer_get_id();
-                if (client_id){
-                    $.when(self.ts_model.get('selectedOrder').get_last_line_by('ult', client_id))
-                        .done(function(){
-                        })
-                        .fail(function(){
-                            alert(_t("NOT WORKING"));
-                        })
-                }
-            });
-            this.$('#vua-button').click(function(){
-                var client_id = self.check_customer_get_id();
-                if (client_id){
-                    $.when(self.ts_model.get('selectedOrder').get_last_line_by('year', client_id))
-                        .done(function(){
-                        })
-                        .fail(function(){
-                            alert(_t("NOT WORKING"));
-                        })
-                }
-            });
-            this.$('#so-button').click(function(){
-                var client_id = self.check_customer_get_id();
-                if (client_id){
-                    $.when(self.ts_model.get('selectedOrder').get_last_line_by('3month', client_id))
-                        .done(function(){
-                        })
-                        .fail(function(){
-                            alert(_t("NOT WORKING"));
-                        })
-                }
-            });
-            this.$('#promo-button').click(function(){
-               var current_order = self.ts_model.get('selectedOrder')
-               current_order.set('set_promotion', true)
-               self.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
-               $.when( self.ts_model.ready2 )
-               .done(function(){
-               var loaded = self.ts_model.fetch('sale.order',
-                                               ['id', 'name'],
-                                               [
-                                                   ['chanel', '=', 'telesale']
-                                               ])
-                   .then(function(orders){
-                       if (orders[0]) {
-                       var my_id = orders[0].id
-                       $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
-                       .done(function(){
-                       });
-
-                     }
-                   });
-                });
-            });
-            this.$('#info-button').click(function(){
-                var current_order = self.ts_model.get('selectedOrder')
-                var selected_line = current_order.selected_orderline;
-                if (!selected_line){
-                    alert(("You must select a product line."));
-                }else{
-                    var product_id = self.ts_model.db.product_name_id[selected_line.get('product')];
-                    if (!product_id){
-                        alert(_t("This line has not a product defined."));
-                    }
-                    else{
-                        self.show_product(product_id)
-                    }
-                }
-            });
-            this.$('#show-client').click(function(){
-                self.show_client();
-            });
-            this.$('#filter-client').click(function(){
-                self.ts_widget.screen_selector.show_popup('filter_customer_popup', false);
-            });
-
-            // TODO ¿No borrar líneas y añadir a la última?
+            // Destroy line widgets
             for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
                 this.orderlinewidgets[i].destroy();
             }
             this.orderlinewidgets = [];
 
+            // Get lines from model and render it
             var $content = this.$('.orderlines');
             var nline = 1
             this.currentOrderLines.each(_.bind( function(orderLine) {
