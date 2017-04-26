@@ -16,9 +16,7 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
         var self=this;
         this.$('.open-grid').click(function(){
             self.button_open_grid();
-        })
-            
-
+        });
     },
     load_input_fields: function() {
         // Set product name autocomplete
