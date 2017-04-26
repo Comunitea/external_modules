@@ -51,7 +51,7 @@
 
             </td>
              <td class="pc-cell-qty">
-               <input type="text" id="add-qty" class='mandatory' t-att-value="2.0.toFixed(2)"/>
+               <input type="text" id="add-qty" class='mandatory' t-att-value="1.0.toFixed(2)"/>
             </td>
             <td class="pc-cell-add">
                 <button class="add-product fullwidth">+</button>
