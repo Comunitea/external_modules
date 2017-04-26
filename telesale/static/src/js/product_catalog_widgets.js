@@ -115,8 +115,8 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         this.line_widgets = [];
         var products = this.ts_model.get("products").models || [];
         var my_len = products.length;
-        if (my_len > 20){
-            my_len = 20
+        if (my_len > 100){
+            my_len = 100
         }
         for (var i = 0, len = my_len; i < len; i++){
             var product_obj = products[i].attributes;
