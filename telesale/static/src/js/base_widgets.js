@@ -63,6 +63,25 @@ var TsWidget = TsBaseWidget.extend({
             self.try_close();
         });
     },
+    _get_screen_selector_vals: function(){
+        return {
+            screen_set:{
+                'new_order': this.new_order_screen,
+                'order_history': this.order_history_screen,
+                'product_catalog': this.product_catalog_screen,
+                'customer_list': this.customer_list_screen,
+                'key_shorts': this.key_shorts_screen,
+            },
+            popup_set:{
+                // 'product_sust_popup': this.product_sust_popup,
+                // 'add_call_popup': this.add_call_popup,
+                // 'finish_call_popup': this.finish_call_popup,
+                // 'create_reserve_popup': this.create_reserve_popup,
+                'filter_customer_popup': this.filter_customer_popup,
+            },
+            default_client_screen: 'new_order',
+         }
+    },
     build_widgets: function() {
         var self = this;
         // --------  SCREEN WIDGETS ---------
@@ -92,23 +111,8 @@ var TsWidget = TsBaseWidget.extend({
         this.filter_customer_popup.appendTo(this.$('#content'));
 
         // --------  SCREEN SELECTOR ---------
-        this.screen_selector = new Screens.ScreenSelector({
-            screen_set:{
-                'new_order': this.new_order_screen,
-                'order_history': this.order_history_screen,
-                'product_catalog': this.product_catalog_screen,
-                'customer_list': this.customer_list_screen,
-                'key_shorts': this.key_shorts_screen,
-            },
-            popup_set:{
-                // 'product_sust_popup': this.product_sust_popup,
-                // 'add_call_popup': this.add_call_popup,
-                // 'finish_call_popup': this.finish_call_popup,
-                // 'create_reserve_popup': this.create_reserve_popup,
-                'filter_customer_popup': this.filter_customer_popup,
-            },
-            default_client_screen: 'new_order',
-         });
+        var screen_vals = this._get_screen_selector_vals();
+        this.screen_selector = new Screens.ScreenSelector(screen_vals);
         //  // --------  BUTTON WIDGETS ---------
         // this.notification = new Buttons.SynchIconWidget(this,{});
         // this.notification.replace(this.$('#placeholder-session-buttons1'));
@@ -392,6 +396,5 @@ var TsWidget = TsBaseWidget.extend({
     },
 });
 
-return TsWidget;
-
+return {TsWidget: TsWidget};
 });
