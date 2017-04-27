@@ -1,0 +1,18 @@
+.telesale .grid_popup {
+    position: absolute;
+    left: 30%;
+    top: 50%;
+    width: 60%;
+    height: 50%;
+    margin-left: -15%;
+    margin-top: -10%;
+    padding: 10px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 1.5vmin;
+    font-weight: bold;
+    background-color: #B1B1B1;
+    border-radius: 10px;
+    box-shadow: 0px -1px white, 0px 1px white, 0px 4px #949494, 0px 10px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1200;
+}
