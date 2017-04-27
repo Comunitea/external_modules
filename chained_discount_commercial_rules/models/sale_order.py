@@ -20,6 +20,9 @@ class SaleOrderLine(models.Model):
     @api.one
     @api.depends('chained_discount')
     def _compute_discount(self):
+        if not self.chained_discount:
+            self.discount = 0.0
+            return
         splited_discount = self.chained_discount.split('+')
         disc = 0.00
         for val in splited_discount:
@@ -35,12 +38,12 @@ class SaleOrderLine(models.Model):
 
     @api.model
     def validate_chained_discount(self, discount_str):
-        splited_discount = discount_str.split('+')
-        for val in splited_discount:
-            try:
+        try:
+            splited_discount = discount_str.split('+')
+            for val in splited_discount:
                 float(val)
-            except:
-                return False
+        except:
+            return False
         return True
 
     @api.onchange('chained_discount')
