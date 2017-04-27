@@ -116,7 +116,6 @@ var DataOrderWidget = TsBaseWidget.extend({
         var self=this;
         if (!value) {return;}
         if (key == "partner"){
-            debugger;
             var partner_id = self.ts_model.db.partner_name_id[value];
 
             // Not partner found in backbone model
@@ -253,15 +252,7 @@ var OrderlineWidget = TsBaseWidget.extend({
           }
         });
     },
-    renderElement: function() {
-        console.log('RENDER ORDER_LINE WIDGET');
-        var self=this;
-        this._super();
-        this.$el.unbind()
-
-        if(this.model.is_selected()){
-            this.$('.col-nline').addClass('selected');
-        }
+    set_input_handlers: function() {
         // Si el campo se rellena con autocomplete se debe usar blur
         // this.$('.col-code').blur(_.bind(this.set_value, this, 'code'));
         // this.$('.col-code').focus(_.bind(this.click_handler, this, 'code'));
@@ -284,21 +275,16 @@ var OrderlineWidget = TsBaseWidget.extend({
 
         this.$('.col-total').change(_.bind(this.set_value, this, 'total'));
         this.$('.col-total').focus(_.bind(this.click_handler, this, 'total'));
-
-
-
-        // Mapeo de teclas para moverse por la tabla con las flechas
-        this.control_arrow_keys()
-        // Creamos nueva linea al tabular la última columna de descuento
-
+    },
+    load_input_fields: function() {
         // Cargo todas las unidades en la linea
-        for (var unit in self.ts_model.db.unit_name_id){
+        for (var unit in this.ts_model.db.unit_name_id){
             var dic = { value: unit,
                         text: unit}
-             if (unit == self.model.get('unit')){
+             if (unit == this.model.get('unit')){
                     dic['selected'] =  "selected"
             }
-            self.$('.col-product_uom').append($('<option>', dic))
+            this.$('.col-product_uom').append($('<option>', dic))
         }
         var product_names = this.ts_model.get('products_names')
         this.$('.col-product').autocomplete({
@@ -450,6 +436,24 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.model.set('total',subtotal);
         this.renderElement();
         this.$('.col-'+ focus_key).focus()
+    },
+    renderElement: function() {
+        console.log('RENDER ORDER_LINE WIDGET');
+        var self=this;
+        this._super();
+        this.$el.unbind()
+
+        // Set color n_line selected NOT WORKING
+        if(this.model.is_selected()){
+            this.$('.col-nline').addClass('selected');
+        }
+        // Set handlers for the line input fields
+        this.set_input_handlers();
+        // Mapeo de teclas para moverse por la tabla con las flechas
+        // Creamos nueva linea al tabular la última columna de descuento
+        this.control_arrow_keys()
+        // Set autocompletes of product and unit field
+        this.load_input_fields();
     },
 });
 

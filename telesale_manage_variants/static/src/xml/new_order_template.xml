@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<templates id="template_new_order" inherit_id="telesale.template_new_order">
+
+    <t t-extend="Order-Widget">
+        <t t-jquery=".header-product" t-operation="before">
+            <th class="header-product-tmpl">Grid</th>
+            <th class="header-product-tmpl">Template</th>
+        </t>
+    </t>
+
+    <t t-extend="Order-line-Widget">
+        <t t-jquery=".cell-product" t-operation="before">
+            <!-- LQDR column -->
+            <td>
+                <button class="open-grid">G</button>
+            </td>
+            <td class="cell-product-tmpl">
+                <input type="search" class='col-product-tmpl mandatory' t-att-value="widget.model.get('product')"/>
+            </td>
+        </t>
+    </t>
+
+</templates>
