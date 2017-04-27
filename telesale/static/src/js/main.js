@@ -1,7 +1,8 @@
 
 odoo.define('telesale.main', function (require) {
 "use strict";
-var ts_widget = require('telesale.BaseWidget');
+var BaseWidget = require('telesale.BaseWidget');
+var ts_widget = BaseWidget.TsWidget;
 var core = require('web.core');
 
 core.action_registry.add('ts.ui', ts_widget);

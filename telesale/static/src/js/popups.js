@@ -43,6 +43,7 @@ var FilterCustomerPopUp = PopUpWidget.extend({
     }
 });
 
-return {FilterCustomerPopUp: FilterCustomerPopUp};
+return {FilterCustomerPopUp: FilterCustomerPopUp,
+        PopUpWidget: PopUpWidget};
 
 });
