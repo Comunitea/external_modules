@@ -6,6 +6,8 @@
                 <link rel="stylesheet" href="/telesale_manage_variants/static/src/css/new_order.css" id="ts-stylesheet"/>
                 <script type="text/javascript" src="/telesale_manage_variants/static/src/js/new_order_widgets.js"></script>
                 <script type="text/javascript" src="/telesale_manage_variants/static/src/js/models.js"></script>
+                <script type="text/javascript" src="/telesale_manage_variants/static/src/js/db.js"></script>
+                <script type="text/javascript" src="/telesale_manage_variants/static/src/js/popups.js"></script>
             </xpath>
         </template>
     </data>

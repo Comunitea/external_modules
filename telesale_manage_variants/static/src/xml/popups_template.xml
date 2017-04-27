@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<templates id="template_popups" inherit_id="telesale.template_popups">
+
+    <t t-name="Grid-PopUp">
+
+        <div class="grid_popup">
+            <div id="placeholder-grid-widget">
+            </div>
+            <div class="close-block">
+                <div class="col-xs-12 fullheight centerinside">
+                  <div class="centerthis">
+                    <button id="close-filter">Close Grid</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
