@@ -19,6 +19,9 @@ DB.TS_LS = DB.TS_LS.extend({
             this.template_name_id[template.display_name] = template.id
         }
     },
+    get_template_by_id: function(template_id){
+        return this.template_by_id[template_id];
+    }
     
 });
 
