@@ -3,6 +3,13 @@
 <templates id="template_new_order" inherit_id="telesale.template_new_order">
 
     <t t-extend="Order-Widget">
+        <t t-jquery=".state_order" t-operation="before">
+            <div class="col-xs-1 fullheight centerinside">
+              <div class="centerthis">
+                <button id="change_view" tabIndex="18">P / V</button>
+              </div>
+            </div>
+        </t>
         <t t-jquery=".header-product" t-operation="before">
             <th class="header-template">Grid</th>
             <th class="header-template">Template</th>

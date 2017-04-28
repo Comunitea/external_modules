@@ -91,6 +91,72 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
 
 });
 
+
+var OrderWidget = NewOrderWidgets.OrderWidget.include({
+    events: {
+            'click .add-line-button': 'button_add_line',
+            'click .remove-line-button': 'button_remove_line',
+            'click  #ult-button': 'button_ult',
+            'click  #vua-button': 'button_vua',
+            'click  #so-button': 'button_so',
+            'click  #promo-button': 'button_promo',
+            'click  #info-button': 'button_info',
+            'click  #show-client': 'button_show_client',
+            // ADDED
+            'click  #change_view': 'button_change_view',
+        },
+    init: function(parent, options){
+        this._super(parent, options);
+        this.view_mode = 'template';
+    },
+    button_change_view: function(){
+
+       var next_mode = 'template'
+       if (this.view_mode == 'template'){
+            this.view_mode = 'product';
+            next_mode = 'product'
+       }
+       else{
+            this.view_mode = 'template';
+            next_mode = 'template'
+       }
+       var options = {'mode': next_mode}
+       this.renderLines(options)
+       this.view_mode = next_mode
+    },
+    renderLines: function(options){
+        // this._super();
+        var mode = 'template';
+        if (options && options.mode){
+            mode = options.mode;
+        }
+        // OVERWRITED AND MODIFIED
+        var self = this;
+        // Destroy line widgets
+            for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
+                this.orderlinewidgets[i].destroy();
+            }
+            this.orderlinewidgets = [];
+
+        var $content = this.$('.orderlines');
+        var nline = 1
+        this.currentOrderLines.each(_.bind( function(orderLine) {
+            orderLine.set('n_line', nline++);
+            console.log(orderLine)
+            console.log(orderLine.mode)
+            console.log(mode)
+            if (orderLine.mode == mode){
+                var line = new NewOrderWidgets.OrderlineWidget(this, {
+                    model: orderLine,
+                    order: this.ts_model.get('selectedOrder'),
+                });
+                line.appendTo($content);
+                self.orderlinewidgets.push(line);
+            }
+        }, this));
+    }
+    });
+
 });
 
 
