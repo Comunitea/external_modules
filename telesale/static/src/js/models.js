@@ -859,13 +859,16 @@ var Order = Backbone.Model.extend({
       var self=this;
       // self.get('orderLines')
     },
-    addProductLine: function(product_id, add_qty){
+    addProductLine: function(product_id, add_qty, force_new_line){
         var self=this;
         if (!add_qty){
             add_qty = 1.0
-        }        
+        }
+        if (!force_new_line){
+            force_new_line = false;
+        }           
         if($('#partner').val()){
-            if(this.selected_orderline && this.selected_orderline.get('code') == "" && this.selected_orderline.get('product') == "" ){
+            if(this.selected_orderline && !force_new_line && this.selected_orderline.get('product') == "" ){
               $('.remove-line-button').click()
             }
             $('.add-line-button').click()

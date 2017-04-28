@@ -681,13 +681,9 @@ var OrderWidget = TsBaseWidget.extend({
             })
             return loaded
         },
-        renderElement: function () {
-            console.log('RENDER ORDER WIDGET')
-            // Delete lines widgets and read models to get the news ones.
+        // Get lines from model and render it
+        renderLines: function(options){
             var self = this;
-            // Events linked
-
-            this._super();
 
             // Destroy line widgets
             for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
@@ -695,7 +691,6 @@ var OrderWidget = TsBaseWidget.extend({
             }
             this.orderlinewidgets = [];
 
-            // Get lines from model and render it
             var $content = this.$('.orderlines');
             var nline = 1
             this.currentOrderLines.each(_.bind( function(orderLine) {
@@ -707,6 +702,15 @@ var OrderWidget = TsBaseWidget.extend({
                 line.appendTo($content);
                 self.orderlinewidgets.push(line);
             }, this));
+        },
+        // Delete lines widgets and read models to get the news ones.
+        renderElement: function () {
+            // Events linked in dict events
+            var self = this;
+            this._super();
+
+            // Get lines from model and render it
+            self.renderLines();
 
         },
     });   
