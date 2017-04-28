@@ -35,6 +35,7 @@ TsModels.Orderline.prototype.initialize = function(session, attributes){
     this.set({
         template : ''
     });
+    this.mode = 'template'
     return _initialize_.call(this, session, attributes);
 }
 

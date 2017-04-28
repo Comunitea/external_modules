@@ -39,7 +39,10 @@ var GridWidget = TsBaseWidget.extend({
     },
     prototipe_add: function(variant_id){
         var current_order= this.ts_model.get('selectedOrder');
-        current_order.addProductLine(variant_id, 3.69);
+        current_order.addProductLine(variant_id, 3.69, true);
+        var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
+        added_line.mode = 'product';
+
     },
     refresh: function(options){
         this.variant_ids = [];
