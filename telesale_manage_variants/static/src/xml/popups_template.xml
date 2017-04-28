@@ -5,8 +5,6 @@
     <t t-name="Grid-PopUp">
 
         <div class="grid_popup">
-            <div id="placeholder-grid-widget">
-            </div>
             <div class="close-block">
                 <div class="col-xs-12 fullheight centerinside">
                   <div class="centerthis">
@@ -14,6 +12,20 @@
                   </div>
                 </div>
             </div>
+            <div id="placeholder-grid-widget">
+            </div>
+        </div>
+    </t>
+
+
+    <t t-name="Grid-Widget">
+
+        <div class="grid-content">
+            <t t-foreach="widget.variant_objs" t-as="variant">
+                <div class="grid-cell" t-att-variant-id="variant.id">
+                    <h2><t t-esc="variant.display_name"/></h2>
+                </div>
+            </t>
         </div>
     </t>
 

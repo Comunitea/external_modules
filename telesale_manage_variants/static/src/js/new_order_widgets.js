@@ -6,8 +6,8 @@ var core = require('web.core');
 var _t = core._t;
 
 var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
+    // Add product templete event handler
     set_input_handlers: function() {
-        // Add product templete event handler
         this._super();
         this.$('.col-template').blur(_.bind(this.set_value, this, 'template'));
         this.$('.col-template').focus(_.bind(this.click_handler, this, 'template'));
@@ -18,8 +18,9 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
             self.button_open_grid();
         });
     },
+
+    // Set template autocomplete
     load_input_fields: function() {
-        // Set product name autocomplete
         this._super();
         var product_names = this.ts_model.get('template_names')
         this.$('.col-template').autocomplete({
@@ -29,18 +30,41 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
             }
         });
     },
-    button_open_grid: function(){
-        // Opens Grid PopUp
-        this.ts_widget.screen_selector.show_popup('grid_popup', this);
+
+    // Get template_obj related with the name in the input field 
+    get_template: function(){
+        var template_obj = false;
+        var value = this.$('.col-template').val();
+        var template_id =  this.ts_model.db.template_name_id[value];
+        if (template_id){
+            template_obj = this.ts_model.db.get_template_by_id(template_id);
+        }
+        if (!template_obj)
+            template_obj = false;
+        return template_obj
     },
+
+    // Calls PopUp widget to show the grid
+    button_open_grid: function(){
+        var template_obj = this.get_template();
+        if (!template_obj){
+            alert(_t("No template defined to open grid"));
+        }
+        else{
+        // Pase the line widget to grid PopUp
+        this.ts_widget.screen_selector.show_popup('grid_popup', this);
+        }
+    },
+
+    // Get product if only one variant, open grid if more than one variant
     perform_onchange: function(key){
-    // Onchange for product template;
         this._super(key);
         if (key == 'template'){
             var value = this.$('.col-'+key).val();
-            var template_id = this.ts_model.db.template_name_id[value];
             // Case name not valid
-            if (!template_id){
+            var template_obj = this.get_template();
+            if (!template_obj){
+                var value = this.$('.col-template').val();
                 alert(_t("Template name '" + value + "' does not exist"));
                 this.model.set('template', "");
                 this.model.set('product', "");
@@ -48,7 +72,7 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
                 this.refresh('qty');
             }
             else{
-                var template_obj = this.model.get_template();
+                // Get product from model
                 if (template_obj.product_variant_count == 1){
                     var product_id = template_obj.product_variant_ids[0];
                     var product_obj = this.ts_model.db.get_product_by_id(product_id)
@@ -57,12 +81,14 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
                         this.call_product_id_change(product_id);
                     }
                 }
+                // Open the grid
                 else{
                     this.button_open_grid();
                 }
             }
         }
     }
+
 });
 
 });
