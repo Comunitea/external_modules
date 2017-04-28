@@ -310,7 +310,7 @@
                 <button id="filter-client" tabIndex="18">FILTER CUSTOMER</button>
               </div>
             </div> -->
-            <div class="col-xs-3 fullheight centerinside">
+            <div class="state_order col-xs-3 fullheight centerinside">
               <div class="centerthis">
 
                 <div class="span-state fullwidth">
