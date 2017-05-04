@@ -7,11 +7,12 @@
             <div class="col-xs-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="change_view" tabIndex="18">P / V</button>
+                <t t-esc="widget.view_mode"/>
               </div>
             </div>
         </t>
         <t t-jquery=".header-product" t-operation="before">
-            <th class="header-template">Grid</th>
+            <th class="header-grid">Grid</th>
             <th class="header-template">Template</th>
         </t>
     </t>
@@ -19,7 +20,7 @@
     <t t-extend="Order-line-Widget">
         <t t-jquery=".cell-product" t-operation="before">
             <!-- LQDR column -->
-            <td>
+            <td class="cell-grid">
                 <button class="open-grid">G</button>
             </td>
             <td class="cell-template">

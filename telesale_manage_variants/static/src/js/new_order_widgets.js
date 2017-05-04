@@ -83,9 +83,21 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
                 }
                 // Open the grid
                 else{
+                    this.model.mode = 'template_variants'
                     this.button_open_grid();
                 }
             }
+        }
+    },
+
+    renderElement: function(){
+        this._super();
+        if (this.order_widget.view_mode == 'template'){
+            this.$('.cell-product').hide();
+        }
+        else{
+            this.$('.cell-template').hide();
+            this.$('.cell-grid').hide();
         }
     }
 
@@ -111,41 +123,44 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
     },
     button_change_view: function(){
 
-       var next_mode = 'template'
        if (this.view_mode == 'template'){
-            this.view_mode = 'product';
-            next_mode = 'product'
+            this.view_mode = 'variant';
        }
        else{
             this.view_mode = 'template';
-            next_mode = 'template'
        }
-       var options = {'mode': next_mode}
-       this.renderLines(options)
-       this.view_mode = next_mode
+       this.renderElement();
     },
     renderLines: function(options){
         // this._super();
-        var mode = 'template';
-        if (options && options.mode){
-            mode = options.mode;
-        }
+        // var mode = 'template';
+        // if (options && options.mode){
+        //     mode = options.mode;
+        // }
         // OVERWRITED AND MODIFIED
         var self = this;
         // Destroy line widgets
-            for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
-                this.orderlinewidgets[i].destroy();
-            }
-            this.orderlinewidgets = [];
+        for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
+            this.orderlinewidgets[i].destroy();
+        }
+        this.orderlinewidgets = [];
 
         var $content = this.$('.orderlines');
         var nline = 1
+
+
+        var allow_modes = ['template_single', 'template_variants']
+        if (this.view_mode == 'variant'){
+            allow_modes = ['template_single', 'variant']
+        }
         this.currentOrderLines.each(_.bind( function(orderLine) {
             orderLine.set('n_line', nline++);
+            var line_mode = orderLine.mode
             console.log(orderLine)
             console.log(orderLine.mode)
-            console.log(mode)
-            if (orderLine.mode == mode){
+            console.log(this.view_mode)
+            console.log(allow_modes.indexOf(line_mode) >= 0)
+            if (allow_modes.indexOf(line_mode) >= 0){
                 var line = new NewOrderWidgets.OrderlineWidget(this, {
                     model: orderLine,
                     order: this.ts_model.get('selectedOrder'),
@@ -154,6 +169,17 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
                 self.orderlinewidgets.push(line);
             }
         }, this));
+    },
+
+    renderElement: function(){
+        this._super();
+        if (this.view_mode == 'template'){
+            this.$('.header-product').hide();
+        }
+        else{
+            this.$('.header-template').hide();
+            this.$('.header-grid').hide();
+        }
     }
     });
 

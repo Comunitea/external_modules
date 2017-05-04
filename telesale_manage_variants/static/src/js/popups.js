@@ -29,6 +29,7 @@ var GridWidget = TsBaseWidget.extend({
         this._super(parent, options);
         this.variant_ids = [];
         this.variant_objs = [];
+
     },
     renderElement: function(){
         var self = this;
@@ -41,13 +42,15 @@ var GridWidget = TsBaseWidget.extend({
         var current_order= this.ts_model.get('selectedOrder');
         current_order.addProductLine(variant_id, 3.69, true);
         var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
-        added_line.mode = 'product';
-
+        added_line.mode = 'variant';
+        added_line.parent_cid = this.line_widget.model.cid
+        this.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
     },
     refresh: function(options){
+        this.line_widget = options.line_widget
         this.variant_ids = [];
         this.variant_objs = [];
-        var template_obj = options.line_widget.get_template();
+        var template_obj = this.line_widget.get_template();
         for (var i = 0, len = template_obj.product_variant_ids.length; i < len; i++) {
             var variant_id = template_obj.product_variant_ids[i]
             var variant_obj = this.ts_model.db.get_product_by_id(variant_id)
