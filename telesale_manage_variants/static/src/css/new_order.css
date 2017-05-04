@@ -1,9 +1,9 @@
 .telesale .grid_popup {
     position: absolute;
-    left: 30%;
-    top: 50%;
-    width: 60%;
-    height: 50%;
+    left: 20%;
+    top: 20%;
+    width: 90%;
+    height: 90%;
     margin-left: -15%;
     margin-top: -10%;
     padding: 10px;
@@ -17,3 +17,32 @@
     z-index: 1200;
     overflow: auto; 
 }
+
+.telesale .grid-content {
+        height: 100%;
+        width: 100%;
+        font-size: 1.7vmin;
+}
+
+.telesale .grid-content .grid-table {
+        border: solid 1px black;
+        border-collapse: collapse;
+        height: 100%;
+        width: 100%;
+}
+.telesale .grid-content .grid-table.tr {
+    border: solid 1px black;
+}
+.telesale .grid-content .grid-table tr:nth-child(even){background-color: #f2f2f2}
+
+.telesale .grid-content .grid-table.th {
+    text-align: center;
+    padding: 8px;
+}
+
+.telesale .grid-content .grid-table.td {
+    text-align: left;
+    padding: 8px;
+}
+
+
