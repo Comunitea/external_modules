@@ -30,13 +30,27 @@ TsModels.TsModel = TsModels.TsModel.extend({
 
 // Set template to store the template name en la linea
 var _initialize_ = TsModels.Orderline.prototype.initialize;
-TsModels.Orderline.prototype.initialize = function(session, attributes){
+TsModels.Orderline.prototype.initialize = function(options){
     var self = this;
     this.set({
         template : ''
     });
-    this.mode = 'template'
-    return _initialize_.call(this, session, attributes);
+
+    //template_singe: A normal line, template with one variant
+    //template_variants: Grouping line with special grouping behavior
+    //variant: Line created with the grid, parent line is a template_variants
+    this.mode = 'template_single'
+    this.parent_cid = undefined;
+    return _initialize_.call(this, options);
+}
+
+//Overwrited to not fail when product empty if is a template grouping line
+TsModels.Orderline.prototype.check = function(){
+    var res = true
+    if ( this.mode != "template_variants" && this.get('product') == "" ) {
+       res = false;
+    }
+    return res
 }
 
 
@@ -50,6 +64,17 @@ TsModels.Orderline.prototype.get_template = function(){
     }
     return false
 }
+
+var _exportJSON_ = TsModels.Orderline.prototype.export_as_JSON;
+TsModels.Orderline.prototype.export_as_JSON = function(){
+    var res = _exportJSON_.call(this, {});
+    var to_add = {mode: this.mode,
+                  cid: this.cid,
+                  parent_cid: this.parent_cid}
+    res = $.extend(res, to_add)
+    return res
+}
+
 
 
 });

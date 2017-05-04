@@ -5,55 +5,88 @@ from odoo import models, api
 # import time
 
 
-# class SaleOrder(models.Model):
-#     _inherit = 'sale.order'
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
 
-#     @api.model
-#     def confirm_order_background(self, order_id):
-#         """
-#         OWERWRITED in order to pass the state to pending or lqdr
-#         """
-#         self.browse(order_id).action_lqdr_pending()
+    @api.model
+    def _get_ts_template_line_vals(self, order_obj, line):
+        t_product = self.env['product.product']
+        product_obj = t_product.browse(line['product_id'])
+        product_uom_id = line.get('product_uom', False)
+        product_uom_qty = line.get('qty', 0.0)
+        vals = {
+            'order_id': order_obj.id,
+            'name': product_obj.name,
+            'product_template': product_obj.product_tmpl_id.id,
+            'product_id': product_obj.id,
+            'price_unit': line.get('price_unit', 0.0),
+            'product_uom': product_uom_id,
+            'product_uom_qty': product_uom_qty,
+            'tax_id': [(6, 0, line.get('tax_ids', False))],
+            'discount': line.get('discount', 0.0),
+        }
+        return vals
 
-#     @api.model
-#     def _get_ts_line_vals(self, order_obj, line):
-#         """
-#         Get the firtst product route to the line
-#         """
-#         t_product = self.env['product.product']
-#         product_obj = t_product.browse(line['product_id'])
-#         vals = super(SaleOrder, self)._get_ts_line_vals(order_obj, line)
+    @api.model
+    def _get_ts_parent_template_line_vals(self, order_obj, line, total_qty):
+        t_product = self.env['product.product']
+        product_obj = t_product.browse(line['product_id'])
+        vals = {
+            'order_id': order_obj.id,
+            'product_template': product_obj.product_tmpl_id.id,
+            'name': product_obj.product_tmpl_id.display_name,
+            'product_uom': line.get('product_uom', False),
+            'product_uom_qty': total_qty,
+            'product_id': product_obj.product_tmpl_id.product_variant_ids[0].id
+        }
+        return vals
 
-#         if product_obj.route_ids:
-#             vals.update({'route_id': product_obj.route_ids[0].id})
-#         vals.update({'chained_discount': line.get('chained_discount', '0.00')})
-#         return vals
+    @api.model
+    def _create_lines_from_ui(self, order_obj, order_lines):
+        """
+        Overwrited to create template_lines
+        """
+        t_order_line = self.env['sale.order.line']
+        t_template_line = self.env['sale.order.line.template']
 
-#     @api.model
-#     def ts_onchange_partner_id(self, partner_id):
-#         """
-#         Get warning messagges
-#         """
-#         res = super(SaleOrder, self).ts_onchange_partner_id(partner_id)
-#         order_t = self.env['sale.order']
-#         partner = self.env['res.partner'].browse(partner_id)
+        # grouping_lines = [] # list of cid of lines with more than one variant
+        child_lines = {}     # Key is parent cid, value list of variant lines
+        child_qty = {}     # Key is parent cid, value total qty lines
 
-#         order = order_t.new({'partner_id': partner_id,
-#                              'date_order': time.strftime("%Y-%m-%d"),
-#                              'pricelist_id':
-#                              partner.property_product_pricelist.id})
-#         res2 = order.onchange_partner_id_warning()
-#         warning = False
+        # Create template_single lines and get structure to create grouping
+        # lines and child.
+        for line in order_lines:
+            mode = line.pop('mode')
+            line.pop('cid')
 
-#         if res2 and res2.get('warning', False):
-#             warning = res2['warning']['message']
+            if mode == 'template_single':
+                vals = self._get_ts_template_line_vals(order_obj, line)
+                t_template_line.create(vals)
+            elif mode == 'template_variants':
+                continue
+            elif mode == 'variant':
+                p_cid = line.pop('parent_cid')
+                if p_cid not in child_lines:
+                    child_lines[p_cid] = []
+                child_lines[p_cid].append(line)
 
-#         mode = 'warning'
-#         if partner.sale_warn == 'block':
-#             mode = 'block'
-#         res.update({
-#             'warning': warning,
-#             'mode': mode
+                if p_cid not in child_qty:
+                    child_qty[p_cid] = 0.0
+                child_qty[p_cid] += line.get('qty', 0.0)
 
-#         })
-#         return res
+        ctx = dict(self._context)
+        ctx.update({'no_create_line': True})
+        t_template_line2 = t_template_line.with_context(ctx)
+        for p_cid in child_lines:
+            #  Create parent line
+            list_child_lines = child_lines[p_cid]
+            line = list_child_lines[0]
+            qty = child_qty[p_cid]
+            vals = self._get_ts_parent_template_line_vals(order_obj, line, qty)
+            template_line_obj = t_template_line2.create(vals)
+
+            #  Create child lines
+            for child_line in list_child_lines:
+                vals = self._get_ts_line_vals(order_obj, child_line)
+                vals.update({'template_line': template_line_obj.id})
+                t_order_line.create(vals)

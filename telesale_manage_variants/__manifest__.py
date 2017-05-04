@@ -10,6 +10,7 @@
     'license': 'AGPL-3',
     'depends': [
         'telesale',
+        'custom_sale_order_variant_mgmt'
     ],
     'contributors': [
         "Comunitea ",
