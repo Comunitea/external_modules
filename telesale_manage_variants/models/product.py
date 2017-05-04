@@ -1,34 +1,33 @@
 # -*- coding: utf-8 -*-
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from odoo import models, api, fields
+from odoo import models, api
 
 
-# class ProductProduct(models.Model):
-#     _inherit = 'product.product'
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
 
-#     route_name = fields.Char('Route name', related='route_ids.name',
-#                              store=True)
-
-#     # Ejemplo de como añadir mas campos al widget
-#     # @api.model
-#     # def get_product_info(self, product_id, partner_id):
-#     #     """ Return data of widget productInfo """
-#     #     res = super(ProductProduct, self).get_product_info(product_id,
-#     #                                                        partner_id)
-#     #     product_obj = self.browse(product_id)
-#     #     route = product_obj.route_ids[0].name if product_obj.route_ids else ""
-#     #     lqdr = _("Yes") if product_obj.lqdr else _("No")
-#     #     res.update({'route': route, 'lqdr': lqdr})
-#     #     return res
-
-
-#     @api.model
-#     def ts_get_global_stocks(self, product_id):
-#         """ Return data of widget productInfo """
-#         res = {'global_available_stock': 0.0}
-#         if product_id:
-#             product_obj = self.browse(product_id)
-#             res.update({'global_available_stock':
-#                         product_obj.global_available_stock})
-#         return res
+    @api.model
+    def ts_get_grid_structure(self, template_id):
+        res = {}
+        template_obj = self.browse(template_id)
+        column_attrs = [{'id': 1, 'name': 'S'}, {'id': 2, 'name': 'M'}, {'id': 3, 'name': 'L'}]
+        row_attrs = [{'id': 4, 'name': 'Blanco'}, {'id': 5, 'name': 'Rojo'}]
+        str_table = {
+            4: {1: {'id': 11, 'stock': '1111111'},
+                2: {'id': 12, 'stock': '1111112'},
+                3: {'id': 13, 'stock': '1111113'}},
+            5: {1: {'id': 21, 'stock': '2222221'},
+                2: {'id': 22, 'stock': '2222222'},
+                3: {'id': 33, 'stock': '3333333'}}
+        }
+        res.update({
+            'column_attrs': column_attrs,
+            'row_attrs': row_attrs,
+            'str_table': str_table
+        })
+        print "********************************************************"
+        print "*********** ts_get_grid_structure RESULT: **************"
+        print res
+        print "********************************************************"
+        return res
