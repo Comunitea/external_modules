@@ -19,12 +19,11 @@ class SaleOrder(models.Model):
     def create_order_from_ui(self, orders):
         t_partner = self.env['res.partner']
         t_order = self.env['sale.order']
-        t_order_line = self.env['sale.order.line']
+       
        
         t_irvalue = self.env['ir.values']
 
         order_ids = []
-
         for rec in orders:
             order = rec['data']
             order_obj = False
@@ -53,12 +52,12 @@ class SaleOrder(models.Model):
                 'partner_shipping_id': order.get('partner_shipping_id',
                                                  partner_obj.id),
                 'chanel': 'telesale',
-                'order_policy': 'picking',
+                # 'order_policy': 'picking',
                 'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
                 'requested_date': order['requested_date'] + " 19:00:00" or
                 False,
                 'note': order['note'],
-                'warwhouse_id': warehouse_id,
+                'warehouse_id': warehouse_id,
                 'client_order_ref': order.get('client_order_ref', False)
             }
             if order['erp_id'] and order['erp_state'] == 'draft':
@@ -73,12 +72,11 @@ class SaleOrder(models.Model):
             order_lines = order['lines']
 
             if order['erp_id'] and order['erp_state'] == 'draft':
+                t_order_line = self.env['sale.order.line']
                 domain = [('order_id', '=', order_obj.id)]
                 line_objs = t_order_line.search(domain)
                 line_objs.unlink()
-            for line in order_lines:
-                vals = self._get_ts_line_vals(order_obj, line)
-                t_order_line.create(vals)
+            self._create_lines_from_ui(order_obj, order_lines)
             if order['action_button'] == 'confirm':
                 order_obj.action_button_confirm()
             # elif order['action_button'] == 'confirm_background':
@@ -90,6 +88,12 @@ class SaleOrder(models.Model):
             if 'set_promotion' in order and order['set_promotion']:
                 order_obj.apply_commercial_rules()
         return order_ids
+
+    def _create_lines_from_ui(self, order_obj, order_lines):
+        t_order_line = self.env['sale.order.line']
+        for line in order_lines:
+            vals = self._get_ts_line_vals(order_obj, line)
+            t_order_line.create(vals)
 
     def _get_ts_line_vals(self, order_obj, line):
         t_product = self.env['product.product']
