@@ -58,8 +58,8 @@ var GridWidget = TsBaseWidget.extend({
     get_row_values: function(){
         return this.row_attrs
     },
-    get_cell_obj: function(row_id, col_id){
-        return this.str_table[row_id][col_id]
+    get_cell_obj: function(col_id, row_id){
+        return this.str_table[col_id][row_id]
     },
     get_grid_from_server: function(template_id){
         self=this;

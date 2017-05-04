@@ -21,13 +21,7 @@
     <t t-name="Grid-Widget">
 
         <div class="grid-content">
-            <t t-foreach="widget.variant_objs" t-as="variant">
-                <div class="grid-cell" t-att-variant-id="variant.id">
-                    <h2><t t-esc="variant.display_name"/></h2>
-                </div>
-            </t>
-
-            <table>
+            <table class="grid-table">
                 <tr>
                     <thead>
                         <th></th>
@@ -40,10 +34,18 @@
                             <tr>
                                 <th t-att-attr-id="row_obj.id"><t t-esc="row_obj.name"/></th>
                                 <t t-foreach="widget.get_column_values()" t-as="col_obj">
-                                    <t t-set="cell" t-value="widget.get_cell_obj(row_obj.id, col_obj.id)"/>
+                                    <t t-set="cell" t-value="widget.get_cell_obj(col_obj.id, row_obj.id)"/>
                                     <td>
                                         <div class="grid-cell" t-att-variant-id="cell.id">
-                                            <span t-esc="cell.stock"/>
+                                            <div>
+                                                Stock: <span t-esc="cell.stock"/>
+                                            </div>
+                                            <div>
+                                                Price: <span t-esc="cell.price"/>
+                                            </div>
+                                            <div>
+                                                <input class="add-qty mandatory" t-att-variant-id="cell.id" type="number" step="0.01"/>
+                                            </div>
                                         </div>
                                     </td>
                                 </t>
@@ -52,6 +54,12 @@
                     </tbody>
                 </tr>
             </table>
+
+            <t t-foreach="widget.variant_objs" t-as="variant">
+                <div class="grid-cell" t-att-variant-id="variant.id">
+                    <h2><t t-esc="variant.display_name"/></h2>
+                </div>
+            </t>
         </div>
     </t>
 
