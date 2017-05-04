@@ -26,6 +26,32 @@
                     <h2><t t-esc="variant.display_name"/></h2>
                 </div>
             </t>
+
+            <table>
+                <tr>
+                    <thead>
+                        <th></th>
+                        <t t-foreach="widget.get_column_values()" t-as="col_obj">
+                            <th t-att-attr-id="col_obj.id"><t t-esc="col_obj.name"/></th>
+                        </t>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="widget.get_row_values()" t-as="row_obj">
+                            <tr>
+                                <th t-att-attr-id="row_obj.id"><t t-esc="row_obj.name"/></th>
+                                <t t-foreach="widget.get_column_values()" t-as="col_obj">
+                                    <t t-set="cell" t-value="widget.get_cell_obj(row_obj.id, col_obj.id)"/>
+                                    <td>
+                                        <div class="grid-cell" t-att-variant-id="cell.id">
+                                            <span t-esc="cell.stock"/>
+                                        </div>
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </tbody>
+                </tr>
+            </table>
         </div>
     </t>
 

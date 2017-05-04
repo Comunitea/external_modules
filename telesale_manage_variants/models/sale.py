@@ -2,7 +2,6 @@
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from odoo import models, api
-# import time
 
 
 class SaleOrder(models.Model):
@@ -49,7 +48,6 @@ class SaleOrder(models.Model):
         t_order_line = self.env['sale.order.line']
         t_template_line = self.env['sale.order.line.template']
 
-        # grouping_lines = [] # list of cid of lines with more than one variant
         child_lines = {}     # Key is parent cid, value list of variant lines
         child_qty = {}     # Key is parent cid, value total qty lines
 
@@ -74,6 +72,7 @@ class SaleOrder(models.Model):
                     child_qty[p_cid] = 0.0
                 child_qty[p_cid] += line.get('qty', 0.0)
 
+        # Create parent and child lines
         ctx = dict(self._context)
         ctx.update({'no_create_line': True})
         t_template_line2 = t_template_line.with_context(ctx)

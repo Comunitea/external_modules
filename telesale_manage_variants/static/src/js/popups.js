@@ -6,6 +6,8 @@ var TsBaseWidget = require('telesale.TsBaseWidget');
 
 var PopUp = require('telesale.PopUps');
 
+var Model = require('web.DataModel');
+
 // Set grid PopUp In 
 BaseWidgets.TsWidget.include({
     build_widgets: function() {
@@ -30,6 +32,10 @@ var GridWidget = TsBaseWidget.extend({
         this.variant_ids = [];
         this.variant_objs = [];
 
+        this.column_attrs = [];
+        this.row_attrs = [];
+        this.str_table = {};
+
     },
     renderElement: function(){
         var self = this;
@@ -46,7 +52,28 @@ var GridWidget = TsBaseWidget.extend({
         added_line.parent_cid = this.line_widget.model.cid
         this.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
     },
+    get_column_values: function(){
+        return this.column_attrs
+    },
+    get_row_values: function(){
+        return this.row_attrs
+    },
+    get_cell_obj: function(row_id, col_id){
+        return this.str_table[row_id][col_id]
+    },
+    get_grid_from_server: function(template_id){
+        self=this;
+        var model = new Model("product.template")
+        var loaded = model.call("ts_get_grid_structure",[template_id])
+        .then(function(result){
+            self.column_attrs =result.column_attrs
+            self.row_attrs = result.row_attrs
+            self.str_table = result.str_table
+        });
+        return loaded
+    },
     refresh: function(options){
+        var self = this;
         this.line_widget = options.line_widget
         this.variant_ids = [];
         this.variant_objs = [];
@@ -57,8 +84,11 @@ var GridWidget = TsBaseWidget.extend({
             this.variant_ids.push(variant_id) 
             this.variant_objs.push(variant_obj)
         }
-        this.renderElement();
-    }
+        $.when(this.get_grid_from_server(template_obj.id))
+        .done(function(){
+            self.renderElement();
+        });
+    },
 
 });
 
