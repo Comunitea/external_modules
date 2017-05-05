@@ -44,7 +44,8 @@ class ProductTemplate(models.Model):
                     'id': value_y.id,
                     'name': value_y.name
                 }
-                res['row_attrs'].append(y_attr)
+                if y_attr not in res['row_attrs']:
+                    res['row_attrs'].append(y_attr)
                 values = value_x
                 if value_y:
                     values += value_y
