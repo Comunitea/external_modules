@@ -42,7 +42,7 @@
                                 <t t-foreach="widget.get_column_values()" t-as="col_obj">
                                     <t t-set="cell" t-value="widget.get_cell_obj(col_obj.id, row_obj.id)"/>
                                     <td>
-                                        <div class="grid-cell" t-att-variant-id="cell.id">
+                                        <div class="grid-cell" t-att-variant-id="cell.id" t-att-line-cid="cell.line_cid">
                                             <div>
                                                 Stock: <span t-esc="cell.stock.toFixed(2)"/>
                                             </div>
@@ -50,7 +50,7 @@
                                                 Price: <span t-esc="cell.price.toFixed(2)"/>
                                             </div>
                                             <div>
-                                                <input class="add-qty mandatory" placeholder="Add Qty" t-att-variant-id="cell.id" type="text"/>
+                                                <input class="add-qty mandatory" placeholder="Add Qty" t-att-variant-id="cell.id" t-att-value="cell.qty.toFixed(2)" type="text"/>
                                             </div>
                                            <!--  <div>
                                                 <input class="add-price mandatory" t-att-value="cell.price.toFixed(2)" t-att-variant-id="cell.id" type="text"/>
