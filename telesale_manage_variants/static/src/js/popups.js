@@ -29,8 +29,6 @@ var GridWidget = TsBaseWidget.extend({
     template: 'Grid-Widget',
     init: function(parent, options){
         this._super(parent, options);
-        this.variant_ids = [];
-        this.variant_objs = [];
 
         this.column_attrs = [];
         this.row_attrs = [];
@@ -40,32 +38,30 @@ var GridWidget = TsBaseWidget.extend({
     renderElement: function(){
         var self = this;
         this._super();
-        // this.$('.grid-cell').bind('click', function(event){
-        //     self.prototipe_add(parseInt(this.getAttribute('variant-id')));
-        // });
         this.$('#add-variants-button').bind('click', function(event){
             self.add_variants_button();
+            $('#close-filter').click();
         });
     },
     add_variants_button: function(){
         var self=this;
         this.$('.grid-cell').each(function(i, cell){
-            debugger;
+
             var qty = $(cell).find('input.add-qty').val();
             if (!qty){
                 return
             }
             var variant_id = cell.getAttribute('variant-id');
-            var price = $(cell).find('input.add-price').val();
-            var discount = $(cell).find('input.add-discount').val()
+            // var price = $(cell).find('input.add-price').val();
+            // var discount = $(cell).find('input.add-discount').val()
             self.prototipe_add(parseInt(variant_id), parseInt(qty));
         })
     },
     prototipe_add: function(variant_id, add_qty){
+        debugger;
         if (!add_qty){
             add_qty: 1.0
         }
-        debugger;
         var current_order= this.ts_model.get('selectedOrder');
         current_order.addProductLine(variant_id, add_qty, true);
         var added_line = this.ts_model.get('selectedOrder').getLastOrderline();

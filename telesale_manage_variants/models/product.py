@@ -14,17 +14,6 @@ class ProductTemplate(models.Model):
             'row_attrs': [],
             'str_table': {}
         }
-        # column_attrs = [{'id': 1, 'name': 'S'}, {'id': 2, 'name': 'M'}, {'id': 3, 'name': 'L'}]
-        # row_attrs = [{'id': 4, 'name': 'Blanco'}, {'id': 5, 'name': 'Rojo'}]
-        # str_table = {
-        #     4: {1: {'id': 11, 'stock': '1111111'},
-        #         2: {'id': 12, 'stock': '1111112'},
-        #         3: {'id': 13, 'stock': '1111113'}},
-        #     5: {1: {'id': 21, 'stock': '2222221'},
-        #         2: {'id': 22, 'stock': '2222222'},
-        #         3: {'id': 33, 'stock': '3333333'}}
-        # }
-
         template = self.browse(template_id)
 
         num_attrs = len(template.attribute_line_ids)
@@ -51,14 +40,14 @@ class ProductTemplate(models.Model):
                     values += value_y
                 product = template.product_variant_ids.filtered(
                     lambda x: not(values - x.attribute_value_ids))[:1]
-                
+
                 cell_dic = {
                     'id': product and product.id or 0,
                     'stock': product and product.global_available_stock or 0,
                     'price': product and product.lst_price or 0,
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
-                
+
         print "********************************************************"
         print "*********** ts_get_grid_structure RESULT: **************"
         import pprint

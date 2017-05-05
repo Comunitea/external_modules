@@ -44,20 +44,20 @@
                                     <td>
                                         <div class="grid-cell" t-att-variant-id="cell.id">
                                             <div>
-                                                Stock: <span t-esc="cell.stock"/>
+                                                Stock: <span t-esc="cell.stock.toFixed(2)"/>
                                             </div>
                                             <div>
-                                                Price: <span t-esc="cell.price"/>
+                                                Price: <span t-esc="cell.price.toFixed(2)"/>
                                             </div>
                                             <div>
                                                 <input class="add-qty mandatory" placeholder="Add Qty" t-att-variant-id="cell.id" type="text"/>
                                             </div>
-                                            <div>
+                                           <!--  <div>
                                                 <input class="add-price mandatory" t-att-value="cell.price.toFixed(2)" t-att-variant-id="cell.id" type="text"/>
                                             </div>
                                             <div>
                                                 <input class="add-discount mandatory" placeholder="Add Discount" t-att-variant-id="cell.id" type="text"/>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </td>
                                 </t>
