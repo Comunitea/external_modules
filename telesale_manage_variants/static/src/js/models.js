@@ -41,6 +41,7 @@ TsModels.Orderline.prototype.initialize = function(options){
     //variant: Line created with the grid, parent line is a template_variants
     this.mode = 'template_single'
     this.parent_cid = undefined;
+    this.variant_related_cid = {};
     return _initialize_.call(this, options);
 }
 

@@ -45,6 +45,7 @@ class ProductTemplate(models.Model):
                     'id': product and product.id or 0,
                     'stock': product and product.global_available_stock or 0,
                     'price': product and product.lst_price or 0,
+                    'qty': 0.0,
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
 
