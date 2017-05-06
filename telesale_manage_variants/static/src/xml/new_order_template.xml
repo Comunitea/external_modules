@@ -33,6 +33,58 @@
                 <input type="search" class='col-template mandatory' t-att-value="widget.model.get('template')"/>
             </td>
         </t>
+
+        <t t-jquery=".cell-qty" t-operation="replace">
+            <td class="cell-qty">
+                <t t-if="widget.model.mode == 'template_variants'">
+                    <div style="text-align:right;padding-right:9px">
+                        <span class='col-qty'><t t-esc="widget.get_template_qty().toFixed(2)"/></span>
+                    </div>
+                </t>
+                <t t-if="widget.model.mode != 'template_variants'">
+                   <input type="text" class='col-qty mandatory' t-att-value="widget.model.get('qty').toFixed(2)"/>
+                </t>
+            </td>
+        </t>
+
+         <t t-jquery=".cell-pvp" t-operation="replace">
+            <td class="cell-pvp">
+                <t t-if="widget.model.mode == 'template_variants'">
+                    <div style="text-align:right;padding-right:9px">
+                        <span class='col-pvp' style="text-align:right"><t t-esc="widget.get_template_pvp().toFixed(2)"/></span>
+                    </div>
+                </t>
+                <t t-if="widget.model.mode != 'template_variants'">
+                    <input type="text" class='col-pvp mandatory' t-att-value="widget.model.get('pvp').toFixed(2)"/>
+                </t>
+            </td>
+        </t>
+
+        <!-- CHECK WITHOUT JIM TELESALE MODULE -->
+
+        <t t-jquery=".cell-plus-discount" t-operation="replace">
+            <td class=".cell-plus-discount">
+                <t t-if="widget.model.mode == 'template_variants'">
+                    <span class='col-plus-discount'></span>
+                </t>
+                <t t-if="widget.model.mode != 'template_variants'">
+                     <input type="text" class='col-chained_discount mandatory' t-att-value="widget.model.get('chained_discount')"/>
+                </t>
+            </td>
+        </t>
+
+        <t t-jquery=".cell-total" t-operation="replace">
+            <td class="cell-total">
+                <t t-if="widget.model.mode == 'template_variants'">
+                     <span t-esc="widget.get_template_subtotal().toFixed(2)"/>
+                </t>
+                <t t-if="widget.model.mode != 'template_variants'">
+                     <span t-esc="widget.model.get('total')"/>
+                </t>
+            </td>
+        </t>
+
+
     </t>
 
 </templates>

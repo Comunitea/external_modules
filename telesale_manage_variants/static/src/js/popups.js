@@ -33,7 +33,6 @@ var GridWidget = TsBaseWidget.extend({
         this.column_attrs = [];
         this.row_attrs = [];
         this.str_table = {};
-        // this.variant_related_cid = {};
 
     },
     renderElement: function(){
@@ -74,6 +73,10 @@ var GridWidget = TsBaseWidget.extend({
         current_order.addProductLine(variant_id, add_qty, true);
 
         var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
+
+        // neded because addProductLine not set add_qty ???
+        added_line.set('qty', add_qty);
+        added_line.update_line_values();
         added_line.mode = 'variant';
         added_line.parent_cid = template_line_model.cid;
         template_line_model.variant_related_cid[variant_id] = added_line.cid;
@@ -84,6 +87,7 @@ var GridWidget = TsBaseWidget.extend({
         if (line_model){
             line_model.set('qty', add_qty);
         }
+        line_model.update_line_values();
     },
     get_column_values: function(){
         return this.column_attrs
@@ -141,14 +145,7 @@ var GridWidget = TsBaseWidget.extend({
     refresh: function(options){
         var self = this;
         this.line_widget = options.line_widget
-        // this.variant_ids = [];
-        // this.variant_objs = [];
-        // for (var i = 0, len = template_obj.product_variant_ids.length; i < len; i++) {
-        //     var variant_id = template_obj.product_variant_ids[i]
-        //     var variant_obj = this.ts_model.db.get_product_by_id(variant_id)
-        //     this.variant_ids.push(variant_id) 
-        //     this.variant_objs.push(variant_obj)
-        // }
+
         var template_obj = this.line_widget.get_template();
         $.when(this.get_grid_from_server(template_obj.id))
         .done(function(){
