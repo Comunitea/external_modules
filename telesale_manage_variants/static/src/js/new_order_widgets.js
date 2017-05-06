@@ -74,6 +74,7 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
             else{
                 // Get product from model
                 if (template_obj.product_variant_count == 1){
+                    this.model.mode = 'template_single'
                     var product_id = template_obj.product_variant_ids[0];
                     var product_obj = this.ts_model.db.get_product_by_id(product_id)
                     if (product_obj){
@@ -84,6 +85,7 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
                 // Open the grid
                 else{
                     this.model.mode = 'template_variants'
+                    this.refresh();
                     this.button_open_grid();
                 }
             }
@@ -99,7 +101,49 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
             this.$('.cell-template').hide();
             this.$('.cell-grid').hide();
         }
-    }
+    },
+
+    get_template_totals: function(){
+        var totals = {
+            'qty': 0.0,
+            'pvp': 0.0,
+            'subtotal': 0.0,
+        }
+        if (this.model.mode == 'template_variants'){
+            var cid = "";
+            var qty = 0.0
+            var pvp = 0.0
+            var subtotal = 0.0
+            for (var variant_id in this.model.variant_related_cid){
+                cid = this.model.variant_related_cid[variant_id];
+                var line_model = this.model.get_line_model_by_cid(cid)
+                if (line_model){
+                    qty = qty + line_model.get('qty');
+                    pvp = pvp + line_model.get('pvp');
+                    subtotal = subtotal + line_model.get('total');
+                }
+            }
+            totals['qty'] = qty;
+            totals['pvp'] = pvp;
+            totals['subtotal'] = subtotal;
+        }
+        return totals
+    },
+
+    get_template_qty: function(){
+        var totals = this.get_template_totals()
+        return totals['qty']
+    },
+
+    get_template_pvp: function(){
+        var totals = this.get_template_totals()
+        return totals['pvp']
+    },
+
+    get_template_subtotal: function(){
+        var totals = this.get_template_totals()
+        return totals['subtotal']
+    },
 
 });
 
@@ -132,12 +176,6 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
        this.renderElement();
     },
     renderLines: function(options){
-        // this._super();
-        // var mode = 'template';
-        // if (options && options.mode){
-        //     mode = options.mode;
-        // }
-        // OVERWRITED AND MODIFIED
         var self = this;
         // Destroy line widgets
         for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
@@ -171,10 +209,43 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
         }, this));
     },
 
+    remove_lines_chlid_variants: function(template_line){
+        var current_order = this.ts_model.get('selectedOrder')
+        for (var variant_id in template_line.variant_related_cid){
+            var cid = template_line.variant_related_cid[variant_id];
+            var line_model = template_line.get_line_model_by_cid(cid)
+            current_order.selectLine(line_model);
+            current_order.removeLine();
+            // delete template_line.variant_related_cid[variant_id]; 
+            }
+    },
+
+    // get template_variants line and remove variant_related_cid key
+    remove_variant_related: function(variant_line){
+        var cid = variant_line.parent_cid
+        var template_line = variant_line.get_line_model_by_cid(cid)
+
+        var variant_id = variant_line.get_product().id
+        template_line.variant_related_cid[variant_id];
+
+    },
+
     //Ovewwrited to focus template
     button_remove_line: function(){
+            var current_order = this.ts_model.get('selectedOrder');
+            var selected_line = current_order.getSelectedLine();
+            if (selected_line.mode == 'template_variants'){
+                this.remove_lines_chlid_variants(selected_line)
+            }
+
+            if (selected_line.mode == 'variant'){
+                this.remove_variant_related(selected_line)
+            }
+
+            // select line again to remove it
+           current_order.selectLine(selected_line);
             this.ts_model.get('selectedOrder').removeLine();
-            var selected_line = this.ts_model.get('selectedOrder').getSelectedLine();
+            var selected_line = current_order.getSelectedLine();
             if (selected_line){
                 var n_line = selected_line.get('n_line')
                 if (this.orderlinewidgets[n_line-1]){

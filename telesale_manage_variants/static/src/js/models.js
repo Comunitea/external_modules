@@ -33,15 +33,15 @@ var _initialize_ = TsModels.Orderline.prototype.initialize;
 TsModels.Orderline.prototype.initialize = function(options){
     var self = this;
     this.set({
-        template : ''
+        template : options.template || ''
     });
 
     //template_singe: A normal line, template with one variant
     //template_variants: Grouping line with special grouping behavior
     //variant: Line created with the grid, parent line is a template_variants
-    this.mode = 'template_single'
-    this.parent_cid = undefined;
-    this.variant_related_cid = {};
+    this.mode = options.mode || 'template_single'
+    this.parent_cid = options.parent_cid || undefined;
+    this.variant_related_cid = options.variant_related_id || {};
     return _initialize_.call(this, options);
 }
 
@@ -53,6 +53,12 @@ TsModels.Orderline.prototype.check = function(){
     }
     return res
 }
+
+TsModels.Orderline.prototype.get_line_model_by_cid = function(line_cid){
+    var current_order = this.ts_model.get('selectedOrder');
+    var line_model = current_order.get('orderLines').get({cid: line_cid}); 
+    return line_model;
+},
 
 
 // Function to get template obj from model (Extend is not working)
