@@ -136,8 +136,9 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
     },
 
     get_template_pvp: function(){
-        var totals = this.get_template_totals()
-        return totals['pvp']
+        // var totals = this.get_template_totals()
+        // return totals['pvp']
+        return "";
     },
 
     get_template_subtotal: function(){

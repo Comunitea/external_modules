@@ -51,7 +51,8 @@
             <td class="cell-pvp">
                 <t t-if="widget.model.mode == 'template_variants'">
                     <div style="text-align:right;padding-right:9px">
-                        <span class='col-pvp' style="text-align:right"><t t-esc="widget.get_template_pvp().toFixed(2)"/></span>
+                        <!-- <span class='col-pvp' style="text-align:right"><t t-esc="widget.get_template_pvp().toFixed(2)"/></span> -->
+                        <span class='col-pvp' style="text-align:right"><t t-esc="widget.get_template_pvp()"/></span>
                     </div>
                 </t>
                 <t t-if="widget.model.mode != 'template_variants'">
