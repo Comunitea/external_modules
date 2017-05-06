@@ -226,7 +226,7 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
         var template_line = variant_line.get_line_model_by_cid(cid)
 
         var variant_id = variant_line.get_product().id
-        template_line.variant_related_cid[variant_id];
+        delete template_line.variant_related_cid[variant_id]; 
 
     },
 

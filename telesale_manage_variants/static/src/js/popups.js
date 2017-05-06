@@ -86,8 +86,8 @@ var GridWidget = TsBaseWidget.extend({
         var line_model = this.get_line_model_by_cid(line_cid);
         if (line_model){
             line_model.set('qty', add_qty);
+            line_model.update_line_values();
         }
-        line_model.update_line_values();
     },
     get_column_values: function(){
         return this.column_attrs
