@@ -269,6 +269,12 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
             }
     },
 
+    // get_line_fields: function(){
+    //     var res = this._super();
+    //     res.push('product_template')
+    //     return res
+    // },
+
     renderElement: function(){
         this._super();
         if (this.view_mode == 'template'){
