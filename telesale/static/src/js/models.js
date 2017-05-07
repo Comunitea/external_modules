@@ -303,6 +303,17 @@ var TsModel = Backbone.Model.extend({
         }
         return vals
     },
+ 
+    build_order_create_lines: function(order_model, order_lines){
+        for (var key in order_lines){
+            var line = order_lines[key];
+            var prod_obj = this.db.get_product_by_id(line.product_id[0]);
+
+            var line_vals = this.get_line_vals(line, order_model)
+            var line = new Orderline(line_vals);
+            order_model.get('orderLines').add(line);
+        }
+    },
     build_order: function(order_obj, order_model, order_lines){
         var partner_obj = this.db.get_partner_by_id(order_obj.partner_id[0]);
         var cus_name = this.getComplexName(partner_obj);
@@ -334,14 +345,8 @@ var TsModel = Backbone.Model.extend({
         var shipp_addr = this.getComplexName(partner_shipp_obj);
         order_model.set('shipp_addr',shipp_addr);
 
-        for (var key in order_lines){
-            var line = order_lines[key];
-            var prod_obj = this.db.get_product_by_id(line.product_id[0]);
-
-            var line_vals = this.get_line_vals(line, order_model)
-            var line = new Orderline(line_vals);
-            order_model.get('orderLines').add(line);
-        }
+        this.build_order_create_lines(order_model, order_lines)
+        
     },
     parse_duration_watch_format: function(minutes){
         var res = "00:00";

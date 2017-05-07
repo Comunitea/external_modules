@@ -25,7 +25,107 @@ TsModels.TsModel = TsModels.TsModel.extend({
                 }
             });
         return TsModelSuper.prototype.load_server_data.call(this,{})
-    }
+    },
+
+   _get_product_fields: function(){
+        var res = TsModelSuper.prototype._get_product_fields.call(this,{});
+        res.push('product_tmpl_id');
+        return res
+    },
+
+    // OVERWRITED TO LET NOT HAVE PRODUCT IF PRODUCT VARIANT LINE
+    get_line_vals: function(line, order_model){
+        // No product setted, fail in super
+        var res = {}
+        if (line.mode == 'template_variants'){
+            res = {
+                ts_model: this, 
+                order:order_model,
+                code: "" ,
+                product:'',
+                unit:'',
+                qty: 0.0,
+                pvp: 0.0,
+                discount: 0.0,
+                taxes_ids:[],
+            }
+        }
+        else{
+            res = TsModelSuper.prototype.get_line_vals.call(this, line, order_model);
+        }
+
+        // Add fields to manage variant lines
+        var new_vals = {
+             mode: line.mode || 'template_single',
+             template: line.template || '',
+             parent_cid: line.parent_cid || "",
+             variant_related_cid: line.variant_related_cid || {}
+        }
+        $.extend(res, new_vals)
+        return res
+    },
+
+    build_order_create_lines: function(order_model, order_lines){
+        var model_by_tmpl_id = {}
+        for (var key in order_lines){
+            var line = order_lines[key];
+
+            var prod_obj = this.db.get_product_by_id(line.product_id[0]);
+            var template_id = prod_obj.product_tmpl_id[0];
+            var template_obj = this.db.template_by_id[template_id];
+
+            var to_add = {
+                mode: 'template_single',
+                template: template_obj.display_name,
+                parent_cid: "",
+                variant_related_cid: {}
+            }
+            if (template_obj.product_variant_count > 1){
+                if ( !_.has(model_by_tmpl_id, template_obj.id) ){
+                     var template_line_vals = {
+                        mode: 'template_variants',
+                        variant_related_cid: {},
+                        template: template_obj.display_name,
+                        product: '',
+                        parent_cid: "",
+                     }
+                     // Create template line
+                     $.extend(line, template_line_vals);
+                     var line_vals = this.get_line_vals(line, order_model)
+                     model_by_tmpl_id[template_obj.id] = new TsModels.Orderline(line_vals);
+                     order_model.get('orderLines').add(model_by_tmpl_id[template_obj.id]);
+                }
+                var template_model = model_by_tmpl_id[template_obj.id];
+
+
+                // Create variant line
+                to_add.mode = 'variant';
+                to_add.parent_cid = template_model.cid
+
+                $.extend(line, to_add);
+                var line_vals = this.get_line_vals(line, order_model)
+                var line = new TsModels.Orderline(line_vals);
+
+                // PROBAR A AÑADIR TODOS EN ARRAY
+                order_model.get('orderLines').add(line);
+
+                // Update structure for grid
+                template_model.variant_related_cid[prod_obj.id] = line.cid
+            }
+            else{
+                $.extend(line, to_add);
+                var line_vals = this.get_line_vals(line, order_model)
+                var line = new TsModels.Orderline(line_vals);
+                order_model.get('orderLines').add(line);
+            }
+
+
+
+
+
+        }
+    }, 
+
 });
 
 // Set template to store the template name en la linea
@@ -80,6 +180,20 @@ TsModels.Orderline.prototype.export_as_JSON = function(){
                   parent_cid: this.parent_cid}
     res = $.extend(res, to_add)
     return res
+},
+
+
+TsModels.Order.prototype.add_lines_to_current_order = function(order_lines, fromsoldprodhistory){
+    debugger;
+     this.get('orderLines').unbind();  //unbind to render all the lines once, then in OrderWideget we bind again
+
+    if(this.selected_orderline && this.selected_orderline.get('code') == "" && this.selected_orderline.get('product') == "" ){
+        $('.remove-line-button').click()
+    }
+    // Instead of original for bucle
+    this.ts_model.build_order_create_lines(this, order_lines);
+    $('.col-template').focus();
+
 }
 
 
