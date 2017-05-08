@@ -85,11 +85,23 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
                 // Open the grid
                 else{
                     this.model.mode = 'template_variants'
+
+                    
                     this.refresh();
                     this.button_open_grid();
                 }
             }
         }
+    },
+
+    set_value: function(key){
+        if (key == 'template'){
+            var value = this.$('.col-'+key).val();
+            if (value != this.model.get('template')){
+                this.order_widget.remove_lines_chlid_variants(this.model);
+            }
+        }
+        this._super(key);
     },
 
     renderElement: function(){
@@ -268,12 +280,6 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
                 this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-template').focus(); //set focus on line when we add one
             }
     },
-
-    // get_line_fields: function(){
-    //     var res = this._super();
-    //     res.push('product_template')
-    //     return res
-    // },
 
     renderElement: function(){
         this._super();
