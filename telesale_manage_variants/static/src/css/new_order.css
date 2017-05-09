@@ -59,4 +59,14 @@
     cursor: pointer;
 }
 
+.telesale .grid-content .grid-table .grid-cell label {
+    display: inline-block;
+    width: 30%;
+    text-align: right;
+}
+
+.telesale .grid-content .grid-table .grid-cell input {
+    width: 80%;
+}
+
 
