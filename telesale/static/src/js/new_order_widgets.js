@@ -350,6 +350,7 @@ var OrderlineWidget = TsBaseWidget.extend({
             self.model.set('unit', self.model.ts_model.db.unit_by_id[result.product_uom].name);
             self.model.set('qty', add_qty);
             self.model.set('discount', 0.0);
+            debugger;
             self.model.set('pvp', self.ts_model.my_round( result.price_unit));
            
             var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)

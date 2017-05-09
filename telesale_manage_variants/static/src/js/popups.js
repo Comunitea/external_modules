@@ -10,14 +10,15 @@ var Model = require('web.DataModel');
 
 // Set grid PopUp In 
 BaseWidgets.TsWidget.include({
+    // Define Grid widget
     build_widgets: function() {
-        // Set product name autocomplete
         this.grid_popup = new GridPopUp(this, {});
         this.grid_popup.appendTo(this.$('#content'));
         this._super();
     },
-    _get_screen_selector_vals: function() {
+
     // Set product name autocomplete
+    _get_screen_selector_vals: function() {
         var res = this._super();
         res.popup_set['grid_popup'] = this.grid_popup
         return res
@@ -35,66 +36,89 @@ var GridWidget = TsBaseWidget.extend({
         this.str_table = {};
 
     },
-    renderElement: function(){
-        var self = this;
-        this._super();
-        this.$('#add-variants-button').bind('click', function(event){
-            self.add_variants_button();
-            self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
-            $('#close-filter').click();
-        });
-    },
-    add_variants_button: function(){
-        var self=this;
-        this.$('.grid-cell').each(function(i, cell){
-            var qty = $(cell).find('input.add-qty').val();
-            if (!qty || qty == "0.00"){
-                return // continue to next iteration
-            }
-            var variant_id = cell.getAttribute('variant-id');
-            var line_cid = cell.getAttribute('line-cid');
-            // var price = $(cell).find('input.add-price').val();
-            // var discount = $(cell).find('input.add-discount').val()
 
-            if (line_cid == ""){
-                self.prototipe_add(parseInt(variant_id), parseInt(qty));
-            }
-            else{
-                 self.prototipe_update(line_cid, parseInt(qty));
-            }
-        })
-    },
-    prototipe_add: function(variant_id, add_qty){
-        var template_line_model = this.line_widget.model;
-        if (!add_qty){
-            add_qty: 1.0
-        }
-        var current_order= this.ts_model.get('selectedOrder');
-        current_order.addProductLine(variant_id, add_qty, true);
-
-        var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
-
-        // neded because addProductLine not set add_qty ???
-        added_line.set('qty', add_qty);
-        added_line.update_line_values();
-        added_line.mode = 'variant';
-        added_line.parent_cid = template_line_model.cid;
-        template_line_model.variant_related_cid[variant_id] = added_line.cid;
-        // this.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
-    },
-    prototipe_update: function(line_cid, add_qty){
-        var line_model = this.get_line_model_by_cid(line_cid);
-        if (line_model){
-            line_model.set('qty', add_qty);
-            line_model.update_line_values();
-        }
-    },
     get_column_values: function(){
         return this.column_attrs
     },
+    
     get_row_values: function(){
         return this.row_attrs
     },
+    
+    // Get input values from cell and format it to float.
+    get_cell_vals: function(cell){
+        var qty = this.ts_model.my_str2float( $(cell).find('input.add-qty').val() );
+        var price = this.ts_model.my_str2float( $(cell).find('input.add-price').val() );
+        var discount = this.ts_model.my_str2float( $(cell).find('input.add-discount').val() );
+
+        var vals = {
+            'qty': qty,
+            'price': price,
+            'discount': discount,
+        }
+        return vals
+    },
+
+    // For each cell add or update a line variant
+    add_variants_button: function(){
+        var self=this;
+        this.$('.grid-cell').each(function(i, cell){
+            var line_vals = self.get_cell_vals(cell);
+            if (!line_vals.qty){
+                return  // Continue to next iteration
+            }
+            var variant_id = cell.getAttribute('variant-id');
+            var line_cid = cell.getAttribute('line-cid');
+            
+            if (line_cid == ""){
+                self.prototipe_add(parseInt(variant_id), line_vals);
+            }
+            else{
+                 self.prototipe_update(line_cid, line_vals);
+            }
+        });
+    },
+
+    // Set the line model with line_vals info
+    set_cell_vals: function(line_model, line_vals){
+        line_model.set('qty', line_vals.qty);
+        line_model.set('pvp', line_vals.price);
+        line_model.set('discount', line_vals.discount);
+        line_model.update_line_values();
+    },
+
+    // Adds a new variant line from the Grid
+    prototipe_add: function(variant_id, line_vals){
+
+        var template_line_model = this.line_widget.model;
+
+        // Create new line
+        var current_order= this.ts_model.get('selectedOrder');
+        var added_line = current_order.addLine();
+
+        // var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
+
+        // Needed because addProductLine not set add_qty at time.
+        this.set_cell_vals(added_line, line_vals);
+
+        // Set line behaviour to a variant
+        added_line.mode = 'variant';
+        added_line.parent_cid = template_line_model.cid;
+
+        // Update parent_line dictionary with child line
+        template_line_model.variant_related_cid[variant_id] = added_line.cid;
+    },
+
+    // Update a exiting line from the Grid
+    prototipe_update: function(line_cid, line_vals){
+
+        var line_model = this.get_line_model_by_cid(line_cid);
+        if (line_model){
+            this.set_cell_vals(line_model, line_vals);
+        }
+    },
+
+    // Get cid from Grid cell
     get_line_cid_related: function(cell){
         var variant_id = cell.id;
 
@@ -106,11 +130,15 @@ var GridWidget = TsBaseWidget.extend({
         return line_cid;
 
     },
+
+    // Get an order line by grid cell cid
     get_line_model_by_cid: function(line_cid){
         var current_order = this.ts_model.get('selectedOrder');
         var line_model = current_order.get('orderLines').get({cid: line_cid}); 
         return line_model;
     },
+
+    // If line already exits get line vals
     update_cell: function(cell){
         var updated_cell = cell;
         var line_cid = this.get_line_cid_related(cell);
@@ -120,17 +148,21 @@ var GridWidget = TsBaseWidget.extend({
             if (line_model){
                 updated_cell['qty'] = line_model.get('qty') || 0.0
                 updated_cell['price'] = line_model.get('pvp') || 0.0
+                updated_cell['discount'] = line_model.get('discount') || 0.0
             }
         }
         return updated_cell
     },
-    // str_table with data from server updated, we need to return the updated
+
+    // Structure table with data from server updated, we need to return the updated
     // and linked to orderlines model cell obj
     get_cell_obj: function(col_id, row_id){
         var cell = this.str_table[col_id][row_id]
 
         return this.update_cell(cell)
     },
+
+    // Load Grid From server
     get_grid_from_server: function(template_id){
         self=this;
         var model = new Model("product.template")
@@ -142,6 +174,8 @@ var GridWidget = TsBaseWidget.extend({
         });
         return loaded
     },
+
+    // Renders the witget waiting for callback of the server
     refresh: function(options){
         var self = this;
         this.line_widget = options.line_widget
@@ -153,12 +187,24 @@ var GridWidget = TsBaseWidget.extend({
         });
     },
 
+    // Set behaviour of Button Apply
+    renderElement: function(){
+        var self = this;
+        this._super();
+        this.$('#add-variants-button').bind('click', function(event){
+            self.add_variants_button();
+            self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
+            $('#close-filter').click();
+        });
+    },
+
 });
 
 
 // The Grid Pop Up
 var GridPopUp = PopUp.PopUpWidget.extend({
     template: 'Grid-PopUp',
+
     start: function(){
         var self = this
         // Define Grid Widget
@@ -170,6 +216,8 @@ var GridPopUp = PopUp.PopUpWidget.extend({
             self.ts_widget.screen_selector.close_popup('filter_customer_popup');
         });
     },
+
+    // Render the withget to load info from server each time we show it.
     show: function(line_widget){
         var options = {
             'line_widget': line_widget
@@ -179,7 +227,6 @@ var GridPopUp = PopUp.PopUpWidget.extend({
         
     },
 });
-
 
 
 });

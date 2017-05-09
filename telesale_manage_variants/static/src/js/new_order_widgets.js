@@ -85,8 +85,6 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
                 // Open the grid
                 else{
                     this.model.mode = 'template_variants'
-
-                    
                     this.refresh();
                     this.button_open_grid();
                 }

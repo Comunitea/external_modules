@@ -44,20 +44,20 @@
                                     <td>
                                         <div class="grid-cell" t-att-variant-id="cell.id" t-att-line-cid="cell.line_cid">
                                             <div>
-                                                Stock: <span t-esc="cell.stock.toFixed(2)"/>
+                                                Available: <span t-esc="cell.stock.toFixed(2)"/>
                                             </div>
                                             <div>
-                                                Price: <span t-esc="cell.price.toFixed(2)"/>
+                                                <label>Qty</label>
+                                                <input class="add-qty mandatory" placeholder="Add Qty" t-att-value="cell.qty.toFixed(2)" type="text"/>
                                             </div>
                                             <div>
-                                                <input class="add-qty mandatory" placeholder="Add Qty" t-att-variant-id="cell.id" t-att-value="cell.qty.toFixed(2)" type="text"/>
-                                            </div>
-                                           <!--  <div>
-                                                <input class="add-price mandatory" t-att-value="cell.price.toFixed(2)" t-att-variant-id="cell.id" type="text"/>
+                                                <label>PVP</label>
+                                                <input class="add-price mandatory" t-att-value="cell.price.toFixed(2)" type="text"/>
                                             </div>
                                             <div>
-                                                <input class="add-discount mandatory" placeholder="Add Discount" t-att-variant-id="cell.id" type="text"/>
-                                            </div> -->
+                                                <label>Disc</label>
+                                                <input class="add-discount mandatory" t-att-value="cell.discount.toFixed(2)" type="text"/>
+                                            </div>
                                         </div>
                                     </td>
                                 </t>

@@ -487,6 +487,15 @@ var TsModel = Backbone.Model.extend({
         }
         return n.toFixed(decimals) * 1
     },
+    my_str2float: function(str){
+        var res = str;
+        res = res.replace(',', '.')
+        if ( isNaN(res) ){
+            res = 0.0;
+        }
+        return parseFloat(res);
+
+    }
 
 });
 
@@ -860,6 +869,9 @@ var Order = Backbone.Model.extend({
     deleteProductLine: function(id_line){
       var self=this;
       // self.get('orderLines')
+    },
+    createNewLine: function(vals){
+
     },
     addProductLine: function(product_id, add_qty, force_new_line){
         var self=this;
