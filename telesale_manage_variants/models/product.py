@@ -49,12 +49,4 @@ class ProductTemplate(models.Model):
                     'qty': 0.0,
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
-
-        print "********************************************************"
-        print "*********** ts_get_grid_structure RESULT: **************"
-        import pprint
-        print pprint.pprint(res)
-        print pprint.pprint(res)
-        # print res
-        print "********************************************************"
         return res
