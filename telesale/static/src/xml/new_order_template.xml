@@ -384,8 +384,7 @@
                 <input type="text" class='col-discount mandatory' t-att-value="widget.model.get('specific_discount') || widget.model.get('discount').toFixed(2)"/>
             </td>
              <td class="cell-total">
-                <!-- <input type="text" class='col-total' t-att-value="widget.model.get('total').toFixed(2)" readonly="readonly" tabIndex="-1"/> -->
-                <span t-esc="widget.model.get('total')"/>
+                <span t-esc="widget.model.get('total').toFixed(2)"/>
             </td>
 
 
