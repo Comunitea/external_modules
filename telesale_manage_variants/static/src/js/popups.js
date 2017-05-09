@@ -189,7 +189,33 @@ var GridWidget = TsBaseWidget.extend({
         });
     },
 
-    // Set behaviour of Button Apply
+    check_float(input_field){
+        var value = $(input_field).val();
+        if (isNaN(value)){
+            alert(value + " is not a valid number")
+            $(input_field).val("0.00")
+            $(input_field).focus();
+        }
+    },
+
+    bind_onchange_events: function(){
+        this.$('.add-qty').unbind();
+        this.$('.add-price').unbind();
+        this.$('.add-discount').unbind();
+
+        var self=this;
+        this.$('.add-qty').bind('change', function(event){
+             self.check_float(this);
+        });
+        this.$('.add-price').bind('change', function(event){
+             self.check_float(this);
+        });
+        this.$('.add-discount').bind('change', function(event){
+             self.check_float(this);
+        });
+    },
+
+    // Set behaviour of Button Apply, Cancel, and checks of inputs
     renderElement: function(){
         var self = this;
         this._super();
@@ -203,6 +229,8 @@ var GridWidget = TsBaseWidget.extend({
         this.$('#close-filter').off('click').click(function(){
             self.ts_widget.screen_selector.close_popup('filter_customer_popup');
         });
+
+        this.bind_onchange_events();
     },
 
 });
