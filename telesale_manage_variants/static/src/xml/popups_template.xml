@@ -5,13 +5,13 @@
     <t t-name="Grid-PopUp">
 
         <div class="grid_popup">
-            <div class="close-block">
+            <!-- <div class="close-block">
                 <div class="col-xs-12 fullheight centerinside">
                   <div class="centerthis">
                     <button id="close-filter">Close Grid</button>
                   </div>
                 </div>
-            </div>
+            </div> -->
             <div id="placeholder-grid-widget">
             </div>
         </div>
@@ -19,10 +19,13 @@
 
 
     <t t-name="Grid-Widget">
-        <div class="add-variants-button">
+        <div class="button-zone">
             <div class="col-xs-12 fullheight centerinside">
-              <div class="centerthis">
-                <button id="add-variants-button">Add variants</button>
+              <div class="col-xs-6 centerthis">
+                <button id="close-filter">Close</button>
+              </div>
+              <div class="col-xs-6 centerthis">
+                <button id="add-variants-button">Update Variants</button>
               </div>
             </div>
         </div>
@@ -41,22 +44,35 @@
                                 <th t-att-attr-id="row_obj.id"><t t-esc="row_obj.name"/></th>
                                 <t t-foreach="widget.get_column_values()" t-as="col_obj">
                                     <t t-set="cell" t-value="widget.get_cell_obj(col_obj.id, row_obj.id)"/>
-                                    <td>
+                                    <td t-att-class="cell.line_cid and 'cell-selected' or '' ">
                                         <div class="grid-cell" t-att-variant-id="cell.id" t-att-line-cid="cell.line_cid">
-                                            <div>
-                                                Available: <span t-esc="cell.stock.toFixed(2)"/>
+                                            <div t-att-class="cell.stock &gt; 0 and 'grid-stock' or 'grid-no-stock' ">
+                                                STOCK: <strong><t t-esc="cell.stock.toFixed(2)"/></strong>
                                             </div>
-                                            <div>
-                                                <label>Qty</label>
-                                                <input class="add-qty mandatory" placeholder="Add Qty" t-att-value="cell.qty.toFixed(2)" type="text"/>
+
+                                            <div class="grid-input">
+                                                <div class="col-xs-4">
+                                                    <label for="grid-qty">Qty</label>
+                                                </div>
+                                                <div class="col-xs-8">
+                                                    <input id="grid-qty" class="add-qty mandatory" placeholder="Add Qty" t-att-value="cell.qty.toFixed(2)" type="text"/>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <label>PVP</label>
-                                                <input class="add-price mandatory" t-att-value="cell.price.toFixed(2)" type="text"/>
+                                            <div class="grid-input">
+                                                <div class="col-xs-4">
+                                                    <label for="pvp">PVP</label>
+                                                </div>
+                                                <div class="col-xs-8">
+                                                    <input id="grid-pvp" class="add-price mandatory" t-att-value="cell.price.toFixed(2)" type="text" tabindex="-1"/>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <label>Disc</label>
-                                                <input class="add-discount mandatory" t-att-value="cell.discount.toFixed(2)" type="text"/>
+                                            <div class="grid-input">
+                                                <div class="col-xs-4">
+                                                    <label for="grid-discount">Disc</label>
+                                                </div>
+                                                <div class="col-xs-8">
+                                                  <input id="grid-discount" class="add-discount mandatory" t-att-value="cell.discount.toFixed(2)" type="text" tabindex="-1"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>

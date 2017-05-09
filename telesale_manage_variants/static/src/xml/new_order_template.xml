@@ -63,10 +63,10 @@
 
         <!-- CHECK WITHOUT JIM TELESALE MODULE -->
 
-        <t t-jquery=".cell-plus-discount" t-operation="replace">
-            <td class=".cell-plus-discount">
+        <t t-jquery=".cell-discount" t-operation="replace">
+            <td class=".cell-discount">
                 <t t-if="widget.model.mode == 'template_variants'">
-                    <span class='col-plus-discount'></span>
+                    <span class='col-discount'></span>
                 </t>
                 <t t-if="widget.model.mode != 'template_variants'">
                      <input type="text" class='col-chained_discount mandatory' t-att-value="widget.model.get('chained_discount')"/>

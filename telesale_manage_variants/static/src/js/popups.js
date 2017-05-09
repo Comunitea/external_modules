@@ -95,6 +95,10 @@ var GridWidget = TsBaseWidget.extend({
         // Create new line
         var current_order= this.ts_model.get('selectedOrder');
         var added_line = current_order.addLine();
+        var product_obj = this.ts_model.db.get_product_by_id(variant_id)
+        var product_name = product_obj.display_name;
+        added_line.set('product', product_name);
+        added_line.set('unit', product_obj.uom_id[1]);
 
         // var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
 
@@ -194,7 +198,12 @@ var GridWidget = TsBaseWidget.extend({
         this.$('#add-variants-button').bind('click', function(event){
             self.add_variants_button();
             self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
-            $('#close-filter').click();
+            self.$('#close-filter').click();
+        });
+
+        // Cancel button
+        this.$('#close-filter').off('click').click(function(){
+            self.ts_widget.screen_selector.close_popup('filter_customer_popup');
         });
     },
 
@@ -211,10 +220,7 @@ var GridPopUp = PopUp.PopUpWidget.extend({
         this.grid_widget = new GridWidget(this, {});
         this.grid_widget.replace(this.$('#placeholder-grid-widget'));
 
-        // Cancel button
-        this.$('#close-filter').off('click').click(function(){
-            self.ts_widget.screen_selector.close_popup('filter_customer_popup');
-        });
+        
     },
 
     // Render the withget to load info from server each time we show it.
