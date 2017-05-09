@@ -2,23 +2,18 @@
 
 <templates id="template_popups" inherit_id="telesale.template_popups">
 
+    <!-- Grid PopUp Screen -->
     <t t-name="Grid-PopUp">
-
         <div class="grid_popup">
-            <!-- <div class="close-block">
-                <div class="col-xs-12 fullheight centerinside">
-                  <div class="centerthis">
-                    <button id="close-filter">Close Grid</button>
-                  </div>
-                </div>
-            </div> -->
             <div id="placeholder-grid-widget">
             </div>
         </div>
     </t>
 
-
+    <!-- Grid Widget template -->
     <t t-name="Grid-Widget">
+
+        <!-- Buttons -->
         <div class="button-zone">
             <div class="col-xs-12 fullheight centerinside">
               <div class="col-xs-6 centerthis">
@@ -29,6 +24,8 @@
               </div>
             </div>
         </div>
+
+        <!-- Grid TAble -->
         <div class="grid-content">
             <table class="grid-table">
                 <tr>
