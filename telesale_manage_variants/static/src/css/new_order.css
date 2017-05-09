@@ -63,12 +63,14 @@
     text-align: center;
     border: solid 1px black;
     background-color: #c1c1c1
+    font-weight: bold;
 }
 
 .telesale .grid-content .grid-table tbody th {
     text-align: left;
     padding: 8px;
     border: solid 1px black;
+    font-weight: bold;
 }
 
 .telesale .grid-content .grid-table td {

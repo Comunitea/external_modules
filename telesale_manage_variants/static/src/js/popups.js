@@ -100,8 +100,6 @@ var GridWidget = TsBaseWidget.extend({
         added_line.set('product', product_name);
         added_line.set('unit', product_obj.uom_id[1]);
 
-        // var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
-
         // Needed because addProductLine not set add_qty at time.
         this.set_cell_vals(added_line, line_vals);
 
@@ -142,7 +140,7 @@ var GridWidget = TsBaseWidget.extend({
         return line_model;
     },
 
-    // If line already exits get line vals
+    // If line already exits get line vals from model to the cell
     update_cell: function(cell){
         var updated_cell = cell;
         var line_cid = this.get_line_cid_related(cell);
@@ -233,6 +231,8 @@ var GridPopUp = PopUp.PopUpWidget.extend({
         
     },
 });
+
+return {GridWidget: GridWidget}
 
 
 });
