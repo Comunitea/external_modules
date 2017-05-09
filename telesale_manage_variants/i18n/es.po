@@ -121,5 +121,5 @@ msgstr "Actualizar variantes"
 #: code:addons/telesale_manage_variants/static/src/js/popups.js:197
 #, python-format
 msgid "is not a valid number"
-msgstr "No es un número válido"
+msgstr " No es un número válido"
 
