@@ -521,7 +521,7 @@ var Orderline = Backbone.Model.extend({
             qty: options.qty || 1,
             unit: options.unit || '',
             pvp: options.pvp || 0,
-            total: options.total || 0,
+            total: options.total || 0.0,
             //to calc totals
             margin: options.margin || 0,
             taxes_ids:  options.taxes_ids || [],
