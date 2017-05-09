@@ -80,7 +80,7 @@
                      <span t-esc="widget.get_template_subtotal().toFixed(2)"/>
                 </t>
                 <t t-if="widget.model.mode != 'template_variants'">
-                     <span t-esc="widget.model.get('total')"/>
+                     <span t-esc="widget.model.get('total').toFixed(2)"/>
                 </t>
             </td>
         </t>
