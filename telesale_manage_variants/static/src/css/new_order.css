@@ -19,10 +19,28 @@
 }
 
 .telesale .grid-content {
-        height: 100%;
+        height: 95%;
         width: 100%;
         font-size: 1.7vmin;
         overflow: auto; 
+}
+
+.telesale .grid_popup .button-zone{
+        width: 100%;
+        margin-bottom: 5vh;
+}
+
+.telesale .grid_popup .button-zone button{
+        color: black;
+        height: 100%;
+        font-size: 2vmin;
+        font-weight: bold;
+        border: 2px solid #353A7E;
+        background: #7f82ac;
+}
+
+.telesale .grid_popup .button-zone #add-variants-button{
+    background: #0f8a0d;
 }
 
 .telesale .grid-content .grid-table tbody{
@@ -59,14 +77,42 @@
     cursor: pointer;
 }
 
+.telesale .grid-content .grid-table .grid-cell div.grid-stock{
+    width: 100%;
+    background-color: #0f8a0d;
+    border: solid 3px black;
+    margin-bottom: 1vh;
+    font-size: 2vh;
+    color: white;
+    font-weight: bold;
+}
+
+.telesale .grid-content .grid-table .grid-cell div.grid-no-stock{
+    width: 100%;
+    background-color: #bf3d3d;
+    border: solid 3px black;
+    margin-bottom: 1vh;
+    font-size: 2vh;
+    color: white;
+    font-weight: bold;
+}
+
+.telesale .grid-content .grid-table .grid-cell div.grid-input{
+    width:100%;
+}
+
 .telesale .grid-content .grid-table .grid-cell label {
-    display: inline-block;
-    width: 30%;
-    text-align: right;
+/*    display: inline-block;
+*/  width: 100%;
+    text-align: left;
 }
 
 .telesale .grid-content .grid-table .grid-cell input {
-    width: 80%;
+    /*width: 70%;*/
+}
+
+.telesale .grid-content .grid-table td.cell-selected {
+    background-color: #fcff45;
 }
 
 
