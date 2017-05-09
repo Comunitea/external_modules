@@ -7,6 +7,8 @@ var TsBaseWidget = require('telesale.TsBaseWidget');
 var PopUp = require('telesale.PopUps');
 
 var Model = require('web.DataModel');
+var core = require('web.core');
+var _t = core._t;
 
 // Set grid PopUp In 
 BaseWidgets.TsWidget.include({
@@ -192,7 +194,7 @@ var GridWidget = TsBaseWidget.extend({
     check_float(input_field){
         var value = $(input_field).val();
         if (isNaN(value)){
-            alert(value + " is not a valid number")
+            alert(value + _t("is not a valid number"));
             $(input_field).val("0.00")
             $(input_field).focus();
         }
