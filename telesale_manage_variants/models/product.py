@@ -11,10 +11,20 @@ class ProductTemplate(models.Model):
     def _get_variant_price(self, product, partner_id):
         res = product and product.lst_price or 0
         if partner_id:
-            values = self.env['sale.order.line'].ts_product_id_change(product.id,
-                                                                      partner_id)
+            values = self.env['sale.order.line'].\
+                ts_product_id_change(product.id, partner_id)
             if values.get('price_unit', False):
                 res = values['price_unit']
+        return res
+
+    @api.model
+    def _get_taxes_ids(self, product, partner_id):
+        res = []
+        if partner_id:
+            values = self.env['sale.order.line'].\
+                ts_product_id_change(product.id, partner_id)
+            if values.get('tax_id', False):
+                res = values['tax_id']
         return res
 
     @api.model
@@ -62,6 +72,7 @@ class ProductTemplate(models.Model):
                     'price': self._get_variant_price(product, partner_id),
                     'discount': 0.0,
                     'qty': 0.0,
+                    'tax_ids': self._get_taxes_ids(product, partner_id),
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
         return res
