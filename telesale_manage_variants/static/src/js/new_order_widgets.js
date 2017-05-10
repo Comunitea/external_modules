@@ -205,10 +205,6 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
         this.currentOrderLines.each(_.bind( function(orderLine) {
             orderLine.set('n_line', nline++);
             var line_mode = orderLine.mode
-            console.log(orderLine)
-            console.log(orderLine.mode)
-            console.log(this.view_mode)
-            console.log(allow_modes.indexOf(line_mode) >= 0)
             if (allow_modes.indexOf(line_mode) >= 0){
                 var line = new NewOrderWidgets.OrderlineWidget(this, {
                     model: orderLine,
