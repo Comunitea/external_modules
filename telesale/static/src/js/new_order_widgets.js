@@ -335,10 +335,9 @@ var OrderlineWidget = TsBaseWidget.extend({
         if (!add_qty){
             add_qty = 1.0
         }
-        debugger;
         var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
         var model = new Model("sale.order.line");
-        model.call("ts_product_id_change", [product_id, customer_id])
+        return model.call("ts_product_id_change", [product_id, customer_id])
         .then(function(result){
             console.log("RESULTADO PRODUCT ID CHGANGE")
             console.log(result);
