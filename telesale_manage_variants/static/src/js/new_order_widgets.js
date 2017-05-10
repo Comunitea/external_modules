@@ -34,7 +34,8 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
     // Get template_obj related with the name in the input field 
     get_template: function(){
         var template_obj = false;
-        var value = this.$('.col-template').val();
+        // var value = this.$('.col-template').val();
+        var value = this.model.get('template');
         var template_id =  this.ts_model.db.template_name_id[value];
         if (template_id){
             template_obj = this.ts_model.db.get_template_by_id(template_id);
