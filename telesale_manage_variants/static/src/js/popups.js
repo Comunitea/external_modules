@@ -52,11 +52,14 @@ var GridWidget = TsBaseWidget.extend({
         var qty = this.ts_model.my_str2float( $(cell).find('input.add-qty').val() );
         var price = this.ts_model.my_str2float( $(cell).find('input.add-price').val() );
         var discount = this.ts_model.my_str2float( $(cell).find('input.add-discount').val() );
-
+        var col_id = $(cell).attr('col-id');
+        var row_id = $(cell).attr('row-id');
+        var cell_obj = this.get_cell_obj(col_id, row_id)
         var vals = {
             'qty': qty,
             'price': price,
             'discount': discount,
+            'tax_ids': cell_obj.tax_ids
         }
         return vals
     },
@@ -86,10 +89,11 @@ var GridWidget = TsBaseWidget.extend({
         line_model.set('qty', line_vals.qty);
         line_model.set('pvp', line_vals.price);
         line_model.set('discount', line_vals.discount);
+        line.model.set('taxes_ids', line_vals.tax_ids || []); 
         line_model.update_line_values();
     },
 
-    
+
     // Adds a new variant line from the Grid
     prototipe_add: function(variant_id, line_vals){
 
