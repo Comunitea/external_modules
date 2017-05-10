@@ -651,6 +651,7 @@ var OrderWidget = TsBaseWidget.extend({
                     self.ts_model.build_order(self.order_fetch, self.open_order, order_lines); //build de order model
                     self.ts_widget.new_order_screen.data_order_widget.refresh();
                 }
+                self.renderElement();
             })
             return loaded
         },
