@@ -89,6 +89,7 @@ var GridWidget = TsBaseWidget.extend({
         line_model.update_line_values();
     },
 
+    
     // Adds a new variant line from the Grid
     prototipe_add: function(variant_id, line_vals){
 
