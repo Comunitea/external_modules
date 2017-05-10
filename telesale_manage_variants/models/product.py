@@ -8,7 +8,21 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     @api.model
-    def ts_get_grid_structure(self, template_id):
+    def _get_variant_price(self, product, partner_id):
+        res = product and product.lst_price or 0
+        if partner_id:
+            values = self.env['sale.order.line'].ts_product_id_change(product.id,
+                                                                      partner_id)
+            if values.get('price_unit', False):
+                res = values['price_unit']
+        return res
+
+    @api.model
+    def _get_variant_stock(self, product):
+        return product and product.qty_available or 0
+
+    @api.model
+    def ts_get_grid_structure(self, template_id, partner_id):
         res = {
             'column_attrs': [],
             'row_attrs': [],
@@ -21,6 +35,7 @@ class ProductTemplate(models.Model):
             return res
         line_x = template.attribute_line_ids[0]
         line_y = False if num_attrs == 1 else template.attribute_line_ids[1]
+
         for value_x in line_x.value_ids:
             x_attr = {
                 'id': value_x.id,
@@ -43,8 +58,8 @@ class ProductTemplate(models.Model):
 
                 cell_dic = {
                     'id': product and product.id or 0,
-                    'stock': product and product.global_available_stock or 0,
-                    'price': product and product.lst_price or 0,
+                    'stock': self._get_variant_stock(product),
+                    'price': self._get_variant_price(product, partner_id),
                     'discount': 0.0,
                     'qty': 0.0,
                 }
