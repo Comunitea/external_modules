@@ -204,6 +204,7 @@ var GridWidget = TsBaseWidget.extend({
             alert(value + _t("is not a valid number"));
             $(input_field).val("0.00")
             $(input_field).focus();
+            $(input_field).select();
         }
     },
 
