@@ -124,4 +124,7 @@
     overflow: auto;
 }
 
+.telesale  #leftpart .order-container .order-line-table th.header-grid{
+    width: 4%;
+}
 
