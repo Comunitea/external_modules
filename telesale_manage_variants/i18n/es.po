@@ -61,8 +61,8 @@ msgstr "P / V"
 #. openerp-web
 #: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:60
 #, python-format
-msgid "PVP"
-msgstr "PVP"
+msgid "Price"
+msgstr "Precio"
 
 #. module: telesale_manage_variants
 #. openerp-web

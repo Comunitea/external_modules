@@ -757,8 +757,8 @@ msgstr "Las líneas de pedido no pueden estar vacías"
 #. openerp-web
 #: code:addons/telesale/static/src/xml/new_order_template.xml:347
 #, python-format
-msgid "PVP"
-msgstr "PVP"
+msgid "Price"
+msgstr "Precio"
 
 #. module: telesale
 #: model:ir.model,name:telesale.model_res_partner

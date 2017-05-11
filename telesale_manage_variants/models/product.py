@@ -8,23 +8,18 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     @api.model
-    def _get_variant_price(self, product, partner_id):
-        res = product and product.lst_price or 0
-        if partner_id:
+    def _get_onchange_vals(self, product, partner_id):
+        res = {
+            'price': 0.0,
+            'tax_ids': []
+        }
+        if partner_id and product:
             values = self.env['sale.order.line'].\
                 ts_product_id_change(product.id, partner_id)
-            if values.get('price_unit', False):
-                res = values['price_unit']
-        return res
-
-    @api.model
-    def _get_taxes_ids(self, product, partner_id):
-        res = []
-        if partner_id:
-            values = self.env['sale.order.line'].\
-                ts_product_id_change(product.id, partner_id)
-            if values.get('tax_id', False):
-                res = values['tax_id']
+            res.update({
+                'price': values.get('price_unit', 0.0),
+                'tax_ids': values.get('tax_id', [])
+            })
         return res
 
     @api.model
@@ -66,13 +61,14 @@ class ProductTemplate(models.Model):
                 product = template.product_variant_ids.filtered(
                     lambda x: not(values - x.attribute_value_ids))[:1]
 
+                onchange_vals = self._get_onchange_vals(product, partner_id)
                 cell_dic = {
                     'id': product and product.id or 0,
                     'stock': self._get_variant_stock(product),
-                    'price': self._get_variant_price(product, partner_id),
+                    'price': onchange_vals['price'],
                     'discount': 0.0,
                     'qty': 0.0,
-                    'tax_ids': self._get_taxes_ids(product, partner_id),
+                    'tax_ids': onchange_vals['tax_ids'],
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
         return res
