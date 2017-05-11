@@ -80,8 +80,6 @@ overflow: hidden !important;
     height: 4%;
     color: gray;
     background: #393939;
-    background: -moz-linear-gradient(#7b7979, #393939);
-    background: -webkit-gradient(linear, left top, left bottom, from(#7b7979), to(#393939));
 }
 /*Content of screens*/
 .telesale #content {
@@ -92,7 +90,7 @@ overflow: hidden !important;
 }
 
 .telesale #content button:focus{
-  background: linear-gradient(#F5DAD6, #FC1616);
+  background: #F5DAD6
   }
 /******************************************** TOP BAR *******************************************************/
 /*Close button*/
@@ -124,8 +122,6 @@ overflow: hidden !important;
     height: 100%;
     color: gray;
     background: #393939;
-    background: -moz-linear-gradient(#7b7979, #393939);
-    background: -webkit-gradient(linear, left top, left bottom, from(#7b7979), to(#393939));
 
 }
 /*  ********* CUSTOM MULTICOMPANY SWITCH WIDGET ********* */
@@ -142,7 +138,6 @@ overflow: hidden !important;
 
 }
 .telesale #placeholder-switch-company .oe_topbar_name {
-    .o-text-overflow();
     max-width: 150px;
 }
 .telesale #placeholder-switch-company a {
@@ -257,7 +252,7 @@ overflow: hidden !important;
 }
 
 .telesale #topheader button.selected-screen{
-    background: linear-gradient(#FC1616, #F5DAD6);
+    background: #ff4a4a;
 }
 
 .telesale .col-sm-1 .col-md-1 .col-lg-1 .col-xs-2 .col-sm-2 .col-md-2 .col-lg-2 .col-xs-3 .col-sm-3 .col-md-3 .col-lg-3 .col-xs-4 .col-sm-4 .col-md-4 .col-lg-4 .col-xs-5 .col-sm-5 .col-md-5 .col-lg-5 .col-xs-6 .col-sm-6 .col-md-6 .col-lg-6 .col-xs-7 .col-sm-7 .col-md-7 .col-lg-7 .col-xs-8 .col-sm-8 .col-md-8 .col-lg-8 {
