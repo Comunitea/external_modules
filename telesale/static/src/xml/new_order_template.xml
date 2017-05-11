@@ -344,7 +344,7 @@
                     <th class="header-product">Product</th>
                     <th class="header-qty">Qty</th>
                     <th class="header-unit">Unit</th>
-                    <th class="header-pvp">PVP</th>
+                    <th class="header-pvp">Price</th>
                     <th class="header-disc">Disc.</th>
                     <th class="header-pvp">Total</th>
                 </thead>
