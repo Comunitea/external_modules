@@ -55,7 +55,7 @@
                                             </div>
                                             <div class="grid-input">
                                                 <div class="col-xs-4">
-                                                    <label for="pvp">PVP</label>
+                                                    <label for="pvp">Price</label>
                                                 </div>
                                                 <div class="col-xs-8">
                                                     <input id="grid-pvp" class="add-price mandatory" t-att-value="cell.price.toFixed(2)" type="text" tabindex="-1"/>
