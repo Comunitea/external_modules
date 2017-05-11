@@ -56,7 +56,7 @@ var TsModel = Backbone.Model.extend({
             'nbr_pending_operations': 0,
 
             'update_catalog': 'a',  //value to detect changes between a and b to update the catalog only when click in label
-            'bo_id': 0 //it's a counter to assign to the buttons when you do click on '+'
+            'bo_id': 1 //it's a counter to assign to the buttons when you do click on '+'
         });
 
         this.get('orders').bind('remove', function(){ self.on_removed_order(); });
