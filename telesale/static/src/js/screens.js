@@ -139,7 +139,7 @@ exports.OrderScreenWidget = ScreenWidget.extend({
                 order: new_order,
                 ts_model: self.ts_model
             });
-            new_order_button.appendTo($('#orders'));
+            new_order_button.appendTo(self.$('#orders'));
             new_order_button.selectOrder();
             var counter = this.ts_model.get('bo_id');
             counter = counter + 1;
