@@ -237,15 +237,11 @@
 .telesale #leftpart .button-order-container button {
     color:black;
     width:100%;
-    margin:0.1vw;
     font-weight: bold;
     font-size: 1.5vmin;
     border: 2px solid #353A7E;
     background: #7f82ac;
-    background: -webkit-gradient(linear, left top, left bottom, from(#b2b3d7), to(#7f82ac));
-    background: -moz-linear-gradient(#b2b3d7, #7f82ac);
-    background:  -ms-linear-gradient(#b2b3d7, #7f82ac);
-    background:      linear-gradient(#b2b3d7, #7f82ac);
+   
 }
 
 /* order container Table*/

@@ -70,7 +70,7 @@ msgstr "El nombre de cliente es obligatorio"
 #: code:addons/telesale/static/src/xml/new_order_template.xml:269
 #, python-format
 msgid "ADD"
-msgstr "Añadir"
+msgstr "AÑADIR"
 
 #. module: telesale
 #. openerp-web

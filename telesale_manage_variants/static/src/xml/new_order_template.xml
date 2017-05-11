@@ -6,8 +6,13 @@
         <t t-jquery=".state_order" t-operation="before">
             <div class="col-xs-1 fullheight centerinside">
               <div class="centerthis">
-                <button id="change_view" tabIndex="18">P / V</button>
-                <t t-esc="widget.view_mode"/>
+                <t t-if="widget.view_mode == 'variant'">
+                    <button id="change_view" tabIndex="18">TEMPLATES</button>
+                </t>
+                <t t-if="widget.view_mode != 'variant'">
+                    <button id="change_view" tabIndex="18">VARIANTS</button>
+                </t>
+
               </div>
             </div>
         </t>
