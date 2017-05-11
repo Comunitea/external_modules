@@ -341,7 +341,7 @@
     box-sizing: border-box;
     color: black;
 }
-.telesale  #leftpart .order-container .order-line-table td.cell-nline{
+/*.telesale  #leftpart .order-container .order-line-table td.cell-nline{
     width: 4%;
 }
 .telesale  #leftpart .order-container .order-line-table td.cell-code{
@@ -361,7 +361,7 @@
 }
 .telesale  #leftpart .order-container .order-line-table td.cell-disc{
     width: 8%;
-}
+}*/
 .telesale  #leftpart .order-container .order-line-table td.cell-pvp input{
     text-align: right;
 }
