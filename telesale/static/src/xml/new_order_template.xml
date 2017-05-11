@@ -119,11 +119,11 @@
             </div>
             </div>
             <div id="bottompart">
-                <div class="bottomleft col-xs-4 fullheight">
+                <div class="bottomleft col-xs-3 fullheight">
                     <div id="placeholder-bottompart-left">
                     </div>
                 </div>
-                <div class="bottomright col-xs-8 fullheight">
+                <div class="bottomright col-xs-9 fullheight">
                     <div id="placeholder-bottompart">
                     </div>
                 </div>
