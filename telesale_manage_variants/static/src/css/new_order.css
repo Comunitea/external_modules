@@ -57,6 +57,7 @@
 .telesale .grid-content .grid-table thead tr {
     border: solid 1px black;
     text-align: center;
+    background: #c1c1c1;
 }
 
 .telesale .grid-content .grid-table thead th {
