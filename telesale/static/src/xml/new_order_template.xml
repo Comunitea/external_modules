@@ -468,19 +468,19 @@
         </div>
         <div class="col-xs-4 fullheight centerinside">
           <div class="fullheight centerinside fullwidth">
+            <div class="order-button">
+                  <div class="fullheight centerinside fullwidth">
+                       <div class="centerthis">
+                  <button class="cancel-button fullwidth" tabIndex="20">CANCEL</button>
+                       </div>
+                  </div>
+              </div>
               <div class="order-button">
                 <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
                     <button type="button" class="save-button fullwidth" tabIndex="19">SAVE</button>
                   </div>
                 </div>
-              </div>
-              <div class="order-button">
-                  <div class="fullheight centerinside fullwidth">
-                       <div class="centerthis">
-                  <button class="cancel-button fullwidth" tabIndex="20">CANCEL</button>
-                       </div>
-                  </div>
               </div>
               <div class="order-button">
                   <div class="fullheight centerinside fullwidth">

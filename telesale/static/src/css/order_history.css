@@ -51,55 +51,6 @@
     font-size: 1.7vmin;
     line-height: 3vh;
 }
-/*OLD STYLE */
-/*.telesale .history-line-table th{
-    border: 1px solid #000;
-    height: 9%;
-    background: #7f82ac;
-    text-align: center;
-    color:black;
-}*/
-
-/*.telesale .history-line-table td{
-    border: 1px solid #000;
-    height: 100%;
-    text-align: center;
-    vertical-align: middle;
-}*/
-
-/*.telesale .history-line-table td.cell-name{
-    width: 10%;
-}
-.telesale .history-line-table td.cell-date{
-    width: 20%;
-}
-.telesale .history-line-table td.cell-total{
-    width: 15%;
-}
-.telesale .history-line-table td.cell-state{
-    width: 10%;
-}
-.telesale .history-line-table td.cell-add{
-    width: 12.5%;
-}
-.telesale .history-line-table td.cell-create{
-    width: 12.5%;
-}
-*/
-/*.telesale .order-history-screen button {
-    color: black;
-    vertical-align: middle;
-    margin-right:0px;
-    border: 1px solid #353A7E;
-    background: #7f82ac;
-    background: -webkit-gradient(linear, left top, left bottom, from(#b2b3d7), to(#7f82ac));
-    background: -moz-linear-gradient(#b2b3d7, #7f82ac);
-    background:  -ms-linear-gradient(#b2b3d7, #7f82ac);
-    background:      linear-gradient(#b2b3d7, #7f82ac);
-    width: 100%;
-    padding: 0px;
-    font-size: 1.7vmin;
-}*/
 
 /*NEW STYLE */
 .telesale .order-history-screen button {

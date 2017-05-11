@@ -56,40 +56,10 @@
 .telesale .catalog-table th.pc-head-show{
     width: 10%;
 }
-/*.telesale .catalog-table td{
-    border: 1px solid #000;
-    height: 100%;
-    text-align: center;
-    font-size: 1.7vmin;
-    vertical-align: middle
-}*/
 }.telesale .catalog-table td.pc-cell-stock{
      text-align: right;
 }
 
-/*.telesale .catalog-table button {
-    color: black;
-    font-size: 1.5vmin;
-    vertical-align: middle;
-    margin-right:0px;
-    border: 1px solid #353A7E;
-    background: #7f82ac;
-    background: -webkit-gradient(linear, left top, left bottom, from(#b2b3d7), to(#7f82ac));
-    background: -moz-linear-gradient(#b2b3d7, #7f82ac);
-    background:  -ms-linear-gradient(#b2b3d7, #7f82ac);
-    background:      linear-gradient(#b2b3d7, #7f82ac);
-}*/
-
-/*.telesale .catalog-table button {
-    color: black;
-    vertical-align: middle;
-    margin-right: 0px;
-    border: 1px solid #ffffff;
-    background: #9ba3ff;
-    width: 100%;
-    padding: 0px;
-    font-size: 1.7vmin;
-}*/
 .telesale .catalog-table button {
     color: black;
     vertical-align: middle;
