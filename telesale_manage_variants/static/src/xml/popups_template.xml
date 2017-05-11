@@ -5,8 +5,6 @@
     <!-- Grid PopUp Screen -->
     <t t-name="Grid-PopUp">
         <div class="grid_popup">
-            <div id="placeholder-grid-widget">
-            </div>
         </div>
     </t>
 

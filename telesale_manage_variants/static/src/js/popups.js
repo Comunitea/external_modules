@@ -255,7 +255,7 @@ var GridPopUp = PopUp.PopUpWidget.extend({
         var self = this
         // Define Grid Widget
         this.grid_widget = new GridWidget(this, {});
-        this.grid_widget.appendTo(this.$('#placeholder-grid-widget'));
+        this.grid_widget.appendTo($(this.el));
 
         
     },
@@ -263,7 +263,7 @@ var GridPopUp = PopUp.PopUpWidget.extend({
     // Render the withget to load info from server each time we show it.
     show: function(line_widget){
         this.grid_widget = new GridWidget(this, {});
-        this.grid_widget.appendTo(this.$('#placeholder-grid-widget'));
+        this.grid_widget.appendTo($(this.el));
         var options = {
             'line_widget': line_widget
         }

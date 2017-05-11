@@ -22,8 +22,8 @@
         height: 95%;
         width: 100%;
         font-size: 1.7vmin;
-/*        overflow: auto; 
-*/}
+        overflow: auto; 
+}
 
 .telesale .grid_popup .button-zone{
         width: 100%;
@@ -115,13 +115,6 @@
 
 .telesale .grid-content .grid-table td.cell-selected {
     background-color: #fcff45;
-}
-
-.telesale #placeholder-grid-widget{
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
 }
 
 .telesale  #leftpart .order-container .order-line-table th.header-grid{
