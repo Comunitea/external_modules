@@ -8,25 +8,6 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     @api.model
-    def _get_onchange_vals(self, product, partner_id):
-        res = {
-            'price': 0.0,
-            'tax_ids': []
-        }
-        if partner_id and product:
-            values = self.env['sale.order.line'].\
-                ts_product_id_change(product.id, partner_id)
-            res.update({
-                'price': values.get('price_unit', 0.0),
-                'tax_ids': values.get('tax_id', [])
-            })
-        return res
-
-    @api.model
-    def _get_variant_stock(self, product):
-        return product and product.qty_available or 0
-
-    @api.model
     def ts_get_grid_structure(self, template_id, partner_id):
         res = {
             'column_attrs': [],
@@ -41,6 +22,7 @@ class ProductTemplate(models.Model):
         line_x = template.attribute_line_ids[0]
         line_y = False if num_attrs == 1 else template.attribute_line_ids[1]
 
+        t_product = self.env['product.product']
         for value_x in line_x.value_ids:
             x_attr = {
                 'id': value_x.id,
@@ -61,10 +43,11 @@ class ProductTemplate(models.Model):
                 product = template.product_variant_ids.filtered(
                     lambda x: not(values - x.attribute_value_ids))[:1]
 
-                onchange_vals = self._get_onchange_vals(product, partner_id)
+                onchange_vals = t_product._get_onchange_vals(product,
+                                                             partner_id)
                 cell_dic = {
                     'id': product and product.id or 0,
-                    'stock': self._get_variant_stock(product),
+                    'stock': t_product._get_product_stock(product),
                     'price': onchange_vals['price'],
                     'discount': 0.0,
                     'qty': 0.0,

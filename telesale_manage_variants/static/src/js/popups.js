@@ -100,13 +100,7 @@ var GridWidget = TsBaseWidget.extend({
         var template_line_model = this.line_widget.model;
 
         // Create new line
-        var current_order= this.ts_model.get('selectedOrder');
-        var added_line = current_order.addLine();
-        var product_obj = this.ts_model.db.get_product_by_id(variant_id)
-        var product_name = product_obj.display_name;
-        added_line.set('product', product_name);
-        added_line.set('unit', product_obj.uom_id[1]);
-
+        var added_line = self.ts_widget.new_order_screen.order_widget.create_line_empty(variant_id)
         // Needed because addProductLine not set add_qty at time.
         this.set_cell_vals(added_line, line_vals);
 

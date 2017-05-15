@@ -36,20 +36,45 @@ class ProductProduct(models.Model):
         return res
 
     @api.model
-    def _get_product_values(self, product):
+    def _get_product_values2(self, product, partner_id):
+        onchange_vals = self._get_onchange_vals(product, partner_id)
+
         vals = {
             'id': product.id,
             'display_name': product.display_name,
             'default_code': product.default_code,
-            'stock': product.qty_available
+            'stock': product.qty_available,
+            'price': onchange_vals['price'],
+            'discount': 0.0,
+            'qty': 0.0,
+            'tax_ids': onchange_vals['tax_ids'],
         }
         return vals
 
     @api.model
-    def ts_search_products(self, product_name):
+    def ts_search_products(self, product_name, partner_id):
         res = []
         domain = [('name', 'ilike', product_name)]
         for product in self.search(domain):
-            values = self._get_product_values(product)
+            values = self._get_product_values2(product, partner_id)
             res.append(values)
         return res
+
+    @api.model
+    def _get_onchange_vals(self, product, partner_id):
+        res = {
+            'price': 0.0,
+            'tax_ids': []
+        }
+        if partner_id and product:
+            values = self.env['sale.order.line'].\
+                ts_product_id_change(product.id, partner_id)
+            res.update({
+                'price': values.get('price_unit', 0.0),
+                'tax_ids': values.get('tax_id', [])
+            })
+        return res
+
+    @api.model
+    def _get_product_stock(self, product):
+        return product and product.qty_available or 0
