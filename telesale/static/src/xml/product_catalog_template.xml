@@ -4,16 +4,17 @@
 
     <t t-name="Product-Catalog-Screen-Widget">
         <div class="product-catalog-screen">
-             <div class="search-box">
-               <div class="center"><input id="search-product" placeholder="Search Products" class="tab1"/></div>
-               <!-- <img class="search-clear" src="/telesale/static/src/img/search_reset.gif" /> -->
-            </div>
             <div id="placeholder-product-catalog-widget">
             </div>
         </div>
     </t>
 
     <t t-name="Product-Catalog-Widget">
+
+            <div class="search-box">
+               <div class="center"><input id="search-product" placeholder="Search Products" class="tab1"/></div>
+               <div class="center"><button id="search-product-button">SEARCH</button></div>
+            </div>
             <div class="product-catalog-content">
                 <table class="catalog-table">
                     <thead>
@@ -45,13 +46,12 @@
                 </span>
             </td>
             <td class="pc-cell-stock">
-              <t t-if="widget.stock">
-                  <span class="product-cell" t-esc="widget.stock.toFixed(2)"/>
-              </t>
+                  <span class="product-cell" t-esc="widget.product.stock.toFixed(2)"/>
+
 
             </td>
              <td class="pc-cell-qty">
-               <input type="text" id="add-qty" class='mandatory' t-att-value="1.0.toFixed(2)"/>
+               <input type="text" id="add-qty" class='mandatory' t-att-value="0.0.toFixed(2)"/>
             </td>
             <td class="pc-cell-add">
                 <button class="add-product fullwidth">+</button>

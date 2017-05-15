@@ -183,51 +183,10 @@ exports.ProductCatalogScreenWidget = ScreenWidget.extend({
     init: function(parent,options){
         this._super(parent,options)
     },
-    search_customer_products: function(query,string){
-        var re = RegExp("([0-9]+):.*?"+query,"gi");
-        var results = [];
-        for(var i = 0; i < 100; i++){
-            var r = re.exec(string);
-            if(r){
-                var id = Number(r[1]);
-                results.push(this.ts_model.db.get_product_by_id(id));
-            }else{
-                break;
-            }
-        }
-        return results;
-    },
     start: function(){
         var self = this;
         this.product_catalog_widget = new ProductCatalog.ProductCatalogWidget(this, {});
         this.product_catalog_widget.replace(this.$('#placeholder-product-catalog-widget'));
-        this.$("#search-product").keyup(function(event){
-            var query = $(this).val().toLowerCase();
-            if(query && self.ts_model.get("product_search_string")){
-                if(event.which === 13){
-                    if( self.ts_model.get('products').size() === 1 ){
-                        self.ts_model.get('selectedOrder').addProductLine(self.ts_model.get('products').at(0).id);
-                        // self.clear_search();
-                    }
-                }else{
-                    var products = self.search_customer_products(query,self.ts_model.get("product_search_string"));
-                    self.ts_model.get('products').reset(products);
-                    var upd = self.ts_model.get('update_catalog')
-                    if (upd === 'a'){
-                        upd = 'b'
-                    }
-                    else{
-                        upd = 'a'
-                    }
-                    self.ts_model.set('update_catalog', upd)
-                    // self.$('.search-clear').fadeIn();
-                }
-            }else{
-                // var products = self.ts_model.db.get_product_by_category(self.category.id);
-                // self.ts_model.get('products').reset(products);
-                // self.$('.search-clear').fadeOut();
-            }
-        });
     }
 });
 
