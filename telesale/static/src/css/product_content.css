@@ -94,3 +94,15 @@
 .telesale .catalog-table tr.lowlight:nth-child(even){
     transition: all 150ms linear;
 }
+
+.telesale .catalog-table tr.in-order{
+    background-color: #fcff45;
+}
+
+.telesale .catalog-table td.line-stock{
+    background-color: #93ff91;
+}
+
+.telesale .catalog-table td.line-no-stock{
+    background-color: #ff7878;
+}

@@ -654,6 +654,26 @@ var OrderWidget = TsBaseWidget.extend({
             })
             return loaded
         },
+
+        create_line_empty: function(product_id){
+            var current_order= this.ts_model.get('selectedOrder');
+            var added_line = current_order.addLine();
+            var product_obj = this.ts_model.db.get_product_by_id(product_id)
+            var product_name = product_obj.display_name;
+            added_line.set('product', product_name);
+            added_line.set('unit', product_obj.uom_id[1]);
+            return added_line;
+        },
+
+        create_line_from_vals: function(product_id, line_vals){
+            var added_line = this.create_line_empty(product_id);
+            added_line.set('qty', line_vals.qty || 1.0);
+            added_line.set('pvp', line_vals.price || 0.0);
+            added_line.set('discount', line_vals.discount || 0.0);
+            added_line.set('taxes_ids', line_vals.tax_ids || []); 
+            added_line.update_line_values();
+            return
+        },
         // Get lines from model and render it
         renderLines: function(options){
             var self = this;

@@ -14,15 +14,17 @@
             <div class="search-box">
                <div class="center"><input id="search-product" placeholder="Search Products" class="tab1"/></div>
                <div class="center"><button id="search-product-button">SEARCH</button></div>
+               <div class="center"><button id="add-alll-button">ADD ALL</button></div>
             </div>
             <div class="product-catalog-content">
                 <table class="catalog-table">
                     <thead>
                         <th class="pc-head-name">Name</th>
-                        <th class="pc-head-code">Code</th>
+<!--                         <th class="pc-head-code">Code</th> -->
                         <th class="pc-head-stock">Stock</th>
                         <th class="pc-head-stock">Add qty</th>
-                        <th class="pc-head-add">Add</th>
+                        <th class="pc-head-stock">Price</th>
+                       <!--  <th class="pc-head-add">Add</th> -->
                         <th class="pc-head-show">show</th>
                     </thead>
                     <tbody class="productlines">
@@ -34,30 +36,34 @@
     </t>
 
     <t t-name="Product-Line-Widget">
-        <tr>
+        <t t-set="line_product" t-value="widget.get_product_obj()"/>
+        <tr t-attf-class="catalog-line #{line_product.line_cid and 'in-order' or ''}" t-att-product-id="widget.product.id" t-att-line-cid="line_product.line_cid">
             <td class="pc-cell-name">
-                <span class="product-cell"><t t-esc="widget.product.display_name"/></span>
+                <span class="product-cell"><t t-esc="line_product.display_name"/></span>
             </td>
-            <td class="pc-cell-code">
+<!--             <td class="pc-cell-code">
                 <span class="product-cell">
-                    <t t-if="widget.product.default_code !== false">
-                         <t t-esc="widget.product.default_code"/>
+                    <t t-if="line_product.default_code !== false">
+                         <t t-esc="line_product.default_code"/>
                     </t>
                 </span>
-            </td>
-            <td class="pc-cell-stock">
-                  <span class="product-cell" t-esc="widget.product.stock.toFixed(2)"/>
+            </td> -->
+            <td t-attf-class="pc-cell-stock #{line_product.stock &gt; 0 and 'line-stock' or 'line-no-stock' }">
+                  <span class="product-cell" t-esc="line_product.stock.toFixed(2)"/>
 
 
             </td>
              <td class="pc-cell-qty">
-               <input type="text" id="add-qty" class='mandatory' t-att-value="0.0.toFixed(2)"/>
+               <input type="text" id="add-qty" class='mandatory' t-att-value="line_product.qty.toFixed(2)"/>
             </td>
-            <td class="pc-cell-add">
-                <button class="add-product fullwidth">+</button>
+            <td class="pc-cell-price">
+                  <input type="text" id="add-price" class='mandatory' t-att-value="line_product.price.toFixed(2)"/>
             </td>
+<!--             <td class="pc-cell-add">
+                <button class="add-product fullwidth" tabindex="-1">+</button>
+            </td> -->
             <td class="pc-cell-show">
-                <button class="show-product fullwidth">show</button>
+                <button class="show-product fullwidth" tabindex="-1">show</button>
             </td>
         </tr>
     </t>
