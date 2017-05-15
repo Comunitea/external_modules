@@ -34,3 +34,22 @@ class ProductProduct(models.Model):
             res['last_qty'] = line_obj.product_uom_qty
             res['last_price'] = line_obj.price_unit
         return res
+
+    @api.model
+    def _get_product_values(self, product):
+        vals = {
+            'id': product.id,
+            'display_name': product.display_name,
+            'default_code': product.default_code,
+            'stock': product.qty_available
+        }
+        return vals
+
+    @api.model
+    def ts_search_products(self, product_name):
+        res = []
+        domain = [('name', 'ilike', product_name)]
+        for product in self.search(domain):
+            values = self._get_product_values(product)
+            res.append(values)
+        return res
