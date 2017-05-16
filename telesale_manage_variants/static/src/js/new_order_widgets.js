@@ -288,6 +288,20 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
     }
     });
 
+
+var SoldProductLineWidget = NewOrderWidgets.SoldProductLineWidget.include({
+    // FULL OVERWRITED: to add the template line
+    add_product_to_order: function() {
+        alert("En desarrollo");
+        // var self=this;
+        // var product_id = this.sold_line.product_id[0]
+        // if (product_id){
+        //     var current_order= this.ts_model.get('selectedOrder')
+        //     current_order.addProductLine(product_id);
+        // }
+    },
+});
+
 });
 
 

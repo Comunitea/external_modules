@@ -1,4 +1,4 @@
-odoo.define('telesale_manage_variants.product_vatalog_widgets', function (require) {
+odoo.define('telesale_manage_variants.product_catalog_widgets', function (require) {
 "use strict";
 
 var Catalog = require('telesale.ProductCatalog');

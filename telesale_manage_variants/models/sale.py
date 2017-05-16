@@ -2,6 +2,7 @@
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from odoo import models, api
+from datetime import date, timedelta
 
 
 class SaleOrder(models.Model):
@@ -89,3 +90,63 @@ class SaleOrder(models.Model):
                 vals = self._get_ts_line_vals(order_obj, child_line)
                 vals.update({'template_line': template_line_obj.id})
                 t_order_line.create(vals)
+
+
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    @api.model
+    def get_last_lines_by(self, period, client_id):
+        """
+        FULL OCERWRITED TO GET TEMPLATE LINES
+        """
+        cr = self._cr
+        date_str = date.today()
+
+        user = self.env['res.users'].browse(self._uid)
+        company_id = user.company_id.id
+        if period == "ult":
+            sq = """ SELECT id
+                     FROM sale_order_line_template sol
+                     WHERE order_id in
+                        (SELECT id
+                         FROM sale_order WHERE
+                         state in ('sale','done')
+                         and company_id = %s
+                         and partner_id = %s order by id desc limit 1)
+                    ORDER BY id desc"""
+
+        else:
+            if period == "3month":
+                date_str = date.today() - timedelta(90)
+            elif period == "year":
+                date_str = date.today() - timedelta(365)
+            date_str = date_str.strftime("%Y-%m-%d %H:%M:%S")
+            sq = """ SELECT * FROM
+                        (SELECT distinct on (product_id) sol.id
+                         FROM sale_order_line_template sol
+                         INNER JOIN sale_order so ON so.id = sol.order_id
+                         WHERE so.state in
+                            ('sale','done')
+                         AND so.partner_id = %s
+                         AND so.date_order >= %s
+                         and so.company_id = %s
+                         ORDER BY product_id desc, id desc) AS sq
+                    ORDER BY id desc"""
+
+        if period != 'ult':
+            cr.execute(sq, (client_id, date_str, company_id))
+        else:
+            cr.execute(sq, (company_id, client_id))
+        fetch = cr.fetchall()
+        prod_ids = [x[0] for x in fetch]
+        res = []
+        for l in self.env['sale.order.line.template'].browse(prod_ids):
+            dic = {
+                'product_id': (l.product_template.id,
+                               l.product_template.display_name),
+                'price_unit': 0.0,
+                'default_code': '',
+            }
+            res.append(dic)
+        return res
