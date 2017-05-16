@@ -89,8 +89,25 @@
                 </t>
             </td>
         </t>
-
-
     </t>
+
+        <!-- Sold lines without price -->
+        <t t-extend="Sold-Product-Widget">
+            <t t-jquery=".pc-header-price" t-operation="replace">
+            </t>
+        </t>
+
+        <t t-extend="Sold-Product-Line-Widget">
+            <t t-jquery=".pc-cell-code" t-operation="replace">
+            </t>
+
+            <t t-jquery=".pc-cell-stock" t-operation="replace">
+                <td class="pc-cell-stock">
+                    <t t-if="widget.ts_model.db.template_by_id[widget.sold_line.product_id[0]]">
+                        <button class="fullwidth" id="add-line" tabIndex="18">+</button>
+                    </t>
+                </td>
+            </t>
+        </t>
 
 </templates>
