@@ -1,4 +1,4 @@
-odoo.define('telesale_manage_variants.base_widgets', function (require) {
+odoo.define('telesale_manage_variants.popups', function (require) {
 "use strict";
 var BaseWidgets = require('telesale.BaseWidget');
 
@@ -89,7 +89,7 @@ var GridWidget = TsBaseWidget.extend({
         line_model.set('qty', line_vals.qty);
         line_model.set('pvp', line_vals.price);
         line_model.set('discount', line_vals.discount);
-        line.model.set('taxes_ids', line_vals.tax_ids || []); 
+        line_model.set('taxes_ids', line_vals.tax_ids || []); 
         line_model.update_line_values();
     },
 
@@ -124,7 +124,6 @@ var GridWidget = TsBaseWidget.extend({
     // Get cid from Grid cell
     get_line_cid_related: function(cell){
         var variant_id = cell.id;
-
         var line_cid = "";
         var template_line_model = this.line_widget.model;
         if (template_line_model.variant_related_cid[variant_id]){
