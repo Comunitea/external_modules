@@ -29,25 +29,25 @@ var ProductLineWidget = TsBaseWidget.extend({
             });
         }
     },
-    add_product_to_order: function() {
-        var product_id = this.product.id
-        var add_qty = this.$('#add-qty').val();
+    // add_product_to_order: function() {
+    //     var product_id = this.product.id
+    //     var add_qty = this.$('#add-qty').val();
 
-        if (isNaN(add_qty)){
-            alert(_t(add_qty + " is not a valid number"));
-            add_qty = 0.0
-        }
-        if (product_id){
-            var current_order= this.ts_model.get('selectedOrder')
-            add_qty = this.ts_model.my_round(add_qty,2);
-            current_order.addProductLine(product_id, add_qty);
-        }
-    },
+    //     if (isNaN(add_qty)){
+    //         alert(_t(add_qty + " is not a valid number"));
+    //         add_qty = 0.0
+    //     }
+    //     if (product_id){
+    //         var current_order= this.ts_model.get('selectedOrder')
+    //         add_qty = this.ts_model.my_round(add_qty,2);
+    //         current_order.addProductLine(product_id, add_qty);
+    //     }
+    // },
     // Get cid from product line
     get_line_cid_related: function(product){
         var line_cid = "";
         var product_id = product.id;
-
+        var product_id = product.id;
         var order_lines = this.ts_model.get('selectedOrder').get('orderLines').models;
         for (var key in order_lines){
             var line_model = order_lines[key];
@@ -86,7 +86,6 @@ var ProductLineWidget = TsBaseWidget.extend({
         var self=this;
         this._super();
         this.$('.show-product').click(_.bind(this.show_product_info, this));
-        this.$('.add-product').click(_.bind(this.add_product_to_order, this));
     },
 });
 
@@ -141,9 +140,10 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var line_model = current_order.get('orderLines').get({cid: line_cid}); 
         return line_model;
     },
-    catalog_add_product(product_id, line_vals){
-        // Create new line
-        var added_line = this.ts_widget.new_order_screen.order_widget.create_line_from_vals(product_id, line_vals)
+    catalog_add_product(product_id, catalog_vals){
+        // Create new line, overwrited in telesale_manage_variants
+        var added_line = this.ts_widget.new_order_screen.order_widget.create_line_from_vals(product_id, catalog_vals)
+        return added_line;
     },
 
     catalog_update_product(line_cid, line_vals){
@@ -178,7 +178,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var self = this;
         this._super();
         this.$('#search-product-button').click(function (){ self.searchProducts() });
-        this.$('#add-alll-button').click(function (){ self.addAllProducts(); $('button#button_no').click(); });
+        this.$('#add-alll-button').click(function (){ self.addAllProducts(); self.ts_model.ts_widget.new_order_screen.order_widget.renderElement(); $('button#button_no').click(); });
         var $lines_contennt = this.$('.productlines');
         for (var key in this.catalog_products){
             var product_obj = self.catalog_products[key];
