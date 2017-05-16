@@ -208,7 +208,7 @@ class SaleOrderLine(models.Model):
         if period != 'ult':
             cr.execute(sq, (client_id, date_str, company_id))
         else:
-            cr.execute(sq, (client_id, company_id))
+            cr.execute(sq, (company_id, client_id))
         fetch = cr.fetchall()
         prod_ids = [x[0] for x in fetch]
         res = []
