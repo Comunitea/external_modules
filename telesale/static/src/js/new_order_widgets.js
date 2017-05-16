@@ -1015,7 +1015,9 @@ var TotalsOrderWidget = TsBaseWidget.extend({
         OrderWidget: OrderWidget,
         TotalsOrderWidget: TotalsOrderWidget,
         ProductInfoOrderWidget: ProductInfoOrderWidget,
-        SoldProductWidget: SoldProductWidget
+        SoldProductWidget: SoldProductWidget,
+        SoldProductLineWidget: SoldProductLineWidget,
+
     }; 
 });
 
