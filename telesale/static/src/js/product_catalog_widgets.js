@@ -160,6 +160,13 @@ var ProductCatalogWidget = TsBaseWidget.extend({
 
     addAllProducts: function(){
         var self=this;
+        var order =  this.ts_model.get('selectedOrder')
+        var partner_id = this.ts_model.db.partner_name_id[order.get('partner')]
+        if (!partner_id){
+            alert(_t('Please select a customer before adding a order line'));
+            $('#partner').focus();
+            return;
+        }
         this.$('.catalog-line').each(function(i, line){
             var line_vals = self.get_line_vals(line);
             if (!line_vals.qty){
@@ -177,6 +184,31 @@ var ProductCatalogWidget = TsBaseWidget.extend({
             }
         });
     },
+    check_float(input_field){
+        var value = $(input_field).val();
+        if (isNaN(value)){
+            alert(value + _t("is not a valid number"));
+            $(input_field).val("0.00")
+            $(input_field).focus();
+            $(input_field).select();
+        }
+    },
+    bind_onchange_events: function(){
+        this.$('.add-qty').unbind();
+        this.$('.add-price').unbind();
+        this.$('.add-discount').unbind();
+
+        var self=this;
+        this.$('.add-qty').bind('change', function(event){
+             self.check_float(this);
+        });
+        this.$('.add-price').bind('change', function(event){
+             self.check_float(this);
+        });
+        // this.$('.add-discount').bind('change', function(event){
+        //      self.check_float(this);
+        // });
+    },
 
     renderElement: function () {
         var self = this;
@@ -189,6 +221,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
             var product_line = new ProductLineWidget(self, {product: product_obj})
             product_line.appendTo($lines_contennt);
         }
+        this.bind_onchange_events();
     },
 });
 
