@@ -2,16 +2,7 @@ odoo.define('telesale.PopUps', function (require) {
 "use strict";
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
-// var NewOrder = require('telesale.new_order_widgets');
-// var CustomerList = require('telesale.CustomerList');
-// var OrderHistory = require('telesale.OrderHistory');
-// var ProductCatalog = require('telesale.ProductCatalog');
-// var models = require('telesale.models');
-// var core = require('web.core');
-// var _t = core._t;
-
-var exports = {}
-
+var Model = require('web.DataModel');
 
 
 var PopUpWidget = TsBaseWidget.extend({
@@ -29,21 +20,72 @@ var PopUpWidget = TsBaseWidget.extend({
     },
 });
 
-var FilterCustomerPopUp = PopUpWidget.extend({
-    template: 'Filter-Customer-PopUp',
-    init: function(parent,options){
-        this._super(parent,options)
+var SoldHistoryWidget = TsBaseWidget.extend({
+    template: 'Sold-History-Widget',
+
+    init: function(parent, options){
+        this._super(parent, options);
+        this.line_results = [];
+        this.selected_line = false;
     },
-    show: function(){
+
+    // Load Grid From server
+    get_history_from_server: function(product_id){
+        self=this;
+        var model = new Model("product.product")
+        var current_order = this.ts_model.get('selectedOrder');
+        var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
+        var loaded = model.call("get_history_product_info",[product_id, partner_id])
+        .then(function(result){
+            self.line_results = result
+        });
+        return loaded
+    },
+
+    refresh: function(options){
         var self = this;
+        this.selected_line = options.selected_line;
+
+        var product_obj = this.selected_line.get_product();
+        $.when(this.get_history_from_server(product_obj.id))
+        .done(function(){
+            self.renderElement();
+        });
+    }
+
+});
+
+
+var CustomerHistoryPopUp = PopUpWidget.extend({
+    template: 'Customer-History-PopUp',
+    start: function(){
+        var self = this
+        // Define Grid Widget
+        this.sold_history_widget = new SoldHistoryWidget(this, {});
+        this.sold_history_widget.appendTo($(this.el));
+    },
+    show: function(selected_line){
+        var self = this;
+        this.sold_history_widget = new SoldHistoryWidget(this, {});
+        this.sold_history_widget.appendTo($(this.el));
+
+        var options = {
+            'selected_line': selected_line
+        }
+        this.sold_history_widget.refresh(options);
+
         this._super();
         this.$('#close-filter').off('click').click(function(){
-            self.ts_widget.screen_selector.close_popup('filter_customer_popup');
+            self.ts_widget.screen_selector.close_popup('filter-customer_popup');
         })
+    },
+    hide: function(){
+        this.sold_history_widget.destroy();
+        this._super();
     }
 });
 
-return {FilterCustomerPopUp: FilterCustomerPopUp,
+return {CustomerHistoryPopUp: CustomerHistoryPopUp,
         PopUpWidget: PopUpWidget};
 
 });
