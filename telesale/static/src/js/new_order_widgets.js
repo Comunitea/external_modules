@@ -582,6 +582,7 @@ var OrderWidget = TsBaseWidget.extend({
             
         },
         button_show_client: function(){
+            // var win = window.open('', '_blank');
             var client_id = this.check_customer_get_id()
             if (client_id){
                 this.do_action({

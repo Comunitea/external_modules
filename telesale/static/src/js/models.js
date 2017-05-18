@@ -84,7 +84,7 @@ var TsModel = Backbone.Model.extend({
         return  ['display_name', 'default_code', 'list_price', 'standard_price', 'uom_id', 'taxes_id', 'weight']
     },
     _get_partner_fields: function(){
-        return  ['name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date']
+        return  ['name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'area_id']
     },
     // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
     load_server_data: function(){
@@ -147,6 +147,7 @@ var TsModel = Backbone.Model.extend({
                         self.get('customer_names').push(customer_name);
                         self.get('customer_codes').push(customers[key].ref);
                     }
+                    console.log(customers);
                     self.db.add_partners(customers);
 
                     // TAXES

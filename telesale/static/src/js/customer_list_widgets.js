@@ -121,7 +121,7 @@ var CustomerListWidget = TsBaseWidget.extend({
 
         // Search customers implementation
         var search_timeout = null;
-        this.$('.searchbox input').on('keypress',function(event){
+        this.$('.searchbox input').on('keyup',function(event){
             clearTimeout(search_timeout);
 
             var query = this.value;
