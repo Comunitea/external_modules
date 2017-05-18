@@ -70,7 +70,7 @@ class ProductProduct(models.Model):
             'id': product.id,
             'display_name': product.display_name,
             'default_code': product.default_code,
-            'stock': product.qty_available,
+            'stock': self._get_product_stock(product),
             'price': onchange_vals['price'],
             'discount': 0.0,
             'qty': 0.0,

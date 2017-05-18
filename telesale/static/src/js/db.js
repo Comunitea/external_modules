@@ -157,23 +157,38 @@ exports.TS_LS = core.Class.extend({
     },
     _partner_search_string: function(partner){
         var str = partner.name;
-        if (partner.ref){
-            str += '|' + partner.ref;
+        // if (partner.ref){
+        //     str += '|' + partner.ref;
+        // }
+        // if(partner.address){
+        //     str += '|' + partner.adress;
+        // }
+         // if (partner.ref){
+        //     str += '|' + partner.ref;
+        // }
+        if(partner.commercial_partner_name){
+            str += '|' + partner.commercial_partner_name;
         }
-        if(partner.address){
-            str += '|' + partner.adress;
+        if(partner.street){
+            str += '|' + partner.street;
+        }
+        if(partner.zip){
+            str += '|' + partner.zip;
+        }
+        if(partner.city){
+            str += '|' + partner.city;
+        }
+        if(partner.state_id){
+            str += '|' + partner.state_id[0];
+        }
+         if(partner.area_id){
+            str += '|' + partner.area_id[0];
         }
         if(partner.phone){
             str += '|' + partner.phone.split(' ').join('');
         }
         if(partner.email){
             str += '|' + partner.email;
-        }
-        if(partner.state_id){
-            str += '|' + partner.email;
-        }
-        if(partner.zip){
-            str += '|' + partner.zip;
         }
         str = '' + partner.id + ':' + str.replace(':','') + '\n';
         return str

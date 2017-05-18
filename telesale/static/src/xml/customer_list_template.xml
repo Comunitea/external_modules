@@ -12,11 +12,13 @@
     <t t-name="CustomerLine">
         <tr class='client-line' t-att-data-id='partner.id'>
             <td><t t-esc='partner.name' /></td>
-            <!-- <td><t t-esc='partner.address' /></td> -->
+            <td><t t-esc='partner.commercial_partner_name' /></td>
             <td><t t-esc='partner.street' /></td>
             <td><t t-esc='partner.zip and partner.zip or ""' /></td>
             <td><t t-esc='partner.state_id and partner.state_id[1] or ""' /></td>
+            <td><t t-esc='partner.area_id and partner.area_id[1] or ""' /></td>
             <td><t t-esc='partner.phone or partner.mobile or ""' /></td>
+            <td><t t-esc='partner.email or partner.email or ""' /></td>
         </tr>
     </t>
 
@@ -220,10 +222,13 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
+                                            <th>Commercial Name</th>
                                             <th>Address</th>
                                             <th>Zip</th>
-                                            <th>Province</th>
+                                            <th>State</th>
+                                            <th>Area</th>
                                             <th>Phone</th>
+                                            <th>Email</th>
                                         </tr>
                                     </thead>
                                     <tbody class='client-list-contents'>
