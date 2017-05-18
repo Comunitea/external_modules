@@ -181,9 +181,6 @@ exports.TS_LS = core.Class.extend({
         if(partner.state_id){
             str += '|' + partner.state_id[0];
         }
-         if(partner.area_id){
-            str += '|' + partner.area_id[0];
-        }
         if(partner.phone){
             str += '|' + partner.phone.split(' ').join('');
         }

@@ -15,8 +15,8 @@
             <td><t t-esc='partner.commercial_partner_name' /></td>
             <td><t t-esc='partner.street' /></td>
             <td><t t-esc='partner.zip and partner.zip or ""' /></td>
+            <td><t t-esc='partner.city or ""' /></td>
             <td><t t-esc='partner.state_id and partner.state_id[1] or ""' /></td>
-            <td><t t-esc='partner.area_id and partner.area_id[1] or ""' /></td>
             <td><t t-esc='partner.phone or partner.mobile or ""' /></td>
             <td><t t-esc='partner.email or partner.email or ""' /></td>
         </tr>
@@ -220,16 +220,15 @@
                             <div class='subwindow-container-fix touch-scrollable scrollable-y'>
                                 <table class='client-list'>
                                     <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Commercial Name</th>
-                                            <th>Address</th>
-                                            <th>Zip</th>
-                                            <th>State</th>
-                                            <th>Area</th>
-                                            <th>Phone</th>
-                                            <th>Email</th>
-                                        </tr>
+                                            <th class="cl-name">Name</th>
+                                            <th class="cl-cname">Commercial Name</th>
+                                            <th class="cl-street">Address</th>
+                                            <th class="cl-zip">Zip</th>
+                                            <th class="cl-city">City</th>
+                                            <th class="cl-state">State</th>
+                                            <th class="cl-phone">Phone</th>
+                                            <th class="cl-email">Email</th>
+
                                     </thead>
                                     <tbody class='client-list-contents'>
                                     </tbody>

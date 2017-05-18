@@ -106,3 +106,19 @@
 .telesale .catalog-table td.line-no-stock{
     background-color: #ff7878;
 }
+
+.telesale .search-box .center #search-product-button{
+    color: black;
+    font-size: 2vmin;
+    font-weight: bold;
+    border: 2px solid #353A7E;
+    background: #7f82ac;
+}
+
+.telesale .search-box .center #add-alll-button{
+    color: black;
+    font-size: 2vmin;
+    font-weight: bold;
+    border: 2px solid #353A7E;
+    background: #0f8a0d;
+}

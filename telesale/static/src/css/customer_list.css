@@ -84,14 +84,37 @@
 /* e) The Client List Screen */
 
 .telesale .customer-list-content .client-list{
-    font-size: 16px;
     width: 100%;
     line-height: 3vh;
+    table-layout: fixed;
 }
-.telesale .customer-list-content .client-list th,
-.telesale .customer-list-content .client-list td {
-    padding: 0px 8px;
+
+.telesale .customer-list-content .client-list th.cl-name{
+    width: 15%;
 }
+.telesale .customer-list-content .client-list th.cl-cname{
+    width: 15%;
+}
+.telesale .customer-list-content .client-list th.cl-street{
+    width: 18%;
+}
+.telesale .customer-list-content .client-list th.cl-zip{
+    width: 5%;
+}
+.telesale .customer-list-content .client-list th.cl-city{
+    width: 10%;
+}
+.telesale .customer-list-content .client-list th.cl-state{
+    width: 10%;
+}
+.telesale .customer-list-content .client-list th.cl-phone{
+    width: 10%;
+}
+.telesale .customer-list-content .client-list th.cl-email{
+/*    width: 10%;*/
+}
+
+
 .telesale .customer-list-content .client-list tr{
     transition: all 150ms linear;
     background: rgb(230,230,230);
