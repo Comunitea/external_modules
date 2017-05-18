@@ -597,10 +597,6 @@ var OrderWidget = TsBaseWidget.extend({
               alert(_t('You must select a customer'));
             }
         },
-        // button_filter_client: function(){
-        //     // Opens a PopUp
-        //     this.ts_widget.screen_selector.show_popup('filter_customer_popup', false);
-        // },
         check_customer_get_id: function(){
             var client_name = this.ts_model.get('selectedOrder').get('partner')
             var client_id = this.ts_model.db.partner_name_id[client_name];
@@ -748,6 +744,10 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
         if(this.stock <= 0){
           this.$('#stock-info').addClass('warning-red')
         }
+        $('.product-info-table').click(function (){ self.showHistory() });
+    },
+    showHistory: function(){
+       this.ts_widget.screen_selector.show_popup('filter_customer_popup', this.selected_line);
     },
     calcProductInfo: function () {
         var self = this;
@@ -756,17 +756,9 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
             this.set_default_values();
             this.renderElement();
         }
-        // this.selected_line.unbind('change:discount');
         this.selected_line.unbind('change:product');
-        // this.selected_line.unbind('change:margin');
-        // this.selected_line.bind('change:discount', this.change_discount, this);
         this.selected_line.bind('change:product', this.change_product, this);
-        // this.selected_line.bind('change:margin', this.change_margin, this);
         this.selected_line.trigger('change:product');
-        // if (this.selected_line){
-        //     this.change_discount();
-        //     this.change_margin();
-        // }
 
     },
     change_product: function(){

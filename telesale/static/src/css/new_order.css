@@ -387,6 +387,7 @@
     /*margin-left: 3px;*/
     color:black;
     font-size: 1.5vmin;
+    cursor: pointer;
 }
 
 .telesale #bottompart td{

@@ -107,7 +107,7 @@ var TsWidget = TsBaseWidget.extend({
         this.key_shorts_screen.appendTo(this.$('#content'));
 
         // --------  POP UP WIDGETS ---------
-        this.filter_customer_popup = new PopUps.FilterCustomerPopUp(this, {});
+        this.filter_customer_popup = new PopUps.CustomerHistoryPopUp(this, {});
         this.filter_customer_popup.appendTo(this.$('#content'));
 
         // --------  SCREEN SELECTOR ---------
