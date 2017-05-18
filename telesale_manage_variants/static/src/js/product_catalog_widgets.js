@@ -19,9 +19,9 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
     // Get values from catalog vals to create a new line
     get_create_line_vals: function(product_id, catalog_vals, mode){
         var current_order = this.ts_model.get('selectedOrder');
-        var res = {};
+        var res = this._super(product_id, catalog_vals, mode);
         if (mode == 'template_variants'){
-            res = {
+            res = $.extend(res, {
                 ts_model: this.ts_model, 
                 order:current_order,
                 code: "" ,
@@ -31,10 +31,10 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
                 pvp: 0.0,
                 discount: 0.0,
                 taxes_ids:[],
-            }
+            });
         }
         else{
-            res = {
+            res = $.extend(res, {
                 ts_model: this.ts_model, 
                 order:current_order,
                 code: "" ,
@@ -44,7 +44,7 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
                 pvp: catalog_vals.price || 0.0,
                 discount: catalog_vals.discount || 0.0,
                 taxes_ids: catalog_vals.tax_ids,
-            }
+            });
         }
         // Add info to manage variants
         var new_vals = {
@@ -128,7 +128,9 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
         }
     },
 
+
 });
+    return {ProductCatalogWidget: ProductCatalogWidget}
 
 });
 
