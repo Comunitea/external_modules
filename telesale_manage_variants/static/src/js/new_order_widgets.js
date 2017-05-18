@@ -290,15 +290,35 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
 
 
 var SoldProductLineWidget = NewOrderWidgets.SoldProductLineWidget.include({
+    
     // FULL OVERWRITED: to add the template line
     add_product_to_order: function() {
-        alert("En desarrollo");
-        // var self=this;
-        // var product_id = this.sold_line.product_id[0]
-        // if (product_id){
-        //     var current_order= this.ts_model.get('selectedOrder')
-        //     current_order.addProductLine(product_id);
-        // }
+        var self=this;
+        var template_id = this.sold_line.product_id[0]
+        var template_obj = this.ts_model.db.template_by_id[template_id]
+        if (template_obj){
+
+            var current_order =  this.ts_model.get('selectedOrder')
+            var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')]
+            if (!partner_id){
+                alert(_t('Please select a customer before adding a order line'));
+                $('#partner').focus();
+                return;
+            }
+
+            var last_line = current_order.getLastOrderline();
+            if(last_line && last_line.get('template') == "" ){
+              $('.remove-line-button').click()
+            }
+
+
+            $('.add-line-button').click();
+            var lines_widgets = self.ts_model.ts_widget.new_order_screen.order_widget.orderlinewidgets;
+            var created_widget = lines_widgets[lines_widgets.length - 1];
+            created_widget.$('.col-template').val(template_obj.display_name);
+            created_widget.set_value('template');
+            created_widget.perform_onchange('template');
+        }
     },
 });
 
