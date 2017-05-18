@@ -36,6 +36,33 @@ class ProductProduct(models.Model):
         return res
 
     @api.model
+    def _get_line_discount(self, line):
+        return line.discount
+
+    @api.model
+    def get_history_product_info(self, product_id, partner_id):
+        """ Return data of widget productInfo History """
+        res = []
+        t_sol = self.env['sale.order.line']
+        if not product_id or not partner_id:
+            raise except_orm(_('Error!'), _("Product_id or partrner_id \
+                                            must be defined"))
+        domain = [('product_id', '=', product_id),
+                  ('order_id.partner_id', '=', partner_id),
+                  ('state', 'in', ['sale', 'done']),
+                  ]
+        lines_objs = t_sol.search(domain, order="id desc")
+        for line in lines_objs:
+            vals = {
+                'date': line.order_id.date_order,
+                'qty': line.product_uom_qty,
+                'price_unit': line.price_unit,
+                'discount': self._get_line_discount(line)
+            }
+            res.append(vals)
+        return res
+
+    @api.model
     def _get_product_values2(self, product, partner_id):
         onchange_vals = self._get_onchange_vals(product, partner_id)
 
