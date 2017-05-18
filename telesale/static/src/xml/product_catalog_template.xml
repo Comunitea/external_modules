@@ -54,10 +54,10 @@
 
             </td>
              <td class="pc-cell-qty">
-               <input type="text" id="add-qty" class='mandatory' t-att-value="line_product.qty.toFixed(2)"/>
+               <input type="text" id="add-qty" class='add-qty mandatory' t-att-value="line_product.qty.toFixed(2)"/>
             </td>
             <td class="pc-cell-price">
-                  <input type="text" id="add-price" class='mandatory' t-att-value="line_product.price.toFixed(2)"/>
+                  <input type="text" id="add-price" class='add-price mandatory' t-att-value="line_product.price.toFixed(2)"/>
             </td>
 <!--             <td class="pc-cell-add">
                 <button class="add-product fullwidth" tabindex="-1">+</button>
