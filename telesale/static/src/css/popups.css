@@ -25,7 +25,6 @@
     height: 5%;
     width: 100%;
     font-size: 1.7vmin;
-    overflow: auto;
     padding-bottom: 5px;
     border-bottom: solid 1px black;
 }
@@ -39,7 +38,6 @@
 .telesale  .customer-history-popup .sold-history-table{
     border: solid 1px black;
     border-collapse: collapse;
-    height: 100%;
     width: 100%;
 }
 
