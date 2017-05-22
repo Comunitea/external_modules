@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="/telesale/static/src/css/order_history.css" id="ts-stylesheet"/>
         <link rel="stylesheet" href="/telesale/static/src/css/product_content.css" id="ts-stylesheet"/>
         <link rel="stylesheet" href="/telesale/static/src/css/popups.css" id="ts-stylesheet"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/key_shorts.css" id="ts-stylesheet"/>
 
         <script type="text/javascript" src="/telesale/static/src/js/main.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/mousetrap.js"></script>

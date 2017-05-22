@@ -176,7 +176,7 @@
             <section class="top-content">
                 <div class= "col-xs-7 centerinside fullheight">
                     <div class='centerthis searchbox'>
-                        <input placeholder='Search Customers' />
+                        <input id="search-client"  placeholder='Search Customers' />
                         <span class='search-clear'></span>
                     </div>
                     <span class='searchbox'></span>
