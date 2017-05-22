@@ -665,10 +665,11 @@ var OrderWidget = TsBaseWidget.extend({
 
         create_line_from_vals: function(product_id, line_vals){
             var added_line = this.create_line_empty(product_id);
+            var prod_obj = this.ts_model.db.get_product_by_id(product_id);
             added_line.set('qty', line_vals.qty || 1.0);
             added_line.set('pvp', line_vals.price || 0.0);
             added_line.set('discount', line_vals.discount || 0.0);
-            added_line.set('taxes_ids', line_vals.tax_ids || []); 
+            added_line.set('taxes_ids', line_vals.tax_ids || prod_obj.taxes_id); 
             added_line.update_line_values();
             return
         },
