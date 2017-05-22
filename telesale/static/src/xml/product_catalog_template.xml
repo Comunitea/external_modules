@@ -37,7 +37,7 @@
 
     <t t-name="Product-Line-Widget">
         <t t-set="line_product" t-value="widget.get_product_obj()"/>
-        <tr t-attf-class="catalog-line #{line_product.line_cid and 'in-order' or ''}" t-att-product-id="widget.product.id" t-att-line-cid="line_product.line_cid" t-att-stock="line_product.stock.toFixed(2)">
+        <tr t-attf-class="catalog-line #{line_product.line_cid and 'in-order' or ''}" t-att-product-id="widget.product.id" t-att-line-cid="line_product.line_cid" t-att-stock="line_product.stock.toFixed(2)" t-att-taxes="line_product.taxes">
             <td class="pc-cell-name">
                 <span class="product-cell"><t t-esc="line_product.display_name"/></span>
             </td>

@@ -20,6 +20,8 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
     get_create_line_vals: function(product_id, catalog_vals, mode){
         var current_order = this.ts_model.get('selectedOrder');
         var res = this._super(product_id, catalog_vals, mode);
+        var prod_obj = this.ts_model.db.get_product_by_id(product_id);
+
         if (mode == 'template_variants'){
             res = $.extend(res, {
                 ts_model: this.ts_model, 
@@ -43,7 +45,7 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
                 qty: catalog_vals.qty || 0.0,
                 pvp: catalog_vals.price || 0.0,
                 discount: catalog_vals.discount || 0.0,
-                taxes_ids: catalog_vals.tax_ids,
+                taxes_ids: catalog_vals.taxes_ids || prod_obj.taxes_id,
             });
         }
         // Add info to manage variants
