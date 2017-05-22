@@ -68,6 +68,8 @@ var ProductLineWidget = TsBaseWidget.extend({
         var updated_product = product;
         var line_cid = this.get_line_cid_related(product);
         updated_product['line_cid'] = line_cid;
+        var taxes_str = product.tax_ids.map(String).join();
+        updated_product['taxes'] = taxes_str;
         if (line_cid){
             var line_model = this.get_line_model_by_cid(line_cid);
             if (line_model){
@@ -82,7 +84,6 @@ var ProductLineWidget = TsBaseWidget.extend({
         return this.update_product(product);
     },
     renderElement: function() {
-        // debugger;
         var self=this;
         this._super();
         this.$('.show-product').click(_.bind(this.show_product_info, this));
@@ -125,12 +126,18 @@ var ProductCatalogWidget = TsBaseWidget.extend({
     get_line_vals: function(line){
         var qty = this.ts_model.my_str2float( $(line).find('#add-qty').val() );
         var price = this.ts_model.my_str2float( $(line).find('#add-price').val() );
+        var tax_ids = [];
+        var taxes_str =  line.getAttribute('taxes') || ""
+        if (taxes_str) {
+            var tax_split = taxes_str.split(',');
+            var tax_ids = tax_split.map(function(x) { return parseInt(x); });
+        }
 
         var vals = {
             'qty': qty,
             'price': price,
             'discount': 0.0,
-            'tax_ids': [],
+            'taxes_ids': tax_ids,
         }
         return vals
     },
@@ -167,6 +174,13 @@ var ProductCatalogWidget = TsBaseWidget.extend({
             $('#partner').focus();
             return;
         }
+
+        //If selected line is an empty line delete it.
+        var selected_orderline = order.getSelectedLine();
+        if(selected_orderline && selected_orderline.get('product') == "" ){
+            $('.remove-line-button').click()
+        }
+
         this.$('.catalog-line').each(function(i, line){
             var line_vals = self.get_line_vals(line);
             if (!line_vals.qty){
