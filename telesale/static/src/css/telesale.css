@@ -199,13 +199,14 @@ overflow: hidden !important;
     background: #00FFFF;
 }
 
-.telesale .customer-data-content{
+.telesale .key-shorts-content{
     width: 100%;
     position: absolute;
-    margin-left: 3%;
+    padding-left: 1.5%;
     top: 0;
     bottom: 0;
     background: #F0EEEE;
+    overflow: auto;
 }
 
 .telesale .ui-autocomplete-input{

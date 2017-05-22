@@ -142,25 +142,7 @@ var TsWidget = TsBaseWidget.extend({
         Mousetrap.stopCallback = function () {
             return false;
         }
-        // Mousetrap.bind('esc', function() {
-        //     self.$(window).click();
-        // });
-        //Add line
-        Mousetrap.bind('alt+a', function(e) {
-            $( document.activeElement ).blur();
-            if (e.defaultPrevented) e.defaultPrevented;
-            else e.returnValue = false;
-            self.$('.add-line-button').click();
-        });
-        //Remove line
-        Mousetrap.bind('alt+s', function(e) {
-            $( document.activeElement ).blur();
-            if (e.defaultPrevented) e.defaultPrevented;
-            else e.returnValue = false;
-            self.$('.remove-line-button').click()
-        });
 
-        //change betwen button block
         Mousetrap.bind('alt+q', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
@@ -168,48 +150,68 @@ var TsWidget = TsBaseWidget.extend({
             self.$('#button_no').click();  //new order screen
             self.$("#partner").focus();
         });
-
-        Mousetrap.bind('alt+w', function(e){
+         Mousetrap.bind('alt+w', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-            self.$('#button_oh').click(); //Order history page
-            self.$('.ui-autocomplete-input').focus();
+            self.$('#button_pc').click(); //Product catalog
+            self.$('#search-product').focus();
         });
-        Mousetrap.bind('alt+e', function(e){
+         Mousetrap.bind('alt+e', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-            self.$('#button_cl').click();//call list page
-            self.$('.tab1').focus();
+            self.$('#button_so').click();//Client list page
+            self.$('#search-client').focus();
         });
         Mousetrap.bind('alt+r', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-            self.$('#button_pc').click(); //product catalog
-            self.$('#search-product').focus();
+            self.$('#button_oh').click(); //Order Hystory
+            self.$('#input-customer').focus();
         });
         Mousetrap.bind('alt+t', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-            self.$('#button_pr').click();  //product reserved page
+            self.$('#button_ks').click(); //key shorts page
             self.$('#input-customer').focus();
         });
-        Mousetrap.bind('alt+y', function(e){
+
+
+        Mousetrap.bind('alt+o', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-             self.$('#button_so').click(); //Customer list page
-            self.$("#input-date_start2").focus();
+            self.$('.neworder-button').click();  //new order
+            self.$('#partner').focus();
         });
-        Mousetrap.bind('alt+f12', function(e){
+
+        Mousetrap.bind('alt+p', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-             self.$('#button_ks').click(); //key shorts page
+            self.$('.removeorder-button').click();  //remove order
+            self.$('#partner').focus();
         });
+
+        
+        Mousetrap.bind('alt+a', function(e) {
+            $( document.activeElement ).blur();
+            if (e.defaultPrevented) e.defaultPrevented;
+            else e.returnValue = false;
+            self.$('.add-line-button').click(); //Add line
+        });
+
+       
+        Mousetrap.bind('alt+s', function(e) {
+            $( document.activeElement ).blur();
+            if (e.defaultPrevented) e.defaultPrevented;
+            else e.returnValue = false;
+            self.$('.remove-line-button').click() //Remove line
+        });
+
         Mousetrap.bind('ctrl+u', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
@@ -220,25 +222,19 @@ var TsWidget = TsBaseWidget.extend({
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-            self.$('#vua-button').click();  //VUM button
+            self.$('#vua-button').click();  //VUA button
         });
         Mousetrap.bind('ctrl+a', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-            self.$('#via-button').click();  //VIA button
+            self.$('#so-button').click();  //SO button
         });
         Mousetrap.bind('ctrl+p', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-            self.$('#promo-button').click();  //PROMOT button
-        });
-        Mousetrap.bind('ctrl+s', function(e){
-            $( document.activeElement ).blur();
-            if (e.defaultPrevented) e.defaultPrevented;
-            else e.returnValue = false;
-            self.$('#sust-button').click();  //SUST button
+            self.$('#promo-button').click();  //PROMO button
         });
         Mousetrap.bind('ctrl+i', function(e){
             $( document.activeElement ).blur();
@@ -259,7 +255,7 @@ var TsWidget = TsBaseWidget.extend({
             else e.returnValue = false;
             self.$('.save-button').click();  //SAVE button
         });
-        Mousetrap.bind('ctrl+alt+c', function(e){
+        Mousetrap.bind('ctrl+alt+backspace', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
@@ -289,8 +285,6 @@ var TsWidget = TsBaseWidget.extend({
                     index = 0;
 
                 var line_wgt = order_lines_wgts[index];
-                // if (!line_wgt.model.is_selected()){
-                    // if (cur_line) cur_line.$('.mandatory').blur();
                     line_wgt.$el.click();
                     line_wgt.$('.col-product').focus();
                 // }
@@ -321,27 +315,12 @@ var TsWidget = TsBaseWidget.extend({
             }
         });
 
-        Mousetrap.bind('alt+p', function(e){
-            $( document.activeElement ).blur();
-            if (e.defaultPrevented) e.defaultPrevented;
-            else e.returnValue = false;
-            self.$('.neworder-button').click();  //new order
-            self.$('#partner').focus();
-        });
-
-        Mousetrap.bind('alt+o', function(e){
-            $( document.activeElement ).blur();
-            if (e.defaultPrevented) e.defaultPrevented;
-            else e.returnValue = false;
-            self.$('.removeorder-button').click();  //remove order
-            self.$('#partner').focus();
-        });
-
         Mousetrap.bind('ctrl+left', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
             self.$('.select-order')[0].click();
+            self.$('.select-order').focus();
         });
         Mousetrap.bind('alt+z', function(e){
             $( document.activeElement ).blur();
@@ -359,7 +338,7 @@ var TsWidget = TsBaseWidget.extend({
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
-            self.$('#add-line').focus();
+            self.$('.add-line-button').focus();
         });
     },
     loading_progress: function(fac){
