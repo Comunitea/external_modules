@@ -467,7 +467,7 @@
         <div class="col-xs-2 fullheight">
         </div>
         <div class="col-xs-4 fullheight centerinside">
-          <div class="fullheight centerinside fullwidth">
+          <div id="buttons_order_div" class="fullheight centerinside fullwidth">
             <div class="order-button">
                   <div class="fullheight centerinside fullwidth">
                        <div class="centerthis">
