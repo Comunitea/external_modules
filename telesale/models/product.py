@@ -81,9 +81,12 @@ class ProductProduct(models.Model):
 
     @api.model
     def ts_search_products(self, product_name, partner_id, pricelist_id):
+        limit = 100000
         res = []
         domain = [('name', 'ilike', product_name)]
-        for product in self.search(domain):
+        if not product_name:
+            limit = 100
+        for product in self.search(domain, limit=limit):
             values = self._get_product_values2(product, partner_id,
                                                pricelist_id)
             res.append(values)
