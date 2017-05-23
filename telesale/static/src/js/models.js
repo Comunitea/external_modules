@@ -49,6 +49,7 @@ var TsModel = Backbone.Model.extend({
             'units_names':            [], // Array of units names
            
             'customer_names':            [], // Array of customer names
+            'pricelist_names':            [], // Pricelist names
             'customer_codes':         [], // Array of customer refs
 
             'pricelist':              null,
@@ -87,6 +88,7 @@ var TsModel = Backbone.Model.extend({
         return  ['name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city']
     },
     // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
+    // OVERWRITED IN MODULE TELESALE MANAGE VARIANTS because dificult to inherit because of the deferred return
     load_server_data: function(){
         var self=this;
 
@@ -165,6 +167,15 @@ var TsModel = Backbone.Model.extend({
                     return self.fetch('account.fiscal.position', ['name', 'tax_ids']);
                 }).then(function(fposition) {
                     self.db.add_fiscal_position(fposition);
+
+                    //PRICELIST
+                    return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]]);
+                }).then(function(pricelists) {
+                    for (var key in pricelists){
+                        var pricelist_name = pricelists[key].name;
+                        self.get('pricelist_names').push(pricelist_name);
+                    }
+                    self.db.add_pricelist(pricelists);
                 });
         return loaded;
     },
@@ -345,6 +356,9 @@ var TsModel = Backbone.Model.extend({
         var partner_shipp_obj = this.db.get_partner_by_id(order_obj.partner_shipping_id[0]);
         var shipp_addr = this.getComplexName(partner_shipp_obj);
         order_model.set('shipp_addr',shipp_addr);
+
+        var pricelist_obj = this.db.pricelist_by_id[order_obj.pricelist_id[0]]
+        order_model.set('pricelist', pricelist_obj.name);
 
         this.build_order_create_lines(order_model, order_lines)
         
@@ -672,7 +686,8 @@ var Order = Backbone.Model.extend({
             comercial: '',
             coment: '',
             client_order_ref: '',
-            set_promotion: false  // Used to apply promotions on server
+            set_promotion: false,  // Used to apply promotions on server
+            pricelist: '',
         });
         this.ts_model = attributes.ts_model;
         this.selected_orderline = undefined;
@@ -806,6 +821,7 @@ var Order = Backbone.Model.extend({
             customer_comment: this.get('customer_comment'),
             client_order_ref: this.get('client_order_ref'),
             set_promotion: this.get('set_promotion'),
+            pricelist_id: this.ts_model.db.pricelist_name_id[this.get('pricelist')]
         };
     },
     get_last_line_by: function(period, client_id){

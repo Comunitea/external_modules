@@ -170,7 +170,8 @@ var GridWidget = TsBaseWidget.extend({
         var model = new Model("product.template")
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
-        var loaded = model.call("ts_get_grid_structure",[template_id, partner_id])
+        var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
+        var loaded = model.call("ts_get_grid_structure",[template_id, partner_id, pricelist_id])
         .then(function(result){
             self.column_attrs =result.column_attrs
             self.row_attrs = result.row_attrs

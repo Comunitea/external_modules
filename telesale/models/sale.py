@@ -19,8 +19,6 @@ class SaleOrder(models.Model):
     def create_order_from_ui(self, orders):
         t_partner = self.env['res.partner']
         t_order = self.env['sale.order']
-       
-       
         t_irvalue = self.env['ir.values']
 
         order_ids = []
@@ -44,10 +42,13 @@ class SaleOrder(models.Model):
                     self._default_warehouse_id()[0].id or 1
             # TODO, BUSCAR VALORES POR DEFECTO WAREHOUSE ID SINO PONER EL DE LA
             # COMPAÑÍA
+            pricelist_id = partner_obj.property_product_pricelist.id
+            if order.get('pricelist_id', False):
+                pricelist_id = order['pricelist_id']
             vals = {
                 # 'name': '/',
                 'partner_id': partner_obj.id,
-                'pricelist_id': partner_obj.property_product_pricelist.id,
+                'pricelist_id': pricelist_id,
                 'partner_invoice_id': partner_obj.id,
                 'partner_shipping_id': order.get('partner_shipping_id',
                                                  partner_obj.id),
@@ -146,15 +147,15 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     @api.model
-    def ts_product_id_change(self, product_id, partner_id):
+    def ts_product_id_change(self, product_id, partner_id, pricelist_id):
         res = {}
         order_t = self.env['sale.order']
         partner = self.env['res.partner'].browse(partner_id)
-
+        if not pricelist_id:
+            pricelist_id = partner.property_product_pricelist.id
         order = order_t.new({'partner_id': partner_id,
                              'date_order': time.strftime("%Y-%m-%d"),
-                             'pricelist_id':
-                             partner.property_product_pricelist.id})
+                             'pricelist_id': pricelist_id})
         line = self.new({'order_id': order.id,
                          'product_id': product_id})
         line.product_id_change()

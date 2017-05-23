@@ -105,7 +105,8 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         // Wee need the partner to ger the product price from server.
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
-        var loaded = model.call("ts_search_products", [product_name, partner_id])
+        var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
+        var loaded = model.call("ts_search_products", [product_name, partner_id, pricelist_id])
         .then(function(result){
             self.catalog_products = result;
         });

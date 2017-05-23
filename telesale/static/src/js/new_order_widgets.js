@@ -78,14 +78,15 @@ var DataOrderWidget = TsBaseWidget.extend({
         var self = this;
         this.order_model = this.ts_model.get('selectedOrder');
         this._super();
-
-        this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
+        this.$('#partner').unbind();
+        this.$('#partner').change(_.bind(this.set_value, this, 'partner'))
         this.$('#shipp_addr').blur(_.bind(this.set_value, this, 'shipp_addr'))
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
         this.$('#requested_date').blur(_.bind(this.set_value, this, 'requested_date'))
         this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
         this.$('#client_order_ref').blur(_.bind(this.set_value, this, 'client_order_ref'))
         this.$('#customer_comment').blur(_.bind(this.set_value, this, 'customer_comment'))
+        this.$('#pricelist').blur(_.bind(this.set_value, this, 'pricelist'))
 
         var array_names = self.ts_model.get('customer_names');
         // Autocomplete products and units from array of names
@@ -103,15 +104,28 @@ var DataOrderWidget = TsBaseWidget.extend({
                 response(results.slice(0, 20));
             }
         });
+
+        // Pricelist autocomplete
+        var pricelist_names = self.ts_model.get('pricelist_names');
+        // Autocomplete products and units from array of names
+        this.$('#pricelist').autocomplete({
+            // source: this.ts_model.get('customer_names'),
+            source: function(request, response) {
+                var results = $.ui.autocomplete.filter(pricelist_names, request.term);
+                response(results.slice(0, 20));
+            }
+        });
     },
     set_value: function(key) {
-        var value = this.$('#' + key).val();;
+        var value = this.$('#' + key).val();
         if (value == this.order_model.get('partner') ) {
             return;
          }
         this.order_model.set(key, value);
         this.perform_onchange(key, value);
     },
+
+    // OVERWRITED IN MODULE JIM TELESALE
     perform_onchange: function(key, value) {
         var self=this;
         if (!value) {return;}
@@ -119,11 +133,12 @@ var DataOrderWidget = TsBaseWidget.extend({
             var partner_id = self.ts_model.db.partner_name_id[value];
 
             // Not partner found in backbone model
-            if (!partner_id){
+            if (value && !partner_id){
                 var alert_msg = _t("Customer name '" + value + "' does not exist");
                 alert(alert_msg);
                 self.order_model.set('partner', "");
                 self.refresh();
+                self.$('#partner').focus();
             }
             else {
                 var partner_obj = self.ts_model.db.get_partner_by_id(partner_id);
@@ -144,10 +159,17 @@ var DataOrderWidget = TsBaseWidget.extend({
                     var partner_shipp_obj = self.ts_model.db.get_partner_by_id(result.partner_shipping_id);
                     var shipp_addr =self.ts_model.getComplexName(partner_shipp_obj);
                     self.order_model.set('shipp_addr', shipp_addr);
+                    var pricelist_obj = self.ts_model.db.pricelist_by_id[result.pricelist_id];
+                    if (pricelist_obj){
+                        self.order_model.set('pricelist', pricelist_obj.name);
+                    }
 
                     self.refresh();
-                    // New line and VUA button when change
-                    $('#vua-button').click();
+                     // New line and VUA button when chang
+                    // Only do it when partner is setted
+                    if (self.order_model.get('partner')){
+                        $('#vua-button').click();
+                    }
                     if(self.order_model.get('orderLines').length == 0){
                         $('.add-line-button').click()
                     }
@@ -157,13 +179,25 @@ var DataOrderWidget = TsBaseWidget.extend({
                 });
             }
         }
+        else if (key == "pricelist"){
+            var pricelist_id = self.ts_model.db.pricelist_name_id[value];
+
+            // Not partner found in backbone model
+            if (!pricelist_id){
+                var alert_msg = _t("Pricelist name '" + value + "' does not exist");
+                alert(alert_msg);
+                self.order_model.set('pricelist', "");
+                self.refresh();
+                self.$('#pricelist').focus();
+            }
+        }
     },
     load_order_from_server: function(order_id){
         var self=this;
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
-                                        ['partner_shipping_id','note','comercial','client_order_ref','client_order_ref','name','partner_id',
-                                         'date_order','state','amount_total','date_invoice', 'requested_date'],
+                                        ['partner_shipping_id','note','comercial','client_order_ref','name','partner_id',
+                                         'date_order','state','amount_total','date_invoice', 'requested_date', 'pricelist_id'],
                                         [
                                             ['id', '=', order_id]
                                         ])
@@ -336,8 +370,9 @@ var OrderlineWidget = TsBaseWidget.extend({
             add_qty = 1.0
         }
         var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
+        var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
         var model = new Model("sale.order.line");
-        return model.call("ts_product_id_change", [product_id, customer_id])
+        return model.call("ts_product_id_change", [product_id, customer_id, pricelist_id])
         .then(function(result){
             console.log("RESULTADO PRODUCT ID CHGANGE")
             console.log(result);
@@ -613,7 +648,7 @@ var OrderWidget = TsBaseWidget.extend({
         get_order_fields: function(){
         // Called when load an order from server
             return ['partner_shipping_id','note','comercial','client_order_ref','name',
-                    'partner_id','date_order','state','amount_total','requested_date']
+                    'partner_id','date_order','state','amount_total','requested_date', 'pricelist_id']
 
         },
         get_line_fields: function(){
