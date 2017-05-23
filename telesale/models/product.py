@@ -84,7 +84,7 @@ class ProductProduct(models.Model):
         limit = 100000
         res = []
         domain = [('name', 'ilike', product_name)]
-        if not product_name:
+        if len(product_name) < 2:
             limit = 100
         for product in self.search(domain, limit=limit):
             values = self._get_product_values2(product, partner_id,
