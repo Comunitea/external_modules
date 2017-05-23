@@ -18,7 +18,7 @@ class AccountVoucherWizard(models.TransientModel):
     date = fields.Date("Date", required=True,
                        default=fields.Date.context_today)
     exchange_rate = fields.Float("Exchange rate", digits=(16, 6), default=1.0,
-                                 readonly=True)
+                                 readonly=False)
     currency_id = fields.Many2one("res.currency", "Currency", readonly=True)
     currency_amount = fields.Float("Curr. amount", digits=(16, 2),
                                    readonly=True)
