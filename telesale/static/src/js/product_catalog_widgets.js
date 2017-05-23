@@ -29,21 +29,6 @@ var ProductLineWidget = TsBaseWidget.extend({
             });
         }
     },
-    // add_product_to_order: function() {
-    //     var product_id = this.product.id
-    //     var add_qty = this.$('#add-qty').val();
-
-    //     if (isNaN(add_qty)){
-    //         alert(_t(add_qty + " is not a valid number"));
-    //         add_qty = 0.0
-    //     }
-    //     if (product_id){
-    //         var current_order= this.ts_model.get('selectedOrder')
-    //         add_qty = this.ts_model.my_round(add_qty,2);
-    //         current_order.addProductLine(product_id, add_qty);
-    //     }
-    // },
-    // Get cid from product line
     get_line_cid_related: function(product){
         var line_cid = "";
         var product_id = product.id;
@@ -87,17 +72,17 @@ var ProductLineWidget = TsBaseWidget.extend({
         var self=this;
         this.$('.add-qty').keydown(function(event){
             var keyCode = event.keyCode || event.which;
-            if (keyCode == 40) {  // KEY DOWWN (40) 
+            if (keyCode == 40) {  // KEY DOWWN
                 $(this).parent().parent().next().find('.add-qty').focus();
 
             }
-            else if (keyCode == 38){
+            else if (keyCode == 38){ // KEY UP
                 $(this).parent().parent().prev().find('.add-qty').focus();
             }
-            else if (keyCode == 37){
+            else if (keyCode == 37){  // KEY LEFT
                  $(this).parent().parent().find('.add-price').focus();
             }
-             else if (keyCode == 39){
+             else if (keyCode == 39){ // KEY RIGHT
                 $(this).parent().parent().find('.add-price').focus();
             }
         });
@@ -256,6 +241,13 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         });
         this.$('.add-price').bind('change', function(event){
              self.check_float(this);
+        });
+
+        this.$('#search-product').keydown(function(event){
+            var keyCode = event.keyCode || event.which;
+            if (keyCode == 13) {  // key enter pressed
+               self.$('#search-product-button').click();
+            }
         });
     },
 
