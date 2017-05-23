@@ -1032,7 +1032,7 @@ msgstr "Empezar sesión"
 #: code:addons/telesale/static/src/xml/order_history_template.xml:72
 #, python-format
 msgid "State"
-msgstr "Provincia"
+msgstr "Estado"
 
 #. module: telesale
 #. openerp-web
