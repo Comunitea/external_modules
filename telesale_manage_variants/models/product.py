@@ -8,7 +8,7 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     @api.model
-    def ts_get_grid_structure(self, template_id, partner_id):
+    def ts_get_grid_structure(self, template_id, partner_id, pricelist_id):
         res = {
             'column_attrs': [],
             'row_attrs': [],
@@ -44,7 +44,8 @@ class ProductTemplate(models.Model):
                     lambda x: not(values - x.attribute_value_ids))[:1]
 
                 onchange_vals = t_product._get_onchange_vals(product,
-                                                             partner_id)
+                                                             partner_id,
+                                                             pricelist_id)
                 cell_dic = {
                     'id': product and product.id or 0,
                     'stock': t_product._get_product_stock(product),
