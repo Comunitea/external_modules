@@ -12,7 +12,7 @@
     <t t-name="Product-Catalog-Widget">
 
             <div class="search-box">
-               <div class="center"><input id="search-product" placeholder="Search Products" class="tab1"/></div>
+               <div class="center"><input onclick="this.select()" id="search-product" placeholder="Search Products" class="tab1"/></div>
                <div class="center"><button id="search-product-button">SEARCH</button></div>
                <div class="center"><button id="add-alll-button">ADD ALL</button></div>
             </div>
@@ -54,10 +54,10 @@
 
             </td>
              <td class="pc-cell-qty">
-               <input type="text" id="add-qty" class='add-qty mandatory' t-att-value="line_product.qty.toFixed(2)"/>
+               <input type="text" id="add-qty" class='add-qty mandatory' t-att-value="line_product.qty.toFixed(2)" onclick="this.select()"/>
             </td>
             <td class="pc-cell-price">
-                  <input type="text" id="add-price" class='add-price mandatory' t-att-value="line_product.price.toFixed(2)"/>
+                  <input type="text" id="add-price" class='add-price mandatory' t-att-value="line_product.price.toFixed(2)" onclick="this.select()"/>
             </td>
 <!--             <td class="pc-cell-add">
                 <button class="add-product fullwidth" tabindex="-1">+</button>

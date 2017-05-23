@@ -143,7 +143,7 @@
                       <div class="fullheight centerinside fullwidth">
                         <div class="centerthis">
                             <label for="customer" id="labelpartner">Customer:</label>
-                            <input class="mandatory tab1" type="text" id="partner" name="customer" t-att-value="widget.order_model.get('partner')" tabIndex="1"/>
+                            <input onclick="this.select()" class="mandatory tab1" type="text" id="partner" name="customer" t-att-value="widget.order_model.get('partner')" tabIndex="1"/>
                         </div>
                       </div>
                     </div>
@@ -155,7 +155,7 @@
                       <div class="fullheight centerinside fullwidth">
                         <div class="centerthis">
                           <label for="shipp_addr">Shipp Addr:</label>
-                          <input class="mandatory" type="text" id='shipp_addr' name="shipp_addr" t-att-value="widget.order_model.get('shipp_addr')" tabIndex="2"/>
+                          <input onclick="this.select()" class="mandatory" type="text" id='shipp_addr' name="shipp_addr" t-att-value="widget.order_model.get('shipp_addr')" tabIndex="2"/>
                         </div>
                       </div>
                     </div>
@@ -166,7 +166,7 @@
                       <div class="row semiheight">
                           <div class="centerthis">
                             <label for="coment">Notes:</label>
-                            <textarea class="semiheight notes mandatory" rows="2" cols="91" id='coment' name="coment" tabIndex="3"><t t-esc="widget.order_model.get('coment')"/></textarea>
+                            <textarea onclick="this.select()" class="semiheight notes mandatory" rows="2" cols="91" id='coment' name="coment" tabIndex="3"><t t-esc="widget.order_model.get('coment')"/></textarea>
                           </div>
                       </div>
                 </div>
@@ -178,7 +178,7 @@
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
                             <label for="date_order">Pricelist:</label>
-                            <input class="mandatory tab1" type="text" id="pricelist" name="pricelist" t-att-value="widget.order_model.get('pricelist')" tabIndex="4"/>
+                            <input onclick="this.select()" class="mandatory tab1" type="text" id="pricelist" name="pricelist" t-att-value="widget.order_model.get('pricelist')" tabIndex="4"/>
                           </div>
                         </div>
                     </div>
@@ -208,7 +208,7 @@
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
                             <label for="client_order_ref">Customer Ref:</label>
-                            <input class="mandatory" type="text" id='client_order_ref' name="client_order_ref" t-att-value="widget.order_model.get('client_order_ref')" tabIndex="7"/>
+                            <input onclick="this.select()" class="mandatory" type="text" id='client_order_ref' name="client_order_ref" t-att-value="widget.order_model.get('client_order_ref')" tabIndex="7"/>
                         </div>
                       </div>
                     </div>
@@ -227,7 +227,7 @@
                     <div class="row semiheight">
                         <div class="centerthis">
                           <label for="observations">Observations:</label>
-                          <textarea class="semiheight notes mandatory" rows="2" cols="82" id='observations' name="observations" tabIndex="8"><t t-esc="widget.order_model.get('observations')" t-if="widget.order_model.get('observations')"/></textarea>
+                          <textarea onclick="this.select()" class="semiheight notes mandatory" rows="2" cols="82" id='observations' name="observations" tabIndex="8"><t t-esc="widget.order_model.get('observations')" t-if="widget.order_model.get('observations')"/></textarea>
                         </div>
                     </div>
               </div>
