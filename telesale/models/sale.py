@@ -14,6 +14,7 @@ class SaleOrder(models.Model):
                               string='Chanel',
                               default='erp',
                               readonly=True)
+    observations = fields.Text('Observations')
 
     @api.model
     def create_order_from_ui(self, orders):
@@ -58,6 +59,7 @@ class SaleOrder(models.Model):
                 'requested_date': order['requested_date'] + " 19:00:00" or
                 False,
                 'note': order['note'],
+                'observations': order['observations'],
                 'warehouse_id': warehouse_id,
                 'client_order_ref': order.get('client_order_ref', False)
             }

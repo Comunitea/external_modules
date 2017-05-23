@@ -348,7 +348,7 @@ var TsModel = Backbone.Model.extend({
         }
         order_model.set('num_order',order_obj.name);
         // TODO SACARLO DEL CLIENTE
-        order_model.set('customer_comment',order_obj.customer_comment || '');
+        order_model.set('observations',order_obj.observations || '');
         order_model.set('comercial',partner_obj.user_id[1]);
         order_model.set('coment',order_obj.note || '');
         order_model.set('client_order_ref',order_obj.client_order_ref || '');
@@ -662,7 +662,7 @@ var Order = Backbone.Model.extend({
             num_order: this.generateNumOrder(),
             partner_code: '',
             partner: '',
-            customer_comment: '',
+            observations: '',
             shipp_addr: '',
             date_order: this.getStrDate(),
             requested_date: this.getStrDatePlanned(),
@@ -818,7 +818,7 @@ var Order = Backbone.Model.extend({
             date_order: this.get('date_order'),
             requested_date: this.get('requested_date'),
             note: this.get('coment'),
-            customer_comment: this.get('customer_comment'),
+            observations: this.get('observations'),
             client_order_ref: this.get('client_order_ref'),
             set_promotion: this.get('set_promotion'),
             pricelist_id: this.ts_model.db.pricelist_name_id[this.get('pricelist')]
