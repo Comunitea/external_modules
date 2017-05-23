@@ -83,10 +83,47 @@ var ProductLineWidget = TsBaseWidget.extend({
         var product = this.product;
         return this.update_product(product);
     },
+    control_arrow_keys: function(){
+        var self=this;
+        this.$('.add-qty').keydown(function(event){
+            var keyCode = event.keyCode || event.which;
+            if (keyCode == 40) {  // KEY DOWWN (40) 
+                $(this).parent().parent().next().find('.add-qty').focus();
+
+            }
+            else if (keyCode == 38){
+                $(this).parent().parent().prev().find('.add-qty').focus();
+            }
+            else if (keyCode == 37){
+                 $(this).parent().parent().find('.add-price').focus();
+            }
+             else if (keyCode == 39){
+                $(this).parent().parent().find('.add-price').focus();
+            }
+        });
+
+        this.$('.add-price').keydown(function(event){
+            var keyCode = event.keyCode || event.which;
+            if (keyCode == 40) {  // KEY DOWWN (40) 
+                $(this).parent().parent().next().find('.add-price').focus();
+
+            }
+            else if (keyCode == 38){
+                $(this).parent().parent().prev().find('.add-price').focus();
+            }
+            else if (keyCode == 37){
+                 $(this).parent().parent().find('.add-qty').focus();
+            }
+             else if (keyCode == 39){
+                $(this).parent().parent().find('.add-qty').focus();
+            }
+        });
+    },
     renderElement: function() {
         var self=this;
         this._super();
         this.$('.show-product').click(_.bind(this.show_product_info, this));
+        this.control_arrow_keys();
     },
 });
 
@@ -209,9 +246,9 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         }
     },
     bind_onchange_events: function(){
-        this.$('.add-qty').unbind();
-        this.$('.add-price').unbind();
-        this.$('.add-discount').unbind();
+        // this.$('.add-qty').unbind();
+        // this.$('.add-price').unbind();
+        // this.$('.add-discount').unbind();
 
         var self=this;
         this.$('.add-qty').bind('change', function(event){
@@ -220,9 +257,6 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         this.$('.add-price').bind('change', function(event){
              self.check_float(this);
         });
-        // this.$('.add-discount').bind('change', function(event){
-        //      self.check_float(this);
-        // });
     },
 
     renderElement: function () {
