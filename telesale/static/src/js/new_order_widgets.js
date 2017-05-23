@@ -85,7 +85,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.$('#requested_date').blur(_.bind(this.set_value, this, 'requested_date'))
         this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
         this.$('#client_order_ref').blur(_.bind(this.set_value, this, 'client_order_ref'))
-        this.$('#customer_comment').blur(_.bind(this.set_value, this, 'customer_comment'))
+        this.$('#observations').blur(_.bind(this.set_value, this, 'observations'))
         this.$('#pricelist').blur(_.bind(this.set_value, this, 'pricelist'))
 
         var array_names = self.ts_model.get('customer_names');
@@ -150,7 +150,7 @@ var DataOrderWidget = TsBaseWidget.extend({
                     self.order_model.set('partner', cus_name);
                     self.order_model.set('partner_code', partner_obj.ref ? partner_obj.ref : "");
                     
-                    self.order_model.set('customer_comment', partner_obj.comment);
+                    self.order_model.set('observations', partner_obj.comment);
                     // TODO nan_partner_risk migrar a la 10
                     // self.order_model.set('limit_credit', self.ts_model.my_round(partner_obj.credit_limit,2));
                     // self.order_model.set('customer_debt', self.ts_model.my_round(partner_obj.credit,2));
@@ -197,7 +197,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.open_order =  this.ts_model.get('selectedOrder')
         var loaded = self.ts_model.fetch('sale.order',
                                         ['partner_shipping_id','note','comercial','client_order_ref','name','partner_id',
-                                         'date_order','state','amount_total','date_invoice', 'requested_date', 'pricelist_id'],
+                                         'date_order','state','amount_total','date_invoice', 'requested_date', 'pricelist_id', 'observations'],
                                         [
                                             ['id', '=', order_id]
                                         ])
@@ -648,7 +648,7 @@ var OrderWidget = TsBaseWidget.extend({
         get_order_fields: function(){
         // Called when load an order from server
             return ['partner_shipping_id','note','comercial','client_order_ref','name',
-                    'partner_id','date_order','state','amount_total','requested_date', 'pricelist_id']
+                    'partner_id','date_order','state','amount_total','requested_date', 'pricelist_id', 'observations']
 
         },
         get_line_fields: function(){

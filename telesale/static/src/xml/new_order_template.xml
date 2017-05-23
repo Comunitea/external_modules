@@ -223,6 +223,14 @@
                       </div>
                     </div>
                 </div>
+                 <div class="col-xs-4 fullheight">
+                    <div class="row semiheight">
+                        <div class="centerthis">
+                          <label for="observations">Observations:</label>
+                          <textarea class="semiheight notes mandatory" rows="2" cols="82" id='observations' name="observations" tabIndex="8"><t t-esc="widget.order_model.get('observations')" t-if="widget.order_model.get('observations')"/></textarea>
+                        </div>
+                    </div>
+              </div>
 <!--                 <div class="col-xs-2 fullheight">
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
@@ -248,7 +256,7 @@
                     <div class="row semiheight">
                         <div class="centerthis">
                           <label for="customer_note">Customer Notes:</label>
-                          <textarea class="semiheight notes mandatory" rows="2" cols="82" id='customer_comment' name="customer_comment" tabIndex="8"><t t-esc="widget.order_model.get('customer_comment')" t-if="widget.order_model.get('customer_comment')"/></textarea>
+                          <textarea class="semiheight notes mandatory" rows="2" cols="82" id='observations' name="observations" tabIndex="8"><t t-esc="widget.order_model.get('observations')" t-if="widget.order_model.get('observations')"/></textarea>
                         </div>
                     </div>
               </div> -->
