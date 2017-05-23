@@ -63,8 +63,9 @@ class ProductProduct(models.Model):
         return res
 
     @api.model
-    def _get_product_values2(self, product, partner_id):
-        onchange_vals = self._get_onchange_vals(product, partner_id)
+    def _get_product_values2(self, product, partner_id, pricelist_id):
+        onchange_vals = self._get_onchange_vals(product, partner_id,
+                                                pricelist_id)
 
         vals = {
             'id': product.id,
@@ -79,23 +80,24 @@ class ProductProduct(models.Model):
         return vals
 
     @api.model
-    def ts_search_products(self, product_name, partner_id):
+    def ts_search_products(self, product_name, partner_id, pricelist_id):
         res = []
         domain = [('name', 'ilike', product_name)]
         for product in self.search(domain):
-            values = self._get_product_values2(product, partner_id)
+            values = self._get_product_values2(product, partner_id,
+                                               pricelist_id)
             res.append(values)
         return res
 
     @api.model
-    def _get_onchange_vals(self, product, partner_id):
+    def _get_onchange_vals(self, product, partner_id, pricelist_id):
         res = {
             'price': 0.0,
             'tax_ids': []
         }
         if partner_id and product:
             values = self.env['sale.order.line'].\
-                ts_product_id_change(product.id, partner_id)
+                ts_product_id_change(product.id, partner_id, pricelist_id)
             res.update({
                 'price': values.get('price_unit', 0.0),
                 'tax_ids': values.get('tax_id', [])

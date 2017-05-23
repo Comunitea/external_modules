@@ -42,6 +42,10 @@ exports.TS_LS = core.Class.extend({
         this.unit_by_id = {};
         this.unit_name_id = {};
         this.all_units = {};
+
+        //PRICELISTS
+        this.pricelist_by_id = {};
+        this.pricelist_name_id = {};
       
         this.cache_sold_lines = {};
     },
@@ -99,6 +103,17 @@ exports.TS_LS = core.Class.extend({
             this.unit_name_id[unit.name] = unit.id;
         }
         this.all_units = units
+    },
+    add_pricelist: function(pricelists){
+        if(!pricelists instanceof Array){
+            pricelists = [pricelists];
+        }
+        for(var i = 0, len = pricelists.length; i < len; i++){
+            var pricelist = pricelists[i];
+
+            this.pricelist_by_id[pricelist.id] = pricelist;
+            this.pricelist_name_id[pricelist.name] = pricelist.id;
+        }
     },
     add_taxes: function(taxes){
         if(!taxes instanceof Array){
