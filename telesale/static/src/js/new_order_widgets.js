@@ -255,35 +255,40 @@ var OrderlineWidget = TsBaseWidget.extend({
       var self=this;
         this.$('.col-pvp').keydown(function(event){
           var keyCode = event.keyCode || event.which;
-          if (keyCode == 40 || keyCode == 38) {  // KEY DOWWN (40) up (38)
-            var selected_line = self.order.selected_orderline;
-            if (selected_line){
-                var n_line = selected_line.get('n_line');
-                var idx =(keyCode == 40) ? n_line + 1 : n_line - 1;
-                var next_line = self.order_widget.orderlinewidgets[idx - 1]
-                if (next_line) {
+          if (keyCode == 40) {  // KEY DOWWN (40) 
+                event.preventDefault();
+                $(this).parent().parent().next().find('.col-pvp').select();
 
-                  self.order.selectLine(next_line.model);
-                  next_line.$el.find('.col-pvp').focus();
-                }
             }
-          }
+            else if (keyCode == 38){  //KEY UP
+                event.preventDefault();
+                $(this).parent().parent().prev().find('.col-pvp').select();
+            }
         });
         this.$('.col-discount').keydown(function(event){
           var keyCode = event.keyCode || event.which;
-          if (keyCode == 40 || keyCode == 38) {  // KEY DOWWN (40) up (38)
-            var selected_line = self.order.selected_orderline;
-            if (selected_line){
-                var n_line = selected_line.get('n_line');
-                var idx =(keyCode == 40) ? n_line + 1 : n_line - 1;
-                var next_line = self.order_widget.orderlinewidgets[idx - 1]
-                if (next_line) {
+          if (keyCode == 40) {  // KEY DOWWN (40) 
+                event.preventDefault();
+                $(this).parent().parent().next().find('.col-discount').select();
 
-                  self.order.selectLine(next_line.model);
-                  next_line.$el.find('.col-discount').focus();
-                }
             }
-          }
+            else if (keyCode == 38){  //KEY UP
+                event.preventDefault();
+                $(this).parent().parent().prev().find('.col-discount').select();
+            }
+        });
+
+        this.$('.col-qty').keydown(function(event){
+            var keyCode = event.keyCode || event.which;
+            if (keyCode == 40) {  // KEY DOWWN (40) 
+                event.preventDefault();
+                $(this).parent().parent().next().find('.col-qty').select();
+
+            }
+            else if (keyCode == 38){  //KEY UP
+                event.preventDefault();
+                $(this).parent().parent().prev().find('.col-qty').select();
+            }
         });
     },
     set_input_handlers: function() {
