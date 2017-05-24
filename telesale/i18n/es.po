@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-18 17:23+0000\n"
-"PO-Revision-Date: 2017-05-18 17:23+0000\n"
+"POT-Creation-Date: 2017-05-24 11:04+0000\n"
+"PO-Revision-Date: 2017-05-24 11:04+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,42 +17,42 @@ msgstr ""
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:304
+#: code:addons/telesale/static/src/js/new_order_widgets.js:343
 #, python-format
 msgid " is not a valid number"
 msgstr " no es un número valido"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:330
+#: code:addons/telesale/static/src/xml/new_order_template.xml:341
 #, python-format
 msgid "(Canceled)"
 msgstr "(Cancelado)"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:324
+#: code:addons/telesale/static/src/xml/new_order_template.xml:335
 #, python-format
 msgid "(Confirmed)"
 msgstr "(Confirmado)"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:327
+#: code:addons/telesale/static/src/xml/new_order_template.xml:338
 #, python-format
 msgid "(Done)"
 msgstr "(Realizado)"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:318
+#: code:addons/telesale/static/src/xml/new_order_template.xml:329
 #, python-format
 msgid "(Draft)"
 msgstr "(Presupuesto)"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:321
+#: code:addons/telesale/static/src/xml/new_order_template.xml:332
 #, python-format
 msgid "(Quotation Sent)"
 msgstr "(Presupuesto enviado)"
@@ -66,7 +66,7 @@ msgstr "El nombre de cliente es obligatorio"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:269
+#: code:addons/telesale/static/src/xml/new_order_template.xml:280
 #, python-format
 msgid "ADD"
 msgstr "Añadir"
@@ -80,105 +80,91 @@ msgstr "Añadir todos"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:31
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:60
 #, python-format
-msgid "ALT + A --------------------------> Añadir línea pedido"
-msgstr "ALT + A --------------------------> Añadir línea pedido"
+msgid "ALT + A"
+msgstr "ALT + A"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:64
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:141
 #, python-format
-msgid "ALT + C --------------------------> Foco en botón '+' de últimos vendidos"
-msgstr "ALT + C --------------------------> Foco en botón '+' de últimos vendidos"
+msgid "ALT + C"
+msgstr "ALT + C"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:24
+#, python-format
+msgid "ALT + E"
+msgstr "ALT + E"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:44
+#, python-format
+msgid "ALT + O"
+msgstr "ALT + O"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:48
+#, python-format
+msgid "ALT + P"
+msgstr "ALT + P"
 
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/key_shorts_template.xml:16
 #, python-format
-msgid "ALT + E --------------------------> Listado llamadas"
-msgstr "ALT + E --------------------------> Listado llamadas"
-
-#. module: telesale
-#. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:10
-#, python-format
-msgid "ALT + F12 -------------------------> Mostrar esta pantalla"
-msgstr "ALT + F12 -------------------------> Mostrar esta pantalla"
+msgid "ALT + Q"
+msgstr "ALT + Q"
 
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/key_shorts_template.xml:28
 #, python-format
-msgid "ALT + O --------------------------> Eliminar orden de pedido"
-msgstr "ALT + O --------------------------> Eliminar orden de pedido"
+msgid "ALT + R"
+msgstr "ALT + R"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:25
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:64
 #, python-format
-msgid "ALT + P --------------------------> Nueva orden de pedido"
-msgstr "ALT + P --------------------------> Nueva orden de pedido"
+msgid "ALT + S"
+msgstr "ALT + S"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:12
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:32
 #, python-format
-msgid "ALT + Q --------------------------> Nuevo pedido"
-msgstr "ALT + Q --------------------------> Nuevo pedido"
-
-#. module: telesale
-#. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:18
-#, python-format
-msgid "ALT + R --------------------------> Catálogo productos"
-msgstr "ALT + R --------------------------> Catálogo productos"
-
-#. module: telesale
-#. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:35
-#, python-format
-msgid "ALT + S --------------------------> Eliminar línea pedido"
-msgstr "ALT + S --------------------------> Eliminar línea pedido"
+msgid "ALT + T"
+msgstr "ALT + T"
 
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/key_shorts_template.xml:20
 #, python-format
-msgid "ALT + T --------------------------> Productos reservados"
-msgstr "ALT + T --------------------------> Productos reservados"
+msgid "ALT + W"
+msgstr "ALT + W"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:14
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:137
 #, python-format
-msgid "ALT + W --------------------------> Historial pedidos"
-msgstr "ALT + W --------------------------> Historial pedidos"
+msgid "ALT + X"
+msgstr "ALT + X"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:62
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:133
 #, python-format
-msgid "ALT + X --------------------------> Foco en código de línea de pedido"
-msgstr "ALT + X --------------------------> Foco en código de línea de pedido"
+msgid "ALT + Z"
+msgstr "ALT + Z"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:22
-#, python-format
-msgid "ALT + Y --------------------------> Resumen pedidos"
-msgstr "ALT + Y --------------------------> Resumen pedidos"
-
-#. module: telesale
-#. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:60
-#, python-format
-msgid "ALT + Z --------------------------> Foco en primer campo"
-msgstr "ALT + Z --------------------------> Foco en primer campo"
-
-#. module: telesale
-#. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:533
+#: code:addons/telesale/static/src/xml/new_order_template.xml:544
 #: code:addons/telesale/static/src/xml/order_history_template.xml:122
 #, python-format
 msgid "Add"
@@ -213,6 +199,13 @@ msgstr "Un identificador interno de televenta"
 
 #. module: telesale
 #. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:33
+#, python-format
+msgid "Atajos Teclado (Esta Página)"
+msgstr "Atajos Teclado (Esta Página)"
+
+#. module: telesale
+#. openerp-web
 #: code:addons/telesale/static/src/xml/key_shorts_template.xml:8
 #, python-format
 msgid "Atajos de teclado para moverse rápidamente por la aplicación"
@@ -220,115 +213,206 @@ msgstr "Atajos de teclado para moverse rápidamente por la aplicación"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:474
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:56
+#, python-format
+msgid "Barra botones de pedido"
+msgstr "Barra botones de pedido"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:40
+#, python-format
+msgid "Barra de pedidos"
+msgstr "Barra de pedidos"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:49
+#, python-format
+msgid "Borrar pedido"
+msgstr "Borrar pedido"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:102
+#, python-format
+msgid "Botón BORRADOR"
+msgstr "Botón BORRADOR"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:106
+#, python-format
+msgid "Botón CANCELAR"
+msgstr "Botón CANCELAR"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:110
+#, python-format
+msgid "Botón CONFIRMAR"
+msgstr "Botón CONFIRMAR"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:90
+#, python-format
+msgid "Botón CUSTOMER"
+msgstr "Botón CUSTOMER"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:86
+#, python-format
+msgid "Botón INFO"
+msgstr "Botón INFO"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:82
+#, python-format
+msgid "Botón PROMO"
+msgstr "Botón PROMO"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:78
+#, python-format
+msgid "Botón SO"
+msgstr "Botón SO"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:70
+#, python-format
+msgid "Botón ULT"
+msgstr "Botón ULT"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:74
+#, python-format
+msgid "Botón VUA"
+msgstr "Botón VUA"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:61
+#, python-format
+msgid "Bóton"
+msgstr "Bóton"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/new_order_template.xml:485
 #, python-format
 msgid "CANCEL"
 msgstr "CANCELAR"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:488
+#: code:addons/telesale/static/src/xml/new_order_template.xml:499
 #, python-format
 msgid "CONFIRM"
 msgstr "CONFIRMAR"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:294
+#: code:addons/telesale/static/src/xml/new_order_template.xml:305
 #, python-format
 msgid "CR"
 msgstr "CR"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:67
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:77
 #, python-format
-msgid "CTRL + ALT + B----------------------> Botón Borrador"
-msgstr "CTRL + ALT + B----------------------> Botón Borrador"
+msgid "CTRL + A"
+msgstr "CTRL + A"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:70
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:101
 #, python-format
-msgid "CTRL + ALT + C----------------------> Botón Cancelar"
-msgstr "CTRL + ALT + C----------------------> Botón Cancelar"
+msgid "CTRL + ALT + B"
+msgstr "CTRL + ALT + B"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:72
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:105
 #, python-format
-msgid "CTRL + ALT + ENTER------------------> Botón Confirmar"
-msgstr "CTRL + ALT + ENTER------------------> Botón Confirmar"
+msgid "CTRL + ALT + BACKSPACE"
+msgstr "CTRL + ALT + BACKSPACE"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:47
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:109
 #, python-format
-msgid "CTRL + I -------------------------> Botón INFO"
-msgstr "CTRL + I -------------------------> Botón INFO"
+msgid "CTRL + ALT + ENTER"
+msgstr "CTRL + ALT + ENTER"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:41
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:85
 #, python-format
-msgid "CTRL + M -------------------------> Botón VUA"
-msgstr "CTRL + M -------------------------> Botón VUA"
+msgid "CTRL + I"
+msgstr "CTRL + I"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:43
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:73
 #, python-format
-msgid "CTRL + P -------------------------> Botón PROMO"
-msgstr "CTRL + P -------------------------> Botón PROMO"
+msgid "CTRL + M"
+msgstr "CTRL + M"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:49
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:81
 #, python-format
-msgid "CTRL + Q--------------------------> Botón cliente"
-msgstr "CTRL + Q--------------------------> Botón cliente"
+msgid "CTRL + P"
+msgstr "CTRL + P"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:45
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:89
 #, python-format
-msgid "CTRL + S -------------------------> Botón SUST"
-msgstr "CTRL + S -------------------------> Botón SUST"
+msgid "CTRL + Q"
+msgstr "CTRL + Q"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:38
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:69
 #, python-format
-msgid "CTRL + U -------------------------> Botón ULT"
-msgstr "CTRL + U -------------------------> Botón ULT"
+msgid "CTRL + U"
+msgstr "CTRL + U"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:52
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:121
 #, python-format
-msgid "CTRL + down-----------------------> Selecionar línea de abajo"
-msgstr "CTRL + down-----------------------> Selecionar línea de abajo"
+msgid "CTRL + down"
+msgstr "CTRL + down"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:58
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:129
 #, python-format
-msgid "CTRL + left-----------------------> Foco en botones pedidos"
-msgstr "CTRL + left-----------------------> Foco en botones pedidos"
+msgid "CTRL + left"
+msgstr "CTRL + left"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:55
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:125
 #, python-format
-msgid "CTRL + up-------------------------> Selecionar línea de arriba"
-msgstr "CTRL + up-------------------------> Selecionar línea de arriba"
+msgid "CTRL + up"
+msgstr "CTRL + up"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:304
+#: code:addons/telesale/static/src/xml/new_order_template.xml:315
 #, python-format
 msgid "CUSTOMER"
-msgstr "CLIENTE"
+msgstr "CUSTOMER"
 
 #. module: telesale
 #. openerp-web
@@ -339,10 +423,31 @@ msgstr "Lista llamadas"
 
 #. module: telesale
 #. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:12
+#, python-format
+msgid "Cambio de página"
+msgstr "Cambio de página"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:117
+#, python-format
+msgid "Cambios de focos"
+msgstr "Cambios de focos"
+
+#. module: telesale
+#. openerp-web
 #: code:addons/telesale/static/src/xml/order_history_template.xml:116
 #, python-format
 msgid "Canceled"
 msgstr "Cancelado"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:21
+#, python-format
+msgid "Catálogo de productos"
+msgstr "Catálogo de productos"
 
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_sale_order_chanel
@@ -380,14 +485,7 @@ msgstr "Cerrar"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:9
-#, python-format
-msgid "Combinaciones de teclas:"
-msgstr "Combinaciones de teclas:"
-
-#. module: telesale
-#. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:209
+#: code:addons/telesale/static/src/xml/new_order_template.xml:220
 #, python-format
 msgid "Comercial:"
 msgstr "Comercial:"
@@ -409,6 +507,13 @@ msgid "Confirmed"
 msgstr "Confirmado"
 
 #. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:45
+#, python-format
+msgid "Crear nuevo pedido"
+msgstr "Crear nuevo pedido"
+
+#. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config_create_uid
 msgid "Created by"
 msgstr "Creado por"
@@ -416,7 +521,7 @@ msgstr "Creado por"
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config_create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Creado en"
 
 #. module: telesale
 #. openerp-web
@@ -434,13 +539,6 @@ msgstr "El cliente '' no existe."
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:231
-#, python-format
-msgid "Customer Debt:"
-msgstr "Deuda cliente:"
-
-#. module: telesale
-#. openerp-web
 #: code:addons/telesale/static/src/js/buttons_widgets.js:104
 #, python-format
 msgid "Customer List"
@@ -448,14 +546,14 @@ msgstr "Listado Clientes"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:199
+#: code:addons/telesale/static/src/xml/new_order_template.xml:210
 #, python-format
 msgid "Customer Ref:"
 msgstr "Ref.Cliente:"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:123
+#: code:addons/telesale/static/src/js/new_order_widgets.js:137
 #, python-format
 msgid "Customer name '' does not exist"
 msgstr "El nombre del cliente no existe"
@@ -485,7 +583,7 @@ msgstr "Fecha fin:"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:156
+#: code:addons/telesale/static/src/xml/new_order_template.xml:190
 #, python-format
 msgid "Date Order:"
 msgstr "Fecha pedido:"
@@ -499,7 +597,7 @@ msgstr "Fecha planificada"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:166
+#: code:addons/telesale/static/src/xml/new_order_template.xml:200
 #, python-format
 msgid "Date Planned:"
 msgstr "Fecha planificada:"
@@ -513,13 +611,6 @@ msgstr "Fecha inicio:"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/key_shorts_template.xml:7
-#, python-format
-msgid "Desastualizado"
-msgstr "Desactualizado"
-
-#. module: telesale
-#. openerp-web
 #: code:addons/telesale/static/src/js/customer_list_widgets.js:353
 #, python-format
 msgid "Deselect Customer"
@@ -527,7 +618,7 @@ msgstr "Quitar cliente"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:348
+#: code:addons/telesale/static/src/xml/new_order_template.xml:359
 #, python-format
 msgid "Disc."
 msgstr "Desc."
@@ -541,7 +632,7 @@ msgstr "Descuento"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:403
+#: code:addons/telesale/static/src/xml/new_order_template.xml:414
 #, python-format
 msgid "Discount:"
 msgstr "Descuento:"
@@ -549,7 +640,7 @@ msgstr "Descuento:"
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config_display_name
 msgid "Display Name"
-msgstr "Nombre a mostrar"
+msgstr "Nombre mostrado"
 
 #. module: telesale
 #. openerp-web
@@ -579,6 +670,13 @@ msgstr "ERP"
 
 #. module: telesale
 #. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:65
+#, python-format
+msgid "Eliminar línea de pedido"
+msgstr "Eliminar línea de pedido"
+
+#. module: telesale
+#. openerp-web
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:44
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:150
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:230
@@ -594,6 +692,48 @@ msgid "Error!"
 msgstr "Error!"
 
 #. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:130
+#, python-format
+msgid "Foco en botones pedidos"
+msgstr "Foco en botones pedidos"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:142
+#, python-format
+msgid "Foco en botón mas de últimos vendidos"
+msgstr "Foco en botón mas de últimos vendidos"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:134
+#, python-format
+msgid "Foco en cliente"
+msgstr "Foco en cliente"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:122
+#, python-format
+msgid "Foco en la línea de abajo"
+msgstr "Foco en la línea de abajo"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:126
+#, python-format
+msgid "Foco en la línea de arriba"
+msgstr "Foco en la línea de arriba"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:138
+#, python-format
+msgid "Foco en primera línea de pedido"
+msgstr "Foco en primera línea de pedido"
+
+#. module: telesale
 #: model:ir.ui.view,arch_db:telesale.view_sales_order_filter_telesale
 msgid "From ERP"
 msgstr "Desde ERP"
@@ -604,13 +744,20 @@ msgid "From Telesale"
 msgstr "Desde Televenta"
 
 #. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:29
+#, python-format
+msgid "Historial Pedidos"
+msgstr "Historial Pedidos"
+
+#. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config_id
 msgid "ID"
 msgstr "ID"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:299
+#: code:addons/telesale/static/src/xml/new_order_template.xml:310
 #, python-format
 msgid "INFO"
 msgstr "INFO"
@@ -629,7 +776,7 @@ msgstr "Atajos Teclado"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:510
+#: code:addons/telesale/static/src/xml/new_order_template.xml:521
 #, python-format
 msgid "Last Date"
 msgstr "Última fecha"
@@ -641,14 +788,14 @@ msgstr "Última modificación en"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:518
+#: code:addons/telesale/static/src/xml/new_order_template.xml:529
 #, python-format
 msgid "Last Price"
 msgstr "Último precio"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:514
+#: code:addons/telesale/static/src/xml/new_order_template.xml:525
 #, python-format
 msgid "Last Quantity"
 msgstr "Última cantidad"
@@ -661,18 +808,18 @@ msgstr "Última actualización por"
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config_write_date
 msgid "Last Updated on"
-msgstr "Última actualización el"
+msgstr "Última actualización en"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:219
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:25
 #, python-format
-msgid "Limit Credit:"
-msgstr "Límite crédito:"
+msgid "Listado clientes"
+msgstr "Listado clientes"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/models.js:74
+#: code:addons/telesale/static/src/js/models.js:75
 #: code:addons/telesale/static/src/xml/new_order_template.xml:29
 #, python-format
 msgid "Loading"
@@ -680,10 +827,17 @@ msgstr "Cargando"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:448
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:97
+#, python-format
+msgid "Manejo del pedido"
+msgstr "Manejo del pedido"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/new_order_template.xml:459
 #, python-format
 msgid "Margin (%):"
-msgstr "Margen (%):"
+msgstr "Margin (%):"
 
 #. module: telesale
 #. openerp-web
@@ -713,9 +867,9 @@ msgstr "N/A"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:516
-#: code:addons/telesale/static/src/js/new_order_widgets.js:528
-#: code:addons/telesale/static/src/js/new_order_widgets.js:540
+#: code:addons/telesale/static/src/js/new_order_widgets.js:556
+#: code:addons/telesale/static/src/js/new_order_widgets.js:568
+#: code:addons/telesale/static/src/js/new_order_widgets.js:580
 #, python-format
 msgid "NOT WORKING"
 msgstr "NO ESTÁ FUNCIONANDO"
@@ -724,7 +878,7 @@ msgstr "NO ESTÁ FUNCIONANDO"
 #. openerp-web
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:117
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:223
-#: code:addons/telesale/static/src/xml/new_order_template.xml:531
+#: code:addons/telesale/static/src/xml/new_order_template.xml:542
 #: code:addons/telesale/static/src/xml/order_history_template.xml:67
 #: code:addons/telesale/static/src/xml/product_catalog_template.xml:22
 #, python-format
@@ -740,17 +894,37 @@ msgstr "Nuevo pedido"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:605
+#: code:addons/telesale/static/src/js/new_order_widgets.js:645
 #, python-format
 msgid "No customer defined"
 msgstr "No hay cliente definido"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:175
+#: code:addons/telesale/static/src/xml/new_order_template.xml:168
 #, python-format
 msgid "Notes:"
 msgstr "Notas:"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/key_shorts_template.xml:17
+#, python-format
+msgid "Nuevo pedido"
+msgstr "Nuevo pedido"
+
+#. module: telesale
+#: model:ir.model.fields,field_description:telesale.field_sale_order_observations
+#: model:ir.ui.view,arch_db:telesale.sale_view_order_form_telesale
+msgid "Observations"
+msgstr "Observaciones"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/new_order_template.xml:229
+#, python-format
+msgid "Observations:"
+msgstr "Observaciones:"
 
 #. module: telesale
 #: model:ir.actions.client,name:telesale.action_client_ts_menu
@@ -766,7 +940,7 @@ msgstr "Historial pedidos"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/models.js:777
+#: code:addons/telesale/static/src/js/models.js:792
 #, python-format
 msgid "Order lines can not be empty."
 msgstr "Las líneas de pedido no pueden estar vacías"
@@ -774,18 +948,18 @@ msgstr "Las líneas de pedido no pueden estar vacías"
 #. module: telesale
 #: model:ir.model,name:telesale.model_res_partner
 msgid "Partner"
-msgstr "Empresa"
+msgstr "Cliente"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/models.js:773
+#: code:addons/telesale/static/src/js/models.js:788
 #, python-format
 msgid "Partner can not be empty."
 msgstr "El cliente no puede estár vacío"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/base_widgets.js:390
+#: code:addons/telesale/static/src/js/base_widgets.js:369
 #, python-format
 msgid "Pending orders will be lost.\n"
 "Are you sure you want to leave this session?"
@@ -803,10 +977,10 @@ msgstr "Teléfono"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/models.js:895
-#: code:addons/telesale/static/src/js/new_order_widgets.js:490
+#: code:addons/telesale/static/src/js/models.js:911
+#: code:addons/telesale/static/src/js/new_order_widgets.js:530
 #: code:addons/telesale/static/src/js/order_history_widgets.js:31
-#: code:addons/telesale/static/src/js/product_catalog_widgets.js:166
+#: code:addons/telesale/static/src/js/product_catalog_widgets.js:200
 #, python-format
 msgid "Please select a customer before adding a order line"
 msgstr "Por favor, selecciona un cliente antes de añadir una línea de pedido"
@@ -820,8 +994,8 @@ msgstr "Código postal"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:347
-#: code:addons/telesale/static/src/xml/new_order_template.xml:532
+#: code:addons/telesale/static/src/xml/new_order_template.xml:358
+#: code:addons/telesale/static/src/xml/new_order_template.xml:543
 #: code:addons/telesale/static/src/xml/popups_template.xml:40
 #: code:addons/telesale/static/src/xml/product_catalog_template.xml:26
 #, python-format
@@ -830,7 +1004,21 @@ msgstr "Precio"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:344
+#: code:addons/telesale/static/src/js/new_order_widgets.js:187
+#, python-format
+msgid "Pricelist name '' does not exist"
+msgstr "La tarifa '' no existe"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/new_order_template.xml:180
+#, python-format
+msgid "Pricelist:"
+msgstr "Tarifa:"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/new_order_template.xml:355
 #: model:ir.model,name:telesale.model_product_product
 #, python-format
 msgid "Product"
@@ -852,21 +1040,21 @@ msgstr "Productos reservados"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/models.js:782
+#: code:addons/telesale/static/src/js/models.js:797
 #, python-format
 msgid "Product can not be empty"
 msgstr "El producto no puede estar vacío"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:368
+#: code:addons/telesale/static/src/js/new_order_widgets.js:408
 #, python-format
 msgid "Product code '' does not exist"
 msgstr "El código de producto no existe"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:383
+#: code:addons/telesale/static/src/js/new_order_widgets.js:423
 #, python-format
 msgid "Product name '' does not exist"
 msgstr "El nombre del producto no existe"
@@ -887,7 +1075,7 @@ msgstr "Provincia"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:345
+#: code:addons/telesale/static/src/xml/new_order_template.xml:356
 #: code:addons/telesale/static/src/xml/popups_template.xml:39
 #, python-format
 msgid "Qty"
@@ -902,7 +1090,7 @@ msgstr "Presupuesto envíado"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:274
+#: code:addons/telesale/static/src/xml/new_order_template.xml:285
 #, python-format
 msgid "REMOVE"
 msgstr "ELIMINAR"
@@ -923,7 +1111,7 @@ msgstr "Referencia:"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:481
+#: code:addons/telesale/static/src/xml/new_order_template.xml:492
 #, python-format
 msgid "SAVE"
 msgstr "GUARDAR"
@@ -938,7 +1126,7 @@ msgstr "BUSCAR"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:289
+#: code:addons/telesale/static/src/xml/new_order_template.xml:300
 #, python-format
 msgid "SO"
 msgstr "SO"
@@ -995,7 +1183,7 @@ msgstr "Establecer entrega"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:188
+#: code:addons/telesale/static/src/xml/new_order_template.xml:157
 #, python-format
 msgid "Shipp Addr:"
 msgstr "Dirección de entrega:"
@@ -1043,7 +1231,7 @@ msgstr "Stock"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:504
+#: code:addons/telesale/static/src/xml/new_order_template.xml:515
 #, python-format
 msgid "Stock Product"
 msgstr "Stock Producto"
@@ -1059,7 +1247,7 @@ msgstr "Calle"
 #. module: telesale
 #: model:ir.ui.view,arch_db:telesale.ts_session_opening_form_view
 msgid "TeleSale Session Opening"
-msgstr "Abrir sesión televenta"
+msgstr "Televenta Abrir sesión"
 
 #. module: telesale
 #: model:ir.ui.menu,name:telesale.menu_telesale_root
@@ -1074,21 +1262,21 @@ msgstr "Nombre televenta"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:576
+#: code:addons/telesale/static/src/js/new_order_widgets.js:616
 #, python-format
 msgid "This line has not a product defined."
 msgstr "Esta línea no tienen un producto definido."
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/models.js:843
+#: code:addons/telesale/static/src/js/models.js:859
 #, python-format
 msgid "This product can not be loaded, becouse is not registerd"
 msgstr "Este producto no puede ser cargado, porque no está registrado"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:349
+#: code:addons/telesale/static/src/xml/new_order_template.xml:360
 #: code:addons/telesale/static/src/xml/order_history_template.xml:71
 #, python-format
 msgid "Total"
@@ -1096,28 +1284,28 @@ msgstr "Total"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:414
+#: code:addons/telesale/static/src/xml/new_order_template.xml:425
 #, python-format
 msgid "Total Base:"
 msgstr "Base:"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:436
+#: code:addons/telesale/static/src/xml/new_order_template.xml:447
 #, python-format
 msgid "Total Iva:"
 msgstr "Iva:"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:426
+#: code:addons/telesale/static/src/xml/new_order_template.xml:437
 #, python-format
 msgid "Total Margin:"
 msgstr "Margen total:"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:459
+#: code:addons/telesale/static/src/xml/new_order_template.xml:470
 #, python-format
 msgid "Total Order:"
 msgstr "Total pedido:"
@@ -1131,21 +1319,21 @@ msgstr "Trimestre"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:279
+#: code:addons/telesale/static/src/xml/new_order_template.xml:290
 #, python-format
 msgid "ULT"
 msgstr "ULT"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:346
+#: code:addons/telesale/static/src/xml/new_order_template.xml:357
 #, python-format
 msgid "Unit"
 msgstr "Unidad"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:284
+#: code:addons/telesale/static/src/xml/new_order_template.xml:295
 #, python-format
 msgid "VUA"
 msgstr "VUA"
@@ -1159,14 +1347,14 @@ msgstr "Semana"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:982
+#: code:addons/telesale/static/src/js/new_order_widgets.js:1023
 #, python-format
 msgid "You cant cancel an order which state is diferent than draft."
 msgstr "No puedes cancelar un pedido cuyo estado sea diferente de presupuesto"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:598
+#: code:addons/telesale/static/src/js/new_order_widgets.js:638
 #, python-format
 msgid "You must select a customer"
 msgstr "Debes seleciconar un cliente"
@@ -1193,7 +1381,7 @@ msgstr "C.P."
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/product_catalog_widgets.js:190
+#: code:addons/telesale/static/src/js/product_catalog_widgets.js:231
 #, python-format
 msgid "is not a valid number"
 msgstr " no es un número válido"

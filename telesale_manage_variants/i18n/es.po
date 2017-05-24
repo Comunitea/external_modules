@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-18 17:23+0000\n"
-"PO-Revision-Date: 2017-05-18 17:23+0000\n"
+"POT-Creation-Date: 2017-05-24 11:05+0000\n"
+"PO-Revision-Date: 2017-05-24 11:05+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:53
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:54
 #, python-format
 msgid "Add Qty"
 msgstr "Añadir Cant."
@@ -31,7 +31,7 @@ msgstr "Cerrar"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:66
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:67
 #, python-format
 msgid "Disc"
 msgstr "Desc."
@@ -60,7 +60,7 @@ msgstr "Por favor selecciona un cliente antes de añadir una línea de venta"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:58
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:59
 #, python-format
 msgid "Price"
 msgstr "Precio"
@@ -72,14 +72,14 @@ msgstr "Plantilla de producto"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:50
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:51
 #, python-format
 msgid "Qty"
 msgstr "Cant."
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:44
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:45
 #, python-format
 msgid "STOCK:"
 msgstr "STOCK:"
@@ -131,7 +131,7 @@ msgstr "VARIANTES"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/js/popups.js:197
+#: code:addons/telesale_manage_variants/static/src/js/popups.js:198
 #, python-format
 msgid "is not a valid number"
 msgstr " No es un número válido"
