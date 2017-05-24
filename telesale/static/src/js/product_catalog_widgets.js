@@ -73,35 +73,39 @@ var ProductLineWidget = TsBaseWidget.extend({
         this.$('.add-qty').keydown(function(event){
             var keyCode = event.keyCode || event.which;
             if (keyCode == 40) {  // KEY DOWWN
-                $(this).parent().parent().next().find('.add-qty').focus();
+                event.preventDefault();
+                ($(this).parent().parent().next().find('.add-qty')).select();
 
             }
-            else if (keyCode == 38){ // KEY UP
-                $(this).parent().parent().prev().find('.add-qty').focus();
+            if (keyCode == 38){ // KEY UP
+                event.preventDefault();
+                $(this).parent().parent().prev().find('.add-qty').select();
             }
-            else if (keyCode == 37){  // KEY LEFT
-                 $(this).parent().parent().find('.add-price').focus();
-            }
-             else if (keyCode == 39){ // KEY RIGHT
-                $(this).parent().parent().find('.add-price').focus();
-            }
+            // else if (keyCode == 37){  // KEY LEFT
+            //      $(this).parent().parent().find('.add-price').select();
+            // }
+            // else if (keyCode == 39){ // KEY RIGHT
+            //     $(this).parent().parent().find('.add-price').select();
+            // }
         });
 
         this.$('.add-price').keydown(function(event){
             var keyCode = event.keyCode || event.which;
             if (keyCode == 40) {  // KEY DOWWN (40) 
-                $(this).parent().parent().next().find('.add-price').focus();
+                event.preventDefault();
+                $(this).parent().parent().next().find('.add-price').select();
 
             }
-            else if (keyCode == 38){
-                $(this).parent().parent().prev().find('.add-price').focus();
+            else if (keyCode == 38){  //KEY UP
+                event.preventDefault();
+                $(this).parent().parent().prev().find('.add-price').select();
             }
-            else if (keyCode == 37){
-                 $(this).parent().parent().find('.add-qty').focus();
-            }
-             else if (keyCode == 39){
-                $(this).parent().parent().find('.add-qty').focus();
-            }
+            // else if (keyCode == 37){  //KEY LEFT
+            //      $(this).parent().parent().find('.add-qty').select();
+            // }
+            //  else if (keyCode == 39){  //KEY LEFT
+            //     $(this).parent().parent().find('.add-qty').select();
+            // }
         });
     },
     renderElement: function() {
