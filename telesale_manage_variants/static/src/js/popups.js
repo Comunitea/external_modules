@@ -219,6 +219,97 @@ var GridWidget = TsBaseWidget.extend({
         });
     },
 
+    control_arrow_keys: function(){
+        var self=this;
+        this.$('.add-qty').keydown(function(event){
+          var keyCode = event.keyCode || event.which;
+          if (keyCode == 40) {  // KEY DOWWN (40) 
+                event.preventDefault();
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().parent().next().children().eq(i).find('.add-qty').select();
+
+            }
+            else if (keyCode == 38){  //KEY UP
+                event.preventDefault();
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().parent().prev().children().eq(i).find('.add-qty').select();
+            }
+            else if (keyCode == 37){  //KEY LEFT
+                event.preventDefault();
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().prev().find('.add-qty').select();
+            }
+            else if (keyCode == 39){  //KEY RIGHT
+                event.preventDefault();
+
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().next().find('.add-qty').select();
+            }
+        });
+        this.$('.add-price').keydown(function(event){
+          var keyCode = event.keyCode || event.which;
+          if (keyCode == 40) {  // KEY DOWWN (40) 
+                event.preventDefault();
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().parent().next().children().eq(i).find('.add-price').select();
+
+            }
+            else if (keyCode == 38){  //KEY UP
+                event.preventDefault();
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().parent().prev().children().eq(i).find('.add-price').select();
+            }
+            else if (keyCode == 37){  //KEY LEFT
+                event.preventDefault();
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().prev().find('.add-price').select();
+            }
+            else if (keyCode == 39){  //KEY RIGHT
+                event.preventDefault();
+
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().next().find('.add-price').select();
+            }
+        });
+        this.$('.add-discount').keydown(function(event){
+          var keyCode = event.keyCode || event.which;
+          if (keyCode == 40) {  // KEY DOWWN (40) 
+                event.preventDefault();
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().parent().next().children().eq(i).find('.add-discount').select();
+
+            }
+            else if (keyCode == 38){  //KEY UP
+                event.preventDefault();
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().parent().prev().children().eq(i).find('.add-discount').select();
+            }
+            else if (keyCode == 37){  //KEY LEFT
+                event.preventDefault();
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().prev().find('.add-discount').select();
+            }
+            else if (keyCode == 39){  //KEY RIGHT
+                event.preventDefault();
+
+                var col = $(this).parent().parent().parent().parent().attr('col')
+                var i = parseInt(col)
+                $(this).parent().parent().parent().parent().next().find('.add-discount').select();
+            }
+        });
+    },
+
     // Set behaviour of Button Apply, Cancel, and checks of inputs
     renderElement: function(){
         var self = this;
@@ -236,6 +327,7 @@ var GridWidget = TsBaseWidget.extend({
         });
 
         this.bind_onchange_events();
+        this.control_arrow_keys();
     },
 
 });
