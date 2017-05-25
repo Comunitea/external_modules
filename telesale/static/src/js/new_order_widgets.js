@@ -368,6 +368,8 @@ var OrderlineWidget = TsBaseWidget.extend({
             })
         return loaded
     },
+
+    // OVERWRITED IN JIM TELESALE
     call_product_id_change: function(product_id, add_qty){
         var self = this;
 
