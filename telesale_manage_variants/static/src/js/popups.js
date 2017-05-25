@@ -84,7 +84,7 @@ var GridWidget = TsBaseWidget.extend({
         });
     },
 
-    // Set the line model with line_vals info
+    // OVERWRITED IN JIM TELESALE Set the line model with line_vals info
     set_cell_vals: function(line_model, line_vals){
         line_model.set('qty', line_vals.qty);
         line_model.set('pvp', line_vals.price);
