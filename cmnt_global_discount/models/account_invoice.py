@@ -59,6 +59,7 @@ class AccountInvoice(models.Model):
         invoice = super(AccountInvoice, self).create(vals)
         if 'invoice_line' in vals or 'gd_id' in vals:
             self._create_global_discount_lines(invoice)
+            invoice.button_reset_taxes()
         return invoice
 
     @api.multi
