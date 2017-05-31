@@ -307,7 +307,7 @@ var SoldProductLineWidget = NewOrderWidgets.SoldProductLineWidget.include({
             }
 
             var last_line = current_order.getLastOrderline();
-            if(last_line && last_line.get('template') == "" ){
+            if(last_line && last_line.get('template') == "" && last_line.get('product') == ""  ){
               $('.remove-line-button').click()
             }
 
