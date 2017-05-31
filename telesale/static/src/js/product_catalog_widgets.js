@@ -192,6 +192,15 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         }
     },
 
+    delete_if_empty_line: function(){
+        //If selected line is an empty line delete it.
+        var order =  this.ts_model.get('selectedOrder')
+        var selected_orderline = order.getSelectedLine();
+        if(selected_orderline && selected_orderline.get('product') == "" ){
+            $('.remove-line-button').click()
+        }
+    },
+
     addAllProducts: function(){
         var self=this;
         var order =  this.ts_model.get('selectedOrder')
@@ -202,11 +211,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
             return;
         }
 
-        //If selected line is an empty line delete it.
-        var selected_orderline = order.getSelectedLine();
-        if(selected_orderline && selected_orderline.get('product') == "" ){
-            $('.remove-line-button').click()
-        }
+        this.delete_if_empty_line();
 
         this.$('.catalog-line').each(function(i, line){
             var line_vals = self.get_line_vals(line);
