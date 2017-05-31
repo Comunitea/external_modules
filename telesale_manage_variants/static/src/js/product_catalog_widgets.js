@@ -130,6 +130,15 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
         }
     },
 
+    delete_if_empty_line: function(){
+        //If selected line is an empty line delete it.
+        var order =  this.ts_model.get('selectedOrder')
+        var selected_orderline = order.getSelectedLine();
+        if(selected_orderline && selected_orderline.get('product') == "" &&  selected_orderline.get('template') == ""){
+            $('.remove-line-button').click()
+        }
+    }
+
 
 });
     return {ProductCatalogWidget: ProductCatalogWidget}
