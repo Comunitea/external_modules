@@ -18,7 +18,7 @@ class AccountVoucherWizard(models.TransientModel):
     date = fields.Date("Date", required=True,
                        default=fields.Date.context_today)
     exchange_rate = fields.Float("Exchange rate", digits=(16, 6), default=1.0,
-                                 readonly=False)
+                                 readonly=True)
     currency_id = fields.Many2one("res.currency", "Currency", readonly=True)
     currency_amount = fields.Float("Curr. amount", digits=(16, 2),
                                    readonly=True)
@@ -77,37 +77,44 @@ class AccountVoucherWizard(models.TransientModel):
     @api.multi
     def make_advance_payment(self):
         """Create customer paylines and validates the payment"""
-        payment_obj = self.env['account.payment']
-        purchase_obj = self.env['purchase.order']
+        ## Neceito dividir para heredar y añadir campos, así como poder evirar llamar a do_post si viene a True en context
 
+        no_post = self._context.get('no_post', False)
+        payment_obj = self.env['account.payment']
         purchase_ids = self.env.context.get('active_ids', [])
         if purchase_ids:
-            purchase_id = purchase_ids[0]
-            purchase = purchase_obj.browse(purchase_id)
-
-            partner_id = purchase.partner_id.id
-            date = self[0].date
-            company_id = purchase.company_id
-
-            payment_res = {'payment_type': 'outbound',
-                           'partner_id': partner_id,
-                           'partner_type': 'supplier',
-                           'journal_id': self[0].journal_id.id,
-                           'company_id': company_id.id,
-                           'currency_id': purchase.currency_id.id,
-                           'payment_date': date,
-                           'amount': self[0].amount_advance,
-                           'purchase_id': purchase.id,
-                           'name': _("Advance Payment") + " - " +
-                           (purchase.partner_ref or purchase.name),
-                           'communication':
-                           self[0].payment_ref or purchase.name,
-                           'payment_method_id': self.env.
-                           ref('account.account_payment_method_manual_out').id
-                           }
+            payment_res = self.get_payment_res(purchase_ids)
             payment = payment_obj.create(payment_res)
-            payment.post()
-
+            if not no_post:
+                payment.post()
         return {
             'type': 'ir.actions.act_window_close',
         }
+
+    def get_payment_res(self, purchase_ids):
+        purchase_obj = self.env['purchase.order']
+
+        purchase_id = purchase_ids[0]
+        purchase = purchase_obj.browse(purchase_id)
+
+        partner_id = purchase.partner_id.id
+        date = self[0].date
+        company_id = purchase.company_id
+
+        payment_res = {'payment_type': 'outbound',
+                       'partner_id': partner_id,
+                       'partner_type': 'supplier',
+                       'journal_id': self[0].journal_id.id,
+                       'company_id': company_id.id,
+                       'currency_id': purchase.currency_id.id,
+                       'payment_date': date,
+                       'amount': self[0].amount_advance,
+                       'purchase_id': purchase.id,
+                       'name': _("Advance Payment") + " - " +
+                               (purchase.partner_ref or purchase.name),
+                       'communication':
+                           self[0].payment_ref or purchase.name,
+                       'payment_method_id': self.env.
+                           ref('account.account_payment_method_manual_out').id
+                       }
+        return payment_res
