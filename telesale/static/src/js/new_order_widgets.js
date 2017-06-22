@@ -1005,7 +1005,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                        console.log('Entro')
                         if (orders[0]) {
                           // var my_id = orders[0].id
-                          (new Model('sale.order')).call('confirm_order_background',[orders[0].id])
+                          (new Model('sale.order')).call('confirm_order_from_ui',[orders[0].id])
                               .fail(function(unused, event){
                                   //don't show error popup if it fails
                                   console.error('Failed confirm order: ',orders[0].name);
