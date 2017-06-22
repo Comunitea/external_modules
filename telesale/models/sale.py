@@ -150,7 +150,7 @@ class SaleOrder(models.Model):
         for order in self:
             if not self._context.get('do_super', False) and \
                     len(order.order_line) >= max_lines_len:
-                res = self.with_delay().batch_confirm_one_order()
+                res = order.with_delay().batch_confirm_one_order()
             else:
                 res = super(SaleOrder, self).action_confirm()
         return res
