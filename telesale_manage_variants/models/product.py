@@ -15,7 +15,6 @@ class ProductTemplate(models.Model):
             'str_table': {}
         }
         template = self.browse(template_id)
-
         num_attrs = len(template.attribute_line_ids)
         if not template or not (num_attrs > 1):
             return res
@@ -53,6 +52,7 @@ class ProductTemplate(models.Model):
                     'discount': 0.0,
                     'qty': 0.0,
                     'tax_ids': onchange_vals['tax_ids'],
+                    'enable': True if product else False
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
         return res
