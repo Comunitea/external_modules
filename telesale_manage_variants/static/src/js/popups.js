@@ -59,7 +59,8 @@ var GridWidget = TsBaseWidget.extend({
             'qty': qty,
             'price': price,
             'discount': discount,
-            'tax_ids': cell_obj.tax_ids
+            'tax_ids': cell_obj.tax_ids,
+            'enable': cell_obj.enable
         }
         return vals
     },
