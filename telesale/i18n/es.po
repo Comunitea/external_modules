@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-24 11:04+0000\n"
-"PO-Revision-Date: 2017-05-24 11:04+0000\n"
+"POT-Creation-Date: 2017-06-23 10:43+0000\n"
+"PO-Revision-Date: 2017-06-23 10:43+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -784,7 +784,7 @@ msgstr "Última fecha"
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config___last_update
 msgid "Last Modified on"
-msgstr "Última modificación en"
+msgstr "Last Modified on"
 
 #. module: telesale
 #. openerp-web
@@ -867,9 +867,9 @@ msgstr "N/A"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:556
-#: code:addons/telesale/static/src/js/new_order_widgets.js:568
-#: code:addons/telesale/static/src/js/new_order_widgets.js:580
+#: code:addons/telesale/static/src/js/new_order_widgets.js:558
+#: code:addons/telesale/static/src/js/new_order_widgets.js:570
+#: code:addons/telesale/static/src/js/new_order_widgets.js:582
 #, python-format
 msgid "NOT WORKING"
 msgstr "NO ESTÁ FUNCIONANDO"
@@ -894,7 +894,7 @@ msgstr "Nuevo pedido"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:645
+#: code:addons/telesale/static/src/js/new_order_widgets.js:647
 #, python-format
 msgid "No customer defined"
 msgstr "No hay cliente definido"
@@ -948,7 +948,7 @@ msgstr "Las líneas de pedido no pueden estar vacías"
 #. module: telesale
 #: model:ir.model,name:telesale.model_res_partner
 msgid "Partner"
-msgstr "Cliente"
+msgstr "Empresa"
 
 #. module: telesale
 #. openerp-web
@@ -978,9 +978,9 @@ msgstr "Teléfono"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/js/models.js:911
-#: code:addons/telesale/static/src/js/new_order_widgets.js:530
+#: code:addons/telesale/static/src/js/new_order_widgets.js:532
 #: code:addons/telesale/static/src/js/order_history_widgets.js:31
-#: code:addons/telesale/static/src/js/product_catalog_widgets.js:200
+#: code:addons/telesale/static/src/js/product_catalog_widgets.js:209
 #, python-format
 msgid "Please select a customer before adding a order line"
 msgstr "Por favor, selecciona un cliente antes de añadir una línea de pedido"
@@ -1047,14 +1047,14 @@ msgstr "El producto no puede estar vacío"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:408
+#: code:addons/telesale/static/src/js/new_order_widgets.js:410
 #, python-format
 msgid "Product code '' does not exist"
 msgstr "El código de producto no existe"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:423
+#: code:addons/telesale/static/src/js/new_order_widgets.js:425
 #, python-format
 msgid "Product name '' does not exist"
 msgstr "El nombre del producto no existe"
@@ -1262,7 +1262,7 @@ msgstr "Nombre televenta"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:616
+#: code:addons/telesale/static/src/js/new_order_widgets.js:618
 #, python-format
 msgid "This line has not a product defined."
 msgstr "Esta línea no tienen un producto definido."
@@ -1347,14 +1347,14 @@ msgstr "Semana"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:1023
+#: code:addons/telesale/static/src/js/new_order_widgets.js:1025
 #, python-format
 msgid "You cant cancel an order which state is diferent than draft."
 msgstr "No puedes cancelar un pedido cuyo estado sea diferente de presupuesto"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:638
+#: code:addons/telesale/static/src/js/new_order_widgets.js:640
 #, python-format
 msgid "You must select a customer"
 msgstr "Debes seleciconar un cliente"
@@ -1381,10 +1381,15 @@ msgstr "C.P."
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/product_catalog_widgets.js:231
+#: code:addons/telesale/static/src/js/product_catalog_widgets.js:236
 #, python-format
 msgid "is not a valid number"
 msgstr " no es un número válido"
+
+#. module: telesale
+#: model:ir.model,name:telesale.model_sale_config_settings
+msgid "sale.config.settings"
+msgstr "sale.config.settings"
 
 #. module: telesale
 #. openerp-web
