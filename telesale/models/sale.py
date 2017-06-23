@@ -135,27 +135,6 @@ class SaleOrder(models.Model):
         })
         return res
 
-    @job
-    @api.multi
-    def batch_confirm_one_order(self):
-        self.ensure_one()
-        ctx = self._context.copy()
-        ctx.update({'do_super': True})
-        self.with_context(ctx).action_confirm()
-
-    @api.multi
-    def action_confirm(self):
-        res = False
-        max_lines_len = 5
-        for order in self:
-            if not self._context.get('do_super', False) and \
-                    len(order.order_line) >= max_lines_len:
-                res = order.with_delay().batch_confirm_one_order()
-            else:
-                res = super(SaleOrder, self).action_confirm()
-        return res
-
-
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
