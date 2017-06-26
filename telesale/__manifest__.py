@@ -15,7 +15,6 @@
         'product',
         'commercial_rules',
         'stock',  # stock_available ProductInfoWifget, move to other module?
-        'queue_job'
     ],
     'contributors': [
         "Comunitea ",
