@@ -16,9 +16,13 @@ class IrAttachment(models.Model):
         ''')
         att_objs = self.sudo().search([('store_fname', '=', False),
                                        ('db_datas', '!=', False)])
-        l = len(att_objs)
+        self._cr.execute("select id from ir_attachment where store_fname is "
+			 "null and db_datas is not null")
+        data = self._cr.fetchall()
+        l = len(data)
         c = 1
-        for att in att_objs:
+        for att_id in data:
+            att = self.browse(att_id)
             print "***********************"
             print "A disco el id: %s" % str(att.id)
             print "%s / %s" % (str(c), str(l))
