@@ -10,6 +10,7 @@ class HSCode(models.Model):
     _inherit = "hs.code"
 
     @api.one
+    @api.depends('local_code')
     def _get_url(self):
         if self.local_code:
             self.url = (u"http://ec.europa.eu/taxation_customs/dds2/taric/"
