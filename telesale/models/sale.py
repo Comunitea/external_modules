@@ -4,6 +4,7 @@
 from odoo import models, fields, api
 import time
 from datetime import date, timedelta
+from odoo.addons.queue_job.job import job
 
 
 class SaleOrder(models.Model):
@@ -21,7 +22,6 @@ class SaleOrder(models.Model):
         t_partner = self.env['res.partner']
         t_order = self.env['sale.order']
         t_irvalue = self.env['ir.values']
-
         order_ids = []
         for rec in orders:
             order = rec['data']
@@ -81,13 +81,7 @@ class SaleOrder(models.Model):
                 line_objs.unlink()
             self._create_lines_from_ui(order_obj, order_lines)
             if order['action_button'] == 'confirm':
-                order_obj.action_button_confirm()
-            # elif order['action_button'] == 'confirm_background':
-            #     # wf_service = netsvc.LocalService('workflow')
-            #     # wf_service.trg_validate(uid, 'sale.order', order_id,
-            #     #                         'order_confirm', cr)
-            #     self.action_button_confirm_thread(cr, uid, [order_id],
-            #                                       context=context)
+                order_obj.action_confirm()
             if 'set_promotion' in order and order['set_promotion']:
                 order_obj.apply_commercial_rules()
         return order_ids
@@ -116,11 +110,8 @@ class SaleOrder(models.Model):
         return vals
 
     @api.model
-    def confirm_order_background(self, order_id):
-        # TODO DEPENDENCIA DEL MODULO PARA PONER EL HILO
-        # self.action_button_confirm_thread(cr, uid, [order_id],
-        #                                   context=context)
-        self.browse(order_id).action_confirm()
+    def confirm_order_from_ui(self, order_id):
+        self.browse(order_id).action_button_confirm()
 
     @api.model
     def cancel_order_from_ui(self, order_id):
@@ -143,7 +134,6 @@ class SaleOrder(models.Model):
 
         })
         return res
-
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
