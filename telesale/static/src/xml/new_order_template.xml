@@ -500,6 +500,13 @@
                        </div>
                   </div>
               </div>
+              <div class="order-button">
+                  <div class="fullheight centerinside fullwidth">
+                       <div class="centerthis">
+                  <button class="print-button fullwidth" tabIndex="21">PRINT</button>
+                       </div>
+                  </div>
+              </div>
           </div>
 
 
