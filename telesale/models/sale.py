@@ -4,7 +4,6 @@
 from odoo import models, fields, api
 import time
 from datetime import date, timedelta
-from odoo.addons.queue_job.job import job
 
 
 class SaleOrder(models.Model):
@@ -134,6 +133,7 @@ class SaleOrder(models.Model):
 
         })
         return res
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
