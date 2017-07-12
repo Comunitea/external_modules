@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-23 10:43+0000\n"
-"PO-Revision-Date: 2017-06-23 10:43+0000\n"
+"POT-Creation-Date: 2017-07-12 12:23+0000\n"
+"PO-Revision-Date: 2017-07-12 12:23+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -164,7 +164,7 @@ msgstr "ALT + Z"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:544
+#: code:addons/telesale/static/src/xml/new_order_template.xml:551
 #: code:addons/telesale/static/src/xml/order_history_template.xml:122
 #, python-format
 msgid "Add"
@@ -776,7 +776,7 @@ msgstr "Atajos Teclado"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:521
+#: code:addons/telesale/static/src/xml/new_order_template.xml:528
 #, python-format
 msgid "Last Date"
 msgstr "Última fecha"
@@ -784,18 +784,18 @@ msgstr "Última fecha"
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config___last_update
 msgid "Last Modified on"
-msgstr "Last Modified on"
+msgstr "Última modificación en"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:529
+#: code:addons/telesale/static/src/xml/new_order_template.xml:536
 #, python-format
 msgid "Last Price"
 msgstr "Último precio"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:525
+#: code:addons/telesale/static/src/xml/new_order_template.xml:532
 #, python-format
 msgid "Last Quantity"
 msgstr "Última cantidad"
@@ -878,7 +878,7 @@ msgstr "NO ESTÁ FUNCIONANDO"
 #. openerp-web
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:117
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:223
-#: code:addons/telesale/static/src/xml/new_order_template.xml:542
+#: code:addons/telesale/static/src/xml/new_order_template.xml:549
 #: code:addons/telesale/static/src/xml/order_history_template.xml:67
 #: code:addons/telesale/static/src/xml/product_catalog_template.xml:22
 #, python-format
@@ -946,9 +946,16 @@ msgid "Order lines can not be empty."
 msgstr "Las líneas de pedido no pueden estar vacías"
 
 #. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/xml/new_order_template.xml:506
+#, python-format
+msgid "PRINT"
+msgstr "IMPRIMIR"
+
+#. module: telesale
 #: model:ir.model,name:telesale.model_res_partner
 msgid "Partner"
-msgstr "Empresa"
+msgstr "Partner"
 
 #. module: telesale
 #. openerp-web
@@ -995,7 +1002,7 @@ msgstr "Código postal"
 #. module: telesale
 #. openerp-web
 #: code:addons/telesale/static/src/xml/new_order_template.xml:358
-#: code:addons/telesale/static/src/xml/new_order_template.xml:543
+#: code:addons/telesale/static/src/xml/new_order_template.xml:550
 #: code:addons/telesale/static/src/xml/popups_template.xml:40
 #: code:addons/telesale/static/src/xml/product_catalog_template.xml:26
 #, python-format
@@ -1220,7 +1227,7 @@ msgstr "Empezar sesión"
 #: code:addons/telesale/static/src/xml/order_history_template.xml:72
 #, python-format
 msgid "State"
-msgstr "Estado"
+msgstr "Provincia"
 
 #. module: telesale
 #. openerp-web
@@ -1231,7 +1238,7 @@ msgstr "Stock"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/xml/new_order_template.xml:515
+#: code:addons/telesale/static/src/xml/new_order_template.xml:522
 #, python-format
 msgid "Stock Product"
 msgstr "Stock Producto"
@@ -1247,7 +1254,7 @@ msgstr "Calle"
 #. module: telesale
 #: model:ir.ui.view,arch_db:telesale.ts_session_opening_form_view
 msgid "TeleSale Session Opening"
-msgstr "Televenta Abrir sesión"
+msgstr "Abrir sesión Televenta"
 
 #. module: telesale
 #: model:ir.ui.menu,name:telesale.menu_telesale_root
@@ -1347,10 +1354,17 @@ msgstr "Semana"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:1025
+#: code:addons/telesale/static/src/js/new_order_widgets.js:1026
 #, python-format
 msgid "You cant cancel an order which state is diferent than draft."
 msgstr "No puedes cancelar un pedido cuyo estado sea diferente de presupuesto"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/js/new_order_widgets.js:1035
+#, python-format
+msgid "You must save the order in the server in order to print it"
+msgstr "Debes guardar el pedido en el servidor para poder imprimirlo"
 
 #. module: telesale
 #. openerp-web
@@ -1385,11 +1399,6 @@ msgstr "C.P."
 #, python-format
 msgid "is not a valid number"
 msgstr " no es un número válido"
-
-#. module: telesale
-#: model:ir.model,name:telesale.model_sale_config_settings
-msgid "sale.config.settings"
-msgstr "sale.config.settings"
 
 #. module: telesale
 #. openerp-web

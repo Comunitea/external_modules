@@ -940,6 +940,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             this.$('.confirm-button').click(function (){ self.confirmCurrentOrder() });
             this.$('.cancel-button').click(function (){ self.cancelCurrentOrder() });
             this.$('.save-button').click(function (){ self.saveCurrentOrder() });
+            this.$('.print-button').click(function (){ self.printCurrentOrder() });
         },
         changeTotals: function(){
             var self = this;
@@ -1027,6 +1028,23 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             else if ( currentOrder.check() ){
                 this.ts_model.cancel_order(currentOrder.get('erp_id'));
             }
+        },
+        printCurrentOrder: function() {
+            var currentOrder = this.order_model;
+            if (!currentOrder.get('erp_id')){
+                alert(_t("You must save the order in the server in order to print it"));
+                return;
+            }
+            this.do_action({
+                 context: {'active_ids': [currentOrder.get('erp_id')]},
+                 data: null,
+                 name: 'Quotation / Order',
+                 report_file: 'sale.report_saleorder',
+                 report_name: 'sale.report_saleorder',
+                 report_type: 'qweb-pdf',
+                 type: 'ir.actions.report.xml'
+            });
+            // new Model('sale.order').call('print_order_from_ui',[currentOrder.get('erp_id')])
         },
         saveCurrentOrder: function() {
             var currentOrder = this.order_model;

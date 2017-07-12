@@ -480,6 +480,9 @@
 .telesale #bottompart .confirm-button {
     background: #3fab3f;
 }
+.telesale #bottompart .print-button {
+    background: #81baed;
+}
 /*.telesale #bottompart button:focus{
   background: #eaff41
 }*/
@@ -512,6 +515,6 @@
 }
 .telesale #bottompart .order-button {
     width: 100%;
-    height: 33.0%;
+    height: 25.0%;
     /*height: 100%;*/
 }
