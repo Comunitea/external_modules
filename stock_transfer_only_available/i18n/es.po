@@ -26,3 +26,9 @@ msgstr "No hay suficiente stock en %s del producto %s"
 #, python-format
 msgid "Quantity error"
 msgstr "Error de stock"
+
+#. module: stock_transfer_only_available
+#: code:addons/stock_transfer_only_available/wizard/stock_transfer_details.py:55
+#, python-format
+msgid " with lot %s"
+msgstr " con el lote %s"

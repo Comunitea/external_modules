@@ -48,8 +48,15 @@ class StockTransferDetails(models.TransientModel):
                         total_qty, totals[product.id][lot][location.id],
                         precision_rounding=product.uom_id.rounding)
                     if difference < 0:
+                        error_message = _(
+                            'Not found enought stock in %s for product %s') % \
+                                (location.name, product.name)
+                        if lot:
+                            error_message += _(' with lot %s') % \
+                                self.env['stock.production.lot'].browse(
+                                lot).name
                         raise exceptions.Warning(
                             _('Quantity error'),
-                            _('Not found enought stock in %s for product %s') %
-                            (location.name, product.name))
+                            error_message
+                            )
         return super(StockTransferDetails, self).do_detailed_transfer()
