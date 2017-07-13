@@ -36,6 +36,7 @@ var GridWidget = TsBaseWidget.extend({
         this.column_attrs = [];
         this.row_attrs = [];
         this.str_table = {};
+        this.aux_field = null; // used in callback funcion
 
     },
 
@@ -203,6 +204,24 @@ var GridWidget = TsBaseWidget.extend({
         }
     },
 
+    // Load Grid From server
+    call_product_uom_change: function(input_field){
+        self=this;
+        self.aux_field = input_field
+        var model = new Model("sale.order.line")
+        var current_order = this.ts_model.get('selectedOrder');
+        var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
+        var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
+        var qty = parseFloat($(input_field).val());
+        var product_id = parseInt($(input_field).parent().parent().parent()[0].getAttribute('variant-id'))
+        return model.call("ts_product_uom_change", [product_id, partner_id, pricelist_id, qty])
+        .then(function(result){
+            var input_field = self.aux_field
+            $(input_field).parent().parent().next().children()[1].children[0].value = result.price_unit.toString()
+        });
+        return
+    },
+
     bind_onchange_events: function(){
         this.$('.add-qty').unbind();
         this.$('.add-price').unbind();
@@ -211,6 +230,7 @@ var GridWidget = TsBaseWidget.extend({
         var self=this;
         this.$('.add-qty').bind('change', function(event){
              self.check_float(this);
+             self.call_product_uom_change(this);
         });
         this.$('.add-price').bind('change', function(event){
              self.check_float(this);
