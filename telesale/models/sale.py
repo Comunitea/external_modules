@@ -161,6 +161,27 @@ class SaleOrderLine(models.Model):
         return res
 
     @api.model
+    def ts_product_uom_change(self, product_id, partner_id, pricelist_id, qty):
+        res = {}
+        order_t = self.env['sale.order']
+        partner = self.env['res.partner'].browse(partner_id)
+        if not pricelist_id:
+            pricelist_id = partner.property_product_pricelist.id
+        order = order_t.new({'partner_id': partner_id,
+                             'date_order': time.strftime("%Y-%m-%d"),
+                             'pricelist_id': pricelist_id})
+        prod = self.env['product.product'].browse(product_id)
+        line = self.new({'order_id': order.id,
+                         'product_id': product_id,
+                         'product_uom': prod.uom_id.id,
+                         'product_uom_qty': qty})
+        line.product_uom_change()
+        res.update({
+            'price_unit': line.price_unit,
+        })
+        return res
+
+    @api.model
     def get_last_lines_by(self, period, client_id):
         """
         """

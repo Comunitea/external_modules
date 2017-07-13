@@ -399,6 +399,20 @@ var OrderlineWidget = TsBaseWidget.extend({
             self.$('.col-qty').select();
         });
     },
+    call_product_uom_change: function(product_id, qty){
+        var self = this;
+        var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
+        var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
+        var model = new Model("sale.order.line");
+        return model.call("ts_product_uom_change", [product_id, customer_id, pricelist_id, qty])
+        .then(function(result){
+            self.model.set('pvp', self.ts_model.my_round(result.price_unit));
+            var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
+            self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
+            self.refresh('pvp');
+            self.$('.col-pvp').select();
+        });
+    },
     perform_onchange: function(key) {
         var self=this;
         var value = this.$('.col-'+key).val();
@@ -432,8 +446,15 @@ var OrderlineWidget = TsBaseWidget.extend({
                 this.call_product_id_change(product_id);
                 break;
             case "qty":
+            // TODO CALL CHECK FLOAT
+            var qty = parseFloat(value)
                 this.refresh('unit');
                 this.$('.col-unit').focus()
+                var product_name = this.model.get('product')
+                if (product_name){
+                    var product_id = this.ts_model.db.product_name_id[product_name];
+                    this.call_product_uom_change(product_id, qty);
+                }
                 break;
             case "unit":
                 this.refresh('pvp');
