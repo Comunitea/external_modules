@@ -53,8 +53,8 @@ class SaleOrder(models.Model):
             for line in order.order_line:
                 amount_subtotal += line.price_subtotal
                 amount_tax += order._amount_line_tax(line)
-                if order.gd_id:
-                    amount_tax = amount_tax * (1 - order.discount_rate / 100)
+            if order.gd_id:
+                amount_tax = amount_tax * (1 - order.discount_rate / 100)
             amount_untaxed = amount_subtotal - amount_discount
 
             if order.gd_id:
