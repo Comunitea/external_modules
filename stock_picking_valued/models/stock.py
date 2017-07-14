@@ -138,3 +138,23 @@ class stock_move(models.Model):
                 move.percent_margin = (move.margin/move.price_subtotal)*100
             else:
                 move.percent_margin = 0
+
+
+
+class StockPackOperation(models.Model):
+
+    _inherit = 'stock.pack.operation'
+
+    price_subtotal = fields.Float(
+        compute='_get_subtotal', string="Subtotal",
+        digits=dp.get_precision('Account'), readonly=True, store=True)
+
+    @api.multi
+    @api.depends('product_qty',
+                 'linked_move_operation_ids.move_id.order_price_unit')
+    def _get_subtotal(self):
+        for operation in self:
+            subtotal = 0.0
+            for link in operation.linked_move_operation_ids:
+                price_unit = link.move_id.order_price_unit
+                operation.price_subtotal = price_unit * operation.product_qty
