@@ -252,7 +252,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         return model.call("ts_product_uom_change", [product_id, partner_id, pricelist_id, qty])
         .then(function(result){
             var input_field = self.aux_field
-            $(input_field).parent().next().children()[0].value = result.price_unit.toString()
+            $(input_field).parent().next().children()[0].value = result.price_unit.toFixed(2);
         });
         return
     },
