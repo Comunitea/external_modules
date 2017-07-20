@@ -101,7 +101,6 @@ class ProductProduct(models.Model):
         ctx.update(pricelist=pricelist_id, partner=partner_id)
         read = self.with_context(ctx).search_read(domain, fields, limit=100, 
                                                   offset=offset)
-        import ipdb; ipdb.set_trace()
         for dic in read:
             formated = {
                 'id': dic['id'],
