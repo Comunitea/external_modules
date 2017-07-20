@@ -85,7 +85,6 @@ exports.TS_LS = core.Class.extend({
             var product = products[i];
             // var search_string = this._product_search_string(product);
             this.product_by_id[product.id] = product;
-            // this.product_by_tmp_id[product.product_tmpl_id[0]] = product;
             this.product_name_id[product.display_name] = product.id;
             if(product.default_code){
                 this.product_code_id[product.default_code] = product.id;

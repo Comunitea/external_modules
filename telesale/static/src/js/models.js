@@ -82,7 +82,7 @@ var TsModel = Backbone.Model.extend({
         return new Model(model).query(fields).filter(domain).order_by(orderby).context(ctx).all()
     },
     _get_product_fields: function(){
-        return  ['display_name', 'default_code', 'list_price', 'standard_price', 'uom_id', 'taxes_id', 'weight']
+        return  ['display_name', 'default_code', 'uom_id']
     },
     _get_partner_fields: function(){
         return  ['name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city']
@@ -120,11 +120,8 @@ var TsModel = Backbone.Model.extend({
 
                     // PRODUCTS
                     var product_fields = self._get_product_fields();
-                    return self.fetch(
-                        'product.product',
-                        product_fields,
-                        [['sale_ok', '=', true]]
-                    );
+                    var model = new Model('product.product');
+                    return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true]]]);
                 }).then(function(products){
                     // TODO OPTIMIZAR
                     self.db.add_products(products);
@@ -311,7 +308,7 @@ var TsModel = Backbone.Model.extend({
             pvp:my_round(line.price_unit,2), //TODO poner precio del producto???
             total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
             discount: my_round(line.discount, 2) || 0.0,
-            taxes_ids: line.tax_id || prod_obj.taxes_id || [],
+            taxes_ids: line.tax_id || [],
         }
         return vals
     },
@@ -868,15 +865,16 @@ var Order = Backbone.Model.extend({
             if(fromsoldprodhistory){
               l_qty = 1.0;
             }
+            var uom_obj = this.ts_model.db.get_unit_by_id(product_obj.uom_id)
             var line_vals = {ts_model: this.ts_model, order:this,
                              code:prod_obj.default_code || "" ,
                              product:prod_obj.display_name,
-                             unit:prod_obj.uom_id[1] || line.product_uom[1], 
+                             unit:uom_obj.name || line.product_uom[1], 
                              qty:my_round(l_qty),
                              pvp: my_round(line.current_pvp ? line.current_pvp : 0, 2),
                              total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
                              discount: my_round( line.discount || 0.0, 2 ),
-                             taxes_ids: line.tax_id || product_obj.taxes_id || [],
+                             taxes_ids: line.tax_id || [],
                             }
             var line = new Orderline(line_vals);
             this.get('orderLines').add(line);
