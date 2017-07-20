@@ -63,33 +63,33 @@ class ProductProduct(models.Model):
         return res
 
     @api.model
-    def _get_product_values2(self, product, partner_id, pricelist_id):
-        onchange_vals = self._get_onchange_vals(product, partner_id,
-                                                pricelist_id)
-
-        vals = {
-            'id': product.id,
-            'display_name': product.display_name,
-            'default_code': product.default_code,
-            'stock': self._get_product_stock(product),
-            'price': onchange_vals['price'],
-            'discount': 0.0,
-            'qty': 0.0,
-            'tax_ids': onchange_vals['tax_ids'],
-        }
-        return vals
+    def _get_stock_field(self):
+        return 'qty_available'
 
     @api.model
-    def ts_search_products(self, product_name, partner_id, pricelist_id):
-        limit = 100000
+    def ts_search_products(self, product_name, partner_id, pricelist_id,
+                           offset=0):
         res = []
         domain = [('name', 'ilike', product_name)]
-        if len(product_name) < 2:
-            limit = 100
-        for product in self.search(domain, limit=limit):
-            values = self._get_product_values2(product, partner_id,
-                                               pricelist_id)
-            res.append(values)
+        stock_field = self._get_stock_field()
+        fields = ['id', 'display_name', 'default_code', stock_field, 'price', 
+                  'taxes_id']
+        ctx = self._context.copy()
+        ctx.update(pricelist=pricelist_id, partner=partner_id)
+        read = self.with_context(ctx).search_read(domain, fields, limit=False, 
+                                                  offset=offset)
+        for dic in read:
+            formated = {
+                'id': dic['id'],
+                'display_name': dic.get('display_name', 0.0),
+                'default_code': dic.get('default_code', 0.0),
+                'stock': dic.get(stock_field, 0.0),
+                'price': dic.get('price', 0.0),
+                'discount': 0.0,
+                'qty': 0.0,
+                'tax_ids': dic.get('taxes_id', []),
+            }
+            res.append(formated)
         return res
 
     @api.model
