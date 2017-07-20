@@ -358,7 +358,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         var self=this;
         var domain = [['id', '=', product_id]]
         var loaded = self.ts_model.fetch('product.product',
-                                        ['display_name','product_class','list_price','standard_price','default_code','uom_id', 'log_base_id', 'log_base_discount', 'log_unit_discount','log_box_discount', 'log_unit_id', 'log_box_id', 'base_use_sale', 'unit_use_sale', 'box_use_sale','virtual_stock_conservative','taxes_id', 'weight', 'kg_un', 'un_ca', 'ca_ma', 'ma_pa', 'max_discount', 'category_max_discount', 'product_tmpl_id','products_substitute_ids'],
+                                        ['display_name','product_class','standard_price','default_code','uom_id', 'log_base_id', 'log_base_discount', 'log_unit_discount','log_box_discount', 'log_unit_id', 'log_box_id', 'base_use_sale', 'unit_use_sale', 'box_use_sale','virtual_stock_conservative','taxes_id', 'weight', 'kg_un', 'un_ca', 'ca_ma', 'ma_pa', 'max_discount', 'category_max_discount', 'product_tmpl_id','products_substitute_ids'],
                                         domain
                                         )
             .then(function(products){
@@ -384,7 +384,6 @@ var OrderlineWidget = TsBaseWidget.extend({
             console.log("RESULTADO PRODUCT ID CHGANGE")
             console.log(result);
             var product_obj = self.ts_model.db.get_product_by_id(product_id);
-            var uom_obj = self.ts_model.db.get_unit_by_id(product_obj.uom_id[0])
             self.model.set('code', product_obj.default_code || "");
             self.model.set('product', product_obj.display_name || "");
             self.model.set('taxes_ids', result.tax_id || []); //TODO poner impuestos de producto o vacio
@@ -722,7 +721,8 @@ var OrderWidget = TsBaseWidget.extend({
             var product_obj = this.ts_model.db.get_product_by_id(product_id)
             var product_name = product_obj.display_name;
             added_line.set('product', product_name);
-            added_line.set('unit', product_obj.uom_id[1]);
+            var uom_obj = self.ts_model.db.get_unit_by_id(product_obj.uom_id)
+            added_line.set('unit', uom_obj.name);
             return added_line;
         },
 
@@ -732,7 +732,7 @@ var OrderWidget = TsBaseWidget.extend({
             added_line.set('qty', line_vals.qty || 1.0);
             added_line.set('pvp', line_vals.price || 0.0);
             added_line.set('discount', line_vals.discount || 0.0);
-            added_line.set('taxes_ids', line_vals.tax_ids || prod_obj.taxes_id); 
+            added_line.set('taxes_ids', line_vals.tax_ids || []); 
             added_line.update_line_values();
             return
         },
@@ -940,11 +940,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
 
             this.selected_line = this.ts_model.get('selectedOrder').get('selected_line');
             this.selected_line.unbind('change:total');
-            this.selected_line.unbind('change:weight');
-            this.selected_line.unbind('change:boxes');
             this.selected_line.bind('change:total', this.changeTotals, this);
-            this.selected_line.bind('change:weight', this.changeTotals, this);
-            this.selected_line.bind('change:boxes', this.changeTotals, this);
         },
         change_selected_order: function() {
             this.order_model.unbind('change:selected_line');
