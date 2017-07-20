@@ -1,12 +1,35 @@
 # -*- coding: utf-8 -*-
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from odoo import models, api, _
+from odoo import models, api, _, fields
 from openerp.exceptions import except_orm
+
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    display_name = fields.Char(store=True)
+    uom_id = fields.Many2one(index=True, auto_join=True)
 
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
+
+    display_name = fields.Char(store=True)
+    product_tmpl_id = fields.Many2one(index=True, auto_join=True)
+
+    @api.model
+    def fetch_product_data(self, field_list, domain):
+        """
+        Get the products as fast as posible, with only id in many to one
+        """
+        products = self.search(domain)
+        res = products.read(field_list, load='_classic_write')
+
+        #TODO, eliminar, obtener standar price en la linea y calcularlo ahí
+        for r in res:
+            r.update(standard_price=0.0)
+        return res
 
     @api.model
     def get_product_info(self, product_id, partner_id):
@@ -76,8 +99,9 @@ class ProductProduct(models.Model):
                   'taxes_id']
         ctx = self._context.copy()
         ctx.update(pricelist=pricelist_id, partner=partner_id)
-        read = self.with_context(ctx).search_read(domain, fields, limit=False, 
+        read = self.with_context(ctx).search_read(domain, fields, limit=100, 
                                                   offset=offset)
+        import ipdb; ipdb.set_trace()
         for dic in read:
             formated = {
                 'id': dic['id'],
