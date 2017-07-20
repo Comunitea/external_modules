@@ -36,16 +36,17 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
             });
         }
         else{
+            var uom_obj = self.ts_model.db.get_unit_by_id(catalog_vals.product_obj.uom_id)
             res = $.extend(res, {
                 ts_model: this.ts_model, 
                 order:current_order,
                 code: "" ,
                 product: catalog_vals.product_obj.display_name || '',
-                unit: catalog_vals.product_obj.uom_id[1] || '',
+                unit: uom_obj.name || '',
                 qty: catalog_vals.qty || 0.0,
                 pvp: catalog_vals.price || 0.0,
                 discount: catalog_vals.discount || 0.0,
-                taxes_ids: catalog_vals.taxes_ids || prod_obj.taxes_id,
+                taxes_ids: catalog_vals.taxes_ids || [],
             });
         }
         // Add info to manage variants
@@ -81,7 +82,7 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
         var current_order = this.ts_model.get('selectedOrder');
 
         var prod_obj = this.ts_model.db.get_product_by_id(product_id);
-        var template_id = prod_obj.product_tmpl_id[0];
+        var template_id = prod_obj.product_tmpl_id;
         var template_obj = this.ts_model.db.template_by_id[template_id];
         $.extend(catalog_vals, {product_obj: prod_obj,
                                 template_obj: template_obj,

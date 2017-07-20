@@ -2,7 +2,7 @@ odoo.define('telesale_manage_variants.models2', function (require) {
 "use strict";
 var TsModels = require('telesale.models');
 var OrderSuper = TsModels.Order
-// var Backbone = window.Backbone;
+var Model = require('web.DataModel');
 
 var TsModelSuper = TsModels.TsModel
 TsModels.TsModel = TsModels.TsModel.extend({
@@ -100,11 +100,8 @@ TsModels.TsModel = TsModels.TsModel.extend({
 
                     // PRODUCTS
                     var product_fields = self._get_product_fields();
-                    return self.fetch(
-                        'product.product',
-                        product_fields,
-                        [['sale_ok', '=', true]]
-                    );
+                    var model = new Model('product.product');
+                    return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true]]]);
                 }).then(function(products){
                     // TODO OPTIMIZAR
                     self.db.add_products(products);
@@ -179,7 +176,7 @@ TsModels.TsModel = TsModels.TsModel.extend({
             var line = order_lines[key];
 
             var prod_obj = this.db.get_product_by_id(line.product_id[0]);
-            var template_id = prod_obj.product_tmpl_id[0];
+            var template_id = prod_obj.product_tmpl_id;
             var template_obj = this.db.template_by_id[template_id];
 
             var to_add = {
