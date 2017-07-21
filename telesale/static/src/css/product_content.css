@@ -107,12 +107,17 @@
     background-color: #ff7878;
 }
 
-.telesale .search-box .center #search-product-button{
+.telesale .search-box .center button{
     color: black;
     font-size: 2vmin;
     font-weight: bold;
     border: 2px solid #353A7E;
     background: #7f82ac;
+}
+.telesale .search-box .center .paginator{
+    display:inline;
+    padding-left:10px;
+    padding-right:10px;
 }
 
 .telesale .search-box .center #add-alll-button{
