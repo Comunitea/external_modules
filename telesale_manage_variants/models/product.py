@@ -21,7 +21,16 @@ class ProductTemplate(models.Model):
         line_x = template.attribute_line_ids[0]
         line_y = False if num_attrs == 1 else template.attribute_line_ids[1]
 
+        ctx = self._context.copy()
+        ctx.update(pricelist=pricelist_id, partner=partner_id)
         t_product = self.env['product.product']
+        stock_field = t_product._get_stock_field()
+        fields = ['id', stock_field, 'price', 'taxes_id']
+        read = template.with_context(ctx).product_variant_ids.read(fields)
+        variant_dic = {}
+        for dic in read:
+            variant_dic[dic['id']] = dic
+
         for value_x in line_x.value_ids:
             x_attr = {
                 'id': value_x.id,
@@ -42,16 +51,14 @@ class ProductTemplate(models.Model):
                 product = template.product_variant_ids.filtered(
                     lambda x: not(values - x.attribute_value_ids))[:1]
 
-                onchange_vals = t_product._get_onchange_vals(product,
-                                                             partner_id,
-                                                             pricelist_id)
+                var_info = variant_dic[product.id]
                 cell_dic = {
                     'id': product and product.id or 0,
-                    'stock': t_product._get_product_stock(product),
-                    'price': onchange_vals['price'],
+                    'stock': var_info[stock_field],
+                    'price': var_info['price'],
                     'discount': 0.0,
                     'qty': 0.0,
-                    'tax_ids': onchange_vals['tax_ids'],
+                    'tax_ids': var_info['taxes_id'],
                     'enable': True if product else False
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
