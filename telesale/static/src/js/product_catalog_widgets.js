@@ -123,30 +123,37 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var self = this;
         this._super(parent,options);
         this.catalog_products = [];
+        this.last_search = "";
+        this.page = 1;
+        this.result_str = "";
     },
 
-    load_products_from_server: function(product_name){
+    load_products_from_server: function(product_name, offset){
         var self=this;
         var model = new Model("product.product");
         // Wee need the partner to ger the product price from server.
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
-        var loaded = model.call("ts_search_products", [product_name, partner_id, pricelist_id])
+        var loaded = model.call("ts_search_products", [product_name, partner_id, pricelist_id, offset])
         .then(function(result){
-            self.catalog_products = result;
+            self.catalog_products = result['products'];
+            self.result_str = result['result_str']
         });
         return loaded;
 
     },
 
-    searchProducts: function(){
+    searchProducts: function(mode){
         var self=this;
         var product_name = this.$('#search-product').val()
-        $.when(this.load_products_from_server(product_name))
+        this.last_search = product_name
+        var offset = (this.page - 1) * 100;
+
+        $.when(this.load_products_from_server(product_name, offset))
         .done(function(){
             self.renderElement();
-            self.$('search-product').val(product_name);
+            self.$('#search-product').val(self.last_search)
         })
     },
 
@@ -281,7 +288,19 @@ var ProductCatalogWidget = TsBaseWidget.extend({
     renderElement: function () {
         var self = this;
         this._super();
-        this.$('#search-product-button').click(function (){ self.searchProducts() });
+        this.$('#search-product-button').click(function (){ 
+            self.page = 1;
+            self.searchProducts('init') 
+        });
+        this.$('#search-product-prev').click(function (){
+            if (self.page > 1) 
+                self.page = self.page - 1;
+            self.searchProducts('prev') 
+        });
+        this.$('#search-product-next').click(function (){ 
+            self.page = self.page + 1;
+            self.searchProducts('next') 
+        });
         this.$('#add-alll-button').click(function (){ self.addAllProducts(); self.ts_model.ts_widget.new_order_screen.order_widget.renderElement(); $('button#button_no').click(); });
         var $lines_contennt = this.$('.productlines');
         for (var key in this.catalog_products){
