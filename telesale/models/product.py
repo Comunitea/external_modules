@@ -26,7 +26,7 @@ class ProductProduct(models.Model):
         products = self.search(domain)
         res = products.read(field_list, load='_classic_write')
 
-        #TODO, eliminar, obtener standar price en la linea y calcularlo ahí
+        # TODO, eliminar, obtener standar price en la linea y calcularlo ahí
         for r in res:
             r.update(standard_price=0.0)
         return res
@@ -95,11 +95,11 @@ class ProductProduct(models.Model):
         res = []
         domain = [('name', 'ilike', product_name)]
         stock_field = self._get_stock_field()
-        fields = ['id', 'display_name', 'default_code', stock_field, 'price', 
+        fields = ['id', 'display_name', 'default_code', stock_field, 'price',
                   'taxes_id']
         ctx = self._context.copy()
         ctx.update(pricelist=pricelist_id, partner=partner_id)
-        read = self.with_context(ctx).search_read(domain, fields, limit=100, 
+        read = self.with_context(ctx).search_read(domain, fields, limit=100,
                                                   offset=offset)
         for dic in read:
             formated = {
@@ -113,7 +113,15 @@ class ProductProduct(models.Model):
                 'tax_ids': dic.get('taxes_id', []),
             }
             res.append(formated)
-        return res
+
+        init = offset + 1
+        end = init + 99
+        result_str = "%s - %s / %s" % (init, end, len(self.search(domain)))
+        result = {
+            'result_str': result_str,
+            'products': res
+        }
+        return result
 
     @api.model
     def _get_onchange_vals(self, product, partner_id, pricelist_id):
