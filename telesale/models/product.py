@@ -24,14 +24,8 @@ class ProductProduct(models.Model):
         Get the products as fast as posible, with only id in many to one
         """
         products = self.search(domain)
-        # from time import time
-        # tiempo_inicial = time() 
         res = products.read(field_list, load='_classic_write')
         tiempo_final = time() 
-        # tiempo_ejecucion = tiempo_final - tiempo_inicial
-        # print '************************************************************'
-        # print 'El tiempo de ejecucion fue:',tiempo_ejecucion  # En segundos
-        # print '*************************************************************
         return res
 
     @api.model
