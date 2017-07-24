@@ -25,7 +25,6 @@ class ProductProduct(models.Model):
         """
         products = self.search(domain)
         res = products.read(field_list, load='_classic_write')
-        tiempo_final = time() 
         return res
 
     @api.model
