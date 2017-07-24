@@ -50,18 +50,18 @@ class ProductTemplate(models.Model):
                     values += value_y
                 product = template.product_variant_ids.filtered(
                     lambda x: not(values - x.attribute_value_ids))[:1]
-
-                var_info = variant_dic[product.id]
-                tax_ids = product._ts_compute_taxes(product,
-                                                    var_info['taxes_id'],
-                                                    partner_id)
+                if product:
+                    var_info = variant_dic[product.id]
+                    tax_ids = product._ts_compute_taxes(product,
+                                                        var_info['taxes_id'],
+                                                        partner_id)
                 cell_dic = {
                     'id': product and product.id or 0,
-                    'stock': var_info[stock_field],
-                    'price': var_info['price'],
+                    'stock': product and var_info[stock_field] or 0.0,
+                    'price': product and var_info['price'] or 0.0,
                     'discount': 0.0,
                     'qty': 0.0,
-                    'tax_ids': tax_ids,
+                    'tax_ids': product and tax_ids or [],
                     'enable': True if product else False
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
