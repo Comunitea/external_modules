@@ -66,3 +66,27 @@ class ProductTemplate(models.Model):
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
         return res
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    @api.multi
+    def write(self, vals):
+        """
+        Set template active or archived if all of his variats are of the same
+        state
+        """
+        res = super(ProductProduct, self).write(vals)
+        if 'active' in vals:
+            active = vals['active']
+            for product in self:
+                tmpl = product.product_tmpl_id
+                domain = [('active', '=', not active),
+                          ('product_tmpl_id', '=', tmpl.id)]
+                if not self.search(domain):
+                    #  write query to not launch infinite bucle
+                    self._cr.execute("""
+                        update product_template set active = %s where id = %s
+                        """ % (active, tmpl.id))
+        return res
