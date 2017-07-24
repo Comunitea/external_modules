@@ -4,6 +4,7 @@
 from odoo import models, fields, api
 import time
 from datetime import date, timedelta
+# import odoo.addons.decimal_precision as dp
 
 
 class SaleOrder(models.Model):
@@ -138,6 +139,10 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
+    # Because of performance options:
+    standard_price = fields.Float('Intercompany Price',
+                                  related='product_id.standard_price')
+
     @api.model
     def ts_product_id_change(self, product_id, partner_id, pricelist_id):
         res = {}
@@ -155,7 +160,8 @@ class SaleOrderLine(models.Model):
             'price_unit': line.price_unit,
             'product_uom': line.product_uom.id,
             'product_uom_qty': line.product_uom_qty,
-            'tax_id': [x.id for x in line.tax_id]
+            'tax_id': [x.id for x in line.tax_id],
+            'standard_price': line.product_id.standard_price
 
         })
         return res
