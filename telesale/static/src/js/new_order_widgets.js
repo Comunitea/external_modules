@@ -192,37 +192,6 @@ var DataOrderWidget = TsBaseWidget.extend({
             }
         }
     },
-    load_order_from_server: function(order_id){
-        var self=this;
-        this.open_order =  this.ts_model.get('selectedOrder')
-        var loaded = self.ts_model.fetch('sale.order',
-                                        ['partner_shipping_id','note','comercial','client_order_ref','name','partner_id',
-                                         'date_order','state','amount_total','date_invoice', 'requested_date', 'pricelist_id', 'observations'],
-                                        [
-                                            ['id', '=', order_id]
-                                        ])
-            .then(function(orders){
-                var order = orders[0];
-                self.order_fetch = order;
-                return self.ts_model.fetch('sale.order.line',
-                                            ['product_id','product_uom',
-                                            'product_uom_qty',
-                                            'product_uos',
-                                            'product_uos_qty',
-                                            'price_udv','price_unit',
-                                            'price_subtotal','tax_id',
-                                            'pvp_ref','current_pvp',
-                                            'q_note', 'detail_note',
-                                            'discount', 'tourism'],
-                                            [
-                                                ['order_id', '=', order_id],
-                                             ]);
-            }).then(function(order_lines){
-                    self.ts_model.build_order(self.order_fetch, self.open_order, order_lines); //build de order model
-                    self.ts_widget.new_order_screen.data_order_widget.refresh();
-            })
-        return loaded
-    },
     refresh: function(){
         this.renderElement();
     },
@@ -354,21 +323,6 @@ var OrderlineWidget = TsBaseWidget.extend({
             }
         }
     },
-    update_stock_product: function(product_id){
-        var self=this;
-        var domain = [['id', '=', product_id]]
-        var loaded = self.ts_model.fetch('product.product',
-                                        ['display_name','product_class','standard_price','default_code','uom_id', 'log_base_id', 'log_base_discount', 'log_unit_discount','log_box_discount', 'log_unit_id', 'log_box_id', 'base_use_sale', 'unit_use_sale', 'box_use_sale','virtual_stock_conservative','taxes_id', 'weight', 'kg_un', 'un_ca', 'ca_ma', 'ma_pa', 'max_discount', 'category_max_discount', 'product_tmpl_id','products_substitute_ids'],
-                                        domain
-                                        )
-            .then(function(products){
-                // TODO ESTO NO MOLA, MEJORAR, COMENTE LO DE ABAJO
-                // self.ts_model.db.add_products(products);
-                // TODO FALTA REPETIR LO MISMO QUE EN EL MODELS???
-            })
-        return loaded
-    },
-
     // OVERWRITED IN JIM TELESALE
     call_product_id_change: function(product_id, add_qty){
         var self = this;
@@ -390,6 +344,7 @@ var OrderlineWidget = TsBaseWidget.extend({
             self.model.set('unit', self.model.ts_model.db.unit_by_id[result.product_uom].name);
             self.model.set('qty', add_qty);
             self.model.set('discount', 0.0);
+            self.model.set('standard_price', result.standard_price || 0.0);
             self.model.set('pvp', self.ts_model.my_round( result.price_unit));
            
             var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
@@ -681,7 +636,7 @@ var OrderWidget = TsBaseWidget.extend({
         get_line_fields: function(){
         // Called when load the order lines from server
             var line_fields = ['product_id','product_uom','product_uom_qty','price_unit',
-                               'tax_id', 'price_subtotal', 'discount'];
+                               'tax_id', 'price_subtotal', 'discount', 'standard_price'];
             return line_fields;
 
         },
@@ -971,16 +926,13 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             this.sum_cost = 0;
 
             (this.currentOrderLines).each(_.bind( function(line) {
-                var product_id = self.ts_model.db.product_name_id[line.get('product')]
-                if (product_id){
-                    var product_obj = self.ts_model.db.get_product_by_id(product_id)
-                      self.sum_cost += product_obj.standard_price * line.get('qty');
-                      self.discount += line.get('qty') * line.get('pvp') * (line.get('discount') / 100)
-                      var price_disc = line.get('pvp') * (1 - (line.get('discount') / 100))
-                      self.margin += (price_disc -  product_obj.standard_price) * line.get('qty');
-                      self.base += line.get_price_without_tax('total');
-                      self.iva += line.get_tax();
-                }
+                self.sum_cost += line.get('standard_price') * line.get('qty');
+                self.discount += line.get('qty') * line.get('pvp') * (line.get('discount') / 100)
+                var price_disc = line.get('pvp') * (1 - (line.get('discount') / 100))
+                self.margin += (price_disc -  line.get('standard_price')) * line.get('qty');
+                self.base += line.get_price_without_tax('total');
+                self.iva += line.get_tax();
+
             }, this));
             self.total += self.ts_model.my_round(self.base, 2) + self.ts_model.my_round(self.iva, 2);
             self.base = self.ts_model.my_round(self.base, 2);

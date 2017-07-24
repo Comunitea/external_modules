@@ -309,6 +309,7 @@ var TsModel = Backbone.Model.extend({
             total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
             discount: my_round(line.discount, 2) || 0.0,
             taxes_ids: line.tax_id || [],
+            standard_price: line.standard_price || 0.0
         }
         return vals
     },
@@ -538,6 +539,7 @@ var Orderline = Backbone.Model.extend({
             margin: options.margin || 0,
             taxes_ids:  options.taxes_ids || [],
             discount:  options.discount ||0.0,
+            standard_price: options.standard_price || 0.0
         }),
         this.ts_model = options.ts_model;
         this.order = options.order;
@@ -835,7 +837,6 @@ var Order = Backbone.Model.extend({
                       if (!order_lines){
                         order_lines = []
                       }
-                        // self.add_lines_to_current_order(order_lines);
                       if(period == 'year'){
                           self.ts_model.db.cache_sold_lines[client_id] = order_lines;
                       }
@@ -875,6 +876,7 @@ var Order = Backbone.Model.extend({
                              total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
                              discount: my_round( line.discount || 0.0, 2 ),
                              taxes_ids: line.tax_id || [],
+                             standard_price: line.standard_price || 0.0
                             }
             var line = new Orderline(line_vals);
             this.get('orderLines').add(line);
