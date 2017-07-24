@@ -52,13 +52,16 @@ class ProductTemplate(models.Model):
                     lambda x: not(values - x.attribute_value_ids))[:1]
 
                 var_info = variant_dic[product.id]
+                tax_ids = product._ts_compute_taxes(product,
+                                                    var_info['taxes_id'],
+                                                    partner_id)
                 cell_dic = {
                     'id': product and product.id or 0,
                     'stock': var_info[stock_field],
                     'price': var_info['price'],
                     'discount': 0.0,
                     'qty': 0.0,
-                    'tax_ids': var_info['taxes_id'],
+                    'tax_ids': tax_ids,
                     'enable': True if product else False
                 }
                 res['str_table'][value_x.id][value_y.id] = cell_dic
