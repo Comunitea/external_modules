@@ -998,22 +998,61 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                 this.ts_model.cancel_order(currentOrder.get('erp_id'));
             }
         },
-        printCurrentOrder: function() {
-            var currentOrder = this.order_model;
-            if (!currentOrder.get('erp_id')){
-                alert(_t("You must save the order in the server in order to print it"));
-                return;
-            }
-            this.do_action({
-                 context: {'active_ids': [currentOrder.get('erp_id')]},
-                 data: null,
-                 name: 'Quotation / Order',
-                 report_file: 'sale.report_saleorder',
-                 report_name: 'sale.report_saleorder',
-                 report_type: 'qweb-pdf',
-                 type: 'ir.actions.report.xml'
+        button_promo: function(){
+           var self = this;
+           var current_order = this.ts_model.get('selectedOrder')
+           current_order.set('set_promotion', true)
+           this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
+           $.when( self.ts_model.ready2 )
+           .done(function(){
+           var loaded = self.ts_model.fetch('sale.order',
+                                           ['id', 'name'],
+                                           [
+                                               ['chanel', '=', 'telesale']
+                                           ])
+               .then(function(orders){
+                   if (orders[0]) {
+                   var my_id = orders[0].id
+                   $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
+                   .done(function(){
+                   });
+
+                 }
+               });
             });
-            // new Model('sale.order').call('print_order_from_ui',[currentOrder.get('erp_id')])
+            
+        },
+        printCurrentOrder: function() {
+            var self = this;
+            var current_order = this.ts_model.get('selectedOrder')
+            this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
+            $.when( self.ts_model.ready2 )
+            .done(function(){
+            var loaded = self.ts_model.fetch('sale.order',
+                                           ['id', 'name'],
+                                           [
+                                               ['chanel', '=', 'telesale']
+                                           ])
+               .then(function(orders){
+                   if (orders[0]) {
+                   var my_id = orders[0].id
+                   $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
+                   .done(function(){
+                        var currentOrder = self.ts_model.get('selectedOrder')
+                        self.do_action({
+                             context: {'active_ids': [currentOrder.get('erp_id')]},
+                             data: null,
+                             name: 'Quotation / Order',
+                             report_file: 'sale.report_saleorder',
+                             report_name: 'sale.report_saleorder',
+                             report_type: 'qweb-pdf',
+                             type: 'ir.actions.report.xml'
+                        });
+                   });
+
+                 }
+               });
+            });
         },
         saveCurrentOrder: function() {
             var currentOrder = this.order_model;
