@@ -93,6 +93,18 @@ class ProductProduct(models.Model):
         return 'qty_available'
 
     @api.model
+    def _ts_compute_taxes(self, product_id, tax_ids, partner_id):
+        res = tax_ids
+        if partner_id and tax_ids:
+            partner = self.env['res.partner'].browse(partner_id)
+            product = self.env['product.product'].browse(product_id)
+            fpos = partner.property_account_position_id
+            if fpos:
+                taxes = self.env['account.tax'].browse(tax_ids)
+                res = fpos.map_tax(taxes, product, partner).ids
+        return res
+
+    @api.model
     def ts_search_products(self, product_name, partner_id, pricelist_id,
                            offset=0):
         res = []
@@ -105,6 +117,8 @@ class ProductProduct(models.Model):
         read = self.with_context(ctx).search_read(domain, fields, limit=100,
                                                   offset=offset)
         for dic in read:
+            tax_ids = self._ts_compute_taxes(dic['id'], dic.get('taxes_id', []),
+                                          partner_id)
             formated = {
                 'id': dic['id'],
                 'display_name': dic.get('display_name', 0.0),
@@ -113,7 +127,7 @@ class ProductProduct(models.Model):
                 'price': dic.get('price', 0.0),
                 'discount': 0.0,
                 'qty': 0.0,
-                'tax_ids': dic.get('taxes_id', []),
+                'tax_ids': tax_ids,
             }
             res.append(formated)
 
