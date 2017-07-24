@@ -53,6 +53,7 @@ TsModels.TsModel = TsModels.TsModel.extend({
                 pvp: 0.0,
                 discount: 0.0,
                 taxes_ids:[],
+                standard_price: 0.0
             }
         }
         else{
