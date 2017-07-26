@@ -4,7 +4,7 @@
 {
     "name": "Attachments to disk",
     "description": """
-       Product Cost Management.
+       Move attachments to disk.
         """,
     "version": "1.0",
     "author": "Comunitea",
