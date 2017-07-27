@@ -37,17 +37,15 @@ class ProductTag(models.Model):
 
     @api.multi
     def name_get(self):
-        """ Return the tags' display name, including their direct parent. """
-        res = {}
-        for record in self:
-            current = record
-            name = current.name
-            while current.parent_id:
-                name = '%s / %s' % (current.parent_id.name, name)
+        res = []
+        for tag in self:
+            names = []
+            current = tag
+            while current:
+                names.append(current.name)
                 current = current.parent_id
-            res[record.id] = name
-
-        return res.items()
+            res.append((tag.id, u' / '.join(reversed(names))))
+        return res
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
@@ -56,8 +54,7 @@ class ProductTag(models.Model):
             # Be sure name_search is symetric to name_get
             name = name.split(' / ')[-1]
             args = [('name', operator, name)] + args
-        tags = self.search(args, limit=limit)
-        return tags.name_get()
+        return self.search(args, limit=limit).name_get()
 
 
 class ProductTemplate(models.Model):
