@@ -78,7 +78,8 @@ var DataOrderWidget = TsBaseWidget.extend({
         var self = this;
         this.order_model = this.ts_model.get('selectedOrder');
         this._super();
-        this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
+        this.$('#partner').unbind();
+        this.$('#partner').change(_.bind(this.set_value, this, 'partner'))
         this.$('#shipp_addr').blur(_.bind(this.set_value, this, 'shipp_addr'))
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
         this.$('#requested_date').blur(_.bind(this.set_value, this, 'requested_date'))
