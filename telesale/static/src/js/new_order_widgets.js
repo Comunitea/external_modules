@@ -44,13 +44,13 @@ var OrderButtonWidget = TsBaseWidget.extend({
         });
     },
     setButtonSelected: function() {
-
-        /*TODO NO SE PONE EL COLOR BIEN, YA QUE COJE UNA LISTA Y NO EL BOTON*/
         var identify = 'button#' + this.bo_id
         $('.select-order').removeClass('selected-order');
         $(identify).addClass('selected-order');
-        $('.tab1').focus();
-        if($('#partner').val()){
+        // $('.tab1').focus();
+        var value = $('#partner').val()
+        var partner_id = this.ts_model.db.partner_name_id[value];
+        if(partner_id){
             $('#vua-button').click();
         }
     },
@@ -78,8 +78,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         var self = this;
         this.order_model = this.ts_model.get('selectedOrder');
         this._super();
-        this.$('#partner').unbind();
-        this.$('#partner').change(_.bind(this.set_value, this, 'partner'))
+        this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
         this.$('#shipp_addr').blur(_.bind(this.set_value, this, 'shipp_addr'))
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
         this.$('#requested_date').blur(_.bind(this.set_value, this, 'requested_date'))
