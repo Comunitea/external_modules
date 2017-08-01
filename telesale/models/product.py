@@ -101,7 +101,7 @@ class ProductProduct(models.Model):
     def ts_search_products(self, product_name, partner_id, pricelist_id,
                            offset=0):
         res = []
-        domain = [('name', 'ilike', product_name)]
+        domain = [('display_name', 'ilike', product_name)]
         stock_field = self._get_stock_field()
         fields = ['id', 'display_name', 'default_code', stock_field, 'price',
                   'taxes_id']
