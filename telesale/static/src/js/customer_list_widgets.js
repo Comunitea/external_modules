@@ -142,18 +142,11 @@ var CustomerListWidget = TsBaseWidget.extend({
         var self = this;
         var order = this.ts_model.get_order();
         if( this.has_client_changed() ){
-            // if ( this.new_client ) {
-            //     order.fiscal_position = _.find(this.pos.fiscal_positions, function (fp) {
-            //         return fp.id === self.new_client.property_account_position_id[0];
-            //     });
-            // } else {
-            //     order.fiscal_position = undefined;
-            // }
-
-            // order.set_client(this.new_client);
-            // $('#partner').blur();
-            // self.ts_widget.new_order_screen.data_order_widget.refresh();
-            $('#partner').val(this.new_client.name + ' | ' + this.new_client.ref);
+            var cus_name = this.new_client.display_name
+            if (this.new_client.ref){
+                cus_name += ' | ' + this.new_client.ref
+            }
+            $('#partner').val(cus_name);
             $('button#button_no').click();
         }
     },
@@ -161,18 +154,11 @@ var CustomerListWidget = TsBaseWidget.extend({
         var self = this;
         var order = this.ts_model.get_order();
         if( this.has_client_changed() ){
-            // if ( this.new_client ) {
-            //     order.fiscal_position = _.find(this.pos.fiscal_positions, function (fp) {
-            //         return fp.id === self.new_client.property_account_position_id[0];
-            //     });
-            // } else {
-            //     order.fiscal_position = undefined;
-            // }
-
-            // order.set_client(this.new_client);
-            // $('#partner').blur();
-            // self.ts_widget.new_order_screen.data_order_widget.refresh();
-            $('#shipp_addr').val(this.new_client.name + ' | ' + this.new_client.ref);
+            var cus_name = this.new_client.display_name
+            if (this.new_client.ref){
+                cus_name += ' | ' + this.new_client.ref
+            }
+            $('#shipp_addr').val(cus_name);
             $('button#button_no').click();
             $('#shipp_addr').focus();
         }
