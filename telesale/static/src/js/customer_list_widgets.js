@@ -142,10 +142,7 @@ var CustomerListWidget = TsBaseWidget.extend({
         var self = this;
         var order = this.ts_model.get_order();
         if( this.has_client_changed() ){
-            var cus_name = this.new_client.display_name
-            if (this.new_client.ref){
-                cus_name += ' | ' + this.new_client.ref
-            }
+            var cus_name = self.ts_model.getComplexName(this.new_client);
             $('#partner').val(cus_name);
             $('button#button_no').click();
         }
@@ -154,10 +151,7 @@ var CustomerListWidget = TsBaseWidget.extend({
         var self = this;
         var order = this.ts_model.get_order();
         if( this.has_client_changed() ){
-            var cus_name = this.new_client.display_name
-            if (this.new_client.ref){
-                cus_name += ' | ' + this.new_client.ref
-            }
+            var cus_name = self.ts_model.getComplexName(this.new_client);
             $('#shipp_addr').val(cus_name);
             $('button#button_no').click();
             $('#shipp_addr').focus();
@@ -392,7 +386,11 @@ var CustomerListWidget = TsBaseWidget.extend({
                 self.new_client = partner;
                 self.toggle_save_button();
                 self.display_customer_details('show',partner);
-            } else {
+                var customer_name = self.ts_model.getComplexName(partner);
+                self.ts_model.get('customer_names').push(customer_name);
+                self.ts_model.get('customer_codes').push(partner.ref);
+            }
+            else {
                 // should never happen, because create_from_ui must return the id of the partner it
                 // has created, and reload_partner() must have loaded the newly created partner. 
                 self.display_customer_details('hide');

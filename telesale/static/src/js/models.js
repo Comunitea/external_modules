@@ -190,11 +190,6 @@ var TsModel = Backbone.Model.extend({
             .all({'timeout':3000, 'shadow': true})
             .then(function(partners){
                 if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
-                    for (var key in partners){
-                        var customer_name = self.getComplexName(partners[key]);
-                        self.get('customer_names').push(customer_name);
-                        self.get('customer_codes').push(partners[key].ref);
-                    }
                     def.resolve();
                 } else {
                     def.reject();
@@ -925,10 +920,7 @@ var Order = Backbone.Model.extend({
         return partner_obj
     },
     set_client: function(partner){
-        var cus_name = partner.display_name
-        if (partner.ref){
-            cus_name += ' | ' + partner.ref
-        }
+        var cus_name = self.ts_model.getComplexName(partner);
         this.set('partner', cus_name);
     },
 
