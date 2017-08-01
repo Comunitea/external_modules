@@ -120,7 +120,7 @@ TsModels.TsModel = TsModels.TsModel.extend({
 
                     // PARTNERS
                     var partner_fields = self._get_partner_fields();
-                    return self.fetch('res.partner', partner_fields, [['customer', '=', true]])
+                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
                 }).then(function(customers){
                     for (var key in customers){
                         var customer_name = self.getComplexName(customers[key]);
