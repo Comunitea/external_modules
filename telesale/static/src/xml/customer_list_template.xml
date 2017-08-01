@@ -11,7 +11,7 @@
 
     <t t-name="CustomerLine">
         <tr class='client-line' t-att-data-id='partner.id'>
-            <td><t t-esc='partner.name' /></td>
+            <td><t t-esc='partner.display_name' /></td>
             <td><t t-esc='partner.commercial_partner_name' /></td>
             <td><t t-esc='partner.street' /></td>
             <td><t t-esc='partner.zip and partner.zip or ""' /></td>
@@ -25,7 +25,7 @@
     <!-- VIEW DETAILS -->
     <t t-name="CustomerDetails">
         <section class='client-details'>
-            <div class='client-name'><t t-esc='partner.name' /></div>
+            <div class='client-name'><t t-esc='partner.display_name' /></div>
             <div class='edit-buttons'>
                 <div class='button edit'><i class='fa fa-pencil-square' /></div>
             </div>
@@ -114,7 +114,7 @@
                 </t> -->
 <!--                 <input type='file' class='image-uploader'></input>   
  -->            </div>
-            <input class='detail client-name' name='name' t-att-value='partner.name' placeholder='Name'></input>
+            <input class='detail client-name' name='name' t-att-value='partner.display_name' placeholder='Name'></input>
             <div class='edit-buttons'>
                 <div class='button undo'><i class='fa fa-undo' /></div>
                 <div class='button save'><i class='fa fa-floppy-o' /></div>

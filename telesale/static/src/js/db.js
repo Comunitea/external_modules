@@ -170,16 +170,7 @@ exports.TS_LS = core.Class.extend({
         return undefined;
     },
     _partner_search_string: function(partner){
-        var str = partner.name;
-        // if (partner.ref){
-        //     str += '|' + partner.ref;
-        // }
-        // if(partner.address){
-        //     str += '|' + partner.adress;
-        // }
-         // if (partner.ref){
-        //     str += '|' + partner.ref;
-        // }
+        var str = partner.display_name;
         if(partner.commercial_partner_name){
             str += '|' + partner.commercial_partner_name;
         }
@@ -204,23 +195,6 @@ exports.TS_LS = core.Class.extend({
         str = '' + partner.id + ':' + str.replace(':','') + '\n';
         return str
     },
-    // add_partners: function(partners){
-    //     if(!partners instanceof Array){
-    //         partners = [partners];
-    //     }
-    //     for(var i = 0, len = partners.length; i < len; i++){
-    //         var partner = partners[i];
-
-    //         this.partner_by_id[partner.id] = partner;
-    //         var cus_name = partner.name + ' | ' + partner.ref
-    //         this.partner_name_id[cus_name] = partner.id;
-    //         if(partner.ref){
-    //             this.partner_ref_id[partner.ref] = partner.id;
-    //         }
-    //         var search_string = this._partner_search_string(partner);
-    //         this.partner_search_string += search_string
-    //     }
-    // },
     get_partners_stored: function(max_count){
         max_count = max_count ? Math.min(this.partner_sorted.length, max_count) : this.partner_sorted.length;
         var partners = [];
@@ -276,7 +250,10 @@ exports.TS_LS = core.Class.extend({
             updated_count += 1;
 
             // TODO IMPROVE como obtener el id del partner, partner_name_id no es lo mejor
-            var cus_name = partner.name + ' | ' + partner.ref
+            var cus_name = partner.display_name
+            if (partner.ref){
+                cus_name += ' | ' + partner.ref
+            }
             this.partner_name_id[cus_name] = partner.id;
             if(partner.ref){
                 this.partner_ref_id[partner.ref] = partner.id;

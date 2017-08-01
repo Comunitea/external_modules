@@ -90,14 +90,12 @@ var DataOrderWidget = TsBaseWidget.extend({
         var array_names = self.ts_model.get('customer_names');
         // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
-            // source: this.ts_model.get('customer_names'),
             source: function(request, response) {
                 var results = $.ui.autocomplete.filter(array_names, request.term);
                 response(results.slice(0, 20));
             }
         });
         this.$('#shipp_addr').autocomplete({
-            // source: this.ts_model.get('customer_names'),
             source: function(request, response) {
                 var results = $.ui.autocomplete.filter(array_names, request.term);
                 response(results.slice(0, 20));
@@ -108,7 +106,6 @@ var DataOrderWidget = TsBaseWidget.extend({
         var pricelist_names = self.ts_model.get('pricelist_names');
         // Autocomplete products and units from array of names
         this.$('#pricelist').autocomplete({
-            // source: this.ts_model.get('customer_names'),
             source: function(request, response) {
                 var results = $.ui.autocomplete.filter(pricelist_names, request.term);
                 response(results.slice(0, 20));
