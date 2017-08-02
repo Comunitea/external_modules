@@ -74,6 +74,25 @@ var DomCache = core.Class.extend({
     },
 });
 
+// var CustomerDetailsEdit = TsBaseWidget.extend({
+//     template:'CustomerDetailsEdit',
+
+//     renderElement: function(){
+//         this._super();
+//         var self=this;
+//         debugger;
+//         // Pricelist autocomplete
+//         // Autocomplete states from array of names
+//         var state_names = self.ts_model.get('state_names');
+//         this.$('#state').autocomplete({
+//             source: function(request, response) {
+//                 var results = $.ui.autocomplete.filter(state_names, request.term);
+//                 response(results.slice(0, 20));
+//             }
+//         });
+//     },
+// });
+
 var CustomerListWidget = TsBaseWidget.extend({
     template:'CustomerListWidget',
     init: function(parent, options){
@@ -134,6 +153,17 @@ var CustomerListWidget = TsBaseWidget.extend({
         // Clear search
         this.$('.searchbox .search-clear').click(function(){
             self.clear_search();
+        });
+
+
+        // Pricelist autocomplete
+        var state_names = self.ts_model.get('state_names');
+        // Autocomplete states from array of names
+        this.$('#state').autocomplete({
+            source: function(request, response) {
+                var results = $.ui.autocomplete.filter(state_names, request.term);
+                response(results.slice(0, 20));
+            }
         });
 
 
@@ -281,6 +311,31 @@ var CustomerListWidget = TsBaseWidget.extend({
             this.editing_client = true;
             contents.empty();
             contents.append($(QWeb.render('CustomerDetailsEdit',{widget:this,partner:partner})));
+            // Autocomplete states from array of names
+            var state_names = self.ts_model.get('state_names');
+            contents.find('#state').autocomplete({
+                source: function(request, response) {
+                    var results = $.ui.autocomplete.filter(state_names, request.term);
+                    response(results.slice(0, 20));
+                }
+            });
+            // Pricelist autocomplete
+            var pricelist_names = self.ts_model.get('pricelist_names');
+            contents.find('#pricelist').autocomplete({
+                source: function(request, response) {
+                    var results = $.ui.autocomplete.filter(pricelist_names, request.term);
+                    response(results.slice(0, 20));
+                }
+            });
+
+            // Countries autocomplete
+            var country_names = self.ts_model.get('country_names');
+            contents.find('#country').autocomplete({
+                source: function(request, response) {
+                    var results = $.ui.autocomplete.filter(country_names, request.term);
+                    response(results.slice(0, 20));
+                }
+            });
             this.toggle_save_button();
 
             // Browsers attempt to scroll invisible input elements
@@ -351,6 +406,25 @@ var CustomerListWidget = TsBaseWidget.extend({
         this.$('.client-details-contents .detail').each(function(idx,el){
             fields[el.name] = el.value || false;
         });
+        var company_type = this.$('.company_type').val();
+        var is_company = company_type == 'company' ? true : false
+        fields['is_company'] = is_company
+
+        fields['property_product_pricelist'] = false
+        fields['state_id'] = false
+        fields['country_id'] = false
+        var pricelist_id = self.ts_model.db.pricelist_name_id[this.$('#pricelist').val()];
+        if (pricelist_id){
+            fields['property_product_pricelist'] = pricelist_id
+        }
+        var state_id = self.ts_model.db.state_name_id[this.$('#state').val()];
+        if (state_id){
+            fields['state_id'] = state_id
+        }
+        var country_id = self.ts_model.db.country_name_id[this.$('#country').val()];
+        if (country_id){
+            fields['country_id'] = country_id
+        }
 
         if (!fields.name) {
             // this.gui.show_popup('error',_t('A Customer Name Is Required'));
@@ -364,7 +438,6 @@ var CustomerListWidget = TsBaseWidget.extend({
 
         fields.id           = partner.id || false;
         // fields.country_id   = fields.country_id || false;
-
         new Model('res.partner').call('update_partner_from_ui',[fields]).then(function(partner_id){
             self.saved_client_details(partner_id);
         },function(err,event){

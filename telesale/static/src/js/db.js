@@ -46,6 +46,14 @@ exports.TS_LS = core.Class.extend({
         //PRICELISTS
         this.pricelist_by_id = {};
         this.pricelist_name_id = {};
+
+        //STATES
+        this.state_by_id = {};
+        this.state_name_id = {};
+
+        //COUNTRIES
+        this.country_by_id = {};
+        this.country_name_id = {};
       
         this.cache_sold_lines = {};
     },
@@ -112,6 +120,28 @@ exports.TS_LS = core.Class.extend({
 
             this.pricelist_by_id[pricelist.id] = pricelist;
             this.pricelist_name_id[pricelist.name] = pricelist.id;
+        }
+    },
+    add_states: function(states){
+        if(!states instanceof Array){
+            states = [states];
+        }
+        for(var i = 0, len = states.length; i < len; i++){
+            var state = states[i];
+
+            this.state_by_id[state.id] = state;
+            this.state_name_id[state.name] = state.id;
+        }
+    },
+    add_countries: function(contries){
+        if(!contries instanceof Array){
+            contries = [contries];
+        }
+        for(var i = 0, len = contries.length; i < len; i++){
+            var country = contries[i];
+
+            this.country_by_id[country.id] = country;
+            this.country_name_id[country.name] = country.id;
         }
     },
     add_taxes: function(taxes){
