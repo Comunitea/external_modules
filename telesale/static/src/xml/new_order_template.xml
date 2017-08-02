@@ -149,7 +149,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xs-4 fullheight">
+                <div id="inherit_me" class="col-xs-4 fullheight">
                   <div class="row semiheight">
                     <div class="col-xs-12 fullheight">
                       <div class="fullheight centerinside fullwidth">
