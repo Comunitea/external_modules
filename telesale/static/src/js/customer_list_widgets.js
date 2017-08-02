@@ -74,25 +74,6 @@ var DomCache = core.Class.extend({
     },
 });
 
-// var CustomerDetailsEdit = TsBaseWidget.extend({
-//     template:'CustomerDetailsEdit',
-
-//     renderElement: function(){
-//         this._super();
-//         var self=this;
-//         debugger;
-//         // Pricelist autocomplete
-//         // Autocomplete states from array of names
-//         var state_names = self.ts_model.get('state_names');
-//         this.$('#state').autocomplete({
-//             source: function(request, response) {
-//                 var results = $.ui.autocomplete.filter(state_names, request.term);
-//                 response(results.slice(0, 20));
-//             }
-//         });
-//     },
-// });
-
 var CustomerListWidget = TsBaseWidget.extend({
     template:'CustomerListWidget',
     init: function(parent, options){
