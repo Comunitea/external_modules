@@ -50,6 +50,8 @@ var TsModel = Backbone.Model.extend({
            
             'customer_names':            [], // Array of customer names
             'pricelist_names':            [], // Pricelist names
+            'country_names':            [], // Country names
+            'state_names':            [], // State names
             'customer_codes':         [], // Array of customer refs
 
             'pricelist':              null,
@@ -85,7 +87,7 @@ var TsModel = Backbone.Model.extend({
         return  ['display_name', 'default_code', 'uom_id']
     },
     _get_partner_fields: function(){
-        return  ['display_name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city']
+        return  ['country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type']
     },
     // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
     // OVERWRITED IN MODULE TELESALE MANAGE VARIANTS because dificult to inherit because of the deferred return
@@ -146,7 +148,6 @@ var TsModel = Backbone.Model.extend({
                         self.get('customer_names').push(customer_name);
                         self.get('customer_codes').push(customers[key].ref);
                     }
-                    console.log(customers);
                     self.db.add_partners(customers);
 
                     // TAXES
@@ -173,7 +174,23 @@ var TsModel = Backbone.Model.extend({
                         self.get('pricelist_names').push(pricelist_name);
                     }
                     self.db.add_pricelist(pricelists);
-                });
+
+                    //STATES
+                    return self.fetch('res.country.state', ['name']);
+                }).then(function(states) {
+                    for (var key in states){
+                        var state_name = states[key].name;
+                        self.get('state_names').push(state_name);
+                    }
+                    self.db.add_states(states);
+                    return self.fetch('res.country', ['name']);
+                }).then(function(countries) {
+                    for (var key in countries){
+                        var country_name = countries[key].name;
+                        self.get('country_names').push(country_name);
+                    }
+                    self.db.add_countries(countries);
+                })
         return loaded;
     },
     load_new_partners: function(){
@@ -277,7 +294,6 @@ var TsModel = Backbone.Model.extend({
         var self = this;
         var last_id = self.db.load('last_order_id',0);
         var order = {id: last_id + 1, data: record};
-        console.log(order)
         self.set('nbr_pending_operations',orders.length);
         if(!order){
             return;

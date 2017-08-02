@@ -11,7 +11,7 @@
 
     <t t-name="CustomerLine">
         <tr class='client-line' t-att-data-id='partner.id'>
-            <td><t t-esc='partner.display_name' /></td>
+            <td><t t-esc='partner.name' /></td>
             <td><t t-esc='partner.commercial_partner_name' /></td>
             <td><t t-esc='partner.street' /></td>
             <td><t t-esc='partner.zip and partner.zip or ""' /></td>
@@ -25,12 +25,30 @@
     <!-- VIEW DETAILS -->
     <t t-name="CustomerDetails">
         <section class='client-details'>
-            <div class='client-name'><t t-esc='partner.display_name' /></div>
+            <div class='client-name'><t t-esc='partner.name' /></div>
             <div class='edit-buttons'>
                 <div class='button edit'><i class='fa fa-pencil-square' /></div>
             </div>
             <div class='client-details-box clearfix'>
                 <div class='client-details-left'>
+                    <div class='client-detail'>
+                        <span class='label'>Type</span>
+                        <t t-if="partner.company_type == 'person'">
+                            <span class='detail company_type'>Individual</span>
+                        </t>
+                         <t t-if="partner.company_type == 'company'">
+                            <span class='detail company_type'>Company</span>
+                        </t>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Reference</span>
+                        <t t-if='partner.ref'>
+                            <span class='detail ref'><t t-esc='partner.ref'/></span>
+                        </t>
+                        <t t-if='!partner.ref'>
+                            <span class='detail ref empty'>N/A</span>
+                        </t>
+                    </div>
                     <div class='client-detail'>
                         <span class='label'>Address</span>
                         <t t-if='partner.address'>
@@ -38,6 +56,37 @@
                         </t>
                         <t t-if='!partner.address'>
                             <span class='detail client-address empty'>N/A</span>
+                        </t>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Country</span>
+                        <t t-if='partner.country_id'>
+                            <span class='detail client-country'><t t-esc='partner.country_id[1]'/></span>
+                        </t>
+                        <t t-if='!partner.state_id'>
+                            <span class='detail client-country empty'>N/A</span>
+                        </t>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Province</span>
+                        <t t-if='partner.state_id'>
+                            <span class='detail client-state'><t t-esc='partner.state_id[1]'/></span>
+                        </t>
+                        <t t-if='!partner.state_id'>
+                            <span class='detail client-state empty'>N/A</span>
+                        </t>
+                    </div>
+                    
+                </div>
+                
+                <div class='client-details-right'>
+                    <div class='client-detail'>
+                        <span class='label'>Comercial name</span>
+                        <t t-if='partner.comercial'>
+                            <span class='detail client-comercial'><t t-esc='partner.comercial' /></span>
+                        </t>
+                        <t t-if='!partner.comercial'>
+                            <span class='detail client-comercial'>N/A</span>
                         </t>
                     </div>
                     <div class='client-detail'>
@@ -68,36 +117,6 @@
                         </t>
                     </div>
                 </div>
-                <div class='client-details-right'>
-                    <div class='client-detail'>
-                        <span class='label'>Province</span>
-                        <t t-if='partner.state_id'>
-                            <span class='detail client-id'><t t-esc='partner.state_id[1]'/></span>
-                        </t>
-                        <t t-if='!partner.state_id'>
-                            <span class='detail client-id empty'>N/A</span>
-                        </t>
-                    </div>
-      <!--               <div class='client-detail'>
-                        <span class='label'>NIF</span>
-                        <t t-if='partner.vat'>
-                            <span class='detail vat'><t t-esc='partner.vat'/></span>
-                        </t>
-                        <t t-if='!partner.vat'>
-                            <span class='detail vat empty'>N/A</span>
-                        </t>
-                    </div> -->
-                    <div class='client-detail'>
-                        <span class='label'>Reference</span>
-                        <t t-if='partner.ref'>
-                            <span class='detail ref'><t t-esc='partner.ref'/></span>
-                        </t>
-                        <t t-if='!partner.ref'>
-                            <span class='detail ref empty'>N/A</span>
-                        </t>
-                    </div>
-
-                </div>
             </div>
         </section>
     </t>
@@ -109,12 +128,8 @@
                 <t t-if='!partner.id'>
                     <i class='fa fa-camera'></i>
                 </t>
-                <!-- <t t-if='partner.id'>
-                    <img t-att-src='widget.partner_icon_url(partner.id)' />
-                </t> -->
-<!--                 <input type='file' class='image-uploader'></input>   
- -->            </div>
-            <input class='detail client-name' name='name' t-att-value='partner.display_name' placeholder='Name'></input>
+            </div>
+            <input class='detail client-name' name='name' t-att-value='partner.name' placeholder='Name'></input>
             <div class='edit-buttons'>
                 <div class='button undo'><i class='fa fa-undo' /></div>
                 <div class='button save'><i class='fa fa-floppy-o' /></div>
@@ -122,30 +137,42 @@
             <div class='client-details-box clearfix'>
                 <div class='client-details-left'>
                     <div class='client-detail'>
-                        <span class='label'>Street</span>
-                        <input class='detail client-address-street' name='street'       t-att-value='partner.street || ""' placeholder='Street'></input>
+                        <span class='label'>Type</span>
+                        <select style="display:inline;" class="company_type" name="type_select">
+                              <option value="person">Individual</option> 
+                              <option value="company" selected="1">Company</option>
+                        </select>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Reference: </span>
+                        <input class='detail ref'           name='ref'     t-att-value='partner.ref || ""'></input>
                     </div>
                     <div class='client-detail'>
                         <span class='label'>City</span>
                         <input class='detail client-address-city'   name='city'         t-att-value='partner.city || ""' placeholder='City'></input>
                     </div>
                     <div class='client-detail'>
+                        <span class='label'>Country</span>
+                        <input id="country" class='detail client-country'   name='country_id'         t-att-value='partner.country_id ? partner.country_id[1] : ""' placeholder='Country'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Province</span>
+                        <input id="state" class='detail client-state'   name='state_id'         t-att-value='partner.state_id ? partner.state_id[1] : ""' placeholder='Province'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Street</span>
+                        <input class='detail client-address-street' name='street'       t-att-value='partner.street || ""' placeholder='Street'></input>
+                    </div>
+                </div>
+                <div class='client-details-right'>
+                    <div class='client-detail'>
+                        <span class='label'>Comercial name</span>
+                        <input class='detail client-comercial' name='comercial'       t-att-value='partner.comercial || ""' placeholder='Comercial name'></input>
+                    </div>
+                     <div class='client-detail'>
                         <span class='label'>Postcode</span>
                         <input class='detail client-address-zip'    name='zip'          t-att-value='partner.zip || ""' placeholder='ZIP'></input>
                     </div>
-                   <!--  <div class='client-detail'>
-                        <span class='label'>Country</span>
-                        <select class='detail client-address-country needsclick' name='country_id'>
-                            <option value=''>None</option>
-                            <t t-foreach='widget.pos.countries' t-as='country'>
-                                <option t-att-value='country.id' t-att-selected="partner.country_id ? ((country.id === partner.country_id[0]) ? true : undefined) : undefined"> 
-                                    <t t-esc='country.name'/>
-                                </option>
-                            </t>
-                        </select>
-                    </div> -->
-                </div>
-                <div class='client-details-right'>
                     <div class='client-detail'>
                         <span class='label'>Email</span>
                         <input class='detail client-email'  name='email'    type='email'    t-att-value='partner.email || ""'></input>
@@ -154,18 +181,11 @@
                         <span class='label'>Phone</span>
                         <input class='detail client-phone'  name='phone'    type='tel'      t-att-value='partner.phone || ""'></input>
                     </div>
-                   <!--  <div class='client-detail'>
-                        <span class='label'>Barcode</span>
-                        <input class='detail barcode'       name='barcode'    t-att-value='partner.barcode || ""'></input>
-                    </div> -->
-              <!--       <div class='client-detail'>
-                        <span class='label'>Tax ID</span>
-                        <input class='detail vat'           name='vat'     t-att-value='partner.vat || ""'></input>
-                    </div>   -->    
                     <div class='client-detail'>
-                        <span class='label'>Reference: </span>
-                        <input class='detail ref'           name='ref'     t-att-value='partner.ref || ""'></input>
-                    </div>
+                        <span class='label'>Pricelist</span>
+                        <input id="pricelist" class='detail pricelist'   name='property_product_pricelist'         t-att-value='partner.pricelist_name || ""' placeholder='Pricelist'></input>
+                    </div>  
+                    
                 </div>
             </div>
         </section>
@@ -225,7 +245,7 @@
                                             <th class="cl-street">Address</th>
                                             <th class="cl-zip">Zip</th>
                                             <th class="cl-city">City</th>
-                                            <th class="cl-state">State</th>
+                                            <th class="cl-state">Province</th>
                                             <th class="cl-phone">Phone</th>
                                             <th class="cl-email">Email</th>
 

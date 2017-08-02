@@ -331,8 +331,6 @@ var OrderlineWidget = TsBaseWidget.extend({
         var model = new Model("sale.order.line");
         return model.call("ts_product_id_change", [product_id, customer_id, pricelist_id])
         .then(function(result){
-            console.log("RESULTADO PRODUCT ID CHGANGE")
-            console.log(result);
             var product_obj = self.ts_model.db.get_product_by_id(product_id);
             self.model.set('code', product_obj.default_code || "");
             self.model.set('product', product_obj.display_name || "");
@@ -422,7 +420,6 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.$('.col-'+ focus_key).focus()
     },
     renderElement: function() {
-        console.log('RENDER ORDER_LINE WIDGET');
         this.model.update_line_values();
         var self=this;
         this._super();
@@ -968,7 +965,6 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                                                     ['chanel', '=', 'telesale']
                                                 ])
                     .then(function(orders){
-                       console.log('Entro')
                         if (orders[0]) {
                           // var my_id = orders[0].id
                           (new Model('sale.order')).call('confirm_order_from_ui',[orders[0].id])
@@ -977,7 +973,6 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                                   console.error('Failed confirm order: ',orders[0].name);
                               })
                               .done(function(){
-                                    console.log('Confirmado en segundo plano Yeeeeeah');
                               });
 
                         }
