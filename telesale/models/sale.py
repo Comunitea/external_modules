@@ -18,10 +18,46 @@ class SaleOrder(models.Model):
     observations = fields.Text('Observations')
 
     @api.model
-    def create_order_from_ui(self, orders):
+    def get_head_order_vals(self, order):
         t_partner = self.env['res.partner']
-        t_order = self.env['sale.order']
         t_irvalue = self.env['ir.values']
+        partner_obj = t_partner.browse(order['partner_id'])
+        warehouse_id = False
+        domain = [('name', '=', 'warehouse_id'),
+                  ('model', '=', 'sale.order')]
+        default_value = t_irvalue.search(domain, limit=1)
+        if default_value:
+            warehouse_id = int(default_value.value_unpickle)
+        else:
+            warehouse_id = self._default_warehouse_id() and \
+                self._default_warehouse_id()[0].id or 1
+        # TODO, BUSCAR VALORES POR DEFECTO WAREHOUSE ID SINO PONER EL DE LA
+        # COMPAÑÍA
+        pricelist_id = partner_obj.property_product_pricelist.id
+        if order.get('pricelist_id', False):
+            pricelist_id = order['pricelist_id']
+        res = {
+            # 'name': '/',
+            'partner_id': partner_obj.id,
+            'pricelist_id': pricelist_id,
+            'partner_invoice_id': partner_obj.id,
+            'partner_shipping_id': order.get('partner_shipping_id',
+                                             partner_obj.id),
+            'chanel': 'telesale',
+            # 'order_policy': 'picking',
+            'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
+            'requested_date': order['requested_date'] + " 19:00:00" or
+            False,
+            'note': order['note'],
+            'observations': order['observations'],
+            'warehouse_id': warehouse_id,
+            'client_order_ref': order.get('client_order_ref', False)
+        }
+        return res
+
+    @api.model
+    def create_order_from_ui(self, orders):
+        t_order = self.env['sale.order']
         order_ids = []
         for rec in orders:
             order = rec['data']
@@ -31,38 +67,8 @@ class SaleOrder(models.Model):
             #     self.cancel_sale_to_draft(cr, uid, order['erp_id'], context)
             #     order['erp_state'] = 'draft'
 
-            partner_obj = t_partner.browse(order['partner_id'])
-            warehouse_id = False
-            domain = [('name', '=', 'warehouse_id'),
-                      ('model', '=', 'sale.order')]
-            default_value = t_irvalue.search(domain, limit=1)
-            if default_value:
-                warehouse_id = int(default_value.value_unpickle)
-            else:
-                warehouse_id = self._default_warehouse_id() and \
-                    self._default_warehouse_id()[0].id or 1
-            # TODO, BUSCAR VALORES POR DEFECTO WAREHOUSE ID SINO PONER EL DE LA
-            # COMPAÑÍA
-            pricelist_id = partner_obj.property_product_pricelist.id
-            if order.get('pricelist_id', False):
-                pricelist_id = order['pricelist_id']
-            vals = {
-                # 'name': '/',
-                'partner_id': partner_obj.id,
-                'pricelist_id': pricelist_id,
-                'partner_invoice_id': partner_obj.id,
-                'partner_shipping_id': order.get('partner_shipping_id',
-                                                 partner_obj.id),
-                'chanel': 'telesale',
-                # 'order_policy': 'picking',
-                'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
-                'requested_date': order['requested_date'] + " 19:00:00" or
-                False,
-                'note': order['note'],
-                'observations': order['observations'],
-                'warehouse_id': warehouse_id,
-                'client_order_ref': order.get('client_order_ref', False)
-            }
+            vals = self.get_head_order_vals(order)
+
             if order['erp_id'] and order['erp_state'] == 'draft':
                 order_obj = t_order.browse(order['erp_id'])
                 order_obj.write(vals)
