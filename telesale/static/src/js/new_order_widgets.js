@@ -1048,13 +1048,10 @@ var TotalsOrderWidget = TsBaseWidget.extend({
         saveCurrentOrder: function() {
             var currentOrder = this.order_model;
             currentOrder.set('action_button', 'save')
-            // if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
-            //     alert(_t('You cant save as draft an order which state is diferent than draft.'));
-            // }
-            // else if ( currentOrder.check() ){
-            if ( currentOrder.check() ){
-//                this.ts_model.push_order(currentOrder.exportAsJSON());
-//               NO HACEMOS QUE PASE POR EL FLUJO DE LA BOLITA ROJA, ESTÁ DESABILITADA
+            if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
+                alert(_t('You cant save as draft an order which state is diferent than draft.'));
+            }
+            else if ( currentOrder.check() ){
                 this.ts_model._flush2(currentOrder.exportAsJSON());
             }
         },
