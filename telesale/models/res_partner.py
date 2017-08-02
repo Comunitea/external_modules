@@ -11,7 +11,6 @@ class ResPartner(models.Model):
 
     @api.model
     def update_partner_from_ui(self, partner):
-        import ipdb; ipdb.set_trace()
         partner_id = partner.pop('id', False)
         if partner_id:  # Modifying existing partner
             self.browse(partner_id).write(partner)
