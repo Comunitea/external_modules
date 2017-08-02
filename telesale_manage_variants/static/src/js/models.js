@@ -127,7 +127,6 @@ TsModels.TsModel = TsModels.TsModel.extend({
                         self.get('customer_names').push(customer_name);
                         self.get('customer_codes').push(customers[key].ref);
                     }
-                    console.log(customers);
                     self.db.add_partners(customers);
 
                     // TAXES
@@ -154,11 +153,24 @@ TsModels.TsModel = TsModels.TsModel.extend({
                         self.get('pricelist_names').push(pricelist_name);
                     }
                     self.db.add_pricelist(pricelists);
-
+                    return self.fetch('res.country.state', ['name']);
+                }).then(function(states) {
+                    for (var key in states){
+                        var state_name = states[key].name;
+                        self.get('state_names').push(state_name);
+                    }
+                    self.db.add_states(states);
+                    return self.fetch('res.country', ['name']);
+                }).then(function(countries) {
+                    for (var key in countries){
+                        var country_name = countries[key].name;
+                        self.get('country_names').push(country_name);
+                    }
+                    self.db.add_countries(countries);
                     // ADDED BECAUSE DIFICULT INHERIT
                     var template_fields = ['name', 'display_name', 'product_variant_ids', 'product_variant_count']
                     var template_domain = [['sale_ok','=',true]]
-                    return self.fetch('product.template', template_fields, template_domain)
+                    return self.fetch('product.template', template_fields, template_domain)           
                 }).then(function(templates){
                     self.db.add_templates(templates);
 
