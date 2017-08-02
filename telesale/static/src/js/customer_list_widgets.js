@@ -135,19 +135,6 @@ var CustomerListWidget = TsBaseWidget.extend({
         this.$('.searchbox .search-clear').click(function(){
             self.clear_search();
         });
-
-
-        // Pricelist autocomplete
-        var state_names = self.ts_model.get('state_names');
-        // Autocomplete states from array of names
-        this.$('#state').autocomplete({
-            source: function(request, response) {
-                var results = $.ui.autocomplete.filter(state_names, request.term);
-                response(results.slice(0, 20));
-            }
-        });
-
-
     },
     save_changes: function(){
         var self = this;
@@ -317,6 +304,14 @@ var CustomerListWidget = TsBaseWidget.extend({
                     response(results.slice(0, 20));
                 }
             });
+
+            var partner_names = self.ts_model.get('customer_names');
+            contents.find('#parent').autocomplete({
+                source: function(request, response) {
+                    var results = $.ui.autocomplete.filter(partner_names, request.term);
+                    response(results.slice(0, 20));
+                }
+            });
             this.toggle_save_button();
 
             // Browsers attempt to scroll invisible input elements
@@ -408,6 +403,10 @@ var CustomerListWidget = TsBaseWidget.extend({
         var country_id = self.ts_model.db.country_name_id[this.$('#country').val()];
         if (country_id){
             fields['country_id'] = country_id
+        }
+        var parent_id = self.ts_model.db.partner_name_id[this.$('#parent').val()];
+        if (parent_id){
+            fields['parent_id'] = parent_id;
         }
 
         if (!fields.name) {
