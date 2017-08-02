@@ -390,6 +390,9 @@ var CustomerListWidget = TsBaseWidget.extend({
         var company_type = this.$('.company_type').val();
         var is_company = company_type == 'company' ? true : false
         fields['is_company'] = is_company
+        if (!is_company){
+            fields['type'] = 'delivery'
+        }
 
         fields['property_product_pricelist'] = false
         fields['state_id'] = false
