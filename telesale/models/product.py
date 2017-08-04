@@ -8,14 +8,28 @@ from openerp.exceptions import except_orm
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    display_name = fields.Char(store=True)
+    @api.multi
+    @api.depends('name', 'default_code')
+    def _get_display_name(self):
+        for template in self:
+            template.display_name = template.name_get() and \
+                template.name_get()[0] and template.name_get()[0][1] or ''
+
+    display_name = fields.Char(store=True, compute='_get_display_name')
     uom_id = fields.Many2one(index=True, auto_join=True)
 
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    display_name = fields.Char(store=True)
+    @api.multi
+    @api.depends('name', 'default_code')
+    def _get_display_name(self):
+        for product in self:
+            product.display_name = product.name_get() and \
+                product.name_get()[0] and product.name_get()[0][1] or ''
+
+    display_name = fields.Char(store=True, compute='_get_display_name')
     product_tmpl_id = fields.Many2one(index=True, auto_join=True)
 
     @api.model
