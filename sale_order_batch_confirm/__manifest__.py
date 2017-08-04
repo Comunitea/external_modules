@@ -11,7 +11,9 @@
     'depends': [
         'base',
         'sale',
-        'queue_job'
+        'queue_job',
+        'web_notify',
+        'jim_sale'
     ],
     'contributors': [
         "Comunitea ",
