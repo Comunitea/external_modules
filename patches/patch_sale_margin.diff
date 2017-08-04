@@ -1,0 +1,57 @@
+diff --git a/addons/sale/models/sale.py b/addons/sale/models/sale.py
+index 38a4036f609..d9cf5a67a71 100644
+--- a/addons/sale/models/sale.py
++++ b/addons/sale/models/sale.py
+@@ -734,7 +734,7 @@ class SaleOrderLine(models.Model):
+             lines._action_procurement_create()
+         return result
+ 
+-    order_id = fields.Many2one('sale.order', string='Order Reference', required=True, ondelete='cascade', index=True, copy=False)
++    order_id = fields.Many2one('sale.order', string='Order Reference', required=False, ondelete='cascade', index=True, copy=False)
+     name = fields.Text(string='Description', required=True)
+     sequence = fields.Integer(string='Sequence', default=10)
+ 
+diff --git a/addons/sale_margin/models/sale_order.py b/addons/sale_margin/models/sale_order.py
+index fe788d24bba..55e993f37e3 100644
+--- a/addons/sale_margin/models/sale_order.py
++++ b/addons/sale_margin/models/sale_order.py
+@@ -40,20 +40,21 @@ class SaleOrderLine(models.Model):
+             return
+         self.purchase_price = self._compute_margin(self.order_id, self.product_id, self.product_uom)
+ 
+-    @api.model
+-    def create(self, vals):
+-        vals.update(self._prepare_add_missing_fields(vals))
++    @api.multi
++    def write(self, vals):
++        # vals.update(self._prepare_add_missing_fields(vals))
+ 
+         # Calculation of the margin for programmatic creation of a SO line. It is therefore not
+         # necessary to call product_id_change_margin manually
+-        if 'purchase_price' not in vals:
+-            order_id = self.env['sale.order'].browse(vals['order_id'])
+-            product_id = self.env['product.product'].browse(vals['product_id'])
+-            product_uom_id = self.env['product.uom'].browse(vals['product_uom'])
++        for line in self:
++            if 'purchase_price' not in vals and not line.purchase_price:
++                order_id = self.env['sale.order'].browse(vals.get('order_id', line.order_id.id))
++                product_id = self.env['product.product'].browse(vals.get('product_id', line.product_id.id))
++                product_uom_id = self.env['product.uom'].browse(vals.get('product_uom', line.product_uom.id))
+ 
+-            vals['purchase_price'] = self._compute_margin(order_id, product_id, product_uom_id)
++                vals['purchase_price'] = self._compute_margin(order_id, product_id, product_uom_id)
+ 
+-        return super(SaleOrderLine, self).create(vals)
++        return super(SaleOrderLine, self).write(vals)
+ 
+     @api.depends('product_id', 'purchase_price', 'product_uom_qty', 'price_unit', 'price_subtotal')
+     def _product_margin(self):
+@@ -63,7 +64,7 @@ class SaleOrderLine(models.Model):
+             if not price:
+                 from_cur = line.env.user.company_id.currency_id.with_context(date=line.order_id.date_order)
+                 price = from_cur.compute(line.product_id.standard_price, currency, round=False)
+- 
++
+             line.margin = currency.round(line.price_subtotal - (price * line.product_uom_qty))
+ 
+ 
