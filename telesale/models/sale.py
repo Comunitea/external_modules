@@ -85,26 +85,28 @@ class SaleOrder(models.Model):
                 domain = [('order_id', '=', order_obj.id)]
                 line_objs = t_order_line.search(domain)
                 line_objs.unlink()
-            self._create_lines_from_ui(order_obj, order_lines)
+            lines, template_lines = self._create_lines_from_ui(order_lines)
+            order_obj.write({'order_line': [(4,x.id) for x in lines], 'template_lines': [(4,x.id) for x in template_lines]})
             if order['action_button'] == 'confirm':
                 order_obj.action_confirm()
             if 'set_promotion' in order and order['set_promotion']:
                 order_obj.apply_commercial_rules()
         return order_ids
 
-    def _create_lines_from_ui(self, order_obj, order_lines):
+    def _create_lines_from_ui(self, order_lines):
         t_order_line = self.env['sale.order.line']
+        line_ids = self.env['sale.order_line']
         for line in order_lines:
-            vals = self._get_ts_line_vals(order_obj, line)
-            t_order_line.create(vals)
+            vals = self._get_ts_line_vals(line)
+            line_ids += t_order_line.create(vals)
+        return line_ids, False
 
-    def _get_ts_line_vals(self, order_obj, line):
+    def _get_ts_line_vals(self, line):
         t_product = self.env['product.product']
         product_obj = t_product.browse(line['product_id'])
         product_uom_id = line.get('product_uom', False)
         product_uom_qty = line.get('qty', 0.0)
         vals = {
-            'order_id': order_obj.id,
             'name': product_obj.name,
             'product_id': product_obj.id,
             'price_unit': line.get('price_unit', 0.0),

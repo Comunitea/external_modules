@@ -9,13 +9,12 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     @api.model
-    def _get_ts_template_line_vals(self, order_obj, line):
+    def _get_ts_template_line_vals(self, line):
         t_product = self.env['product.product']
         product_obj = t_product.browse(line['product_id'])
         product_uom_id = line.get('product_uom', False)
         product_uom_qty = line.get('qty', 0.0)
         vals = {
-            'order_id': order_obj.id,
             'name': product_obj.name,
             'product_template': product_obj.product_tmpl_id.id,
             'product_id': product_obj.id,
@@ -28,11 +27,10 @@ class SaleOrder(models.Model):
         return vals
 
     @api.model
-    def _get_ts_parent_template_line_vals(self, order_obj, line, total_qty):
+    def _get_ts_parent_template_line_vals(self, line, total_qty):
         t_product = self.env['product.product']
         product_obj = t_product.browse(line['product_id'])
         vals = {
-            'order_id': order_obj.id,
             'product_template': product_obj.product_tmpl_id.id,
             'name': product_obj.product_tmpl_id.display_name,
             'product_uom': line.get('product_uom', False),
@@ -42,11 +40,13 @@ class SaleOrder(models.Model):
         return vals
 
     @api.model
-    def _create_lines_from_ui(self, order_obj, order_lines):
+    def _create_lines_from_ui(self, order_lines):
         """
         Overwrited to create template_lines
         """
         t_order_line = self.env['sale.order.line']
+        line_ids = self.env['sale.order.line']
+        line_t_ids = self.env['sale.order.line.template']
         t_template_line = self.env['sale.order.line.template']
 
         child_lines = {}     # Key is parent cid, value list of variant lines
@@ -59,7 +59,7 @@ class SaleOrder(models.Model):
             line.pop('cid')
 
             if mode == 'template_single':
-                vals = self._get_ts_template_line_vals(order_obj, line)
+                vals = self._get_ts_template_line_vals(line)
                 t_template_line.create(vals)
             elif mode == 'template_variants':
                 continue
@@ -82,14 +82,16 @@ class SaleOrder(models.Model):
             list_child_lines = child_lines[p_cid]
             line = list_child_lines[0]
             qty = child_qty[p_cid]
-            vals = self._get_ts_parent_template_line_vals(order_obj, line, qty)
+            vals = self._get_ts_parent_template_line_vals(line, qty)
             template_line_obj = t_template_line2.create(vals)
+            line_t_ids += template_line_obj
 
             #  Create child lines
             for child_line in list_child_lines:
-                vals = self._get_ts_line_vals(order_obj, child_line)
+                vals = self._get_ts_line_vals(child_line)
                 vals.update({'template_line': template_line_obj.id})
-                t_order_line.create(vals)
+                line_ids += t_order_line.create(vals)
+        return line_ids, line_t_ids
 
 
 class SaleOrderLine(models.Model):
