@@ -54,6 +54,10 @@ class SaleOrder(models.Model):
 
         # Create template_single lines and get structure to create grouping
         # lines and child.
+
+        # Delete template lines first, then crteate again
+        order_obj.template_lines.unlink()
+
         for line in order_lines:
             mode = line.pop('mode')
             line.pop('cid')
