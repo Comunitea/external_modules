@@ -14,10 +14,13 @@
         <!-- Buttons -->
         <div class="button-zone">
             <div class="col-xs-12 fullheight centerinside">
-              <div class="col-xs-6 centerthis">
+              <div class="col-xs-3 centerthis">
                 <button id="close-filter">Close</button>
               </div>
               <div class="col-xs-6 centerthis">
+                <span class="template-name" t-esc="widget.line_widget and widget.line_widget.get_template().display_name or ''"/>
+              </div>
+              <div class="col-xs-3 centerthis">
                 <button id="add-variants-button">Update Variants</button>
               </div>
             </div>
