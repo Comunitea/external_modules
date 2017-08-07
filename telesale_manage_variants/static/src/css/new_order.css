@@ -21,19 +21,19 @@
 .telesale .grid-content {
         height: 95%;
         width: 100%;
-        font-size: 1.7vmin;
+        font-size: 1.2vmin;
         overflow: auto; 
 }
 
 .telesale .grid_popup .button-zone{
         width: 100%;
-        margin-bottom: 5vh;
+        margin-bottom: 3vh;
 }
 
 .telesale .grid_popup .button-zone button{
         color: black;
         height: 100%;
-        font-size: 2vmin;
+        font-size: 1.1vmin;
         font-weight: bold;
         border: 2px solid #353A7E;
         background: #7f82ac;
@@ -69,14 +69,14 @@
 
 .telesale .grid-content .grid-table tbody th {
     text-align: left;
-    padding: 8px;
+    padding: 4px;
     border: solid 1px black;
     font-weight: bold;
 }
 
 .telesale .grid-content .grid-table td {
     border: solid 1px black;
-    padding: 8px;
+    padding: 4px;
     cursor: pointer;
     min-width: 200px;
 }
@@ -85,8 +85,8 @@
     width: 100%;
     background-color: #0f8a0d;
     border: solid 3px black;
-    margin-bottom: 1vh;
-    font-size: 2vh;
+    margin-bottom: 2px;
+    font-size: 1.1vh;
     color: white;
     font-weight: bold;
 }
@@ -95,14 +95,18 @@
     width: 100%;
     background-color: #bf3d3d;
     border: solid 3px black;
-    margin-bottom: 1vh;
-    font-size: 2vh;
+    margin-bottom: 2px;
+    font-size: 1.1vh;
     color: white;
     font-weight: bold;
 }
 
 .telesale .grid-content .grid-table .grid-cell div.grid-input{
     width:100%;
+}
+
+.telesale .grid-content .grid-table .grid-cell input {
+    height: 2vh;
 }
 
 .telesale .grid-content .grid-table .grid-cell label {
