@@ -21,6 +21,7 @@
     ],
     "data": [
         'views/sale_config_settings_view.xml',
+        'views/sale_view.xml',
     ],
     "installable": True,
     'application': False,

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="view_order_form_queue" model="ir.ui.view">
+            <field name="name">view.order.form.queue</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <button name="action_cancel" position="attributes">
+                    <attribute name="states">draft,sent,sale,progress</attribute>
+                </button>
+                <notebook position="inside">
+                    <page string="Queue Orders">
+                        <group>
+                            <field name="last_job_failed"/>
+                        </group>
+                        <group string="Related Jobs">
+                            <field name="order_jobs_ids"
+                                   nolabel="1"
+                                   readonly="1"
+                                   options="{'reload_on_button': true}">
+
+                                <tree>
+                                    <field name="date_created"/>
+                                    <field name="eta"/>
+                                    <field name="date_done"/>
+                                    <field name="state"/>
+                                    <button type="object"
+                                            name="requeue"
+                                            string="Requeue"
+                                            class="oe_highlight"
+                                            attrs="{'invisible': [('state', '!=', 'failed')]}"/>
+                                    <button type="object"
+                                            name="do_now"
+                                            string="Send now"
+                                            class="oe_highlight"
+                                            attrs="{'invisible': [('state', '!=', 'pending'), ('eta', '!=', False)]}"
+                                    />
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <record id="view_sales_order_filter_last_failed" model="ir.ui.view">
+            <field name="name">sale.order.list.select.last_failed</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                    <filter name="my_sale_orders_filter" position="after">
+                        <filter string="Confirmation failed" domain="[('last_job_failed', '=', True)]" name="last_fail"/>
+                    </filter>
+            </field>
+        </record>
+    </data>
+</odoo>
