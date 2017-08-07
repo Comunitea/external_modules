@@ -44,11 +44,14 @@ class SaleOrder(models.Model):
             if not self._context.get('do_super', False) and \
                     len(order.order_line) >= max_lines_len:
                 order.state = "progress"
-                res = order.with_delay().batch_confirm_one_order()
+                ctx = order._context.copy()
+                ctx.update(company_id=order.company_id.id)
+                order2 = self.with_context(ctx).browse(order.id)
+                res = order2.sudo().with_delay().batch_confirm_one_order()
                 # Add job to the orders queue
                 queue_ids = queue_obj.search([('uuid', '=', res.uuid)],
                                              limit=1)
-                order.order_jobs_ids |= queue_ids
+                order2.sudo().order_jobs_ids |= queue_ids
                 return True
             else:
                 res = super(SaleOrder, self).action_confirm()
