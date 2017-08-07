@@ -105,7 +105,7 @@ class SaleOrder(models.Model):
         product_uom_qty = line.get('qty', 0.0)
         vals = {
             'order_id': order_obj.id,
-            'name': product_obj.name,
+            'name': product_obj.display_name,
             'product_id': product_obj.id,
             'price_unit': line.get('price_unit', 0.0),
             'product_uom': product_uom_id,
