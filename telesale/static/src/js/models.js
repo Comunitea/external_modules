@@ -12,6 +12,9 @@ var exports = {};
 
 
 var my_round = function(number, decimals){
+        if (!decimals){
+            decimals = 2;
+        }
         var n = number || 0;
         if (typeof n === "string"){
             n = n * 1;
@@ -513,6 +516,9 @@ var TsModel = Backbone.Model.extend({
         return res;
     },
     my_round: function(number, decimals){
+        if (!decimals){
+            decimals = 2;
+        }
         var n = number || 0;
         if (typeof n === "string"){
             n = n * 1;
