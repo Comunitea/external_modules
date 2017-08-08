@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <button name="action_cancel" position="attributes">
-                    <attribute name="states">draft,sent,sale,progress</attribute>
+                    <attribute name="states">draft,sent,sale,progress,pending</attribute>
                 </button>
                 <notebook position="inside">
                     <page string="Queue Orders">

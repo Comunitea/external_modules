@@ -8,22 +8,12 @@ from odoo.addons.queue_job.job import job
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    @api.model
-    @api.depends('order_jobs_ids', 'order_jobs_ids.state')
-    def _get_last_job_fail(self):
-        for order in self:
-            if order.order_jobs_ids:
-                last_job = order.order_jobs_ids[-1]
-                if last_job.state == 'failed':
-                    order.last_job_failed = True
-
     state = fields.Selection(selection_add=[('progress',
                                              'Confirm in Progress')])
     order_jobs_ids = fields.Many2many(comodel_name='queue.job',
                                       column1='order_id', column2='job_id',
                                       string="Queue orders", copy=False)
-    last_job_failed = fields.Boolean('Last confirmation failed',
-                                     compute='_get_last_job_fail', store=True)
+    last_job_failed = fields.Boolean('Last confirmation failed')
 
     @job
     @api.multi
@@ -32,7 +22,12 @@ class SaleOrder(models.Model):
         ctx = self._context.copy()
         ctx.update({'do_super': True})
         self.with_context(ctx).action_confirm()
-        self.env.user.notify_info('The confirmation batch order has finished')
+        last_job = self.order_jobs_ids[-1]
+        if last_job.state == 'failed':
+            self.last_job_failed = True
+        #self.env['res.users'].browse(notif_user).\
+        #    notify_info('The confirmation batch order has finished')
+
 
     @api.multi
     def action_confirm(self):
@@ -46,6 +41,7 @@ class SaleOrder(models.Model):
                 order.state = "progress"
                 ctx = order._context.copy()
                 ctx.update(company_id=order.company_id.id)
+                notif_user = self.env.user.id
                 order2 = self.with_context(ctx).browse(order.id)
                 res = order2.sudo().with_delay().batch_confirm_one_order()
                 # Add job to the orders queue
