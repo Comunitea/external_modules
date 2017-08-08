@@ -78,6 +78,7 @@
     border: solid 1px black;
     padding: 4px;
     cursor: pointer;
+    min-width: 150px;
 }
 
 .telesale .grid-content .grid-table .grid-cell div.grid-stock{
