@@ -66,16 +66,29 @@ var GridWidget = TsBaseWidget.extend({
         return vals
     },
 
+    prototipe_delete_variant: function(line_cid){
+        var line_model = this.get_line_model_by_cid(line_cid)
+        if (line_model){
+            var current_order = this.ts_model.get('selectedOrder')
+            current_order.selectLine(line_model);
+            current_order.removeLine();
+        }
+    },
+
     // For each cell add or update a line variant
     add_variants_button: function(){
         var self=this;
         this.$('.grid-cell').each(function(i, cell){
             var line_vals = self.get_cell_vals(cell);
-            if (!line_vals.qty){
-                return  // Continue to next iteration
-            }
             var variant_id = cell.getAttribute('variant-id');
             var line_cid = cell.getAttribute('line-cid');
+            if (!line_vals.qty){
+                // An existing line is setted to 0, delete it
+                if (line_cid != ""){
+                    self.prototipe_delete_variant(line_cid);
+                }
+                return  // Continue to next iteration
+            }
             
             if (line_cid == ""){
                 self.prototipe_add(parseInt(variant_id), line_vals);
