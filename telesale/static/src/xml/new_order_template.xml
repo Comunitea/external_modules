@@ -165,7 +165,7 @@
                 <div class="col-xs-4 fullheight">
                       <div class="row semiheight">
                           <div class="centerthis">
-                            <label for="coment">Notes:</label>
+                            <label for="coment">Internal Notes:</label>
                             <textarea onclick="this.select()" class="semiheight notes mandatory" rows="2" cols="91" id='coment' name="coment" tabIndex="3"><t t-esc="widget.order_model.get('coment')"/></textarea>
                           </div>
                       </div>
