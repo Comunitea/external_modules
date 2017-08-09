@@ -13,7 +13,6 @@
         'sale',
         'queue_job',
         'web_notify',
-        'jim_sale'
     ],
     'contributors': [
         "Comunitea ",
