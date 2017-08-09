@@ -57,7 +57,6 @@ class SaleOrder(models.Model):
 
         # Delete template lines first, then crteate again
         order_obj.template_lines.unlink()
-
         for line in order_lines:
             mode = line.pop('mode')
             line.pop('cid')
