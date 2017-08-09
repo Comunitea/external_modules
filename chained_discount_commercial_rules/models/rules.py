@@ -43,4 +43,5 @@ class PromotionsRulesActions(models.Model):
             else:
                 disc_str = str(discount)
             line.chained_discount = disc_str
+            line.promotion_line = True
         return

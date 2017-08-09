@@ -10,7 +10,7 @@ class SaleOrder(models.Model):
 
     def clear_existing_promotion_lines(self):
         res = super(SaleOrder, self).clear_existing_promotion_lines()
-        self.order_line.write({'chained_discount': '0.00'})
+        self.order_line.filtered('promotion_line').write({'chained_discount': '0.00'})
         return res
 
 
