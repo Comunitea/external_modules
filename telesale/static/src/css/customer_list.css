@@ -96,7 +96,7 @@
     width: 15%;
 }
 .telesale .customer-list-content .client-list th.cl-street{
-    width: 18%;
+    width: 20%;
 }
 .telesale .customer-list-content .client-list th.cl-zip{
     width: 5%;
@@ -108,10 +108,13 @@
     width: 10%;
 }
 .telesale .customer-list-content .client-list th.cl-phone{
-    width: 10%;
+    width: 7%;
 }
 .telesale .customer-list-content .client-list th.cl-email{
-/*    width: 10%;*/
+    width: 12%;
+}
+.telesale .customer-list-content .client-list th.cl-type{
+    width: 5%;
 }
 
 
@@ -199,8 +202,12 @@
     position: relative;
     font-size: 16px;
 }
+.telesale .customer-list-content .client-details-box-header{
+     margin-bottom: 20px;
+     font-size: 16px;
+}
 .telesale .customer-list-content .client-details-left{
-    width: 45%;
+    width: 43%;
     float: left;
 }
 .telesale .customer-list-content .client-details-right{
