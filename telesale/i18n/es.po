@@ -952,8 +952,8 @@ msgstr "No hay cliente definido"
 #. openerp-web
 #: code:addons/telesale/static/src/xml/new_order_template.xml:168
 #, python-format
-msgid "Notes:"
-msgstr "Notas:"
+msgid "Internal Notes:"
+msgstr "Notas internas:"
 
 #. module: telesale
 #. openerp-web
