@@ -122,6 +122,12 @@
     transition: all 150ms linear;
     background: rgb(230,230,230);
 }
+.telesale .customer-list-content .client-list td{
+/*     max-width: 100px;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
 .telesale .customer-list-content .client-list thead > tr,
 .telesale .customer-list-content .client-list tr:nth-child(even) {
     background: rgb(247,247,247);
