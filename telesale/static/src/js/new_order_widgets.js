@@ -96,13 +96,12 @@ var DataOrderWidget = TsBaseWidget.extend({
             }
         });
         this.$('#partner').keydown(function(e){
-            if( e.keyCode != $.ui.keyCode.ENTER ) return; 
+            if( e.keyCode != $.ui.keyCode.TAB ) return; 
 
             e.keyCode = $.ui.keyCode.DOWN;
             $(this).trigger(e);
 
-            e.keyCode = $.ui.keyCode.TAB;
-            $(this).trigger(e);
+            self.$('#shipp_addr').focus()
     
             return false;
         });
