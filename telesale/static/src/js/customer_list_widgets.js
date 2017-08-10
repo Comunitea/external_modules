@@ -287,6 +287,17 @@ var CustomerListWidget = TsBaseWidget.extend({
                     response(results.slice(0, 20));
                 }
             });
+            contents.find('#state').keydown(function(e){
+                if( e.keyCode != $.ui.keyCode.ENTER ) return; 
+
+                e.keyCode = $.ui.keyCode.DOWN;
+                $(this).trigger(e);
+
+                e.keyCode = $.ui.keyCode.TAB;
+                $(this).trigger(e);
+        
+                return false;
+            });
             // Pricelist autocomplete
             var pricelist_names = self.ts_model.get('pricelist_names');
             contents.find('#pricelist').autocomplete({
@@ -295,7 +306,17 @@ var CustomerListWidget = TsBaseWidget.extend({
                     response(results.slice(0, 20));
                 }
             });
+            contents.find('#pricelist').keydown(function(e){
+                if( e.keyCode != $.ui.keyCode.ENTER ) return; 
 
+                e.keyCode = $.ui.keyCode.DOWN;
+                $(this).trigger(e);
+
+                e.keyCode = $.ui.keyCode.TAB;
+                $(this).trigger(e);
+        
+                return false;
+            });
             // Countries autocomplete
             var country_names = self.ts_model.get('country_names');
             contents.find('#country').autocomplete({
@@ -304,13 +325,34 @@ var CustomerListWidget = TsBaseWidget.extend({
                     response(results.slice(0, 20));
                 }
             });
+            contents.find('#country').keydown(function(e){
+                if( e.keyCode != $.ui.keyCode.ENTER ) return; 
 
+                e.keyCode = $.ui.keyCode.DOWN;
+                $(this).trigger(e);
+
+                e.keyCode = $.ui.keyCode.TAB;
+                $(this).trigger(e);
+        
+                return false;
+            });
             var partner_names = self.ts_model.get('customer_names');
             contents.find('#parent').autocomplete({
                 source: function(request, response) {
                     var results = $.ui.autocomplete.filter(partner_names, request.term);
                     response(results.slice(0, 20));
                 }
+            });
+            contents.find('#parent').keydown(function(e){
+                if( e.keyCode != $.ui.keyCode.ENTER ) return; 
+
+                e.keyCode = $.ui.keyCode.DOWN;
+                $(this).trigger(e);
+
+                e.keyCode = $.ui.keyCode.TAB;
+                $(this).trigger(e);
+        
+                return false;
             });
             this.toggle_save_button();
 

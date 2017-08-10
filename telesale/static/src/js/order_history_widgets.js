@@ -62,6 +62,17 @@ var OrderHistoryWidget = TsBaseWidget.extend({
                 response(results.slice(0, 20));
             }
         });
+        this.$('#input-customer').keydown(function(e){
+            if( e.keyCode != $.ui.keyCode.ENTER ) return; 
+
+            e.keyCode = $.ui.keyCode.DOWN;
+            $(this).trigger(e);
+
+            e.keyCode = $.ui.keyCode.TAB;
+            $(this).trigger(e);
+    
+            return false;
+        });
         this.$('#search-customer').click(function (){ self.searchCustomerOrders() });
         this.$('#search-customer-week').click(function (){ self.searchCustomerOrders('week') });
         this.$('#search-customer-month').click(function (){ self.searchCustomerOrders('month') });
