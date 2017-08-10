@@ -29,6 +29,17 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
                 response(results.slice(0, 20));
             }
         });
+        this.$('.col-template').keydown(function(e){
+            if( e.keyCode != $.ui.keyCode.ENTER ) return; 
+
+            e.keyCode = $.ui.keyCode.DOWN;
+            $(this).trigger(e);
+
+            e.keyCode = $.ui.keyCode.TAB;
+            $(this).trigger(e);
+    
+            return false;
+        });
     },
 
     // Get template_obj related with the name in the input field 
