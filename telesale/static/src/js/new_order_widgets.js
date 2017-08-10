@@ -118,8 +118,9 @@ var DataOrderWidget = TsBaseWidget.extend({
             e.keyCode = $.ui.keyCode.DOWN;
             $(this).trigger(e);
 
-            e.keyCode = $.ui.keyCode.TAB;
-            $(this).trigger(e);
+            // e.keyCode = $.ui.keyCode.TAB;
+            // $(this).trigger(e);
+            self.$('#coment').focus()
     
             return false;
         });
