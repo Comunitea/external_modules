@@ -25,6 +25,7 @@ class SaleOrder(models.Model):
         last_job = self.order_jobs_ids[-1]
         if last_job.state == 'failed':
             self.last_job_failed = True
+            self.state = "pending"
         #self.env['res.users'].browse(notif_user).\
         #    notify_info('The confirmation batch order has finished')
 
@@ -42,7 +43,7 @@ class SaleOrder(models.Model):
                 ctx = order._context.copy()
                 ctx.update(company_id=order.company_id.id)
                 notif_user = self.env.user.id
-                order2 = self.with_context(ctx).browse(order.id)
+                order2 = self.with_context(ctx,tracking_disable=True).browse(order.id)
                 res = order2.sudo().with_delay().batch_confirm_one_order()
                 # Add job to the orders queue
                 queue_ids = queue_obj.search([('uuid', '=', res.uuid)],
@@ -50,7 +51,9 @@ class SaleOrder(models.Model):
                 order2.sudo().order_jobs_ids |= queue_ids
                 return True
             else:
-                res = super(SaleOrder, self).action_confirm()
+                ctx = self._context.copy()
+                ctx.update(tracking_disable=True)
+                res = super(SaleOrder, self.with_context(ctx)).action_confirm()
         return res
 
     @api.multi
