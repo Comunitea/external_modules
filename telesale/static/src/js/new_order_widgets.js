@@ -95,11 +95,34 @@ var DataOrderWidget = TsBaseWidget.extend({
                 response(results.slice(0, 20));
             }
         });
+        this.$('#partner').keydown(function(e){
+            if( e.keyCode != $.ui.keyCode.ENTER ) return; 
+
+            e.keyCode = $.ui.keyCode.DOWN;
+            $(this).trigger(e);
+
+            e.keyCode = $.ui.keyCode.TAB;
+            $(this).trigger(e);
+    
+            return false;
+        });
+
         this.$('#shipp_addr').autocomplete({
             source: function(request, response) {
                 var results = $.ui.autocomplete.filter(array_names, request.term);
                 response(results.slice(0, 20));
             }
+        });
+        this.$('#shipp_addr').keydown(function(e){
+            if( e.keyCode != $.ui.keyCode.ENTER ) return; 
+
+            e.keyCode = $.ui.keyCode.DOWN;
+            $(this).trigger(e);
+
+            e.keyCode = $.ui.keyCode.TAB;
+            $(this).trigger(e);
+    
+            return false;
         });
 
         // Pricelist autocomplete
@@ -110,6 +133,17 @@ var DataOrderWidget = TsBaseWidget.extend({
                 var results = $.ui.autocomplete.filter(pricelist_names, request.term);
                 response(results.slice(0, 20));
             }
+        });
+        this.$('#pricelist').keydown(function(e){
+            if( e.keyCode != $.ui.keyCode.ENTER ) return; 
+
+            e.keyCode = $.ui.keyCode.DOWN;
+            $(this).trigger(e);
+
+            e.keyCode = $.ui.keyCode.TAB;
+            $(this).trigger(e);
+    
+            return false;
         });
     },
     set_value: function(key) {
@@ -296,6 +330,17 @@ var OrderlineWidget = TsBaseWidget.extend({
                 var results = $.ui.autocomplete.filter(product_names, request.term);
                 response(results.slice(0, 20));
             }
+        });
+        this.$('.col-product').keydown(function(e){
+            if( e.keyCode != $.ui.keyCode.ENTER ) return; 
+
+            e.keyCode = $.ui.keyCode.DOWN;
+            $(this).trigger(e);
+
+            e.keyCode = $.ui.keyCode.TAB;
+            $(this).trigger(e);
+    
+            return false;
         });
     },
     set_value: function(key) {
