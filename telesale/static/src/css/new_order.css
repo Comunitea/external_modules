@@ -9,7 +9,7 @@
 .telesale #pagespart {
         position: relative;
     width: 100%;
-    height: 4%;
+    height: 3%;
     color: #d6d2d2;
     border-top: solid 1px #a7a7a7;
     background: -moz-linear-gradient(#7A7A7A, #4D4D4D);
@@ -19,7 +19,7 @@
 .telesale #toppart {
     position: relative;
     width: 100%;
-    height: 20%;
+    height: 13%;
     border-top: solid 1px #CECBCB;
     border-bottom: solid 1px #CECBCB;
 }
@@ -30,7 +30,7 @@
 .telesale #middlepart {
     position: relative;
     width:100%;
-    height: 55%;
+    height: 65%;
     border-right: solid 1px #CECBCB;
 }
 .telesale #leftpart {
@@ -50,7 +50,7 @@
     position: relative;
     /*clear:both;*/
     width: 100%;
-    height: 20.5%;
+    height: 18.5%;
     border-top: solid 1px #CECBCB;
 }
 .telesale #bottompart table{
@@ -77,14 +77,15 @@
 .telesale #toppart  input{
     color:black;
     width:100%;
-    height:3vh;
+    height:2vh;
+    font-size:1.1vmin;
 }
 .telesale .semiheight{
     height: 50%;
 }
 .telesale .notes{
     resize: none;
-    font-size: 1.4vmin;
+    font-size: 1.2vmin;
 }
 .telesale .fullheight{
     height: 100%;
@@ -116,7 +117,7 @@
     height:98%;
     vertical-align: middle;
     margin-right:0px;
-    font-size:1.7vmin;
+    font-size:1.2vmin;
     border: 1px solid #353A7E;
     background: #7f82ac;
 }
@@ -142,7 +143,7 @@
 }
 .telesale #topheader button {
     color: black;
-    font-size:1.7vmin;
+    font-size:1.2vmin;
     height:100%;
     width: 100%;
     margin:0;
@@ -224,7 +225,7 @@
     width: 80%;
 }
 .telesale #leftpart .button-order-container .span-state{
-    font-size: 1vw;
+    font-size: 1vmin;
     width: 100%;
     text-align: center;
 }
@@ -232,7 +233,7 @@
     color:black;
     width:100%;
     font-weight: bold;
-    font-size: 1.5vmin;
+    font-size: 1.2vmin;
     border: 2px solid #353A7E;
     background: #7f82ac;
    
@@ -254,31 +255,15 @@
 */    font-weight: bold;
     color:black;
 }
-/*
-.telesale  #leftpart .order-container .order-line-table th{
-    border: 1px solid #000;
-    height: 3vh;
-    background: #7f82ac;
-    text-align: center;
-    font-weight: bold;
-/*}*/
-/*.telesale  #leftpart .order-container .order-line-table button {
-    color: black;
-    vertical-align: middle;
-    margin-right: 0px;
-    border: 1px solid #000000;
-    background: #c7c7c7;
-    width: 100%;
-    padding: 0px;
-    font-size: 1.7vmin;
-}*/
 
 .telesale  #leftpart .order-container .order-line-table th, .telesale  #leftpart .order-container .order-line-table td {
     padding: 0px 8px;
+    font-size:1.2vmin;
 }
 .telesale  #leftpart .order-container .order-line-table tr{
     transition: all 150ms linear;
     background: rgb(230,230,230);
+    height: 1vmin;
 }
 
 .telesale  #leftpart .order-container .order-line-table thead > tr,
@@ -330,6 +315,8 @@
     width: 100%;
     box-sizing: border-box;
     color: black;
+    height: 2vmin;
+    font-size:1.2vmin;
 }
 /*.telesale  #leftpart .order-container .order-line-table td.cell-nline{
     width: 4%;
@@ -386,7 +373,7 @@
     border: 1px solid #000;
     /*margin-left: 3px;*/
     color:black;
-    font-size: 1.5vmin;
+    font-size: 1.2vmin;
     cursor: pointer;
 }
 
@@ -395,7 +382,7 @@
     /*cursor:pointer;*/
     text-align: center;
     vertical-align: middle;
-    font-size: 1.5vmin;
+    font-size: 1.2vmin;
 }
 
 .telesale #bottompart th{
@@ -405,7 +392,7 @@
     background: #7f82ac;
     text-align: left;
     /*padding-left: 2px;*/
-    font-size: 1.6vmin;
+    font-size: 1.2vmin;
     font-weight: bold;
     text-align: center;
 
@@ -417,7 +404,7 @@
     border: 1px solid #000;
     font-weight: bold;
     color:black;
-    font-size:1.7vmin;
+    font-size:1.2vmin;
     overflow:auto;
 }
 
@@ -455,7 +442,7 @@
     margin-right:0px;
     border: 1px solid #353A7E;
     background: #7f82ac;
-    font-size:1.7vmin;
+    font-size:1.5vmin;
 }
 
 
@@ -466,7 +453,7 @@
 .telesale #bottompart button {
     color: black;
     height:100%;
-    font-size: 2.2vmin;
+    font-size: 1.5vmin;
     font-weight: bold;
     border: 2px solid #353A7E;
     background: #7f82ac;
@@ -510,7 +497,7 @@
     font-weight: bold;
 }
 .telesale #bottompart .totalorder{
-    font-size: 2vmin;
+    font-size: 1.4vmin;
     color: blue;
 }
 .telesale #bottompart .order-button {

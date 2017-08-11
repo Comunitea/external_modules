@@ -1,6 +1,6 @@
  /* Principal screen */
 .telesale {
-    font-size: 1.7vmin;
+    font-size: 1.2vmin;
     font-weight: bold;
     /*position: absolute;*/
     position: fixed; /*con los css explicitos en la carpeta views*/
@@ -77,7 +77,7 @@ overflow: hidden !important;
 .telesale #topheader {
     position:relative;
     width: 100%;
-    height: 4%;
+    height: 3%;
     color: gray;
     background: #393939;
 }
@@ -85,7 +85,7 @@ overflow: hidden !important;
 .telesale #content {
     position: relative;
     width: 100%;
-    height: 96%;
+    height: 97%;
     background: #F0EEEE;
 }
 
@@ -219,7 +219,7 @@ overflow: hidden !important;
     color:black;
     padding:0.5vmin !important; /*width:100%;
     height:50%;*/
-    height: 3vh;
+    height: 2vh;
 
 }
 .telesale .mandatory{
