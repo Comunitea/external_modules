@@ -11,11 +11,14 @@ class AccountInvoiceLine(models.Model):
     @api.one
     @api.depends('chained_discount')
     def _compute_discount(self):
-        splited_discount = self.chained_discount.split('+')
-        disc = 0.00
-        for val in splited_discount:
-            disc += float(val)
-        self.discount = disc
+        if self.chained_discount:
+            splited_discount = self.chained_discount.split('+')
+            disc = 0.00
+            for val in splited_discount:
+                disc += float(val)
+            self.discount = disc
+        else:
+            self.dicount = 0
 
     discount = fields.Float(string='Discount (%)',
                             digits=dp.get_precision('Discount'),
