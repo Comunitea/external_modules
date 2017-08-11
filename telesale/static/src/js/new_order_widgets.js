@@ -96,7 +96,7 @@ var DataOrderWidget = TsBaseWidget.extend({
             }
         });
         this.$('#partner').keydown(function(e){
-            if( e.keyCode != $.ui.keyCode.TAB ) return; 
+            if( e.keyCode != $.ui.keyCode.ENTER ) return; 
 
             e.keyCode = $.ui.keyCode.DOWN;
             $(this).trigger(e);
@@ -118,8 +118,7 @@ var DataOrderWidget = TsBaseWidget.extend({
             e.keyCode = $.ui.keyCode.DOWN;
             $(this).trigger(e);
 
-            // e.keyCode = $.ui.keyCode.TAB;
-            // $(this).trigger(e);
+
             self.$('#coment').focus()
     
             return false;
@@ -140,8 +139,7 @@ var DataOrderWidget = TsBaseWidget.extend({
             e.keyCode = $.ui.keyCode.DOWN;
             $(this).trigger(e);
 
-            e.keyCode = $.ui.keyCode.TAB;
-            $(this).trigger(e);
+            self.$('#date_order').focus()
     
             return false;
         });
@@ -337,8 +335,7 @@ var OrderlineWidget = TsBaseWidget.extend({
             e.keyCode = $.ui.keyCode.DOWN;
             $(this).trigger(e);
 
-            e.keyCode = $.ui.keyCode.TAB;
-            $(this).trigger(e);
+             self.$('#col-qty').focus()
     
             return false;
         });

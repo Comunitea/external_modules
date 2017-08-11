@@ -293,8 +293,7 @@ var CustomerListWidget = TsBaseWidget.extend({
                 e.keyCode = $.ui.keyCode.DOWN;
                 $(this).trigger(e);
 
-                e.keyCode = $.ui.keyCode.TAB;
-                $(this).trigger(e);
+                self.$('#country').focus()
         
                 return false;
             });
@@ -312,8 +311,7 @@ var CustomerListWidget = TsBaseWidget.extend({
                 e.keyCode = $.ui.keyCode.DOWN;
                 $(this).trigger(e);
 
-                e.keyCode = $.ui.keyCode.TAB;
-                $(this).trigger(e);
+                self.$('#country').focus()
         
                 return false;
             });
@@ -331,8 +329,7 @@ var CustomerListWidget = TsBaseWidget.extend({
                 e.keyCode = $.ui.keyCode.DOWN;
                 $(this).trigger(e);
 
-                e.keyCode = $.ui.keyCode.TAB;
-                $(this).trigger(e);
+                self.$('#phone').focus()
         
                 return false;
             });

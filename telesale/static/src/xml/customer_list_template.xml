@@ -199,7 +199,7 @@
                 <div class='client-details-right'>
                     <div class='client-detail'>
                         <span class='label'>Phone</span>
-                        <input class='detail client-phone'  name='phone'    type='tel'      t-att-value='partner.phone || ""'></input>
+                        <input class='detail client-phone'  id='phone' name='phone'    type='tel'      t-att-value='partner.phone || ""'></input>
                     </div>
                     <div class='client-detail'>
                         <span class='label'>Email</span>
