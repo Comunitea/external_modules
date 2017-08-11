@@ -1008,7 +1008,7 @@ msgstr "IMPRIMIR"
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:199
 #, python-format
 msgid "Parent"
-msgstr "Padre"
+msgstr "Asociar a cliente"
 
 #. module: telesale
 #: model:ir.model,name:telesale.model_res_partner
