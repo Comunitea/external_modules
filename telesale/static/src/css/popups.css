@@ -24,7 +24,7 @@
 .telesale  .customer-history-popup .close-block{
     height: 5%;
     width: 100%;
-    font-size: 1.7vmin;
+    font-size: 1.5vmin;
     padding-bottom: 5px;
     border-bottom: solid 1px black;
 }
@@ -65,7 +65,7 @@
 .telesale  .customer-history-popup button{
         color: black;
         height: 100%;
-        font-size: 2vmin;
+        font-size: 1.5vmin;
         font-weight: bold;
         border: 2px solid #353A7E;
         background: #7f82ac;

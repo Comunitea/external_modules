@@ -22,7 +22,7 @@
 .telesale .product-catalog-content{
     height:95%;
     overflow: auto;
-    font-size: 1.7vmin;
+    font-size: 1.2vmin;
 }
 
 .telesale .catalog-table{
@@ -68,7 +68,7 @@
     background: #c7c7c7;
     width: 100%;
     padding: 0px;
-    font-size: 1.7vmin;
+    font-size: 1.4vmin;
 }
 .telesale .catalog-table th, .telesale .catalog-table td {
     padding: 0px 8px;
@@ -109,7 +109,7 @@
 
 .telesale .search-box .center button{
     color: black;
-    font-size: 2vmin;
+    font-size: 1.4vmin;
     font-weight: bold;
     border: 2px solid #353A7E;
     background: #7f82ac;
@@ -122,7 +122,7 @@
 
 .telesale .search-box .center #add-alll-button{
     color: black;
-    font-size: 2vmin;
+    font-size: 1.4vmin;
     font-weight: bold;
     border: 2px solid #353A7E;
     background: #0f8a0d;

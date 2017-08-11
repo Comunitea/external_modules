@@ -227,7 +227,7 @@
                     <div class="row semiheight">
                         <div class="centerthis">
                           <label for="observations">Observations:</label>
-                          <textarea onclick="this.select()" class="semiheight notes mandatory" rows="2" cols="82" id='observations' name="observations" tabIndex="8"><t t-esc="widget.order_model.get('observations')" t-if="widget.order_model.get('observations')"/></textarea>
+                          <textarea onclick="this.select()" class="semiheight notes mandatory" rows="2" cols="91" id='observations' name="observations" tabIndex="8"><t t-esc="widget.order_model.get('observations')" t-if="widget.order_model.get('observations')"/></textarea>
                         </div>
                     </div>
               </div>
