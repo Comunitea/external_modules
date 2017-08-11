@@ -214,7 +214,7 @@
 
 .telesale #leftpart .button-order-container{
     position: relative;
-    height: 10%;
+    height: 6%;
     width:100%;
     border-bottom: solid 2px #CECBCB;
     display: table;
@@ -242,7 +242,7 @@
 /* order container Table*/
 .telesale  #leftpart .order-container{
     position: relative;
-    height: 89%;
+    height: 93%;
     width:100%;
     overflow:auto;
 }
