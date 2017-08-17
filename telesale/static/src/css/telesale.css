@@ -1,7 +1,7 @@
  /* Principal screen */
 .telesale {
-    font-size: 1.2vmin;
-    font-weight: bold;
+    font-size: 1.4vmin;
+/*    font-weight: normal;*/
     /*position: absolute;*/
     position: fixed; /*con los css explicitos en la carpeta views*/
     left: 0;
@@ -148,6 +148,7 @@ overflow: hidden !important;
 .telesale label{
     display:block;
     margin:0.1vmin
+    font-weight: normal;
 }
 
 /* The notifications indicator */
@@ -211,7 +212,7 @@ overflow: hidden !important;
 
 .telesale .ui-autocomplete-input{
     color:black;
-    font-size: 1.7vmin;
+    font-size: 1.3vmin;
     line-height: 0;
 }
 
