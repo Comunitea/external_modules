@@ -36,6 +36,8 @@ class SaleOrder(models.Model):
         pricelist_id = partner_obj.property_product_pricelist.id
         if order.get('pricelist_id', False):
             pricelist_id = order['pricelist_id']
+
+        values = self.ts_onchange_partner_id(partner_obj.id)
         res = {
             # 'name': '/',
             'partner_id': partner_obj.id,
@@ -51,7 +53,10 @@ class SaleOrder(models.Model):
             'note': order['note'],
             'observations': order['observations'],
             'warehouse_id': warehouse_id,
-            'client_order_ref': order.get('client_order_ref', False)
+            'client_order_ref': order.get('client_order_ref', False),
+            'fiscal_position_id': values.get('fiscal_position_id', False),
+            'payment_term_id': values.get('payment_term_id', False),
+            'payment_mode_id': values.get('payment_mode_id', False)
         }
         return res
 
@@ -134,9 +139,13 @@ class SaleOrder(models.Model):
                              'pricelist_id':
                              partner.property_product_pricelist.id})
         order.onchange_partner_id()
+        order.onchange_partner_shipping_id()
         res.update({
             'pricelist_id': order.pricelist_id.id,
             'partner_shipping_id': order.partner_shipping_id.id,
+            'fiscal_position_id': order.fiscal_position_id.id,
+            'payment_term_id': order.payment_term_id.id,
+            'payment_mode_id': order.payment_mode_id.id
 
         })
         return res
