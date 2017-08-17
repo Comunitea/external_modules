@@ -62,6 +62,7 @@
     position: relative;
     height: 100%;
     overflow: auto;
+    padding-left: 3px;
 }
 .telesale .customer-list-content .search-clear {
     position: absolute;
@@ -224,7 +225,7 @@
     line-height: 24px;
 }
 .telesale .customer-list-content .client-detail > .label{
-    font-weight: bold;
+    font-weight: normal;
     display: inline-block;
     text-align: right;
     margin-right: 8px;

@@ -14,7 +14,7 @@
     padding-top: 20px;
     text-align: center;
     font-size: 1.5vmin;
-    font-weight: bold;
+    font-weight: normal;
     background-color: #FFFFFF;
     border-radius: 10px;
     box-shadow: 0px -1px white, 0px 1px white, 0px 4px #949494, 0px 10px 20px rgba(0, 0, 0, 0.3);
@@ -53,7 +53,7 @@
     text-align: center;
     border: solid 1px black;
     background-color: #c1c1c1
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .telesale  .customer-history-popup .sold-history-table td {
@@ -66,7 +66,7 @@
         color: black;
         height: 100%;
         font-size: 1.5vmin;
-        font-weight: bold;
+        font-weight: normal;
         border: 2px solid #353A7E;
         background: #7f82ac;
 }
