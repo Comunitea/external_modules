@@ -128,7 +128,7 @@ exports.OrderScreenWidget = ScreenWidget.extend({
         });
 
         this.$('.removeorder-button').click(function(){
-            var r = confirm(_t("Do you want remove this order"));
+            var r = confirm(_t("Sure you want close this order?"));
             if (r)
                 self.ts_model.get('selectedOrder').destroy();
         });
