@@ -88,6 +88,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.$('#pricelist').blur(_.bind(this.set_value, this, 'pricelist'))
 
         var array_names = self.ts_model.get('company_customer_names');
+        var address_names = self.ts_model.get('customer_names');
         // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
             source: function(request, response) {
@@ -108,7 +109,7 @@ var DataOrderWidget = TsBaseWidget.extend({
 
         this.$('#shipp_addr').autocomplete({
             source: function(request, response) {
-                var results = $.ui.autocomplete.filter(array_names, request.term);
+                var results = $.ui.autocomplete.filter(address_names, request.term);
                 response(results.slice(0, 20));
             }
         });
