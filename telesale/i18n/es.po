@@ -678,8 +678,8 @@ msgstr "Nombre mostrado"
 #. openerp-web
 #: code:addons/telesale/static/src/js/screens.js:131
 #, python-format
-msgid "Do you want remove this order"
-msgstr "¿Quieres eliminar este pedido?"
+msgid "ure you want close this order?"
+msgstr "¿Seguro que quieres cerrar este pedido?"
 
 #. module: telesale
 #. openerp-web
