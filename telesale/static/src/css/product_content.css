@@ -110,7 +110,7 @@
 .telesale .search-box .center button{
     color: black;
     font-size: 1.4vmin;
-    font-weight: bold;
+    font-weight: normal;
     border: 2px solid #353A7E;
     background: #7f82ac;
 }
@@ -123,7 +123,7 @@
 .telesale .search-box .center #add-alll-button{
     color: black;
     font-size: 1.4vmin;
-    font-weight: bold;
+    font-weight: normal;
     border: 2px solid #353A7E;
     background: #0f8a0d;
 }
