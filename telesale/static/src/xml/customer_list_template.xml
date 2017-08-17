@@ -60,7 +60,7 @@
                     </t>
                 </div>
                 <div class='client-detail'>
-                    <span class='label'>Parent</span>
+                    <span class='label'>Related Partner</span>
                     <t t-if='partner.parent_id'>
                         <span class='detail client-parent'><t t-esc='partner.parent_id[1]' /></span>
                     </t>
@@ -167,7 +167,7 @@
                         <input class='detail client-comercial' name='comercial'       t-att-value='partner.comercial || ""' placeholder='Comercial name'></input>
                 </div>
                 <div class='client-detail'>
-                        <span class='label'>Parent</span>
+                        <span class='label'>Related Partner</span>
                         <input id="parent" class='detail parent'   name='parent_id'         t-att-value='partner.parent_id ? partner.parent_id[1] : ""' placeholder='Parent'></input>
                 </div>    
             </div>
