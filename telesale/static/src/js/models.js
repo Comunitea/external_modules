@@ -52,6 +52,7 @@ var TsModel = Backbone.Model.extend({
             'units_names':            [], // Array of units names
            
             'customer_names':            [], // Array of customer names
+            'company_customer_names':            [], // Array of customer names
             'pricelist_names':            [], // Pricelist names
             'country_names':            [], // Country names
             'state_names':            [], // State names
@@ -147,8 +148,12 @@ var TsModel = Backbone.Model.extend({
                     return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
                 }).then(function(customers){
                     for (var key in customers){
-                        var customer_name = self.getComplexName(customers[key]);
+                        var customer = customers[key];
+                        var customer_name = self.getComplexName(customer);
                         self.get('customer_names').push(customer_name);
+                        if (customer.company_type == 'company'){
+                            self.get('company_customer_names').push(customer_name);
+                        }
                         self.get('customer_codes').push(customers[key].ref);
                     }
                     self.db.add_partners(customers);

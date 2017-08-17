@@ -87,7 +87,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.$('#observations').blur(_.bind(this.set_value, this, 'observations'))
         this.$('#pricelist').blur(_.bind(this.set_value, this, 'pricelist'))
 
-        var array_names = self.ts_model.get('customer_names');
+        var array_names = self.ts_model.get('company_customer_names');
         // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
             source: function(request, response) {
