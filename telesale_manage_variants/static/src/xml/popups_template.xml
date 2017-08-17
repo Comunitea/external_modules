@@ -51,26 +51,26 @@
                                                 </div>
 
                                                 <div class="grid-input">
-                                                    <div class="col-xs-4">
+                                                    <div class="col-xs-5">
                                                         <label for="grid-qty">Qty</label>
                                                     </div>
-                                                    <div class="col-xs-8">
+                                                    <div class="col-xs-7">
                                                         <input onclick="this.select()" id="grid-qty" class="add-qty mandatory" placeholder="Add Qty" t-att-value="cell.qty.toFixed(2)" type="text"/>
                                                     </div>
                                                 </div>
                                                 <div class="grid-input">
-                                                    <div class="col-xs-4">
+                                                    <div class="col-xs-5">
                                                         <label for="pvp">Price</label>
                                                     </div>
-                                                    <div class="col-xs-8">
+                                                    <div class="col-xs-7">
                                                         <input onclick="this.select()" id="grid-pvp" class="add-price mandatory" t-att-value="cell.price.toFixed(2)" type="text" tabindex="-1"/>
                                                     </div>
                                                 </div>
                                                 <div class="grid-input">
-                                                    <div class="col-xs-4">
+                                                    <div class="col-xs-5">
                                                         <label for="grid-discount">Disc</label>
                                                     </div>
-                                                    <div class="col-xs-8">
+                                                    <div class="col-xs-7">
                                                       <input onclick="this.select()" id="grid-discount" class="add-discount mandatory" t-att-value="cell.discount.toFixed(2)" type="text" tabindex="-1"/>
                                                     </div>
                                                 </div>
