@@ -48,6 +48,8 @@ class SaleOrderLine(models.Model):
 
     @api.onchange('chained_discount')
     def onchange_chained_discount(self):
+        if not self.chained_discount:
+            self.chained_discount = '0.00'
         valid = self.validate_chained_discount(self.chained_discount)
         if not valid:
             msg = _("Format must be something like 10.5 or 10.5+2+3.4 etc \

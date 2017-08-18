@@ -19,5 +19,4 @@ def copy_risk_insurance_status_values(cr):
 def migrate(cr, version):
     if not version:
         return
-    # import ipdb; ipdb.set_trace()
     copy_risk_insurance_status_values(cr)
