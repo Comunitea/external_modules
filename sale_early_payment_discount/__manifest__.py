@@ -33,12 +33,12 @@
     'data' : ['security/ir.model.access.csv',
               'security/security.xml',
               'data/product_product.xml',
-              'partner_payment_term_early_discount_view.xml',
-              'partner_view.xml',
-              'payment_term_view.xml',
-              'sale_view.xml',
-              'account_invoice_view.xml',
-              'product_category_view.xml',
+              'views/partner_payment_term_early_discount_view.xml',
+              'views/partner_view.xml',
+              'views/payment_term_view.xml',
+              'views/sale_view.xml',
+              'views/account_invoice_view.xml',
+              'views/product_category_view.xml',
               'report/sale_order.xml'],
     'installable': False
 }
