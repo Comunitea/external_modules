@@ -64,9 +64,13 @@ class SaleOrder(models.Model):
                 if early_discs:
                     self.early_payment_discount = early_discs[0].early_payment_discount
                 else:
-                    early_discs = self.env['account.early.payment.discount'].search([('partner_id', '=', False), ('payment_term_id', '=', self.payment_term_id.id)])
+                    early_discs = commercial_partner.early_payment_discount_ids
                     if early_discs:
                         self.early_payment_discount = early_discs[0].early_payment_discount
+                    else:
+                        early_discs = self.env['account.early.payment.discount'].search([('partner_id', '=', False), ('payment_term_id', '=', self.payment_term_id.id)])
+                        if early_discs:
+                            self.early_payment_discount = early_discs[0].early_payment_discount
         return res
 
     @api.onchange('payment_term_id')
@@ -79,9 +83,13 @@ class SaleOrder(models.Model):
         if early_discs:
             self.early_payment_discount = early_discs[0].early_payment_discount
         else:
-            early_discs = self.env['account.early.payment.discount'].search([('partner_id', '=', False), ('payment_term_id', '=', self.payment_term_id.id)])
+            early_discs = commercial_partner.early_payment_discount_ids
             if early_discs:
                 self.early_payment_discount = early_discs[0].early_payment_discount
+            else:
+                early_discs = self.env['account.early.payment.discount'].search([('partner_id', '=', False), ('payment_term_id', '=', self.payment_term_id.id)])
+                if early_discs:
+                    self.early_payment_discount = early_discs[0].early_payment_discount
 
     @api.multi
     def _prepare_invoice(self):
