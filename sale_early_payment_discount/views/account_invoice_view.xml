@@ -25,10 +25,9 @@
             <field name="priority" eval="2"/>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <field name="payment_term" position="replace">
-                    <field name="payment_term"/>
+                <field name="payment_term_id" position="after">
                     <field name="early_payment_discount"/>
-                    <field name="early_discount_amount"/>
+                    <field name="early_payment_discount_amount"/>
                 </field>
             </field>
         </record>

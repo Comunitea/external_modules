@@ -3,8 +3,8 @@
     <data>
 
         <record id="partner_payment_term_early_discount_form" model="ir.ui.view">
-            <field name="name">account.partner.payment.term.early.discount.form</field>
-            <field name="model">account.partner.payment.term.early.discount</field>
+            <field name="name">account.early.payment.discount.form</field>
+            <field name="model">account.early.payment.discount</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Early payment discount">
@@ -27,8 +27,8 @@
         </record>
 
         <record id="partner_payment_term_early_discount_tree" model="ir.ui.view">
-            <field name="name">account.partner.payment.term.early.discount.tree</field>
-            <field name="model">account.partner.payment.term.early.discount</field>
+            <field name="name">account.early.payment.discount.tree</field>
+            <field name="model">account.early.payment.discount</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Early payment discounts">
@@ -43,7 +43,7 @@
 
         <record id="action_payment_term_early_discount_form" model="ir.actions.act_window">
             <field name="name">Early payment discounts</field>
-            <field name="res_model">account.partner.payment.term.early.discount</field>
+            <field name="res_model">account.early.payment.discount</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>

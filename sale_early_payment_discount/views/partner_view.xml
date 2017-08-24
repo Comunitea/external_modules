@@ -8,7 +8,7 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="account.view_partner_property_form"/>
             <field name="arch" type="xml">
-                <field name="bank_ids" position="before">
+                <field name="property_payment_term_id" position="before">
                     <field name="early_payment_discount_ids" colspan ="4" nolabel="1" context="{'partner_id': active_id}"/>
                 </field>
             </field>

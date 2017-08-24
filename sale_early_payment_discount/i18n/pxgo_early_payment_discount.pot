@@ -1,6 +1,6 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
-#	* pxgo_early_payment_discount
+#   * pxgo_early_payment_discount
 #
 msgid ""
 msgstr ""
@@ -21,7 +21,7 @@ msgid "Untaxed Amount E.P."
 msgstr ""
 
 #. module: pxgo_early_payment_discount
-#: view:account.partner.payment.term.early.discount:0
+#: view:account.early.payment.discount:0
 #: model:ir.actions.act_window,name:pxgo_early_payment_discount.action_payment_term_early_discount_form
 #: model:ir.model,name:pxgo_early_payment_discount.model_account_partner_payment_term_early_discount
 #: model:ir.ui.menu,name:pxgo_early_payment_discount.menu_action_payment_term_early_discount_form
@@ -39,7 +39,7 @@ msgid "Error: Payment days field format is not valid."
 msgstr ""
 
 #. module: pxgo_early_payment_discount
-#: help:account.invoice,early_discount_amount:0
+#: help:account.invoice,early_payment_discount_amount:0
 msgid "Early payment discount amount to apply."
 msgstr ""
 
@@ -66,7 +66,7 @@ msgid "Cannot set early payment discount because now is impossible find the earl
 msgstr ""
 
 #. module: pxgo_early_payment_discount
-#: field:account.invoice,early_discount_amount:0
+#: field:account.invoice,early_payment_discount_amount:0
 #: field:sale.order,total_early_discount:0
 msgid "E.P. amount"
 msgstr ""
@@ -84,7 +84,7 @@ msgstr ""
 
 #. module: pxgo_early_payment_discount
 #: help:account.invoice,early_payment_discount:0
-#: view:account.partner.payment.term.early.discount:0
+#: view:account.early.payment.discount:0
 #: code:addons/pxgo_early_payment_discount/account_invoice.py:130
 #: code:addons/pxgo_early_payment_discount/account_invoice.py:142
 #: model:product.template,name:pxgo_early_payment_discount.product_rappel_product_template
@@ -104,7 +104,7 @@ msgid "Apply early payment disc."
 msgstr ""
 
 #. module: pxgo_early_payment_discount
-#: field:account.partner.payment.term.early.discount,name:0
+#: field:account.early.payment.discount,name:0
 msgid "Name"
 msgstr ""
 
@@ -121,7 +121,7 @@ msgstr ""
 
 #. module: pxgo_early_payment_discount
 #: field:account.invoice,early_payment_discount:0
-#: field:account.partner.payment.term.early.discount,early_payment_discount:0
+#: field:account.early.payment.discount,early_payment_discount:0
 #: field:sale.order,early_payment_discount:0
 msgid "E.P. disc.(%)"
 msgstr ""
@@ -132,7 +132,7 @@ msgid "Error ! You can not create recursive categories."
 msgstr ""
 
 #. module: pxgo_early_payment_discount
-#: field:account.partner.payment.term.early.discount,payment_term_id:0
+#: field:account.early.payment.discount,payment_term_id:0
 #: model:ir.model,name:pxgo_early_payment_discount.model_account_payment_term
 msgid "Payment Term"
 msgstr ""
@@ -148,7 +148,7 @@ msgid "Taxes E.P."
 msgstr ""
 
 #. module: pxgo_early_payment_discount
-#: help:account.partner.payment.term.early.discount,early_payment_discount:0
+#: help:account.early.payment.discount,early_payment_discount:0
 msgid "Percentage of discount for early payment."
 msgstr ""
 
@@ -164,7 +164,7 @@ msgid "Invoice"
 msgstr ""
 
 #. module: pxgo_early_payment_discount
-#: field:account.partner.payment.term.early.discount,partner_id:0
+#: field:account.early.payment.discount,partner_id:0
 #: model:ir.model,name:pxgo_early_payment_discount.model_res_partner
 msgid "Partner"
 msgstr ""
