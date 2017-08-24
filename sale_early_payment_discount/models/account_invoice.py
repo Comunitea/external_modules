@@ -68,6 +68,7 @@ class AccountInvoice(models.Model):
         self.ensure_one()
         early_payments = {}
         inv_lines_out_vat = []
+        new_lines = self.env['account.invoice.line']
 
         for invoice_line in self.invoice_line_ids:
             if invoice_line.product_id and \
@@ -117,7 +118,7 @@ class AccountInvoice(models.Model):
             partner_id = self.partner_id and self.partner_id.id or False
             for early_payment_line in group_account_line:
                 for account_id in group_account_line[early_payment_line]:
-                    self.env['account.invoice.line'].with_context(partner_id=partner_id).create({
+                    new_lines += self.env['account.invoice.line'].with_context(partner_id=partner_id).create({
                         'name': _("Early payment discount") + " " + str(self.early_payment_discount) + "%",
                         'invoice_id': self.id,
                         'product_id': prod_early_payment.id,
@@ -129,7 +130,7 @@ class AccountInvoice(models.Model):
                         })
 
             if inv_lines_out_vat:
-                self.env['account.invoice.line'].with_context(partner_id=partner_id).create({
+                new_lines += self.env['account.invoice.line'].with_context(partner_id=partner_id).create({
                         'name': _("Early payment discount") + " " + str(self.early_payment_discount) + "%",
                         'invoice_id': self.id,
                         'product_id': prod_early_payment.id,
@@ -142,7 +143,7 @@ class AccountInvoice(models.Model):
         #recompute taxes
         self.compute_taxes()
 
-        return True
+        return new_lines
 
     @api.multi
     def button_compute_early_payment_disc(self):

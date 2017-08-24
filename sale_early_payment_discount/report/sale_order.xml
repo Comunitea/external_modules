@@ -8,16 +8,16 @@
                     <td>
                       <strong>E.P. Disc. :</strong>
                     </td>
-                    <td>
-                      <span t-field="o.early_payment_discount"/> %
+                    <td class="text-right">
+                      <span t-field="doc.early_payment_discount"/> %
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <strong>With E.P. :</strong>
                     </td>
-                    <td>
-                      <span t-field="o.early_payment_disc_total"/> <span t-field="o.pricelist_id.currency_id.symbol"/>
+                    <td class="text-right">
+                      <span t-field="doc.early_payment_disc_total"/> <span t-field="doc.pricelist_id.currency_id.symbol"/>
                     </td>
                  </tr>
             </xpath>
