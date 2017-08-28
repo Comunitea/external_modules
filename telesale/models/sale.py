@@ -145,7 +145,8 @@ class SaleOrder(models.Model):
             'partner_shipping_id': order.partner_shipping_id.id,
             'fiscal_position_id': order.fiscal_position_id.id,
             'payment_term_id': order.payment_term_id.id,
-            'payment_mode_id': order.payment_mode_id.id
+            'payment_mode_id': order.payment_mode_id.id,
+            'early_payment_discount': order.early_payment_discount
 
         })
         return res

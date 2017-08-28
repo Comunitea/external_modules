@@ -970,8 +970,11 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                 self.iva += line.get_tax();
 
             }, this));
-            self.total += self.ts_model.my_round(self.base, 2) + self.ts_model.my_round(self.iva, 2);
-            self.base = self.ts_model.my_round(self.base, 2);
+            var percent_epd = this.order_model.get('epd') /100
+            self.iva = self.ts_model.my_round(self.iva * (1 - percent_epd ), 2);
+            self.base = self.ts_model.my_round(self.base  * (1 - percent_epd ), 2);
+            self.total += self.base + self.iva;
+
             this.order_model.set('total_base',self.base);
             this.order_model.set('total_iva', self.iva);
             this.order_model.set('total', self.total);
