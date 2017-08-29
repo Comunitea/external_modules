@@ -11,7 +11,7 @@
             <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
             <field name="arch" type="xml">
                 <field name="advance_payment_method" position="after">
-                    <field name="journal"/>
+                    <field name="journal" domain="[('type', 'in', ['sale',])]"/>
                 </field>
             </field>
         </record>
