@@ -18,7 +18,7 @@ class AccountInvoice(models.Model):
     early_payment_discount = fields.Float('E.P. disc.(%)', digits=(16,2),
                                           help="Early payment discount")
     early_payment_discount_amount = fields.Float(
-        'E.P. amount', digits_compute=dp.get_precision('Account'),
+        'E.P. amount', digits=dp.get_precision('Account'),
         help="Early payment discount amount to apply.", readonly=True,
         compute='_compute_early_payment_discount_amount')
 
