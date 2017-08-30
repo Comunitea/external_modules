@@ -11,17 +11,14 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     early_payment_discount = fields.Float('E.P. disc.(%)', digits=(16,2), help="Early payment discount")
-    early_payment_disc_total = fields.Float('With E.P.', digits_compute=dp.get_precision('Account'), compute='_amount_all2')
-    early_payment_disc_untaxed = fields.Float('Untaxed Amount E.P.', digits_compute=dp.get_precision('Account'), compute='_amount_all2')
-    early_payment_disc_tax = fields.Float('Taxes E.P.', digits_compute=dp.get_precision('Account'), compute='_amount_all2')
-    total_early_discount = fields.Float('E.P. amount', digits_compute=dp.get_precision('Account'), compute='_amount_all2')
+    early_payment_disc_total = fields.Float('With E.P.', digits=dp.get_precision('Account'), compute='_amount_all')
+    early_payment_disc_untaxed = fields.Float('Untaxed Amount E.P.', digits=dp.get_precision('Account'), compute='_amount_all')
+    early_payment_disc_tax = fields.Float('Taxes E.P.', digits=dp.get_precision('Account'), compute='_amount_all')
+    total_early_discount = fields.Float('E.P. amount', digits=dp.get_precision('Account'), compute='_amount_all')
 
-    @api.one
-    @api.depends('order_line', 'early_payment_discount',
-                 'order_line.price_unit', 'order_line.tax_id',
-                 'order_line.discount', 'order_line.product_uom_qty')
-    def _amount_all2(self):
-        """calculates functions amount fields"""
+    @api.depends('order_line.price_total', 'early_payment_discount')
+    def _amount_all(self):
+        super(SaleOrder, self)._amount_all()
         if not self.early_payment_discount:
             self.early_payment_disc_total = self.amount_total
             self.early_payment_disc_tax = self.amount_tax
