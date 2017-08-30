@@ -4,7 +4,7 @@
 
         <template id="sale_order_add_early_payment" inherit_id="sale.report_saleorder_document">
             <xpath expr="//div[@class='col-xs-4 pull-right']/table" position="inside">
-                <tr class="border-black">
+                <tr class="border-black ep_disc">
                     <td>
                       <strong>E.P. Disc. :</strong>
                     </td>
@@ -12,7 +12,7 @@
                       <span t-field="doc.early_payment_discount"/> %
                     </td>
                 </tr>
-                <tr>
+                <tr class="ep_disc">
                     <td>
                         <strong>With E.P. :</strong>
                     </td>
