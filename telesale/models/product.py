@@ -23,7 +23,7 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     @api.multi
-    @api.depends('name', 'default_code')
+    @api.depends('product_tmpl_id.name', 'default_code')
     def _get_display_name(self):
         for product in self:
             product.display_name = product.name_get() and \
