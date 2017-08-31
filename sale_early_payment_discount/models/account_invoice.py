@@ -115,7 +115,10 @@ class AccountInvoice(models.Model):
                             prod_early_payment.property_account_inoutput.id
                         )] = [invoice_line.id]
                     elif prod_early_payment.property_account_income_id and str(prod_early_payment.property_account_income_id.id) in group_account_line[early_payment_line] or prod_early_payment.categ_id.property_account_sale_early_payment_disc.id and str(prod_early_payment.categ_id.property_account_sale_early_payment_disc.id) in group_account_line[early_payment_line]:
-                        group_account_line[early_payment_line][str(prod_early_payment.property_account_income_id.id)].append(invoice_line.id)
+                        if prod_early_payment.property_account_income_id:
+                            group_account_line[early_payment_line][str(prod_early_payment.property_account_income_id.id)].append(invoice_line.id)
+                        else:
+                            group_account_line[early_payment_line][str(prod_early_payment.categ_id.property_account_sale_early_payment_disc.id)].append(invoice_line.id)
                     else:
                         raise exceptions.except_orm(_('Warning'), _('Cannot set early payment discount because now is impossible find the early payment account. Review invoice products categories have defined early payment account by default or early payment discount product have defined an output account.'))
 
