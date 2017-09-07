@@ -138,6 +138,10 @@ var CustomerListWidget = TsBaseWidget.extend({
     },
     save_changes: function(){
         var self = this;
+        if (this.new_client.company_type != 'company'){
+            alert(_t("You can set it as order's customer, because is not a company type"));
+            return;
+        }
         var order = this.ts_model.get_order();
         if( this.has_client_changed() ){
             var cus_name = self.ts_model.getComplexName(this.new_client);
@@ -468,7 +472,7 @@ var CustomerListWidget = TsBaseWidget.extend({
             //     'title': _t('Error: Could not Save Changes'),
             //     'body': _t('Your Internet connection is probably down.'),
             // });
-            alert(_('Error saving partner to the server'))
+            alert(_t('Error saving partner to the server'))
         });
     },
     
