@@ -917,6 +917,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             this._super(parent,options);
             this.ts_model.bind('change:selectedOrder', this.change_selected_order, this);
             this.bind_orderline_events();
+            this.print_id = false;
         },
         bind_orderline_events: function() {
             this.order_model = this.ts_model.get('selectedOrder');
@@ -1072,32 +1073,38 @@ var TotalsOrderWidget = TsBaseWidget.extend({
         },
         printCurrentOrder: function() {
             var self = this;
+            self.print_id = false
             var current_order = this.ts_model.get('selectedOrder')
             if (current_order.get('erp_id')){
-                self.doPrint(current_order.get('erp_id'));
+                if (current_order.get('state') != 'draft'){
+                    self.doPrint(current_order.get('erp_id'));
+                    return;
+                }
+                else{
+                    self.print_id = current_order.get('erp_id')
+                }
             }
-            else{
-                this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
-                $.when( self.ts_model.ready2 )
-                .done(function(){
-                var loaded = self.ts_model.fetch('sale.order',
-                                               ['id', 'name'],
-                                               [
-                                                   ['chanel', '=', 'telesale']
-                                               ])
-                   .then(function(orders){
-                       if (orders[0]) {
-                       var my_id = orders[0].id
-                       $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
-                       .done(function(){
-                            var currentOrder = self.ts_model.get('selectedOrder')
-                            self.doPrint(currentOrder.get('erp_id'));
-                       });
 
-                     }
-                   });
-                });
+            this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
+            $.when( self.ts_model.ready2 )
+            .done(function(){
+            var domain = [['chanel', '=', 'telesale']]
+            if (self.print_id){
+                domain = [['id', '=', self.print_id]]
             }
+            var loaded = self.ts_model.fetch('sale.order', ['id', 'name'], domain)
+               .then(function(orders){
+                   if (orders[0]) {
+                   var my_id = orders[0].id
+                   $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
+                   .done(function(){
+                        var currentOrder = self.ts_model.get('selectedOrder')
+                        self.doPrint(currentOrder.get('erp_id'));
+                   });
+
+                 }
+               });
+            });
         },
         saveCurrentOrder: function() {
             var currentOrder = this.order_model;
