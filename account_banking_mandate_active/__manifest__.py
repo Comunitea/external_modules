@@ -28,6 +28,6 @@
     "website": "http://www.comunitea.com",
     "depends" : ["account_banking_mandate", "res_partner_bank_active"],
     "category" : "Accounting",
-    "data" : [],
+    "data" : ['views/account_banking_mandate_view.xml'],
     'installable': True,
 }
