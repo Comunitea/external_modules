@@ -23,11 +23,11 @@
     "description": """
        Allows to deactive partner bank accounts
     """,
-    "version" : "8.0.1.0.0",
+    "version" : "10.0.1.0.0",
     "author" : "Comunitea",
     "website": "http://www.comunitea.com",
     "depends" : ["base"],
     "category" : "Accounting",
     "data" : ["views/res_partner_bank_view.xml"],
-    'installable': False,
+    'installable': True,
 }

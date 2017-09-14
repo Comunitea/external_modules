@@ -23,11 +23,11 @@
     "description": """
        Allows to deactive banking mandates
     """,
-    "version" : "8.0.1.0.0",
+    "version" : "10.0.1.0.0",
     "author" : "Comunitea",
     "website": "http://www.comunitea.com",
     "depends" : ["account_banking_mandate", "res_partner_bank_active"],
     "category" : "Accounting",
     "data" : [],
-    'installable': False,
+    'installable': True,
 }
