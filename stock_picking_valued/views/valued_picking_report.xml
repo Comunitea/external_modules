@@ -108,20 +108,22 @@
                                     </t>
                                     <t t-if="o.state == 'done'">
                                         <tr t-foreach="o.pack_operation_ids.sorted(key=lambda r: r.product_id.id)" t-as="operation">
-                                            <td><span t-field="operation.linked_move_operation_ids[0].move_id.name"/></td>
-                                            <td class="text-right">
-                                                <span t-field="operation.product_qty"/>
-                                                <span t-field="operation.product_uom_id" groups="product.group_uom"/>
-                                            </td>
-                                            <td class="text-right"><span t-field="operation.lot_id"/></td>
-                                            <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'"><span
-                                                    t-field="operation.linked_move_operation_ids[0].move_id.order_price_unit"
-                                                    t-field-options='{"widget": "monetary", "display_currency": "o.sale_id.pricelist_id.currency_id"}'/>
-                                            </td>
-                                            <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'">
-                                                <span t-field="operation.price_subtotal"
-                                                    t-field-options='{"widget": "monetary", "display_currency": "o.sale_id.pricelist_id.currency_id"}'/>
-                                            </td>
+                                            <t t-if="operation.linked_move_operation_ids and operation.linked_move_operation_ids[0].move_id">
+                                                <td><span t-field="operation.linked_move_operation_ids[0].move_id.name"/></td>
+                                                <td class="text-right">
+                                                    <span t-field="operation.product_qty"/>
+                                                    <span t-field="operation.product_uom_id" groups="product.group_uom"/>
+                                                </td>
+                                                <td class="text-right"><span t-field="operation.lot_id"/></td>
+                                                <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'"><span
+                                                        t-field="operation.linked_move_operation_ids[0].move_id.order_price_unit"
+                                                        t-field-options='{"widget": "monetary", "display_currency": "o.sale_id.pricelist_id.currency_id"}'/>
+                                                </td>
+                                                <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'">
+                                                    <span t-field="operation.price_subtotal"
+                                                        t-field-options='{"widget": "monetary", "display_currency": "o.sale_id.pricelist_id.currency_id"}'/>
+                                                </td>
+                                            </t>
                                         </tr>
                                     </t>
                                 </tbody>
