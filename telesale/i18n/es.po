@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-07 17:05+0000\n"
-"PO-Revision-Date: 2017-09-07 17:05+0000\n"
+"POT-Creation-Date: 2017-10-09 16:03+0000\n"
+"PO-Revision-Date: 2017-10-09 16:03+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -474,6 +474,13 @@ msgid "City"
 msgstr "Ciudad"
 
 #. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/js/customer_list_widgets.js:462
+#, python-format
+msgid "City Is Required"
+msgstr "La ciudad es obligatoria"
+
+#. module: telesale
 #: model:ir.ui.view,arch_db:telesale.ts_session_opening_form_view
 msgid "Click to start a session."
 msgstr "Click para empezar la sesión de televenta"
@@ -557,7 +564,7 @@ msgstr "Creado por"
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config_create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Creado en"
 
 #. module: telesale
 #. openerp-web
@@ -676,7 +683,7 @@ msgstr "Descuento:"
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config_display_name
 msgid "Display Name"
-msgstr "Nombre a mostrar"
+msgstr "Nombre mostrado"
 
 #. module: telesale
 #. openerp-web
@@ -712,6 +719,13 @@ msgstr "Eliminar línea de pedido"
 #, python-format
 msgid "Email"
 msgstr "Email"
+
+#. module: telesale
+#. openerp-web
+#: code:addons/telesale/static/src/js/customer_list_widgets.js:480
+#, python-format
+msgid "Error saving partner to the server"
+msgstr "Error saving partner to the server"
 
 #. module: telesale
 #: code:addons/telesale/models/product.py:56
@@ -850,7 +864,7 @@ msgstr "Última actualización por"
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_ts_config_write_date
 msgid "Last Updated on"
-msgstr "Última actualización el"
+msgstr "Última actualización en"
 
 #. module: telesale
 #. openerp-web
@@ -995,12 +1009,12 @@ msgstr "IMPRIMIR"
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:171
 #, python-format
 msgid "Parent"
-msgstr "Padre"
+msgstr "Asociar a cliente"
 
 #. module: telesale
 #: model:ir.model,name:telesale.model_res_partner
 msgid "Partner"
-msgstr "Empresa"
+msgstr "Partner"
 
 #. module: telesale
 #. openerp-web
@@ -1450,14 +1464,14 @@ msgstr "No se puede establecer como cliente del pedido porque no es del tipo com
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:1032
+#: code:addons/telesale/static/src/js/new_order_widgets.js:1033
 #, python-format
 msgid "You cant cancel an order which state is diferent than draft."
 msgstr "No puedes cancelar un pedido cuyo estado sea diferente de presupuesto"
 
 #. module: telesale
 #. openerp-web
-#: code:addons/telesale/static/src/js/new_order_widgets.js:1098
+#: code:addons/telesale/static/src/js/new_order_widgets.js:1113
 #, python-format
 msgid "You cant save as draft an order which state is diferent than draft."
 msgstr "No puedes guardar un pedido cuyo estado sea diferente de presupuesto"

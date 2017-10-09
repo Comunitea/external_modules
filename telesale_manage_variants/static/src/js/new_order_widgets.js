@@ -70,6 +70,7 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
     // Get product if only one variant, open grid if more than one variant
     perform_onchange: function(key){
         this._super(key);
+        var current_olines = this.ts_model.get('selectedOrder').get('orderLines').models
         if (key == 'template'){
             var value = this.$('.col-'+key).val();
             // Case name not valid
@@ -83,6 +84,21 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
                 this.refresh('qty');
             }
             else{
+                //Check if a template is already in order lines
+                var template_obj = this.get_template();
+                for (var key2 in current_olines){
+                    var o_line = current_olines[key2];
+                    var line_product_id =  this.ts_model.db.template_name_id[o_line.get('template')];
+                    if (o_line.cid != this.model.cid && line_product_id == template_obj.id){
+                         alert(_t("Template '" + template_obj.name + "' is already in the order"));
+                          this.model.set('template', "");
+                          this.model.set('product', "");
+                          this.model.set('description', "");
+                          this.model.set('product_uos_qty', 0.0);
+                          this.refresh('qty');
+                          this.ts_widget.new_order_screen.order_widget.button_remove_line()
+                    }
+                }
                 // Get product from model
                 if (template_obj.product_variant_count == 1){
                     this.model.mode = 'template_single'
@@ -108,7 +124,7 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
             var value = this.$('.col-'+key).val();
             if (value != this.model.get('template')){
                 this.order_widget.remove_lines_chlid_variants(this.model);
-            }
+            } 
         }
         this._super(key);
     },
