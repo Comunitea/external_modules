@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-24 11:05+0000\n"
-"PO-Revision-Date: 2017-05-24 11:05+0000\n"
+"POT-Creation-Date: 2017-10-09 15:57+0000\n"
+"PO-Revision-Date: 2017-10-09 15:57+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:54
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:58
 #, python-format
 msgid "Add Qty"
 msgstr "Añadir Cant."
@@ -31,7 +31,7 @@ msgstr "Cerrar"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:67
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:71
 #, python-format
 msgid "Disc"
 msgstr "Desc."
@@ -45,25 +45,30 @@ msgstr "Grid"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/js/new_order_widgets.js:52
+#: code:addons/telesale_manage_variants/static/src/js/new_order_widgets.js:62
 #, python-format
 msgid "No template defined to open grid"
 msgstr "No hay plantilla de producto definida para abrir el grid"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/js/new_order_widgets.js:269
-#: code:addons/telesale_manage_variants/static/src/js/new_order_widgets.js:304
+#: code:addons/telesale_manage_variants/static/src/js/new_order_widgets.js:295
+#: code:addons/telesale_manage_variants/static/src/js/new_order_widgets.js:330
 #, python-format
 msgid "Please select a customer before adding a order line"
 msgstr "Por favor selecciona un cliente antes de añadir una línea de venta"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:59
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:63
 #, python-format
 msgid "Price"
 msgstr "Precio"
+
+#. module: telesale_manage_variants
+#: model:ir.model,name:telesale_manage_variants.model_product_product
+msgid "Product"
+msgstr "Product"
 
 #. module: telesale_manage_variants
 #: model:ir.model,name:telesale_manage_variants.model_product_template
@@ -72,14 +77,14 @@ msgstr "Plantilla de producto"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:51
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:55
 #, python-format
 msgid "Qty"
 msgstr "Cant."
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:45
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:49
 #, python-format
 msgid "STOCK:"
 msgstr "STOCK:"
@@ -110,14 +115,21 @@ msgstr "Plantilla producto"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/js/new_order_widgets.js:69
+#: code:addons/telesale_manage_variants/static/src/js/new_order_widgets.js:93
+#, python-format
+msgid "Template '' is already in the order"
+msgstr "El producto '' ya está en el pedido."
+
+#. module: telesale_manage_variants
+#. openerp-web
+#: code:addons/telesale_manage_variants/static/src/js/new_order_widgets.js:80
 #, python-format
 msgid "Template name '' does not exist"
 msgstr "El nombre de plantilla de producto no existe"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:21
+#: code:addons/telesale_manage_variants/static/src/xml/popups_template.xml:24
 #, python-format
 msgid "Update Variants"
 msgstr "Actualizar variantes"
@@ -131,7 +143,7 @@ msgstr "VARIANTES"
 
 #. module: telesale_manage_variants
 #. openerp-web
-#: code:addons/telesale_manage_variants/static/src/js/popups.js:198
+#: code:addons/telesale_manage_variants/static/src/js/popups.js:213
 #, python-format
 msgid "is not a valid number"
 msgstr " No es un número válido"
