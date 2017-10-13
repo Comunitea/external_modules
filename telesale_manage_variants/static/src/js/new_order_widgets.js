@@ -89,7 +89,7 @@ var OrderlineWidget = NewOrderWidgets.OrderlineWidget.include({
                 for (var key2 in current_olines){
                     var o_line = current_olines[key2];
                     var line_product_id =  this.ts_model.db.template_name_id[o_line.get('template')];
-                    if (o_line.cid != this.model.cid && line_product_id == template_obj.id){
+                    if (o_line.cid != this.model.cid && line_product_id == template_obj.id && template_obj.product_variant_count > 1){
                          alert(_t("Template '" + template_obj.name + "' is already in the order"));
                           this.model.set('template', "");
                           this.model.set('product', "");
