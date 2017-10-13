@@ -112,10 +112,16 @@ class ProductProduct(models.Model):
         return res
 
     @api.model
-    def ts_search_products(self, product_name, partner_id, pricelist_id,
+    def ts_search_products(self, product_name, product_barcode, partner_id, pricelist_id,
                            offset=0):
         res = []
         domain = [('display_name', 'ilike', product_name)]
+        if product_barcode:
+            domain2 = ('barcode', 'ilike', product_barcode)
+            if product_name:
+                domain.append(domain2)
+            else:  # Only search by barcode
+                domain = [domain2]
         stock_field = self._get_stock_field()
         fields = ['id', 'display_name', 'default_code', stock_field, 'price',
                   'taxes_id']

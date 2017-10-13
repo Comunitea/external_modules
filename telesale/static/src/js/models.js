@@ -88,7 +88,7 @@ var TsModel = Backbone.Model.extend({
         return new Model(model).query(fields).filter(domain).order_by(orderby).context(ctx).all()
     },
     _get_product_fields: function(){
-        return  ['display_name', 'default_code', 'uom_id']
+        return  ['display_name', 'default_code', 'uom_id', 'barcode']
     },
     _get_partner_fields: function(){
         return  ['parent_id', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type']
