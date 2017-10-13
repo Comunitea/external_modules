@@ -1243,7 +1243,7 @@ msgstr "Línea de pedido de venta"
 #: code:addons/telesale/static/src/xml/product_catalog_template.xml:16
 #, python-format
 msgid "Search Barcode"
-msgstr "Search Barcode"
+msgstr "Buscar código de barras"
 
 #. module: telesale
 #. openerp-web
