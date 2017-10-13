@@ -137,7 +137,8 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         var search_str = product_name.replace('*', '%')
-        var loaded = model.call("ts_search_products", [search_str, product_barcode, partner_id, pricelist_id, offset])
+        var search_barcode = product_barcode.replace('*', '%')
+        var loaded = model.call("ts_search_products", [search_str, search_barcode, partner_id, pricelist_id, offset])
         .then(function(result){
             self.catalog_products = result['products'];
             self.result_str = result['result_str']
