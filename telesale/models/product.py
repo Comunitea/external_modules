@@ -115,7 +115,6 @@ class ProductProduct(models.Model):
     def ts_search_products(self, product_name, product_barcode, partner_id, pricelist_id,
                            offset=0):
         res = []
-        import ipdb; ipdb.set_trace()
         domain = [('display_name', 'ilike', product_name)]
         if product_barcode:
             domain2 = ('barcode', 'ilike', product_barcode)
