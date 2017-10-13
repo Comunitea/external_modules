@@ -124,11 +124,12 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         this._super(parent,options);
         this.catalog_products = [];
         this.last_search = "";
+        this.last_barcode_search = "";
         this.page = 1;
         this.result_str = "";
     },
 
-    load_products_from_server: function(product_name, offset){
+    load_products_from_server: function(product_name, product_barcode, offset){
         var self=this;
         var model = new Model("product.product");
         // Wee need the partner to ger the product price from server.
@@ -136,7 +137,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         var search_str = product_name.replace('*', '%')
-        var loaded = model.call("ts_search_products", [search_str, partner_id, pricelist_id, offset])
+        var loaded = model.call("ts_search_products", [search_str, product_barcode, partner_id, pricelist_id, offset])
         .then(function(result){
             self.catalog_products = result['products'];
             self.result_str = result['result_str']
@@ -148,13 +149,16 @@ var ProductCatalogWidget = TsBaseWidget.extend({
     searchProducts: function(mode){
         var self=this;
         var product_name = this.$('#search-product').val()
+        var product_barcode = this.$('#search-product-barcode').val()
         this.last_search = product_name
+        this.last_barcode_search = product_barcode
         var offset = (this.page - 1) * 100;
 
-        $.when(this.load_products_from_server(product_name, offset))
+        $.when(this.load_products_from_server(product_name, product_barcode, offset))
         .done(function(){
             self.renderElement();
             self.$('#search-product').val(self.last_search)
+            self.$('#search-product-barcode').val(self.last_barcode_search)
         })
     },
 
