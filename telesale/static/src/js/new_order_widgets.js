@@ -595,9 +595,14 @@ var OrderWidget = TsBaseWidget.extend({
             }
         },
         button_promo: function(){
-           var self = this;
-           var current_order = this.ts_model.get('selectedOrder')
-           current_order.set('set_promotion', true)
+            var self = this;
+            var currentOrder = this.ts_model.get('selectedOrder')
+            currentOrder.set('set_promotion', true)
+            var currentOrder = this.ts_model.get('selectedOrder')
+            if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
+                alert(_t('You cant apply customer rules to an order which state is diferent than draft.'));
+                return;
+            }
            this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder(true)
            $.when( self.ts_model.ready2 )
            .done(function(){
@@ -1043,34 +1048,6 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             else if ( currentOrder.check() ){
                 this.ts_model.cancel_order(currentOrder.get('erp_id'));
             }
-        },
-        button_promo: function(){
-           var self = this;
-           var current_order = this.ts_model.get('selectedOrder')
-           if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
-                alert(_t('You cant apply customer rules to an order which state is diferent than draft.'));
-                return;
-            }
-           current_order.set('set_promotion', true)
-           this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder(true)
-           $.when( self.ts_model.ready2 )
-           .done(function(){
-           var loaded = self.ts_model.fetch('sale.order',
-                                           ['id', 'name'],
-                                           [
-                                               ['chanel', '=', 'telesale']
-                                           ])
-               .then(function(orders){
-                   if (orders[0]) {
-                   var my_id = orders[0].id
-                   $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
-                   .done(function(){
-                   });
-
-                 }
-               });
-            });
-            
         },
         doPrint: function(erp_id){
             this.do_action({
