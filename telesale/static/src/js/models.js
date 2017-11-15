@@ -33,6 +33,7 @@ var TsModel = Backbone.Model.extend({
         this.db = new DB.TS_LS();                       // a database used to store the products and categories
         // this.db.clear('products','partners');
         this.ts_widget = attributes.ts_widget;
+        this.last_sale_id = null; // last id writed
         this.set({
             'currency':              {symbol: $, position: 'after'},
             'shop':                  null,
@@ -290,11 +291,12 @@ var TsModel = Backbone.Model.extend({
                 self._flush(index+1);
                 self.ready2.reject()
             })
-            .done(function(){
+            .done(function(orders){
                 //remove from db if success
                 self.db.remove_order(order.id);
                 self._flush(index);
                 self.get('selectedOrder').destroy(); // remove order from UI
+                self.last_sale_id = orders[0]
                 self.ready2.resolve()
             });
     },
@@ -314,9 +316,10 @@ var TsModel = Backbone.Model.extend({
                 alert('Ocurrió un fallo en al mandar el pedido al servidor');
                 self.ready2.reject()
             })
-            .done(function(){
+            .done(function(orders){
                 //remove from db if success
                 self.get('selectedOrder').destroy(); // remove order from UI
+                self.last_sale_id = orders[0]
                 self.ready2.resolve()
             });
     },

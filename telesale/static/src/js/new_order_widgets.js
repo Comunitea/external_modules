@@ -48,7 +48,8 @@ var OrderButtonWidget = TsBaseWidget.extend({
         $('.select-order').removeClass('selected-order');
         $(identify).addClass('selected-order');
         // $('.tab1').focus();
-        var value = $('#partner').val()
+        // var value = $('#partner').val()
+        var value = this.ts_model.get('selectedOrder').get('partner')
         var partner_id = this.ts_model.db.partner_name_id[value];
         if(partner_id){
             $('#vua-button').click();
@@ -1114,7 +1115,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             if (!avoid_load){
                 $.when( self.ts_model.ready2 )
                 .done(function(){
-                    var domain = [['chanel', '=', 'telesale']]
+                    var domain = [['id', '=', self.ts_model.last_sale_id]]
                     var loaded = self.ts_model.fetch('sale.order', ['id', 'name'], domain)
                        .then(function(orders){
                            if (orders[0]) {
