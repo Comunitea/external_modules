@@ -6,32 +6,6 @@ var Model = require('web.DataModel');
 
 var TsModelSuper = TsModels.TsModel
 TsModels.TsModel = TsModels.TsModel.extend({
-    // hace que entre dos veces a cargarlo todo
-    // load_server_data: function(){
-    //     var self=this;
-    //     var loaded = TsModelSuper.prototype.load_server_data.call(this,{})
-    //     var template_fields = ['name', 'display_name', 'product_variant_ids', 'product_variant_count']
-    //     var template_domain = [['sale_ok','=',true]]
-    //     // FIX; NOT RENDER DATAWIDGET AT TIME?
-    //     loaded = self.fetch('product.template', template_fields, template_domain)
-    //         .then(function(templates){
-    //             self.db.add_templates(templates);
-
-    //             // Set names list to autocomplete
-    //             self.set('template_names', [])
-    //             for (var key in templates){
-    //                 var tmp = templates[key]
-    //                 self.get('template_names').push(tmp.display_name);
-    //             }
-    //         });
-    //     return TsModelSuper.prototype.load_server_data.call(this,{})
-    // },
-
-    //TOVERWRITED TODO IMPROVE: ver como hacer la herencia de arriba bien
-    // parece que el la sentencia when - done que llama a esta función le basta 
-    // on que el padre esté listo.
-
-
    _get_product_fields: function(){
         var res = TsModelSuper.prototype._get_product_fields.call(this,{});
         res.push('product_tmpl_id');
@@ -53,7 +27,9 @@ TsModels.TsModel = TsModels.TsModel.extend({
                 pvp: 0.0,
                 discount: 0.0,
                 taxes_ids:[],
-                standard_price: 0.0
+                standard_price: 0.0,
+                erp_line_id: false,
+                to_update: false,
             }
         }
         else{
@@ -65,12 +41,12 @@ TsModels.TsModel = TsModels.TsModel.extend({
              mode: line.mode || 'template_single',
              template: line.template || '',
              parent_cid: line.parent_cid || "",
-             variant_related_cid: line.variant_related_cid || {}
+             variant_related_cid: line.variant_related_cid || {},
         }
         $.extend(res, new_vals)
         return res
     },
-        load_server_data: function(){
+    load_server_data: function(){
         var self=this;
 
         var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', this.session.uid]])
@@ -240,11 +216,6 @@ TsModels.TsModel = TsModels.TsModel.extend({
                 var line = new TsModels.Orderline(line_vals);
                 order_model.get('orderLines').add(line);
             }
-
-
-
-
-
         }
     }, 
 

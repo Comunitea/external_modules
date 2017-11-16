@@ -359,6 +359,7 @@ var OrderlineWidget = TsBaseWidget.extend({
             if ( this.model.get(key) != value || key == "discount"){
             // if ( this.model.get(key) != value){
                 this.model.set(key, value);
+                this.model.set('to_update', true);
                 this.perform_onchange(key);
             }
         }
@@ -550,12 +551,19 @@ var OrderWidget = TsBaseWidget.extend({
                 this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product').focus(); //set focus on line when we add one
             }
         },
+        // FULL OVERWRITED IN TELESALE MANAGE VARIANTS
         button_remove_line: function(){
             this.ts_model.get('selectedOrder').removeLine();
             var selected_line = this.ts_model.get('selectedOrder').getSelectedLine();
             if (selected_line){
                 var n_line = selected_line.get('n_line')
                 this.orderlinewidgets[n_line-1].$('.col-product').focus();
+                if (selected_line.get('erp_line_id')){
+                    var model = new Model("sale.order.line");
+                    return model.call("ts_unlink_line", [selected_line.get('erp_line_id')])
+                    .then(function(result){
+                    });
+                }
             }
         },
         button_ult: function(){
@@ -678,7 +686,7 @@ var OrderWidget = TsBaseWidget.extend({
         get_line_fields: function(){
         // Called when load the order lines from server
             var line_fields = ['product_id','product_uom','product_uom_qty','price_unit',
-                               'tax_id', 'price_subtotal', 'discount', 'standard_price'];
+                               'tax_id', 'price_subtotal', 'discount', 'standard_price', 'id'];
             return line_fields;
 
         },

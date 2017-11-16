@@ -85,11 +85,11 @@ class SaleOrder(models.Model):
 
             order_lines = order['lines']
 
-            if order['erp_id'] and order['erp_state'] == 'draft':
-                t_order_line = self.env['sale.order.line']
-                domain = [('order_id', '=', order_obj.id)]
-                line_objs = t_order_line.search(domain)
-                line_objs.unlink()
+            # if order['erp_id'] and order['erp_state'] == 'draft':
+            #     t_order_line = self.env['sale.order.line']
+            #     domain = [('order_id', '=', order_obj.id)]
+            #     line_objs = t_order_line.search(domain)
+            #     line_objs.unlink()
             self._create_lines_from_ui(order_obj, order_lines)
             if order['action_button'] == 'confirm':
                 order_obj.action_confirm()
@@ -101,7 +101,12 @@ class SaleOrder(models.Model):
         t_order_line = self.env['sale.order.line']
         for line in order_lines:
             vals = self._get_ts_line_vals(order_obj, line)
-            t_order_line.create(vals)
+            if line.get('erp_line_id', False):
+                if line.get('to_update', False):
+                    t_order_line.browse(line.get['erp_line_id']).\
+                        write(vals)
+            else:
+                t_order_line.create(vals)
 
     def _get_ts_line_vals(self, order_obj, line):
         t_product = self.env['product.product']
@@ -256,3 +261,8 @@ class SaleOrderLine(models.Model):
             }
             res.append(dic)
         return res
+
+    @api.model
+    def ts_unlink_line(self, erp_line_id):
+        self.browse(erp_line_id).unlink()
+        return

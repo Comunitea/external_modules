@@ -183,7 +183,8 @@ var ProductCatalogWidget = TsBaseWidget.extend({
     },
     //hook
     get_create_line_vals: function(product_id, catalog_vals, mode){
-        return {}
+        return {'erp_line_id': false,
+                'to_update': false}
     },
     // Get an order line by grid cell cid
     get_line_model_by_cid: function(line_cid){

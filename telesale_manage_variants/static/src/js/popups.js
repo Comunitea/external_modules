@@ -101,6 +101,9 @@ var GridWidget = TsBaseWidget.extend({
 
     // OVERWRITED IN JIM TELESALE Set the line model with line_vals info
     set_cell_vals: function(line_model, line_vals){
+        if ( (line_model.get('qty') != line_vals.qty) || (line_model.get('pvp') != line_vals.price) || (line_model.get('discount') != line_vals.discount) ){
+            line_model.set('to_update', true); 
+        }
         line_model.set('qty', line_vals.qty);
         line_model.set('pvp', line_vals.price);
         line_model.set('discount', line_vals.discount);

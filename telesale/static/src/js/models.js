@@ -336,8 +336,12 @@ var TsModel = Backbone.Model.extend({
             total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
             discount: my_round(line.discount, 2) || 0.0,
             taxes_ids: line.tax_id || [],
-            standard_price: line.standard_price || 0.0
+            standard_price: line.standard_price || 0.0,
+            erp_line_id: line.id,
+            to_update: false
         }
+        console.log("******************************************")
+        console.log(vals)
         return vals
     },
  
@@ -571,8 +575,10 @@ var Orderline = Backbone.Model.extend({
             //to calc totals
             margin: options.margin || 0,
             taxes_ids:  options.taxes_ids || [],
-            discount:  options.discount ||0.0,
-            standard_price: options.standard_price || 0.0
+            discount:  options.discount || 0.0,
+            standard_price: options.standard_price || 0.0,
+            erp_line_id: options.erp_line_id || false,
+            to_update: options.to_update || false
         }),
         this.ts_model = options.ts_model;
         this.order = options.order;
@@ -610,6 +616,8 @@ var Orderline = Backbone.Model.extend({
             price_unit: this.get('pvp'),
             tax_ids: this.get('taxes_ids'),
             discount: this.get('discount') || 0.0,
+            erp_line_id: this.get('erp_line_id'),
+            to_update: this.get('to_update')
         };
     },
     get_price_without_tax: function(){
@@ -786,6 +794,12 @@ var Order = Backbone.Model.extend({
             if ( item && item.is_selected() ){
                 this.get('orderLines').remove(item)
                 index = item.get('n_line') - 1;
+                if (item.get('erp_line_id')){
+                    var model = new Model("sale.order.line");
+                    return model.call("ts_unlink_line", [item.get('erp_line_id')])
+                    .then(function(result){
+                    });
+                }
             }
         }, this));
         if ( !$.isEmptyObject( this.get('orderLines')) ){
@@ -853,7 +867,7 @@ var Order = Backbone.Model.extend({
             observations: this.get('observations'),
             client_order_ref: this.get('client_order_ref'),
             set_promotion: this.get('set_promotion'),
-            pricelist_id: this.ts_model.db.pricelist_name_id[this.get('pricelist')]
+            pricelist_id: this.ts_model.db.pricelist_name_id[this.get('pricelist')],
         };
     },
     get_last_line_by: function(period, client_id){
@@ -909,7 +923,9 @@ var Order = Backbone.Model.extend({
                              total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
                              discount: my_round( line.discount || 0.0, 2 ),
                              taxes_ids: line.tax_id || [],
-                             standard_price: line.standard_price || 0.0
+                             standard_price: line.standard_price || 0.0,
+                             erp_line_id: false,
+                             to_update: false,
                             }
             var line = new Orderline(line_vals);
             this.get('orderLines').add(line);

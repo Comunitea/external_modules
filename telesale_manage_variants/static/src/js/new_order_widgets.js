@@ -311,8 +311,13 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
             this.$('.header-template').hide();
             this.$('.header-grid').hide();
         }
+    },
+    get_line_fields: function(){
+        var res = this._super();
+        res.push('template_line')
+        return res
     }
-    });
+});
 
 
 var SoldProductLineWidget = NewOrderWidgets.SoldProductLineWidget.include({
