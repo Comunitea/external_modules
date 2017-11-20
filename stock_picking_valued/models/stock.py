@@ -51,6 +51,7 @@ class stock_picking(models.Model):
     @api.depends('move_lines', 'partner_id')
     def _amount_all(self):
         for picking in self:
+            print picking
             taxes = amount_gross = amount_untaxed = 0.0
             cur = picking.partner_id.property_product_pricelist \
                 and picking.partner_id.property_product_pricelist.currency_id \
@@ -98,28 +99,27 @@ class stock_move(models.Model):
     price_subtotal = fields.Float(
         compute='_get_subtotal', string="Subtotal",
         digits=dp.get_precision('Account'), readonly=True,
-        store=True, multi=True)
+        store=True)
     order_price_unit = fields.Float(
         compute='_get_subtotal', string="Price unit",
         digits=dp.get_precision('Product Price'), readonly=True,
-        store=True, multi=True)
+        store=True)
     cost_subtotal = fields.Float(
         compute='_get_subtotal', string="Cost subtotal",
         digits=dp.get_precision('Account'), readonly=True,
-        store=True, multi=True)
+        store=True)
     margin = fields.Float(
         compute='_get_subtotal', string="Margin",
         digits=dp.get_precision('Account'), readonly=True,
-        store=True, multi=True)
+        store=True)
     percent_margin = fields.Float(
         compute='_get_subtotal', string="% margin",
         digits=dp.get_precision('Account'), readonly=True,
-        store=True, multi=True)
+        store=True)
 
     @api.multi
     @api.depends('product_id', 'product_uom_qty', 'procurement_id.sale_line_id')
     def _get_subtotal(self):
-
         for move in self:
             price_unit = 0.0
             if move.procurement_id.sale_line_id:
@@ -128,8 +128,10 @@ class stock_move(models.Model):
                 price_unit = (move.purchase_line_id.price_unit * (1-(move.purchase_line_id.discount or 0.0)/100.0))
             else:
                 continue
-
-            cost_price = move.product_id.standard_price or 0.0
+            cost_price = self.env['product.template'].get_history_price(move.product_id.product_tmpl_id.id,
+                                                                        move.company_id.id,
+                                                                        date=move.date)
+            cost_price = cost_price or move.with_context(force_company=move.company_id.id).product_id.standard_price
             move.price_subtotal = price_unit * move.product_uom_qty
             move.order_price_unit = price_unit
             move.cost_subtotal = cost_price * move.product_uom_qty
@@ -140,21 +142,30 @@ class stock_move(models.Model):
                 move.percent_margin = 0
 
 
-
 class StockPackOperation(models.Model):
 
     _inherit = 'stock.pack.operation'
 
+    price_unit = fields.Float(
+        compute='_get_subtotal', string="Price unit",
+        digits=dp.get_precision('Product Price'), readonly=True,
+        store=True)
     price_subtotal = fields.Float(
         compute='_get_subtotal', string="Subtotal",
-        digits=dp.get_precision('Account'), readonly=True, store=True)
+        digits=dp.get_precision('Account'), readonly=True,
+        store=True)
 
     @api.multi
     @api.depends('product_qty',
-                 'linked_move_operation_ids.move_id.order_price_unit')
+                 'linked_move_operation_ids.move_id.product_id',
+                 'linked_move_operation_ids.move_id.product_uom_qty',
+                 'linked_move_operation_ids.move_id.procurement_id.sale_line_id')
     def _get_subtotal(self):
         for operation in self:
             subtotal = 0.0
             for link in operation.linked_move_operation_ids:
-                price_unit = link.move_id.order_price_unit
-                operation.price_subtotal = price_unit * operation.product_qty
+                move_id = link.move_id
+                subtotal += move_id.price_subtotal * link.qty / move_id.product_uom_qty
+            if operation.linked_move_operation_ids:
+                operation.price_unit = subtotal / operation.product_qty
+                operation.price_subtotal = subtotal

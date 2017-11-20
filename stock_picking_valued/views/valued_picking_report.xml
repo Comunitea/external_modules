@@ -116,7 +116,7 @@
                                                 </td>
                                                 <td class="text-right"><span t-field="operation.lot_id"/></td>
                                                 <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'"><span
-                                                        t-field="operation.linked_move_operation_ids[0].move_id.order_price_unit"
+                                                        t-field="operation.price_unit"
                                                         t-field-options='{"widget": "monetary", "display_currency": "o.sale_id.pricelist_id.currency_id"}'/>
                                                 </td>
                                                 <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'">
