@@ -29,11 +29,12 @@ var TsModel = Backbone.Model.extend({
         this.session = session;  // openerp session
         this.ready = $.Deferred(); // used to notify the GUI that the PosModel has loaded all resources
         this.ready2 = $.Deferred(); // used to notify the GUI that thepromotion has writed in the server
+        this.ready3 = $.Deferred(); // used to notify the GUI that tsavecurrentorder is finished
         // this.flush_mutex = new $.Mutex();  // used to make sure the orders are sent to the server once at time
         this.db = new DB.TS_LS();                       // a database used to store the products and categories
         // this.db.clear('products','partners');
         this.ts_widget = attributes.ts_widget;
-        this.last_sale_id = null; // last id writed
+        this.last_sale_id = false; // last id writed
         this.set({
             'currency':              {symbol: $, position: 'after'},
             'shop':                  null,
@@ -289,7 +290,8 @@ var TsModel = Backbone.Model.extend({
                 //don't show error popup if it fails
                 console.error('Failed to send order:',order);
                 self._flush(index+1);
-                self.ready2.reject()
+                self.ready2.reject();
+                self.last_sale_id = false
             })
             .done(function(orders){
                 //remove from db if success
@@ -315,6 +317,7 @@ var TsModel = Backbone.Model.extend({
             .fail(function(unused, event){
                 alert('Ocurrió un fallo en al mandar el pedido al servidor');
                 self.ready2.reject()
+                self.last_sale_id = false
             })
             .done(function(orders){
                 //remove from db if success
