@@ -1078,14 +1078,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             self.ts_model.ready3 = $.Deferred();
             self.print_id = false
             var current_order = this.ts_model.get('selectedOrder')
-            if (current_order.get('erp_id')){
-                // if (current_order.get('state') != 'draft'){
-                //     self.doPrint(current_order.get('erp_id'));
-                //     return;
-                // }
-                // else{
-                //     self.print_id = current_order.get('erp_id')
-                // }
+            if (current_order.get('erp_id') && false){  // No hacerlo nunca, por si se modifica y se imprime un presupuesto
                 self.doPrint(current_order.get('erp_id'));
             }
             else{
@@ -1093,22 +1086,6 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                 this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
                 $.when( self.ts_model.ready3 )
                 .done(function(){
-                    // var domain = [['chanel', '=', 'telesale']]
-                    // if (self.print_id){
-                    //     domain = [['id', '=', self.print_id]]
-                    // }
-                    // var loaded = self.ts_model.fetch('sale.order', ['id', 'name'], domain)
-                    //    .then(function(orders){
-                    //        if (orders[0]) {
-                    //        var my_id = orders[0].id
-                    //        $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
-                    //        .done(function(){
-                    //             var currentOrder = self.ts_model.get('selectedOrder')
-                    //             self.doPrint(currentOrder.get('erp_id'));
-                    //        });
-
-                    //      }
-                    //    });
                     var currentOrder = self.ts_model.get('selectedOrder')
                     self.doPrint(currentOrder.get('erp_id'));
                 });
