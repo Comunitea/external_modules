@@ -1078,11 +1078,10 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             self.ts_model.ready3 = $.Deferred();
             self.print_id = false
             var current_order = this.ts_model.get('selectedOrder')
-            if (current_order.get('erp_id') && false){  // No hacerlo nunca, por si se modifica y se imprime un presupuesto
+            if (current_order.get('erp_id') && current_order.get('erp_state') != 'draft'){
                 self.doPrint(current_order.get('erp_id'));
             }
             else{
-
                 this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
                 $.when( self.ts_model.ready3 )
                 .done(function(){
