@@ -51,7 +51,6 @@ class stock_picking(models.Model):
     @api.depends('move_lines', 'partner_id')
     def _amount_all(self):
         for picking in self:
-            print picking
             taxes = amount_gross = amount_untaxed = 0.0
             cur = picking.partner_id.property_product_pricelist \
                 and picking.partner_id.property_product_pricelist.currency_id \
@@ -148,18 +147,12 @@ class StockPackOperation(models.Model):
 
     price_unit = fields.Float(
         compute='_get_subtotal', string="Price unit",
-        digits=dp.get_precision('Product Price'), readonly=True,
-        store=True)
+        digits=dp.get_precision('Product Price'), readonly=True)
     price_subtotal = fields.Float(
         compute='_get_subtotal', string="Subtotal",
-        digits=dp.get_precision('Account'), readonly=True,
-        store=True)
+        digits=dp.get_precision('Account'), readonly=True)
 
     @api.multi
-    @api.depends('product_qty',
-                 'linked_move_operation_ids.move_id.product_id',
-                 'linked_move_operation_ids.move_id.product_uom_qty',
-                 'linked_move_operation_ids.move_id.procurement_id.sale_line_id')
     def _get_subtotal(self):
         for operation in self:
             subtotal = 0.0

@@ -97,8 +97,7 @@
                                                     </t>
                                                 </td>
                                                 <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'"><span
-                                                        t-field="move.order_price_unit"
-                                                        t-field-options='{"widget": "monetary", "display_currency": "o.sale_id.pricelist_id.currency_id"}'/></td>
+                                                        t-field="move.order_price_unit"/></td>
                                                 <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'">
                                                     <span t-field="move.price_subtotal"
                                                         t-field-options='{"widget": "monetary", "display_currency": "o.sale_id.pricelist_id.currency_id"}'/>
@@ -116,8 +115,7 @@
                                                 </td>
                                                 <td class="text-right"><span t-field="operation.lot_id"/></td>
                                                 <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'"><span
-                                                        t-field="operation.price_unit"
-                                                        t-field-options='{"widget": "monetary", "display_currency": "o.sale_id.pricelist_id.currency_id"}'/>
+                                                        t-field="operation.price_unit"/>
                                                 </td>
                                                 <td class="text-right" t-if="o.valued_picking == True and o.picking_type_id.code == 'outgoing'">
                                                     <span t-field="operation.price_subtotal"
