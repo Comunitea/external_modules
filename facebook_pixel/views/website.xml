@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2017 Comunitea
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+    <data>
+
+        <record id="view_website_add_facebook_pixel" model="ir.ui.view">
+            <field name="name">website.form</field>
+            <field name="model">website</field>
+            <field name="inherit_id" ref="website.view_website_form"/>
+            <field name="arch" type="xml">
+                <field name="google_analytics_key" position="after">
+                    <field name="pixel_id" placeholder="123456789"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_website_settings_add_facebook_pixel" model="ir.ui.view">
+            <field name="name">Website settings</field>
+            <field name="model">website.config.settings</field>
+            <field name="inherit_id" ref="website.view_website_config_settings"/>
+            <field name="arch" type="xml">
+                <div name="google_analytics_key" position="after">
+                    <label for="pixel_id"/>
+                    <div name="pixel_id">
+                        <div class="oe_inline">
+                            <field name="pixel_id" placeholder="123456789"/>
+                        </div>
+                    </div>
+                </div>
+            </field>
+        </record>
+
+        <template id="layout_facebook_pixel" inherit_id="website.layout">
+            <xpath expr="//head" position="inside">
+                <t t-if="website and website.pixel_id">
+                    <script t-esc="website.pixel_script"/>
+                    <noscript>
+                        <img height="1" width="1" style="display:none" t-att-src="'https://www.facebook.com/tr?id=%s&amp;ev=PageView&amp;noscript=1' % website.pixel_id"/>
+                    </noscript>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="redsys_result_ok_add_pixel" inherit_id="payment_redsys.redsys_result_ok">
+            <xpath expr="//section[@id='redsys_ok']" position="inside">
+                <script>
+                    fbq('track', 'Lead');
+                </script>
+            </xpath>
+        </template>
+
+        <template id="redsys_result_ko_add_pixel" inherit_id="payment_redsys.redsys_result_ko">
+            <xpath expr="//section[@id='redsys_ok']" position="inside">
+                <script>
+                    fbq('track', 'Lead');
+                </script>
+            </xpath>
+        </template>
+
+        <template id="website_sale_confirmation_add_pixel" inherit_id="website_sale.confirmation">
+            <xpath expr="//div[@id='wrap']" position="inside">
+                <script>
+                    fbq('track', 'Lead');
+                </script>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>
