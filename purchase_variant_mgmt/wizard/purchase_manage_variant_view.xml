@@ -15,6 +15,8 @@
                        widget="x2many_2d_matrix"
                        field_x_axis="value_x"
                        field_y_axis="value_y"
+                       y_axis_order="y_order"
+                       x_axis_order="x_order"
                        field_value = "product_qty"
                        field_att_disabled="disabled"
                        x_axis_clickable="0"

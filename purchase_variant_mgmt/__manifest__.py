@@ -16,6 +16,7 @@
     "data": [
         'wizard/purchase_manage_variant_view.xml',
         'views/purchase_view.xml',
+        'views/widget_assets.xml',
     ],
     "installable": True
 }

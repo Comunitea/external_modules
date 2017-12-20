@@ -16,10 +16,19 @@ class PurchaseManageVariant(models.TransientModel):
     def onchange(self, values, field_name, field_onchange):  # pragma: no cover
         if "variant_line_ids" in field_onchange:
             for sub in ("product_id", "disabled", "value_x", "value_y",
-                        "product_qty"):
+                        "product_qty", "y_order", "x_order"):
                 field_onchange.setdefault("variant_line_ids." + sub, u"")
         return super(PurchaseManageVariant, self).onchange(
             values, field_name, field_onchange)
+
+    @api.model
+    def _get_order_str(self, values):
+        res = ""
+        if values:
+            str_ids = map(str, values.ids)   # already_ordered
+            res = ','.join(str_ids)
+        return res
+
 
     @api.onchange('product_tmpl_id')
     def _onchange_product_tmpl_id(self):
@@ -38,6 +47,11 @@ class PurchaseManageVariant(models.TransientModel):
         line_x = template.attribute_line_ids[0]
         line_y = False if num_attrs == 1 else template.attribute_line_ids[1]
         lines = []
+
+        x_order_str = self._get_order_str(line_x.value_ids)
+        y_order_str = \
+            self._get_order_str(line_y and line_y.value_ids or [False])
+
         for value_x in line_x.value_ids:
             for value_y in line_y and line_y.value_ids or [False]:
                 # Filter the corresponding product for that values
@@ -54,6 +68,8 @@ class PurchaseManageVariant(models.TransientModel):
                     'value_x': value_x,
                     'value_y': value_y,
                     'product_qty': order_line.product_qty,
+                    'x_order': x_order_str,
+                    'y_order': y_order_str,
                 }))
         self.variant_line_ids = lines
 
@@ -101,3 +117,5 @@ class PurchaseManageVariantLine(models.TransientModel):
     value_y = fields.Many2one(comodel_name='product.attribute.value')
     product_qty = fields.Float(
         string="Quantity", digits=dp.get_precision('Product UoS'))
+    x_order = fields.Char('X axis order')
+    y_order = fields.Char('Y axis order')
