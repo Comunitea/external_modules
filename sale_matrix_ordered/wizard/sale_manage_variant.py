@@ -51,7 +51,7 @@ class SaleManageVariant(models.TransientModel):
 
         x_order_str = self._get_order_str(line_x.value_ids)
         y_order_str = \
-            self._get_order_str(line_y and line_y.value_ids or [False])
+            self._get_order_str(line_y and line_y.value_ids or False)
 
         for value_x in line_x.value_ids:
             for value_y in line_y and line_y.value_ids or [False]:
