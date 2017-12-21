@@ -3,20 +3,18 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 {
-    'name': "Purchase Variant Management",
+    'name': "Purchase Matrix Ordered",
     'version': '10.0.1.0.0',
-    'category': 'Textile Vertical',
+    'category': 'Custom',
     'author': 'Comunitea',
     'website': 'http://www.comunitea.com',
     'license': 'AGPL-3',
     "depends": [
-        'purchase',
-        'web_widget_x2many_2d_matrix',
+        'purchase_order_variant_mgmt',
+        'widget_matrix_ordered',
     ],
     "data": [
         'wizard/purchase_manage_variant_view.xml',
-        'views/purchase_view.xml',
-        'views/widget_assets.xml',
     ],
     "installable": True
 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2016 Pedro M. Baeza <pedro.baeza@tecnativa.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
 
-    <record model="ir.ui.view" id="purchase_manage_variant_form">
-        <field name="model">purchase.manage.variant</field>
+    <record model="ir.ui.view" id="sale_manage_variant_form">
+        <field name="model">sale.manage.variant</field>
         <field name="arch" type="xml">
             <form string="Manage Product Variants">
                 <group>
@@ -15,9 +17,7 @@
                        widget="x2many_2d_matrix"
                        field_x_axis="value_x"
                        field_y_axis="value_y"
-                       y_axis_order="y_order"
-                       x_axis_order="x_order"
-                       field_value = "product_qty"
+                       field_value = "product_uom_qty"
                        field_att_disabled="disabled"
                        x_axis_clickable="0"
                        y_axis_clickable="0"
@@ -37,12 +37,25 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="action_purchase_manage_variant">
-        <field name="name">Manage variants</field>
-        <field name="res_model">purchase.manage.variant</field>
-        <field name="view_mode">form</field>
-        <field name="view_type">form</field>
-        <field name="target">new</field>
+
+    <record model="ir.ui.view" id="sale_manage_variant_form_ordered">
+        <field name="model">sale.manage.variant</field>
+        <field name="inherit_id" ref="sale_order_variant_mgmt.sale_manage_variant_form"/>
+        <field name="arch" type="xml">
+            <field name="variant_line_ids" position="replace">
+                <field name="variant_line_ids"
+                       widget="x2many_2d_matrix"
+                       field_x_axis="value_x"
+                       field_y_axis="value_y"
+                       field_value = "product_uom_qty"
+                       field_att_disabled="disabled"
+                       x_axis_clickable="0"
+                       y_axis_clickable="0"
+                       y_axis_order="y_order"
+                       x_axis_order="x_order"
+                />
+            </field>
+        </field>
     </record>
 
 </odoo>
