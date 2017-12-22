@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 # Copyright 2016 Pedro M. Baeza <pedro.baeza@tecnativa.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
-import odoo.addons.decimal_precision as dp
 from odoo import api, models, fields
 
 
 class SaleManageVariant(models.TransientModel):
     _inherit = 'sale.manage.variant'
+
+    route_id = fields.Many2one('stock.location.route', string='Route',
+                               domain=[('sale_selectable', '=', True)])
 
     # FULL OVERWRITE
     # ADD X Y ORDER FIELDS
@@ -74,6 +75,34 @@ class SaleManageVariant(models.TransientModel):
                 }))
         self.variant_line_ids = lines
 
+    # Add route to writed lines
+    @api.multi
+    def button_transfer_to_order(self):
+        """
+        Add route to writed lines
+        """
+        self.ensure_one()
+        super(SaleManageVariant, self).button_transfer_to_order()
+        context = self.env.context
+        record = self.env[context['active_model']].browse(context['active_id'])
+
+        route_id = self.route_id.id
+        if route_id:
+            lines2write = self.env['sale.order.line']
+            record = self.env[context['active_model']].\
+                browse(context['active_id'])
+            if context['active_model'] == 'sale.order.line':
+                sale_order = record.order_id
+            else:
+                sale_order = record
+
+            for line in self.variant_line_ids:
+                order_line = sale_order.order_line.filtered(
+                    lambda x: x.product_id == line.product_id)
+                if order_line:
+                    lines2write += order_line
+            lines2write.write({'route_id': route_id})
+
 
 class SaleManageVariantLine(models.TransientModel):
     _inherit = 'sale.manage.variant.line'
@@ -81,4 +110,3 @@ class SaleManageVariantLine(models.TransientModel):
     # Adding ordered fields in order to read it in the javascript widget
     x_order = fields.Char('X axis order')
     y_order = fields.Char('Y axis order')
-
