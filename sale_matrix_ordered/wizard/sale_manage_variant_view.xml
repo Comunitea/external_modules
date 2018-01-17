@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2016 Pedro M. Baeza <pedro.baeza@tecnativa.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <!-- Sale manager variant form -->
+    <record model="ir.ui.view" id="sale_manage_variant_form_ordered">
+        <field name="model">sale.manage.variant</field>
+        <field name="inherit_id" ref="sale_order_variant_mgmt.sale_manage_variant_form"/>
+        <field name="arch" type="xml">
+            <!-- Add x_order and y_order -->
+            <field name="variant_line_ids" position="replace">
+                <field name="variant_line_ids"
+                       widget="x2many_2d_matrix"
+                       field_x_axis="value_x"
+                       field_y_axis="value_y"
+                       field_value = "product_uom_qty"
+                       field_att_disabled="disabled"
+                       x_axis_clickable="0"
+                       y_axis_clickable="0"
+                       y_axis_order="y_order"
+                       x_axis_order="x_order"
+                />
+            </field>
+
+            <!-- Add route field -->
+            <field name="product_tmpl_id" position="after">
+                <field name="route_id"/>
+            </field>
+
+        </field>
+    </record>
+
+</odoo>
