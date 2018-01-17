@@ -144,6 +144,7 @@
                         <div class="centerthis">
                             <label for="customer" id="labelpartner">Customer:</label>
                             <input onclick="this.select()" class="mandatory tab1" type="text" id="partner" name="customer" t-att-value="widget.order_model.get('partner')" tabIndex="1"/>
+                            <span><t t-esc="widget.order_model.get_parent_partner()"/></span>
                         </div>
                       </div>
                     </div>
