@@ -956,6 +956,30 @@ var Order = Backbone.Model.extend({
         var cus_name = self.ts_model.getComplexName(partner);
         this.set('partner', cus_name);
     },
+    get_parent_partner: function(){
+        var parent_name = ''
+        var current_partner_id = this.get_client()
+        var current_partner = this.ts_model.db.get_partner_by_id(current_partner_id)
+        var top_parent = false;
+        if (!current_partner)
+            return parent_name
+
+        if (!current_partner.parent_id) 
+            return parent_name
+
+        var parent_id = current_partner.parent_id[0]
+        var parent = this.ts_model.db.get_partner_by_id(parent_id)
+        while (parent){
+            top_parent = parent
+            parent_id = parent.parent_id || false
+            parent = this.ts_model.db.get_partner_by_id(parent_id)
+        }
+        if (top_parent)
+            parent_name = top_parent.name
+        
+        
+        return parent_name
+    }
 
 });
 
