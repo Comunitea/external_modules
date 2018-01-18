@@ -58,3 +58,8 @@ class account_invoice_line(osv.osv):
     _columns = {
         'stock_move_id': fields.many2one('stock.move', 'Stock move')
     }
+    
+    def copy(self, cr, uid, id, default=None, context=None):
+        default = default or {}
+        default.update({'stock_move_id': False,})
+        return super(account_invoice_line, self).copy(cr, uid, id, default, context)
