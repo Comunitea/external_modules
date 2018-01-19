@@ -20,7 +20,6 @@
 #
 ##############################################################################
 from openerp.osv import fields, osv
-from openerp import api
 
 
 class account_invoice(osv.osv):
@@ -51,19 +50,7 @@ class account_invoice(osv.osv):
             'picking_ids':[],
             'sale_order_ids':[],
             })
-        res = super(account_invoice, self).copy(cr, uid, id, default, context)
-        invoice_id = self.pool.get('account.invoice').browse(cr, uid, [res], context)
-        invoice_id.invoice_line.write({'stock_move_id': False})
-        return res
-
-    @api.model
-    def _refund_cleanup_lines(self, lines):
-        res = super(account_invoice, self)._refund_cleanup_lines(lines)
-        if lines and lines[0]._name != 'account.invoice.line':
-            return res
-        for i, line in enumerate(lines):
-            res[i][2]['stock_move_id'] = False
-        return res
+        return super(account_invoice, self).copy(cr, uid, id, default, context)
 
 account_invoice()
 
@@ -71,10 +58,5 @@ account_invoice()
 class account_invoice_line(osv.osv):
     _inherit = "account.invoice.line"
     _columns = {
-        'stock_move_id': fields.many2one('stock.move', 'Stock move')
+        'stock_move_id': fields.many2one('stock.move', 'Stock move', copy=False)
     }
-    
-    def copy(self, cr, uid, id, default=None, context=None):
-        default = default or {}
-        default.update({'stock_move_id': False})
-        return super(account_invoice_line, self).copy(cr, uid, id, default, context)
