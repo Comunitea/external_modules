@@ -21,28 +21,29 @@
 ##############################################################################
 from openerp.osv import fields, osv
 
+
 class account_invoice(osv.osv):
     _inherit = "account.invoice"
 
 # FIXME -this is not used, because info is in account_invoice.name
     def _client_order_refs(self, cr, uid, ids, field_name, arg, context=None):
-         result = {}
-         for inv in self.browse(cr, uid, ids, context):
+        result = {}
+        for inv in self.browse(cr, uid, ids, context):
             client_ref = '' 
             for ref in inv.sale_order_ids:
-               if ref.client_order_ref:
-                   if client_ref:
-                       client_ref +='; '
-                   client_ref += ref.client_order_ref
+                if ref.client_order_ref:
+                    if client_ref:
+                        client_ref +='; '
+                    client_ref += ref.client_order_ref
             result[inv.id] = client_ref
-         return result
-
+        return result
 
     _columns = {
         'picking_ids': fields.many2many('stock.picking', 'picking_invoice_rel', 'invoice_id', 'picking_id', 'Pickings' ),
         'sale_order_ids': fields.many2many('sale.order', 'sale_order_invoice_rel', 'invoice_id', 'order_id', 'Sale Orders', readonly=True, help="This is the list of sale orders linked to this invoice. "),
         'client_order_refs' : fields.function(_client_order_refs, method=True, string="Client Sale Orders Ref", type='char'),
     }
+
     def copy(self, cr, uid, id, default=None, context=None):
         default = default or {}
         default.update({
@@ -50,16 +51,12 @@ class account_invoice(osv.osv):
             'sale_order_ids':[],
             })
         return super(account_invoice, self).copy(cr, uid, id, default, context)
-                            
+
 account_invoice()
+
 
 class account_invoice_line(osv.osv):
     _inherit = "account.invoice.line"
     _columns = {
-        'stock_move_id': fields.many2one('stock.move', 'Stock move')
+        'stock_move_id': fields.many2one('stock.move', 'Stock move', copy=False)
     }
-    
-    def copy(self, cr, uid, id, default=None, context=None):
-        default = default or {}
-        default.update({'stock_move_id': False})
-        return super(account_invoice_line, self).copy(cr, uid, id, default, context)
