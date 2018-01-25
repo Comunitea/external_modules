@@ -58,6 +58,13 @@ class SaleOrderLine(models.Model):
             return {'warning': {'title': 'Warning',
                                 'message': msg}}
 
+    @api.onchange('product_id', 'price_unit', 'product_uom', 'product_uom_qty',
+                  'tax_id')
+    def _onchange_discount(self):
+        super(SaleOrderLine, self)._onchange_discount()
+        if self.discount > 0:
+            self.chained_discount = self.discount
+
     def _prepare_invoice_line(self, qty):
         res = super(SaleOrderLine, self)._prepare_invoice_line(qty)
         res.update({'chained_discount': self.chained_discount})
