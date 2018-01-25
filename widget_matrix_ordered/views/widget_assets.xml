@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" inherit_id="web_widget_x2many_2d_matrix.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/widget_matrix_ordered/static/src/js/web_widget_x2many_2d_matrix.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>
