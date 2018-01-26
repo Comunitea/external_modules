@@ -1,4 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_expense_type_sales_manager,expense.type.sales.manager,model_expense_type,base.group_sale_manager,1,0,0,0
 access_expense_type,expense.type,model_expense_type,account.group_account_invoice,1,1,1,1
+access_expense_structure_sales_manager,expense.structure.sales.manager,model_expense_structure,base.group_sale_manager,1,0,0,0
 access_expense_structure,expense.structure,model_expense_structure,account.group_account_invoice,1,1,1,1
+access_expense_structure_elements_sales_manager,expense.structure.elements.sales.manager,model_expense_structure_elements,base.group_sale_manager,1,0,0,0
 access_expense_structure_elements,expense.structure.elements,model_expense_structure_elements,account.group_account_invoice,1,1,1,1
