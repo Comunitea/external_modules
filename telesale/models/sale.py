@@ -45,7 +45,6 @@ class SaleOrder(models.Model):
             'partner_invoice_id': partner_obj.id,
             'partner_shipping_id': order.get('partner_shipping_id',
                                              partner_obj.id),
-            'chanel': 'telesale',
             # 'order_policy': 'picking',
             'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
             'requested_date': order['requested_date'] + " 19:00:00" or
@@ -78,7 +77,7 @@ class SaleOrder(models.Model):
                 order_obj = t_order.browse(order['erp_id'])
                 order_obj.write(vals)
             else:
-                # vals['name'] = '/'
+                vals['chanel'] = 'telesale'
                 order_obj = t_order.create(vals)
 
             order_ids.append(order_obj.id)
