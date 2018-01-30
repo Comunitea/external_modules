@@ -462,6 +462,11 @@ var CustomerListWidget = TsBaseWidget.extend({
             alert(_t('City Is Required'));
             return;
         }
+        if (!fields.state_id) {
+            // this.state_id.show_popup('error',_t('A Customer Name Is Required'));
+            alert(_t('State Is Required'));
+            return;
+        }
         
         // if (this.uploaded_picture) {
         //     fields.image = this.uploaded_picture;
