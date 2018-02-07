@@ -463,8 +463,8 @@ var CustomerListWidget = TsBaseWidget.extend({
         if (!fields.state_id) {
             if (country_id == 69){
                 alert(_t('State Is Required'));
+                return;
             }
-            return;
         }
         
         fields.id           = partner.id || false;
