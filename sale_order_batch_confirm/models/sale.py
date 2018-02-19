@@ -2,8 +2,19 @@
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from odoo import models, fields, api, exceptions, _
-from odoo.addons.queue_job.job import job
+import logging
 
+_logger = logging.getLogger(__name__)
+
+try:
+    from odoo.addons.queue_job.job import job
+except ImportError:
+    _logger.debug('Can not `import queue_job`.')
+    import functools
+
+    def empty_decorator_factory(*argv, **kwargs):
+        return functools.partial
+    job = empty_decorator_factory
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -74,4 +85,3 @@ class SaleOrder(models.Model):
                               ' there is a job running!'))
         res = super(SaleOrder, self).action_cancel()
         return res
-
