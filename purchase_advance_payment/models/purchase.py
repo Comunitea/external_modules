@@ -18,7 +18,6 @@ class PurchaseOrder(models.Model):
         self.amount_resisual = self.amount_total - advance_amount
 
     account_payment_ids = fields.One2many('account.payment', 'purchase_id',
-                                          string="Pay purchase advanced",
-                                          readonly=True)
+                                          string="Pay purchase advanced")
     amount_resisual = fields.Float('Residual amount', readonly=True,
                                    compute="_get_amount_residual")
