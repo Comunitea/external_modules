@@ -12,12 +12,11 @@ class IrAttachment(models.Model):
     @api.model
     def att_to_disk(self, automatic=False, use_new_cursor=False):
         self._cr.execute('''
-            delete from ir_attachment where db_datas is null and datas is null;
+            delete from ir_attachment where db_datas is null and datas is null
+            and store_fname is null
         ''')
-        att_objs = self.sudo().search([('store_fname', '=', False),
-                                       ('db_datas', '!=', False)])
         self._cr.execute("select id from ir_attachment where store_fname is "
-			 "null and db_datas is not null")
+                         "null and db_datas is not null")
         data = self._cr.fetchall()
         l = len(data)
         c = 1
