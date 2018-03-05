@@ -25,20 +25,20 @@
 ##############################################################################
 
 {
-    'name' : 'Partner Paydays',
-    'version' : '1.0',
-    'description' : "This module adds fields to introduce partner's paydays & holidays. It also allows due date in customer invoices to take into account vacations if the partner doesn't pay during that period.",
-    "author" : "Nan,Pexego \n contributor readylan, Comunitea",
-    'website' : 'http://www.NaN-tic.com, http://www.comunitea.com',
-    'depends' : [
-        'base', 'account', 'account_payment_term_multi_day',
-    ],
-    'category' : 'Custom Modules',
-    'data' : [
-        'partner_paydays_view.xml',
+    'name': 'Partner Paydays',
+    'version': '10.0.0.0.0',
+    'description': """"This module adds fields to introduce partner's paydays
+& holidays. It also allows due date in customer invoices to take into account
+vacations if the partner doesn't pay during that period.""",
+    "author": "Nan,Pexego \n contributor readylan, Comunitea",
+    'website': 'http://www.NaN-tic.com, http://www.comunitea.com',
+    'depends': ['account'],
+    'category': 'Custom Modules',
+    'data': [
+        'views/partner_paydays_view.xml',
         'security/ir.model.access.csv',
     ],
-    'installable': False
+    'installable': True
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

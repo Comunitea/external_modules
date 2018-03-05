@@ -25,7 +25,7 @@
 ##############################################################################
 
 from datetime import datetime, timedelta
-from openerp import models, fields, api, _, exceptions
+from odoo import models, fields, api, _, exceptions
 
 
 class ResPartner(models.Model):
@@ -44,7 +44,7 @@ class ResPartner(models.Model):
         except:
             error = True
         if error:
-            raise exceptions.Warning(
+            raise exceptions.UserError(
                 _('Payment days field format is not valid.'))
 
     payment_days = fields.\
@@ -85,6 +85,7 @@ class AccountPaymentTerm(models.Model):
 
     _inherit = "account.payment.term"
 
+    @api.model
     def _decode_payment_days(self, days_char):
         # Admit space, dash and comma as separators
         days_char = days_char.replace(' ', '-').replace(',', '-')
@@ -93,6 +94,7 @@ class AccountPaymentTerm(models.Model):
         days.sort()
         return days
 
+    @api.model
     def days_in_month(self, date):
         if date.month == 12:
             date = date.replace(day=31)
@@ -100,6 +102,7 @@ class AccountPaymentTerm(models.Model):
             date = date.replace(month=date.month+1, day=1) - timedelta(days=1)
         return date.day
 
+    @api.model
     def next_day(self, date, day):
         if date.day == day:
             return date
@@ -112,7 +115,8 @@ class AccountPaymentTerm(models.Model):
             if date.day == day:
                 return date
 
-    def _after_holidays(self, cr, uid, partner, date, days):
+    @api.model
+    def _after_holidays(self, partner, date, days):
         for holidays in partner.holiday_ids:
             start = datetime.\
                 strptime(datetime.strptime(holidays.start, '%Y-%m-%d').
@@ -132,21 +136,19 @@ class AccountPaymentTerm(models.Model):
                 date = self.next_day(date, days[0])
         return date.strftime('%Y-%m-%d')
 
-    def compute(self, cr, uid, id, value, date_ref=False, context=None):
-        if context is None: context= {}
-        result = super(AccountPaymentTerm, self).compute(cr, uid, id, value,
-                                                         date_ref, context)
-        if not context.get('partner_id'):
+    def compute(self, value, date_ref=False):
+        result = super(AccountPaymentTerm, self).compute(value, date_ref)
+        if not self.env.context.get('partner_id'):
             return result
-        partner = self.pool.get('res.partner').\
-            browse(cr, uid, context.get('partner_id'), context)
+        partner = self.env['res.partner'].\
+            browse(self.env.context['partner_id'])
         if not partner.payment_days:
             return result
 
         days = self._decode_payment_days(partner.payment_days)
 
         new_result = []
-        for line in result:
+        for line in result[0]:
             new_date = False
             date = datetime.strptime(line[0], '%Y-%m-%d')
 
@@ -163,8 +165,8 @@ class AccountPaymentTerm(models.Model):
                     date = new_date
 
             if not partner.pays_during_holidays:
-                date = self._after_holidays(cr, uid, partner, date, days)
+                date = self._after_holidays(partner, date, days)
 
             new_result.append((date, line[1]))
 
-        return new_result
+        return [new_result]
