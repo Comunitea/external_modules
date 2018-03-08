@@ -21,14 +21,14 @@
 
 {
     'name': 'Account Due Dates Str',
-    'version': '0.1',
+    'version': '10.0.0.0.0',
     'license': 'AGPL-3',
-    'author': 'comunitea',
+    'author': 'Comunitea',
     'website': 'https://launchpad.net/banking-addons',
     'category': 'Banking addons',
-    'depends': ['account', 'account_payment'],
+    'depends': ['account', 'account_payment_partner'],
     'data': [],
     'description': '''
 Get a new field thar have the due dates in a string''',
-    'installable': False,
+    'installable': True,
 }

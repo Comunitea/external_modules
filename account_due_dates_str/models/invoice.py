@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
+from odoo import models, fields, api, tools
 import time
 from datetime import datetime
 from time import mktime
@@ -35,25 +35,22 @@ class AccountInvoice(models.Model):
         expiration_dates_str = ""
         move_line_obj = self.env["account.move.line"]
         if self.move_id:
-            move_lines = move_line_obj.search([('move_id', '=',
-                                                self.move_id.id),
-                                               ('date_maturity', "!=", False)],
-                                              order="date_maturity asc")
-            payment_mode = False
-            if self.payment_mode_id:
-                payment_mode = self.payment_mode_id
-                expiration_dates_str += payment_mode.name + \
-                    u":\n"
+            move_lines = move_line_obj.\
+                search([('move_id', '=', self.move_id.id),
+                        ('account_id.internal_type', 'in',
+                         ['payable', 'receivable']),
+                        ('date_maturity', "!=", False)],
+                       order="date_maturity asc")
             for line in move_lines:
                 date = time.strptime(line.date_maturity, "%Y-%m-%d")
                 date = datetime.fromtimestamp(mktime(date))
                 date = date.strftime("%d/%m/%Y")
                 expiration_dates_str += date + \
                     " -------------> " + \
-                    str(self.type in ('out_invoice', 'in_refund') and
-                        line.debit or (self.type in ('in_invoice',
-                                                     'out_refund') and
-                        line.credit or 0)) + "\n"
+                    (self.type in ('out_invoice', 'in_refund') and
+                     tools.formatLang(self.env, line.debit) or
+                     (self.type in ('in_invoice', 'out_refund') and
+                      tools.formatLang(self.env, line.credit) or "0")) + "\n"
 
         self.expiration_dates_str = expiration_dates_str
 
