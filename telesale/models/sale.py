@@ -171,10 +171,12 @@ class SaleOrderLine(models.Model):
         line = self.new({'order_id': order.id,
                          'product_id': product_id})
         line.product_id_change()
+        line._onchange_discount()
         res.update({
             'price_unit': line.price_unit,
             'product_uom': line.product_uom.id,
             'product_uom_qty': line.product_uom_qty,
+            'discount': line.discount,
             'tax_id': [x.id for x in line.tax_id],
             'standard_price': line.product_id.standard_price
 

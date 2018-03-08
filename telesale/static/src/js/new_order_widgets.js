@@ -381,7 +381,7 @@ var OrderlineWidget = TsBaseWidget.extend({
             self.model.set('taxes_ids', result.tax_id || []); //TODO poner impuestos de producto o vacio
             self.model.set('unit', self.model.ts_model.db.unit_by_id[result.product_uom].name);
             self.model.set('qty', add_qty);
-            self.model.set('discount', 0.0);
+            self.model.set('discount', result.discount || 0.0);
             self.model.set('standard_price', result.standard_price || 0.0);
             self.model.set('pvp', self.ts_model.my_round( result.price_unit));
            
