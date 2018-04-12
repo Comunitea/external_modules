@@ -13,7 +13,7 @@ class PurchaseManageVariant(models.TransientModel):
     def onchange(self, values, field_name, field_onchange):  # pragma: no cover
         if "variant_line_ids" in field_onchange:
             for sub in ("product_id", "disabled", "value_x", "value_y",
-                        "product_uom_qty", "y_order", "x_order"):
+                        "product_qty", "y_order", "x_order"):
                 field_onchange.setdefault("variant_line_ids." + sub, u"")
         return super(PurchaseManageVariant, self).onchange(
             values, field_name, field_onchange)
@@ -68,7 +68,7 @@ class PurchaseManageVariant(models.TransientModel):
                     'disabled': not bool(product),
                     'value_x': value_x,
                     'value_y': value_y,
-                    'product_uom_qty': order_line.product_qty,
+                    'product_qty': order_line.product_qty,
                     'x_order': x_order_str,
                     'y_order': y_order_str,
                 }))
