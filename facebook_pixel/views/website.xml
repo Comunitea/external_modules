@@ -45,13 +45,13 @@
 
         <template id="redsys_result_ok_add_pixel" inherit_id="payment_redsys.redsys_result_ok">
             <xpath expr="//section[@id='redsys_order']" position="inside">
-                <script t-esc="'fbq(\'track\';, \'Purchase\', {value: %s, currency: \'%s\',});' % (order.amount_total, order.currency_id.name)"/>
+                <script t-esc="'fbq(\'track\', \'Purchase\', {value: %s, currency: \'%s\',});' % (order.amount_total, order.currency_id.name)"/>
             </xpath>
         </template>
 
         <template id="website_sale_confirmation_add_pixel" inherit_id="website_sale.confirmation">
             <xpath expr="//div[@id='wrap']" position="inside">
-                <script t-esc="'fbq(\'track\', &quot;Purchase&quot;, {value: %s, currency: \'%s\',});' % (order.amount_total, order.currency_id.name)"/>
+                <script t-esc="'fbq(\'track\', \'Purchase\', {value: %s, currency: \'%s\',});' % (order.amount_total, order.currency_id.name)"/>
             </xpath>
         </template>
 
