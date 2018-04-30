@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_hierarchy_multicompany" model="ir.rule">
+        <field name="name">Account hierarchy multicompany</field>
+        <field ref="model_account_hierarchy" name="model_id"/>
+        <field name="domain_force">['|',('company','=',False),('company','child_of',[user.company_id.id])]</field>
+    </record>
+</odoo>

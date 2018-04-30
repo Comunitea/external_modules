@@ -19,6 +19,7 @@
     ],
     'data': [
         "security/ir.model.access.csv",
+        "security/acount_hierarchy_security.xml",
         "data/account.hierarchy.label.csv",
         "views/account_hierarchy_label.xml",
         "views/account_views.xml",
