@@ -1,0 +1,43 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#       * account_payment_order_usability
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-09 12:07+0000\n"
+"PO-Revision-Date: 2018-04-09 12:07+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_payment_order_usability
+#: model:ir.model.fields,field_description:account_payment_order_usability.field_account_invoice_in_payment_order
+msgid "In payment order"
+msgstr "Remesado"
+
+#. module: account_payment_order_usability
+#: model:ir.model,name:account_payment_order_usability.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: account_payment_order_usability
+#: code:addons/account_payment_order_usability/models/account_invoice.py:56
+#, python-format
+msgid "No Mandate on invoice %s"
+msgstr "Sin mandato en la factura %s"
+
+#. module: account_payment_order_usability
+#: model:ir.ui.view,arch_db:account_payment_order_usability.view_account_invoice_filter_add_in_po
+msgid "No Remitted"
+msgstr "No remesado"
+
+#. module: account_payment_order_usability
+#: code:addons/account_payment_order_usability/models/account_invoice.py:38
+#, python-format
+msgid "Unsupported search operator"
+msgstr "Operador no soportado"
