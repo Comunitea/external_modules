@@ -28,7 +28,8 @@ class StockTransferDetails(models.TransientModel):
         if not picking.pack_operation_ids:
             picking.do_prepare_partial()
 
-        items = packs = []
+        items = []
+        packs = []
         for op in picking.pack_operation_ids:
             uos_id = uom_id = op.product_uom_id.id
             uos_qty = uom_qty = op.product_qty
