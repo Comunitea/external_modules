@@ -151,6 +151,7 @@ class AccountInvoice(models.Model):
                         })
 
         #recompute taxes
+        self._compute_amount()
         self.compute_taxes()
 
         return new_lines
