@@ -20,6 +20,7 @@
 #
 ##############################################################################
 from openerp.osv import fields, osv
+from openerp import fields as fields2
 
 
 class stock_move (osv.osv):
@@ -36,6 +37,9 @@ class stock_picking(osv.osv):
         'invoice_ids': fields.many2many('account.invoice', 'picking_invoice_rel', 'picking_id', 'invoice_id', 'Invoices'),
         'client_order_ref' : fields.related ('sale_id', 'client_order_ref', type="char", relation="sale.order", string="Client Ref", readonly = True ),
     }
+    purchase_id = fields2.Many2one(
+        'purchase.order', related='move_lines.purchase_line_id.order_id',
+        store=True)
 
     def init(self, cr):
         # This is a helper to guess "old" Relations between pickings and invoices
