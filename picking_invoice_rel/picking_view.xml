@@ -24,6 +24,7 @@
             <field name="arch" type="xml">
                 <field name="move_type" position="after">
                     <field name="sale_id" attrs="{'invisible': [('sale_id', '=', False)]}"/>
+                    <field name="purchase_id" attrs="{'invisible': [('purchase_id', '=', False)]}"/>
                     <field name="client_order_ref"/>
                 </field>
             </field>
