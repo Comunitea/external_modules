@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <button name="button_draft" position="before">
                     <button name="%(action_view_account_purchase_voucher_wizard)d" string="Pay purchase advanced"
-                        type="action" groups="account.group_account_invoice" attrs="{'invisible': ['|',('state', 'not in', ['purchase','to_approve']),('invoice_status', '=', 'invoiced')]}"/>
+                        type="action" groups="account.group_account_invoice" attrs="{'invisible': [('state', 'not in', ['purchase','to_approve'])]}"/>
                 </button>
                 <notebook position="inside">
                     <page string="Payment advances" groups="account.group_account_invoice">
