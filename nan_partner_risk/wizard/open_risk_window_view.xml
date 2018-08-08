@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<openerp>
-    <data>
-      <record id="open_risk_window_view" model="ir.ui.view">
+<odoo>
+
+    <record id="open_risk_window_view" model="ir.ui.view">
            <field name="name">open_risk_window_view</field>
            <field name="model">open.risk.window</field>
            <field name="arch" type="xml">
@@ -33,5 +33,5 @@
              <field name="target">new</field>
        </record>
 
-    </data>
-</openerp>
+
+</odoo>

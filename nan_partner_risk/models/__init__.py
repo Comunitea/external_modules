@@ -4,4 +4,6 @@
 # © 2011 Pexego Sistemas Informáticos.
 #        Alberto Luengo Cabanillas <alberto@pexego.es>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-import open_risk_window
+import res_partner
+import sale_order
+import account

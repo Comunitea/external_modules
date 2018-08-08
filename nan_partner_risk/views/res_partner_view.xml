@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_partner_form">
+                <field name="name">res.partner.form.risk</field>
+                <field name="model">res.partner</field>
+                <field name="inherit_id" ref="account.view_partner_property_form"/>
+                <field name="arch" type="xml">
+                    <field name="trust" position="after">
+                        <button string="View Risk Information" name="%(action_open_risk_window)d"
+                                icon="fa-exclamation-triangle" type="action" colspan="2"/>
+                    </field>
+                </field>
+        </record>
+
+    </data>
+</openerp>
