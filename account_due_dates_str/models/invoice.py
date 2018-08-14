@@ -32,7 +32,6 @@ class AccountInvoice(models.Model):
     @api.one
     def _get_move_lines_str(self):
         """returns all move lines related to invoice in string"""
-        import pdb; pdb.set_trace()
         expiration_dates_str = ""
         move_line_obj = self.env["account.move.line"]
         if self.move_id:
