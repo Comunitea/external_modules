@@ -958,10 +958,11 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             this.order_model = this.ts_model.get('selectedOrder');
             this._super();
 
-            this.$('.confirm-button').click(function (){ self.confirmCurrentOrder() });
-            this.$('.cancel-button').click(function (){ self.cancelCurrentOrder() });
-            this.$('.save-button').click(function (){ self.saveCurrentOrder() });
-            this.$('.print-button').click(function (){ self.printCurrentOrder() });
+            this.$('.confirm-button').click(function (){  $(this).attr('disabled','disabled'); self.confirmCurrentOrder();});
+            this.$('.cancel-button').click(function (){  $(this).attr('disabled','disabled'); self.cancelCurrentOrder();});
+            this.$('.save-button').click(function (envent){ $(this).attr('disabled','disabled'); self.saveCurrentOrder();});
+               
+            this.$('.print-button').click(function (){ $.blockUI(); self.printCurrentOrder(); $.unblockUI(); });
         },
         changeTotals: function(){
             var self = this;
