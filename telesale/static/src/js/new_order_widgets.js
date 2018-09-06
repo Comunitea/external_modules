@@ -952,17 +952,23 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             this.bind_orderline_events();
             this.renderElement();
         },
+        no_more_clicks: function(){
+            this.$('.confirm-button').attr('disabled','disabled');
+            this.$('.cancel-button').attr('disabled','disabled');
+            this.$('.save-button').attr('disabled','disabled');
+            this.$('.print-button').attr('disabled','disabled');
+        },
         renderElement: function () {
             var self = this;
 
             this.order_model = this.ts_model.get('selectedOrder');
             this._super();
 
-            this.$('.confirm-button').click(function (){  $(this).attr('disabled','disabled'); self.confirmCurrentOrder();});
-            this.$('.cancel-button').click(function (){  $(this).attr('disabled','disabled'); self.cancelCurrentOrder();});
-            this.$('.save-button').click(function (envent){ $(this).attr('disabled','disabled'); self.saveCurrentOrder();});
+            this.$('.confirm-button').click(function (){ self.no_more_clicks(); self.confirmCurrentOrder();});
+            this.$('.cancel-button').click(function (){  self.no_more_clicks(); self.cancelCurrentOrder();});
+            this.$('.save-button').click(function (){    self.no_more_clicks(); self.saveCurrentOrder();});
                
-            this.$('.print-button').click(function (){ $.blockUI(); self.printCurrentOrder(); $.unblockUI(); });
+            this.$('.print-button').click(function (){ self.no_more_clicks(); self.printCurrentOrder(); });
         },
         changeTotals: function(){
             var self = this;
