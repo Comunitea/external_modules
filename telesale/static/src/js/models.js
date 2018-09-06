@@ -348,7 +348,10 @@ var TsModel = Backbone.Model.extend({
         for (var key in order_lines){
             var line = order_lines[key];
             var prod_obj = this.db.get_product_by_id(line.product_id[0]);
-
+            if (!prod_obj){
+                alert('Ocurrió un error al cargar el producto ' + line.product_id[1] + ' Seguramente esté desactivado. No se cargará ninguna línea ni se podrá operar con el pedido en televenta.');
+                break;
+            }
             var line_vals = this.get_line_vals(line, order_model)
             var line = new Orderline(line_vals);
             order_model.get('orderLines').add(line);
