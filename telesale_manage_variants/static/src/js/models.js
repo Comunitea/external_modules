@@ -193,6 +193,10 @@ TsModels.TsModel = TsModels.TsModel.extend({
             var line = order_lines[key];
 
             var prod_obj = this.db.get_product_by_id(line.product_id[0]);
+            if (!prod_obj){
+                alert('Ocurrió un error al cargar el producto ' + line.product_id[1] + ' Seguramente esté desactivado. No se cargará ninguna línea ni se podrá operar con el pedido en televenta.');
+                break;
+            }
             var template_id = prod_obj.product_tmpl_id;
             var template_obj = this.db.template_by_id[template_id];
 
