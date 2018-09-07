@@ -63,7 +63,7 @@ class SaleOrderLine(models.Model):
     def _onchange_discount(self):
         super(SaleOrderLine, self)._onchange_discount()
         if self.discount > 0:
-            self.chained_discount = self.discount
+            self.chained_discount = str(self.discount)
 
     def _prepare_invoice_line(self, qty):
         res = super(SaleOrderLine, self)._prepare_invoice_line(qty)
