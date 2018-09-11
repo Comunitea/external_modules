@@ -38,6 +38,7 @@ class ProductTemplate(models.Model):
             }
             res['column_attrs'].append(x_attr)
             res['str_table'][value_x.id] = {}
+            price = 0.0
             for value_y in line_y.value_ids:
                 y_attr = {
                     'id': value_y.id,
