@@ -40,6 +40,7 @@ class ProductTemplate(models.Model):
             res['str_table'][value_x.id] = {}
             for value_y in line_y.value_ids:
                 price = 0.0
+                discount = 0.0
                 y_attr = {
                     'id': value_y.id,
                     'name': value_y.name
@@ -62,14 +63,16 @@ class ProductTemplate(models.Model):
                     price = product and var_info['price'] or 0.0
                     if result.get('price_unit', 0.0):
                         price = result['price_unit']
+                    if result.get('discount', 0.0):
+                        discount = result['discount']
                 cell_dic = {
                     'id': product and product.id or 0,
                     'stock': product and var_info[stock_field] or 0.0,
                     'price': price,
-                    'discount': result.get('discount', 0.0),
+                    'discount': discount,
                     # Esto tendría que estar abstraidoy en jim_telesale
                     # meter el chained discount. Aun así no va a fallar
-                    'chained_discount': str(result.get('discount', 0.0)),
+                    'chained_discount': str(discount),
                     'qty': 0.0,
                     'tax_ids': product and tax_ids or [],
                     'enable': True if product else False
