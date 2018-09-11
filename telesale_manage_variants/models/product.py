@@ -55,11 +55,20 @@ class ProductTemplate(models.Model):
                     tax_ids = product._ts_compute_taxes(product,
                                                         var_info['taxes_id'],
                                                         partner_id)
+                    result = self.env['sale.order.line'].\
+                        ts_product_id_change(product.id, partner_id,
+                                             pricelist_id)
+                    price = product and var_info['price'] or 0.0
+                    if result.get('price_unit', 0.0):
+                        price = result['price_unit']
                 cell_dic = {
                     'id': product and product.id or 0,
                     'stock': product and var_info[stock_field] or 0.0,
-                    'price': product and var_info['price'] or 0.0,
-                    'discount': 0.0,
+                    'price': price,
+                    'discount': result.get('discount', 0.0),
+                    # Esto tendría que estar abstraidoy en jim_telesale
+                    # meter el chained discount. Aun así no va a fallar
+                    'chained_discount': str(result.get('discount', 0.0)),
                     'qty': 0.0,
                     'tax_ids': product and tax_ids or [],
                     'enable': True if product else False
