@@ -953,10 +953,19 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             this.renderElement();
         },
         no_more_clicks: function(){
-            this.$('.confirm-button').attr('disabled','disabled');
-            this.$('.cancel-button').attr('disabled','disabled');
-            this.$('.save-button').attr('disabled','disabled');
-            this.$('.print-button').attr('disabled','disabled');
+            // Esto deshabilita los botones
+            // el flujo normal es que se cargue la pantalla y aparezca habilitado de nuevo
+            // cuidad is hay excepciones y no recarga la página, habŕia que llamar a la función de abaj.o
+            this.$('.confirm-button').prop('disabled', true);
+            this.$('.cancel-button').prop('disabled', true);
+            this.$('.save-button').prop('disabled', true);
+            this.$('.print-button').prop('disabled', true);
+        },
+        enable_more_clicks: function(){
+            this.$('.confirm-button').prop('disabled', false);
+            this.$('.cancel-button').prop('disabled', false);
+            this.$('.save-button').prop('disabled', false);
+            this.$('.print-button').prop('disabled', false);
         },
         renderElement: function () {
             var self = this;
@@ -1025,6 +1034,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             currentOrder.set('action_button', 'save')
             if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
                 alert(_t('You cant confirm an order which state is diferent than draft.'));
+                self.enable_more_clicks();
                 return;
             }
             self.saveCurrentOrder(true)
@@ -1064,6 +1074,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             currentOrder.set('action_button', 'cancel')
             if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ||  !currentOrder.get('erp_id')){
                 alert(_t('You cant cancel an order which state is diferent than draft.'));
+                this.enable_more_clicks();
             }
             else if ( currentOrder.check() ){
                 this.ts_model.cancel_order(currentOrder.get('erp_id'));
@@ -1079,6 +1090,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                 report_type: 'qweb-pdf',
                 type: 'ir.actions.report.xml'
             });
+            this.enable_more_clicks()
         },
         printCurrentOrder: function() {
             var self = this;
@@ -1103,6 +1115,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             currentOrder.set('action_button', 'save')
             if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ){
                 alert(_t('You cant save as draft an order which state is diferent than draft.'));
+                self.enable_more_clicks();
                 return;
             }
             else if ( currentOrder.check() ){
