@@ -26,7 +26,7 @@
 
 {
     'name': 'Partner Paydays',
-    'version': '10.0.0.0.0',
+    'version': '11.0.0.0.0',
     'description': """"This module adds fields to introduce partner's paydays
 & holidays. It also allows due date in customer invoices to take into account
 vacations if the partner doesn't pay during that period.""",
