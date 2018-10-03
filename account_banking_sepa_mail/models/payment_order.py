@@ -20,7 +20,7 @@ class AccountPaymentOrder(models.Model):
 
             for line in order.bank_line_ids:
                 template = self.env.ref(
-                    'account_bankin_sepa_mail.payment_order_advise_partner',
+                    'account_banking_sepa_mail.payment_order_advise_partner',
                     False)
                 ctx = dict(self._context)
                 ctx.update({
