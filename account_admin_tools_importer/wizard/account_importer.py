@@ -123,6 +123,7 @@ class AccountAdminToolsImporter(models.TransientModel):
                                 'internal_type': brother_account.internal_type,
                                 'user_type_id':
                                     brother_account.user_type_id.id,
+                                'group_id': brother_account.group_id.id,
                                 'reconcile': brother_account.reconcile,
                                 'company_id': self.company_id.id,
                                 'currency_id': brother_account.currency_id.id,
