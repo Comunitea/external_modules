@@ -45,7 +45,9 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
                 unit: uom_obj.name || '',
                 qty: catalog_vals.qty || 0.0,
                 pvp: catalog_vals.price || 0.0,
-                discount: catalog_vals.discount || 0.0,
+                discount: catalog_vals.chained_discount || 0.0,
+                // El chained discount debería estar abstraido en jim_telese
+                chained_discount: catalog_vals.discount || 0.0,
                 taxes_ids: catalog_vals.taxes_ids || [],
             });
         }
