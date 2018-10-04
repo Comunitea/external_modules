@@ -32,7 +32,7 @@
                         <th class="pc-head-stock">Stock</th>
                         <th class="pc-head-stock">Add qty</th>
                         <th class="pc-head-stock">Price</th>
-                       <!--  <th class="pc-head-add">Add</th> -->
+                        <th class="pc-head-add">Discount</th>
                         <th class="pc-head-show">show</th>
                     </thead>
                     <tbody class="productlines">
@@ -66,6 +66,9 @@
             </td>
             <td class="pc-cell-price">
                   <input type="text" id="add-price" class='add-price mandatory' t-att-value="line_product.price.toFixed(2)" onclick="this.select()"/>
+            </td>
+            <td class="pc-cell-discount">
+                  <input type="text" id="add-discount" class='add-price mandatory' t-att-value="line_product.discount.toFixed(2)" onclick="this.select()"/>
             </td>
 <!--             <td class="pc-cell-add">
                 <button class="add-product fullwidth" tabindex="-1">+</button>
