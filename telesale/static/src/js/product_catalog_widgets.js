@@ -164,8 +164,9 @@ var ProductCatalogWidget = TsBaseWidget.extend({
     },
 
     get_line_vals: function(line){
-        var qty = this.ts_model.my_str2float( $(line).find('#add-qty').val() );
+        var qty = this.ts_model.my_str2float(   $(line).find('#add-qty').val() );
         var price = this.ts_model.my_str2float( $(line).find('#add-price').val() );
+        var discount = this.ts_model.my_str2float( $(line).find('#add-discount').val() );
         var tax_ids = [];
         var taxes_str =  line.getAttribute('taxes') || ""
         if (taxes_str) {
@@ -176,7 +177,10 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var vals = {
             'qty': qty,
             'price': price,
-            'discount': 0.0,
+            'discount': discount,
+            // # Esto tendría que estar abstraidoy en jim_telesale
+            // # meter el chained discount. Aun así no va a fallar
+            'chained_discount': discount.toString(),
             'taxes_ids': tax_ids,
         }
         return vals
