@@ -112,8 +112,8 @@ class ProductProduct(models.Model):
         return res
 
     @api.model
-    def ts_search_products(self, product_name, product_barcode, partner_id, pricelist_id,
-                           offset=0):
+    def ts_search_products(self, product_name, product_barcode, partner_id,
+                           pricelist_id, offset=0):
         res = []
         domain = [('display_name', 'ilike', product_name)]
         if product_barcode:
@@ -129,16 +129,31 @@ class ProductProduct(models.Model):
         ctx.update(pricelist=pricelist_id, partner=partner_id)
         read = self.with_context(ctx).search_read(domain, fields, limit=100,
                                                   offset=offset)
+
         for dic in read:
-            tax_ids = self._ts_compute_taxes(dic['id'], dic.get('taxes_id', []),
-                                          partner_id)
+            tax_ids = self._ts_compute_taxes(dic['id'],
+                                             dic.get('taxes_id', []),
+                                             partner_id)
+            result = self.env['sale.order.line'].\
+                ts_product_id_change(dic['id'], partner_id, pricelist_id)
+
+            # Get the correct price and discount
+            price = dic.get('price', 0.0)
+            discount = dic.get('discount', 0.0)
+            if result.get('price_unit', 0.0):
+                price = result['price_unit']
+            if result.get('discount', 0.0):
+                discount = result['discount']
             formated = {
                 'id': dic['id'],
                 'display_name': dic.get('display_name', 0.0),
                 'barcode': dic.get('barcode', 0.0),
                 'stock': dic.get(stock_field, 0.0),
-                'price': dic.get('price', 0.0),
-                'discount': 0.0,
+                'price': price,
+                'discount': discount,
+                # Esto tendría que estar abstraidoy en jim_telesale
+                # meter el chained discount. Aun así no va a fallar
+                'chained_discount': str(discount),
                 'qty': 0.0,
                 'tax_ids': tax_ids,
             }
