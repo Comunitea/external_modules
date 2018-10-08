@@ -68,7 +68,7 @@
                   <input type="text" id="add-price" class='add-price mandatory' t-att-value="line_product.price.toFixed(2)" onclick="this.select()"/>
             </td>
             <td class="pc-cell-discount">
-                  <input type="text" id="add-discount" class='add-price mandatory' t-att-value="line_product.discount.toFixed(2)" onclick="this.select()"/>
+                  <input type="text" id="add-discount" class='add-discount mandatory' t-att-value="line_product.discount.toFixed(2)" onclick="this.select()"/>
             </td>
 <!--             <td class="pc-cell-add">
                 <button class="add-product fullwidth" tabindex="-1">+</button>
