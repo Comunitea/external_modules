@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_invoice_group_type_id" model="sale.invoice.group.method">
+        <field name="name">Group by Sale Order Type</field>
+        <field name="criteria_fields_ids" search="[('model','=','sale.order'),('name','=','type_id')]"/>
+    </record>
+
+</odoo>
