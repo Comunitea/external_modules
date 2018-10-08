@@ -49,6 +49,8 @@ var ProductLineWidget = TsBaseWidget.extend({
         var line_model = current_order.get('orderLines').get({cid: line_cid}); 
         return line_model;
     },
+
+    //OVERWRITED IN JIM TELESALE
     update_product: function(product){
         var updated_product = product;
         var line_cid = this.get_line_cid_related(product);
@@ -60,6 +62,7 @@ var ProductLineWidget = TsBaseWidget.extend({
             if (line_model){
                 updated_product['qty'] = line_model.get('qty') || 0.0;
                 updated_product['price'] = line_model.get('pvp') || 0.0;
+                updated_product['discount'] = line_model.get('discount') || 0.0;
             }
         }
         return updated_product
@@ -206,6 +209,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         if (line_model){
             line_model.set('qty', line_vals.qty || 1.0);
             line_model.set('pvp', line_vals.price || 0.0);
+            line_model.set('discount', line_vals.discount || 0.0);
         }
     },
 
