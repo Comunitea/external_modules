@@ -13,7 +13,7 @@
         'sale',
         'web',
         'product',
-        'commercial_rules',
+        # 'commercial_rules',
         'stock',  # stock_available ProductInfoWifget, move to other module?
     ],
     'contributors': [
