@@ -2,7 +2,10 @@ odoo.define('telesale.models', function (require) {
 "use strict";
 
 var Backbone = window.Backbone;
-var Model = require('web.DataModel');
+// var Model = require('web.DataModel');
+var rpc = require('web.rpc');
+var session = require('web.session');
+
 var core = require('web.core');
 var time = require('web.time');
 var DB = require('telesale.db');
@@ -81,13 +84,16 @@ var TsModel = Backbone.Model.extend({
     fetch: function(model, fields, domain, ctx){
         this._load_progress = (this._load_progress || 0) + 0.05;
         this.ts_widget.loading_message(_t('Loading')+' '+model,this._load_progress);
-        return new Model(model).query(fields).filter(domain).context(ctx).all()
+        // return new Model(model).query(fields).filter(domain).context(ctx).all()
+        return rpc.query({model: model, method: 'search_read', args:[domain, fields]})
     },
     fetch_limited_ordered: function(model, fields, domain, limit, orderby, ctx){
-        return new Model(model).query(fields).filter(domain).limit(limit).order_by(orderby).context(ctx).first()
+        // return new Model(model).query(fields).filter(domain).limit(limit).order_by(orderby).context(ctx).first()
+        return rpc.query({model: model, method: 'search_read', args:[domain, fields], orderBy: orderby, limit:limit})
     },
     fetch_ordered: function(model, fields, domain, orderby, ctx){
-        return new Model(model).query(fields).filter(domain).order_by(orderby).context(ctx).all()
+        // return new Model(model).query(fields).filter(domain).order_by(orderby).context(ctx).all()
+        return rpc.query({model: model, method: 'search_read', args:[domain, fields], orderBy: orderby})
     },
     _get_product_fields: function(){
         return  ['display_name', 'default_code', 'uom_id', 'barcode']
@@ -100,7 +106,7 @@ var TsModel = Backbone.Model.extend({
     load_server_data: function(){
         var self=this;
 
-        var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', this.session.uid]])
+        var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', session.uid]])
             .then(function(users){
                 self.set('user', users[0]);
                     // COMPANY
@@ -128,8 +134,10 @@ var TsModel = Backbone.Model.extend({
 
                     // PRODUCTS
                     var product_fields = self._get_product_fields();
-                    var model = new Model('product.product');
-                    return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true]]]);
+                    // var model = new Model('product.product');
+
+                    // return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true]]]);
+                    return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]]})
                 }).then(function(products){
                     // TODO OPTIMIZAR
                     self.db.add_products(products);
@@ -208,20 +216,26 @@ var TsModel = Backbone.Model.extend({
         var def  = new $.Deferred();
         // var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
         var partner_fields = self._get_partner_fields();
-        self.fetch('res.partner', partner_fields, [['customer','=',true],['write_date','>', self.db.get_partner_write_date()]])
-
-        // TODO MEJOR CON FETCH
-        new Model('res.partner')
-            .query(partner_fields)
-            .filter([['customer','=',true],['write_date','>',this.db.get_partner_write_date()]])
-            .all({'timeout':3000, 'shadow': true})
-            .then(function(partners){
+        self.fetch('res.partner', partner_fields, [['customer','=',true],['write_date','>', self.db.get_partner_write_date()]]).then(function(partners){
                 if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
                     def.resolve();
                 } else {
                     def.reject();
                 }
-            }, function(err,event){ event.preventDefault(); def.reject(); });    
+            }, function(err,event){ event.preventDefault(); def.reject(); });   
+
+        // MIG 11TODO MEJORADO CON FETCH ARRIBA
+        // new Model('res.partner')
+        //     .query(partner_fields)
+        //     .filter([['customer','=',true],['write_date','>',this.db.get_partner_write_date()]])
+        //     .all({'timeout':3000, 'shadow': true})
+        //     .then(function(partners){
+        //         if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
+        //             def.resolve();
+        //         } else {
+        //             def.reject();
+        //         }
+        //     }, function(err,event){ event.preventDefault(); def.reject(); });    
         return def;
     },
     // return the current order

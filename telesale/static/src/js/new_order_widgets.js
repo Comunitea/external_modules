@@ -2,7 +2,8 @@ odoo.define('telesale.new_order_widgets', function (require) {
 "use strict";
 
 var core = require('web.core');
-var Model = require('web.DataModel');
+// var Model = require('web.DataModel');
+var rpc = require('web.rpc');
 var models = require('telesale.models');
 var _t = core._t;
 

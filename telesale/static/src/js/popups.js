@@ -2,7 +2,8 @@ odoo.define('telesale.PopUps', function (require) {
 "use strict";
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
-var Model = require('web.DataModel');
+// var Model = require('web.DataModel');
+var rpc = require('web.rpc');
 
 
 var PopUpWidget = TsBaseWidget.extend({

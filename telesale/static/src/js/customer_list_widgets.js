@@ -4,7 +4,9 @@ odoo.define('telesale.CustomerList', function (require) {
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var models = require('telesale.models');
 var core = require('web.core');
-var Model = require('web.DataModel');
+// var Model = require('web.DataModel');
+var rpc = require('web.rpc');
+
 var _t = core._t;
 var QWeb = core.qweb;
 
@@ -469,12 +471,22 @@ var CustomerListWidget = TsBaseWidget.extend({
         
         fields.id           = partner.id || false;
         // fields.country_id   = fields.country_id || false;
-        new Model('res.partner').call('update_partner_from_ui',[fields]).then(function(partner_id){
+
+        // MIG11 Cambio esto a sintaxis rpc
+        // new Model('res.partner').call('update_partner_from_ui',[fields]).then(function(partner_id){
+        //     self.saved_client_details(partner_id);
+        // },function(err,event){
+        //     event.preventDefault();
+        //     alert(_t('Error saving partner to the server'))
+        // });
+        rpc.query({model: 'res.partner', method: 'update_partner_from_ui', args:[fields]}).then(function(partner_id){
             self.saved_client_details(partner_id);
         },function(err,event){
             event.preventDefault();
             alert(_t('Error saving partner to the server'))
         });
+
+
     },
     
     // what happens when we've just pushed modifications for a partner of id partner_id
