@@ -3,8 +3,7 @@ odoo.define('telesale.ProductCatalog', function (require) {
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var models = require('telesale.models');
-// var rpc = require('web.DataModel');
-var Model = require('web.rpc');
+var rpc = require('web.rpc');
 var core = require('web.core');
 var _t = core._t;
 
@@ -135,14 +134,13 @@ var ProductCatalogWidget = TsBaseWidget.extend({
 
     load_products_from_server: function(product_name, product_barcode, offset){
         var self=this;
-        var model = new Model("product.product");
         // Wee need the partner to ger the product price from server.
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         var search_str = product_name.replace('*', '%')
         var search_barcode = product_barcode.replace('*', '%')
-        var loaded = model.call("ts_search_products", [search_str, search_barcode, partner_id, pricelist_id, offset])
+        var loaded = rpc.query({model: 'product.product', method: 'ts_search_products', args:[search_str, search_barcode, partner_id, pricelist_id, offset]})
         .then(function(result){
             self.catalog_products = result['products'];
             self.result_str = result['result_str']
@@ -265,13 +263,12 @@ var ProductCatalogWidget = TsBaseWidget.extend({
     call_product_uom_change: function(input_field){
         self=this;
         self.aux_field = input_field
-        var model = new Model("sale.order.line")
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         var qty = parseFloat($(input_field).val());
         var product_id = parseInt($(input_field).parent().parent()[0].getAttribute('product-id'))
-        return model.call("ts_product_uom_change", [product_id, partner_id, pricelist_id, qty])
+        return rpc.query({model: 'sale.order.line', method: 'ts_product_uom_change', args:[product_id, partner_id, pricelist_id, qty]})
         .then(function(result){
             var input_field = self.aux_field
             $(input_field).parent().next().children()[0].value = result.price_unit.toFixed(2);

@@ -4,7 +4,6 @@ odoo.define('telesale.CustomerList', function (require) {
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var models = require('telesale.models');
 var core = require('web.core');
-// var Model = require('web.DataModel');
 var rpc = require('web.rpc');
 
 var _t = core._t;
