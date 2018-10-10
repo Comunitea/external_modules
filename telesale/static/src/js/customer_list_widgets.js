@@ -472,13 +472,6 @@ var CustomerListWidget = TsBaseWidget.extend({
         fields.id           = partner.id || false;
         // fields.country_id   = fields.country_id || false;
 
-        // MIG11 Cambio esto a sintaxis rpc
-        // new Model('res.partner').call('update_partner_from_ui',[fields]).then(function(partner_id){
-        //     self.saved_client_details(partner_id);
-        // },function(err,event){
-        //     event.preventDefault();
-        //     alert(_t('Error saving partner to the server'))
-        // });
         rpc.query({model: 'res.partner', method: 'update_partner_from_ui', args:[fields]}).then(function(partner_id){
             self.saved_client_details(partner_id);
         },function(err,event){
