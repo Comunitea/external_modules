@@ -84,15 +84,12 @@ var TsModel = Backbone.Model.extend({
     fetch: function(model, fields, domain, ctx){
         this._load_progress = (this._load_progress || 0) + 0.05;
         this.ts_widget.loading_message(_t('Loading')+' '+model,this._load_progress);
-        // return new Model(model).query(fields).filter(domain).context(ctx).all()
         return rpc.query({model: model, method: 'search_read', args:[domain, fields]})
     },
     fetch_limited_ordered: function(model, fields, domain, limit, orderby, ctx){
-        // return new Model(model).query(fields).filter(domain).limit(limit).order_by(orderby).context(ctx).first()
         return rpc.query({model: model, method: 'search_read', args:[domain, fields], orderBy: orderby, limit:limit})
     },
     fetch_ordered: function(model, fields, domain, orderby, ctx){
-        // return new Model(model).query(fields).filter(domain).order_by(orderby).context(ctx).all()
         return rpc.query({model: model, method: 'search_read', args:[domain, fields], orderBy: orderby})
     },
     _get_product_fields: function(){
@@ -134,9 +131,7 @@ var TsModel = Backbone.Model.extend({
 
                     // PRODUCTS
                     var product_fields = self._get_product_fields();
-                    // var model = new Model('product.product');
-
-                    // return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true]]]);
+                   
                     return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]]})
                 }).then(function(products){
                     // TODO OPTIMIZAR
@@ -223,19 +218,6 @@ var TsModel = Backbone.Model.extend({
                     def.reject();
                 }
             }, function(err,event){ event.preventDefault(); def.reject(); });   
-
-        // MIG 11TODO MEJORADO CON FETCH ARRIBA
-        // new Model('res.partner')
-        //     .query(partner_fields)
-        //     .filter([['customer','=',true],['write_date','>',this.db.get_partner_write_date()]])
-        //     .all({'timeout':3000, 'shadow': true})
-        //     .then(function(partners){
-        //         if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
-        //             def.resolve();
-        //         } else {
-        //             def.reject();
-        //         }
-        //     }, function(err,event){ event.preventDefault(); def.reject(); });    
         return def;
     },
     // return the current order
@@ -272,7 +254,6 @@ var TsModel = Backbone.Model.extend({
     },
     cancel_order: function(erp_id){
         var self = this;
-        // (new Model('sale.order')).call('cancel_order_from_ui',,undefined,{shadow:true})
         (new Model('sale.order')).call('cancel_order_from_ui', [[erp_id]])
             .fail(function(unused, event){
                 //don't show error popup if it fails
