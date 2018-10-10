@@ -3,7 +3,8 @@
 odoo.define('telesale.BaseWidget', function (require) {
 "use strict";
 
-var Model = require('web.DataModel');
+// var Model = require('web.DataModel');
+var rpc = require('web.rpc');
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var Buttons = require('telesale.ButtonsWidgets');
@@ -360,6 +361,7 @@ var TsWidget = TsBaseWidget.extend({
         var self = this;
 
         function close(){
+            // MIG11 Ver como se hace esto ahora
             return new Model("ir.model.data").get_func("search_read")([['name', '=', 'action_client_ts_menu']], ['res_id']).pipe(function(res) {
                 window.location = '/web#action=' + res[0]['res_id'];
             });
