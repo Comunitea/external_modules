@@ -2,7 +2,6 @@ odoo.define('telesale.models', function (require) {
 "use strict";
 
 var Backbone = window.Backbone;
-// var Model = require('web.DataModel');
 var rpc = require('web.rpc');
 var session = require('web.session');
 
@@ -254,14 +253,16 @@ var TsModel = Backbone.Model.extend({
     },
     cancel_order: function(erp_id){
         var self = this;
-        (new Model('sale.order')).call('cancel_order_from_ui', [[erp_id]])
-            .fail(function(unused, event){
-                //don't show error popup if it fails
-                console.error('Failed to cancel order:',erp_id);
-            })
+        // MIG11: qUIZÁS EL .DONE ES .THEM Y EL FAIL, VA COMO FUNCIÓN SUELTA SEGUIDA DE LA PRINCIPAL.
+        // .THEN(FUNCION DONE, FUNCION ERROR), VER EJEMPLOS EN POS
+        rpc.query({model: 'sale.order', method: 'cancel_order_from_ui', args:[[erp_id]]})
             .done(function(){
                 //remove from db if success
                 self.get('selectedOrder').destroy(); // remove order from UI
+            })
+            .fail(function(unused, event){
+                //don't show error popup if it fails
+                console.error('Failed to cancel order:',erp_id);
             });
     },
     flush: function() {
@@ -280,14 +281,8 @@ var TsModel = Backbone.Model.extend({
         self.ready2 = $.Deferred();
         //try to push an order to the server
         // shadow : true is to prevent a spinner to appear in case of timeout
-        (new Model('sale.order')).call('create_order_from_ui',[[order]])
-            .fail(function(unused, event){
-                //don't show error popup if it fails
-                console.error('Failed to send order:',order);
-                self._flush(index+1);
-                self.ready2.reject();
-                self.last_sale_id = false
-            })
+        // MIG11: Quizá con notación then
+        rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]]})
             .done(function(orders){
                 //remove from db if success
                 self.db.remove_order(order.id);
@@ -295,6 +290,13 @@ var TsModel = Backbone.Model.extend({
                 self.get('selectedOrder').destroy(); // remove order from UI
                 self.last_sale_id = orders[0]
                 self.ready2.resolve()
+            })
+            .fail(function(unused, event){
+                //don't show error popup if it fails
+                console.error('Failed to send order:',order);
+                self._flush(index+1);
+                self.ready2.reject();
+                self.last_sale_id = false
             });
     },
      _flush2: function(record) {
@@ -308,17 +310,18 @@ var TsModel = Backbone.Model.extend({
         self.ready2 = $.Deferred();
         //try to push an order to the server
         // shadow : true is to prevent a spinner to appear in case of timeout
-        (new Model('sale.order')).call('create_order_from_ui',[[order]],{})
-            .fail(function(unused, event){
-                alert('Ocurrió un fallo en al mandar el pedido al servidor');
-                self.ready2.reject()
-                self.last_sale_id = false
-            })
+        // MIG11: Quizá con notación then
+        rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]]})
             .done(function(orders){
                 //remove from db if success
                 self.get('selectedOrder').destroy(); // remove order from UI
                 self.last_sale_id = orders[0]
                 self.ready2.resolve()
+            })
+            .fail(function(unused, event){
+                alert('Ocurrió un fallo en al mandar el pedido al servidor');
+                self.ready2.reject()
+                self.last_sale_id = false
             });
     },
     // Build a order loaded from the server as order_obj the selected order_model
@@ -860,13 +863,12 @@ var Order = Backbone.Model.extend({
     get_last_line_by: function(period, client_id){
       var self = this;
       // TODO TODA ESTA PARTE
-      var model = new Model('sale.order.line');
       var cache_sold_lines = self.ts_model.db.cache_sold_lines[client_id]
       if (cache_sold_lines && period == 'year'){
           self.ts_model.get('sold_lines').reset(cache_sold_lines)
       }
       else{
-          var loaded = model.call("get_last_lines_by",[period, client_id])
+          var loaded = rpc.query({model: 'sale.order.line', method: 'get_last_lines_by', args:[period, client_id]})
               .then(function(order_lines){
                       if (!order_lines){
                         order_lines = []

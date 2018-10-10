@@ -2,7 +2,6 @@ odoo.define('telesale.PopUps', function (require) {
 "use strict";
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
-// var Model = require('web.DataModel');
 var rpc = require('web.rpc');
 
 
@@ -33,10 +32,9 @@ var SoldHistoryWidget = TsBaseWidget.extend({
     // Load Grid From server
     get_history_from_server: function(product_id){
         self=this;
-        var model = new Model("product.product")
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
-        var loaded = model.call("get_history_product_info",[product_id, partner_id])
+        var loaded = rpc.query({model: 'product.product', method: 'get_history_product_info', args:[product_id, partner_id]})
         .then(function(result){
             self.line_results = result
         });

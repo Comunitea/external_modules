@@ -2,7 +2,6 @@ odoo.define('telesale.new_order_widgets', function (require) {
 "use strict";
 
 var core = require('web.core');
-// var Model = require('web.DataModel');
 var rpc = require('web.rpc');
 var models = require('telesale.models');
 var _t = core._t;
@@ -173,8 +172,7 @@ var DataOrderWidget = TsBaseWidget.extend({
             }
             else {
                 var partner_obj = self.ts_model.db.get_partner_by_id(partner_id);
-                var model = new Model("sale.order");
-                model.call("ts_onchange_partner_id", [partner_id])
+                rpc.query({model: 'sale.order', method: 'ts_onchange_partner_id', args:[partner_id]})
                 .then(function(result){
 
                     var cus_name = self.ts_model.getComplexName(partner_obj);
@@ -373,8 +371,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         }
         var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
         var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
-        var model = new Model("sale.order.line");
-        return model.call("ts_product_id_change", [product_id, customer_id, pricelist_id])
+        return rpc.query({model: 'sale.order.line', method: 'ts_product_id_change', args:[product_id, customer_id, pricelist_id]})
         .then(function(result){
             var product_obj = self.ts_model.db.get_product_by_id(product_id);
             self.model.set('code', product_obj.default_code || "");
@@ -396,8 +393,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         var self = this;
         var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
         var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
-        var model = new Model("sale.order.line");
-        return model.call("ts_product_uom_change", [product_id, customer_id, pricelist_id, qty])
+        return rpc.query({model: 'sale.order.line', method: 'ts_product_uom_change', args:[product_id, customer_id, pricelist_id, qty]})
         .then(function(result){
             self.model.set('pvp', self.ts_model.my_round(result.price_unit));
             var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
@@ -840,8 +836,7 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
             var partner_name = this.ts_model.get('selectedOrder').get('partner');
             var partner_id = this.ts_model.db.partner_name_id[partner_name];
             if (product_id && partner_id){
-                var model = new Model('product.product');
-                model.call("get_product_info",[product_id,partner_id])
+                rpc.query({model: 'product.product', method: 'get_product_info', args:[product_id,partner_id]})
                     .then(function(result){
                         self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
                         self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
@@ -1050,11 +1045,8 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                 var loaded = self.ts_model.fetch('sale.order', ['id', 'name'], domain)
                     .then(function(orders){
                         if (orders[0]) {
-                          (new Model('sale.order')).call('confirm_order_from_ui',[orders[0].id])
-                              .fail(function(unused, event){
-                                  //don't show error popup if it fails
-                                   self.ts_model.last_sale_id = false
-                              })
+                            // MIG11: Quizá con notación then
+                            rpc.query({model: 'sale.order', method: 'confirm_order_from_ui', args:[orders[0].id]})
                               .done(function(){
                                     var my_id = orders[0].id
                                     $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
@@ -1064,6 +1056,10 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                                     .fail(function(){
                                         self.ts_model.last_sale_id = false
                                     });
+                              })
+                              .fail(function(unused, event){
+                                  //don't show error popup if it fails
+                                   self.ts_model.last_sale_id = false
                               });
 
                         }
