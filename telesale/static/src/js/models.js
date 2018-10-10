@@ -569,7 +569,7 @@ var Orderline = Backbone.Model.extend({
             code: options.code || '',
             product: options.product || '',
             qty: options.qty || 1,
-            unit: options.unit || '',
+            unit: options.unit || 1,
             pvp: options.pvp || 0,
             total: options.total || 0.0,
             //to calc totals
@@ -902,7 +902,7 @@ var Order = Backbone.Model.extend({
             if(fromsoldprodhistory){
               l_qty = 1.0;
             }
-            var uom_obj = this.ts_model.db.get_unit_by_id(product_obj.uom_id)
+            var uom_obj = this.ts_model.db.get_unit_by_id(prod_obj.uom_id)
             var line_vals = {ts_model: this.ts_model, order:this,
                              code:prod_obj.default_code || "" ,
                              product:prod_obj.display_name,

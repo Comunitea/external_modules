@@ -301,8 +301,8 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.$('.col-qty').change(_.bind(this.set_value, this, 'qty'));
         this.$('.col-qty').focus(_.bind(this.click_handler, this, 'qty'));
 
-        this.$('.col-product_uom').blur(_.bind(this.set_value, this, 'unit'));
-        this.$('.col-product_uom').focus(_.bind(this.click_handler, this, 'unit'));
+        this.$('.col-unit').blur(_.bind(this.set_value, this, 'unit'));
+        this.$('.col-unit').focus(_.bind(this.click_handler, this, 'unit'));
 
         this.$('.col-pvp').change(_.bind(this.set_value, this, 'pvp'));
         this.$('.col-pvp').focus(_.bind(this.click_handler, this, 'pvp'));
@@ -321,7 +321,7 @@ var OrderlineWidget = TsBaseWidget.extend({
              if (unit == this.model.get('unit')){
                     dic['selected'] =  "selected"
             }
-            this.$('.col-product_uom').append($('<option>', dic))
+            this.$('.col-unit').append($('<option>', dic))
         }
         var product_names = this.ts_model.get('products_names')
         this.$('.col-product').autocomplete({
@@ -995,10 +995,8 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                 self.iva += line.get_tax();
 
             }, this));
-            var percent_epd = this.order_model.get('epd') /100
-            self.iva = self.ts_model.my_round(self.iva * (1 - percent_epd ), 2);
-            self.base = self.ts_model.my_round(self.base  * (1 - percent_epd ), 2);
-            self.total += self.base + self.iva;
+            self.total += self.ts_model.my_round(self.base, 2) + self.ts_model.my_round(self.iva, 2);
+            self.base = self.ts_model.my_round(self.base, 2);
 
             this.order_model.set('total_base',self.base);
             this.order_model.set('total_iva', self.iva);

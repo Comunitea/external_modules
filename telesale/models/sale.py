@@ -20,12 +20,11 @@ class SaleOrder(models.Model):
     @api.model
     def get_head_order_vals(self, order):
         t_partner = self.env['res.partner']
-        t_irvalue = self.env['ir.values']
+        t_default = self.env['ir.default']
         partner_obj = t_partner.browse(order['partner_id'])
         warehouse_id = False
-        domain = [('name', '=', 'warehouse_id'),
-                  ('model', '=', 'sale.order')]
-        default_value = t_irvalue.search(domain, limit=1)
+        default_value = t_default.get('sale.order', 'warehouse_id')
+
         if default_value:
             warehouse_id = int(default_value.value_unpickle)
         else:
@@ -92,8 +91,9 @@ class SaleOrder(models.Model):
             self._create_lines_from_ui(order_obj, order_lines)
             if order['action_button'] == 'confirm':
                 order_obj.action_confirm()
-            if 'set_promotion' in order and order['set_promotion']:
-                order_obj.apply_commercial_rules()
+            # MIG11 comentado, no dependo del commercial rules
+            # if 'set_promotion' in order and order['set_promotion']:
+            #     order_obj.apply_commercial_rules()
         return order_ids
 
     def _create_lines_from_ui(self, order_obj, order_lines):
@@ -121,7 +121,7 @@ class SaleOrder(models.Model):
 
     @api.model
     def confirm_order_from_ui(self, order_id):
-        self.browse(order_id).action_button_confirm()
+        self.browse(order_id).action_confirm()
 
     @api.model
     def cancel_order_from_ui(self, order_id):
@@ -145,8 +145,6 @@ class SaleOrder(models.Model):
             'fiscal_position_id': order.fiscal_position_id.id,
             'payment_term_id': order.payment_term_id.id,
             'payment_mode_id': order.payment_mode_id.id,
-            'early_payment_discount': order.early_payment_discount
-
         })
         return res
 
