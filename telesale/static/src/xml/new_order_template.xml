@@ -163,7 +163,7 @@
                   </div>
                 </div>
 
-                <div class="col-xs-3 fullheight">
+                <div class="col-xs-4 fullheight">
                       <div class="row semiheight">
                           <div class="centerthis">
                             <label for="coment">Internal Notes:</label>
@@ -386,7 +386,7 @@
                 <input type="text" class='col-qty mandatory' t-att-value="widget.model.get('qty').toFixed(2)"/>
             </td>
              <td class="cell-unit">
-                <select class="col-product_uom mandatory" t-att-value="widget.model.get('unit')">
+                <select class="col-unit mandatory" t-att-value="widget.model.get('unit')">
                 </select>
             </td>
             <td class="cell-pvp">
