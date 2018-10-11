@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets" inherit_id="telesale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/telesale_financial_risk/static/src/js/new_order_widgets.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

@@ -155,7 +155,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.perform_onchange(key, value);
     },
 
-    // FULL OVERWRITED IN MODULE JIM TELESALE
+    // FULL OVERWRITED IN MODULE TELESALE_FINANCIAL_RISK
     perform_onchange: function(key, value) {
         var self=this;
         if (!value) {return;}
