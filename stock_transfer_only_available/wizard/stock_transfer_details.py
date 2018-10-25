@@ -13,7 +13,7 @@ class StockTransferDetails(models.TransientModel):
     def do_detailed_transfer(self):
         picking = self.picking_id
         location_obj = self.env['stock.location']
-        stock_loc_id = picking.picking_type_id.warehouse_id.lot_stock_id.id
+        stock_loc_id = [x.lot_stock_id.id for x in self.env['stock.warehouse'].search([])]
         totals = {}
         for line in self.item_ids:
             if line.product_id.type == 'product':
