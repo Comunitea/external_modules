@@ -1,7 +1,6 @@
 odoo_repos/
 var/
 parts/
-lib/
 include/
 eggs/
 develop-eggs/
