@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="res_partner_form_add_risk_insurance_date_end" model="ir.ui.view">
+        <field name="name">res.partner.inherit.view.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="partner_financial_risk.res_partner_view_risk"/>
+        <field name="arch" type="xml">
+            <field name="risk_insurance_code_2" position="after">
+                <field name="risk_insurance_end_date"/>
+            </field>
+
+        </field>
+    </record>
+
+</odoo>
+
