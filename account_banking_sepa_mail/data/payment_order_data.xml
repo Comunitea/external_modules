@@ -11,67 +11,85 @@
         <field name="partner_to">${ctx.get('partner_id') or ''}</field>
         <field name="auto_delete" eval="False"/>
 
-        <field name="body_html"><![CDATA[
-            <html>
-                <head>
-                    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-                    <title>Recibos ${ctx['partner_name']}</title>
-                    <style>
-                        span.oe_mail_footer_access {
-                            display:block;
-                            text-align:center;
-                            color:grey;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
-                    <p>Hola ${ctx['partner_name']}</p><br>
-                    <p>Acabamos de remitir una remesa al banco con sus efectos:</p><br>
-                    <div>
-                    % for line in ctx['lines']:
-                    <p>- ${line.amount_currency} ${line.currency_id.name} a fecha ${line.date} con referencia ${line.communication}. La cuenta bancaria de destino es: ${line.partner_bank_id.acc_number}</p>
-                    % endfor
-                    </div>
-                    <br>
-                    <p>Si tiene cualquier pregunta, no dude en contactarnos.</p>
-                    <p>Un cordial saludo</p>
-                    <br>
-                    <br>
-                    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
-                        <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
-                            <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
-                    </div>
-                    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
-                        <span style="color: #222; margin-bottom: 5px; display: block; ">
-                        % if object.company_id.street:
-                            ${object.company_id.street}<br>
-                        % endif
-                        % if object.company_id.street2:
-                            ${object.company_id.street2}<br>
-                        % endif
-                        % if object.company_id.city or object.company_id.zip:
-                            ${object.company_id.zip} ${object.company_id.city}<br>
-                        % endif
-                        % if object.company_id.country_id:
-                            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br>
-                        % endif
-                        </span>
-                        % if object.company_id.phone:
-                            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
-                                Teléfono:&nbsp; ${object.company_id.phone}
-                            </div>
-                        % endif
-                        % if object.company_id.website:
-                            <div>
-                                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
-                            </div>
-                        %endif
-                        <p></p>
-                    </div>
-                    </div>
+        <field name="body_html"><![CDATA[<html>
+                <head></head>
+                % set record = ctx.get('record')
+                % set company = record and record.company_id or ctx.get('company')
+                <body style="margin: 0; padding: 0;">
+                <table border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;" summary="o_mail_notification">
+                    <tbody>
+
+                      <!-- HEADER -->
+                      <tr>
+                        <td align="center" style="min-width: 590px;">
+                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                            <tr>
+                              <td valign="middle">
+                                  <span style="font-size:20px; color:white; font-weight: bold;">
+                                      Hola ${ctx['partner_name']}
+                                  </span>
+                              </td>
+                              <td valign="middle" align="right">
+                                  <img src="/logo.png?company=${company.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${company.name}">
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- CONTENT -->
+                      <tr>
+                        <td align="center" style="min-width: 590px;">
+                          <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
+                            <tbody>
+                              <td valign="top" style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;">
+                                    <p>Acabamos de remitir una remesa al banco con sus efectos:</p><br>
+                                    <div>
+                                    % for line in ctx['lines']:
+                                    <p>- ${line.amount_currency} ${line.currency_id.name} a fecha ${format_date(line.date)} con referencia ${line.communication}. La cuenta bancaria de destino es: ${line.partner_bank_id.acc_number or ''}</p>
+                                    % endfor
+                                    </div>
+                                    <br>
+                                    <p>Si tiene cualquier pregunta, no dude en contactarnos.</p>
+                                    <p>Un cordial saludo</p>
+                              </td>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- FOOTER -->
+                      <tr>
+                        <td align="center" style="min-width: 590px;">
+                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                            <tr>
+                              <td valign="middle" align="left" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                ${company.name}<br/>
+                                ${company.phone or ''}
+                              </td>
+                              <td valign="middle" align="right" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                % if company.email:
+                                <a href="mailto:${company.email}" style="text-decoration:none; color: white;">${company.email}</a><br/>
+                                % endif
+                                % if company.website:
+                                    <a href="${company.website}" style="text-decoration:none; color: white;">
+                                        ${company.website}
+                                    </a>
+                                % endif
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                            Powered by <a target="_blank" href="https://www.odoo.com">Odoo</a>.
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
                 </body>
-            </html>
+                </html>
             ]]>
             </field>
     </record>
