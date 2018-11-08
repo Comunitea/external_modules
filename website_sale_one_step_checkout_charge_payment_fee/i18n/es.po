@@ -1,0 +1,74 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* website_sale_one_step_checkout_charge_payment_fee
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-08 10:35+0000\n"
+"PO-Revision-Date: 2018-11-08 10:35+0000\n"
+"Last-Translator: Comunitea - Ruben <ruben@comunitea.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.ui.view,arch_db:website_sale_one_step_checkout_charge_payment_fee.add_fiction_breadcrumbs_bar_checkout
+msgid "(processing fees apply)"
+msgstr "(Procesando aplicación de tarifa)"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.ui.view,arch_db:website_sale_one_step_checkout_charge_payment_fee.order_state_message_custom
+msgid "<i class=\"fa fa-cog\"/> Configure Transaction Details"
+msgstr "<i class=\"fa fa-cog\"/> Configurar Detalles Transacción"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.ui.view,arch_db:website_sale_one_step_checkout_charge_payment_fee.cart_cash_on_delivery
+msgid "<span class=\"col-xs-6 text-right text-muted\" title=\"Cash on Delivery will be updated after choosing a new payment method\">Cash on Delivery:</span>"
+msgstr "<span class=\"col-xs-6 text-right text-muted\" title=\"El Contrareembolso será actualizado después de escoger un nuevo método de pago\">Contrareembolso:</span>"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.ui.view,arch_db:website_sale_one_step_checkout_charge_payment_fee.add_fiction_breadcrumbs_bar_checkout
+msgid "<strong>Remenber: </strong>for select a cash on delivery the total amount must be between 100€ and 350€.\n"
+"                    You can see payment conditions clicking"
+msgstr "<strong>Recuerde: </strong>para poder seleccionar Contrareembolso el importe debe estar entre 100€ y 350€.\n"
+"                    Puede ver las condicciones de pago"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.model.fields,field_description:website_sale_one_step_checkout_charge_payment_fee.field_sale_order_amount_cash_on_delivery
+msgid "Cash on Delivery Amount"
+msgstr "Importe Contrareembolso"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.model.fields,help:website_sale_one_step_checkout_charge_payment_fee.field_sale_order_has_cash_on_delivery
+msgid "Has an order line set for cash on delivery"
+msgstr "Tiene una linea del pedido seleccionada para Contrareembolso"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.model.fields,field_description:website_sale_one_step_checkout_charge_payment_fee.field_sale_order_has_cash_on_delivery
+msgid "Has cash on delivery"
+msgstr "Tiene Contrareembolso"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.model,name:website_sale_one_step_checkout_charge_payment_fee.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de Venta"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.model.fields,help:website_sale_one_step_checkout_charge_payment_fee.field_sale_order_amount_cash_on_delivery
+msgid "The amount without tax."
+msgstr "Importe sin IVA"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.ui.view,arch_db:website_sale_one_step_checkout_charge_payment_fee.add_fiction_breadcrumbs_bar_checkout
+msgid "You must select a payment method to continue process checkout"
+msgstr "Debe seleccionar un método de pago para continuar el proceso de pago"
+
+#. module: website_sale_one_step_checkout_charge_payment_fee
+#: model:ir.ui.view,arch_db:website_sale_one_step_checkout_charge_payment_fee.add_fiction_breadcrumbs_bar_checkout
+msgid "here"
+msgstr "aquí"
+

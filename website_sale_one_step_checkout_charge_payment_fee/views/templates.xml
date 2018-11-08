@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <template id="assets_frontend" inherit_id="website.assets_frontend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/less"
+				href="/website_sale_one_step_checkout_charge_payment_fee/static/src/css/checkout_charge_payment.less" />
+            <script type="text/javascript"
+                    src="/website_sale_one_step_checkout_charge_payment_fee/static/src/js/checkout_charge_payment.js"/>
+        </xpath>
+    </template>
+
+    <!--Show cash on delivery amount in cart total-->
+    <template id="cart_cash_on_delivery" name="Cash on Delivery Costs" inherit_id="website_sale.total">
+        <xpath expr="//div[@id='order_total_untaxed']" position="before">
+            <div class="row" id="order_cash_on_delivery" t-if="website_sale_order and website_sale_order.has_cash_on_delivery">
+                  <span class="col-xs-6 text-right text-muted" title="Cash on Delivery will be updated after choosing a new payment method">Cash on Delivery:</span>
+                  <span class="col-xs-6 text-right text-muted">
+                      <span t-field="website_sale_order.amount_cash_on_delivery" style="white-space: nowrap;"
+                            t-options='{"widget": "monetary", "display_currency": website_sale_order.currency_id}'/>
+                  </span>
+            </div>
+        </xpath>
+    </template>
+
+    <!--Hide cash on delivery order line in cart-->
+    <template id="cart_lines_cash_on_delivery" name="Cart lines without cash on Delivery Costs" inherit_id="website_sale.cart_lines">
+        <xpath expr="//tbody/t" position="attributes">
+            <attribute name="t-foreach">website_sale_order.website_order_line.filtered(lambda x : not x.payment_fee_line)</attribute>
+        </xpath>
+    </template>
+
+    <!--Hide cash on delivery order line in cart popover and total items control-->
+    <template id="cart_popover_lines_cash_on_delivery" name="Cart popover lines without cash on Delivery Costs" inherit_id="website_sale.cart_popover">
+        <xpath expr="//t[@t-foreach]" position="attributes">
+            <attribute name="t-foreach">website_sale_order.website_order_line.filtered(lambda x : not x.payment_fee_line)</attribute>
+        </xpath>
+    </template>
+
+    <!--OSC-->
+    <template id="add_fiction_breadcrumbs_bar_checkout" inherit_id="website_sale_one_step_checkout.osc_onestepcheckout">
+
+        <!--Warning for choose a payment method if none is checked-->
+        <xpath expr="//h3[@class='page-header mt16']" position="after">
+            <h4 t-if="not website_sale_order.payment_acquirer_id">You must select a payment method to continue process checkout</h4>
+            <t t-if="not website_sale_order.has_cash_on_delivery and (website_sale_order.amount_total &lt; 100 and website_sale_order.amount_total &gt; 350)">
+                <p><strong>Remenber: </strong>for select a cash on delivery the total amount must be between 100€ and 350€.
+                    You can see payment conditions clicking <a href="/page/pago-seguro" style="text-decoration: underline;">here</a>.</p>
+            </t>
+        </xpath>
+
+        <!--Prevent infinite acquirers loop and check the correct one-->
+        <xpath expr="//t[@t-foreach]/li" position="replace">
+            <t t-if="acquirer.name != 'Contrareembolso' or (acquirer.name == 'Contrareembolso' and website_sale_order.amount_total &gt; 100 and website_sale_order.amount_total &lt; 351)">
+                <label t-if="acquirer.button">
+                    <input t-att-value="acquirer.id" type="radio" name="acquirer"
+                           t-att-checked="website_sale_order.payment_acquirer_id == acquirer"/>
+                    <span t-field="acquirer.image_small" t-att-title="acquirer.name"
+                          t-field-options='{"widget": "image", "style":"max-width: 60px; display: inline-block"}'/>
+                    <span t-field="acquirer.name"/>
+                    <span t-if="acquirer.fees_active">(processing fees apply)
+                    </span>
+                </label>
+            </t>
+        </xpath>
+
+        <!--Hide cash on delivery order line in review order-->
+        <xpath expr="//tbody/tr" position="attributes">
+            <attribute name="t-foreach">website_sale_order.website_order_line.filtered(lambda x : not x.payment_fee_line)</attribute>
+        </xpath>
+
+    </template>
+
+    <!--Replace Configure button text from only tranfer use to a generic payment acquirer-->
+    <template id="order_state_message_custom" inherit_id="website_sale.order_state_message" name="Order State Message Custom">
+        <xpath expr="//a[@class='btn btn-primary pull-right']" position="replace">
+            <a class="btn btn-primary pull-right" target="_blank" t-att-href="'/web#model=%s&amp;id=%s&amp;action=%s&amp;view_type=form' % ('payment.acquirer',acquirer_id.id, 'payment.action_payment_acquirer')">
+                <i class="fa fa-cog"></i> Configure Transaction Details</a>
+        </xpath>
+    </template>
+
+</odoo>
