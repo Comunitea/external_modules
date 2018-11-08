@@ -28,29 +28,29 @@ msgstr "<i class=\"fa fa-cog\"/> Configurar Detalles Transacción"
 #. module: website_sale_one_step_checkout_charge_payment_fee
 #: model:ir.ui.view,arch_db:website_sale_one_step_checkout_charge_payment_fee.cart_cash_on_delivery
 msgid "<span class=\"col-xs-6 text-right text-muted\" title=\"Cash on Delivery will be updated after choosing a new payment method\">Cash on Delivery:</span>"
-msgstr "<span class=\"col-xs-6 text-right text-muted\" title=\"El Contrareembolso será actualizado después de escoger un nuevo método de pago\">Contrareembolso:</span>"
+msgstr "<span class=\"col-xs-6 text-right text-muted\" title=\"El Reembolso será actualizado después de escoger un nuevo método de pago\">Reembolso:</span>"
 
 #. module: website_sale_one_step_checkout_charge_payment_fee
 #: model:ir.ui.view,arch_db:website_sale_one_step_checkout_charge_payment_fee.add_fiction_breadcrumbs_bar_checkout
 msgid "<strong>Remenber: </strong>for select a cash on delivery the total amount must be between 100€ and 350€.\n"
 "                    You can see payment conditions clicking"
-msgstr "<strong>Recuerde: </strong>para poder seleccionar Contrareembolso el importe debe estar entre 100€ y 350€.\n"
+msgstr "<strong>Recuerde: </strong>para poder seleccionar Reembolso el importe debe estar entre 100€ y 350€.\n"
 "                    Puede ver las condicciones de pago"
 
 #. module: website_sale_one_step_checkout_charge_payment_fee
 #: model:ir.model.fields,field_description:website_sale_one_step_checkout_charge_payment_fee.field_sale_order_amount_cash_on_delivery
 msgid "Cash on Delivery Amount"
-msgstr "Importe Contrareembolso"
+msgstr "Importe Reembolso"
 
 #. module: website_sale_one_step_checkout_charge_payment_fee
 #: model:ir.model.fields,help:website_sale_one_step_checkout_charge_payment_fee.field_sale_order_has_cash_on_delivery
 msgid "Has an order line set for cash on delivery"
-msgstr "Tiene una linea del pedido seleccionada para Contrareembolso"
+msgstr "Tiene una linea del pedido seleccionada para Reembolso"
 
 #. module: website_sale_one_step_checkout_charge_payment_fee
 #: model:ir.model.fields,field_description:website_sale_one_step_checkout_charge_payment_fee.field_sale_order_has_cash_on_delivery
 msgid "Has cash on delivery"
-msgstr "Tiene Contrareembolso"
+msgstr "Tiene Reembolso"
 
 #. module: website_sale_one_step_checkout_charge_payment_fee
 #: model:ir.model,name:website_sale_one_step_checkout_charge_payment_fee.model_sale_order
