@@ -51,7 +51,7 @@
 
         <!--Prevent infinite acquirers loop and check the correct one-->
         <xpath expr="//t[@t-foreach]/li" position="replace">
-            <t t-if="acquirer.name != 'Contrareembolso' or (acquirer.name == 'Contrareembolso' and website_sale_order.amount_total &gt; 100 and website_sale_order.amount_total &lt; 351)">
+            <t t-if="acquirer.name != 'Reembolso' or (acquirer.name == 'Reembolso' and website_sale_order.amount_total &gt; 100 and website_sale_order.amount_total &lt; 351)">
                 <label t-if="acquirer.button">
                     <input t-att-value="acquirer.id" type="radio" name="acquirer"
                            t-att-checked="website_sale_order.payment_acquirer_id == acquirer"/>
