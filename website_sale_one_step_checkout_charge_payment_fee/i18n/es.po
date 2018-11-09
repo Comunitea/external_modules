@@ -32,7 +32,7 @@ msgstr "<span class=\"col-xs-6 text-right text-muted\" title=\"El Reembolso ser�
 
 #. module: website_sale_one_step_checkout_charge_payment_fee
 #: model:ir.ui.view,arch_db:website_sale_one_step_checkout_charge_payment_fee.add_fiction_breadcrumbs_bar_checkout
-msgid "<strong>Remenber: </strong>for select a cash on delivery the total amount must be between 100€ and 350€.\n"
+msgid "<strong>Remember: </strong>for select a cash on delivery the total amount must be between 100€ and 350€.\n"
 "                    You can see payment conditions clicking"
 msgstr "<strong>Recuerde: </strong>para poder seleccionar Reembolso el importe debe estar entre 100€ y 350€.\n"
 "                    Puede ver las condicciones de pago"

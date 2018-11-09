@@ -43,8 +43,8 @@
         <!--Warning for choose a payment method if none is checked-->
         <xpath expr="//h3[@class='page-header mt16']" position="after">
             <h4 t-if="not website_sale_order.payment_acquirer_id">You must select a payment method to continue process checkout</h4>
-            <t t-if="not website_sale_order.has_cash_on_delivery and (website_sale_order.amount_total &lt; 100 and website_sale_order.amount_total &gt; 350)">
-                <p><strong>Remenber: </strong>for select a cash on delivery the total amount must be between 100€ and 350€.
+            <t t-if="not website_sale_order.has_cash_on_delivery and (website_sale_order.amount_total &lt; 100 or website_sale_order.amount_total &gt; 350)">
+                <p><strong>Remember: </strong>for select a cash on delivery the total amount must be between 100€ and 350€.
                     You can see payment conditions clicking <a href="/page/pago-seguro" style="text-decoration: underline;">here</a>.</p>
             </t>
         </xpath>
