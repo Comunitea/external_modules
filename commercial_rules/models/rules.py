@@ -265,6 +265,7 @@ class PromotionsRules(models.Model):
         Get all active promiotions, evaluate it, and execute if evaluation
         is true
         """
+        import ipdb; ipdb.set_trace()
         order = self.env['sale.order'].browse(order_id)
         domain = self._get_promotions_domain(order)
         active_promos = self.search(domain)
@@ -462,7 +463,7 @@ class PromotionsRulesConditionsExprs(models.Model):
                 (product_code, comparator, qty)
         return res
 
-    def evaluate(self, order):
+    def evaluate(self, order, **kwargs):
         """
         Evaluates the expression in given environment
         @param cr: Database cr

@@ -473,7 +473,7 @@ msgstr "Secuencia"
 #. module: commercial_rules
 #: selection:promos.rules.conditions.exps,attribute:0
 msgid "Ship Address City"
-msgstr "Çiudad de la dirección de envío"
+msgstr "Ciudad de la dirección de envío"
 
 #. module: commercial_rules
 #: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_stop_further
@@ -508,7 +508,7 @@ msgstr "Hasta la fecha"
 #. module: commercial_rules
 #: selection:promos.rules.conditions.exps,attribute:0
 msgid "Total Amount"
-msgstr "Cantidad tottal"
+msgstr "Cantidad total"
 
 #. module: commercial_rules
 #: model:ir.model,name:commercial_rules.model_stock_picking
