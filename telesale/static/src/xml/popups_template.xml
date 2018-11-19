@@ -51,7 +51,7 @@
                                 <span t-esc="line.qty"/>
                             </td>
                             <td>
-                                <span t-esc="line.price"/>
+                                <span t-esc="line.price_unit"/>
                             </td>
                               <td>
                                 <span t-esc="line.discount"/>
