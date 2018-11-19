@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-# © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
+# © 2018 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-# from openerp.osv import orm, fields
-# from openerp.tools.misc import ustr
-# from openerp.tools.translate import _
-
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
@@ -272,11 +267,7 @@ class PromotionsRules(models.Model):
         """
         order = self.env['sale.order'].browse(order_id)
         domain = self._get_promotions_domain(order)
-        print "*******************************"
-        print domain
         active_promos = self.search(domain)
-        print active_promos
-        print "*******************************"
         for promotion_rule in active_promos:
             result = promotion_rule.evaluate(order)
             if result:
@@ -398,7 +389,7 @@ class PromotionsRulesConditionsExprs(models.Model):
                                 % attribute)
             product_code, quantity = value.split(",")
             if not (type(eval(product_code)) == str and
-                    type(eval(quantity)) in [int, long, float]):
+                    type(eval(quantity)) in [int, float]):
                 raise UserError("Value for %s combination is invalid\n"
                                 "Eg for right format is `'PC312',120.50`"
                                 % attribute)
@@ -411,7 +402,7 @@ class PromotionsRulesConditionsExprs(models.Model):
                     "Eg for right format is `['code1,code2',..]|120.50`")
             product_codes_iter, quantity = value.split("|")
             if not (type(eval(product_codes_iter)) in [tuple, list] and
-                    type(eval(quantity)) in [int, long, float]):
+                    type(eval(quantity)) in [int, float]):
                 raise UserError(
                     "Value for computed subtotal combination is invalid\n"
                     "Eg for right format is `['code1,code2',..]|120.50`")
@@ -857,13 +848,13 @@ class PromotionsRulesActions(models.Model):
                     type(eval(vals['product_code'])) == str:
                 raise UserError("Invalid product code\n Has to be \
                                 'product_code'")
-            if not type(eval(vals['arguments'])) in [int, long, float]:
+            if not type(eval(vals['arguments'])) in [int, float]:
                 raise UserError("Argument has to be numeric. eg: 10.00")
 
         if vals['action_type'] in ['cart_disc_perc', 'cart_disc_fix']:
             if vals['product_code']:
                 raise UserError("Product code is not used in cart actions")
-            if not type(eval(vals['arguments'])) in [int, long, float]:
+            if not type(eval(vals['arguments'])) in [int, float]:
                 raise UserError("Argument has to be numeric. eg: 10.00")
 
         if vals['action_type'] in ['prod_x_get_y', ]:

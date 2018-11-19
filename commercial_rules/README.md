@@ -1,5 +1,5 @@
 Customer Rules on Sale Order for Odoo
-    = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+===================================== 
     Features:
     1. Customer Rules (like promotions) based on conditions and coupons
     2. Web services API compliance
@@ -13,12 +13,12 @@ Customer Rules on Sale Order for Odoo
 
 
 Original module openerp-sale-promotions
-========================================
+=======================================
 
 This is open-ERP module for promotion of sales
 
 New Comunitea features
-=======================
+======================
     1. Restrict aplication of promotions by partner
     2. New action to add a product discount in a new line
     3. New condition to the delivery city of the order
