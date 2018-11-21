@@ -4,7 +4,7 @@
 
         <!-- Avoid Menu of product Variants -->
         <delete model="ir.ui.menu" search="[('id','=',ref('product.menu_products'))]"/>
-        <menuitem id="menu_products2" action="product.product_normal_action_sell" parent="base.menu_product" groups="group_no_variants" sequence="10"/>
+        <menuitem id="menu_products2" action="product.product_normal_action_sell" parent="sale.menu_product" groups="group_no_variants" sequence="10"/>
         <delete model="ir.ui.menu" search="[('id','=',ref('stock.menu_product_variant_config_stock'))]"/>
         <menuitem
             action="product.product_normal_action" id="menu_product_variant_config_stock2"
@@ -75,7 +75,7 @@
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_kanban_view"/>
             <field name="arch" type="xml">
-                <xpath expr="/kanban/templates/t/div/div/a" position="replace"/>
+                <xpath expr="/kanban/templates/t/div/div/div/strong" position="replace"/>
             </field>
         </record>
 

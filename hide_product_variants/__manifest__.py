@@ -25,7 +25,7 @@
     'description': """Hide by default product variants menu""",
     'author': 'Comunitea',
     'website': 'www.comunitea.com',
-    "depends": ['stock', 'product', 'purchase'],
+    "depends": ['stock', 'product', 'purchase', 'sale'],
     "data": ['security/hide_variants_groups.xml',
              'views/product_view.xml'],
     "installable": True
