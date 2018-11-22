@@ -8,9 +8,11 @@
     'author': 'Comunitea',
     'website': 'http://www.comunitea.com',
     'category': 'Banking addons',
-    'depends': ['account_payment_order'],
+    'depends': ['account_payment_order', 'account_payment_return'],
     'data': ['data/payment_order_data.xml',
-             'views/payment_order_view.xml'],
+             'data/payment_return_data.xml',
+             'views/payment_order_view.xml',
+             'views/payment_return.xml'],
     'demo': [],
     'description': '''
 Send email to partners when payment order is done''',
