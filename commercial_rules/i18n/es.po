@@ -1,0 +1,631 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* commercial_rules
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-06 17:42+0000\n"
+"PO-Revision-Date: 2017-04-06 17:42+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_res_partner_rules_count
+msgid "# Customer Rules"
+msgstr "# Reglas comerciales"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_action_type
+msgid "Action"
+msgstr "Acción"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "Actions"
+msgstr "Acciones"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_active
+msgid "Active"
+msgstr "Activo"
+
+#. module: commercial_rules
+#: selection:promos.rules,logic:0
+msgid "All"
+msgstr "Todo"
+
+#. module: commercial_rules
+#: selection:promos.rules,logic:0
+msgid "Any"
+msgstr "Algo"
+
+#. module: commercial_rules
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "Applicable Period"
+msgstr "Período aplicable"
+
+#. module: commercial_rules
+#: model:ir.model.fields,help:commercial_rules.field_promos_rules_partner_categories
+msgid "Applicable to all if                                                 none is selected"
+msgstr "Se aplica a todos si ninguno está seleccionado"
+
+#. module: commercial_rules
+#: model:ir.model.fields,help:commercial_rules.field_promos_rules_partner_ids
+msgid "Applicable to all if none is                                    selected"
+msgstr "Se aplica a todos si ninguno está seleccionado"
+
+#. module: commercial_rules
+#: model:ir.ui.view,arch_db:commercial_rules.view_sale_promo_form
+msgid "Apply Commercial Rules"
+msgstr "Aplicar reglas comerciales"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_arguments
+msgid "Arguments"
+msgstr "Argumentos"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_attribute
+msgid "Attribute"
+msgstr "Atributo"
+
+#. module: commercial_rules
+#: selection:product.packaging,ul_type:0
+msgid "Box"
+msgstr "Caja"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:53
+#: selection:promos.rules.actions,action_type:0
+#, python-format
+msgid "Buy X get Y free"
+msgstr "Compra X llévate Y gratis"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_res_partner_rule_ids
+msgid "Comercial Rules"
+msgstr "Reglas comerciales"
+
+#. module: commercial_rules
+#: model:ir.ui.view,arch_db:commercial_rules.view_partner_form_commercial_rules
+msgid "Comercial rules"
+msgstr "Reglas comerciales"
+
+#. module: commercial_rules
+#: model:ir.model.fields,help:commercial_rules.field_res_partner_rule_ids
+msgid "Comercial rules belongs to this                                       customer"
+msgstr "Reglas comerciales que pertenecen a este cliente"
+
+#. module: commercial_rules
+#: model:ir.actions.act_window,name:commercial_rules.act_commercial_rules
+#: model:ir.ui.menu,name:commercial_rules.promos
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_tree
+msgid "Commercial Rules"
+msgstr "Reglas comerciales"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_comparator
+msgid "Comparator"
+msgstr "Comparador"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Compute sub total excluding products"
+msgstr "Cálcular subtotal excluyendo productos"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Compute sub total of products"
+msgstr "Calcular subtotal en productos"
+
+#. module: commercial_rules
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "Conditions"
+msgstr "Condiciones"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_coupon_code
+msgid "Coupon Code"
+msgstr "Código cupón"
+
+#. module: commercial_rules
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "Coupon/Voucher Settings"
+msgstr "Configuración de los cupones"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_create_uid
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_create_uid
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_create_date
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_create_date
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Custom domain expression"
+msgstr "Custom domain expression"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_description
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "Description"
+msgstr "Descripción"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:49
+#: selection:promos.rules.actions,action_type:0
+#, python-format
+msgid "Discount % on Product"
+msgstr "Descuento % en producto"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:51
+#: selection:promos.rules.actions,action_type:0
+#, python-format
+msgid "Discount % on Sub Total"
+msgstr "Descuento % en subtotal"
+
+#. module: commercial_rules
+#: model:product.product,name:commercial_rules.product_discount
+#: model:product.template,name:commercial_rules.product_discount_product_template
+msgid "Discount line"
+msgstr "Línea descuento"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_display_name
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_display_name
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/stock.py:43
+#, python-format
+msgid "Error!"
+msgstr "Error!"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_serialised_expr
+msgid "Expression"
+msgstr "Expresión"
+
+#. module: commercial_rules
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_cond_expr_form
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_cond_expr_tree
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "Expressions"
+msgstr "Expresiones"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_expressions
+msgid "Expressions/Conditions"
+msgstr "Expresiones/Condiciones"
+
+#. module: commercial_rules
+#: selection:promos.rules,expected_logic_result:0
+msgid "False"
+msgstr "Falso"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:50
+#: selection:promos.rules.actions,action_type:0
+#, python-format
+msgid "Fixed amount on Product"
+msgstr "Cantidad fija en producto"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:52
+#: selection:promos.rules.actions,action_type:0
+#, python-format
+msgid "Fixed amount on Sub Total"
+msgstr "Cantidad fija en subtotal"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_from_date
+msgid "From Date"
+msgstr "Desde la fecha"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_sale_order_line_orig_line_ids
+msgid "From lines"
+msgstr "Desde líneas"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_id
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_id
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_id
+msgid "ID"
+msgstr "ID"
+
+#. module: commercial_rules
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "If"
+msgstr "Si"
+
+#. module: commercial_rules
+#: model:ir.model.fields,help:commercial_rules.field_product_product_no_promo
+msgid "If checked the product will be ignored                               when apply promotions"
+msgstr "Si está marcado el producto será ignorado cuando se aplican las reglas comerciales"
+
+#. module: commercial_rules
+#: model:ir.model.fields,help:commercial_rules.field_sale_order_line_promotion_line
+msgid "Indicates if the line was                                           created by comemrcial rules"
+msgstr "Identifica si la línea estaba creada por reglas comerciales"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules___last_update
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions___last_update
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_write_uid
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_write_uid
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_write_date
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_write_date
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_logic
+msgid "Logic"
+msgstr "Lógica"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_product_packaging_ul_type
+msgid "Logitic Unit Type"
+msgstr "Tipo de unidad logística"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:56
+#: selection:promos.rules.actions,action_type:0
+#, python-format
+msgid "New line discount, multiply of pallet"
+msgstr "Nueva línea de descuento, múltiplo de pallet"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:54
+#: selection:promos.rules.actions,action_type:0
+#, python-format
+msgid "New line discount, over order subtotal"
+msgstr "Nueva línea de descuento sobre el subtotal
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:55
+#: selection:promos.rules.actions,action_type:0
+#, python-format
+msgid "New line discount, over price unit"
+msgstr "Nueva línea de descuento sobre el precio unitario"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_product_product_no_promo
+msgid "No Apply promotions"
+msgstr "No aplicar reglas comerciales"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_coupon_used
+msgid "Number of Coupon Uses"
+msgstr "Nº de usos de cupón"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Number of entire pallets"
+msgstr "Número de pallets enteros"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Number pallets of product"
+msgstr "Número de pallets de un producto"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_sale_order_line_old_discount
+msgid "Old discount"
+msgstr "Descuento antiguo"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_sale_order_line_orig_qty
+msgid "Original qty"
+msgstr "Cantidad original"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_expected_logic_result
+msgid "Output"
+msgstr "Salida"
+
+#. module: commercial_rules
+#: selection:product.packaging,ul_type:0
+msgid "Pack"
+msgstr "Paquete"
+
+#. module: commercial_rules
+#: model:ir.model,name:commercial_rules.model_product_packaging
+msgid "Packaging"
+msgstr "Empaquetado"
+
+#. module: commercial_rules
+#: selection:product.packaging,ul_type:0
+msgid "Pallet"
+msgstr "Palet"
+
+#. module: commercial_rules
+#: model:ir.model,name:commercial_rules.model_res_partner
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_partner_ids
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_partner_categories
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "Partner Categories"
+msgstr "Categorías cliente"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/stock.py:44
+#, python-format
+msgid "Please define income account for this                               product: \"%s\" (id:%d)."
+msgstr "or favor defina cuenta de ingresos para este producto: \"%s\" (id:%d)."
+
+#. module: commercial_rules
+#: model:ir.model,name:commercial_rules.model_product_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_product_code
+msgid "Product Code"
+msgstr "Código de producto"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Product Code in order"
+msgstr "Código de producto en orden"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Product Discount combination"
+msgstr "Combinación producto y descuento"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Product Quantity combination"
+msgstr "Combinación producto y cantidad"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Product SubTotal combination"
+msgstr "Combinación producto y subtotal"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Product UnitPrice combination"
+msgstr "Combinación producto y precio unitario"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Product Weight combination"
+msgstr "Combinación producto y peso"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_sale_order_coupon_code
+msgid "Promo Coupon Code"
+msgstr "Código de cupon"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_promotion
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_promotion
+msgid "Promotion"
+msgstr "Regla comercial"
+
+#. module: commercial_rules
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "Restrict partners"
+msgstr "Restringir a empresas"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_sale_order_line_promotion_line
+msgid "Rule Line"
+msgstr "Línea regla"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_name
+msgid "Rule Name"
+msgstr "Nombre de regla"
+
+#. module: commercial_rules
+#: model:ir.model,name:commercial_rules.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: commercial_rules
+#: model:ir.model,name:commercial_rules.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de venta"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_actions_sequence
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_sequence
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Ship Address City"
+msgstr "Ciudad de la dirección de envío"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_stop_further
+msgid "Stop Checks"
+msgstr "Parar comprobaciones"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_stop_further
+msgid "Stop further checks"
+msgstr "Parar futuras comprobaciones"
+
+#. module: commercial_rules
+#: model:ir.model.fields,help:commercial_rules.field_promos_rules_stop_further
+msgid "Stops further promotions being                                  checked"
+msgstr "Evitar que las siguientes promociones sean comprobadas"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Tax Amount"
+msgstr "Cantidad impuestos"
+
+#. module: commercial_rules
+#: model:ir.model.fields,help:commercial_rules.field_promos_rules_coupon_used
+msgid "The number of times this coupon                                       has been used."
+msgstr "El número de veces que este cupón ha sido usado."
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_to_date
+msgid "To Date"
+msgstr "Hasta la fecha"
+
+#. module: commercial_rules
+#: selection:promos.rules.conditions.exps,attribute:0
+msgid "Total Amount"
+msgstr "Cantidad total"
+
+#. module: commercial_rules
+#: model:ir.model,name:commercial_rules.model_stock_picking
+msgid "Transfer"
+msgstr "Transferir"
+
+#. module: commercial_rules
+#: selection:promos.rules,expected_logic_result:0
+msgid "True"
+msgstr "Verdadero"
+
+#. module: commercial_rules
+#: selection:product.packaging,ul_type:0
+msgid "Unit"
+msgstr "Unidad"
+
+#. module: commercial_rules
+#: model:product.product,sga_desc_uom_base_code:commercial_rules.product_discount
+#: model:product.template,sga_desc_uom_base_code:commercial_rules.product_discount_product_template
+msgid "Unit(s)"
+msgstr "Unidad(s)"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:20
+#: selection:promos.rules.conditions.exps,attribute:0
+#, python-format
+msgid "Untaxed Total"
+msgstr "Base total"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_uses_per_coupon
+msgid "Uses per Coupon"
+msgstr "Usos por cupón"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_uses_per_partner
+msgid "Uses per Partner"
+msgstr "Usos por empresa"
+
+#. module: commercial_rules
+#: model:ir.model.fields,field_description:commercial_rules.field_promos_rules_conditions_exps_value
+msgid "Value"
+msgstr "Valor"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:38
+#: selection:promos.rules.conditions.exps,comparator:0
+#, python-format
+msgid "equals"
+msgstr "igual"
+
+#. module: commercial_rules
+#: model:ir.ui.view,arch_db:commercial_rules.view_promotion_rules_form
+msgid "expressions are"
+msgstr "las expresiones son"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:40
+#: selection:promos.rules.conditions.exps,comparator:0
+#, python-format
+msgid "greater than"
+msgstr "mayor que"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:41
+#: selection:promos.rules.conditions.exps,comparator:0
+#, python-format
+msgid "greater than or equal to"
+msgstr "mayor o igual que"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:44
+#: selection:promos.rules.conditions.exps,comparator:0
+#, python-format
+msgid "is in"
+msgstr "está en"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:45
+#: selection:promos.rules.conditions.exps,comparator:0
+#, python-format
+msgid "is not in"
+msgstr "no está en"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:42
+#: selection:promos.rules.conditions.exps,comparator:0
+#, python-format
+msgid "less than"
+msgstr "menor que"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:43
+#: selection:promos.rules.conditions.exps,comparator:0
+#, python-format
+msgid "less than or equal to"
+msgstr "menor o igual que"
+
+#. module: commercial_rules
+#: code:addons/commercial_rules/models/rules.py:39
+#: selection:promos.rules.conditions.exps,comparator:0
+#, python-format
+msgid "not equal to"
+msgstr "no es igual a"
+
+#. module: commercial_rules
+#: model:ir.model,name:commercial_rules.model_promos_rules
+msgid "promos.rules"
+msgstr "promos.rules"
+
+#. module: commercial_rules
+#: model:ir.model,name:commercial_rules.model_promos_rules_actions
+msgid "promos.rules.actions"
+msgstr "promos.rules.actions"
+
+#. module: commercial_rules
+#: model:ir.model,name:commercial_rules.model_promos_rules_conditions_exps
+msgid "promos.rules.conditions.exps"
+msgstr "promos.rules.conditions.exps"
+
