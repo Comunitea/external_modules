@@ -24,8 +24,8 @@ ATTRIBUTES = [
     ('comp_sub_total', 'Compute sub total of products'),
     ('comp_sub_total_x', 'Compute sub total excluding products'),
     ('custom', 'Custom domain expression'),
-    ('pallet', 'Number of entire pallets'),
-    ('prod_pallet', 'Number pallets of product'),
+    # ('pallet', 'Number of entire pallets'),
+    # ('prod_pallet', 'Number pallets of product'),
     ('ship_address', 'Ship Address City'),
 ]
 
@@ -46,9 +46,11 @@ ACTION_TYPES = [
     ('cart_disc_perc', _('Discount % on Sub Total')),
     ('cart_disc_fix', _('Fixed amount on Sub Total')),
     ('prod_x_get_y', _('Buy X get Y free')),
-    ('line_prod_disc_perc', _('New line discount, over order subtotal')),
-    ('line_discount_group_price', _('New line discount, over price unit')),
-    ('line_discount_mult_pallet', _('New line discount, multiply of pallet')),
+    ('buy_x_pay_y', _('Buy X pay Y')),
+    ('prod_free', _('Get product for free')),
+    # ('line_prod_disc_perc', _('New line discount, over order subtotal')),
+    # ('line_discount_group_price', _('New line discount, over price unit')),
+    # ('line_discount_mult_pallet', _('New line discount, multiply of pallet')),
 ]
 
 
@@ -56,23 +58,23 @@ class PromotionsRules(models.Model):
     _name = "promos.rules"
     _order = 'sequence'
 
-    def count_coupon_use(self):
-        '''
-        This function count the number of sale orders(not in cancelled state)
-        that are linked to a particular coupon.
-        '''
-        sales_obj = self.env['sale.order']
-        num_cupons = 0
-        for promotion_rule in self:
-            if promotion_rule.coupon_code:
-                # If there is uses per coupon defined check if its overused
-                if promotion_rule.uses_per_coupon > -1:
-                    domain = [
-                        ('coupon_code', '=', promotion_rule.coupon_code),
-                        ('state', '!=', 'cancel')
-                    ]
-                    num_cupons = len(sales_obj.search(domain))
-            promotion_rule.update({'coupon_used': num_cupons})
+    # def count_coupon_use(self):
+    #     '''
+    #     This function count the number of sale orders(not in cancelled state)
+    #     that are linked to a particular coupon.
+    #     '''
+    #     sales_obj = self.env['sale.order']
+    #     num_cupons = 0
+    #     for promotion_rule in self:
+    #         if promotion_rule.coupon_code:
+    #             # If there is uses per coupon defined check if its overused
+    #             if promotion_rule.uses_per_coupon > -1:
+    #                 domain = [
+    #                     ('coupon_code', '=', promotion_rule.coupon_code),
+    #                     ('state', '!=', 'cancel')
+    #                 ]
+    #                 num_cupons = len(sales_obj.search(domain))
+    #         promotion_rule.update({'coupon_used': num_cupons})
 
     name = fields.Char('Rule Name', required=True)
     description = fields.Text('Description')
@@ -88,13 +90,13 @@ class PromotionsRules(models.Model):
                                           string="Partner Categories",
                                           help="Applicable to all if \
                                                 none is selected")
-    coupon_code = fields.Char('Coupon Code')
-    uses_per_coupon = fields.Integer('Uses per Coupon')
-    uses_per_partner = fields.Integer('Uses per Partner')
-    coupon_used = fields.Integer('Number of Coupon Uses',
-                                 compute='count_coupon_use',
-                                 help='The number of times this coupon \
-                                      has been used.')
+    # coupon_code = fields.Char('Coupon Code')
+    # uses_per_coupon = fields.Integer('Uses per Coupon')
+    # uses_per_partner = fields.Integer('Uses per Partner')
+    # coupon_used = fields.Integer('Number of Coupon Uses',
+    #                              compute='count_coupon_use',
+    #                              help='The number of times this coupon \
+    #                                   has been used.')
     from_date = fields.Datetime('From Date')
     to_date = fields.Datetime('To Date')
     sequence = fields.Integer('Sequence', required=True)
@@ -151,25 +153,25 @@ class PromotionsRules(models.Model):
                 category.id for category in order.partner_id.category_id]
             if not set(applicable_ids).intersection(partner_categories):
                 raise UserError("Not applicable to Partner Category")
-        if self.coupon_code:
-            # If the codes don't match then this is not the promo
-            if not order.coupon_code == self.coupon_code:
-                raise UserError("Coupon codes do not match")
-            # Calling count_coupon_use to check whether no. of
-            # uses is greater than allowed uses.
-            count = self.count_coupon_use
-            if count > self.uses_per_coupon:
-                raise UserError("Coupon is overused")
-            # If a limitation exists on the usage per partner
-            if self.uses_per_partner > -1:
-                domain = [
-                    ('partner_id', '=', order.partner_id.id),
-                    ('coupon_code', '=', self.coupon_code),
-                    ('state', '<>', 'cancel')
-                ]
-                matching_objs = sales_obj.search(domain)
-                if len(matching_objs) > self.uses_per_partner:
-                    raise UserError("Customer already used coupon")
+        # if self.coupon_code:
+        #     # If the codes don't match then this is not the promo
+        #     if not order.coupon_code == self.coupon_code:
+        #         raise UserError("Coupon codes do not match")
+        #     # Calling count_coupon_use to check whether no. of
+        #     # uses is greater than allowed uses.
+        #     count = self.count_coupon_use
+        #     if count > self.uses_per_coupon:
+        #         raise UserError("Coupon is overused")
+        #     # If a limitation exists on the usage per partner
+        #     if self.uses_per_partner > -1:
+        #         domain = [
+        #             ('partner_id', '=', order.partner_id.id),
+        #             ('coupon_code', '=', self.coupon_code),
+        #             ('state', '<>', 'cancel')
+        #         ]
+        #         matching_objs = sales_obj.search(domain)
+        #         if len(matching_objs) > self.uses_per_partner:
+        #             raise UserError("Customer already used coupon")
 
         # If a start date has been specified
         if self.from_date and \
@@ -332,16 +334,16 @@ class PromotionsRulesConditionsExprs(models.Model):
             self.value = "0.00"
 
         # Case 5
-        if self.attribute in ['pallet']:
-            self.value = "0.00"
+        # if self.attribute in ['pallet']:
+        #     self.value = "0.00"
 
         # Case 6
         if self.attribute in ['ship_address']:
             self.value = "'city_name'"
 
         # Case 7
-        if self.attribute in ['prod_pallet']:
-            self.value = "'product_code',0.00"
+        # if self.attribute in ['prod_pallet']:
+        #     self.value = "'product_code',0.00"
 
         return {}
 
@@ -366,7 +368,7 @@ class PromotionsRulesConditionsExprs(models.Model):
                          'prod_net_price',
                          'comp_sub_total',
                          'comp_sub_total_x',
-                         'pallet'
+                        #  'pallet'
                          ] and comparator not in numerical_comparators:
             raise UserError("Only %s can be used with %s"
                             % (",".join(numerical_comparators), attribute))
@@ -381,7 +383,7 @@ class PromotionsRulesConditionsExprs(models.Model):
                          'prod_discount',
                          'prod_weight',
                          'prod_net_price',
-                         'prod_pallet',
+                        #  'prod_pallet',
                          ]:
             if len(value.split(",")) != 2:
                 raise UserError("Value for %s combination is invalid\n"
@@ -452,14 +454,14 @@ class PromotionsRulesConditionsExprs(models.Model):
             res = """(sum(prod_sub_total.values()) - sum(
                 [prod_sub_total.get(prod_code,0) for prod_code in %s]
                 )) %s %s""" % (eval(product_codes_iter), comparator, value)
-        if attribute == 'pallet':
-            res = """sum(prod_pallet.values()) %s %s""" % (comparator, value)
+        # if attribute == 'pallet':
+        #     res = """sum(prod_pallet.values()) %s %s""" % (comparator, value)
         if attribute == 'ship_address':
             res = """order.partner_shipping_id.city == %s""" % value
-        if attribute == 'prod_pallet':
-            product_code, qty = value.split(',')
-            res = """prod_pallet.get(%s, 0.0) %s %s""" %\
-                (product_code, comparator, qty)
+        # if attribute == 'prod_pallet':
+        #     product_code, qty = value.split(',')
+        #     res = """prod_pallet.get(%s, 0.0) %s %s""" %\
+        #         (product_code, comparator, qty)
         return res
 
     def evaluate(self, order, **kwargs):
@@ -474,7 +476,7 @@ class PromotionsRulesConditionsExprs(models.Model):
         """
         products = []   # List of product Codes
         prod_qty = {}   # Dict of product_code:quantity
-        prod_pallet = {}   # Dict of product_code:number_of_pallets
+        # prod_pallet = {}   # Dict of product_code:number_of_pallets
         prod_unit_price = {}
         prod_sub_total = {}
         prod_discount = {}
@@ -502,14 +504,14 @@ class PromotionsRulesConditionsExprs(models.Model):
                     line.product_id.weight
 
                 # Get number of entire pallets
-                entire_pallets = 0
-                packing = line.product_id.packaging_ids and \
-                    line.product_id.packaging_ids[0] or False
-                if packing and packing.ul_type == 'pallet' and packing.qty:
-                    entire_pallets = line.product_uom_qty // packing.qty
+                # entire_pallets = 0
+                # packing = line.product_id.packaging_ids and \
+                #     line.product_id.packaging_ids[0] or False
+                # if packing and packing.ul_type == 'pallet' and packing.qty:
+                #     entire_pallets = line.product_uom_qty // packing.qty
 
-                prod_pallet[product_code] = \
-                    prod_pallet.get(product_code, 0.00) + entire_pallets
+                # prod_pallet[product_code] = \
+                #     prod_pallet.get(product_code, 0.00) + entire_pallets
         return eval(self.serialised_expr)
 
     @api.model
@@ -581,7 +583,7 @@ class PromotionsRulesActions(models.Model):
                 self.product_code in ["'product_code'", "'product_code_of_y'"
                                       "'product_code_x'", "'product_code_y'"]:
                 return {}
-        if self.action_type in ['prod_disc_perc', 'prod_disc_fix']:
+        if self.action_type in ['prod_disc_perc', 'prod_disc_fix', 'prod_free']:
             self.product_code = "'product_code'"
             self.arguments = "0.00"
         if self.action_type in ['cart_disc_perc', 'cart_disc_fix']:
@@ -589,7 +591,10 @@ class PromotionsRulesActions(models.Model):
             self.arguments = "0.00"
         if self.action_type in ['prod_x_get_y']:
             self.product_code = "'product_code_x','product_code_y'"
-            self.arguments = "0.00"
+            self.arguments = "qty_x, qty_y"
+        if self.action_type in ['buy_x_pay_y']:
+            self.product_code = "'product_code'"
+            self.arguments = "qty_x, qty_y"
         # Finally if nothing works
         return
 
@@ -687,11 +692,7 @@ class PromotionsRulesActions(models.Model):
 
     def action_prod_x_get_y(self, order):
         """
-        'Buy X get Y free:[Only for integers]'
-        Note: The function is too long because if it is split then there
-                will a lot of arguments to be passed from one function to
-                another. This might cause the function to get slow and
-                hamper the coding standards.
+        Buy X get Y free
         """
         product_obj = self.env['product.product']
 
@@ -717,119 +718,184 @@ class PromotionsRulesActions(models.Model):
                     get(product_code, 0.00) + order_line.product_uom_qty
         # Total number of free units of y to give
         qty_y_in_cart = prod_qty.get(product_y_code, 0)
-        if product_x_code == product_y_code:
-            diff_x_y = qty_y - qty_x
-            tot_free_y = int(qty_y_in_cart / qty_x) * diff_x_y
-        else:
-            tot_free_y = int(qty_y_in_cart / qty_x) * qty_y
+        # if product_x_code == product_y_code:
+        #     diff_x_y = qty_y - qty_x
+        # else:
+        #     tot_free_y = int(qty_y_in_cart / qty_x) * qty_y
+        qty_x_in_cart = prod_qty.get(product_x_code, 0)
+        tot_free_y = 0
+        if qty_x_in_cart and qty_x:
+            factor = int(qty_x_in_cart / qty_x)
+            tot_free_y = factor * qty_y
 
         if not tot_free_y:
             return True
         return self.create_y_line(order, tot_free_y, product.id)
-
-    def action_line_prod_disc_perc(self, order):
+    
+    def action_buy_x_pay_y(self, order):
         """
-        Crea una nueva linea de cantidad 1 y precio_unitario el descuento
-        sobre el subtotal del pedido
+        Buy X pay Y
         """
-        line_name = self.promotion.name
+        product_obj = self.env['product.product']
 
-        prod_id = self.env.ref('commercial_rules.product_discount').id
+        prod_qty = {}
+        prod_lines = {}
+        # Get Product
+        product_code = eval(self.product_code)
+        qty_x, qty_y = [eval(arg) for arg in self.arguments.split(",")]
+        product = product_obj.search([('default_code', '=',
+                                      product_code)])
+        if not product:
+            raise UserError("No product with the code for Y")
+        if len(product) > 1:
+            raise UserError("Many products with same code")
+        # get Quantity
+        # Build a dictionary of product_code to quantity
         for order_line in order.order_line.\
                 filtered(lambda l: not l.product_id.no_promo):
-            if not self.product_code or \
-                    order_line.product_id.code == eval(self.product_code):
-                disc = eval(self.arguments)
-                args = {
-                    'order_id': order.id,
-                    'name': line_name,
-                    'price_unit': -(order.amount_untaxed * disc / 100),
-                    'product_uom_qty': 1,
-                    'promotion_line': True,
-                    'product_uom': order_line.product_uom.id,
-                    'product_id': prod_id,
-                    'tax_id': [(6, 0, [x.id for x in order_line.tax_id])]
-                }
-                self.create_line(args)
+            if order_line.product_id:
+                product_code = order_line.product_id.default_code
+                prod_qty[product_code] = \
+                    prod_qty.\
+                    get(product_code, 0.00) + order_line.product_uom_qty
+                
+                if product_code not in prod_lines:
+                    prod_lines[product_code] = self.env['sale.order.line']
+                prod_lines[product_code] += order_line
+
+        qty_x_in_cart = prod_qty.get(product_code, 0)
+        tot_free_y = 0
+        if qty_x_in_cart and qty_x:
+            factor = int(qty_x_in_cart / qty_x)
+            tot_free_y = factor * qty_y
+
+        if not tot_free_y:
             return True
-
-    def _create_lines_groped_by_price(self, order, selected_lines):
+        
+        for l in prod_lines[product_code]:
+            if l.product_uom_qty > tot_free_y:
+                l.write({'product_uom_qty': l.product_uom_qty - tot_free_y})
+                break
+        return self.create_y_line(order, tot_free_y, product.id)
+    
+    def action_prod_free(self, order):
         """
-        Crea lineas de descuento agrupandolas por precio, con decuento sobre
-        precio unitario, y agrupándolas por cantidad.
+        Action for: Get Product for free
         """
-        group_dic = {}  # Agrupar lineas del mismo precio y producto
-        group_dic = {}  # Agrupar lineas del mismo precio y producto
-        prod_id = self.env.ref('commercial_rules.product_discount').id
-        for line in selected_lines:
-            key = line.price_unit
-            if key not in group_dic:
-                group_dic[key] = [0.0, []]
-            group_dic[key][0] += line.product_uom_qty
-            group_dic[key][1] += line
+        product_obj = self.env['product.product']
+        # Get Product
+        product_code = eval(self.product_code)
+        product = product_obj.search([('default_code', '=',
+                                      product_code)])
+        if not product:
+            raise UserError(_("No product with the code % s") % product_code)
+        
+        qty = eval(self.arguments)
 
-        line_name = self.promotion.name
-        for price in group_dic:
-            qty = group_dic[price][0]
-            lines = group_dic[price][1]
-            disc = eval(self.arguments)
-            taxes = set()
-            for l in lines:
-                for t in l.tax_id:
-                    taxes.add(t.id)
-            taxes = list(set(taxes))
-            args = {
-                'order_id': order.id,
-                'name': line_name,
-                'price_unit': -(price * disc / 100),
-                'product_uom_qty': qty,
-                'promotion_line': True,
-                'product_uom': lines[0].product_uom.id,
-                'product_id': prod_id,
-                'tax_id': [(6, 0, taxes)],
-                'orig_line_ids': [(6, 0, [x.id for x in lines])]
-            }
-            self.create_line(args)
-        return
+        return self.create_y_line(order, qty, product.id)
 
-    def action_line_discount_group_price(self, order):
-        """
-        Crea una linea descuento con el descuento apñicado al precio unitario
-        y la cantadid será la suma de las lineas implicadas. Se crea una linea
-        descuento a mayores por cada linea implicada con un precio diferente
-        """
+    # def action_line_prod_disc_perc(self, order):
+    #     """
+    #     Crea una nueva linea de cantidad 1 y precio_unitario el descuento
+    #     sobre el subtotal del pedido
+    #     """
+    #     line_name = self.promotion.name
 
-        selected_lines = []
-        restrict_codes = False
-        if self.product_code:
-            restrict_codes = self.product_code.replace("'", '').split(',')
-        for line in order.order_line.\
-                filtered(lambda l: not l.product_id.no_promo):
-            if restrict_codes and line.product_id.code not in restrict_codes:
-                continue
-            selected_lines += line
-        self._create_lines_groped_by_price(order, selected_lines)
-        return
+    #     prod_id = self.env.ref('commercial_rules.product_discount').id
+    #     for order_line in order.order_line.\
+    #             filtered(lambda l: not l.product_id.no_promo):
+    #         if not self.product_code or \
+    #                 order_line.product_id.code == eval(self.product_code):
+    #             disc = eval(self.arguments)
+    #             args = {
+    #                 'order_id': order.id,
+    #                 'name': line_name,
+    #                 'price_unit': -(order.amount_untaxed * disc / 100),
+    #                 'product_uom_qty': 1,
+    #                 'promotion_line': True,
+    #                 'product_uom': order_line.product_uom.id,
+    #                 'product_id': prod_id,
+    #                 'tax_id': [(6, 0, [x.id for x in order_line.tax_id])]
+    #             }
+    #             self.create_line(args)
+    #         return True
 
-    def action_line_discount_mult_pallet(self, order):
-        """
-        Crea una linea descuento por cada linea que cumpla que hay un número
-        de pallets, múltiplo de 1.
-        """
-        selected_lines = []
-        for line in order.order_line.\
-                filtered(lambda l: not l.product_id.no_promo):
-            packing = line.product_id.packaging_ids \
-                and line.product_id.packaging_ids[0] or False
-            num_pallets = 0.0
-            if packing and packing.ul_type == 'pallet' and packing.qty:
-                num_pallets = line.product_uom_qty / packing.qty
-            if not num_pallets or num_pallets % 1 != 0:
-                continue
+    # def _create_lines_groped_by_price(self, order, selected_lines):
+    #     """
+    #     Crea lineas de descuento agrupandolas por precio, con decuento sobre
+    #     precio unitario, y agrupándolas por cantidad.
+    #     """
+    #     group_dic = {}  # Agrupar lineas del mismo precio y producto
+    #     prod_id = self.env.ref('commercial_rules.product_discount').id
+    #     for line in selected_lines:
+    #         key = line.price_unit
+    #         if key not in group_dic:
+    #             group_dic[key] = [0.0, []]
+    #         group_dic[key][0] += line.product_uom_qty
+    #         group_dic[key][1] += line
 
-            selected_lines += line
-        self._create_lines_groped_by_price(order, selected_lines)
-        return
+    #     line_name = self.promotion.name
+    #     for price in group_dic:
+    #         qty = group_dic[price][0]
+    #         lines = group_dic[price][1]
+    #         disc = eval(self.arguments)
+    #         taxes = set()
+    #         for l in lines:
+    #             for t in l.tax_id:
+    #                 taxes.add(t.id)
+    #         taxes = list(set(taxes))
+    #         args = {
+    #             'order_id': order.id,
+    #             'name': line_name,
+    #             'price_unit': -(price * disc / 100),
+    #             'product_uom_qty': qty,
+    #             'promotion_line': True,
+    #             'product_uom': lines[0].product_uom.id,
+    #             'product_id': prod_id,
+    #             'tax_id': [(6, 0, taxes)],
+    #             'orig_line_ids': [(6, 0, [x.id for x in lines])]
+    #         }
+    #         self.create_line(args)
+    #     return
+
+    # def action_line_discount_group_price(self, order):
+    #     """
+    #     Crea una linea descuento con el descuento aplicado al precio unitario
+    #     y la cantadid será la suma de las lineas implicadas. Se crea una linea
+    #     descuento a mayores por cada linea implicada con un precio diferente
+    #     """
+
+    #     selected_lines = []
+    #     restrict_codes = False
+    #     if self.product_code:
+    #         restrict_codes = self.product_code.replace("'", '').split(',')
+    #     for line in order.order_line.\
+    #             filtered(lambda l: not l.product_id.no_promo):
+    #         if restrict_codes and line.product_id.code not in restrict_codes:
+    #             continue
+    #         selected_lines += line
+    #     self._create_lines_groped_by_price(order, selected_lines)
+    #     return
+
+    # def action_line_discount_mult_pallet(self, order):
+    #     """
+    #     Crea una linea descuento por cada linea que cumpla que hay un número
+    #     de pallets, múltiplo de 1.
+    #     """
+    #     selected_lines = []
+    #     for line in order.order_line.\
+    #             filtered(lambda l: not l.product_id.no_promo):
+    #         packing = line.product_id.packaging_ids \
+    #             and line.product_id.packaging_ids[0] or False
+    #         num_pallets = 0.0
+    #         if packing and packing.ul_type == 'pallet' and packing.qty:
+    #             num_pallets = line.product_uom_qty / packing.qty
+    #         if not num_pallets or num_pallets % 1 != 0:
+    #             continue
+
+    #         selected_lines += line
+    #     self._create_lines_groped_by_price(order, selected_lines)
+    #     return
 
     def execute(self, order):
         """
@@ -867,8 +933,8 @@ class PromotionsRulesActions(models.Model):
                                 'product_x','product_y'")
             try:
                 qty_1, qty_2 = vals['arguments'].split(',')
-                assert (type(eval(qty_1)) in [int, long])
-                assert (type(eval(qty_2)) in [int, long])
+                assert (type(eval(qty_1)) in [int])
+                assert (type(eval(qty_2)) in [int])
             except:
                 raise UserError("Argument has to be qty of x,y eg.`1, 1`")
 

@@ -6,34 +6,32 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Commercial Rules">
-                <group string="General">
-                    <group>
+                <group >
+                    <group string="General">
                         <field name="name"/>
-                        
                         <field name="active"/>
-                    </group>
-                    <group>
                         <field name="sequence"/>
                         <field name="stop_further"/>
+                    </group>
+                    <group string="Applicable Period">
+                        <field name="from_date" />
+                        <field name="to_date" />
                     </group>
                 </group>
                 <group string="Descriptiojn">
                     <field name="description" colspan="4" nolabel="1" />
                 </group>
-                <group>
-                    <group string="Applicable Period">
-                        <field name="from_date" />
-                        <field name="to_date" />
-                    </group>
-                    <group string="Coupon/Voucher Settings" >
-                        <field name="coupon_code" />
-                        <field name="coupon_used" />
-                        <field name="uses_per_coupon"
-                            attrs="{'required':[('coupon_code','!=',False)]}" />
-                        <field name="uses_per_partner"
-                            attrs="{'required':[('coupon_code','!=',False)]}" />
-                    </group>
-                </group>
+
+                   
+                <!-- <group string="Coupon/Voucher Settings" >
+                    <field name="coupon_code" />
+                    <field name="coupon_used" />
+                    <field name="uses_per_coupon"
+                        attrs="{'required':[('coupon_code','!=',False)]}" />
+                    <field name="uses_per_partner"
+                        attrs="{'required':[('coupon_code','!=',False)]}" />
+                </group> -->
+
                 <group string="Restrict partners">
                     <field name="partner_ids" widget="many2many_tags"/>
                 </group>
