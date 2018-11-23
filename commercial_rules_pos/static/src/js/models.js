@@ -88,7 +88,7 @@ odoo.define('commercial_rules_pos.models', function (require) {
 
                 // TODO, el original usa el campo code
                 product_code = line.get_product().default_code;
-                products.push(product_code);;
+                products.push(product_code);
                 prod_lines[product_code] = line.get_product();
 
                 if (!(product_code in prod_qty))
@@ -112,7 +112,6 @@ odoo.define('commercial_rules_pos.models', function (require) {
                 //     prod_weight[product_code] = 0.00;
                 // prod_weight[product_code] += line.get_weight();
 
-                // TODO Pallets
             }
             return eval(condition.serialised_pos);
         },
@@ -165,6 +164,8 @@ odoo.define('commercial_rules_pos.models', function (require) {
                     this.remove_orderline(line)
                 if (line.old_discount)
                     line.set_discount(line.old_discount)
+                if (line.old_qty)
+                    line.set_quantity(line.old_qty)
             }
         },
         apply_commercial_rules: function(){
@@ -368,11 +369,14 @@ odoo.define('commercial_rules_pos.models', function (require) {
                         merge: false,
                         extras: {promotion_line: true}
                     });
-                
+                    
+                    var old_qty = 0
                     for (var i = 0; i < prod_lines[product_code].length; i++) {
                         line = prod_lines[product_code][i]
                         if (line.get_quantity() > tot_free_y)
+                            old_qty = line.get_quantity()
                             line.set_quantity( (line.get_quantity() - tot_free_y) )
+                            line.old_qty = old_qty
                     }
                     
                 }
