@@ -493,7 +493,7 @@ msgstr "Evitar que las siguientes promociones sean comprobadas"
 #. module: commercial_rules
 #: selection:promos.rules.conditions.exps,attribute:0
 msgid "Tax Amount"
-msgstr "Cantidad impuestos"
+msgstr "Importe impuestos"
 
 #. module: commercial_rules
 #: model:ir.model.fields,help:commercial_rules.field_promos_rules_coupon_used
@@ -508,7 +508,7 @@ msgstr "Hasta la fecha"
 #. module: commercial_rules
 #: selection:promos.rules.conditions.exps,attribute:0
 msgid "Total Amount"
-msgstr "Cantidad total"
+msgstr "Importe total"
 
 #. module: commercial_rules
 #: model:ir.model,name:commercial_rules.model_stock_picking

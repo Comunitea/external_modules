@@ -6,6 +6,24 @@ odoo.define('commercial_rules_pos.models', function (require) {
 
     var models = require('point_of_sale.models');
 
+    var modelsP = models.PosModel.prototype.models;
+    // Add no_promo field to product.product
+    for (var i = 0; i <= modelsP.length; i++) {
+         var item = modelsP[i];
+         if (item.model === 'product.product') {
+             item.fields.push('no_promo', 'weight')
+             break;
+        }
+    }
+    // Add categories field to res.partner
+    for (var i = 0; i <= modelsP.length; i++) {
+        var item = modelsP[i];
+        if (item.model === 'res.partner') {
+            item.fields.push('category_id')
+            break;
+        }
+    }
+
     // Loading commercial rules
     models.load_models({
         model: 'promos.rules',
@@ -55,18 +73,51 @@ odoo.define('commercial_rules_pos.models', function (require) {
     var _order_super = models.Order.prototype;
     models.Order = models.Order.extend({
         is_rule_applicable: function(rule){
-            // TODO Mirar fechas, mirar categorías, mirar rango fecha
-            console.log("*****is_rule_applicable*******")
+        // Check date range, check restyrict in partner and categories
+
+            // Check date range
+            var today = new Date().toISOString().slice(0, 10)
+            var from_date = rule.from_date || false;
+            var to_date = rule.to_date || false
+            var today = new Date().toISOString().slice(0, 10)
+            
+            if (from_date && today < from_date)
+                return false;
+            if (to_date && today > to_date)
+                return false;
+
+            // Check restrict rule by partner
+            var partner = this.get_client();
+            var partner_found = true;
+            if (rule.partner_ids.length > 0){
+                if (!partner || !rule.partner_ids.includes(partner.id))
+                    partner_found = false;                
+            }
+            
+            // Check restrict rule by category
+            var categ_found = true;
+            if (rule.partner_categories.length > 0){
+                if (!partner)
+                    categ_found = false;  
+                for (var i = 0; i < partner.category_id; i++) {
+                    var categ_id = partner.category_id[i]
+                    if (rule.partner_categories.includes(categ_id)) {
+                        categ_found = true;
+                        break
+                    }
+                }
+            }
+
+            if (!(partner_found && categ_found) )
+                    return false;
             return true;
         },
         check_primary_conditions: function(rule){
             //  Comprobar condiciones, quizá tengo que devolver algo para que
             // se interrumpa la ejecución
-            console.log("*****check_primary_conditions*******")
             return true;
         },
         evaluate_condition: function(condition){
-            console.log("*****evaluate_condition*******")
             var products = [];
             var prod_qty = {};
             var prod_pallet = {};
@@ -81,10 +132,9 @@ odoo.define('commercial_rules_pos.models', function (require) {
             var product_code;
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i]
-                // TODO añadir no_promo al producto
-                // if (! line.get_product().no_promo) {
-                //     continue
-                // }
+                if (line.get_product().no_promo) {
+                    continue
+                }
 
                 // TODO, el original usa el campo code
                 product_code = line.get_product().default_code;
@@ -93,31 +143,30 @@ odoo.define('commercial_rules_pos.models', function (require) {
 
                 if (!(product_code in prod_qty))
                     prod_qty[product_code] = 0.00;
-                prod_qty[product_code] += line.get_quantity();
+                prod_qty[product_code] += line.get_quantity() || 0.00;
 
                 if (!(product_code in prod_unit_price))
                     prod_unit_price[product_code] = 0.00;
-                prod_unit_price[product_code] += line.get_unit_price();
+                prod_unit_price[product_code] += line.get_unit_price() || 0.00;
 
                 if (!(product_code in prod_sub_total))
                     prod_sub_total[product_code] = 0.00;
-                prod_sub_total[product_code] += line.get_base_price();
+                prod_sub_total[product_code] += line.get_base_price() || 0.00;
 
                 if (!(product_code in prod_discount))
                     prod_discount[product_code] = 0.00;
-                prod_discount[product_code] += line.get_discount();
+                prod_discount[product_code] += line.get_discount() || 0.00;
 
-                // TODO: Traerse peso
-                // if (!product_code in prod_weight)
-                //     prod_weight[product_code] = 0.00;
-                // prod_weight[product_code] += line.get_weight();
+                if (!(product_code in prod_weight))
+                    prod_weight[product_code] = 0.00;
+                prod_weight[product_code] += line.get_product().weight || 0.00;
 
             }
-            return eval(condition.serialised_pos);
+            var evaluation = eval(condition.serialised_pos)
+            return evaluation;
         },
         evaluate_rule: function(rule){
-            // Lógica condiciones
-            console.log("*****evaluate_rule*******")
+            // Condition logic evaluation
             var validated = this.check_primary_conditions(rule)
 
             var expected_result = (rule.expected_logic_result == 'True') ? true : false;
@@ -207,10 +256,9 @@ odoo.define('commercial_rules_pos.models', function (require) {
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i]
                 product = line.get_product();
-                // TODO añadir no_promo al producto
-                // if (! product.no_promo) {
-                //     continue
-                // }
+                if (! product.no_promo) {
+                    continue
+                }
                 if (product.default_code == code){
                     var old_discount = line.discount
                     line.set_discount(discount)
@@ -221,7 +269,6 @@ odoo.define('commercial_rules_pos.models', function (require) {
         },
         action_prod_disc_fix: function(action){
             // Action for: Fixed amount on Product
-            console.log('action_prod_free')
             var product_code = eval(action.product_code)
             var products = this.pos.db.search_product_in_category(0, product_code)
 
@@ -238,7 +285,6 @@ odoo.define('commercial_rules_pos.models', function (require) {
         },
         action_cart_disc_perc: function(action){
             // Action for 'Discount % on subtotal'
-            console.log('#########action_cart_disc_perc#########');
             var products = this.pos.db.search_product_in_category(0, 'Discount')
 
             if (products.length > 0){
@@ -279,10 +325,9 @@ odoo.define('commercial_rules_pos.models', function (require) {
             var prod_qty = {};
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i]
-                // TODO añadir no_promo al producto
-                // if (! line.get_product().no_promo) {
-                //     continue
-                // }
+                if (line.get_product().no_promo) {
+                    continue
+                }
                 // TODO, el original usa el campo code
                 product_code = line.get_product().default_code;
                 if (!(product_code in prod_qty))
@@ -328,10 +373,9 @@ odoo.define('commercial_rules_pos.models', function (require) {
             var prod_lines = {};
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i]
-                // TODO añadir no_promo al producto
-                // if (! line.get_product().no_promo) {
-                //     continue
-                // }
+                if (line.get_product().no_promo) {
+                    continue
+                }
                 // TODO, el original usa el campo code
                 product_code = line.get_product().default_code;
                 if (!(product_code in prod_qty))
@@ -384,7 +428,6 @@ odoo.define('commercial_rules_pos.models', function (require) {
         },
         action_prod_free: function(action){
             // Action for: Get Product for free
-            console.log('action_prod_free')
             var product_code = eval(action.product_code)
             var products = this.pos.db.search_product_in_category(0, product_code)
 

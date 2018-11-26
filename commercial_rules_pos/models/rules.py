@@ -17,7 +17,11 @@ class PromotionsRulesConditionsExprs(models.Model):
         """
         res = "this.%s %s %s" % (attribute, comparator, value)
         if attribute == 'amount_untaxed':
-            res = "this.get_subtotal() %s %s" % (comparator, value)
+            res = "this.get_total_without_tax() %s %s" % (comparator, value)
+        if attribute == 'amount_tax':
+            res = "this.get_total_tax() %s %s" % (comparator, value)
+        if attribute == 'amount_total':
+            res = "this.get_total_with_tax() %s %s" % (comparator, value)
         if attribute == 'custom':
             return value
         if attribute == 'product':
@@ -33,27 +37,31 @@ class PromotionsRulesConditionsExprs(models.Model):
             res = '(products.includes("%s")) && (%s["%s"] %s %s)' \
                   % (eval(product_code), attribute, eval(product_code),
                      comparator, quantity)
-        
-        # TODO CON LAS FUNCIONES REDUCE Y MAP SE HARÁ BIEN
-        # if attribute == 'comp_sub_total':
-        #     product_codes_iter, value = value.split("|")
-        #     res = """sum(
-        #         [prod_sub_total.get(prod_code,0) for prod_code in %s]
-        #         ) %s %s""" % (eval(product_codes_iter), comparator, value)
-        # if attribute == 'comp_sub_total_x':
-        #     product_codes_iter, value = value.split("|")
-        #     res = """(sum(prod_sub_total.values()) - sum(
-        #         [prod_sub_total.get(prod_code,0) for prod_code in %s]
-        #         )) %s %s""" % (eval(product_codes_iter), comparator, value)
 
-        # if attribute == 'ship_address':
-        #     res = """order.partner_shipping_id.city == %s""" % value
-        # if attribute == 'pallet':
-        #     res = """sum(prod_pallet.values()) %s %s""" % (comparator, value)
-        # if attribute == 'prod_pallet':
-        #     product_code, qty = value.split(',')
-        #     res = """prod_pallet.get(%s, 0.0) %s %s""" %\
-        #         (product_code, comparator, qty)
+        if attribute == 'comp_sub_total':
+            product_codes_iter, value = value.split("|")
+            # res = """sum(
+            #     [prod_sub_total.get(prod_code,0) for prod_code in %s]
+            #     ) %s %s""" % (eval(product_codes_iter), comparator, value)
+            res = """
+            %s.map(key => prod_sub_total[key] || 0.00).
+            reduce(function(a, b){return a + b}) %s %s;
+            """ % (eval(product_codes_iter), comparator, value)
+        if attribute == 'comp_sub_total_x':
+            product_codes_iter, value = value.split("|")
+            # res = """(sum(prod_sub_total.values()) - sum(
+            #     [prod_sub_total.get(prod_code,0) for prod_code in %s]
+            #     )) %s %s""" % (eval(product_codes_iter), comparator, value)
+            res = """Object.values(prod_sub_total).
+            reduce(function(a, b){return a + b}) -
+            %s.map(key => prod_sub_total[key] || 0.00).
+            reduce(function(a, b){return a + b}) %s %s;
+            """ % (eval(product_codes_iter), comparator, value)
+
+        # No shipp address in pos
+        if attribute == 'ship_address':
+            res = """false"""
+
         return res
 
     @api.model

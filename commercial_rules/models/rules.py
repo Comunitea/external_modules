@@ -303,17 +303,18 @@ class PromotionsRulesConditionsExprs(models.Model):
         """
         # If attribute is not there then return.
         # Will this case be there?
+        # import ipdb; ipdb.set_trace()
         if not self.attribute:
             return
         # If value is not null or one of the defaults
-        if self.value not in [
-            False,
-            "'product_code'",
-            "'product_code',0.00",
-            "['product_code','product_code2']|0.00",
-            "0.00",
-        ]:
-            return {}
+        # if self.value not in [
+        #     False,
+        #     "'product_code'",
+        #     "'product_code',0.00",
+        #     "['product_code','product_code2']|0.00",
+        #     "0.00",
+        # ]:
+        #     return {}
         # Case 1
         if self.attribute == 'product':
             self.value = "'product_code'"
@@ -512,6 +513,7 @@ class PromotionsRulesConditionsExprs(models.Model):
 
                 # prod_pallet[product_code] = \
                 #     prod_pallet.get(product_code, 0.00) + entire_pallets
+        import ipdb; ipdb.set_trace()
         return eval(self.serialised_expr)
 
     @api.model
