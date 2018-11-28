@@ -18,18 +18,22 @@
                     </tr>
                     <tr>
                         <td>ALT + W</td>
+                        <td>Histórico Ventas</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + E></td>
                         <td>Catálogo de productos</td>
                     </tr>
                    <tr>
-                        <td>ALT + E</td>
+                        <td>ALT + R</td>
                         <td>Listado clientes</td>
                     </tr>
                     <tr>
-                        <td>ALT + R</td>
+                        <td>ALT + T</td>
                         <td>Historial Pedidos</td>
                     </tr>
                     <tr>
-                        <td>ALT + T</td>
+                        <td>ALT + Y</td>
                         <td>Atajos Teclado (Esta Página)</td>
                     </tr>
                 </tbody>

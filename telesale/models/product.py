@@ -131,9 +131,9 @@ class ProductProduct(models.Model):
                                                   offset=offset)
 
         for dic in read:
-            tax_ids = self._ts_compute_taxes(dic['id'],
-                                             dic.get('taxes_id', []),
-                                             partner_id)
+            # tax_ids = self._ts_compute_taxes(dic['id'],
+            #                                  dic.get('taxes_id', []),
+            #                                  partner_id)
             result = self.env['sale.order.line'].\
                 ts_product_id_change(dic['id'], partner_id, pricelist_id)
 
@@ -144,6 +144,9 @@ class ProductProduct(models.Model):
                 price = result['price_unit']
             if result.get('discount', 0.0):
                 discount = result['discount']
+            
+            # Get taxes
+            tax_ids = result.get('tax_id', [])
             formated = {
                 'id': dic['id'],
                 'display_name': dic.get('display_name', 0.0),

@@ -175,7 +175,6 @@ var ProductCatalogWidget = TsBaseWidget.extend({
             var tax_split = taxes_str.split(',');
             var tax_ids = tax_split.map(function(x) { return parseInt(x); });
         }
-
         var vals = {
             'qty': qty,
             'price': price,
@@ -212,15 +211,6 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         }
     },
 
-    delete_if_empty_line: function(){
-        //If selected line is an empty line delete it.
-        var order =  this.ts_model.get('selectedOrder')
-        var selected_orderline = order.getSelectedLine();
-        if(selected_orderline && selected_orderline.get('product') == "" ){
-            $('.remove-line-button').click()
-        }
-    },
-
     addAllProducts: function(){
         var self=this;
         var order =  this.ts_model.get('selectedOrder')
@@ -231,7 +221,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
             return;
         }
 
-        this.delete_if_empty_line();
+        this.ts_model.delete_if_empty_line();
 
         this.$('.catalog-line').each(function(i, line){
             var line_vals = self.get_line_vals(line);
@@ -249,15 +239,6 @@ var ProductCatalogWidget = TsBaseWidget.extend({
                  self.catalog_update_product(line_cid, line_vals);
             }
         });
-    },
-    check_float(input_field){
-        var value = $(input_field).val();
-        if (isNaN(value)){
-            alert(value + _t("is not a valid number"));
-            $(input_field).val("0.00")
-            $(input_field).focus();
-            $(input_field).select();
-        }
     },
     // Load Grid From server
     call_product_uom_change: function(input_field){
@@ -282,11 +263,11 @@ var ProductCatalogWidget = TsBaseWidget.extend({
 
         var self=this;
         this.$('.add-qty').bind('change', function(event){
-             self.check_float(this);
+             self.ts_model.check_float(this);
              self.call_product_uom_change(this);
         });
         this.$('.add-price').bind('change', function(event){
-             self.check_float(this);
+             self.ts_model.check_float(this);
         });
 
         this.$('#search-product').keydown(function(event){
@@ -313,7 +294,11 @@ var ProductCatalogWidget = TsBaseWidget.extend({
             self.page = self.page + 1;
             self.searchProducts('next') 
         });
-        this.$('#add-alll-button').click(function (){ self.addAllProducts(); self.ts_model.ts_widget.new_order_screen.order_widget.renderElement(); $('button#button_no').click(); });
+        this.$('#add-alll-button').click(function (){ 
+            self.addAllProducts(); 
+            self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
+            self.ts_model.ts_widget.new_order_screen.order_widget.renderElement(); 
+            $('button#button_no').click(); });
         var $lines_contennt = this.$('.productlines');
         for (var key in this.catalog_products){
             var product_obj = self.catalog_products[key];

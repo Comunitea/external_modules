@@ -721,7 +721,7 @@ var OrderWidget = TsBaseWidget.extend({
             var product_obj = this.ts_model.db.get_product_by_id(product_id)
             var product_name = product_obj.display_name;
             added_line.set('product', product_name);
-            var uom_obj = self.ts_model.db.get_unit_by_id(product_obj.uom_id)
+            var uom_obj = this.ts_model.db.get_unit_by_id(product_obj.uom_id)
             added_line.set('unit', uom_obj.name);
             return added_line;
         },
@@ -732,7 +732,7 @@ var OrderWidget = TsBaseWidget.extend({
             added_line.set('qty', line_vals.qty || 1.0);
             added_line.set('pvp', line_vals.price || 0.0);
             added_line.set('discount', line_vals.discount || 0.0);
-            added_line.set('taxes_ids', line_vals.tax_ids || []); 
+            added_line.set('taxes_ids', line_vals.taxes_ids || []); 
             added_line.update_line_values();
             return
         },
@@ -1156,7 +1156,6 @@ var TotalsOrderWidget = TsBaseWidget.extend({
         ProductInfoOrderWidget: ProductInfoOrderWidget,
         SoldProductWidget: SoldProductWidget,
         SoldProductLineWidget: SoldProductLineWidget,
-
     }; 
 });
 

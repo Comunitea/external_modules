@@ -5,6 +5,7 @@ var TsBaseWidget = require('telesale.TsBaseWidget');
 var NewOrder = require('telesale.new_order_widgets');
 var CustomerList = require('telesale.CustomerList');
 var OrderHistory = require('telesale.OrderHistory');
+var SaleHistory = require('telesale.SaleHistory');
 var ProductCatalog = require('telesale.ProductCatalog');
 var models = require('telesale.models');
 var core = require('web.core');
@@ -198,6 +199,17 @@ exports.OrderHistoryScreenWidget = ScreenWidget.extend({
     start: function(){
         this.order_history_widget = new OrderHistory.OrderHistoryWidget(this, {});
         this.order_history_widget.replace(this.$('#placeholder-order-history-widget'));
+    },
+});
+
+exports.SaleHistoryScreenWidget = ScreenWidget.extend({
+    template: 'Sale-History-Screen-Widget',
+    init: function(parent,options){
+        this._super(parent,options)
+    },
+    start: function(){
+        this.sale_history_widget = new SaleHistory.SaleHistoryWidget(this, {});
+        this.sale_history_widget.replace(this.$('#placeholder-sale-history-widget'));
     },
 });
 

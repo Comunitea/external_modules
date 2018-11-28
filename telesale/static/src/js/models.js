@@ -545,7 +545,24 @@ var TsModel = Backbone.Model.extend({
         }
         return parseFloat(res);
 
-    }
+    },
+    delete_if_empty_line: function(){
+        //If selected line is an empty line delete it.
+        var order =  this.get('selectedOrder')
+        var selected_orderline = order.getSelectedLine();
+        if(selected_orderline && selected_orderline.get('product') == "" ){
+            $('.remove-line-button').click()
+        }
+    },
+    check_float(input_field){
+        var value = $(input_field).val();
+        if (isNaN(value)){
+            alert(value + _t("is not a valid number"));
+            $(input_field).val("0.00")
+            $(input_field).focus();
+            $(input_field).select();
+        }
+    },
 
 });
 

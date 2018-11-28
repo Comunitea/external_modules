@@ -71,6 +71,7 @@ var TsWidget = TsBaseWidget.extend({
                 'product_catalog': this.product_catalog_screen,
                 'customer_list': this.customer_list_screen,
                 'key_shorts': this.key_shorts_screen,
+                'sale_history': this.sale_history_screen,
             },
             popup_set:{
                 // 'product_sust_popup': this.product_sust_popup,
@@ -101,14 +102,18 @@ var TsWidget = TsBaseWidget.extend({
         //Product Catalog Screen
         this.product_catalog_screen = new Screens.ProductCatalogScreenWidget(this, {});
         this.product_catalog_screen.appendTo(this.$('#content'));
-
+        
         //Key Shorts Screen
         this.key_shorts_screen = new Screens.KeyShortsScreenWidget(this, {});
         this.key_shorts_screen.appendTo(this.$('#content'));
-
+        
         // --------  POP UP WIDGETS ---------
         this.filter_customer_popup = new PopUps.CustomerHistoryPopUp(this, {});
         this.filter_customer_popup.appendTo(this.$('#content'));
+        
+        // Sale History Screen
+        this.sale_history_screen = new Screens.SaleHistoryScreenWidget(this, {});
+        this.sale_history_screen.appendTo(this.$('#content'));
 
         // --------  SCREEN SELECTOR ---------
         var screen_vals = this._get_screen_selector_vals();
@@ -150,28 +155,34 @@ var TsWidget = TsBaseWidget.extend({
             self.$('#button_no').click();  //new order screen
             self.$("#partner").focus();
         });
-         Mousetrap.bind('alt+w', function(e){
+        Mousetrap.bind('alt+w', function(e){
+            $( document.activeElement ).blur();
+            if (e.defaultPrevented) e.defaultPrevented;
+            else e.returnValue = false;
+            self.$('#button_sh').click(); //Sale History
+        });
+        Mousetrap.bind('alt+e', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
             self.$('#button_pc').click(); //Product catalog
             self.$('#search-product').focus();
         });
-         Mousetrap.bind('alt+e', function(e){
+         Mousetrap.bind('alt+r', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
             self.$('#button_so').click();//Client list page
             self.$('#search-client').focus();
         });
-        Mousetrap.bind('alt+r', function(e){
+        Mousetrap.bind('alt+t', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
             self.$('#button_oh').click(); //Order Hystory
             self.$('#input-customer').focus();
         });
-        Mousetrap.bind('alt+t', function(e){
+        Mousetrap.bind('alt+y', function(e){
             $( document.activeElement ).blur();
             if (e.defaultPrevented) e.defaultPrevented;
             else e.returnValue = false;
