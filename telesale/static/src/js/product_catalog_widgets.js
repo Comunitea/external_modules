@@ -315,7 +315,11 @@ var ProductCatalogWidget = TsBaseWidget.extend({
             self.page = self.page + 1;
             self.searchProducts('next') 
         });
-        this.$('#add-alll-button').click(function (){ self.addAllProducts(); self.ts_model.ts_widget.new_order_screen.order_widget.renderElement(); $('button#button_no').click(); });
+        this.$('#add-alll-button').click(function (){ 
+            self.addAllProducts();
+            self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
+            self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
+            $('button#button_no').click(); });
         var $lines_contennt = this.$('.productlines');
         for (var key in this.catalog_products){
             var product_obj = self.catalog_products[key];
