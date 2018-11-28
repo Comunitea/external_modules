@@ -735,7 +735,6 @@ var OrderWidget = TsBaseWidget.extend({
             added_line.set('qty', line_vals.qty || 1.0);
             added_line.set('pvp', line_vals.price || 0.0);
             added_line.set('discount', line_vals.discount || 0.0);
-            debugger;
             added_line.set('taxes_ids', line_vals.taxes_ids || []); 
             added_line.update_line_values();
             return
