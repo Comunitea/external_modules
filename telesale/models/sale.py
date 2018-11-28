@@ -203,7 +203,7 @@ class SaleOrderLine(models.Model):
         return res
 
     @api.model
-    def get_last_lines_by(self, period, client_id):
+    def get_last_lines_by(self, period, partner_id):
         """
         """
         cr = self._cr
@@ -241,9 +241,9 @@ class SaleOrderLine(models.Model):
                     ORDER BY id desc"""
 
         if period != 'ult':
-            cr.execute(sq, (client_id, date_str, company_id))
+            cr.execute(sq, (partner_id, date_str, company_id))
         else:
-            cr.execute(sq, (company_id, client_id))
+            cr.execute(sq, (company_id, partner_id))
         fetch = cr.fetchall()
         prod_ids = [x[0] for x in fetch]
         res = []
@@ -255,3 +255,60 @@ class SaleOrderLine(models.Model):
             }
             res.append(dic)
         return res
+    
+    @api.model
+    def ts_get_sale_history(self, partner_id, pricelist_id, offset=0, limit=20):
+        """
+        """
+        cr = self._cr
+
+        user = self.env['res.users'].browse(self._uid)
+        company_id = user.company_id.id
+        sq = """ SELECT id
+                    FROM sale_order_line sol
+                    WHERE order_id in
+                    (SELECT id
+                        FROM sale_order WHERE
+                        state in ('sale','done')
+                        and company_id = %s
+                        and partner_id = %s order by id desc)
+                ORDER BY id desc LIMIT %s OFFSET %s"""
+
+        cr.execute(sq, (company_id, partner_id, limit, offset))
+        fetch = cr.fetchall()
+        prod_ids = [x[0] for x in fetch]
+
+        res = []
+        for l in self.browse(prod_ids):
+            # tax_ids = self.env['product.product'].\
+            #     _ts_compute_taxes(l.product_id.id,
+            #                       l.product_id.taxes_id,
+            #                       partner_id)
+            result = self.env['sale.order.line'].\
+                ts_product_id_change(l.product_id.id, partner_id, pricelist_id)
+
+            # Get price
+            price = l.price_unit
+            price_today = l.price_unit
+            if result.get('price_unit', 0.0):
+                price_today = result['price_unit']
+            
+            # Get taxes
+            tax_ids = result.get('tax_id', [])
+            dic = {
+                'product_id': l.product_id.id,
+                'name': l.product_id.display_name,
+                'date': l.order_id.date_order,
+                'qty': l.product_uom_qty,
+                'price': price,
+                'price_today': price_today,
+                'discount': l.discount,
+                'subtotal': l.price_subtotal,
+                'taxes_ids': tax_ids
+            }
+            res.append(dic)
+        
+        init = offset + 1
+        end = init + (limit -1)
+        result_str = "%s - %s / %s" % (init, end, len(prod_ids))
+        return {'history_lines': res, 'result_str': result_str}

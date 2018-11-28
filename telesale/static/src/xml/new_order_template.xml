@@ -59,9 +59,6 @@
         <div class="header-button">
             <t t-esc="widget.label" />
         </div>
-        <div class="col-xs-1 fullheight">
-            <button id="button_ks" class="select-screen"><t t-esc="widget.button_ks"/></button>
-        </div>
     </t>
 
     <t t-name="ScreenButtonWidget">
@@ -69,6 +66,10 @@
             <!-- New Order -->
             <div class="col-xs-2 fullheight">
                 <button id="button_no" class="selected-screen"><t t-esc="widget.button_no"/></button>
+            </div>
+            <!-- Sale History -->
+            <div class="col-xs-2 fullheight">
+                <button id="button_sh" class="select-screen"><t t-esc="widget.button_sh"/></button>
             </div>
             <!-- Product Catalog -->
             <div class="col-xs-2 fullheight">

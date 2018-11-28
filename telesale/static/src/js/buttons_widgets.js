@@ -103,6 +103,7 @@ var ScreenButtonWidget = ButtonBlockWidget.extend({
         this.button_no = _t("New Order");
         this.button_so = _t("Customer List");
         this.button_pc = _t("Product Catalog");
+        this.button_sh = _t("Customer History");
         this.button_pr = _t("Product Reserved");
         this.button_cl = _t("Call List");
         this.button_oh = _t("Order History");
@@ -134,6 +135,10 @@ var ScreenButtonWidget = ButtonBlockWidget.extend({
         this.$el.find('button#button_ks').click(function(){ self.select_screen('key_shorts');
                                                            self.setButtonSelected('button#button_ks');
                                                          });
+        this.$el.find('button#button_sh').click(function(){ self.select_screen('sale_history');
+                                                            self.ts_widget.sale_history_screen.sale_history_widget.load_sale_history_from_server();
+                                                            self.setButtonSelected('button#button_sh');
+                                                          });
 
 
     },
