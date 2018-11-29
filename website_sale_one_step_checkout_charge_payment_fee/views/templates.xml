@@ -61,6 +61,22 @@
             </div>
         </xpath>
 
+        <!--Prevent infinite acquirers loop and check the correct one-->
+        <xpath expr="//t[@t-foreach]/li" position="replace">
+            <t t-if="acquirer.name != 'Reembolso' or (acquirer.name == 'Reembolso' and website_sale_order.amount_total &gt; 100 and website_sale_order.amount_total &lt; 351)">
+                <label t-if="acquirer.button">
+                    <input t-att-value="acquirer.id" type="radio" name="acquirer"
+                           t-att-checked="website_sale_order.payment_acquirer_id == acquirer"/>
+                    <span t-field="acquirer.image_small" t-att-title="acquirer.name"
+                          t-field-options='{"widget": "image", "style":"max-width: 60px; display: inline-block"}'/>
+                    <span t-field="acquirer.name"/>
+                    <span t-if="acquirer.fees_active">(processing fees apply)
+                    </span>
+                </label>
+            </t>
+>>>>>>> 0e791c4df1984e3fb5395ca5dde9c9d948f072fd
+        </xpath>
+
         <!--Hide cash on delivery order line in review order-->
         <xpath expr="//tbody/tr" position="attributes">
             <attribute name="t-foreach">website_sale_order.website_order_line.filtered(lambda x : not x.payment_fee_line)</attribute>
