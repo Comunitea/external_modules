@@ -513,7 +513,6 @@ class PromotionsRulesConditionsExprs(models.Model):
 
                 # prod_pallet[product_code] = \
                 #     prod_pallet.get(product_code, 0.00) + entire_pallets
-        import ipdb; ipdb.set_trace()
         return eval(self.serialised_expr)
 
     @api.model
