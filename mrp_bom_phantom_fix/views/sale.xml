@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- sale.order inherit form view -->
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="order_line" position="before">
+                <field name="has_packs" invisible="1"/>
+            </field>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
+                <field name="pack_components" attrs="{'column_invisible': [('parent.has_packs', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
