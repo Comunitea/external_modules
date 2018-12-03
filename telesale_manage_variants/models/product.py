@@ -59,7 +59,7 @@ class ProductTemplate(models.Model):
                                                         partner_id)
                     result = self.env['sale.order.line'].\
                         ts_product_id_change(product.id, partner_id,
-                                             pricelist_id)
+                                             pricelist_id, get_stock=False)
                     price = product and var_info['price'] or 0.0
                     if result.get('price_unit', 0.0):
                         price = result['price_unit']
