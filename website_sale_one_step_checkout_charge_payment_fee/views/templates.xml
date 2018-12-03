@@ -41,28 +41,40 @@
     <template id="add_fiction_breadcrumbs_bar_checkout" inherit_id="website_sale_one_step_checkout.osc_onestepcheckout">
 
         <!--Warning for choose a payment method if none is checked-->
-        <xpath expr="//h3[@class='page-header mt16']" position="after">
-            <h4 t-if="not website_sale_order.payment_acquirer_id">You must select a payment method to continue process checkout</h4>
-            <t t-if="not website_sale_order.has_cash_on_delivery and (website_sale_order.amount_total &lt; 100 or website_sale_order.amount_total &gt; 350)">
-                <p><strong>Remember: </strong>for select a cash on delivery the total amount must be between 100€ and 350€.
-                    You can see payment conditions clicking <a href="/page/pago-seguro" style="text-decoration: underline;">here</a>.</p>
-            </t>
+        <xpath expr="//div[@id='payment_method']" position="after">
+            <div id="payment_method_info">
+                <h3 class="page-header mt8">Payment Method Info</h3>
+                <div class="panel panel-default border_primary">
+                    <div class="panel-body" id="payment_body_info">
+                        <p t-if="not website_sale_order.payment_acquirer_id">You must select a payment method to continue process checkout</p>
+                        <p>
+                            For select a <strong>"Cash on Delivery"</strong> payment, the total amount must be between 100€ and 350€.
+                        </p>
+                    </div>
+                    <div class="panel-footer">
+                        <span>You can see all payment conditions clicking <a href="/page/pago-seguro" target="_blank"
+                                                                             title="Haz click para verlo en una nueva pestaña"
+                                                                             style="text-decoration: underline;">here</a>.
+                        </span>
+                    </div>
+                </div>
+            </div>
         </xpath>
 
-        <!--Prevent infinite acquirers loop and check the correct one-->
-        <xpath expr="//t[@t-foreach]/li" position="replace">
-            <t t-if="acquirer.name != 'Reembolso' or (acquirer.name == 'Reembolso' and website_sale_order.amount_total &gt; 100 and website_sale_order.amount_total &lt; 351)">
-                <label t-if="acquirer.button">
-                    <input t-att-value="acquirer.id" type="radio" name="acquirer"
-                           t-att-checked="website_sale_order.payment_acquirer_id == acquirer"/>
-                    <span t-field="acquirer.image_small" t-att-title="acquirer.name"
-                          t-field-options='{"widget": "image", "style":"max-width: 60px; display: inline-block"}'/>
-                    <span t-field="acquirer.name"/>
-                    <span t-if="acquirer.fees_active">(processing fees apply)
-                    </span>
-                </label>
-            </t>
-        </xpath>
+        <!--&lt;!&ndash;Prevent infinite acquirers loop and check the correct one&ndash;&gt;-->
+        <!--<xpath expr="//t[@t-foreach]/li" position="replace">-->
+            <!--<t t-if="acquirer.name != 'Reembolso' or (acquirer.name == 'Reembolso' and website_sale_order.amount_total &gt; 100 and website_sale_order.amount_total &lt; 351)">-->
+                <!--<label t-if="acquirer.button">-->
+                    <!--<input t-att-value="acquirer.id" type="radio" name="acquirer"-->
+                           <!--t-att-checked="website_sale_order.payment_acquirer_id == acquirer"/>-->
+                    <!--<span t-field="acquirer.image_small" t-att-title="acquirer.name"-->
+                          <!--t-field-options='{"widget": "image", "style":"max-width: 60px; display: inline-block"}'/>-->
+                    <!--<span t-field="acquirer.name"/>-->
+                    <!--<span t-if="acquirer.fees_active">(processing fees apply)-->
+                    <!--</span>-->
+                <!--</label>-->
+            <!--</t>-->
+        <!--</xpath>-->
 
         <!--Hide cash on delivery order line in review order-->
         <xpath expr="//tbody/tr" position="attributes">

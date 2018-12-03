@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <template id="custom_onestepcheckout" inherit_id="website_sale_one_step_checkout.osc_onestepcheckout">
+        <xpath expr="//t[@t-foreach]/li" position="replace">
+            <t t-if="(not acquirer.min_amount_required and not acquirer.max_amount_required)
+                     or (
+                        (acquirer.min_amount_required &lt; website_sale_order.amount_total and acquirer.max_amount_required &gt; website_sale_order.amount_total)
+                        or (not acquirer.max_amount_required and acquirer.min_amount_required &lt; website_sale_order.amount_total)
+                        or (not acquirer.min_amount_required and acquirer.max_amount_required &gt; website_sale_order.amount_total)
+                        )">
+                <label t-if="acquirer.button">
+                    <input t-att-value="acquirer.id"
+                           type="radio"
+                           name="acquirer"
+                           t-att-checked="website_sale_order.payment_acquirer_id == acquirer"/>
+                    <span t-field="acquirer.image_small"
+                          t-att-title="acquirer.name"
+                          t-field-options='{"widget": "image", "style":"max-width: 60px; display: inline-block"}'/>
+                    <span t-field="acquirer.name"/>
+                    <span t-if="acquirer.fees_active">(processing fees apply)
+                    </span>
+                </label>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="custom_checkout" inherit_id="website_sale.payment">
+        <xpath expr="//t[@t-foreach]/li" position="replace">
+            <t t-if="(not acquirer.min_amount_required and not acquirer.max_amount_required)
+                     or (
+                        (acquirer.min_amount_required &lt; website_sale_order.amount_total and acquirer.max_amount_required &gt; website_sale_order.amount_total)
+                        or (not acquirer.max_amount_required and acquirer.min_amount_required &lt; website_sale_order.amount_total)
+                        or (not acquirer.min_amount_required and acquirer.max_amount_required &gt; website_sale_order.amount_total)
+                        )">
+                <label t-if="acquirer.button">
+                    <input t-att-value="acquirer.id"
+                           type="radio"
+                           name="acquirer"
+                           t-att-checked="acquirers[0] == acquirer"/>
+                    <span t-field="acquirer.image_small"
+                          t-att-title="acquirer.name"
+                          t-field-options='{"widget": "image", "style":"max-width: 60px; display: inline-block"}'/>
+                    <span t-field="acquirer.name"/>
+                    <span t-if="acquirer.fees_active">(processing fees apply)
+                    </span>
+                </label>
+            </t>
+        </xpath>
+    </template>
+</odoo>
