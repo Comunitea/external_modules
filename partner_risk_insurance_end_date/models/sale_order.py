@@ -8,7 +8,6 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-
     @api.multi
     def action_confirm(self):
         exception_msg = ""
@@ -18,11 +17,12 @@ class SaleOrder(models.Model):
                 datetime.strptime(
                     self.date_order, DEFAULT_SERVER_DATETIME_FORMAT) or \
                 datetime.now()
-            end_date = datetime.strptime(
-                partner.risk_insurance_end_date + ' 00:00:00',
-                DEFAULT_SERVER_DATETIME_FORMAT)
-            if partner.risk_insurance_end_date and end_date < date_order:
-                exception_msg = _('The risk insurance date is exceded.\n')
+            if partner.risk_insurance_end_date:
+                end_date = datetime.strptime(
+                    partner.risk_insurance_end_date + ' 00:00:00',
+                    DEFAULT_SERVER_DATETIME_FORMAT)
+                if end_date < date_order:
+                    exception_msg = _('The risk insurance date is exceded.\n')
         return super(SaleOrder,
                      self.with_context(
                          exception_msg=exception_msg)).action_confirm()
