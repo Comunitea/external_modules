@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="custom_info_template_tree" model="ir.ui.view">
+        <field name="model">product.custom.template</field>
+        <field name="arch" type="xml">
+            <tree string="Custom Info Templates" create="false">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_show_tree_product_templates">
+        <field name="name">Product templates Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="domain">[('product_custom_template_id', '=', active_id)]</field>
+    </record>
+
+    <record id="custom_info_property_form" model="ir.ui.view">
+        <field name="model">product.custom.property</field>
+        <field name="arch" type="xml">
+            <form string="Product custom property" create="false" >
+                <sheet>
+                     <group>
+                        <field name="template_id"/>
+                     </group>
+                     <group>
+                        <field name="name"/>
+                     </group>
+                     <group string="Options">
+                        <field name="option_ids" nolabel="1">
+                            <tree decoration-success="default_option==True" create="false">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name"/>
+                                <field name="default_option"/>
+                            </tree>
+                            <form>
+                                <h2>Option</h2>
+                                <group>
+                                    <field name="name"/>
+                                    <field name="default_option"/>
+                                    <field name="property_id" invisible="1"/>
+
+                                </group>
+                            </form>
+                        </field>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="custom_info_template_form" model="ir.ui.view">
+        <field name="model">product.custom.template</field>
+        <field name="arch" type="xml">
+            <form string="Product custom template">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <!--button name="%(action_show_tree_product_templates)d" type="action"
+                                attrs="{'invisible': [('product_template_count', '=', 0)]}" class="oe_stat_button" icon="fa-play-circle-o">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value"><field name="product_template_count" widget="statinfo" nolabel="1"/></span>
+                                <span class="o_stat_text">Product templates</span>
+                            </div>
+                        </button>
+                        <button name="refresh_template_sub_values" type="object" string="Refresh values" icon="fa-sync"/-->
+                    </div>
+                    <group>
+                        <h2>
+                            <field name="name" nolabel="1"/>
+                        </h2>
+                    </group>
+                    <notebook>
+                        <page name="properties" string="Properties">
+                            <group name="Properties">
+                                <field name ="property_ids" nolabel="1">
+                                    <tree>
+                                        <field name="name"/>
+                                    </tree>
+                                    <form string="Product custom property">
+                                        <sheet>
+                                            <h2>
+                                                <field name="name"/>
+                                            </h2>
+                                            <group string="Options">
+                                                <field name="option_ids" nolabel="1">
+                                                    <tree>
+                                                        <field name="name"/>
+                                                        <field name="default_option"/>
+                                                    </tree>
+                                                    <form>
+                                                        <sheet>
+                                                            <group>
+                                                                <field name="name"/>
+                                                                <field name="default_option"/>
+                                                            </group>
+                                                        </sheet>
+                                                    </form>
+                                                </field>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </group>
+                        </page>
+                        <page name="options" string="Options">
+                            <group name ="Values">
+                                <field name="option_ids" nolabel="1">
+                                    <tree>
+                                        <field name="property_id"/>
+                                        <field name="name"/>
+                                        <field name="default_option"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <field name="property_id"/>
+                                                <field name="name"/>
+                                                <field name="default_option"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="custom_info_template_search" model="ir.ui.view">
+        <field name="model">product.custom.template</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+
+
+    <record id="custom_info_template_tree" model="ir.ui.view">
+        <field name="model">product.custom.option</field>
+        <field name="arch" type="xml">
+            <tree string="Custom Info values" create="false">
+
+                <field name ="template_id" readonly="1"/>
+                <field name="sequence" widget="handle"/>
+                <field name = "name" readonly="1"/>
+                <field name = "default_option" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="product_custom_value_form" model="ir.ui.view">
+        <field name="model">product.custom.option</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <sheet>
+                    <h2>
+                        <field name = "name" readonly="1"/>
+                    </h2>
+
+                    <group>
+                        <field name = "default_option" readonly="1"/>
+                        <field name = "template_id" readonly="1" />
+                        <field name = "property_id" readonly="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="custom_info_value_search" model="ir.ui.view">
+        <field name="model">product.custom.option</field>
+        <field name="name">product.custom.option</field>
+        <field name="arch" type="xml">
+            <search string="Custom value">
+
+                <field name="property_id" string="Template" filter_domain="[('name','ilike',self)]"/>
+                <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+                <filter name="default_option" string="Default option" domain="[('default_option', '=', True)]"/>
+                <separator/>
+                <filter string="Custom template" name="groupby_custom_template" domain="[]"
+                            context="{'group_by' : 'template_id'}"/>
+                <filter string="Custom property" name="groupby_custom_property" domain="[]"
+                            context="{'group_by' : 'property_id'}"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="custom_info_template_action" model="ir.actions.act_window">
+        <field name="name">Templates</field>
+        <field name="res_model">product.custom.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_type">form</field>
+    </record>
+
+    <record id="custom_info_property_action" model="ir.actions.act_window">
+        <field name="name">Custom Properties</field>
+        <field name="res_model">product.custom.property</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_type">form</field>
+    </record>
+
+    <record id="custom_info_option_action" model="ir.actions.act_window">
+        <field name="name">Custom options</field>
+        <field name="res_model">product.custom.option</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_type">form</field>
+    </record>
+
+    <menuitem name="Custom info" id = "custom_info" parent="sale.prod_config_main"/>
+    <menuitem name="Custom templates"
+              action="custom_info_template_action"
+              id="menu_tree_custom_template_action"
+              parent="custom_info"/>
+
+    <menuitem name="Custom property"
+              action="custom_info_property_action"
+              id="menu_tree_custom_property_action"
+              parent="custom_info"/>
+
+     <menuitem name="Custom option"
+              action="custom_info_option_action"
+              id="menu_tree_custom_option_action"
+              parent="custom_info"/>
+
+</odoo>
+
+
+
