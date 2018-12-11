@@ -49,10 +49,10 @@ class AccountInvoice(models.Model):
                     expiration_dates_str += date + \
                         " -------------> " + \
                         (invoice.type in ('out_invoice', 'in_refund') and
-                         tools.formatLang(invoice.env, line.debit) or
+                         tools.formatLang(invoice.env, line.debit)  or
                          (invoice.type in ('in_invoice', 'out_refund') and
                           tools.formatLang(invoice.env, line.credit) or
-                          "0")) + "\n"
+                          "0")) + " €\n"
 
             invoice.expiration_dates_str = expiration_dates_str
 
