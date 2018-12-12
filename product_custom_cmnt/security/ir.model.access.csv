@@ -1,7 +1,7 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_product_custom_template_manager","name_product_custom_template_manager","model_product_custom_template","base.group_partner_manager",1,1,1,1
+"access_product_custom_template_manager","name_product_custom_template_manager","model_product_custom_template","product_custom_cmnt.group_manage_categorizacion",1,1,1,1
 "access_product_custom_template_user","name_product_custom_template_user","model_product_custom_template",,1,0,0,0
-"product_custom_property_manager","name_product_custom_property_manager","model_product_custom_property","base.group_partner_manager",1,1,1,1
+"product_custom_property_manager","name_product_custom_property_manager","model_product_custom_property","product_custom_cmnt.group_manage_categorizacion",1,1,1,1
 "product_custom_property_user","name_product_custom_property_user","model_product_custom_property",,1,0,0,0
-"product_custom_option_manager","name_product.custom.option_manager","model_product_custom_option","base.group_partner_manager",1,1,1,1
+"product_custom_option_manager","name_product.custom.option_manager","model_product_custom_option","product_custom_cmnt.group_manage_categorizacion",1,1,1,1
 "product_custom_option_user","name_product.custom.option_user","model_product_custom_option",,1,0,0,0

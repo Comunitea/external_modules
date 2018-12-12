@@ -11,6 +11,7 @@
         'product',
     ],
     'data': [
+            'security/product_custom_info.xml',
             'security/ir.model.access.csv',
             'views/custom_info_views.xml',
             'wizard/product_template_custom_values_wzd.xml',
