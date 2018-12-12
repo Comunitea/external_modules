@@ -43,7 +43,7 @@ class ProductCustomOption(models.Model):
         res = super(ProductCustomOption, self).create(vals)
 
         if res.default_option:
-            domain = [('product_custom_template_ids', 'in', self.property_id.id)]
+            domain = [('product_custom_template_ids', 'in', res.template_id.id)]
             product_tmpl_ids = self.env['product.template'].search(domain)
             product_tmpl_ids.check_product_custom_value_ids(res)
         return res
