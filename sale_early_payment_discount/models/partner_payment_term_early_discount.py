@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # © 2017 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp import models, fields, api
+from odoo import models, fields, api
 
 
 class AccountEarlyPaymentDiscount(models.Model):
@@ -18,7 +17,7 @@ class AccountEarlyPaymentDiscount(models.Model):
     def _get_default_payment_term(self):
         return self.env.context.get('payment_term', False)
 
-    name = fields.Char('Name', size=64, required=True)
+    name = fields.Char(size=64, required=True)
     partner_id = fields.Many2one('res.partner', 'Partner',
                                  default=_get_default_partner)
     payment_term_id = fields.Many2one('account.payment.term', 'Payment Term',
