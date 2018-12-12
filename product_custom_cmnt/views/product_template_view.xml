@@ -17,8 +17,6 @@
                         <group>
                             <field name="product_custom_template_ids" readonly="1" widget="many2many_tags"  options='{"no_create_edit": True}'/>
                         </group>
-
-
                     </group>
                     <group>
                         <field name="product_custom_option_ids"  nolabel="1" readonly="True">
@@ -35,7 +33,7 @@
     </record>
     <record id="product_template_only_form_view_custom_group" model="ir.ui.view">
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product_custom_cmnt.product_template_only_form_view"/>
+        <field name="inherit_id" ref="product_custom_cmnt.product_template_only_form_view_custom"/>
         <field name="groups_id" eval="[(6, 0, [ref('product_custom_cmnt.group_manage_categorizacion')])]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='product_custom_template_id']" position="attributes">
