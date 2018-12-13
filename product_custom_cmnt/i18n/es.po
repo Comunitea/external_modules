@@ -1,0 +1,441 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* product_custom_cmnt
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-11 15:28+0000\n"
+"PO-Revision-Date: 2018-12-11 15:28+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_product_template_id_11819
+msgid "Apply in this product templates"
+msgstr "Aplicar a estas plantillas de productos"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_custom_value_wzd
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,help:product_custom_cmnt.custom_info_property_action
+msgid "Click to define a new custom info property."
+msgstr "Click para definir una plantilla de valores."
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,help:product_custom_cmnt.custom_info_template_action
+msgid "Click to define a new custom info template."
+msgstr "Pulse para definir una nueva plantilla de inf. personalizada."
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,help:product_custom_cmnt.action_show_tree_product_templates
+msgid "Click to start a new work order."
+msgstr "Haga clic para iniciar una nueva orden de trabajo."
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_create_uid
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_create_uid
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template_create_uid
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_create_uid_11813
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_create_uid_11802
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_create_date
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_create_date
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template_create_date
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_create_date_11818
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_create_date_11809
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_template_tree
+msgid "Custom Info values"
+msgstr "Opciones de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,name:product_custom_cmnt.custom_info_property_action
+msgid "Custom Properties"
+msgstr "Parámetros de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_product_product_custom_property_id
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_product_custom_property_id
+msgid "Custom Property"
+msgstr "Parámetro de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.menu,name:product_custom_cmnt.custom_info
+msgid "Custom info"
+msgstr "Categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_product_product_custom_option_id
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_product_custom_option_id
+#: model:ir.ui.menu,name:product_custom_cmnt.menu_tree_custom_option_action
+msgid "Custom option"
+msgstr "Opciones"
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,name:product_custom_cmnt.custom_info_option_action
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_product_product_custom_option_ids
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_product_custom_option_ids
+msgid "Custom options"
+msgstr "Opciones de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_property_id
+#: model:ir.ui.menu,name:product_custom_cmnt.menu_tree_custom_property_action
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_value_search
+msgid "Custom property"
+msgstr "Parámetros"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_custom_property_ids
+msgid "Custom property ids"
+msgstr "Parámetros de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_template_id
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_value_search
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_tag_search_inherit
+msgid "Custom template"
+msgstr "Plantilla de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_template_id
+msgid "Custom template values"
+msgstr "Plantilla de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_product_product_custom_template_ids
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_product_custom_template_ids
+msgid "Custom template(s)"
+msgstr "Plantilla(s) de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_custom_template_ids
+#: model:ir.ui.menu,name:product_custom_cmnt.menu_tree_custom_template_action
+msgid "Custom templates"
+msgstr "Plantillas"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_value_search
+msgid "Custom value"
+msgstr "Opción de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_custom_value_wzd
+msgid "Custom values"
+msgstr "Opciones de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_default_option
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_default_option_id
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_value_search
+msgid "Default option"
+msgstr "Opción por defecto"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_display_name
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_display_name
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template_display_name
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_display_name_11814
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_display_name_11803
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_only_form_view
+msgid "Edit values"
+msgstr "Modificar categorizacion"
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,name:product_custom_cmnt.act_product_template_custom_value_wzd
+msgid "Filter custom"
+msgstr "Categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_custom_value_wzd
+msgid "Filter product custom values"
+msgstr "Opciones de categorización por producto (plantilla)"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_id
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_id
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template_id
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_id_11822
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_id_11811
+msgid "ID"
+msgstr "ID"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option___last_update
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property___last_update
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template___last_update
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd___last_update_11816
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line___last_update_11804
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_write_uid
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_write_uid
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template_write_uid
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_write_uid_11817
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_write_uid_11805
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_write_date
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_write_date
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template_write_date
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_write_date_11820
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_write_date_11808
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_custom_value_wzd_line_ids_11821
+msgid "Lines"
+msgstr "Líneas"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_product_product_custom_template_id
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_template_product_custom_template_id
+msgid "Main custom template"
+msgstr "Categorización principal"
+
+#. module: product_custom_cmnt
+#: model:ir.model,name:product_custom_cmnt.model_product_custom_property
+msgid "Model to add custom property in product"
+msgstr "Modelo para añadir parámetros de categorización a una plantilla de producto"
+
+#. module: product_custom_cmnt
+#: model:ir.model,name:product_custom_cmnt.model_product_custom_template
+msgid "Model to add custom template to product/template"
+msgstr "Modelo para añadir plantillas de categorización a una plantilla de producto"
+
+#. module: product_custom_cmnt
+#: model:ir.model,name:product_custom_cmnt.model_product_custom_value
+msgid "Model to add custom value in product"
+msgstr "Modelo para añadir opciones de categorización a una plantilla de producto"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_new_line
+msgid "New line"
+msgstr "Nuevo parámetro"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_option_id
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_property_form
+msgid "Option"
+msgstr "Opción"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_option_ids
+msgid "Option ids"
+msgstr "Lista de opciones"
+
+#. module: product_custom_cmnt
+#: sql_constraint:product.custom.option:0
+msgid "Option value must be unique per property!"
+msgstr "Cada opción debe ser única por parámetro y producto!"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_property_form
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_template_form
+msgid "Options"
+msgstr "Opciones"
+
+#. module: product_custom_cmnt
+#: model:ir.model,name:product_custom_cmnt.model_product_product
+msgid "Product"
+msgstr "Product"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_only_form_view
+msgid "Product Custom Information"
+msgstr "Categorización de producto Custom Information"
+
+#. module: product_custom_cmnt
+#: model:ir.model,name:product_custom_cmnt.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_property_form
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_template_form
+msgid "Product custom property"
+msgstr "Parámetros de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_template_form
+msgid "Product custom template"
+msgstr "Plantilla de categorización"
+
+#. module: product_custom_cmnt
+#: code:addons/product_custom_cmnt/models/product_template.py:94
+#, python-format
+msgid "Product custom values"
+msgstr "Opciones de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_tag_search_inherit
+msgid "Product custom: Option"
+msgstr "Categorización: Opciones"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_tag_search_inherit
+msgid "Product custom: Template"
+msgstr "Categorización: Plantilla"
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,name:product_custom_cmnt.action_show_tree_product_templates
+msgid "Product templates Orders"
+msgstr "Product templates Orders"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template_property_ids
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_template_form
+msgid "Properties"
+msgstr "Propiedades"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_property_id_11812
+msgid "Property"
+msgstr "Propiedad"
+
+#. module: product_custom_cmnt
+#: sql_constraint:product.custom.property:0
+msgid "Property must be unique per template!"
+msgstr "Parametro debe ser unico por plantilla!"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_custom_value_wzd
+msgid "Refresh product template"
+msgstr "Actualizar categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_sequence
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_property_sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,help:product_custom_cmnt.field_product_product_product_custom_option_id
+#: model:ir.model.fields,help:product_custom_cmnt.field_product_template_product_custom_option_id
+msgid "Technical field. Used for searching on custom options, not stored in database."
+msgstr "Campo técnico. Usado para busquedas, no guardado en base de datos."
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,help:product_custom_cmnt.field_product_product_product_custom_property_id
+#: model:ir.model.fields,help:product_custom_cmnt.field_product_template_product_custom_property_id
+msgid "Technical field. Used for searching on custom property, not stored in database."
+msgstr "Campo técnico. Usado para busquedas, no guardado en base de datos."
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_template_id
+#: model:ir.ui.view,arch_db:product_custom_cmnt.custom_info_value_search
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,name:product_custom_cmnt.custom_info_template_action
+msgid "Templates"
+msgstr "Plantillas"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_option_name
+msgid "Value"
+msgstr "Valor"
+
+#. module: product_custom_cmnt
+#: code:addons/product_custom_cmnt/wizard/product_template_custom_values_wzd.py:50
+#, python-format
+msgid "Value template"
+msgstr "Plantilla de categorización"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template_option_ids
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_custom_value_wzd
+msgid "Values"
+msgstr "Valores"
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_ptcw_line_wzd_id_11806
+msgid "Wizard"
+msgstr "Asistente"
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,help:product_custom_cmnt.action_show_tree_product_templates
+msgid "Work Orders is the list of operations to be performed for each\n"
+"            manufacturing order. Once you start the first work order of a\n"
+"            manufacturing order, the manufacturing order is automatically\n"
+"            marked as started. Once you finish the latest operation of a\n"
+"            manufacturing order, the MO is automatically done and the related\n"
+"            products are produced."
+msgstr "Las órdenes de trabajo es la lista de operaciones que se realizarán para cada\n"
+"orden de producción. Una vez que comience la primera orden de trabajo,\n"
+"Una vez que comience la primera orden de trabajo,\n"
+"la orden de fabricación se marca automáticamente\n"
+"como empezar. \n"
+"Una vez que termine la última operación de orden de fabricación, la MO se realiza de forma automática y los productos se producen."
+
+#. module: product_custom_cmnt
+#: model:ir.actions.act_window,help:product_custom_cmnt.custom_info_property_action
+#: model:ir.actions.act_window,help:product_custom_cmnt.custom_info_template_action
+msgid "You must define a custom info template for each properties group."
+msgstr "Debe definir una plantilla de inf. personalizada por cada grupo de propiedades."
+
+#. module: product_custom_cmnt
+#: model:ir.model.fields,field_description:product_custom_cmnt.field_product_custom_template_name
+msgid "name"
+msgstr "Nombre"
+
+#. module: product_custom_cmnt
+#: model:ir.ui.view,arch_db:product_custom_cmnt.product_template_custom_value_wzd
+msgid "or"
+msgstr "o"
+
+#. module: product_custom_cmnt
+#: model:ir.model,name:product_custom_cmnt.model_product_custom_option
+msgid "product.custom.option"
+msgstr "product.custom.option"
+
+#. module: product_custom_cmnt
+#: model:ir.model,name:product_custom_cmnt.model_product_custom_template_wzd
+msgid "product.custom.template.wzd"
+msgstr "product.custom.template.wzd"
+
+#. module: product_custom_cmnt
+#: model:ir.model,name:product_custom_cmnt.model_product_template_custom_value_wzd
+msgid "product.template.custom.value.wzd"
+msgstr "product.template.custom.value.wzd"
+
+#. module: product_custom_cmnt
+#: sql_constraint:ptcw.line:0
+msgid "property/value must be unique per template!"
+msgstr "El parámetro debe ser único por plantilla de parámetros!"
+
+#. module: product_custom_cmnt
+#: model:ir.model,name:product_custom_cmnt.model_ptcw_line
+msgid "ptcw.line"
+msgstr "ptcw.line"
+

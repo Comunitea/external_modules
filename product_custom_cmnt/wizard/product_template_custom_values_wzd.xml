@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_custom_value_wzd" model="ir.ui.view">
+        <field name="name">product.custom.value.wzd.name</field>
+        <field name="model">product.template.custom.value.wzd</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Filter product custom values">
+                <div>
+                    <group>
+                        <field name="product_template_id" readonly="1"></field>
+                        <field name="custom_template_ids" widget="many2many_tags" readonly="1"/>
+                        <field name="custom_property_ids" widget="many2many_tags" invisible="1"/>
+                    </group>
+                </div>
+
+
+                <group string="Values">
+                    <field name="line_ids" nolabel="1">
+                        <tree create="1" delete="1" editable="bottom" decoration-danger="new_line">
+                            <field name="wzd_id" invisible="1"/>
+                            <field name="template_id" required="1" options="{'no_quick_create':True,'no_create_edit':True}"  domain="[('id', 'in', parent.custom_template_ids[0][2])]"/>
+                            <field name="property_id" required="1"  options="{'no_quick_create':True,'no_create_edit':True}"
+                                   domain="[('template_id', '=', template_id), ('id', 'not in', parent.custom_property_ids[0][2])]"/>
+                            <field name="option_id" required="1"  options="{'no_create_edit': True, 'no_create': True}" domain="[('property_id', '=', property_id)]"/>
+                            <field name="new_line" readonly="1"/>
+                        </tree>
+                        <form>
+                            <group string="Custom values">
+                                <field name="wzd_id" invisible="1"/>
+                                <field name="template_id" readonly="1" />
+                                <field name="property_id" readonly="1"/>
+                                <field name="option_id" domain="[('property_id', '=', property_id), ('template_id', '=', template_id)]"/>
+                                <field name="new_line" readonly="1"/>
+                            </group>
+                        </form>
+
+                    </field>
+                </group>
+                <footer>
+                    <button name="refresh_product_template" string="Refresh product template" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+     <record model="ir.actions.act_window" id="act_product_template_custom_value_wzd">
+        <field name="name">Filter custom</field>
+        <field name="res_model">product.template.custom.value.wzd</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    </odoo>
