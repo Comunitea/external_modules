@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record model="ir.actions.act_window" id="checkout_coupon_action">
+        <field name="name">Discount coupons</field>
+        <field name="res_model">checkout_coupon.coupons</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.ui.view" id="checkout_coupon_tree">
+        <field name="name">Discount coupons tree</field>
+        <field name="model">checkout_coupon.coupons</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="is_active"/>
+                <field name="code"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="discount_type"/>
+                <field name="value"/>
+                <field name="total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="checkout_coupon_form">
+        <field name="name">Discount coupons form</field>
+        <field name="model">checkout_coupon.coupons</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group colspan="4" col="4">
+                        <group colspan="2" col="2">
+                            <separator string="Coupon settings" colspan="2"/>
+                            <field name="code"/>
+                            <field name="is_active"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="total"/>
+                            <field name="discount_type"/>
+                            <field name="value"/>
+                        </group>
+                        <group colspan="2" col="2">
+                            <separator string="Application settings" colspan="2"/>
+                            <field name="coupon_type"/>
+                            <field name="product_id" attrs="{'invisible': [('coupon_type', 'in', ('category', 'all'))],
+                                                            'required':[('coupon_type', '=', 'product')]}"/>
+                            <field name="category_id" attrs="{'invisible': [('coupon_type', 'in', ('product', 'all'))],
+                                                            'required':[('coupon_type', '=', 'category')]}"/>
+                            <field name="min_cart_value"/>
+                            <field name="max_cart_value"/>
+                            <field name="partner_ids" widget="many2many_tags"/>
+                        </group>
+                        <separator string="Other information" colspan="2"/>
+                        <group colspan="4" col="4">
+                            <group colspan="2" col="2">
+                                <field name="description"/>
+                            </group>
+                            <group colspan="2" col="2"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
