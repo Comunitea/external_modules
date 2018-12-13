@@ -1,0 +1,54 @@
+@red-color: #d9534f;
+@green-color: #005e43;
+@yellow-color: #D5B91D;
+
+.wp-checkout-coupon {
+    width: 100%;
+    max-width: 300px;
+}
+.coupon-message {
+    margin: 10px 0;
+    & div {
+        padding: 1px 4px 3px 4px;
+        margin: 3px 0;
+        font-weight: 600;
+        &.red {
+            background-color: @red-color;
+            color: #fff;
+        }
+        &.green {
+            background-color: @green-color;
+            color: #fff;
+        }
+        &.yellow {
+            background-color: @yellow-color;
+            color: #fff;
+        }
+    }
+}
+a.btn.btn-remove {
+    background-color: @red-color;
+}
+.wp-checkout-loader {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.65);
+}
+.checkout-loader {
+
+}
+.checkout-loader-spinner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url('/checkout_coupon/static/img/load-spinner.gif') no-repeat center center;
+}
+.discount-line {
+    color: @red-color;
+    font-size: 15px;
+}
