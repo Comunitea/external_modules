@@ -63,7 +63,9 @@ class ProductInfoProperty(models.Model):
     sequence = fields.Integer("Sequence", default=10)
     option_ids = fields.One2many('product.custom.option', 'property_id')
     default_option_id = fields.Many2one('product.custom.option', 'Default option', compute="get_default_option")
-
+    type = fields.Selection(selection=[('normal', 'Normal'),
+                                       ('sport', 'Sport'),
+                                       ('origin_country', 'Pais de Origen')], string='Property type', default='normal')
 
     _sql_constraints = [
         ('template_unique', 'unique(template_id, name)', 'Property must be unique per template!'),

@@ -22,7 +22,7 @@
                             <field name="wzd_id" invisible="1"/>
                             <field name="template_id" required="1" options="{'no_quick_create':True,'no_create_edit':True}"  domain="[('id', 'in', parent.custom_template_ids[0][2])]"/>
                             <field name="property_id" required="1"  options="{'no_quick_create':True,'no_create_edit':True}"
-                                   domain="[('template_id', '=', template_id), ('id', 'not in', parent.custom_property_ids[0][2])]"/>
+                                   domain="[('template_id', '=', template_id), ('id', 'not in', parent.custom_property_ids and parent.custom_property_ids[0][2]) or []]"/>
                             <field name="option_id" required="1"  options="{'no_create_edit': True, 'no_create': True}" domain="[('property_id', '=', property_id)]"/>
                             <field name="new_line" readonly="1"/>
                         </tree>

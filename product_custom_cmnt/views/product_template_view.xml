@@ -8,22 +8,26 @@
             <xpath expr="//page[@name='sales']" position="after">
                 <page name="product_custom" string="Product Custom Information">
                     <div class="oe_button_box" name="button_box_custom">
-                        <button name="get_custom_values_wzd" type="object" class="oe_highlight" string="Edit values" ></button>
+                        <button name="get_custom_values_wzd" type="object" class="oe_highlight" string="Edit values"
+                        attrs="{'invisible':[('product_custom_template_ids', '=', [])]}" groups="product_custom_cmnt.group_manage_categorizacion"></button>
                     </div>
                     <group name="group_product_custom_template">
                         <group>
                             <field name="product_custom_template_id" readonly="1" options='{"no_create_edit": True}'/>
+                            <field name="product_custom_template_ids" readonly="1" widget="many2many_tags"
+                                   options='{"no_create_edit": True}'/>
                         </group>
                         <group>
-                            <field name="product_custom_template_ids" readonly="1" widget="many2many_tags"  options='{"no_create_edit": True}'/>
+                            <field name="sport_id"/>
+                            <!--field name="custom_origin_country_id"/-->
                         </group>
+
                     </group>
                     <group>
-                        <field name="product_custom_option_ids"  nolabel="1" readonly="True">
-                            <tree>
+                        <field name="product_custom_option_ids"  options='{"no_create_edit": True}' attrs="{'invisible':[('product_custom_template_ids', '=', [])]}" nolabel="1" readonly="True">
+                            <tree  create="0" delete="0">
                                 <field name="property_id" readonly="True"/>
                                 <field name="name" readonly="True"/>
-                                <!--field name="default_option" readonly="True"/-->
                             </tree>
                         </field>
                     </group>
@@ -31,6 +35,7 @@
             </xpath>
         </field>
     </record>
+
     <record id="product_template_only_form_view_custom_group" model="ir.ui.view">
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product_custom_cmnt.product_template_only_form_view_custom"/>
@@ -45,6 +50,9 @@
             <xpath expr="//field[@name='product_custom_option_ids']" position="attributes">
                 <attribute name="readonly">False</attribute>
             </xpath>
+            <!--xpath expr="//button[@name='get_custom_values_wzd']" position="attributes">
+                <attribute name="invisible">False</attribute>
+            </xpath-->
         </field>
     </record>
 

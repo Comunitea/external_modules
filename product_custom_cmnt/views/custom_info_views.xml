@@ -28,6 +28,8 @@
                      </group>
                      <group>
                         <field name="name"/>
+                        <field name="type"/>
+
                      </group>
                      <group string="Options">
                         <field name="option_ids" nolabel="1">
@@ -76,13 +78,16 @@
                             <group name="Properties">
                                 <field name ="property_ids" nolabel="1">
                                     <tree>
-                                        <field name="name"/>
+                                        <field name="name"/><field name="type"/>
                                     </tree>
                                     <form string="Product custom property">
                                         <sheet>
                                             <h2>
                                                 <field name="name"/>
                                             </h2>
+                                            <group>
+                                                <field name="type"/>
+                                            </group>
                                             <group string="Options">
                                                 <field name="option_ids" nolabel="1">
                                                     <tree>

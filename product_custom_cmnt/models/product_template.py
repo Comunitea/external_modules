@@ -10,6 +10,15 @@ class ProductTemplate(models.Model):
 
     _inherit = "product.template"
 
+    @api.multi
+    @api.depends('product_custom_option_ids')
+    def get_from_options(self):
+        for template in self:
+            sport_option_id = template.product_custom_option_ids.filtered(lambda x:x.property_id.type == 'sport')
+            template.sport_id = sport_option_id and sport_option_id[0] or False
+            #custom_origin_country_id = template.product_custom_option_ids.filtered(lambda x: x.property_id.type == 'origin_country')
+            #template.custom_origin_country_id = custom_origin_country_id and custom_origin_country_id[0] or False
+
     product_custom_template_id = fields.Many2one('product.custom.template', 'Main custom template')
     product_custom_template_ids = fields.Many2many('product.custom.template', 'product_template_custom_template_rel', 'product_tmpl_id', 'template_id', string="Custom template(s)")
     product_custom_option_ids = fields.Many2many('product.custom.option', 'product_template_custom_option_rel', 'product_tmpl_id', 'option_id', string ="Custom options")
@@ -21,9 +30,11 @@ class ProductTemplate(models.Model):
         'product.custom.option', 'Custom option', store=False,
         help='Technical field. Used for searching on custom options, not stored in database.')
 
+    sport_id = fields.Many2one('product.custom.option', 'Sport', compute=get_from_options, store=True)
+    #custom_origin_country_id = fields.Many2one('product.custom.option', 'Origin country', compute=get_from_options, store=True)
+
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):
-
         if 'custom_template_id' in self._context:
             my_arg = [['product_custom_template_ids.name', u'=', self._context.get('custom_template_id')]]
             args = expression.AND([my_arg, args])
@@ -100,3 +111,17 @@ class ProductTemplate(models.Model):
             'res_id': obj.id
         }
 
+    @api.multi
+    def write(self, vals):
+
+        r1 = False
+        if 'product_custom_template_ids' in vals and len(self)==1:
+            r1 = self.product_custom_template_ids
+        res = super(ProductTemplate, self).write(vals)
+
+        if r1:
+            op = r1 - self.product_custom_template_ids
+            ops = self.product_custom_option_ids.filtered(lambda x:x.template_id in op)
+            print ops
+            ops.unlink()
+        return res
