@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # © 2018 Comunitea
 # Ruben Seijas <ruben@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
@@ -25,18 +27,21 @@
 {
     'name': 'Payment Acquirer By Amount',
     'version': '1.0',
-    'summary': 'Set amounts to show payment acquirer in your website by these ones amounts',
+    'summary': 'Set amounts to show payment acquirer in your website by these ones amounts in OSC Checkout',
     'description': 'You can establish a minimun amount, a maximun amount or both to show payment acquirer in your \
-        website by these ones amounts',
+        website by these ones amounts.',
     'category': 'Accounting',
     'author': 'Comunitea',
     'website': 'http://www.comunitea.com',
     'license': 'AGPL-3',
     'contributors': [
-        "Comunitea ",
         "Ruben Seijas <ruben@comunitea.com>"
     ],
-    'depends': ['payment'],
+    'depends': [
+        'payment',
+        'website_sale',  # For default checkout
+        # 'website_sale_one_step_checkout'  # For OSC checkout
+    ],
     'data': [
         'views/payment_view.xml',
         'views/payment_templates.xml'
