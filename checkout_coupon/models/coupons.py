@@ -72,3 +72,9 @@ class Coupons(models.Model):
                 raise ValidationError(_('"Maximum cart total" must be positive'))
             if r.min_cart_value > r.max_cart_value:
                 raise ValidationError(_('"Minimum cart total" must be later then "Maximum cart total"'))
+
+    @api.constrains('code')
+    def _check_coupone_code_length(self):
+        for r in self:
+            if len(r.code) < 4:
+                raise ValidationError(_('Coupon code must have at least four characters'))
