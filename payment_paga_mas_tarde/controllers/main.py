@@ -22,7 +22,7 @@ class PmtController(http.Controller):
     _cancel_url = '/payment/pmt/result/order-cancelled'
     _notification_url = '/payment/pmt/result/notify'
 
-    @http.route(['/payment/pmt/order'], type='http', auth="user", methods=['POST', 'GET', 'PUT'], csrf=False)
+    @http.route(['/payment/pmt/order'], type='http', auth="public", methods=['POST', 'GET', 'PUT'], csrf=False)
     def validate_order(self, **post):
         """
         Recoge los datos del formulario del boton de pago, crea un pedido de tipo paga+tarde con su formulario,
@@ -60,7 +60,7 @@ class PmtController(http.Controller):
         request.session['pmt_tx_error'] = 'Vuelva a intentarlo'
         return werkzeug.utils.redirect('/shop/checkout')
 
-    @http.route(['/payment/pmt/result/<page>'], type='http', auth="user", methods=['POST', 'GET', 'PUT'], csrf=False)
+    @http.route(['/payment/pmt/result/<page>'], type='http', auth="public", methods=['POST', 'GET', 'PUT'], csrf=False)
     def render(self, page):
         """
         Recoge las respuestas que envia el formulario de la web de de paga+tarde.
