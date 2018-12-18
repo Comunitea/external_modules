@@ -27,7 +27,8 @@ class Coupons(models.Model):
     partner_ids = fields.Many2many("res.partner", domain=[("active", "=", True)],
                                    string="List of Partners who can use this coupon")
     code = fields.Char(string="Coupon code", default=code_generate, required=True)
-    total = fields.Integer(string="Balance of coupons", default=1)
+    is_counted = fields.Boolean(string="Is counted?", default=False)
+    total = fields.Integer(string="Balance of coupons")
     coupon_type = fields.Selection(
         selection=[
             ("all", "All Products"),
