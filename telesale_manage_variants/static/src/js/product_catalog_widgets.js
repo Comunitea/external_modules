@@ -36,7 +36,7 @@ var ProductCatalogWidget = Catalog.ProductCatalogWidget.include({
             });
         }
         else{
-            var uom_obj = self.ts_model.db.get_unit_by_id(catalog_vals.product_obj.uom_id)
+            var uom_obj = this.ts_model.db.get_unit_by_id(catalog_vals.product_obj.uom_id)
             res = $.extend(res, {
                 ts_model: this.ts_model, 
                 order:current_order,
