@@ -19,6 +19,7 @@
                 <field name="end_date"/>
                 <field name="discount_type"/>
                 <field name="value"/>
+                <field name="is_counted"/>
                 <field name="total"/>
             </tree>
         </field>
@@ -42,7 +43,8 @@
                             <field name="is_active"/>
                             <field name="start_date"/>
                             <field name="end_date"/>
-                            <field name="total"/>
+                            <field name="is_counted"/>
+                            <field name="total" attrs="{'invisible': [('is_counted', '=', False)]}"/>
                             <field name="discount_type"/>
                             <field name="value"/>
                         </group>

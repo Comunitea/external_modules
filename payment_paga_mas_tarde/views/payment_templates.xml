@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <template id="pmt_acquirer_button">
+            <form t-if="acquirer" t-att-action="tx_url" method="post" target="_self" type='application/json'>
+
+                <!--Configuration-->
+                <input type="hidden" name="pmt_public_key" t-att-value="acquirer.pmt_public_key"/>
+                <input type="hidden" name="pmt_private_key" t-att-value="acquirer.pmt_private_key"/>
+
+                <!--Order-->
+                <input type="hidden" name="reference" t-att-value="reference"/>
+                <input type="hidden" name="amount" t-att-value="int(float(amount) * 100)"/>
+
+                <!--Parthner-->
+                <input type="hidden" name="partner_id" t-att-value="partner_id"/>
+                <input type="hidden" name="partner_name" t-att-value="partner_name"/>
+                <input type="hidden" name="partner_email" t-att-value="partner_email"/>
+                <input type="hidden" name="partner_phone" t-att-value="partner_phone"/>
+                <input type="hidden" name="partner_lang" t-att-value="partner_lang"/>
+                <input type="hidden" name="partner_address" t-att-value="partner_address"/>
+
+                <!--Billing-->
+                <input type="hidden" name="billing_partner_name" t-att-value="billing_partner_name"/>
+                <input type="hidden" name="billing_partner_address" t-att-value="billing_partner_address"/>
+                <input type="hidden" name="billing_partner_city" t-att-value="billing_partner_city"/>
+                <input type="hidden" name="billing_partner_zip" t-att-value="billing_partner_zip"/>
+                <input type="hidden" name="billing_partner_country_id" t-att-value="billing_partner_country_id"/>
+                <input type="hidden" name="billing_partner_phone" t-att-value="billing_partner_phone"/>
+                <input type="hidden" name="billing_partner_address" t-att-value="billing_partner_address"/>
+
+                <!-- submit -->
+                <button type="submit" width="100px" t-att-class="submit_class">
+                    <img t-if="not submit_txt" src="/payment_paga_mas_tarde/static/description/paga_mas_tarde_icon.png"/>
+                    <span t-if="submit_txt"><t t-esc="submit_txt"/> <span class="fa fa-long-arrow-right"/></span>
+                </button>
+            </form>
+        </template>
+
+        <record id="transaction_form_pmt" model="ir.ui.view">
+            <field name="name">acquirer.transaction.form.pmt</field>
+            <field name="model">payment.transaction</field>
+            <field name="inherit_id" ref="payment.transaction_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//notebook' position='inside'>
+                    <page string="Paga+Tarde TX Details">
+                        <group>
+                            <field name="pmt_tx_id"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!--Funciona con checkout por defecto-->
+        <template id="pmt_tx_ko" inherit_id="website_sale.payment">
+            <xpath expr="//div[@class='container oe_website_sale']/h1" position="before">
+                <div t-if="request.session.get('pmt_tx_error')" class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true"><![CDATA[&times;]]></span>
+                            </button>
+                            <strong>PAGA+TARDE: </strong><span t-esc="request.session.get('pmt_tx_error')"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+            </xpath>
+        </template>
+
+        <!--Para adaptar paga+tarde a osc-->
+        <!--<template id="pmt_tx_ko" inherit_id="website_sale_one_step_checkout.osc_onestepcheckout">-->
+            <!--<xpath expr="//div[@class='container oe_website_sale oe_website_sale_osc']/div" position="before">-->
+                <!--<div t-if="request.session.get('pmt_tx_error')" class="row">-->
+                    <!--<div class="col-md-4"></div>-->
+                    <!--<div class="col-md-4">-->
+                        <!--<div class="alert alert-danger alert-dismissible" role="alert">-->
+                            <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+                                <!--<span aria-hidden="true"><![CDATA[&times;]]></span>-->
+                            <!--</button>-->
+                            <!--<strong>PAGA+TARDE: </strong><span t-esc="request.session.get('pmt_tx_error')"></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-4"></div>-->
+                <!--</div>-->
+            <!--</xpath>-->
+        <!--</template>-->
+
+    </data>
+</odoo>

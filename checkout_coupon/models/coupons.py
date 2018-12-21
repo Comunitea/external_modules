@@ -27,7 +27,8 @@ class Coupons(models.Model):
     partner_ids = fields.Many2many("res.partner", domain=[("active", "=", True)],
                                    string="List of Partners who can use this coupon")
     code = fields.Char(string="Coupon code", default=code_generate, required=True)
-    total = fields.Integer(string="Balance of coupons", default=1)
+    is_counted = fields.Boolean(string="Is counted?", default=False)
+    total = fields.Integer(string="Balance of coupons")
     coupon_type = fields.Selection(
         selection=[
             ("all", "All Products"),
@@ -72,3 +73,9 @@ class Coupons(models.Model):
                 raise ValidationError(_('"Maximum cart total" must be positive'))
             if r.min_cart_value > r.max_cart_value:
                 raise ValidationError(_('"Minimum cart total" must be later then "Maximum cart total"'))
+
+    @api.constrains('code')
+    def _check_coupone_code_length(self):
+        for r in self:
+            if len(r.code) < 4:
+                raise ValidationError(_('Coupon code must have at least four characters'))

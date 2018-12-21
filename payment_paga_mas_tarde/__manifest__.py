@@ -25,11 +25,10 @@
 ##############################################################################
 
 {
-    'name': 'Payment Acquirer By Amount',
+    'name': 'Paga+Tarde Payment Acquirer',
     'version': '1.0',
-    'summary': 'Set amounts to show payment acquirer in your website by these ones amounts in OSC Checkout',
-    'description': 'You can establish a minimun amount, a maximun amount or both to show payment acquirer in your \
-        website by these ones amounts.',
+    'summary': 'Añade el método de pago: Paga+Tarde',
+    'description': '',
     'category': 'Accounting',
     'author': 'Comunitea',
     'website': 'http://www.comunitea.com',
@@ -43,8 +42,9 @@
         # 'website_sale_one_step_checkout'  # For OSC checkout
     ],
     'data': [
-        'views/payment_view.xml',
-        'views/payment_templates.xml'
+        'views/payment_views.xml',
+        'views/payment_templates.xml',
+        'data/payment_acquirer_data.xml',
     ],
     'images': [
     ],

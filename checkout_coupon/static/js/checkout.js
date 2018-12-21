@@ -8,7 +8,7 @@ odoo.define('checkout_coupon.couponcheck', function (require) {
 
         var coupon_code = $('input[name="coupon_code"]').val();
 
-        if(coupon_code.length < 8){
+        if(coupon_code.length < 4){
             $('.coupon-message').html('<div class="red">Coupon code is too short</div>');
         }else{
             $('.wp-checkout-loader').toggle();

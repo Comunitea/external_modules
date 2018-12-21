@@ -13,6 +13,7 @@ class Website(models.Model):
 
 class WebsiteConfigSettings(models.TransientModel):
     _inherit = 'website.config.settings'
+    _name = 'checkout_coupon.settings'
 
     def _default_website(self):
         return self.env['website'].search([], limit=1)

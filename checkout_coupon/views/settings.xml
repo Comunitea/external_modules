@@ -3,7 +3,7 @@
 
     <record model="ir.ui.view" id="checkout_coupon_settings_form">
         <field name="name">Coupon settings</field>
-        <field name="model">website.config.settings</field>
+        <field name="model">checkout_coupon.settings</field>
         <field name="arch" type="xml">
             <form string="Coupon settings" class="oe_form_configuration">
                 <header style="padding: 0 0 10px 10px;">
@@ -29,7 +29,7 @@
 
     <record model="ir.actions.act_window" id="checkout_coupon_settings">
         <field name="name">Coupon settings</field>
-        <field name="res_model">website.config.settings</field>
+        <field name="res_model">checkout_coupon.settings</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
     </record>

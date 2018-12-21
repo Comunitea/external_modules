@@ -43,7 +43,7 @@ class CheckoutCoupon(http.Controller):
             elif coupon.end_date and end_date < today:
                 flags = 'yellow'
                 msg += _(' but is expired')
-            elif coupon.total < 1:
+            elif coupon.is_counted and coupon.total < 1:
                 flags = 'yellow'
                 msg += _(' but there is no more in the stock')
             else:
@@ -148,10 +148,13 @@ class CheckoutCoupon(http.Controller):
                 })
                 msg += _(' and was added a history element with id %s' % coupon_history.id)
 
-            coupon.write({'total': coupon.total - 1})
             order._cart_update(product_id=coupon_as_product.id, set_qty=1)
             order.write({'applied_coupon': coupon.id})
-            msg += _(' and your discount is %s €; rest of current coupons: %s' % (coupon_list_price, coupon.total))
+            msg += _(' and your discount is %s €' % coupon_list_price)
+
+            if coupon.is_counted:
+                coupon.write({'total': coupon.total - 1})
+                msg += _('; rest of current coupons: %s' % coupon.total)
 
         values = {
             "message": msg,
@@ -193,9 +196,13 @@ class CheckoutCoupon(http.Controller):
                     limit=1
                 )
                 order._cart_update(product_id=coupon_to_remove.id, add_qty=-1)
-                coupon.write({'total': coupon.total + 1})
                 order.write({'applied_coupon': ''})
-                msg += _(' was eliminated; rest of current coupons: %s' % coupon.total)
+                msg += _(' was eliminated')
+
+                if coupon.is_counted:
+                    coupon.write({'total': coupon.total + 1})
+                    msg += _('; rest of current coupons: %s' % coupon.total)
+
                 flags = 'green'
                 success = True
                 if coupon_history:
@@ -228,7 +235,8 @@ class AutoRemoveCoupon(WebsiteSale):
         )
         sale_order._cart_update(product_id=coupon_to_remove.id, add_qty=-1)
 
-        coupon.write({'total': coupon.total + 1})
+        if coupon.is_counted:
+            coupon.write({'total': coupon.total + 1})
 
         coupon_history = request.env['checkout_coupon.history'].sudo().search(
             [('order', '=', sale_order.id)],
