@@ -19,42 +19,60 @@
 #
 ##############################################################################
 
-from odoo import models, fields, api, tools
-import time
-from datetime import datetime
-from time import mktime
+from odoo import models, fields, api
+from odoo.tools import formatLang, format_date
+import math
 
 
 class AccountInvoice(models.Model):
 
     _inherit = "account.invoice"
 
-    @api.multi
-    def _get_move_lines_str(self):
-        """returns all move lines related to invoice in string"""
-        expiration_dates_str = ""
-        move_line_obj = self.env["account.move.line"]
-        for invoice in self:
-            if invoice.move_id:
-                move_lines = move_line_obj.\
-                    search([('move_id', '=', invoice.move_id.id),
-                            ('account_id.internal_type', 'in',
-                             ['payable', 'receivable']),
-                            ('date_maturity', "!=", False)],
-                           order="date_maturity asc")
-                for line in move_lines:
-                    date = time.strptime(line.date_maturity, "%Y-%m-%d")
-                    date = datetime.fromtimestamp(mktime(date))
-                    date = date.strftime("%d/%m/%Y")
-                    expiration_dates_str += date + \
-                        " -------------> " + \
-                        (invoice.type in ('out_invoice', 'in_refund') and
-                         tools.formatLang(invoice.env, line.debit)  or
-                         (invoice.type in ('in_invoice', 'out_refund') and
-                          tools.formatLang(invoice.env, line.credit) or
-                          "0")) + " €\n"
+    def get_expiration_dates_list(self):
+        self.ensure_one()
+        expiration_dates = []
+        if self.move_id:
+            move_lines = self.env["account.move.line"].\
+                search([('move_id', '=', self.move_id.id),
+                        ('account_id.internal_type', 'in',
+                            ['payable', 'receivable']),
+                        ('date_maturity', "!=", False)],
+                       order="date_maturity asc")
+            for line in move_lines:
+                currency = self.currency_id
+                if self.type in ('out_invoice', 'in_refund'):
+                    quantity = formatLang(
+                        self.env, line.debit, currency_obj=currency)
+                else:
+                    quantity = formatLang(self.env, line.credit)
+                expiration_dates.append('{} -------------> {}'.format(
+                    format_date(self.env, line.date_maturity), quantity))
+        return expiration_dates
 
-            invoice.expiration_dates_str = expiration_dates_str
+    def get_expiration_dates_tuples(self):
+        self.ensure_one()
+        expiration_date_list = []
+        expiration_dates = self.get_expiration_dates_list()
+        curr_pos = 0
+        for i in range(math.ceil(len(expiration_dates) / 2)):
+            curr_expiration = expiration_dates[curr_pos]
+            if curr_pos + 1 <= len(expiration_dates) - 1:
+                curr_expiration_1 = expiration_dates[curr_pos + 1]
+            else:
+                curr_expiration_1 = None
+            expiration_date_list.append(
+                (curr_expiration, curr_expiration_1))
+            curr_pos += 2
+        return expiration_date_list
+
+
+
+    @api.multi
+    def _compute_expiration_dates_str(self):
+        """returns all due dates related to invoice in string"""
+        for invoice in self:
+            expiration_dates = invoice.get_expiration_dates_list()
+            invoice.expiration_dates_str = '\n'.join(expiration_dates)
 
     expiration_dates_str = fields.Text('Expiration dates', readonly=True,
-                                       compute='_get_move_lines_str')
+                                       compute='_compute_expiration_dates_str')
