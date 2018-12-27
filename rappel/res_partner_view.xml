@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<openerp>
+<odoo>
     <data>
          <record id="view_partner_form_add_rappel" model="ir.ui.view">
             <field name="name">res.partner.form_add_rappel</field>
@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field eval="1" name="priority"/>
             <field name="arch" type="xml">
-                <xpath expr="/form/sheet/notebook/page[@string='Sales &amp; Purchases']" position="inside">
+                <xpath expr="/form/sheet/notebook/page[@name='sales_purchases']" position="inside">
                     <group string="Rappels">
                       <field name="rappel_ids" nolabel="1" colspan="4" editable="bottom">
                           <tree editable="bottom">
@@ -25,4 +25,4 @@
          </record>
 
     </data>
-</openerp>
+</odoo>

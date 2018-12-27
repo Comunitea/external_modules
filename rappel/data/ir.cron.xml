@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
+<odoo>
     <data noupdate="0">
         <record forcecreate="True" id="ir_cron_calculate_rappel" model="ir.cron">
             <field name="name">Calculate rappels</field>
@@ -28,4 +28,4 @@
 
 
     </data>
-</openerp>
+</odoo>

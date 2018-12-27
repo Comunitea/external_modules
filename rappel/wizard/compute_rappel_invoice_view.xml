@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data>
 
         <record id="view_rappel_invoice" model="ir.ui.view">
@@ -32,4 +32,4 @@
             id="action_rappel_invoice"/>
 
     </data>
-</openerp>
+</odoo>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<openerp>
+<odoo>
     <data>
         <record id="view_rappel_type_filter" model="ir.ui.view">
             <field name="name">rappel.type.filter</field>
@@ -58,4 +58,4 @@
             </field>
         </record>
         </data>
-</openerp>
+</odoo>

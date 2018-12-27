@@ -19,10 +19,10 @@
 #
 ##############################################################################
 
-from openerp import models, fields, _, api
+from odoo import models, fields, _, api
 from datetime import datetime
 from dateutil import relativedelta
-from openerp import exceptions
+from odoo import exceptions
 
 
 class RappelAdvices(models.Model):
