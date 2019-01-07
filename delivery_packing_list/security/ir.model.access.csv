@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_stock_packing_list,access_stock_packing_list,model_stock_packing_list,stock.group_stock_user,1,1,1,1
-access_stock_packing_list_wzd,access_stock_packing_list_wzd,model_stock_packing_list_wzd,stock.group_stock_user,1,1,1,1
