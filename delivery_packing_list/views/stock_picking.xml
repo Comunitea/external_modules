@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_packing_list_form" model="ir.ui.view">
+            <field name="name">packing.list.form</field>
+            <field name="model">stock.packing.list</field>
+            <field name="arch" type="xml">
+            <form string="Delivery packing">
+                <h2>
+                    <field name="name"/>
+                </h2>
+                <group>
+                    <field name="picking_id" readonly="1"/>
+                    <label for="weight"/>
+                        <div class="o_row">
+                            <field name="weight"/>
+                            <field name="weight_uom_id"/>
+                        </div>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+    <record id="stock_move_packing_list_tree" model="ir.ui.view">
+        <field name="name">stock.move.tree</field>
+        <field name="model">stock.move</field>
+        <field eval="999" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Moves" editable="bottom" create="0" >
+                <field name="date" groups="base.group_no_one" invisible="1"/>
+                <field name="reference" readonly="1" invisible="1"/>
+                <field name="packing_list_id" domain = "[('picking_id','=',picking_id)]" context="{'default_picking_id': picking_id}"  />
+                <field name="picking_id" invisible="1"/>
+                <field name="product_id" readonly="1"/>
+                <field name="product_uom_qty" readonly="1"/>
+                <field name="product_uom" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="product.group_uom" readonly="1"/>
+                <field name="weight" readonly="1"/>
+                <field name="weight_uom_id" readonly="1"/>
+
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="stock_move_packing_list_tree_view_action" model="ir.actions.act_window">
+        <field name="name">Stock moves lines</field>
+        <field name="res_model">stock.move</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="stock_move_packing_list_tree"/>
+    </record>
+
+    <record id="view_picking_packing_list" model="ir.ui.view">
+            <field name="name">view.picking.packing.list</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='tracking']" position="after">
+                    <label for="need_packing_list"/>
+                        <div name="packing_list">
+                            <field name="need_packing_list" class="oe_inline" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                            <button type='object' class="fa fa-arrow-right oe_link" name="open_stock_move_tree_for_packing" string="Apply packing"
+                                    attrs="{'invisible':[('need_packing_list','=',False)]}"/>
+                        </div>
+                </xpath>
+                <xpath expr="//field[@name='move_lines']/tree/field[@name='product_id']" position="before">
+                    <field name="packing_list_id" attrs="{'column_invisible': [('parent.need_packing_list','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <report
+            string="Delivery packing list"
+            id="action_report_delivery_packing_list"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="delivery_packing_list.picking_packing_list"
+            file="delivery_packing_list.picking_packing_list"
+            print_report_name="'Delivery packing list- %s - %s' % (object.partner_id.name or '', object.name)"
+        />
+
+
+</odoo>

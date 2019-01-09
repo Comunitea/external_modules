@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_quant_package_form_stock_apk" model="ir.ui.view">
+            <field name="name">Package Form Stock Apk</field>
+            <field name="model">stock.quant.package</field>
+            <field name="inherit_id" ref="stock.view_quant_package_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/field[@name='company_id']/.." position="after">
+
+                    <group  attrs="{'invisible': [('product_id', '=', False)]}">
+                        <field name="product_id" readonly="1"/>
+                        <field name="mono_product" readonly="1"/>
+                        <field name="lot_id" readonly="1"/>
+
+                            <label for="quant_quantity"/>
+                             <div>
+                                <field name="quant_quantity" class="oe_inline" readonly="1"/>
+                                <field name="uom_id" class="oe_inline" readonly="1"/>
+                             </div>
+
+
+                            <label for="available_quant_quantity" />
+                            <div>
+                                <field name="available_quant_quantity" class="oe_inline" readonly="1"/>
+                                <field name="uom_id" class="oe_inline" readonly="1"/>
+                            </div>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+
+
+    </data>
+</odoo>
