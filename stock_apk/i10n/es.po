@@ -1,0 +1,139 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* stock_apk
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-25 09:30+0000\n"
+"PO-Revision-Date: 2018-10-25 09:30+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_apk
+#: code:addons/stock_apk/models/stock_move.py:74
+#, python-format
+msgid "<li>The move <a href=# data-oe-model=stock.move data-oe-id=%d>%s</a> has been forced  (%s %s) .</li>"
+msgstr "<li>The move <a href=# data-oe-model=stock.move data-oe-id=%d>%s</a> has been forced  (%s %s) .</li>"
+
+#. module: stock_apk
+#: code:addons/stock_apk/models/stock_move.py:61
+#, python-format
+msgid "<li>The move <a href=# data-oe-model=stock.move data-oe-id=%d>%s</a> has been forced (%s %s) .</li>"
+msgstr "<li>The move <a href=# data-oe-model=stock.move data-oe-id=%d>%s</a> has been forced (%s %s) .</li>"
+
+#. module: stock_apk
+#: code:addons/stock_apk/models/stock_move.py:130
+#, python-format
+msgid "Cannot unreserve a done move"
+msgstr "Cannot unreserve a done move"
+
+#. module: stock_apk
+#: model:ir.model.fields,field_description:stock_apk.field_stock_picking_delayed
+msgid "Delayed type"
+msgstr "Delayed type"
+
+#. module: stock_apk
+#: model:ir.ui.view,arch_db:stock_apk.view_picking_inherit_form_warehouse_app
+msgid "Force Availability"
+msgstr "Force Availability"
+
+#. module: stock_apk
+#: model:ir.model.fields,field_description:stock_apk.field_stock_move_forced_move_line
+#: model:ir.model.fields,field_description:stock_apk.field_stock_move_line_forced_move_line
+msgid "Forced move line"
+msgstr "Forced move line"
+
+#. module: stock_apk
+#: model:ir.model.fields,help:stock_apk.field_stock_picking_type_show_in_pda
+msgid "If checked, this picking type will be shown in pda"
+msgstr "If checked, this picking type will be shown in pda"
+
+#. module: stock_apk
+#: model:ir.ui.view,arch_db:stock_apk.view_picking_type_form_warehouse_app
+msgid "Info PDA"
+msgstr "Info PDA"
+
+#. module: stock_apk
+#: model:ir.model,name:stock_apk.model_stock_location
+msgid "Inventory Locations"
+msgstr "Ubicaciones de inventario"
+
+#. module: stock_apk
+#: model:ir.model,name:stock_apk.model_ir_model
+msgid "Models"
+msgstr "Modelos"
+
+#. module: stock_apk
+#: model:ir.model.fields,field_description:stock_apk.field_stock_picking_need_force
+msgid "Need Force"
+msgstr "Need Force"
+
+#. module: stock_apk
+#: model:ir.model.fields,field_description:stock_apk.field_stock_picking_user_id
+msgid "Operator"
+msgstr "Operador"
+
+#. module: stock_apk
+#: model:ir.model,name:stock_apk.model_stock_move_line
+msgid "Packing Operation"
+msgstr "Operación de empaquetado"
+
+#. module: stock_apk
+#: model:ir.model,name:stock_apk.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
+#. module: stock_apk
+#: model:ir.model,name:stock_apk.model_stock_quant
+msgid "Quants"
+msgstr "Quants"
+
+#. module: stock_apk
+#: model:ir.model.fields,field_description:stock_apk.field_product_product_short_name
+#: model:ir.model.fields,field_description:stock_apk.field_product_template_short_name
+#: model:ir.model.fields,field_description:stock_apk.field_stock_location_short_name
+msgid "Short name"
+msgstr "Nombre corto"
+
+#. module: stock_apk
+#: model:ir.model.fields,field_description:stock_apk.field_stock_picking_type_short_name
+msgid "Short name in PDA"
+msgstr "Short name in PDA"
+
+#. module: stock_apk
+#: model:ir.model.fields,help:stock_apk.field_stock_picking_type_short_name
+msgid "Short name to show in PDA"
+msgstr "Short name to show in PDA"
+
+#. module: stock_apk
+#: model:ir.model.fields,field_description:stock_apk.field_stock_picking_type_show_in_pda
+msgid "Show in PDA"
+msgstr "Show in PDA"
+
+#. module: stock_apk
+#: model:ir.model,name:stock_apk.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de Stock"
+
+#. module: stock_apk
+#: model:ir.model,name:stock_apk.model_stock_picking_type
+msgid "The operation type determines the picking view"
+msgstr "El tipo de operación determina la vista de la operación"
+
+#. module: stock_apk
+#: code:addons/stock_apk/models/stock_move.py:47
+#, python-format
+msgid "The picking <a href=# data-oe-model=stock.picking data-oe-id=%d>%s</a> has been forced.<ul>"
+msgstr "The picking <a href=# data-oe-model=stock.picking data-oe-id=%d>%s</a> has been forced.<ul>"
+
+#. module: stock_apk
+#: model:ir.model,name:stock_apk.model_stock_picking
+msgid "Transfer"
+msgstr "Transferir"
+

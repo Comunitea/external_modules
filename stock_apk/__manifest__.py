@@ -1,22 +1,25 @@
 # -*- coding: utf-8 -*-
-# © 2016 Comunitea - Kiko Sánchez <kiko@comunitea.com>
-# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-
+# © 2018 Comunitea - Kiko Sánchez <kiko@comunitea.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
-    'name': 'Stock APK. Requerimientos minimos para apk',
-    'version': '0.0.1',
-    'author': 'Comunitea ',
-    "category": "Sales",
+    'name': 'Stock APK Version 12',
+    'summary': 'Add functions for stock apk',
+    'version': '11.0.1.0.0',
+    'category': 'warehouse',
+    'website': 'comunitea.com',
+    'author': 'Comunitea',
     'license': 'AGPL-3',
+    'application': False,
+    'installable': True,
     'depends': [
         'stock',
+
+
     ],
-    'contributors': [
-        "Comunitea ",
-        "kiko Sánchez <kiko@comunitea.com>"
+    'data': [
+        'views/stock_picking.xml',
+        'views/stock_move.xml',
+        'views/stock_quant_package.xml',
+        'views/stock_location.xml'
     ],
-    "data": [
-    ],
-    "installable": True,
-    'application': True,
 }
