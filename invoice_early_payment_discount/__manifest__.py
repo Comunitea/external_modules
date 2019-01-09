@@ -18,9 +18,7 @@
               'views/partner_payment_term_early_discount_view.xml',
               'views/partner_view.xml',
               'views/payment_term_view.xml',
-              'views/sale_view.xml',
               'views/account_invoice_view.xml',
-              'views/product_category_view.xml',
-              'report/sale_order.xml'],
+              'views/product_category_view.xml'],
     'installable': True
 }
