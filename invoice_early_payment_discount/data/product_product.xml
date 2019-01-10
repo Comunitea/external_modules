@@ -14,13 +14,10 @@
             <field name="purchase_ok" eval="False"/>
             <field name="sale_ok" eval="False"/>
             <field name="type">service</field>
-            <field name="procure_method">make_to_stock</field>
+
             <field name="categ_id" ref="category_system"/>
             <field name="rental" eval="False"/>
             <field name="valuation">real_time</field>
-            <field name="property_stock_procurement" ref="stock.stock_location_stock"/>
-            <field name="property_stock_production" ref="stock.location_production"/>
-            <field name="property_stock_inventory" ref="stock.location_inventory"/>
             <field name="company_id" eval="False"/>
         </record>
 

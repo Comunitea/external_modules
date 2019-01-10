@@ -109,13 +109,18 @@ class AccountInvoice(models.Model):
             False
 
         if prod_early_payment:
-            prod_income_account = prod_early_payment.property_account_income_id
+            if self.type in ('out_invoice', 'out_refund'):
+                prod_account = prod_early_payment.property_account_income_id
+            else:
+                prod_account = \
+                    prod_early_payment.property_account_expense_id
+
             analytic_id = False
-            rec = self.env['account.analytic.default'].account_get(
-                prod_early_payment.id, self.partner_id.id, self._uid,
-                time.strftime('%Y-%m-%d'), company_id=self.company_id.id)
-            if rec:
-                analytic_id = rec.analytic_id.id
+            # rec = self.env['account.analytic.default'].account_get(
+            #     prod_early_payment.id, self.partner_id.id, self._uid,
+            #     time.strftime('%Y-%m-%d'), company_id=self.company_id.id)
+            # if rec:
+            #     analytic_id = rec.analytic_id.id
             group_account_line = {}
             for early_payment_line in early_payments:
                 group_account_line[early_payment_line] = {}
@@ -133,19 +138,19 @@ class AccountInvoice(models.Model):
                             group_account_line[early_payment_line]:
                         group_account_line[early_payment_line][
                             str(epd_invoice_account.id)].append(invoice_line.id)
-                    elif prod_income_account and str(prod_income_account.id) \
+                    elif prod_account and str(prod_account.id) \
                             not in group_account_line[early_payment_line]:
                         group_account_line[early_payment_line][str(
-                            prod_income_account.id
+                            prod_account.id
                         )] = [invoice_line.id]
-                    elif prod_income_account and str(prod_income_account.id) \
+                    elif prod_account and str(prod_account.id) \
                             in group_account_line[early_payment_line] or \
                             epd_invoice_account.id and \
                             str(epd_invoice_account.id) in \
                             group_account_line[early_payment_line]:
-                        if prod_income_account:
+                        if prod_account:
                             group_account_line[early_payment_line][
-                                str(prod_income_account.id)].append(
+                                str(prod_account.id)].append(
                                     invoice_line.id)
                         else:
                             group_account_line[early_payment_line][
