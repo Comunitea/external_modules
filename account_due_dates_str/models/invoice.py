@@ -28,7 +28,7 @@ class AccountInvoice(models.Model):
 
     _inherit = "account.invoice"
 
-    def get_expiration_dates_list(self):
+    def get_expiration_dates_list(self, padding):
         self.ensure_one()
         expiration_dates = []
         if self.move_id:
@@ -45,14 +45,15 @@ class AccountInvoice(models.Model):
                         self.env, line.debit, currency_obj=currency)
                 else:
                     quantity = formatLang(self.env, line.credit)
-                expiration_dates.append('{} -------------> {}'.format(
-                    format_date(self.env, line.date_maturity), quantity))
+                expiration_dates.append('{} {}> {}'.format(
+                    format_date(self.env, line.date_maturity), '-' * padding,
+                    quantity))
         return expiration_dates
 
-    def get_expiration_dates_tuples(self):
+    def get_expiration_dates_tuples(self, padding=1):
         self.ensure_one()
         expiration_date_list = []
-        expiration_dates = self.get_expiration_dates_list()
+        expiration_dates = self.get_expiration_dates_list(padding)
         curr_pos = 0
         for i in range(math.ceil(len(expiration_dates) / 2)):
             curr_expiration = expiration_dates[curr_pos]
