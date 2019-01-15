@@ -1,20 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo noupdate="0">
-
-    <record id="payment_return_advise_partner" model="mail.template">
-        <field name="name">Payment Return advise partners</field>
-        <field name="email_from">${(object.env.user.email or object.company_id.email or 'noreply@localhost')|safe}</field>
-        <field name="subject">Aviso de recibo</field>
-        <field name="model_id" ref="account_payment_return.model_payment_return"/>
-
-        <field name="email_to" >${(ctx.get('partner_email') or '')|safe}</field>
-        <field name="partner_to">${ctx.get('partner_id') or ''}</field>
-        <field name="auto_delete" eval="False"/>
-
-        <field name="body_html"><![CDATA[<html>
-                <head>
-                  <style>
-                    table.TablaDevoluciones {
+    <template id="payment_return_advise_partner_template">
+        <html>
+            <head>
+                <style>table.TablaDevoluciones {
                       width: 100%;
                       text-align: center;
                       border-collapse: collapse;
@@ -54,102 +43,121 @@
                       color: #FFFFFF;
                       padding: 2px 8px;
                       border-radius: 5px;
-                    }
-                  </style>
-
-                </head>
-                % set record = ctx.get('record')
-                % set company = record and record.company_id or ctx.get('company')
-                <body style="margin: 0; padding: 0;">
+                    }</style>
+            </head>
+            <t t-set="obj" t-value="email_template._context.get('obj')" />
+            <t t-set="partner" t-value="email_template._context.get('partner')" />
+            <t t-set="company" t-value="object and object.company_id or email_template._context.get('company')" />
+            <body style="margin: 0; padding: 0;">
                 <table border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;" summary="o_mail_notification">
                     <tbody>
-
-                      <!-- HEADER -->
-                      <tr>
-                        <td align="center" style="min-width: 590px;">
-                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
-                            <tr>
-                              <td valign="middle">
-                                  <span style="font-size:20px; color:white; font-weight: bold;">
-                                      Hola ${ctx['partner_name']}
-                                  </span>
-                              </td>
-                              <td valign="middle" align="right">
-                                  <img src="/logo.png?company=${company.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${company.name}">
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-
-                      <!-- CONTENT -->
-                      <tr>
-                        <td align="center" style="min-width: 590px;">
-                          <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
-                            <tbody>
-                              <td valign="top" style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;">
-                                    <br>
-                                    <table class="TablaDevoluciones">
-                                      <thead>
+                        <!-- HEADER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                                    <tbody>
                                         <tr>
-                                            <th>Fecha de devolución</th>
-                                            <th>Concepto</th>
-                                            <th>Motivo de devolución</th>
-                                            <th>Importe</th>
+                                            <td valign="middle">
+                                                <span style="font-size:20px; color:white; font-weight: bold;">
+                                                    Hola
+                                                    <span t-field="partner.name" />
+                                                </span>
+                                            </td>
+                                            <td valign="middle" align="right">
+                                                <img t-att-src="'/logo.png?company=' + str(company.id)" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="company.name" />
+                                            </td>
                                         </tr>
-                                      </thead>
-                                      <tbody>
-                                        % for line in ctx['lines']:
-                                          <tr>
-                                            <td>${format_date(line.date)}</td>
-                                            <td>${line.concept or ''}</td>
-                                            <td>${line.reason_id and line.reason_id.name or ''}</td>
-                                            <td>${line.amount}</td>
-                                          </tr>
-                                        % endfor
-                                      </tbody>
-                                    </table>
-                                    <br>
-                              </td>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-
-                      <!-- FOOTER -->
-                      <tr>
-                        <td align="center" style="min-width: 590px;">
-                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
-                            <tr>
-                              <td valign="middle" align="left" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
-                                ${company.name}<br/>
-                                ${company.phone or ''}
-                              </td>
-                              <td valign="middle" align="right" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
-                                % if company.email:
-                                <a href="mailto:${company.email}" style="text-decoration:none; color: white;">${company.email}</a><br/>
-                                % endif
-                                % if company.website:
-                                    <a href="${company.website}" style="text-decoration:none; color: white;">
-                                        ${company.website}
-                                    </a>
-                                % endif
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td align="center">
-                            Powered by <a target="_blank" href="https://www.odoo.com">Odoo</a>.
-                        </td>
-                      </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- CONTENT -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
+                                    <tbody>
+                                        <td valign="top" style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;">
+                                            <br />
+                                            <table class="TablaDevoluciones">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Fecha de devolución</th>
+                                                        <th>Concepto</th>
+                                                        <th>Motivo de devolución</th>
+                                                        <th>Importe</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr t-foreach="email_template._context.get('lines')" t-as="line">
+                                                        <td>
+                                                            <span t-field="line.date" />
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.concept" />
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="line.reason_id and line.reason_id.name or ''" />
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.amount" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br />
+                                        </td>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- FOOTER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                                    <tr>
+                                        <td valign="middle" align="left" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                            <span t-field="company.name" />
+                                            <br />
+                                            <span t-field="company.phone" />
+                                        </td>
+                                        <td valign="middle" align="right" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                            <t t-if="company.email">
+                                                <a t-att-href="'mailto:' + company.email" style="text-decoration:none; color: white;">
+                                                    <span t-field="company.email" />
+                                                </a>
+                                                <br />
+                                            </t>
+                                            <t t-if="company.website">
+                                                <a t-att-href="company.website" style="text-decoration:none; color: white;">
+                                                    <span t-field="company.website" />
+                                                </a>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                Powered by
+                                <a target="_blank" href="https://www.odoo.com">Odoo</a>
+                                .
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                </body>
-                </html>
-            ]]>
-            </field>
+            </body>
+        </html>
+    </template>
+    <record id="payment_return_advise_partner" model="mail.template">
+        <field name="name">Payment Return advise partners</field>
+        <field name="email_from">${(object.env.user.email or object.company_id.email or 'noreply@localhost')|safe}</field>
+        <field name="subject">Aviso de recibo</field>
+        <field name="model_id" ref="account_payment_return.model_payment_return" />
+        <field name="email_to">${(ctx.get('partner_email') or '')|safe}</field>
+        <field name="partner_to">${ctx.get('partner_id') or ''}</field>
+        <field name="auto_delete" eval="False" />
+        <field name="body_type">qweb</field>
+        <field name="body_view_id" ref="payment_return_advise_partner_template" />
     </record>
-
 </odoo>

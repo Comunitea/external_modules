@@ -1,246 +1,295 @@
-<?xml version="1.0"?>
-<odoo >
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="payment_order_advise_partner_template">
+        <html>
+            <div style="font-family: Calibri !important;">
+                <p>
+                    <t t-set="obj" t-value="email_template._context.get('obj')" />
+                    <t t-set="company" t-value="object and object.company_id or email_template._context.get('company')" />
+                </p>
+                <table border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;" summary="o_mail_notification">
+                    <tbody>
+                        <!-- HEADER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                                    <tbody>
+                                        <tr>
+                                            <td valign="middle">
+                                                <span style="font-size:20px; color:white; font-weight: bold;">Estimado</span>
+                                            </td>
+                                            <td valign="middle" align="right">
+                                                <img t-att-src="'/logo.png?company=' + str(company.id)" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="company.name" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- CONTENT -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
+                                    <tbody>
+                                        <tr>
+                                            <td valign="top" style="color: #555; font-size: 14px;">
+                                                <p>
+                                                    <style type="text/css">@page { size: 21cm 29.7cm; margin: 2cm }
+		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
+                                                </p>
+                                                <p style="margin-bottom: 0cm">
+                                                    <br />
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" style="color: #555; font-size: 14px;">
+                                                <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">
+                                                    Por la presente le indicamos la composición de nuestro recibo agrupado número <span t-field="obj.name"/> que le será pasado al cobro el próximo
+                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;" t-field="obj.date"/>
+                                                </p>
+                                                <br />
+                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);" />
+                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);" />
+                                                <div>
+                                                    <br />
+                                                    <table width="516" cellpadding="6" cellspacing="0">
+                                                        <colgroup>
+                                                            <col width="159" />
+                                                            <col width="160" />
+                                                            <col width="159" />
+                                                        </colgroup>
+                                                        <tbody>
+                                                            <tr valign="top">
+                                                                <td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);">
+                                                                    <p style="line-height: 14.95px;">Número</p>
+                                                                </td>
+                                                                <td width="160" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);">
+                                                                    <p style="line-height: 14.95px;">Fecha factura</p>
+                                                                </td>
+                                                                <td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);">
+                                                                    <p style="line-height: 14.95px;">Importe</p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr valign="top" t-foreach="obj.payment_line_ids" t-as="line">
+                                                                <td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);">
+                                                                    <p style="line-height: 14.95px;">
+                                                                        <span style="background-color: transparent; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;" t-field="line.communication"/>
+                                                                    </p>
+                                                                </td>
+                                                                <td width="160" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);">
+                                                                    <p style="line-height: 14.95px;" t-field="line.move_line_id.invoice_id.date_invoice"/>
+                                                                </td>
+                                                                <td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);">
+                                                                    <p style="line-height: 14.95px;">
+                                                                        <span t-field="line.amount_currency"/>
+                                                                        <br />
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <br />
+                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);" />
+                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);" />
+                                                <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Le recordamos que esta información puede ser consultada en la página web de la empresa en el apartado “información”.</p>
+                                                <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Atentamente,</p>
+                                                <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Las Rías, S. Coop. Galega</p>
+                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);" />
+                                                <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Dpto. Administración</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- FOOTER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                                    <tr>
+                                        <td valign="middle" align="left" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                            <span t-field="company.name" />
+                                            <br />
+                                            <span t-field="company.phone" />
+                                        </td>
+                                        <td valign="middle" align="right" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                            <t t-if="company.email">
+                                                <a t-att-href="'mailto:' + company.email" style="text-decoration:none; color: white;">
+                                                    <span t-field="company.email" />
+                                                </a>
+                                                <br />
+                                            </t>
+                                            <t t-if="company.website">
+                                                <a t-att-href="company.website" style="text-decoration:none; color: white;">
+                                                    <span t-field="company.website" />
+                                                </a>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p />
+                <style type="text/css">@page { size: 21cm 29.7cm; margin: 2cm }
+		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
+                <style type="text/css">@page { size: 21cm 29.7cm; margin: 2cm }
+		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
+                <style type="text/css">@page { size: 21cm 29.7cm; margin: 2cm }
+		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
+            </div>
+        </html>
+    </template>
 
     <record id="payment_order_advise_partner" model="mail.template">
         <field name="name">Payment Order advise partners</field>
         <field name="email_from">${(object.env.user.email or object.company_id.email or 'noreply@localhost')|safe}</field>
         <field name="subject">Aviso de recibo</field>
-        <field name="model_id" ref="account_payment_order.model_account_payment_order"/>
-
+        <field name="model_id" ref="account_payment_order.model_account_payment_order" />
+        <field name="body_type">qweb</field>
+        <field name="body_view_id" ref="payment_order_advise_partner_template" />
         <field name="partner_to">${ctx.get('partner_id') or ''}</field>
-        <field name="auto_delete" eval="False"/>
-
-        <field name="body_html"><![CDATA[<html>
-          <div style="font-family: Calibri !important;">
-                <p>
-
-                % set record = ctx.get('record')
-                % set company = record and record.company_id or ctx.get('company')
-
-                </p><table border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;" summary="o_mail_notification">
-                    <tbody>
-
-                      <!-- HEADER -->
-                      <tr>
-                        <td align="center" style="min-width: 590px;">
-                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
-                            <tbody><tr>
-                              <td valign="middle"><span style="font-size:20px; color:white; font-weight: bold;">Estimado&nbsp;&nbsp;</span></td><td valign="middle" align="right"><img src="/logo.png?company=${company.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${company.name}"></td></tr>
-                          </tbody></table>
-                        </td>
-                      </tr>
-
-                      <!-- CONTENT -->
-                      <tr>
-                        <td align="center" style="min-width: 590px;">
-                          <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
-                            <tbody>
-                              <tr><td valign="top" style="color: #555; font-size: 14px;">
-                                    <p>
-
-
-	<style type="text/css">
-		@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
-		a:link { color: #000080; so-language: zxx; text-decoration: underline }
-		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
-	</style>
-
-</p><p style="margin-bottom: 0cm"><br></p>
-                              </td>
-                            </tr><tr><td valign="top" style="color: #555; font-size: 14px;"><p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Por la presente le indicamos la composición de nuestro recibo agrupado número ${ctx['name']} que le será pasado al cobro el próximo&nbsp;<span style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;">${format_date(ctx['date'])}</span></p><br><p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"></p><p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"></p><div>
-
-<br>
-
-
-
-
-
-<table width="516" cellpadding="6" cellspacing="0"><colgroup><col width="159"><col width="160"><col width="159"></colgroup>
-<tbody>
-
-<tr valign="top"><td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;">Número</p></td><td width="160" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;">Fecha factura</p></td><td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;">Importe</p></td></tr>
-% for line in ctx['lines']:
-<tr valign="top">
-<td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;"><span style="background-color: transparent; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;">${line.communication}</span></p></td>
-
-<td width="160" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;">${format_date(line.move_line_id.invoice_id.date_invoice)}</p></td>
-
-<td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;">${line.amount_currency}<br></p></td>
-</tr>
-% endfor
-</tbody>
-</table>
-
-
-
-
-</div><br><p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"></p><p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"></p><p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Le recordamos que esta información puede ser consultada en la página web de la empresa en el apartado “información”.</p><p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Atentamente,</p><p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Las Rías, S. Coop. Galega</p><p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"></p><p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Dpto. Administración</p></td>
-                            </tr></tbody>
-                          </table>
-                        </td>
-                      </tr>
-
-                      <!-- FOOTER -->
-                      <tr>
-                        <td align="center" style="min-width: 590px;">
-                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
-                            <tbody><tr>
-                              <td valign="middle" align="left" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
-                                ${company.name}<br><p></p><p>
-                                ${company.phone or ''}
-                              </p></td>
-                              <td valign="middle" align="right" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
-                                % if company.email:
-                                <a href="mailto:${company.email}" style=" color: white;">${company.email}</a><br><p></p><p>
-                                % endif
-                                % if company.website:
-                                    <a href="${company.website}" style=" color: white;">
-                                        ${company.website}
-                                    </a>
-                                % endif
-                              </p></td>
-                            </tr>
-                          </tbody></table>
-                        </td>
-
-                        <td align="center"> </td>
-                      </tr>
-
-                    </tbody>
-                </table>
-
-                <p></p><style type="text/css">
-		@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
-		a:link { color: #000080; so-language: zxx; text-decoration: underline }
-		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
-
-
-
-</style><style type="text/css">
-		@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
-		a:link { color: #000080; so-language: zxx; text-decoration: underline }
-		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
-
-
-
-</style><style type="text/css">
-		@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
-		a:link { color: #000080; so-language: zxx; text-decoration: underline }
-		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
-	</style></div>
-                </html>
-            ]]>
-            </field>
+        <field name="auto_delete" eval="False" />
     </record>
 
 
-    <template id="payment_order_advise_supplier_template"><html>
-                <head></head>
-                <t t-set="obj" t-value="email_template._context.get('obj')"/>
-                <t t-set="company" t-value="object and object.company_id or email_template._context.get('company')"/>
-                <body style="margin: 0; padding: 0;">
+    <template id="payment_order_advise_supplier_template">
+        <html>
+            <head />
+            <t t-set="obj" t-value="email_template._context.get('obj')" />
+            <t t-set="company" t-value="object and object.company_id or email_template._context.get('company')" />
+            <body style="margin: 0; padding: 0;">
                 <table border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;" summary="o_mail_notification">
                     <tbody>
-
-                      <!-- HEADER -->
-                      <tr>
-                        <td align="center" style="min-width: 590px;">
-                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
-                            <tr>
-                              <td valign="middle" align="right">
-                                  <img t-att-src="'/logo.png?company=' + str(company.id)" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="company.name"/>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-
-                      <!-- CONTENT -->
-                      <tr>
-                        <td align="center" style="min-width: 590px;">
-                          <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
-                            <tbody>
-                              <td valign="top" style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;">
-                                <p>Las facturas de nuestro proveedor <strong t-esc="email_template._context.get('partner_name')"/> canceladas mediante <strong>Confirming</strong> de <strong><span t-field="obj.amount_currency"/></strong> son las siguientes:</p>
-                                <table style=" border-collapse: collapse" cellpadding="10">
-                                  <thead>
+                        <!-- HEADER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
                                     <tr>
-                                      <th style="border: 1px solid black">Factura</th>
-                                      <th style="border: 1px solid black">Emisión</th>
-                                      <th style="border: 1px solid black">Vencimiento</th>
-                                      <th style="border: 1px solid black">Importe</th>
+                                        <td valign="middle" align="right">
+                                            <img t-att-src="'/logo.png?company=' + str(company.id)" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="company.name" />
+                                        </td>
                                     </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr t-foreach="email_template._context.get('lines')" t-as="line">
-                                        <td style="border: 1px solid black"><span t-field="line.move_line_id.invoice_id.number"/></td>
-                                        <td style="border: 1px solid black"><span t-field="line.move_line_id.invoice_id.date_invoice"/></td>
-                                        <td style="border: 1px solid black"><span t-field="line.ml_maturity_date"/></td>
-                                        <td style="border: 1px solid black"><span t-field="line.amount_currency"/></td>
-                                      </tr>
-                                  </tbody>
-                                  <tfoot>
-                                    <tr>
-                                      <td></td>
-                                      <td></td>
-                                      <td style="text-align: right;">Total: </td>
-                                      <td style="border: 1px solid black"><span t-field="obj.amount_currency"/></td>
-                                    </tr>
-                                  </tfoot>
                                 </table>
-                              </td>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-
-                      <!-- FOOTER -->
-                      <tr>
-                        <td align="center" style="min-width: 590px;">
-                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
-                            <tr>
-                              <td valign="middle" align="left" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
-                                <span t-field="company.name"/><br/>
-                                <span t-field="company.phone"/>
-                              </td>
-                              <td valign="middle" align="right" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
-                                <t t-if="company.email">
-                                  <a t-att-href="'mailto:' + company.email" style="text-decoration:none; color: white;"><span t-field="company.email"/></a><br/>
-                                </t>
-                                <t t-if="company.website">
-                                    <a t-att-href="company.website" style="text-decoration:none; color: white;">
-                                        <span t-field="company.website"/>
-                                    </a>
-                                </t>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td align="center">
-                            Powered by <a target="_blank" href="https://www.odoo.com">Odoo</a>.
-                        </td>
-                      </tr>
+                            </td>
+                        </tr>
+                        <!-- CONTENT -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
+                                    <tbody>
+                                        <td valign="top" style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;">
+                                            <p>
+                                                Las facturas de nuestro proveedor
+                                                <strong t-field="obj.partner_id.name" />
+                                                canceladas mediante
+                                                <strong>Confirming</strong>
+                                                de
+                                                <strong>
+                                                    <span t-field="obj.amount_currency" />
+                                                </strong>
+                                                son las siguientes:
+                                            </p>
+                                            <table style=" border-collapse: collapse" cellpadding="10">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border: 1px solid black">Factura</th>
+                                                        <th style="border: 1px solid black">Emisión</th>
+                                                        <th style="border: 1px solid black">Vencimiento</th>
+                                                        <th style="border: 1px solid black">Importe</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr t-foreach="obj.payment_line_ids" t-as="line">
+                                                        <td style="border: 1px solid black">
+                                                            <span t-field="line.move_line_id.invoice_id.number" />
+                                                        </td>
+                                                        <td style="border: 1px solid black">
+                                                            <span t-field="line.move_line_id.invoice_id.date_invoice" />
+                                                        </td>
+                                                        <td style="border: 1px solid black">
+                                                            <span t-field="line.ml_maturity_date" />
+                                                        </td>
+                                                        <td style="border: 1px solid black">
+                                                            <span t-field="line.amount_currency" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td />
+                                                        <td />
+                                                        <td style="text-align: right;">Total:</td>
+                                                        <td style="border: 1px solid black">
+                                                            <span t-field="obj.amount_currency" />
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </td>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- FOOTER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                                    <tr>
+                                        <td valign="middle" align="left" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                            <span t-field="company.name" />
+                                            <br />
+                                            <span t-field="company.phone" />
+                                        </td>
+                                        <td valign="middle" align="right" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                            <t t-if="company.email">
+                                                <a t-att-href="'mailto:' + company.email" style="text-decoration:none; color: white;">
+                                                    <span t-field="company.email" />
+                                                </a>
+                                                <br />
+                                            </t>
+                                            <t t-if="company.website">
+                                                <a t-att-href="company.website" style="text-decoration:none; color: white;">
+                                                    <span t-field="company.website" />
+                                                </a>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                Powered by
+                                <a target="_blank" href="https://www.odoo.com">Odoo</a>
+                                .
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                </body>
-                </html>
+            </body>
+        </html>
     </template>
 
     <record id="payment_order_advise_supplier" model="mail.template">
         <field name="name">Payment Order advise supplier</field>
         <field name="email_from">${(object.env.user.email or object.company_id.email or 'noreply@localhost')|safe}</field>
         <field name="subject">Aviso de recibo</field>
-        <field name="model_id" ref="account_payment_order.model_account_payment_order"/>
-
+        <field name="model_id" ref="account_payment_order.model_account_payment_order" />
         <field name="partner_to">${ctx.get('partner_id') or ''}</field>
-        <field name="auto_delete" eval="False"/>
+        <field name="auto_delete" eval="False" />
         <field name="body_type">qweb</field>
-        <field name="body_view_id" ref="payment_order_advise_supplier_template"/>
+        <field name="body_view_id" ref="payment_order_advise_supplier_template" />
     </record>
 </odoo>
