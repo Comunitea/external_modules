@@ -11,6 +11,7 @@
         <field name="auto_delete" eval="False"/>
 
         <field name="body_html"><![CDATA[<html>
+          <div style="font-family: Calibri !important;">
                 <p>
 
                 % set record = ctx.get('record')
@@ -34,7 +35,7 @@
                         <td align="center" style="min-width: 590px;">
                           <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
                             <tbody>
-                              <tr><td valign="top" style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;">
+                              <tr><td valign="top" style="color: #555; font-size: 14px;">
                                     <p>
 
 
@@ -47,7 +48,7 @@
 
 </p><p style="margin-bottom: 0cm"><br></p>
                               </td>
-                            </tr><tr><td valign="top" style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;"><p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Por la presente le indicamos la composición de nuestro recibo agrupado número ${ctx['name']} que le será pasado al cobro el próximo&nbsp;<span style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;">${ctx['date']}</span></p><br><p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"></p><p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"></p><div>
+                            </tr><tr><td valign="top" style="color: #555; font-size: 14px;"><p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Por la presente le indicamos la composición de nuestro recibo agrupado número ${ctx['name']} que le será pasado al cobro el próximo&nbsp;<span style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;">${format_date(ctx['date'])}</span></p><br><p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"></p><p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"></p><div>
 
 <br>
 
@@ -63,7 +64,7 @@
 <tr valign="top">
 <td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;"><span style="background-color: transparent; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;">${line.communication}</span></p></td>
 
-<td width="160" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;">${line.move_line_id.invoice_id.number}</p></td>
+<td width="160" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;">${format_date(line.move_line_id.invoice_id.date_invoice)}</p></td>
 
 <td width="159" style="padding: 0cm 0.19cm 0cm 0.2cm; border: 1px solid rgb(0, 0, 0);"><p style="line-height: 14.95px;">${line.amount_currency}<br></p></td>
 </tr>
@@ -130,7 +131,7 @@
 		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
 		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
-	</style>
+	</style></div>
                 </html>
             ]]>
             </field>
