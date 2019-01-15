@@ -30,6 +30,7 @@ class AccountPaymentOrder(models.Model):
                 ctx = dict(self._context)
                 ctx.update({
                     'partner_id': line.partner_id.id,
+                    'partner_email': line.partner_id.email,
                     'partner_name': line.partner_id.name,
                     'obj': line
                 })
