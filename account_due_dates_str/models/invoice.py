@@ -72,7 +72,7 @@ class AccountInvoice(models.Model):
     def _compute_expiration_dates_str(self):
         """returns all due dates related to invoice in string"""
         for invoice in self:
-            expiration_dates = invoice.get_expiration_dates_list()
+            expiration_dates = invoice.get_expiration_dates_list(1)
             invoice.expiration_dates_str = '\n'.join(expiration_dates)
 
     expiration_dates_str = fields.Text('Expiration dates', readonly=True,
