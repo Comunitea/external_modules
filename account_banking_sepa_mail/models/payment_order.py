@@ -24,10 +24,13 @@ class AccountPaymentOrder(models.Model):
                     False)
                 ctx = dict(self._context)
                 ctx.update({
+                    'name': line.name,
                     'partner_email': line.partner_id.email,
+                    'partner_ref': line.partner_id.ref,
                     'partner_id': line.partner_id.id,
                     'partner_name': line.partner_id.name,
                     'lines': line.payment_line_ids,
+                    'date': line.date
                 })
                 mail_id = template.with_context(ctx).send_mail(order.id)
                 mail_ids += mail_pool.browse(mail_id)
