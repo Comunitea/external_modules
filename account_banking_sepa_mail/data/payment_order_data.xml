@@ -177,7 +177,7 @@
                                   </thead>
                                   <tbody>
                                       <tr t-foreach="email_template._context.get('lines')" t-as="line">
-                                        <td style="border: 1px solid black"><span t-field="line.move_line_id.invoice_id.number"/></td>
+                                        <td style="border: 1px solid black"><span t-field="line.move_line_id.invoice_id.reference"/></td>
                                         <td style="border: 1px solid black"><span t-field="line.move_line_id.invoice_id.date_invoice"/></td>
                                         <td style="border: 1px solid black"><span t-field="line.ml_maturity_date"/></td>
                                         <td style="border: 1px solid black"><span t-field="line.amount_currency"/></td>
