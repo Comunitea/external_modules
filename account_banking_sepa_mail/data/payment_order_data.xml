@@ -189,7 +189,7 @@
                             <td align="center" style="min-width: 590px;">
                                 <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
                                     <tbody>
-                                        <td valign="top" style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;">
+                                        <td  style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;">
                                             <p>
                                                 Las facturas de nuestro proveedor
                                                 <strong t-field="obj.partner_id.name" />
@@ -213,13 +213,13 @@
                                                 <tbody>
                                                     <tr t-foreach="obj.payment_line_ids" t-as="line">
                                                         <td style="border: 1px solid black">
-                                                            <span t-field="line.move_line_id.invoice_id.reference" />
+                                                            <span t-field="line.communication" />
                                                         </td>
                                                         <td style="border: 1px solid black">
                                                             <span t-field="line.move_line_id.invoice_id.date_invoice" />
                                                         </td>
                                                         <td style="border: 1px solid black">
-                                                            <span t-field="line.ml_maturity_date" />
+                                                            <span t-field="line.date" />
                                                         </td>
                                                         <td style="border: 1px solid black">
                                                             <span t-field="line.amount_currency" />
