@@ -137,4 +137,110 @@
             </field>
     </record>
 
+
+    <template id="payment_order_advise_supplier_template"><html>
+                <head></head>
+                <t t-set="obj" t-value="email_template._context.get('obj')"/>
+                <t t-set="company" t-value="object and object.company_id or email_template._context.get('company')"/>
+                <body style="margin: 0; padding: 0;">
+                <table border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;" summary="o_mail_notification">
+                    <tbody>
+
+                      <!-- HEADER -->
+                      <tr>
+                        <td align="center" style="min-width: 590px;">
+                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                            <tr>
+                              <td valign="middle" align="right">
+                                  <img t-att-src="'/logo.png?company=' + str(company.id)" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="company.name"/>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- CONTENT -->
+                      <tr>
+                        <td align="center" style="min-width: 590px;">
+                          <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
+                            <tbody>
+                              <td valign="top" style="font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;">
+                                <p>Las facturas de nuestro proveedor <strong t-esc="email_template._context.get('partner_name')"/> canceladas mediante <strong>Confirming</strong> de <strong><span t-field="obj.amount_currency"/></strong> son las siguientes:</p>
+                                <table style=" border-collapse: collapse" cellpadding="10">
+                                  <thead>
+                                    <tr>
+                                      <th style="border: 1px solid black">Factura</th>
+                                      <th style="border: 1px solid black">Emisión</th>
+                                      <th style="border: 1px solid black">Vencimiento</th>
+                                      <th style="border: 1px solid black">Importe</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr t-foreach="email_template._context.get('lines')" t-as="line">
+                                        <td style="border: 1px solid black"><span t-field="line.move_line_id.invoice_id.number"/></td>
+                                        <td style="border: 1px solid black"><span t-field="line.move_line_id.invoice_id.date_invoice"/></td>
+                                        <td style="border: 1px solid black"><span t-field="line.ml_maturity_date"/></td>
+                                        <td style="border: 1px solid black"><span t-field="line.amount_currency"/></td>
+                                      </tr>
+                                  </tbody>
+                                  <tfoot>
+                                    <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td style="text-align: right;">Total: </td>
+                                      <td style="border: 1px solid black"><span t-field="obj.amount_currency"/></td>
+                                    </tr>
+                                  </tfoot>
+                                </table>
+                              </td>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- FOOTER -->
+                      <tr>
+                        <td align="center" style="min-width: 590px;">
+                          <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                            <tr>
+                              <td valign="middle" align="left" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                <span t-field="company.name"/><br/>
+                                <span t-field="company.phone"/>
+                              </td>
+                              <td valign="middle" align="right" style="color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;">
+                                <t t-if="company.email">
+                                  <a t-att-href="'mailto:' + company.email" style="text-decoration:none; color: white;"><span t-field="company.email"/></a><br/>
+                                </t>
+                                <t t-if="company.website">
+                                    <a t-att-href="company.website" style="text-decoration:none; color: white;">
+                                        <span t-field="company.website"/>
+                                    </a>
+                                </t>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                            Powered by <a target="_blank" href="https://www.odoo.com">Odoo</a>.
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+                </body>
+                </html>
+    </template>
+
+    <record id="payment_order_advise_supplier" model="mail.template">
+        <field name="name">Payment Order advise supplier</field>
+        <field name="email_from">${(object.env.user.email or object.company_id.email or 'noreply@localhost')|safe}</field>
+        <field name="subject">Aviso de recibo</field>
+        <field name="model_id" ref="account_payment_order.model_account_payment_order"/>
+
+        <field name="partner_to">${ctx.get('partner_id') or ''}</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_type">qweb</field>
+        <field name="body_view_id" ref="payment_order_advise_supplier_template"/>
+    </record>
 </odoo>

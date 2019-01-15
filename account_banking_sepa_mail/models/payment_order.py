@@ -19,9 +19,14 @@ class AccountPaymentOrder(models.Model):
                 continue
 
             for line in order.bank_line_ids:
-                template = self.env.ref(
-                    'account_banking_sepa_mail.payment_order_advise_partner',
-                    False)
+                if order.payment_type == 'inbound':
+                    template = self.env.ref(
+                        'account_banking_sepa_mail.payment_order_advise_partner',
+                        False)
+                if order.payment_type == 'outbound':
+                    template = self.env.ref(
+                        'account_banking_sepa_mail.payment_order_advise_supplier',
+                        False)
                 ctx = dict(self._context)
                 ctx.update({
                     'name': line.name,
@@ -30,7 +35,8 @@ class AccountPaymentOrder(models.Model):
                     'partner_id': line.partner_id.id,
                     'partner_name': line.partner_id.name,
                     'lines': line.payment_line_ids,
-                    'date': line.date
+                    'date': line.date,
+                    'obj': line
                 })
                 mail_id = template.with_context(ctx).send_mail(order.id)
                 mail_ids += mail_pool.browse(mail_id)
