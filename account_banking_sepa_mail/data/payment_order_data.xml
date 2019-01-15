@@ -213,7 +213,7 @@
                                                 <tbody>
                                                     <tr t-foreach="obj.payment_line_ids" t-as="line">
                                                         <td style="border: 1px solid black">
-                                                            <span t-field="line.move_line_id.invoice_id.number" />
+                                                            <span t-field="line.move_line_id.invoice_id.reference" />
                                                         </td>
                                                         <td style="border: 1px solid black">
                                                             <span t-field="line.move_line_id.invoice_id.date_invoice" />
