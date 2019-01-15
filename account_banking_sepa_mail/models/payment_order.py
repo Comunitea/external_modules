@@ -10,8 +10,7 @@ class AccountPaymentOrder(models.Model):
     not_send_emails = fields.Boolean()
 
     @api.multi
-    def generate_move(self):
-        res = super(AccountPaymentOrder, self).generate_move()
+    def send_mail(self):
         mail_pool = self.env['mail.mail']
         mail_ids = self.env['mail.mail']
         for order in self:
@@ -38,4 +37,10 @@ class AccountPaymentOrder(models.Model):
                 mail_ids += mail_pool.browse(mail_id)
         if mail_ids:
             mail_ids.send()
+
+    @api.multi
+    def generate_move(self):
+        res = super(AccountPaymentOrder, self).generate_move()
+        self.send_mail()
+
         return res
