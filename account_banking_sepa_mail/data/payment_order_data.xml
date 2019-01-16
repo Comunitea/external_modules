@@ -155,7 +155,7 @@
     <record id="payment_order_advise_partner" model="mail.template">
         <field name="name">Payment Order advise partners</field>
         <field name="email_from">${(object.env.user.email or object.company_id.email or 'noreply@localhost')|safe}</field>
-        <field name="subject">Aviso de recibo</field>
+        <field name="subject">Pago de sus facturas</field>
         <field name="model_id" ref="account_payment_order.model_account_payment_order" />
         <field name="body_type">qweb</field>
         <field name="body_view_id" ref="payment_order_advise_partner_template" />
@@ -205,7 +205,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th style="border: 1px solid black">Factura</th>
-                                                        <th style="border: 1px solid black">Emisión</th>
+                                                        <!--th style="border: 1px solid black">Emisión</th-->
                                                         <th style="border: 1px solid black">Vencimiento</th>
                                                         <th style="border: 1px solid black">Importe</th>
                                                     </tr>
@@ -215,9 +215,9 @@
                                                         <td style="border: 1px solid black">
                                                             <span t-field="line.communication" />
                                                         </td>
-                                                        <td style="border: 1px solid black">
+                                                        <!--td style="border: 1px solid black">
                                                             <span t-field="line.move_line_id.invoice_id.date_invoice" />
-                                                        </td>
+                                                        </td-->
                                                         <td style="border: 1px solid black">
                                                             <span t-field="line.date" />
                                                         </td>
@@ -228,7 +228,7 @@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <td />
+                                                        <!--td /-->
                                                         <td />
                                                         <td style="text-align: right;">Total:</td>
                                                         <td style="border: 1px solid black">
@@ -269,13 +269,7 @@
                                 </table>
                             </td>
                         </tr>
-                        <tr>
-                            <td align="center">
-                                Powered by
-                                <a target="_blank" href="https://www.odoo.com">Odoo</a>
-                                .
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
             </body>
