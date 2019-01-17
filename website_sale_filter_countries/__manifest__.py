@@ -40,7 +40,7 @@
     'depends': [
         'website_sale',
         'website_portal',
-        'website_snippet_country_dropdown'
+        # 'website_snippet_country_dropdown'  # To use this it is necessary install sass
     ],
     'data': [
         'views/res_country.xml',

@@ -2,11 +2,12 @@
 <odoo>
     <data>
 
-        <template id="country_dropdown_filter" inherit_id="website_snippet_country_dropdown.country_dropdown">
-            <xpath expr="//t[@t-set='countries']" position="replace">
-                <t t-set="countries" t-value="request.env['res.country'].search([('website_available', '=', True)])"/>
-            </xpath>
-        </template>
+        <!--To use this it is necessary install sass -->
+        <!--<template id="country_dropdown_filter" inherit_id="website_snippet_country_dropdown.country_dropdown">-->
+            <!--<xpath expr="//t[@t-set='countries']" position="replace">-->
+                <!--<t t-set="countries" t-value="request.env['res.country'].search([('website_available', '=', True)])"/>-->
+            <!--</xpath>-->
+        <!--</template>-->
 
         <!-- Show only countries and states availables in my account contact details -->
         <template id="website_portal_details_state_available" inherit_id="website_portal.details">
