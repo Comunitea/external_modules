@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- © 2016 Comunitea
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
-
-<openerp>
+<odoo>
     <data>
 
         <template id="country_dropdown_filter" inherit_id="website_snippet_country_dropdown.country_dropdown">
@@ -11,5 +8,16 @@
             </xpath>
         </template>
 
+        <!-- Show only countries and states availables in my account contact details -->
+        <template id="website_portal_details_state_available" inherit_id="website_portal.details">
+            <xpath expr="//t[@t-foreach='countries or []']" position="attributes">
+                <attribute name="t-foreach">countries.search([('website_available', '=', True)]) or []</attribute>
+            </xpath>
+
+            <xpath expr="//t[@t-foreach='states or []']" position="attributes">
+                <attribute name="t-foreach">states.search([('website_available', '=', True)]) or []</attribute>
+            </xpath>
+        </template>
+
     </data>
-</openerp>
+</odoo>

@@ -21,7 +21,12 @@ msgid "Country"
 msgstr "País"
 
 #. module: website_sale_filter_countries
-#: field:res.country,website_available:0
-#: field:res.country.state,website_available:0
+#: model:ir.model,name:website_sale_filter_countries.model_res_country_state
+msgid "Country state"
+msgstr "Provincia"
+
+#. module: website_sale_filter_countries
+#: model:ir.model.fields,field_description:website_sale_filter_countries.field_res_country_state_website_available
+#: model:ir.model.fields,field_description:website_sale_filter_countries.field_res_country_website_available
 msgid "Website available"
-msgstr "Disponible en website"
+msgstr "Disponible en Sitio Web"
