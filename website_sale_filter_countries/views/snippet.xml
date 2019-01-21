@@ -2,21 +2,25 @@
 <odoo>
     <data>
 
-        <!--To use this it is necessary install sass -->
-        <!--<template id="country_dropdown_filter" inherit_id="website_snippet_country_dropdown.country_dropdown">-->
-            <!--<xpath expr="//t[@t-set='countries']" position="replace">-->
-                <!--<t t-set="countries" t-value="request.env['res.country'].search([('website_available', '=', True)])"/>-->
-            <!--</xpath>-->
-        <!--</template>-->
-
         <!-- Show only countries and states availables in my account contact details -->
-        <template id="website_portal_details_state_available" inherit_id="website_portal.details">
+        <template id="website_portal_details_custom" inherit_id="website_portal.details">
             <xpath expr="//t[@t-foreach='countries or []']" position="attributes">
                 <attribute name="t-foreach">countries.search([('website_available', '=', True)]) or []</attribute>
             </xpath>
 
             <xpath expr="//t[@t-foreach='states or []']" position="attributes">
                 <attribute name="t-foreach">states.search([('website_available', '=', True)]) or []</attribute>
+            </xpath>
+        </template>
+
+        <!--Show only countries and states availables in OSC Checkout-->
+        <template id="website_sale_one_step_checkout_address_form_custom" inherit_id="website_sale_one_step_checkout.address_form">
+            <xpath expr="//select[@id='country_id']/t" position="attributes">
+                <attribute name="t-foreach">countries.search([('website_available', '=', True)]) or []</attribute>
+            </xpath>
+
+            <xpath expr="//select[@name='state_id']/t" position="attributes">
+                <attribute name="t-foreach">country and country.state_ids.search([('website_available', '=', True)]) or []</attribute>
             </xpath>
         </template>
 

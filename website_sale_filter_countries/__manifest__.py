@@ -25,7 +25,7 @@
 ##############################################################################
 
 {
-    'name': 'Website Sale Filter Countries',
+    'name': 'Website Sale Filter Countries OSC',
     'summary': 'Create a new field website_available to publish countries and country states in website',
     'version': '10.0',
     'category': 'E-Commerce: External',
@@ -40,6 +40,8 @@
     'depends': [
         'website_sale',
         'website_portal',
+        'website_sale_one_step_checkout',
+        'website_sale_one_step_checkout_delivery',
         # 'website_snippet_country_dropdown'  # To use this it is necessary install sass
     ],
     'data': [
