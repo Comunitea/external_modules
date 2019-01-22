@@ -73,7 +73,7 @@
                             </table>
                             <br/>
                             <br/>
-                            <table class="table table-condensed">
+                            <table class="table table-condensed" name="moves_table">
                                 <thead>
                                     <tr>
                                         <th><strong>Product</strong></th>
