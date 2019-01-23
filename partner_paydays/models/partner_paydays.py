@@ -81,9 +81,12 @@ class ResPartnerHolidays(models.Model):
         return result
 
 
+
 class AccountPaymentTerm(models.Model):
 
     _inherit = "account.payment.term"
+
+    reference_date = fields.Selection([('value_date', 'Fecha valor'), ('invoice_date', 'Fecha Factura')], string="Fecha de referencia")
 
     @api.model
     def _decode_payment_days(self, days_char):
@@ -137,7 +140,13 @@ class AccountPaymentTerm(models.Model):
         return date.strftime('%Y-%m-%d')
 
     def compute(self, value, date_ref=False):
+
+        if self._context.get('invoice_id', False):
+            invoice = self.env['account.invoice'].browse(self._context['invoice_id'])
+            if invoice.value_date and invoice.payment_term_id.reference_date == 'value_date':
+                date_ref = invoice.value_date
         result = super(AccountPaymentTerm, self).compute(value, date_ref)
+
         if not self.env.context.get('partner_id'):
             return result
         partner = self.env['res.partner'].\
@@ -168,5 +177,5 @@ class AccountPaymentTerm(models.Model):
                 date = self._after_holidays(partner, date, days)
 
             new_result.append((date, line[1]))
-
+        print (new_result)
         return [new_result]

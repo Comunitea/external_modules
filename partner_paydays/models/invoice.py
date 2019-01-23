@@ -28,9 +28,16 @@ from odoo import models, api, fields
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
-    @api.onchange('payment_term_id', 'date_invoice')
+    value_date = fields.Date(string='Fecha valor', states={'draft': [('readonly', False)]}, index=True, copy=False)
+
+
+    @api.onchange('payment_term_id', 'date_invoice', 'value_date')
     def _onchange_payment_term_date_invoice(self):
-        date_invoice = self.date_invoice
+        if self.value_date and self.payment_term_id.reference_date == 'value_date':
+            date_invoice = self.value_date
+        else:
+            date_invoice = self.date_invoice
+
         if not date_invoice:
             date_invoice = fields.Date.context_today(self)
         if not self.payment_term_id:
@@ -48,7 +55,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def action_move_create(self):
         for inv in self:
-            ctx = dict(self._context, partner_id=inv.partner_id.
+            ctx = dict(self._context, invoice_id=inv.id, partner_id=inv.partner_id.
                        commercial_partner_id.id)
             super(AccountInvoice, inv.
                   with_context(ctx)).action_move_create()

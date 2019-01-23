@@ -36,6 +36,7 @@ vacations if the partner doesn't pay during that period.""",
     'category': 'Custom Modules',
     'data': [
         'views/partner_paydays_view.xml',
+        'views/account_invoice.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True
