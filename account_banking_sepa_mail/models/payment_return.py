@@ -23,8 +23,10 @@ class PaymentReturn(models.Model):
                 'partner_email': partner.email,
                 'partner_id': partner.id,
                 'partner_name': partner.name,
+                'partner': partner,
                 'lines': self.line_ids.filtered(
                     lambda r: r.partner_id == partner),
+                'obj': self,
             })
             mail_id = template.with_context(ctx).send_mail(self.id)
             mail_ids += mail_pool.browse(mail_id)
