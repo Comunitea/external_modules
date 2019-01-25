@@ -86,7 +86,10 @@ class AccountPaymentTerm(models.Model):
 
     _inherit = "account.payment.term"
 
-    reference_date = fields.Selection([('value_date', 'Fecha valor'), ('invoice_date', 'Fecha Factura')], string="Fecha de referencia")
+    reference_date = fields.Selection([('value_date', 'Fecha valor'),
+                                       ('invoice_date', 'Fecha Factura')],
+                                      string="Fecha de referencia",
+                                      default='invoice_date')
 
     @api.model
     def _decode_payment_days(self, days_char):
