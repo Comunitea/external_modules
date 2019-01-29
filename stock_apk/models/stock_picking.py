@@ -116,7 +116,7 @@ class StockPicking(models.Model):
         self._compute_state()
         return res
 
-
+    @api.model
     def button_validate_from_pda(self, vals):
 
         picking_id = self.browse(vals.get('picking_id', False))
