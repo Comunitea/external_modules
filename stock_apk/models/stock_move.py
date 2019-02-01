@@ -12,6 +12,9 @@ class StockMoveLine(models.Model):
 
     forced_move_line = fields.Boolean('Forced move line')
     pda_done = fields.Boolean('Pda done')
+    need_check = fields.Boolean(related='location_id.need_check')
+    need_dest_check = fields.Boolean(related='location_dest_id.need_dest_check')
+
 
     @api.model
     def create_moves_from_serial(self, vals):
@@ -177,6 +180,8 @@ class StockMove(models.Model):
             move.forced_move_line = any(line.forced_move_line for line in move.move_line_ids)
 
     forced_move_line = fields.Boolean('Forced move line', compute=_get_forced_move_line)
+    need_check = fields.Boolean(related='location_id.need_check')
+    need_dest_check = fields.Boolean(related='location_dest_id.need_dest_check')
 
     def _action_assign(self):
 

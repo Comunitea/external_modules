@@ -18,6 +18,30 @@ class StockQuant(models.Model):
             return []
         return super(StockQuant, self)._update_reserved_quantity(product_id=product_id, location_id=location_id, quantity=quantity, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
 
+    @api.model
+    def get_quants_apk(self, vals):
+
+        product_id, location_id, lot_id = vals['product_id'], vals['location_id'], vals['lot_id'] or None
+        package_id, need_qty, first = vals['package_id'] or None, vals['need_qty'] or 0.00, vals['first'] or True
+        owner_id, strict = vals['owner_id'] or None, vals['strict'] or False
+        
+        self = self.sudo()
+        product_id = self.env['product.product'].browse(product_id)
+        location_id = self.env['stock.location'].browse(location_id)
+        lot_id = self.env['stock.production.lot'].browse(lot_id) or None
+        package_id = self.env['stock.quant.package'].browse(package_id) or None
+        quants = self._gather(product_id, location_id)
+        qs = quants.filtered(lambda x: (x.quantity - x.reserved_quantity)>= need_qty)
+        if first:
+            qs = qs and qs[0] or []
+        res = []
+        for q in qs:
+            lot_id = q.lot_id and  {'id': q.lot_id.id, 'name': q.lot_id.name} or {}
+            package_id = q.package_id and {'id': q.package_id.id, 'name': q.package_id.name} or {}
+            new_q = {'id': q.id, 'package_id': package_id, 'qty': q.quantity - q.reserved_quantity, 'lot_id':lot_id}
+            res.append(new_q)
+        return res
+
 
     @api.model
     def _get_available_quantity_by_lot(self, product_id, location_id, lot_id=None, package_id=None, owner_id=None, strict=False, allow_negative=False):
