@@ -1,23 +1,5 @@
-# -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Copyright (C) 2015 Comunitea Servicios Tecnológicos All Rights Reserved
-#    $Omar Castiñeira Saaevdra <omar@comunitea.com>$
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published
-#    by the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2016 Comunitea
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api
 from datetime import datetime
@@ -41,9 +23,9 @@ class ResPartnerRappelRel(models.Model):
     date_start = fields.Date("Start date", required=True,
                              default=fields.Date.context_today)
     date_end = fields.Date("End date")
-    periodicity = fields.Selection(PERIODICITIES, "Periodicity",
+    periodicity = fields.Selection(PERIODICITIES,
                                    default="annual", required=True)
-    last_settlement_date = fields.Date("Last settlement date")
+    last_settlement_date = fields.Date()
 
     @api.multi
     def _get_next_period(self):
@@ -104,7 +86,7 @@ class ResPartnerRappelRel(models.Model):
             rappel_info = {'rappel_id': rappel.rappel_id.id,
                            'partner_id': rappel.partner_id.id,
                            'date_start': period[0],
-                           'amount' :0.0,
+                           'amount': 0.0,
                            'date_end': period[1]}
             total_rappel = 0.0
             if rappel.rappel_id.calc_mode == 'fixed':

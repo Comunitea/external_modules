@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2004-2015 Pexego Sistemas Informáticos All Rights Reserved
@@ -18,11 +17,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import rappel_type
-from . import rappel
-from . import res_partner
-from . import rappel_customer_rel
-from . import rappel_info
+from . import models
 from . import wizard
-from . import sale
-from . import invoice

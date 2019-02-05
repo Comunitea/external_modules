@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015 Comunitea Servicios Tecnológicos All Rights Reserved
@@ -35,17 +34,17 @@ Rappel Management
                 'account',
                 'sale_stock',
                 'product'],
-    'data': ['rappel_type_view.xml',
-             'rappel_view.xml',
-             'res_partner_view.xml',
-             'rappel_info_view.xml',
-             'rappel_menus.xml',
-             # 'rappel_mail_advice_data.xml', # TODO: migrar
+    'data': ['views/rappel_type_view.xml',
+             'views/rappel_view.xml',
+             'views/res_partner_view.xml',
+             'views/rappel_info_view.xml',
+             'views/rappel_menus.xml',
+             # 'data/rappel_mail_advice_data.xml', # TODO: migrar
              'data/ir.cron.xml',
              'wizard/compute_rappel_invoice_view.xml',
              'security/ir.model.access.csv',
-             'sale_view.xml',
-             'account_invoice_view.xml'],
+             'views/sale_view.xml',
+             'views/account_invoice_view.xml'],
     'installable': True,
     'application': True,
 }

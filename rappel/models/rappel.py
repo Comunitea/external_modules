@@ -1,29 +1,9 @@
-# -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Copyright (C) 2004-2015 Pexego Sistemas Informáticos All Rights Reserved
-#    $Jesús Ventosinos Mayor <jesus@pexego.es>$
-#    Copyright (C) 2015 Comunitea Servicios Tecnológicos All Rights Reserved
-#    $Omar Castiñeira Saaevdra <omar@comunitea.com>$
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published
-#    by the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2016 Comunitea
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from odoo import models, fields, api, exceptions, _
 
 
-class rappel(models.Model):
+class Rappel(models.Model):
     _name = 'rappel'
     _description = 'Rappel Model'
 
@@ -37,7 +17,7 @@ class rappel(models.Model):
                                 default='value')
     calc_mode = fields.Selection(CALC_MODE, 'Fixed/Variable', required=True)
     fix_qty = fields.Float('Fix')
-    sections = fields.One2many('rappel.section', 'rappel_id', 'Sections')
+    sections = fields.One2many('rappel.section', 'rappel_id')
     global_application = fields.Boolean('Global', default=True)
     product_id = fields.Many2one('product.product', 'Product')
     product_categ_id = fields.Many2one('product.category', 'Category')
@@ -45,8 +25,8 @@ class rappel(models.Model):
                                    required=True)
     customer_ids = fields.One2many("res.partner.rappel.rel", "rappel_id",
                                    "Customers")
-    advice_timing_ids=fields.One2many("rappel.advice.email", "rappel_id", "Email Timing Advice")
-
+    advice_timing_ids = fields.One2many(
+        "rappel.advice.email", "rappel_id", "Email Timing Advice")
 
     @api.constrains('global_application', 'product_id', 'product_categ_id')
     def _check_application(self):
@@ -91,7 +71,7 @@ class rappel(models.Model):
         self.env["rappel.current.info"].send_rappel_info_mail()
 
 
-class rappel_section(models.Model):
+class RappelSection(models.Model):
 
     _name = 'rappel.section'
     _description = 'Rappel section model'
@@ -111,13 +91,13 @@ class rappel_section(models.Model):
     rappel_id = fields.Many2one('rappel', 'Rappel')
 
 
-class rappel_calculated(models.Model):
+class RappelCalculated(models.Model):
 
     _name = 'rappel.calculated'
 
     partner_id = fields.Many2one('res.partner', 'Customer', required=True)
-    date_start = fields.Date('Date start', required=True)
-    date_end = fields.Date('Date end', required=True)
-    quantity = fields.Float('Quantity', required=True)
+    date_start = fields.Date(required=True)
+    date_end = fields.Date(equired=True)
+    quantity = fields.Float(required=True)
     rappel_id = fields.Many2one('rappel', 'Rappel', required=True)
     invoice_id = fields.Many2one("account.invoice", "Invoice", readonly=True)
