@@ -54,7 +54,7 @@ class ComputeRappelInvoice(models.TransientModel):
                 account_id = rappel_product.property_account_income_id
                 if not account_id:
                     account_id = rappel_product.categ_id.\
-                        property_account_income_categ
+                        property_account_income_categ_id
                 taxes_ids = rappel_product.taxes_id
                 fpos = rappel.partner_id.property_account_position_id or False
                 if fpos:
