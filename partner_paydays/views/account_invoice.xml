@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_due']" position="after">
                 <field name="value_date"/>
+                <field name="payment_ref_date"/>
             </xpath>
         </field>
     </record>

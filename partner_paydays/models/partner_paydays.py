@@ -146,8 +146,11 @@ class AccountPaymentTerm(models.Model):
         #TODO REVISAR SANTI / OMAR
         if self._context.get('invoice_id', False):
             invoice = self.env['account.invoice'].browse(self._context['invoice_id'])
+
             if invoice.value_date and invoice.payment_term_id.reference_date == 'value_date':
                 date_ref = invoice.value_date
+            elif invoice.payment_ref_date:
+                date_ref = invoice.payment_ref_date
 
         result = super(AccountPaymentTerm, self).compute(value, date_ref)
 
