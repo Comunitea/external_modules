@@ -4,12 +4,14 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from pprint import pprint
 
 from odoo.tools.float_utils import float_compare, float_round, float_is_zero
 
 class StockQuant(models.Model):
 
     _inherit = "stock.quant"
+    product_tracking = fields.Selection(related="product_id.product_tmpl_id.tracking")
 
     @api.model
     def _update_reserved_quantity(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None, strict=False):
@@ -22,7 +24,7 @@ class StockQuant(models.Model):
     def get_quants_apk(self, vals):
 
         product_id, location_id, lot_id = vals['product_id'], vals['location_id'], vals['lot_id'] or None
-        package_id, need_qty, first = vals['package_id'] or None, vals['need_qty'] or 0.00, vals['first'] or True
+        package_id, need_qty, first = vals['package_id'] or None, vals['need_qty'] or 0.00, vals['first'] or None
         owner_id, strict = vals['owner_id'] or None, vals['strict'] or False
         
         self = self.sudo()
@@ -30,15 +32,15 @@ class StockQuant(models.Model):
         location_id = self.env['stock.location'].browse(location_id)
         lot_id = self.env['stock.production.lot'].browse(lot_id) or None
         package_id = self.env['stock.quant.package'].browse(package_id) or None
-        quants = self._gather(product_id, location_id)
+        quants = self._gather(product_id, location_id, lot_id, package_id, owner_id, strict)
         qs = quants.filtered(lambda x: (x.quantity - x.reserved_quantity)>= need_qty)
         if first:
             qs = qs and qs[0] or []
         res = []
         for q in qs:
-            lot_id = q.lot_id and  {'id': q.lot_id.id, 'name': q.lot_id.name} or {}
-            package_id = q.package_id and {'id': q.package_id.id, 'name': q.package_id.name} or {}
-            new_q = {'id': q.id, 'package_id': package_id, 'qty': q.quantity - q.reserved_quantity, 'lot_id':lot_id}
+            lot_id_line = q.lot_id and  {'id': q.lot_id.id, 'name': q.lot_id.name} or {}
+            package_id_line = q.package_id and {'id': q.package_id.id, 'name': q.package_id.name} or {}
+            new_q = {'id': q.id, 'package_id': package_id_line, 'qty': q.quantity - q.reserved_quantity, 'lot_id':lot_id_line}
             res.append(new_q)
         return res
 

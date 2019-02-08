@@ -11,6 +11,9 @@ class StockProductionLot(models.Model):
 
     _inherit = "stock.production.lot"
 
+    product_short_name = fields.Char(related='product_id.name')
+    product_tracking = fields.Selection(related='product_id.tracking')
+
 
     @api.model
     def get_alternative_lots(self, vals):

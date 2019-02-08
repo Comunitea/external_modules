@@ -24,6 +24,9 @@ class StockQuantPackage(models.Model):
     uom_id = fields.Many2one('product.uom', compute='get_package_unique_values', store=True)
     lot_id = fields.Many2one('stock.production.lot', compute='get_package_unique_values', store=True)
     mono_product = fields.Boolean('Mono product', compute='get_package_unique_values', store=True)
+    location_barcode = fields.Char(related='location_id.barcode')
+    product_short_name = fields.Char(related='product_id.product_tmpl_name')
+    product_tracking = fields.Selection(related='product_id.tracking')
 
     @api.depends('quant_ids')
     def get_package_unique_values(self):

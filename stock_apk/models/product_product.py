@@ -47,11 +47,15 @@ class ProductTemplate(models.Model):
 
     short_name = fields.Char("Short name")
     need_qty_check = fields.Boolean()
+    need_check = fields.Boolean("Barcode check required", default=False)
 
 
 class ProductProduct(models.Model):
 
     _inherit = "product.product"
+
+    product_tmpl_name = fields.Char(related='product_tmpl_id.name')
+    tracking = fields.Selection(related='product_tmpl_id.tracking')
 
     @api.model
     def get_apk_vals(self, type='normal'):

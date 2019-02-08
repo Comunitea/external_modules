@@ -14,6 +14,11 @@ class StockMoveLine(models.Model):
     pda_done = fields.Boolean('Pda done')
     need_check = fields.Boolean(related='location_id.need_check')
     need_dest_check = fields.Boolean(related='location_dest_id.need_dest_check')
+    original_location_short_name = fields.Char(related='location_id.name')
+    final_location_short_name = fields.Char(related='location_dest_id.name')
+    product_short_name = fields.Char(related='product_id.product_tmpl_id.name')
+    product_barcode = fields.Char(related='product_id.barcode')
+    product_need_check = fields.Boolean(related="product_id.product_tmpl_id.need_check")
 
 
     @api.model

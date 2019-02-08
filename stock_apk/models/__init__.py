@@ -4,4 +4,4 @@
 
 
 from . import stock_location, product_product, stock_quant_package, stock_production_lot
-from. import stock_picking, stock_quant, stock_move, ir_model, res_users
+from. import stock_picking, stock_quant, stock_move, ir_model, res_users, stock_inventory
