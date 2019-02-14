@@ -172,6 +172,22 @@ class StockMoveLine(models.Model):
             if self.id == move.id:
                 prev_move = self.id
         return next_move or act_move
+    
+    @api.model
+    def set_as_pda_done_single_line(self, vals):
+        move_line_obj = self.browse(vals['id'])
+        result = move_line_obj.write({'qty_done': move_line_obj.ordered_qty})
+        return result     
+
+    @api.model
+    def update_line_values_apk(self, vals):
+        from pprint import pprint
+        pprint(vals)
+        for line in vals:
+            pprint(line)
+            line_obj = self.browse(line['id'])
+            result = line_obj.write({'qty_done': line['qty_done']})
+        return result     
 
 
 class StockMove(models.Model):
@@ -382,4 +398,63 @@ class StockMove(models.Model):
             move_vals.update(lot_id = serial.id)
             self.env['stock.move.line'].create(move_vals).write({'qty_done': serial_name['qty']})
         move_id._action_assign()
+        return True
+
+    @api.model
+    def get_qty_available_before_creation(self, vals):
+
+        product_id, location_id = vals['product_id'], vals['location_id']
+
+        product_id = self.env['product.product'].browse(product_id)
+        location_id = self.env['stock.location'].browse(location_id)
+
+        qty_available = product_id.with_context(location=location_id.id).qty_available_global
+
+        return qty_available
+
+    @api.model
+    def create_from_pda(self, vals):
+
+        product_id, location_id = vals['product_id'], vals['location_id']
+        product_uom_qty, location_dest_id = vals['product_uom_qty'], vals['location_dest_id']
+        name, qty_done = vals['name'], vals['qty_done']
+        product_obj = self.env['product.product'].browse(vals['product_id'])
+        product_uom = product_obj.uom_id.id
+
+        result = self.env['stock.move'].create({
+            'name': name,
+            'product_id': product_id,
+            'product_uom_qty': product_uom_qty,
+            'product_uom': product_uom,
+            'location_id': location_id,
+            'location_dest_id': location_dest_id,
+            'procure_method': 'make_to_stock'
+        })
+
+        result.action_confirm_for_pda()
+
+        return result.id
+
+    @api.model
+    def search_for_quants_apk(self, vals):
+
+        stock_move = self.env['stock.move'].browse(vals)
+        stock_move.action_assign_for_pda()
+
+        return True
+
+    @api.model
+    def force_quants_for_apk(self, vals):
+
+        stock_move = self.env['stock.move'].browse(vals)
+        stock_move.force_assign_for_pda()
+
+        return True
+
+    @api.model
+    def move_validation_from_apk(self, vals):
+
+        stock_move = self.env['stock.move'].browse(vals)
+        stock_move.action_done_for_pda()
+
         return True
