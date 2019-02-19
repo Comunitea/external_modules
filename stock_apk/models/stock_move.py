@@ -458,3 +458,49 @@ class StockMove(models.Model):
         stock_move.action_done_for_pda()
 
         return True
+    
+    @api.model
+    def create_new_picking_from_moves_apk(self, vals):
+        from pprint import pprint
+        pprint(vals)
+        move_lines = []
+        for move in vals['moves']:
+            move_lines.append(move['id'])
+
+        picking = self.env['stock.picking'].create({
+            'location_id' : vals['location_id'],
+            'location_dest_id': vals['location_dest_id'],
+            'picking_type_id': vals['picking_type_id'],
+            'move_type': 'direct'
+        })
+
+        for move in vals['moves']:
+            line = self.env['stock.move'].browse(move['id']).write({
+                'picking_id': picking.id
+            })
+
+        picking.action_assign()
+
+        return picking.id
+
+    @api.model
+    def create_for_picking(self, vals):
+
+        product_id, location_id = vals['product_id'], vals['location_id']
+        product_uom_qty, location_dest_id = vals['product_uom_qty'], vals['location_dest_id']
+        name, qty_done = vals['name'], vals['qty_done']
+        product_obj = self.env['product.product'].browse(vals['product_id'])
+        product_uom, picking_id = product_obj.uom_id.id, vals['picking_id']
+
+        result = self.env['stock.move'].create({
+            'name': name,
+            'product_id': product_id,
+            'product_uom_qty': product_uom_qty,
+            'product_uom': product_uom,
+            'location_id': location_id,
+            'location_dest_id': location_dest_id,
+            'procure_method': 'make_to_stock',
+            'picking_id': picking_id
+        })
+
+        return result.id
