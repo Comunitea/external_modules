@@ -48,6 +48,8 @@ class StockInventoryLine(models.Model):
     _inherit = 'stock.inventory.line'
 
     product_barcode = fields.Char(related='product_id.barcode')
+    product_default_code = fields.Char(related="product_id.default_code")
+    original_location_short_name = fields.Char(related='location_id.name')
 
     @api.model
     def get_quants_for_line_apk(self, vals):
