@@ -31,11 +31,8 @@ class StockPicking(models.Model):
 
     @api.multi
     def get_need_force_availability(self):
-        self.ensure_one()
-        print (self.state in ('waiting', 'confirmed') )
-        print (any(move.reserved_availability == 0 for move in self.move_lines))
-        print (self.state in ('waiting', 'confirmed') and any(move.reserved_availability == 0 for move in self.move_lines))
-        self.need_force = self.state in ('waiting', 'confirmed') and any(move.reserved_availability == 0 for move in self.move_lines)
+        for pick in self:
+            pick.need_force = pick.state in ('waiting', 'confirmed') and any(move.reserved_availability == 0 for move in pick.move_lines)
 
     @api.multi
     def get_delayed_val(self):

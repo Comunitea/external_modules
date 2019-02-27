@@ -363,7 +363,6 @@ class StockMove(models.Model):
 
     @api.model
     def create_moves_from_serial(self, vals):
-        import ipdb; ipdb.set_trace()
         move_id = self.browse(vals.get('move_id', False))
         move_vals = {'product_id': move_id.product_id.id,
                      'picking_id': move_id.picking_id.id,
