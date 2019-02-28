@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo>
+<odoo noupdate="1">
     <template id="payment_order_advise_partner_template">
         <html>
 
-            <div style="font-family: Calibri !important;">
+            <div>
                 <p>
                     <t t-set="obj" t-value="email_template._context.get('obj')"/>
                     <t t-set="company" t-value="object and object.company_id or email_template._context.get('company')"/>
                 </p>
-                <table border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;" summary="o_mail_notification">
+                <table border="0" width="100%" cellpadding="0" style="padding: 20px; border-collapse:separate;" summary="o_mail_notification">
                     <tbody>
                         <!-- HEADER -->
                         <tr>
                             <td align="center" style="min-width: 590px;">
-                                <table width="590" border="0" cellpadding="0" bgcolor="#875A7B" style="min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;">
+                                <table width="590" border="0" cellpadding="0" style="min-width: 590px; padding: 20px; border-collapse:separate;">
                                     <tbody>
                                         <tr>
-                                            <td valign="middle">
-                                                <span style="font-size:20px; color:white; font-weight: bold;">Estimado
-                                                <t t-if="int(obj.partner_id.ref)&lt;=524"><span>Socio</span></t>
-                                                <t t-if="int(obj.partner_id.ref)&gt;524"><span>Cliente</span></t>
-                                                </span>
+                                            <td valign="middle" style="color: #555; font-size: 14px;">
+                                                <span t-field="obj.partner_id.name"></span>
                                             </td>
-                                            <td valign="middle" align="right">
-                                                <span/>
-                                                <!--img t-att-src="'/logo.png?company=' + str(company.id)" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="company.name"/-->
+                                        </tr>
+                                        <tr>
+                                            <td valign="middle" style="color: #555; font-size: 14px;">
+                                                <span>Muy señores nuestros:</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -34,87 +32,39 @@
                         <!-- CONTENT -->
                         <tr>
                             <td align="center" style="min-width: 590px;">
-                                <table width="590" border="0" cellpadding="0" bgcolor="#ffffff" style="min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;">
+                                <table width="590" border="0" cellpadding="0" style="min-width: 590px; padding: 20px; border-collapse:separate;">
                                     <tbody>
                                         <tr>
                                             <td style="color: #555; font-size: 14px;">
-                                                <p>
-                                                    <style type="text/css">@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
-		a:link { color: #000080; so-language: zxx; text-decoration: underline }
-		a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
-                                                </p>
-                                                <p style="margin-bottom: 0cm">
-                                                    <br/>
-                                                </p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="color: #555; font-size: 14px;">
                                                 <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">
-                                                    Por la presente le indicamos la composición de nuestro recibo agrupado número <span t-field="obj.name"/> que le será pasado al cobro el próximo
-                                                    <span t-field="obj.date"/>
+                                                    Les informamos que, hemos puesto en circulación recibo/s domiciliado/s con el/los vencimiento/s indicado/s correspondiente/s a la/s factura/s que detallamos a continuación:
                                                 </p>
                                                 <br/>
-                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"/>
-                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"/>
+                                                <p style="line-height: 14.95px;"/>
                                                 <div>
                                                     <br/>
-                                                    <table width="516" cellpadding="6" cellspacing="0">
-                                                        <colgroup>
-                                                            <col width="159"/>
-                                                            <col width="160"/>
-                                                            <col width="159"/>
-                                                        </colgroup>
+                                                    <table width="516">
                                                         <tbody>
-                                                            <tr valign="middle">
-                                                                <td valign="middle" width="159" style="font-size: 14px; border: 1px solid rgb(0, 0, 0);">
-                                                                    <p>Número</p>
-                                                                </td>
-                                                                <!--td valign="middle" width="160" style="font-size: 14px; border: 1px solid rgb(0, 0, 0);">
-                                                                    <p>Fecha factura</p>
-                                                                </td-->
-                                                                <td valign="middle" width="159" style="font-size: 14px; border: 1px solid rgb(0, 0, 0); text-align: right;">
-                                                                    <p>Importe</p>
-                                                                </td>
-                                                            </tr>
                                                             <tr t-foreach="obj.payment_line_ids" t-as="line" valign="middle">
-                                                                <td valign="middle" width="159" style="color: #555; font-size: 14px; border: 1px solid rgb(0, 0, 0);">
-                                                                    <p style="line-height: 14.95px;">
-                                                                        <span style="background-color: transparent; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;" t-field="line.communication"/>
-                                                                    </p>
-                                                                </td>
-                                                                <!--td valign="middle" width="160" style="color: #555; font-size: 14px; border: 1px solid rgb(0, 0, 0);">
-                                                                    <p style="line-height: 14.95px;" t-field="line.move_line_id.invoice_id.date_invoice"/>
-                                                                </td-->
-                                                                <td valign="middle" align="right" width="159" style="color: #555; font-size: 14px; border: 1px solid rgb(0, 0, 0);">
-                                                                    <p style="line-height: 14.95px; text-align: right;">
-                                                                        <span t-field="line.amount_currency"/>
-                                                                        <br/>
+                                                                <td>
+                                                                    <p style="color: #555; font-size: 14px;">
+                                                                        - <span t-field="line.amount_currency"/> <span t-field="line.currency_id.name"/> a fecha <span t-field="line.date"/> con referencia <span t-field="line.communication"/>.
                                                                     </p>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                          <tfoot>
                                                             <tr>
-                                                                <!--td/>
-                                                                <td/-->
-                                                                <td style="text-align: right;">Total:</td>
-                                                                <td style="border: 1px solid black; text-align: right;">
-                                                                    <span t-field="obj.amount_currency"/>
+                                                                <td style="color: #555; font-size: 14px;">
+                                                                    <p>La cuenta bancaria de destino es <span t-field="obj.partner_bank_id.acc_number"/></p>
                                                                 </td>
                                                             </tr>
                                                         </tfoot>
                                                     </table>
                                                 </div>
                                                 <br/>
-                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"/>
-                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"/>
-                                                <!--p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Le recordamos que esta información puede ser consultada en la página web de la empresa en el apartado “información”.</p>
-                                                <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Atentamente,</p>
-                                                <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Las Rías, S. Coop. Galega</p>
-                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);"/-->
-                                                <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Dpto. Administración</p>
+                                                <p style="line-height: 14.95px; background-color: rgb(255, 255, 255);">Sin otro particular, aprovechamos la ocasión para saludarles</p>
+                                                <p style="margin-bottom: 0cm; line-height: 14.95px; background-color: rgb(255, 255, 255);">Atentamente</p>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -152,25 +102,24 @@
                 </table>
                 <p/>
                 <style type="text/css">@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
-		a:link { color: #000080; so-language: zxx; text-decoration: underline }
-		a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
+                p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
+                a:link { color: #000080; so-language: zxx; text-decoration: underline }
+                a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
                 <style type="text/css">@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
-		a:link { color: #000080; so-language: zxx; text-decoration: underline }
-		a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
+                p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
+                a:link { color: #000080; so-language: zxx; text-decoration: underline }
+                a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
                 <style type="text/css">@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
-		a:link { color: #000080; so-language: zxx; text-decoration: underline }
-		a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
+                p { margin-bottom: 0.25cm; direction: ltr; line-height: 115%; text-align: left; orphans: 2; widows: 2; background: transparent }
+                a:link { color: #000080; so-language: zxx; text-decoration: underline }
+                a:visited { color: #800000; so-language: zxx; text-decoration: underline }</style>
             </div>
         </html>
     </template>
 
     <record id="payment_order_advise_partner" model="mail.template">
         <field name="name">Payment Order advise partners</field>
-        <!--field name="email_from">${(object.env.user.email or object.company_id.email or 'noreply@localhost')|safe}</field-->
-        <field name="email_from">Facturación Las Rías &lt;facturacion@las-rias.com&gt;</field>
+        <field name="email_from">${(object.env.user.email or object.company_id.email or 'noreply@localhost')|safe}</field>
         <field name="subject">Aviso de recibo</field>
         <field name="model_id" ref="account_payment_order.model_account_payment_order" />
         <field name="body_type">qweb</field>
