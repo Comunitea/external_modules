@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_move_picking_form_picking_group" model="ir.ui.view">
+        <field name="name">stock.move.form.picking.group</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                 <field name="pick_state" widget="statusbar" statusbar_visible="assigned,picked,done"/>
+            </field>
+             <field name="state" position="before">
+                    <button name="action_force_assign_picking" attrs="{'invisible': [('state', 'not in', ('confirmed', 'assigned', 'partially_available'))]}"
+                            string="(RE) Assign pick" type="object" class="oe_highlight" groups="base.group_user"/>
+            </field>
+            <field name="location_dest_id" position="after">
+
+                <field name="need_force_pick"/>
+                <field name="picking_type_id"/>
+
+            </field>
+        </field>
+    </record>
+
+
+    <record id="view_move_search_group" model="ir.ui.view">
+            <field name="name">stock.move.search.group</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='done']" position="after">
+                    <separator/>
+                    <filter string="Picked ready" name="pick_ready" domain="[('pick_state','=','assigned')]" help="Stock moves that are ready to be picked"/>
+                    <filter string="Picked" name="picked" domain="[('pick_state','=','picked')]" help="Stock moves that are picked"/>
+                </xpath>
+
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="picking_id"/>
+                </xpath>
+                <xpath expr="//filter[@name='groupby_picking_id']" position="after">
+                    <filter string="Picking state" name="groupby_pick_state" domain="[]"  context="{'group_by':'pick_state'}"/>
+                </xpath>
+
+                <!--search string="Stock Moves">
+                    <field name="origin" filter_domain="['|', '|', ('origin', 'ilike', self), ('name', 'ilike', self), ('picking_id', 'ilike', self)]" string="Reference"/>
+                    <field name="date" groups="base.group_no_one"/>
+
+                    <filter string="Ready" name="ready" domain="[('state','=','assigned')]" help="Stock moves that are Available (Ready to process)"/>
+                    <filter string="To Do" name="future" domain="[('state','in',('assigned','confirmed','waiting'))]" help="Stock moves that are Confirmed, Available or Waiting"/>
+                    <filter string="Done" name="done" domain="[('state','=','done')]" help="Stock moves that have been processed"/>
+                    <separator/>
+                    <filter string="Today" domain="[('date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))), ('date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]" help="Orders processed today or scheduled for today"/>
+                    <separator/>
+                    <filter string="Incoming" name="incoming" domain="[('location_id.usage', 'not in', ('internal', 'transit')), ('location_dest_id.usage', 'in', ('internal', 'transit'))]"/>
+                    <filter string="Outgoing" name="outgoing" domain="[('location_id.usage', 'in', ('internal', 'transit')), ('location_dest_id.usage', 'not in', ('internal', 'transit'))]"/>
+                    <field name="product_id"/>
+                    <field name="name" string="Location" filter_domain="['|',('location_id','ilike',self),('location_dest_id','ilike',self)]"/>
+                    <field name="partner_id" string="Partner"  filter_domain="[('picking_id.partner_id','child_of',self)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Product" name="by_product" domain="[]"  context="{'group_by':'product_id'}"/>
+                        <filter string="Picking" name="groupby_picking_id" domain="[]"  context="{'group_by':'picking_id'}"/>
+                        <filter string="Source" name="groupby_location_id" domain="[]" context="{'group_by':'location_id'}" groups="stock.group_stock_multi_locations"/>
+                        <filter string="Destination" name="groupby_dest_location_id" domain="[]" context="{'group_by':'location_dest_id'}" groups="stock.group_stock_multi_locations"/>
+                        <filter string="Status" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Creation" name="groupby_create_date" domain="[]" context="{'group_by':'create_date'}" groups="base.group_no_one"/>
+                        <filter string="Scheduled" name="groupby_date" domain="[]" context="{'group_by':'date_expected'}"/>
+                    </group>
+                </search-->
+            </field>
+        </record>
+</odoo>

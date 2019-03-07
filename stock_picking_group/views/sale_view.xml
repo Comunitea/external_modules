@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_add_need_force_pick" model="ir.ui.view">
+        <field name="name">sale.order.form.add_group_sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="picking_policy" position="after">
+                <field name="need_force_pick"/>
+                <newline/>
+            </field>
+        </field>
+    </record>
+    <record id="sale_order_form_move_line_tree" model="ir.ui.view">
+
+        <field name="name">sale.order.form.move.line.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_view_move_lines" type="object" class="oe_stat_button"
+                        icon="fa-list">
+                    <field name="move_line_count" widget="statinfo" string="Move lines"/>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>
