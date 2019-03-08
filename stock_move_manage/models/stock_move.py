@@ -6,6 +6,17 @@ from odoo import api, models, fields
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
+    qty_available = fields.Float('Qty available', compute="get_qty_available")
+
+    @api.depends('product_id', 'picking_id.location_id')
+    @api.multi
+    def get_qty_available(self):
+
+        for line in self:
+            location = line.picking_id and line.picking_id.location_id or line.location_id
+            line.qty_available = line.product_id.with_context(location=location.id).qty_available_global
+
+
 
     @api.multi
     def action_confirm_for_pda(self):
