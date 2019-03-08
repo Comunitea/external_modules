@@ -9,7 +9,7 @@ import base64
 import logging
 _logger = logging.getLogger(__name__)
 
-# Global variable to store the new created templates
+
 template_ids = []
 
 
@@ -102,15 +102,13 @@ class SaleOrderLineImportWzd(models.TransientModel):
         }
         order_line = self.env['sale.order.line'].new(vals)
         order_line.product_id_change()
-
-
         order_line.name = name
         order_line.price_unit = row_vals['price_unit']
         order_line.discount = row_vals['discount']
         order_line._onchange_discount()
         order_line_vals = order_line._convert_to_write(
             order_line._cache)
-        #print ('{}'.format(order_line_vals))
+
         return sale_order.order_line.browse().create(order_line_vals)
 
 
@@ -122,7 +120,6 @@ class SaleOrderLineImportWzd(models.TransientModel):
         order.onchange_partner_id()
         order_vals = order._convert_to_write(order._cache)
         new_order = self.env['sale.order'].create(order_vals)
-        #print ('Pedido Creado: {} id: {}'.format(new_order.name, new_order.id))
         return new_order
 
 
@@ -137,13 +134,11 @@ class SaleOrderLineImportWzd(models.TransientModel):
 
     def import_order(self):
         self.ensure_one()
-        _logger.info(_('STARTING PRODUCT IMPORTATION'))
-
+        _logger.info(_('STARTING SALES IMPORTATION'))
 
         file = base64.b64decode(self.file)
         book = xlrd.open_workbook(file_contents=file)
         sh = book.sheet_by_index(0)
-
         idx = 1
         order_ids = []
         for nline in range(1, sh.nrows):
@@ -166,5 +161,5 @@ class SaleOrderLineImportWzd(models.TransientModel):
     def action_view_products(self, order_ids):
         self.ensure_one()
         action = self.env.ref('sale.action_quotations').read()[0]
-        action['domain'] = [('id', 'in',[x.id for x in order_ids])]
+        action['domain'] = [('id', 'in', [x.id for x in order_ids])]
         return action

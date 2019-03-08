@@ -6,25 +6,30 @@
 Empty
 =================================
 
-Customizations over product
+Importar líneas de venta
 
 Configuration
-=============
+===========================================
 
-Description of how to configure
+Crear un partner y un artículo por defecto:
+ref y default_code = "import_sale_order"
 
 Usage
 =====
 
 To use this module, you need to:
 #. Descritpion of How to use
---------------------------------
+------------------------------------------------
+
+Si no encuentra artíuclo:
+Si el asistente tiene artículo generico, lo pone
+Si no pone mensaje en sale order
 
 
 Contributors
 ------------
 * Comunitea
-* Javier Colmenero <javier@comunitea.com>
+* Kiko Sánchez <kiko@comunitea.com>
 
 Maintainer
 ----------
