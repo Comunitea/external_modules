@@ -8,7 +8,7 @@
     'license': 'AGPL-3',
     'author': "Comunitea, ",
     'depends': [
-        'stock_picking_custom'
+        'stock'
     ],
     'data': [
         'views/stock_move.xml',
