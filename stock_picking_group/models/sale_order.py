@@ -15,7 +15,10 @@ class SaleOrderLine(models.Model):
 
     @api.multi
     def _action_launch_procurement_rule(self):
-        self.filtered(lambda x: x.state == 'sale' and x.product_id.type in ('consum','product')).mapped('order_id').filtered(lambda x: not x.procurement_group_id).assign_group_procurement_value()
+        self.filtered(lambda x: x.state == 'sale' and x.product_id.type in 
+            ('consum','product')).mapped('order_id').filtered(
+                lambda x: not x.procurement_group_id).\
+                assign_group_procurement_value()
         return super()._action_launch_procurement_rule()
 
     @api.multi
@@ -33,13 +36,16 @@ class SaleOrder(models.Model):
     @api.multi
     def  _get_move_line_ids(self):
         for order in self:
-
-            domain = [('picking_type_id.code', '=', 'outgoing'), ('state', '!=', 'cancel'), ('group_id', '=', order.procurement_group_id.id)]
+            domain = [('picking_type_id.code', '=', 'outgoing'), 
+                      ('state', '!=', 'cancel'), 
+                      ('group_id', '=', order.procurement_group_id.id)]
             order.move_line_count = self.env['stock.move'].search_count(domain)
 
-    need_force_pick = fields.Boolean('Picking auto', help='If checked, create picking when run procurement, (odoo default)', default=False)
+    need_force_pick = fields.Boolean(
+        'Picking auto', 
+        help='If checked, create picking when run procurement, (odoo default)',
+        default=False)
     move_line_count = fields.Integer('Move lines', compute=_get_move_line_ids)
-
 
     def _prepare_proc_group_values(self):
         vals = {
@@ -68,7 +74,7 @@ class SaleOrder(models.Model):
         action['domain'] = [('picking_type_id.code', '=', 'outgoing'), ('state', '!=', 'cancel'), ('group_id', '=', self.procurement_group_id.id)]
         return action
 
-        model_data = self.env['ir.model.data']
+        # model_data = self.env['ir.model.data']
         #tree_view = model_data.get_object_reference(
         #    'stock_picking_group', 'sale_order_move_tree_view')
 
