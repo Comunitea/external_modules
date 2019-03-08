@@ -1,0 +1,137 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* import_sale_order_line_v1
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-08 11:29+0000\n"
+"PO-Revision-Date: 2019-03-08 11:29+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: import_sale_order_line_v1
+#: model:ir.ui.view,arch_db:import_sale_order_line_v1.view_sale_order__linewzd_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_partner_id
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_file
+msgid "File"
+msgstr "Archivo"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_filename
+msgid "Filename"
+msgstr "Nombre de archivo"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: import_sale_order_line_v1
+#: code:addons/import_sale_order_line_v1/wizard/order_line_import_wzd.py:162
+#, python-format
+msgid "IMPORTED LINE %s / %s"
+msgstr "Linea importada%s / %s"
+
+#. module: import_sale_order_line_v1
+#: model:ir.ui.view,arch_db:import_sale_order_line_v1.view_sale_order__linewzd_form
+msgid "Import Sale order lines"
+msgstr "Importar ventas"
+
+#. module: import_sale_order_line_v1
+#: model:ir.actions.act_window,name:import_sale_order_line_v1.action_import_orders
+#: model:ir.ui.menu,name:import_sale_order_line_v1.menu_action_import_orders
+#: model:ir.ui.view,arch_db:import_sale_order_line_v1.view_sale_order__linewzd_form
+msgid "Import orders"
+msgstr "Importar ventas"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_name
+msgid "Importation name"
+msgstr "Nombre importación"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: import_sale_order_line_v1
+#: code:addons/import_sale_order_line_v1/wizard/order_line_import_wzd.py:67
+#, python-format
+msgid "Missing product in row %s "
+msgstr "No se encuentra artículo en la línea %s "
+
+#. module: import_sale_order_line_v1
+#: model:ir.model.fields,field_description:import_sale_order_line_v1.field_sale_order_line_import_wzd_product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model,name:import_sale_order_line_v1.model_sale_order
+msgid "Quotation"
+msgstr "Presupuesto"
+
+#. module: import_sale_order_line_v1
+#: code:addons/import_sale_order_line_v1/wizard/order_line_import_wzd.py:140
+#, python-format
+msgid "STARTING PRODUCT IMPORTATION"
+msgstr "Inicio de importación"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model,name:import_sale_order_line_v1.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de ventas"
+
+#. module: import_sale_order_line_v1
+#: model:ir.ui.view,arch_db:import_sale_order_line_v1.view_sale_order__linewzd_form
+msgid "Select file to import"
+msgstr "Selecciona el fichero para importar"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model,name:import_sale_order_line_v1.model_product_import_wzd
+msgid "product.import.wzd"
+msgstr "Asistente de importación de ventas"
+
+#. module: import_sale_order_line_v1
+#: model:ir.model,name:import_sale_order_line_v1.model_sale_order_line_import_wzd
+msgid "sale.order.line.import.wzd"
+msgstr "sale.order.line.import.wzd"
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order__linewzd_form" model="ir.ui.view">
+        <field name="name">view.sale.order.line.wzd.form</field>
+        <field name="model">sale.order.line.import.wzd</field>
+        <field name="arch" type="xml">
+            <form string="Import Sale order lines">
+                <div name="help">
+                    <h2>Select file to import</h2>
+                </div>
+                <group>
+                    <field name="name"/>
+                    <field name="partner_id" required="True" context="{'default_ref': 'import_sale_order'}"/>
+                    <field name="product_id" context="{'default_default_code': 'import_sale_order'}"/>
+                    <field name="file" required="True" filename="filename"/>
+                </group>
+
+
+
+                <footer>
+                    <button name="import_order" type="object" class="btn-primary" string="Import orders"/>
+                    <button special="cancel" string="Cancel" class="oe_link"/>
+                </footer> 
+            </form>
+        </field>
+    </record>
+
+   
+    <record id="action_import_orders" model="ir.actions.act_window">
+        <field name="name">Import orders</field>
+        <field name="res_model">sale.order.line.import.wzd</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_action_import_orders" name="Import orders" action="action_import_orders" parent="sale.product_menu_catalog" sequence="99"/>
+    
+    
+</odoo>
