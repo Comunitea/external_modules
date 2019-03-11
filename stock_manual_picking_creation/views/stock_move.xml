@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_move_picking_form_picking_group" model="ir.ui.view">
+        <field name="name">stock.move.form.picking.group</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+
+             <field name="state" position="before">
+                    <button name="action_force_assign_picking" 
+                            attrs="{'invisible': ['|', ('picking_id', '!=', False), ('state', 'not in', ('confirmed', 'assigned', 'partially_available'))]}"
+                            string="(Manually) Assign pick" type="object" class="oe_highlight" groups="base.group_user"/>
+            </field>
+            
+            <group name="origin_grp" position="after">
+                <group name="origin_sale" string="Sale Info.">
+                    <field name="manual_pick"/>
+                    <field name="picking_id"/>
+                    <field name="picking_type_id"/>
+                    <field name="sale_id"/>
+                    <field name="shipping_id"/>
+                    <field name="sale_price"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <record id="view_move_extra_tree" model="ir.ui.view">
+        <field name="name">view.move.extra.tree</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree"/>
+        <field name="arch" type="xml">
+            <field name="product_uom" position="after">
+                <field name="manual_pick"/>
+                <field name="sale_id"/>
+                <field name="shipping_id"/>
+                <field name="sale_price"/>
+            </field>
+            
+        </field>
+    </record>
+
+
+    <record id="view_move_search_group" model="ir.ui.view">
+            <field name="name">stock.move.search.group</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_search"/>
+            <field name="arch" type="xml">
+                <!-- Search by picking or sale -->
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="picking_id"/>
+                    <field name="sale_id"/>
+                    <field name="shipping_id"/>
+                </xpath>
+
+                <!-- Filter by related sale, or picking manually -->
+                <xpath expr="//filter[@name='done']" position="after">
+                    <separator/>
+                    <filter string="From Sale order" name="sale_related" domain="[('sale_id','!=',False)]" help="Stock moves that are ready to be picked"/>
+                    <filter string="Manual Picking" name="manual_pick" domain="[('manual_pick', '=', True)]" help="Moves pending to put in a picking"/>
+                    <filter string="With picking" name="with_picking" domain="[('picking_id', '!=', False)]" help="Moves pending to put in a picking"/>
+                    <filter string="Without Picking" name="without_picking" domain="[('picking_id', '=', False)]" help="Moves pending to put in a picking"/>
+                </xpath>
+                <!-- Group by sale origin -->
+                <xpath expr="//filter[@name='groupby_picking_id']" position="after">
+                     <separator/>
+                    <filter string="Origin Sale" name="groupby_origin_sale" domain="[]"  context="{'group_by':'sale_id'}"/>
+                    <filter string="Delivery Address" name="groupby_delivery_address" domain="[]"  context="{'group_by':'shipping_id'}"/>
+                     <separator/>
+                </xpath>
+
+                
+            
+            </field>
+        </record>
+</odoo>
