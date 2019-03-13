@@ -14,7 +14,7 @@ class StockMove(models.Model):
 
         for line in self:
             location = line.picking_id and line.picking_id.location_id or line.location_id
-            line.qty_available = line.product_id.with_context(location=location.id).qty_available_global
+            line.qty_available = line.product_id.with_context(location=location.id).qty_available
 
 
 
