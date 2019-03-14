@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_alternative_product_ids" model="ir.ui.view">
+            <field name="name">view_product_alternative</field>
+            <field name="model">product.alternative.wzd</field>
+            <field name="arch" type="xml">
+                <form string="Product">
+                    <h2>
+                        <field name="product_id"  readonly="1"/>
+                    </h2>
+
+                    <div>
+                        <group>
+                            <group>
+                                 <field name="image_medium" widget="image" class="oe_avatar" nolabel="1"/>
+                            </group>
+                            <group>
+                                <label for="qty_available"/>
+                                <div>
+                                    <field name="qty_available" readonly="1" class="oe_inline"/>
+                                    <field name="uom_id" readonly="1"/>
+                                </div>
+
+                                <field name="currency_id" readonly="1" invisible="1"/>
+                                <label for="virtual_available"/>
+                                <div>
+                                <field name="virtual_available" readonly="1" class="oe_inline"/><field name="uom_id" readonly="1"/>
+                                </div>
+
+                                <field name="lst_price" widget="monetary" readonly="1" />
+                            </group>
+                        </group>
+                    </div>
+
+                    <group>
+                        <field name="alternative_product_ids" readonly="1" mode="kanban" nolabel="1" options="{'no_create': True}">
+                            <kanban create="0" delete="0">
+                                <field name="id"/>
+                                <field name="p_id"/>
+                                <field name="display_name"/>
+                                <field name="lst_price"/>
+                                <field name="selected"/>
+                                <field name="default_code"/>
+                                <field name="currency_id"/>
+                                <field name="product_id"/>
+                                <field name="image_small"/>
+                                <field name="qty_available"/>
+                                <field name="uom_id"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                      <div class="oe_module_vignette">
+                                        <div class="o_kanban_image">
+                                            <img t-att-src="'/web/image/product.product/' + record.p_id.raw_value + '/image_small'" />
+                                        </div>
+                                        <div class="oe_kanban_details">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="product_id"/>
+                                            </strong>
+                                            <div >
+                                                <strong>
+
+                                                </strong>
+                                            </div>
+                                            <div name="tags"/>
+                                            <ul>
+                                                <li>On hand: <field name="qty_available"/> <field name="uom_id"/></li>
+                                                <li>Price: <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/></li>
+                                            </ul>
+                                            <div name="tags"/>
+                                            <div class="oe_module_action">
+                                                <button t-if="!selected" type="object" class="btn btn-primary pull-right btn-sm oe_edit_only" name="set_as_selected"
+                                                context="{'new_product_id': product_id}">Select</button>
+                                          </div>
+                                        </div>
+                                        <!--div class="oe_module_desc" t-att-title="record.default_code.value">
+                                              <field name="product_id"/>
+
+                                              <p class="oe_module_name">
+                                                 <field name="qty_available"/><span class="pull-right text-muted mr8"><field name="uom_id"/></span>
+                                                 <br/>
+                                                 <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                              </p>
+
+                                              <field name="uom_id"/> <span class="pull-right text-muted mr8">Unidades</span>
+                                              <p/>
+                                              <div class="oe_module_action">
+                                                <button t-if="!selected" type="object" class="btn btn-primary pull-right btn-sm" name="set_as_selected"
+                                                context="{'new_product_id': product_id}">Select</button>
+                                              </div>
+                                        </div-->
+                                      </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </group>
+
+
+                    <footer>
+
+                    <button class="oe_link"
+                            special="cancel"
+                            string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
+
