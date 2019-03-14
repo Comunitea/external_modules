@@ -611,7 +611,8 @@ class PromotionsRulesActions(models.Model):
             if order_line.product_id.code == eval(self.product_code):
                 return order_line.\
                     write({'discount': eval(self.arguments),
-                           'old_discount': order_line.discount})
+                           'old_discount': order_line.discount,
+                           'promo_discount_line': True})
 
     def action_prod_disc_fix(self, order):
         """

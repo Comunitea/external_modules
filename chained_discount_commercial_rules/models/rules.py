@@ -35,7 +35,7 @@ class PromotionsRulesActions(models.Model):
         Crea hasta 4 descuentos, en la misma línea,
         cada uno en una columna para las promociones implicadas.
         """
-        discount = eval(self.arguments)
+        discount = self.arguments
         for line in selected_lines:
             disc_str = line.chained_discount
             if disc_str != '0.00':
@@ -43,5 +43,5 @@ class PromotionsRulesActions(models.Model):
             else:
                 disc_str = str(discount)
             line.chained_discount = disc_str
-            line.promotion_line = True
+            line.promo_discount_line = True
         return
