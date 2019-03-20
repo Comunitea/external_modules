@@ -33,8 +33,8 @@
                 <field name="product_id" readonly="1"/>
                 <field name="product_uom_qty" readonly="1"/>
                 <field name="product_uom" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="product.group_uom" readonly="1"/>
-                <field name="weight" readonly="1"/>
-                <field name="weight_uom_id" readonly="1"/>
+                <!--field name="weight" readonly="1"/>
+                <field name="weight_uom_id" readonly="1"/-->
 
                 <field name="state" invisible="1"/>
             </tree>

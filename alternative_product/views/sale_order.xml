@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="sale_order_alternative_product_ids" model="ir.ui.view">
+        <field name="name">sale_order.alternative_products</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='currency_id']" position="after">
+                <button name="action_show_alternative_products" class="oe_edit_only" string="Alternative products" type="object" icon="fa-cogs"
+                        context="{'default_product_id': product_id, 'default_currency_id': currency_id, 'default_sale_order_line_id': id}"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                <attribute name="editable">Top</attribute>
+
+            </xpath>
+
+        </field>
+    </record>
+
+
+
+    </data>
+</odoo>

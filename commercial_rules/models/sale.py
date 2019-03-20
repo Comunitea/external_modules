@@ -28,7 +28,8 @@ class SaleOrder(models.Model):
             order_line_objs.unlink()
 
         # Clear discount column
-        domain = [('order_id', '=', order.id)]
+        domain = [('order_id', '=', order.id),
+                  ('promo_discount_line', '=', True)]
         order_line_objs = order_line_obj.search(domain)
         for line in order_line_objs:
             if line.orig_qty:
@@ -70,6 +71,9 @@ class SaleOrderLine(models.Model):
     promotion_line = fields.Boolean("Rule Line",
                                     help="Indicates if the line was \
                                           created by comemrcial rules")
+    promo_discount_line = fields.Boolean("Rule Line",
+                                    help="Indicates if the line was \
+                                          the original but with new discount")
     orig_qty = fields.Float('Original qty')
     old_discount = fields.Float('Old discount',
                                 digits=dp.get_precision('Discount'),

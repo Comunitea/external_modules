@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="view_partner_form_default_type_partner" model="ir.ui.view">
+        <field name="name">res.partner.form.default.type.partner</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="type" position="replace">
+                <field name="default_partner_by_type" invisible="1"/>
+                <label for="type" attrs="{'invisible': [('parent_id','=', False)]}" groups="base.group_no_one"/>
+                <div attrs="{'invisible': [('parent_id','=', False)]}">
+                   <field name="type" groups="base.group_no_one" class="oe_inline"/>
+                   <button name="set_as_default" type="object" icon="fa-star" style="background-color:#FFFFFF" class="oe_inline" attrs ="{'invisible': [('default_partner_by_type', '!=', True)]}" />
+                   <button name="set_as_default" type="object" icon="fa-star-o" style="background-color:#FFFFFF" class="oe_inline far" attrs ="{'invisible': [('default_partner_by_type', '=', True)]}" />
+                </div>
+            </field>
+
+            <xpath expr="//kanban/field[@name='customer']" position="after">
+               <field name="default_partner_by_type"/>
+            </xpath>
+            <xpath expr="//div[contains(@class, 'oe_kanban_details')]/field[@name='name']" position="after">
+            <!--xpath expr="//div[contains(@class, 'oe_kanban_details')]" position="inside"-->
+                <t t-if="record.default_partner_by_type.raw_value === true">
+                    <i class="fa fa-star"/>
+                </t>
+            </xpath>
+            <xpath expr="//form/sheet/field[@name='type']" position="replace">
+                <group attributes="{'invisible': [('count_partners_by_type','=',0)]}">
+                    <field name="default_partner_by_type" invisible="1"/>
+                    <label for="type" attrs="{'invisible': [('parent_id','=', False)]}" groups="base.group_no_one"/>
+                    <div attrs="{'invisible': [('parent_id','=', False)]}">
+                        <field name="type" groups="base.group_no_one" class="oe_inline"/>
+                        <button name="set_as_default" type="object" icon="fa-star" style="background-color:#FFFFFF" class="oe_edit_only oe_inline" attrs ="{'invisible': [('default_partner_by_type', '!=', True)]}" />
+                        <button name="set_as_default" type="object" icon="fa-star-o" style="background-color:#FFFFFF" class="oe_edit_only oe_inline far" attrs ="{'invisible': [('default_partner_by_type', '=', True)]}" />
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="partner_kanban_view_default_type_partner" model="ir.ui.view">
+        <field name="name">res.partner.kanban.default.type</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="priority" eval="10"/>
+        <field name="arch" type="xml">
+            <field name="is_company" position="after">
+                <field name="default_partner_by_type" invisible="1"/>
+            </field>
+            <xpath expr="//div[contains(@class, 'oe_kanban_partner_categories')]" position="after">
+                <t t-if="record.default_partner_by_type.raw_value === true">
+                    <i class="fa fa-star"/>
+                </t>
+            </xpath>
+        </field>
+    </record>
+    </data>
+</odoo>
