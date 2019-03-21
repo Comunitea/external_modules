@@ -1,0 +1,201 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* customer_price
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-07 15:37+0000\n"
+"PO-Revision-Date: 2019-03-07 15:37+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_product_product_customer_prices_count
+#: model:ir.model.fields,field_description:customer_price.field_product_template_customer_prices_count
+msgid "#Prices"
+msgstr "# Precios"
+
+#. module: customer_price
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_partner
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_tmpl
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_tmpl2
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_variant
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_variant2
+msgid "Click to add a new customer price rule."
+msgstr "Click para añadir un nuevo precio personalizado"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_partner_id
+#: model:ir.ui.view,arch_db:customer_price.view_customer_price_filter
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: customer_price
+#: model:ir.actions.act_window,name:customer_price.action_customer_prices_tmpl
+#: model:ir.actions.act_window,name:customer_price.action_customer_prices_tmpl2
+#: model:ir.actions.act_window,name:customer_price.action_customer_prices_variant
+#: model:ir.actions.act_window,name:customer_price.action_customer_prices_variant2
+#: model:ir.model.fields,field_description:customer_price.field_product_product_customer_product_prices
+#: model:ir.model.fields,field_description:customer_price.field_product_product_customer_tmpl_prices
+#: model:ir.model.fields,field_description:customer_price.field_product_template_customer_tmpl_prices
+#: model:ir.ui.menu,name:customer_price.menu_customer_prices
+#: model:ir.ui.view,arch_db:customer_price.product_normal_form_view_prices
+#: model:ir.ui.view,arch_db:customer_price.product_template_only_form_view_prices
+#: model:ir.ui.view,arch_db:customer_price.view_customer_price_filter
+#: model:ir.ui.view,arch_db:customer_price.view_customer_price_form
+#: model:ir.ui.view,arch_db:customer_price.view_customer_price_tree
+msgid "Customer Prices"
+msgstr "Precios personalizados"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_date_end
+msgid "End Date"
+msgstr "Fecha final"
+
+#. module: customer_price
+#: model:ir.model.fields,help:customer_price.field_customer_price_date_end
+msgid "End date for this customer price"
+msgstr "Fecha final para este precio personalizado"
+
+#. module: customer_price
+#: model:ir.ui.view,arch_db:customer_price.view_customer_price_filter
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_min_qty
+msgid "Min Quantity"
+msgstr "Cantidad mínima"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_price
+msgid "Price"
+msgstr "Precio"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_product_product_product_item_ids
+msgid "Pricelist Product Items"
+msgstr "Elementos de tarifa"
+
+#. module: customer_price
+#: model:ir.model,name:customer_price.model_product_product
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: customer_price
+#: model:ir.ui.menu,name:customer_price.menu_customer_prices_variant
+msgid "Product Prices"
+msgstr "Precios de producto"
+
+#. module: customer_price
+#: model:ir.model,name:customer_price.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
+#. module: customer_price
+#: model:ir.actions.act_window,name:customer_price.action_customer_prices_partner
+msgid "Specific Prices"
+msgstr "Precios personalizados"
+
+#. module: customer_price
+#: model:ir.ui.view,arch_db:customer_price.res_partner_view_buttons_add_prices
+msgid "Specific prices"
+msgstr "Precios personalizados"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_date_start
+msgid "Start Date"
+msgstr "Fecha de inicio"
+
+#. module: customer_price
+#: model:ir.model.fields,help:customer_price.field_customer_price_date_start
+msgid "Start date for this customer price"
+msgstr "Fecha de inicio para este precio personalizado"
+
+#. module: customer_price
+#: model:ir.ui.view,arch_db:customer_price.view_res_partner_filter_zip
+msgid "State"
+msgstr "Estado"
+
+#. module: customer_price
+#: model:ir.model.fields,field_description:customer_price.field_customer_price_product_tmpl_id
+#: model:ir.ui.view,arch_db:customer_price.view_customer_price_filter
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: customer_price
+#: model:ir.ui.menu,name:customer_price.menu_customer_prices_tmpl
+msgid "Template Prices"
+msgstr "Precios de plantilla"
+
+#. module: customer_price
+#: model:ir.model.fields,help:customer_price.field_customer_price_price
+msgid "The price to purchase a product"
+msgstr "El precio al que se compra un producto"
+
+#. module: customer_price
+#: model:ir.ui.view,arch_db:customer_price.view_customer_price_filter
+msgid "Variant"
+msgstr "Variante"
+
+#. module: customer_price
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_partner
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_tmpl
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_tmpl2
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_variant
+#: model:ir.actions.act_window,help:customer_price.action_customer_prices_variant2
+msgid "You can define a specific price by customer and a range of dates."
+msgstr "Se puede definir un precio personalizado y un rango de fechas"
+
+#. module: customer_price
+#: model:ir.model,name:customer_price.model_customer_price
+msgid "customer.price"
+msgstr "customer.price"
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+  <data>
+
+        <record id="view_order_form_add_chained_discount" model="ir.ui.view">
+            <field name="name">view_order_form_add_discounts</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/form/group/group/div[@name='discount']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='order_line']/form/group/group/div[@name='discount']" position="after">
+                    <label for="chained_discount" groups="sale.group_discount_per_so_line"/>
+                    <div>
+                        <field name="chained_discount" groups="sale.group_discount_per_so_line"/>
+                    </div>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="before">
+                    <field name="chained_discount" groups="sale.group_discount_per_so_line"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+  </data>
+</openerp>
