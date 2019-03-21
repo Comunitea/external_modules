@@ -82,7 +82,7 @@ class StockPackingList(models.Model):
     name = fields.Char('Number', store=True, readonly=1)
     weight = fields.Float("Weight", compute='_compute_weight')
     weight_uom_id = fields.Many2one('product.uom', string='Unit of Measure', required=True, readonly="1", help="Unit of measurement for Weight", default=_default_uom)
-    volume = fields.FLoat('Volume', compute='_compute_weight')
+    volume = fields.Float('Volume', compute='_compute_weight')
     packing_type_id = fields.Many2one('stock.packing.type', "Packing list type")
     packing_type_list_id = fields.Many2one('stock.packing.type.list', "Packing type")
     picking_id = fields.Many2one('stock.picking', 'Parent picking')
