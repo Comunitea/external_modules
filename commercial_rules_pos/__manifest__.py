@@ -14,10 +14,11 @@
         'commercial_rules'
     ],
     'data': [
+        'security/ir.model.access.csv',
         'views/assets.xml',
     ],
     'qweb': [
-        'static/src/xml/pos.xml'
+        'static/src/xml/pos.xml',
     ],
     'application': False,
     'installable': True,

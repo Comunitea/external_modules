@@ -1,0 +1,7 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_user_promos_rules","sale_promotions_promos_rules","commercial_rules.model_promos_rules","point_of_sale.group_pos_user",1,1,1,1
+"access_user_promos_rules_conditions_exps","sale_promotions_promos_rules_conditions_exps","commercial_rules.model_promos_rules_conditions_exps","point_of_sale.group_pos_user",1,1,1,1
+"access_user_promos_rules_actions","sale_promotions_promos_rules_actions","commercial_rules.model_promos_rules_actions","point_of_sale.group_pos_user",1,1,1,1
+"access_user_promos_rules_user","sale_promotions_promos_rules","commercial_rules.model_promos_rules","point_of_sale.group_pos_user",1,1,1,1
+"access_user_promos_rules_conditions_exps_user","sale_promotions_promos_rules_conditions_exps","commercial_rules.model_promos_rules_conditions_exps","point_of_sale.group_pos_user",1,1,1,1
+"access_user_promos_rules_actions_user","sale_promotions_promos_rules_actions","commercial_rules.model_promos_rules_actions","point_of_sale.group_pos_user",1,1,1,1
