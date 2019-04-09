@@ -1,0 +1,131 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_custom_dismac
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-14 09:20+0000\n"
+"PO-Revision-Date: 2018-11-14 09:20+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_approval_conditions
+msgid "Approval Conditions"
+msgstr "Visto bueno condiciones"
+
+#. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_create_uid
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type_use_partner_agent
+msgid "Use Partner Agent"
+msgstr "Usar agente del cliente"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_create_date
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner_route_id
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users_route_id
+msgid "Delivery Route"
+msgstr "Ruta de reparto"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_display_name
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_display_name
+msgid "Display Name"
+msgstr "Nombre a Mostrar"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_id
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_id
+msgid "ID"
+msgstr "ID"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route___last_update
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone___last_update
+msgid "Last Modified on"
+msgstr "Última Modificación en"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_write_uid
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_write_uid
+msgid "Last Updated by"
+msgstr "Última Actualización por"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_write_date
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_write_date
+msgid "Last Updated on"
+msgstr "Última Actualización el"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_name
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner_no_valued_picking
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users_no_valued_picking
+msgid "No valued picking"
+msgstr "Sin albarán valorado"
+
+#. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_sale_order
+msgid "Quotation"
+msgstr "Presupuesto"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner_require_num_order
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users_require_num_order
+msgid "Requires num order"
+msgstr "Requiere referencia de cliente"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner_whole_orders
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users_whole_orders
+msgid "Shipping Whole orders"
+msgstr "Entrega de pedidos completos"
+
+#. module: sale_custom_dismac
+#: code:addons/sale_custom_dismac/models/sale_order.py:22
+#, python-format
+msgid "The customer for this order requires a customer                         reference number"
+msgstr "El cliente de este pedido obliga a que haya un número de referencia del cliente"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner_zone_id
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users_zone_id
+msgid "Zone"
+msgstr "Zona"
+
+#. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_delivery_route
+msgid "delivery.route"
+msgstr "delivery.route"
+
+#. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_partner_zone
+msgid "partner.zone"
+msgstr "partner.zone"
+
