@@ -1,6 +1,6 @@
 # © 2019 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import fields, models, _
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
@@ -23,4 +23,12 @@ class ProductCategory(models.Model):
                         category.company_id != category.parent_id.company_id:
                     raise UserError(_('The category %s must be in the same \
                         company as the parent category') % category.name)
+        return res
+
+    @api.model
+    def create(self, vals):
+        res = super().create(vals)
+        if res.parent_id and res.parent_id.company_id and \
+                res.company_id != res.parent_id.company_id:
+            res.company_id = res.parent_id.company_id
         return res
