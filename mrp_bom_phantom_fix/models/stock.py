@@ -3,6 +3,20 @@
 from odoo import models, fields
 
 
+class StockPicking(models.Model):
+
+    _inherit = 'stock.picking'
+
+    has_phantom_bom = fields.Boolean(compute='_compute_has_phantom_bom')
+
+    def _compute_has_phantom_bom(self):
+        for picking in self:
+            has_phantom_bom = False
+            if any([x.phantom_bom_component for x in picking.move_lines]):
+                has_phantom_bom = True
+            picking.has_phantom_bom = has_phantom_bom
+
+
 class StockMove(models.Model):
     _inherit = 'stock.move'
 

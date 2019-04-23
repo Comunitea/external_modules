@@ -1,0 +1,43 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* view_product_prices_from_supplier
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-11 09:43+0000\n"
+"PO-Revision-Date: 2019-04-11 09:43+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: view_product_prices_from_supplier
+#: model:ir.model.fields,field_description:view_product_prices_from_supplier.field_res_partner_product_prices_count
+#: model:ir.model.fields,field_description:view_product_prices_from_supplier.field_res_users_product_prices_count
+msgid "# Products"
+msgstr "# Product"
+
+#. module: view_product_prices_from_supplier
+#: model:ir.actions.act_window,help:view_product_prices_from_supplier.act_supplier_to_pricelist_purchase
+msgid "Create product prices for the supplier"
+msgstr "Crear precios de producto para el proveedor"
+
+#. module: view_product_prices_from_supplier
+#: model:ir.model,name:view_product_prices_from_supplier.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: view_product_prices_from_supplier
+#: model:ir.ui.view,arch_db:view_product_prices_from_supplier.res_supplier_view_purchase_buttons
+msgid "Products"
+msgstr "Productos"
+
+#. module: view_product_prices_from_supplier
+#: model:ir.actions.act_window,name:view_product_prices_from_supplier.act_supplier_to_pricelist_purchase
+msgid "RFQs and Purchases"
+msgstr "PdO y compras"
+

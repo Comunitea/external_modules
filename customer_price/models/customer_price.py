@@ -26,7 +26,7 @@ class CustomerPrice(models.Model):
                  default=lambda self: self.env.user.company_id.id, index=1)
 
     @api.model
-    def get_customer_price(self, partner_id, product, qty, date=False):
+    def get_customer_price_rec(self, partner_id, product, qty, date=False):
         today = date or time.strftime('%Y-%m-%d')
         if isinstance(partner_id, (int,)):
             partner = partner_id
@@ -58,6 +58,12 @@ class CustomerPrice(models.Model):
             ]
             customer_prices = self.env['customer.price'].\
                 search(domain, limit=1, order='min_qty desc')
+        return customer_prices
+
+    @api.model
+    def get_customer_price(self, partner_id, product, qty, date=False):
+        customer_prices = self.get_customer_price_rec(
+            partner_id, product, qty, date)
         if customer_prices:
             return customer_prices.price
         return False
