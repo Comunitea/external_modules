@@ -12,7 +12,7 @@ class StockPackingType(models.Model):
     - Corte Inglés EDI
     Cada uno puede tener sus tipos de paquete concretos
     """
-    name = fields.Char(models.Model)
+    name = fields.Char('Name')
 
 
 class StockPackingTypeList(models.Model):
