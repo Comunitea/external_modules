@@ -142,7 +142,7 @@
                     <div class="col-xs-12 fullheight">
                       <div class="fullheight centerinside fullwidth">
                         <div class="centerthis">
-                            <label for="customer" id="labelpartner">Customer:</label>
+                            <label for="partner" id="labelpartner">Customer:</label>
                             <input onclick="this.select()" class="mandatory tab1" type="text" id="partner" name="customer" t-att-value="widget.order_model.get('partner')" tabIndex="1"/>
                             <span><t t-esc="widget.order_model.get_parent_partner()"/></span>
                         </div>
@@ -178,7 +178,7 @@
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
-                            <label for="date_order">Pricelist:</label>
+                            <label for="pricelist">Pricelist:</label>
                             <input onclick="this.select()" class="mandatory tab1" type="text" id="pricelist" name="pricelist" t-att-value="widget.order_model.get('pricelist')" tabIndex="4"/>
                           </div>
                         </div>

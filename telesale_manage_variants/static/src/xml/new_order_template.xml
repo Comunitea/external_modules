@@ -69,7 +69,7 @@
         <!-- CHECK WITHOUT JIM TELESALE MODULE -->
 
         <t t-jquery=".cell-discount" t-operation="replace">
-            <td class=".cell-discount">
+            <td class="cell-discount">
                 <t t-if="widget.model.mode == 'template_variants'">
                     <span class='col-discount'></span>
                 </t>
