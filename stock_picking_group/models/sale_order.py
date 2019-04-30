@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api, _
+from .stock_move import DOMAIN_NOT_STATE
 
 class ProcurementGroup(models.Model):
 
@@ -39,7 +40,7 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     def get_moves_domain(self):
-        return [('picking_type_id.code', '=', 'outgoing'), ('sale_id', '=', self.id)]
+        return [('sale_id', '=', self.id), ('state', 'not in', DOMAIN_NOT_STATE)]
 
     @api.multi
     def _get_move_line_ids(self):
@@ -56,7 +57,7 @@ class SaleOrder(models.Model):
         action = self.env.ref(
             'stock.stock_move_action').read()[0]
         action['domain'] = self.get_moves_domain()
-        action['context'] = {'search_default_groupby_location_id': True}
+        action['context'] = {'search_default_groupby_picking_type': True}
         return action
 
     @api.multi

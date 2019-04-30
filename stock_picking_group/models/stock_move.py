@@ -6,7 +6,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import timedelta
 
-
+DOMAIN_NOT_STATE = ['draft', 'cancel']
 
 class StockMoveLine(models.Model):
 
@@ -22,6 +22,7 @@ class StockMove(models.Model):
         default=False, copy=True)
     sale_id = fields.Many2one(
         'sale.order', 'Saler Order')
+    purchase_id = fields.Many2one('purchase.order', 'Purchase Order')
     sale_price = fields.Float('Sale Price')
     shipping_id = fields.Many2one('res.partner', string='Delivery Address')
 
@@ -52,7 +53,31 @@ class StockMove(models.Model):
         not_to_pick = self - to_pick
         return not_to_pick, to_pick
 
+
+    def check_assign_picking_error(self):
+        """
+        En caso de asignación en lote se realizan una serie de comprobaciones
+        1 - si es de tipo clientes, todos los albaranes tienen el mismo cliente
+        2 - si es de tipo proveedor, todos los albaranes tienen el mismo proveedor
+        """
+        picking_type_id = self.mapped('picking_type_id')
+        if len(picking_type_id) > 1:
+            raise ValidationError (_('Not same picking types: {}'.format(picking_type_id.mapped("code"))))
+
+        if picking_type_id.code == 'outgoing' :
+            if len(self.mapped('partner_id')) > 1 or len(self.mapped('shipping_id')) > 1 :
+                raise ValidationError(_('Not same partner for outgoing moves: {}'.format(self.mapped('partner_id').mapped('name'))))
+
+        if picking_type_id.code == 'incoming' :
+            if len(self.mapped('partner_id')) > 1:
+                raise ValidationError(_('Not same partner for incoming moves: {}'.format(self.mapped('partner_id').mapped('name'))))
+
+        return True
+        
+    
     def _assign_picking(self):
+        if self and len(self)>1:
+            self.check_picking_error()
         print (self.picking_type_id.name)
         force_assign = self._context.get('force_assign', False)
         if force_assign:
@@ -69,12 +94,9 @@ class StockMove(models.Model):
         return True
 
     def _get_new_picking_domain(self):
-
         domain = super()._get_new_picking_domain()
-        ##if picking_type is set as grouped and move is set as manual_picking delete group_id from domain when search picking
-        if self.picking_type_id.grouped and self.manual_pick:
+        if self.picking_type_id.grouped and (self.manual_pick or self.picking_type_id.code == 'internal'):
             domain.remove(('group_id', '=', self.group_id.id))
-
         domain += [('grouped', '=', self.picking_type_id.grouped), ('grouped_close', '=', False)]
 
         for field in self.picking_type_id.grouped_field_ids:
@@ -103,6 +125,8 @@ class StockMove(models.Model):
         ##COMPRUBA Y ESTABLECE LA NUEVA UBICACIÓN DE ORIGEN DEL MOVIMIENTO Y CAMBIA EL PICKING_TYPE EN CONSECUENCIA. ADEMAS LO SACA DE UN ALBARÁN SI LO TUVIERA
         ##REVISAR BIEN
         if not self.move_line_ids:
+            return
+        if not self.picking_type_id.grouped:
             return
         default_picking_type_id = self.picking_type_id
 

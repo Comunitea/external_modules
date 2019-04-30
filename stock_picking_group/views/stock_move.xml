@@ -15,11 +15,12 @@
                             string="(RE) Assign pick" type="object" class="oe_highlight" groups="base.group_user"/>
             </field>
             <group name="origin_grp" position="after">
-                <group name="origin_sale" string="Sale Info.">
+                <group name="origin_sale" string="Order Info.">
                     <field name="manual_pick"/>
                     <field name="picking_id"/>
                     <field name="picking_type_id"/>
                     <field name="sale_id"/>
+                    <field name="purchase_id"/>
                     <field name="shipping_id"/>
                     <field name="sale_price"/>
                 </group>
@@ -31,11 +32,17 @@
         <field name="model">stock.move</field>
         <field name="inherit_id" ref="stock.view_move_tree"/>
         <field name="arch" type="xml">
-            <field name="product_uom" position="after">
+            <field name="reference" position="after">
+                <field name="picking_id"/>
                 <field name="manual_pick"/>
+            </field>
+            <field name="product_uom" position="after">
+
                 <field name="sale_id"/>
+                <field name="purchase_id"/>
                 <field name="shipping_id"/>
                 <field name="sale_price"/>
+
             </field>
 
         </field>
@@ -49,21 +56,29 @@
                  <xpath expr="//field[@name='product_id']" position="after">
                     <field name="picking_id"/>
                     <field name="sale_id"/>
-                    <field name="shipping_id"/>
+                    <field name="purchase_id"/>
+                    <separator/>
+                     <field name="shipping_id"/>
                     <field name="manual_pick"/>
                 </xpath>
                 <xpath expr="//filter[@name='done']" position="after">
                     <separator/>
                     <filter string="From Sale order" name="sale_related" domain="[('sale_id','!=',False)]" help="Stock moves that are ready to be picked"/>
+                    <filter string="From Purchase order" name="purchase_related" domain="[('purchase_id','!=',False)]" help="Stock moves that are ready to be picked"/>
+                    <separator/>
                     <filter string="Manual Picking" name="manual_pick" domain="[('manual_pick', '=', True)]" help="Moves pending to put in a picking"/>
+                    <separator/>
                     <filter string="With picking" name="with_picking" domain="[('picking_id', '!=', False)]" help="Moves pending to put in a picking"/>
                     <filter string="Without Picking" name="without_picking" domain="[('picking_id', '=', False)]" help="Moves pending to put in a picking"/>
                 </xpath>
                 <!-- Group by sale origin -->
                 <xpath expr="//filter[@name='groupby_picking_id']" position="after">
                      <separator/>
-                    <filter string="Origin Sale" name="groupby_origin_sale" domain="[]"  context="{'group_by':'sale_id'}"/>
-                    <filter string="Delivery Address" name="groupby_delivery_address" domain="[]"  context="{'group_by':'shipping_id'}"/>
+                    <filter string="Picking type" name="groupby_picking_type"  context="{'group_by':'picking_type_id'}"/>
+                    <filter string="Origin Sale" name="groupby_origin_sale" domain="[('sale_id','!=',False)]"  context="{'group_by':'sale_id'}"/>
+                    <filter string="Origin Purchase" name="groupby_origin_purchase" domain="[('purchase_id','!=',False)]" context="{'group_by':'purchase_id'}"/>
+                    <filter string="Delivery Address" name="groupby_delivery_address" domain="[('sale_id','!=',False)]"  context="{'group_by':'shipping_id'}"/>
+                    <filter string="Supplier" name="groupby_supplier" domain="[('purchase_id','!=',False)]"  context="{'group_by':'shipping_id'}"/>
                      <separator/>
                 </xpath>
 
