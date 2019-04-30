@@ -8,7 +8,20 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <field name="origin" position="after">
-                <field name="need_force_pick"/>
+                <field name="grouped"/>
+                <field name="grouped_close"/>
+            </field>
+        </field>
+    </record>
+     <record id="view_picking_type_form" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.grouo</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="show_reserved" position="after">
+                <field name="grouped" groups="stock.group_stock_multi_locations"/>
+                <field name="grouped_field_ids" widget="many2many_tags" groups="stock.group_stock_multi_locations"/>
             </field>
         </field>
     </record>

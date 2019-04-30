@@ -8,9 +8,22 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from operator import itemgetter
 from itertools import groupby
 
+
+
+class StockPickingType(models.Model):
+
+    _inherit = "stock.picking.type"
+
+    grouped = fields.Boolean('Grouped pick', help="Picked manually created from moves")
+    grouped_field_ids = fields.Many2many('ir.model.fields', domain=[('model_id.model', '=', 'stock.move')])
+
 class StockPicking(models.Model):
 
     _inherit = "stock.picking"
 
-    need_force_pick = fields.Boolean('Grouped pick', help="Picked manually created from moves")
+    grouped = fields.Boolean('Grouped pick', help="Picked manually created from moves")
+    grouped_close = fields.Boolean('Grouped close', default=False)
+
+
+
 

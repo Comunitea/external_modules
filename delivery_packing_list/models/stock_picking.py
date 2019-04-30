@@ -36,7 +36,6 @@ class StockMove(models.Model):
         uom_categ_id = self.env.ref('product.product_uom_categ_kgm').id
         return self.env['product.uom'].search([('category_id', '=', uom_categ_id), ('factor', '=', 1)], limit=1)
 
-
     packing_list_id = fields.Many2one('stock.packing.list', 'Packing number', copy=False)
     weight = fields.Float(compute='_compute_weight')
     weight_uom_id = fields.Many2one('product.uom', string='Unit of Measure', required=True, readonly="1",

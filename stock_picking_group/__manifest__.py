@@ -14,7 +14,6 @@
     'depends': [
         'sale_stock',
         'stock_picking_imp',
-        'stock_move_manage'
     ],
     'data': [
         'views/sale_view.xml',

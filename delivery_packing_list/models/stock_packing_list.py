@@ -15,20 +15,27 @@ class StockPackingList(models.Model):
 
         for pack in self:
             weight = 0.00
+            volume = 0.00
             for ml in pack.stock_move_ids:
-                weight += ml.product_uom._compute_quantity(ml.quantity_done, ml.product_id.uom_id) * ml.product_id.weight
+                qty = ml.product_uom._compute_quantity(ml.quantity_done, ml.product_id.uom_id)
+                weight += qty * ml.product_id.weight
+                volume += qty * ml.product_id.volume
             pack.weight = weight
+            pack.volume = volume
 
 
     def _default_uom(self):
         uom_categ_id = self.env.ref('product.product_uom_categ_kgm').id
         return self.env['product.uom'].search([('category_id', '=', uom_categ_id), ('factor', '=', 1)], limit=1)
 
-    weight = fields.Float(compute='_compute_weight')
+    weight = fields.Float("Weight", compute='_compute_weight')
+    volume = fields.Float("Volume", compute='_compute_weight')
     weight_uom_id = fields.Many2one('product.uom', string='Unit of Measure', required=True, readonly="1", help="Unit of measurement for Weight", default=_default_uom)
     name = fields.Char('Number', store=True, readonly=1)
+
     picking_id = fields.Many2one('stock.picking', 'Parent picking')
-    stock_move_ids = fields.One2many('stock.move', 'packing_list_id', string='Contents')
+    stock_move_ids = fields.One2many('stock.move', 'packing_list_id', string = 'Contents')
+    package_ids = fields.Many2many('stock.quant.package',string= 'Package(s)', help = "Move result_package_id list")
 
 
 

@@ -8,6 +8,14 @@ class ProcurementGroup(models.Model):
 
     _inherit = 'procurement.group'
 
+    manual_pick = fields.Boolean('Manual Picking', help='If checked, no create pickings when confirm order', default=True)
+
+    @api.model
+    def create(self, vals):
+        if vals.get('sale_id', False):
+            sale = self.env['sale.order'].browse(vals.get('sale_id', False))
+            vals.update(manual_pick=sale.manual_pick)
+        return super().create(vals)
 
 class SaleOrderLine(models.Model):
 
@@ -15,75 +23,45 @@ class SaleOrderLine(models.Model):
 
     @api.multi
     def _action_launch_procurement_rule(self):
-        self.filtered(lambda x: x.state == 'sale' and x.product_id.type in 
-            ('consum','product')).mapped('order_id').filtered(
-                lambda x: not x.procurement_group_id).\
-                assign_group_procurement_value()
         return super()._action_launch_procurement_rule()
 
     @api.multi
     def _prepare_procurement_values(self, group_id=False):
         values = super()._prepare_procurement_values(group_id)
         values.update({
-            'need_force_pick': self.order_id.need_force_pick,
-        })
-
+            'manual_pick': self.order_id.manual_pick,
+            'sale_id': self.order_id.id,
+            'shipping_id': self.order_id.partner_shipping_id.id
+            })
         return values
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    def get_moves_domain(self):
+        return [('picking_type_id.code', '=', 'outgoing'), ('sale_id', '=', self.id)]
+
     @api.multi
-    def  _get_move_line_ids(self):
-        for order in self:
-            domain = [('picking_type_id.code', '=', 'outgoing'), 
-                      ('state', '!=', 'cancel'), 
-                      ('group_id', '=', order.procurement_group_id.id)]
+    def _get_move_line_ids(self):
+        for order in self.filtered(lambda x: x.procurement_group_id):
+            domain = self.get_moves_domain()
             order.move_line_count = self.env['stock.move'].search_count(domain)
 
-    need_force_pick = fields.Boolean(
-        'Picking auto', 
-        help='If checked, create picking when run procurement, (odoo default)',
-        default=False)
+    manual_pick = fields.Boolean('Manual Picking', help='If checked, no create pickings when confirm order', default=True)
     move_line_count = fields.Integer('Move lines', compute=_get_move_line_ids)
-
-    def _prepare_proc_group_values(self):
-        vals = {
-            'name': self.name,
-            'move_type': self.picking_policy,
-            'sale_id': self.id,
-            'partner_id': self.partner_shipping_id.id,
-            'need_force_pick': self.need_force_pick
-            }
-
-        return vals
-
-    @api.multi
-    def assign_group_procurement_value(self):
-        proc_obj = self.env['procurement.group']
-        for order in self:
-            vals = order._prepare_proc_group_values()
-            order.procurement_group_id = proc_obj.create(vals)
 
     @api.multi
     def action_view_move_lines(self):
         self.ensure_one()
-
         action = self.env.ref(
             'stock.stock_move_action').read()[0]
-        action['domain'] = [('picking_type_id.code', '=', 'outgoing'), ('state', '!=', 'cancel'), ('group_id', '=', self.procurement_group_id.id)]
+        action['domain'] = self.get_moves_domain()
+        action['context'] = {'search_default_groupby_location_id': True}
         return action
 
-        # model_data = self.env['ir.model.data']
-        #tree_view = model_data.get_object_reference(
-        #    'stock_picking_group', 'sale_order_move_tree_view')
-
-
-        #action['views'] = {
-        #    (tree_view and tree_view[1] or False, 'tree')}
-
-
-
-
-
-
+    @api.multi
+    def action_cancel(self):
+        ## Tengo que cancelar los movimientos sin albarnar
+        domain = [('picking_id', '=', False), ('sale_id', 'in', self.mapped('id'))]
+        self.env['stock.move'].search(domain)._action_cancel()
+        return super(SaleOrder, self).action_cancel()
