@@ -1,0 +1,14 @@
+<odoo>
+
+    <record id="product_category_multicompany_form" model="ir.ui.view">
+        <field name="name">product.category.inherit.view.form</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="company_id"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
