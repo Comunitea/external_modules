@@ -24,6 +24,7 @@ class StockMove(models.Model):
         return domain
 
     def _assign_picking(self):
+
         """HEREDO TODO PARA SACAR TODO FUERA Y PODER HEREDAR"""
 
         """ Try to assign the moves to an existing picking that has not been
@@ -34,7 +35,9 @@ class StockMove(models.Model):
         for move in self:
             recompute = False
             picking = Picking.search(move._get_new_picking_domain(), limit=1)
+
             if picking:
+                
                 if picking.partner_id.id != move.partner_id.id or picking.origin != move.origin:
                     # If a picking is found, we'll append `move` to its move list and thus its
                     # `partner_id` and `ref` field will refer to multiple records. In this

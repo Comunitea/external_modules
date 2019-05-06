@@ -76,8 +76,9 @@ class StockMove(models.Model):
         
     
     def _assign_picking(self):
+
         if self and len(self)>1:
-            self.check_picking_error()
+            self.check_assign_picking_error()
         print (self.picking_type_id.name)
         force_assign = self._context.get('force_assign', False)
         if force_assign:
