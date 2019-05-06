@@ -66,19 +66,6 @@
             </td>
         </t>
 
-        <!-- CHECK WITHOUT JIM TELESALE MODULE -->
-
-        <t t-jquery=".cell-discount" t-operation="replace">
-            <td class="cell-discount">
-                <t t-if="widget.model.mode == 'template_variants'">
-                    <span class='col-discount'></span>
-                </t>
-                <t t-if="widget.model.mode != 'template_variants'">
-                     <input type="text" class='col-chained_discount mandatory' t-att-value="widget.model.get('chained_discount')"/>
-                </t>
-            </td>
-        </t>
-
         <t t-jquery=".cell-total" t-operation="replace">
             <td class="cell-total">
                 <t t-if="widget.model.mode == 'template_variants'">
