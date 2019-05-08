@@ -83,7 +83,6 @@ class SaleOrder(models.Model):
             order_ids.append(order_obj.id)
 
             order_lines = order['lines']
-
             if order['erp_id'] and order['erp_state'] == 'draft':
                 t_order_line = self.env['sale.order.line']
                 domain = [('order_id', '=', order_obj.id)]
@@ -114,7 +113,9 @@ class SaleOrder(models.Model):
             'price_unit': line.get('price_unit', 0.0),
             'product_uom': product_uom_id,
             'product_uom_qty': product_uom_qty,
-            'tax_id': [(6, 0, line.get('tax_ids', False))],
+            # Quito el campo para que en el create de la línea se creen
+            # actualizados con la posición fiscal
+            # 'tax_id': [(6, 0, line.get('tax_ids', False))],
             'discount': line.get('discount', 0.0),
         }
         return vals
