@@ -380,7 +380,7 @@ var TsModel = Backbone.Model.extend({
         order_model.set('num_order',order_obj.name);
         // TODO SACARLO DEL CLIENTE
         order_model.set('observations',order_obj.observations || '');
-        order_model.set('comercial',partner_obj.user_id[1]);
+        self.order_model.set('comercial', partner_obj.user_id ? partner_obj.user_id[1] : (self.ts_model.get('user') ? self.ts_model.get('user').name : ""));
         order_model.set('coment',order_obj.note || '');
         order_model.set('client_order_ref',order_obj.client_order_ref || '');
 
