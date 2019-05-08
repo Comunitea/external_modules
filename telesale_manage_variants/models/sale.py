@@ -22,7 +22,9 @@ class SaleOrder(models.Model):
             'price_unit': line.get('price_unit', 0.0),
             'product_uom': product_uom_id,
             'product_uom_qty': product_uom_qty,
-            'tax_id': [(6, 0, line.get('tax_ids', False))],
+            # Quito el campo para que en el create de la línea se creen
+            # actualizados con la posición fiscal
+            # 'tax_id': [(6, 0, line.get('tax_ids', False))],
             'discount': line.get('discount', 0.0),
         }
         return vals
