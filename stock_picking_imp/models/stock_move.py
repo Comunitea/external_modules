@@ -14,29 +14,30 @@ class StockMove(models.Model):
 
 
     def _get_new_picking_domain(self):
-
-        return [
-                ('group_id', '=', self.group_id.id),
+        domain = [
                 ('location_id', '=', self.location_id.id),
                 ('location_dest_id', '=', self.location_dest_id.id),
                 ('picking_type_id', '=', self.picking_type_id.id),
                 ('printed', '=', False),
+                ('group_id', '=', self.group_id.id),
                 ('state', 'in', ['draft', 'confirmed', 'waiting', 'partially_available', 'assigned'])]
+        return domain
 
     def _assign_picking(self):
+
         """HEREDO TODO PARA SACAR TODO FUERA Y PODER HEREDAR"""
 
         """ Try to assign the moves to an existing picking that has not been
         reserved yet and has the same procurement group, locations and picking
         type (moves should already have them identical). Otherwise, create a new
         picking to assign them to. """
-
         Picking = self.env['stock.picking']
         for move in self:
             recompute = False
-            print (move._get_new_picking_domain())
             picking = Picking.search(move._get_new_picking_domain(), limit=1)
+
             if picking:
+                
                 if picking.partner_id.id != move.partner_id.id or picking.origin != move.origin:
                     # If a picking is found, we'll append `move` to its move list and thus its
                     # `partner_id` and `ref` field will refer to multiple records. In this

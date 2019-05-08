@@ -14,10 +14,10 @@
     'depends': [
         'sale_stock',
         'stock_picking_imp',
-        'stock_move_manage'
     ],
     'data': [
         'views/sale_view.xml',
+        'views/purchase_view.xml',
         'views/stock_move.xml',
         'views/stock_picking.xml',
         'views/stock_location.xml'

@@ -15,9 +15,7 @@ class StockLocation(models.Model):
     def _get_location_type_id(self):
         ##DEVUELVE LA 1ª UBICACIÓN PADRE QUE TENGA PICKING TYPE.
         ## ASI PDRÉ AGRUPAR PICKINGS POR UBICACIONES POR DEBAJO DE LA PADRE (DE STOCK)
-
         p_loc = self
-
         while not p_loc.picking_type_id and p_loc.location_id:
             p_loc = p_loc.location_id
         return p_loc

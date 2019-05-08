@@ -8,9 +8,17 @@ from odoo.exceptions import ValidationError
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+    def _default_uom(self):
+        uom_categ_id = self.env.ref('product.product_uom_categ_kgm').id
+        return self.env['product.uom'].search(
+            [('category_id', '=', uom_categ_id), ('factor', '=', 1)], limit=1)
+
     need_packing_list = fields.Boolean('Packing list', default=False)
     packing_list_ids = fields.One2many('stock.packing.list', 'picking_id')
 
+    weight = fields.Float(compute='_compute_weight')
+    weight_uom_id = fields.Many2one('product.uom', string='Unit of Measure', required=True, readonly="1",
+                                    help="Unit of measurement for Weight", default=_default_uom)
 
     @api.multi
     def open_stock_move_tree_for_packing(self):
@@ -27,7 +35,6 @@ class StockPicking(models.Model):
         action['context'] = {}
         return action
 
-
     def fill_sscc(self):
         sscc = self.env['stock.pack.operation.sscc']
         palet = {}
@@ -37,7 +44,8 @@ class StockPicking(models.Model):
 
         for move_line in self.move_line_ids:
             if move_line.packing_list_id and move_line.packing_list_id not in palet.keys():
-                counter, op_sscc = self.make_sscc(self, move_line, counter, '1', packing_list_id= move_line.packing_list_id)
+                counter, op_sscc = self.make_sscc(self, move_line, counter, '1',
+                                                  packing_list_id=move_line.packing_list_id)
                 palet[move_line.packing_list_id] = op_sscc
 
         for move_line in self.move_line_ids:
@@ -51,7 +59,8 @@ class StockPicking(models.Model):
                     parent = False
                     if move_line.packing_list_id:
                         parent = palet[move_line.packing_list_id].id
-                    counter, op_sscc = self.make_sscc(self, move_line, counter, '3', parent=parent, package_id = move_line.result_package_id)
+                    counter, op_sscc = self.make_sscc(self, move_line, counter, '3', parent=parent,
+                                                      package_id=move_line.result_package_id)
                     package[move_line.result_package_id] = op_sscc
                 else:
                     package[move_line.result_package_id].write({'move_line_ids': [(4, move_line.id)]})
@@ -61,9 +70,7 @@ class StockPicking(models.Model):
                     parent = palet[move_line.packing_list_id].id
                 counter, op_sscc = self.make_sscc(self, move_line, counter, '2', parent=parent)
 
-
-
-    def make_sscc(self, move_line, counter, type, packing_list_id=False, package_id = False, parent=None):
+    def make_sscc(self, move_line, counter, type, packing_list_id=False, package_id=False, parent=None):
 
         """Método con el que se calcula el sscc a partir de
         1 + aecoc + 4 digitos num albaran + secuencia 2 digitos + 1 checksum
@@ -73,7 +80,7 @@ class StockPicking(models.Model):
 
         domain = [('picking_id', '=', self.id)]
         if sscc.search(domain):
-            raise  ValidationError (_('Error. This pick has sscc.'))
+            raise ValidationError(_('Error. This pick has sscc.'))
 
         picking_name = self.name.split('\\')[-1][-4:]
         first_num = int(self.name.split('\\')[-1][:1])
