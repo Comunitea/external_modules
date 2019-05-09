@@ -678,7 +678,7 @@ var OrderWidget = TsBaseWidget.extend({
         get_order_fields: function(){
         // Called when load an order from server
             return ['partner_shipping_id','note','comercial','client_order_ref','name',
-                    'partner_id','date_order','state','amount_total','requested_date', 'pricelist_id', 'observations']
+                    'partner_id','date_order','state','amount_total','requested_date', 'pricelist_id', 'observations', 'user_id']
 
         },
         get_line_fields: function(){
