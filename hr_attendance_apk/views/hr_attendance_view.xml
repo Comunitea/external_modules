@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    <record id="view_attendance_form" model="ir.ui.view">
+            <field name="name">hr.attendance.form</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/group" position="after">
+                    <group string="GPS">
+                        <field name="latitude" readonly="1"/>
+                        <field name="longitude" readonly="1"/>
+                        <field name="accuracity" readonly="1"/>
+                        <field name="ip" readonly="1"/>
+                        <field name="url_gps" widget="url"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!--record model="ir.ui.view" id="view_attendance_form">
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance_apk.view_attendance_form" />
+            <field name="groups_id" eval="[(6, 0, [ref('hr_attendance_apk.group_hr_attendance_gps')])]"/>
+            <field name="arch" type="xml">
+
+                <field name="latitude" position="attributes">
+                    <attribute name="readonly">True</attribute>
+                </field>
+                    <field name="longitude" position="attributes">
+                    <attribute name="readonly">True</attribute>
+                </field>
+                    <field name="accuracity" position="attributes">
+                    <attribute name="readonly">True</attribute>
+                </field>
+
+            </field>
+        </record-->
+
+
+    </data>
+</openerp>
