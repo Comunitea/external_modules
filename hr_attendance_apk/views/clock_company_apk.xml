@@ -23,10 +23,12 @@
                         <group>
                             <field name="welcome_message"/>
                             <field name="company_id"/>
+                            <field name="contact_phone" />
                         </group>
                         <group>
                             <field name="logo_color" />
-                            <field name="contact_phone" />
+                            <field name="min_accuracity" />
+                            <field name="min_minute" />
 
 
                         </group>
@@ -83,3 +85,4 @@
         </record>
     </data>
 </openerp>
+
