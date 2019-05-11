@@ -19,18 +19,23 @@ class HrEmployee(models.Model):
 
     @api.model
     def attendance_action_change_apk(self, vals):
-
+        print vals
         employee = self.env['hr.employee'].browse(vals.get('employee_id', False))
         last_signin = self.env['hr.attendance'].search([
                         ('employee_id', '=', employee.id)], limit=1, order='name DESC')
+        if last_signin:
+            last_signin_datetime = datetime.strptime(last_signin.name, '%Y-%m-%d %H:%M:%S')
 
-        last_signin_datetime = datetime.strptime(last_signin.name, '%Y-%m-%d %H:%M:%S')
-        now_datetime = datetime.now()
-        diffmins = (now_datetime - last_signin_datetime).seconds/60
-        if diffmins <= MIN_MINUTE and False:
-            return {'error': True, 'error_msg': (_('Not enogh time between logs: {} minutes').format(diffmins))}
+            now_datetime = datetime.now()
+            diffmins = (now_datetime - last_signin_datetime).seconds/60
+            if diffmins <= MIN_MINUTE and False:
+                return {'error': True, 'error_msg': (_('Not enough time between logs: {} minutes').format(diffmins))}
 
-        res = employee.attendance_action_change()
+        ctx = self._context.copy()
+        if 'gps_info' in vals:
+            ctx.update(gps_info=vals['gps_info'])
+
+        res = employee.with_context(ctx).attendance_action_change()
         if res:
             return {'error': False, 'error_msg': ''}
 
@@ -38,7 +43,8 @@ class HrEmployee(models.Model):
     def get_employee_info(self, vals):
 
         user_id = self.env['res.users'].browse(vals.get('user_id'))
-
+        if not user_id:
+            return {'error': True, 'error_msg': 'No conincide el usuario/contraseña'}
 
         domain = [('user_id', '=',user_id.id)]
         employee_id = self.env['hr.employee'].search(domain, limit=1)
@@ -65,13 +71,7 @@ class HrEmployee(models.Model):
 
         res['employee'] = employee
         res['apk'] = conf
-        print "---------------------"
-        print res
-        print "---------------------"
-        return res
-
-
-
+        return {'error': False, 'data': res}
 
 
 class HrAttendance(models.Model):
@@ -90,59 +90,79 @@ class HrAttendance(models.Model):
          return domain
 
     @api.model
-    def get_logs(self, vals):
+    def get_vals(self, vals_type='out', check_val={}, min_accuracity=0):
+
         def day(date):
-            return datetime.strftime(datetime.strptime(date.split(' ')[0], '%Y-%m-%d'), '%d/%m/%Y')
+            try:
+                day = datetime.strftime(datetime.strptime(date.split(' ')[0], '%Y-%m-%d'), '%d/%m/%Y')
+            except:
+                day = False
+            return day
+
         def hour(date):
-            return date.split(' ')[1]
-        print vals
-        print self._context
+            try:
+                hour = date.split(' ')[1]
+            except:
+                hour=False
+            return hour
+
+
+        if vals_type == 'sign_out':
+            check_val = {'id': self.id,
+                         'action': self.action == 'action' and self.action_desc.action_type or self.action or 'sign_in',
+                         'day': day(self.name),
+                         'log_out_hour': hour(self.name),
+                         'log_out': self.name,
+                         'worked_hours': self.worked_hours,
+                         'gps_out': (self.accuracity <= min_accuracity),
+                         'same_day': True}
+
+        if vals_type== 'sign_in':
+            check_val = {'id': self.id,
+                         'action': self.action == 'action' and self.action_desc.action_type or self.action or 'sign_in',
+                         'day': day(self.name),
+                         'log_in_hour': hour(self.name),
+                         'log_in': self.name,
+                         'worked_hours': self.worked_hours,
+                         'gps_in': (self.accuracity <= min_accuracity),
+                         'same_day': True}
+        if vals_type=='update':
+            check_val.update(same_day=day(self.name) < check_val['day'],
+                             gps_in=(self.accuracity <= min_accuracity),
+                             log_in_hour=hour(self.name),
+                             log_in=self.name)
+        return check_val
+
+
+    @api.model
+    def get_logs(self, vals):
+
         limit = vals.get('limit', 0)
         domain = self.get_logs_domain(vals)
         checks = self.env['hr.attendance'].search(domain, limit=limit, order = 'name desc')
         employee = self.env['hr.employee'].browse(vals.get('employee_id', False))
-        state = employee.state
         checks_vals =[]
         check_val={}
+        apk = employee.company_id.get_clock_apk()
         for check in checks:
+            check_action = (check.action == 'action' and check.action_desc.action_type or check.action)
 
-         check_action = check.action == 'action' and self.action_desc.action_type or check.action or 'sign_in'
+            if check_action == 'sign_out':
+                check_val = check.get_vals(vals_type='sign_out', min_accuracity=apk.min_accuracity)
 
-         if check.action == 'sign_out':
-            check_val = {'id': check.id,
-                         'day': day(check.name),
-                         'action': check_action,
-                         'log_out_hour': hour(check.name),
-                         'log_out': check.name,
-                         'worked_hours': check.worked_hours,
-                         'same_day': True}
+            elif check_action == 'sign_in' and not check_val:
+                checks_vals.append(check.get_vals(vals_type='sign_in', min_accuracity=apk.min_accuracity))
+                check_val = {}
 
-         elif check.action == 'sign_in' and not check_val:
-             check_val = {'id': check.id,
-                          'day': day(check.name),
-                          'action': check_action,
-                          'same_day': True,
-                          'log_in_hour': hour(check.name),
-                          'log_in': check.name}
-             checks_vals.append(check_val)
-             check_val = {}
+            elif check_action == 'sign_in' and check_val:
+                checks_vals.append(check.get_vals(vals_type='update', check_val=check_val, min_accuracity=apk.min_accuracity))
+                check_val = {}
 
-         elif check.action == 'sign_in' and check_val:
-             check_val.update(same_day=day(check.name) < check_val['day'],
-                              log_in_hour=hour(check.name),
-                              log_in=check.name)
-             checks_vals.append(check_val)
-             check_val = {}
-
-        if check_val and check_val['action'] == 'sign_out':
-            domain = [('employee_id', '=', employee.id), ('name', '<', check.name)]
-            check = self.env['hr.attendance'].search(domain, limit=1, order = 'name desc')
-            check_val.update(same_day=day(check.name) < check_val['day'],
-                             log_in_hour=hour(check.name),
-                             log_in=check.name)
-            checks_vals.append(check_val)
-            check_val = {}
-        print checks_vals
+            if check_val and check_val['action'] == 'sign_out' and False:
+                domain = [('employee_id', '=', employee.id), ('name', '<', check.name)]
+                check = check.env['hr.attendance'].search(domain, limit=1, order = 'name desc')
+                checks_vals.append(check.get_vals(vals_type='update', check_val=check_val, min_accuracity=apk.min_accuracity))
+                check_val = {}
         return checks_vals
 
 
@@ -159,3 +179,15 @@ class HrAttendance(models.Model):
     accuracity = fields.Float('Error')
     ip = fields.Char('IP')
     url_gps = fields.Char('Position', compute="_get_url_gps")
+
+
+    @api.model
+    def create(self, vals):
+        print self._context
+
+        gps_info = self._context.get('gps_info', False)
+        if gps_info:
+            vals.update(gps_info)
+
+        print vals
+        return super(HrAttendance, self).create(vals)

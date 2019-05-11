@@ -13,6 +13,12 @@ MIN_MINUTE = 0
 class ResCompany(models.Model):
     _inherit ="res.company"
 
+
+    @api.model
+    def get_clock_apk(self):
+        apk = self.env['clock.company.apk'].search([('company_id', '=', self.id)], limit=1)
+        return apk
+
     @api.multi
     def action_view_clock_company_apk_form(self):
         self.ensure_one()
@@ -34,15 +40,12 @@ class ClockCompanyApk(models.Model):
         for p in self:
             p.image_medium = tools.image_get_resized_images(p.image)['image_medium']
             p.image_small = tools.image_get_resized_images(p.image)['image_small']
-            print (tools.image_get_resized_images(p.image))
         #return dict((p.id, tools.image_get_resized_images(p.image)) for p in self)
 
 
 
 
     company_id = fields.Many2one('res.company')
-
-
     name = fields.Char()
     image = fields.Binary('Image', help='Logo in apk')
     image_medium = fields.Binary('Image medium', compute='_get_image')
@@ -52,3 +55,4 @@ class ClockCompanyApk(models.Model):
     logo_color = fields.Char("Logo color")
     contact_phone= fields.Char("Contact phone")
     min_minute = fields.Integer ('Minutes between logs', default=3)
+    min_accuracity = fields.Integer('Min. accuraccity', default=100)
