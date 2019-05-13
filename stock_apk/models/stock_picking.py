@@ -29,6 +29,84 @@ class StockPicking(models.Model):
 
     _inherit = "stock.picking"
 
+    @api.model
+    def get_component_info(self, model_id, model='stock.picking'):
+        picking = self.browse(model_id)
+
+        if picking.location_id:
+            location_id = {
+                '0': picking.location_id.id,
+                '1': picking.location_id.name
+            }
+        else:
+            location_id = False
+
+        if picking.location_dest_id:
+            location_dest_id = {
+                '0': picking.location_dest_id.id,
+                '1': picking.location_dest_id.name
+            }
+        else:
+            location_dest_id = False
+        
+        if picking.move_lines:
+            move_lines = picking.move_lines.ids
+            move_count = len(picking.move_lines)
+        else:
+            move_lines = False
+            move_count = 0
+
+        if picking.move_line_ids:
+            move_line_ids = []
+            cont = 0
+            for line in picking.move_line_ids:
+                line_data = self.env['stock.move.line'].get_component_info(line.id, 'stock.move.line')
+                line_data.update({
+                    'index': cont
+                })
+                move_line_ids.append(line_data)
+                cont += 1
+            move_done_count = len(picking.move_line_ids.filtered(lambda x: x.state == 'done' or x.state == 'assigned'))
+        else:
+            move_line_ids = False
+            move_done_count = 0
+
+        if picking.partner_id:
+            partner_id = {
+                '0': picking.partner_id.id,
+                '1': picking.partner_id.name
+            }
+        else:
+            partner_id = False
+
+        if picking.picking_type_id:
+            picking_type_id = {
+                '0': picking.picking_type_id.id,
+                '1': picking.picking_type_id.name,
+                '2': picking.picking_type_id.code
+            }
+        else:
+            picking_type_id = False
+
+        data = {
+            'id': picking.id,
+            'location_id': location_id,
+            'location_dest_id': location_dest_id,
+            'model': 'stock.picking',
+            'move_count': move_count,
+            'move_done_count': move_done_count,
+            'move_lines': move_lines,
+            'moves': move_line_ids,
+            'move_line_ids': move_line_ids,
+            'note': picking.note,
+            'name': picking.name,
+            'partner_id': partner_id,
+            'picking_type_id': picking_type_id,
+            'scheduled_date': picking.scheduled_date,
+            'state': picking.state
+        }
+        return data
+
     @api.multi
     def get_need_force_availability(self):
         for pick in self:
