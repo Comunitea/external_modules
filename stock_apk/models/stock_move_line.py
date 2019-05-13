@@ -14,7 +14,7 @@ class StockMoveLine(models.Model):
     barcode = fields.Char(related="product_id.barcode")
 
     @api.model
-    def get_component_info(self, model_id, model):
+    def get_component_info(self, model_id, model='stock.move.line'):
         move_line = self.browse(model_id)
         product = move_line.product_id
         location = move_line.location_id

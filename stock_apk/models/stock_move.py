@@ -181,10 +181,7 @@ class StockMoveLine(models.Model):
 
     @api.model
     def update_line_values_apk(self, vals):
-        from pprint import pprint
-        pprint(vals)
         for line in vals:
-            pprint(line)
             line_obj = self.browse(line['id'])
             result = line_obj.write({'qty_done': line['qty_done']})
         return result     
@@ -194,6 +191,81 @@ class StockMove(models.Model):
 
     _inherit = "stock.move"
 
+
+    @api.model
+    def get_component_info(self, model_id, model):
+        move = self.browse(model_id)
+        location = move.location_id
+        location_dest = move.location_dest_id
+        product = move.product_id
+
+        if location:
+            location_id = {
+                '0': location.id,
+                '1': location.name
+            }
+        else:
+            location_id = False
+
+        if location_dest:
+            location_dest_id = {
+                '0': location_dest.id,
+                '1': location_dest.name
+            }
+        else:
+            location_dest_id = False
+
+        if move.picking_id:
+            picking_id = {
+                '0': move.picking_id.id,
+                '1': move.picking_id.name
+            }
+        else :
+            picking_id = False
+
+        if move.product_id:
+            product_id = {
+                '0': move.product_id.id,
+                '1': move.product_id.name
+            }
+        else :
+            product_id = False
+
+        if move.product_uom:
+            product_uom = {
+                '0': move.product_uom.id,
+                '1': move.product_uom.name
+            }
+        else :
+            product_uom = False
+         
+        if move.inventory_id:
+            inventory_id = {
+                '0': move.inventory_id.id,
+                '1': move.inventory_id.name
+            }
+        else:
+            inventory_id = False
+
+        data = {
+            'display_name': move.display_name,
+            'has_tracking': move.product_id.product_tmpl_id.tracking,
+            'id': move.id,
+            'inventory_id': inventory_id,
+            'location_id': location_id,
+            'location_dest_id': location_dest_id,
+            'model': 'stock.move',
+            'name': move.name,
+            'need_check': location.need_check,
+            'need_dest_check': location_dest.need_dest_check,
+            'picking_id': picking_id,
+            'product_id': product_id,
+            'product_qty': move.product_qty,
+            'product_uom': product_uom,
+            'product_uom_qty': move.product_uom_qty,
+            'state': move.state
+        }
+        return data
 
     @api.multi
     def _get_forced_move_line(self):
