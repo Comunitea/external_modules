@@ -75,11 +75,16 @@ class StockPackingList(models.Model):
 
         for pack in self:
             weight = 0.00
+            volume = 0.00
             for ml in pack.stock_move_ids:
+                qty = ml.product_uom._compute_quantity(ml.quantity_done, ml.product_id.uom_id)
+                volume += qty * ml.product_id.volume
                 weight += ml.product_uom._compute_quantity(
                     ml.quantity_done, ml.product_id.uom_id) * \
                         ml.product_id.weight
+
             pack.weight = weight
+            pack.volume = volume
 
     def _default_uom(self):
         uom_categ_id = self.env.ref('product.product_uom_categ_kgm').id

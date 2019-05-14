@@ -6,7 +6,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import timedelta
 
-
+DOMAIN_NOT_STATE = ['draft', 'cancel']
 
 class StockMoveLine(models.Model):
 
@@ -16,9 +16,16 @@ class StockMove(models.Model):
 
     _inherit = "stock.move"
 
-    need_force_pick = fields.Boolean('Picking auto',
-                                     help='If checked, create picking when run procurement, (odoo default). From sale order',
-                                     default=False, copy=True)
+    manual_pick = fields.Boolean(
+        'Manual Picking',
+        help='If checked, no create pickings when confirm order',
+        default=False, copy=True)
+    sale_id = fields.Many2one(
+        'sale.order', 'Saler Order')
+    purchase_id = fields.Many2one('purchase.order', 'Purchase Order')
+    sale_price = fields.Float('Sale Price')
+    shipping_id = fields.Many2one('res.partner', string='Delivery Address')
+
 
     pick_state = fields.Selection([
         ('draft', 'Draft'),
@@ -36,82 +43,110 @@ class StockMove(models.Model):
 
     @api.multi
     def action_force_assign_picking(self, force=True):
-
         ctx = self._context.copy()
-        ctx.update(force_assign_pick=force)
+        ctx.update(force_assign=force)
         return self.with_context(ctx)._assign_picking()
 
 
+    def get_moves_to_not_asign(self):
+        to_pick = self.filtered(lambda x: x.sale_id and not x.picking_type_id.grouped)
+        not_to_pick = self - to_pick
+        return not_to_pick, to_pick
+
+
+    def check_assign_picking_error(self):
+        """
+        En caso de asignación en lote se realizan una serie de comprobaciones
+        1 - si es de tipo clientes, todos los albaranes tienen el mismo cliente
+        2 - si es de tipo proveedor, todos los albaranes tienen el mismo proveedor
+        """
+        picking_type_id = self.mapped('picking_type_id')
+        if len(picking_type_id) > 1:
+            raise ValidationError (_('Not same picking types: {}'.format(picking_type_id.mapped("code"))))
+
+        if picking_type_id.code == 'outgoing' :
+            if len(self.mapped('partner_id')) > 1 or len(self.mapped('shipping_id')) > 1 :
+                raise ValidationError(_('Not same partner for outgoing moves: {}'.format(self.mapped('partner_id').mapped('name'))))
+
+        if picking_type_id.code == 'incoming' :
+            if len(self.mapped('partner_id')) > 1:
+                raise ValidationError(_('Not same partner for incoming moves: {}'.format(self.mapped('partner_id').mapped('name'))))
+
+        return True
+        
+    
     def _assign_picking(self):
 
-        if self.need_force_pick and not self._context.get('force_assign_pick', False):
-            self._action_assign()
-            return
-
-        super()._assign_picking()
-        for move in self:
-            move.move_line_ids.write({'picking_id': move.picking_id.id})
+        if self and len(self)>1:
+            self.check_assign_picking_error()
+        print (self.picking_type_id.name)
+        force_assign = self._context.get('force_assign', False)
+        if force_assign:
+            print ("FORZANDO ASIGNACION DE PICKING")
+            to_pick = self
+        else:
+            not_to_pick, to_pick = self.get_moves_to_not_asign()
+            if not_to_pick:
+                not_to_pick._action_assign()
+        if to_pick:
+            super(StockMove, to_pick)._assign_picking()
+            for move in to_pick:
+                move.move_line_ids.write({'picking_id': move.picking_id.id})
+        return True
 
     def _get_new_picking_domain(self):
-        vals = super(StockMove, self)._get_new_picking_domain()
-        if self.need_force_pick and self._context.get('force_pick', False):
-            vals += [('group_pick', '=', True)]
-        return vals
+        domain = super()._get_new_picking_domain()
+        if self.picking_type_id.grouped and (self.manual_pick or self.picking_type_id.code == 'internal'):
+            domain.remove(('group_id', '=', self.group_id.id))
+        domain += [('grouped', '=', self.picking_type_id.grouped), ('grouped_close', '=', False)]
+
+        for field in self.picking_type_id.grouped_field_ids:
+            domain += [(field.name, '=', self[field.name].id)]
+        return domain
 
     def _get_new_picking_values(self):
-        """ Prepares a new picking for this move as it could not be assigned to
-        another picking. This method is designed to be inherited. """
-        """ VALORES ORIGINALES
-            'origin': self.origin,
-            'company_id': self.company_id.id,
-            'move_type': self.group_id and self.group_id.move_type or 'direct',
-            'partner_id': self.partner_id.id,
-            'picking_type_id': self.picking_type_id.id,
-            'location_id': self.location_id.id,
-            'location_dest_id': self.location_dest_id.id,
-        }"""
-
         vals = super()._get_new_picking_values()
-        if self.need_force_pick and self._context.get('force_pick', False):
-            vals.update(group_pick=True)
+        if self._context.get('grouped', False):
+            vals.update(grouped=True)
+        vals.update(grouped=self.picking_type_id and self.picking_type_id.grouped)
         return vals
-
-    def picking_type_sust(self, old, new):
-        if old.warehouse_id and (new.warehouse_id and new.warehouse_id != old.warehouse_id):
-            return False
-        if not old.warehouse_id and new.warehouse_id:
-            return False
-        if old.code != new.code:
-            return False
-        return True
 
     def _prepare_move_split_vals(self, qty):
 
         vals = super()._prepare_move_split_vals(qty)
         if self._context.get('default_location_id', False):
-            vals.update(location_id = self['location_id'].id)
+            vals.update(location_id=self['location_id'].id)
 
         if self._context.get('default_location_dest_id', False):
-            vals.update(location_id = self['location_dest_id'].id)
+            vals.update(location_id=self['location_dest_id'].id)
 
         return vals
 
     def check_new_location(self, location='location_id'):
-        ##COMPRUBA Y ESTABLECE LA NUEVA UBICACIÓN DE ORIGEN DEL MOVIMIENTO Y CAMBIA EL PICKING_TYPE EN CONSECUENCIA
-
+        ##COMPRUBA Y ESTABLECE LA NUEVA UBICACIÓN DE ORIGEN DEL MOVIMIENTO Y CAMBIA EL PICKING_TYPE EN CONSECUENCIA. ADEMAS LO SACA DE UN ALBARÁN SI LO TUVIERA
+        ##REVISAR BIEN
         if not self.move_line_ids:
             return
+        if not self.picking_type_id.grouped:
+            return
         default_picking_type_id = self.picking_type_id
-        move_loc = self[location]
+
         #saco las posibles ubicaciones con albaran de las operaciones
         new_mov_locs = [line[location]._get_location_type_id() for line in self.move_line_ids]
-        print ('Solo hay: {}'.format(new_mov_locs))
+        print ('Ubicaciones de las operaciones: {} en relación a las que tienen albaranes {}'.format(self.move_line_ids.mapped(location), new_mov_locs))
         # Si solo hay una, la nueva ubicación del movimiento es la de la operación
         if len(new_mov_locs) == 1:
-            if new_mov_locs != self[location]:
-                self.write({location: new_mov_locs[0]._get_location_type_id().id,
-                            'picking_type_id': new_mov_locs[0].picking_type_id.id})
+            if new_mov_locs[0] != self[location]:
+                vals = {location: new_mov_locs[0]._get_location_type_id().id,
+                        'picking_type_id': new_mov_locs[0].picking_type_id.id,
+                        'picking_id': False
+                        }
+                print("Actualizo el movimiento con vals y reseteo picking_id si lo tuviera")
+                self.write(vals)
+                self.move_line_ids.write({'picking_id': False})
+
         elif new_mov_locs:
+            ##TODO HAY QUE REVISAR ESTO
             for loc in new_mov_locs:
                 moves_loc = self.move_line_ids.filtered(lambda x: x[location]._get_location_type_id().id == loc.id and x[location]._get_location_type_id().id != self[location].id)
                 if moves_loc:
@@ -125,49 +160,31 @@ class StockMove(models.Model):
                     new_move = self.env['stock.move'].browse(new_move_id)
                     new_move._action_assign()
                     #new_move.check_new_location(location)
-
-
             if self.product_uom_qty>0:
                 self._action_assign()
                 self.check_new_location(location)
             else:
                 self.unlink()
 
-
-
+    def _prepare_procurement_values(self):
+        """
+        Pass move custom fields to the linked move
+        """
+        vals = super()._prepare_procurement_values()
+        vals.update({
+            'sale_id': self.sale_id.id,
+            'sale_price': self.sale_price,
+            'shipping_id': self.shipping_id.id,
+            'manual_pick': self.manual_pick
+        })
+        return vals
 
     def _action_assign(self):
+        super()._action_assign()
 
-        super(StockMove, self)._action_assign()
-
-        assigned_moves = self.filtered(lambda x: x.state in ('assigned', 'partially_available'))
-        ctx = self._context.copy()
-        ctx.update(force_pick=True)
-        for move in assigned_moves.with_context(ctx):
+        assigned_moves = self.filtered(lambda x: x.move_line_ids and x.quantity_done == 0)
+        for move in assigned_moves:
             move.check_new_location()
-
-
-    @api.onchange('picking_id', 'state')
-    def on_change_pick_state(self):
-        for move in self:
-            if move.state == 'draft':
-                move.pick_state = move.state
-                move.picking_id = False
-            elif move.state == 'done':
-                move.pick_state = move.state
-            elif not move.picking_id:
-                if move.state in ('partially_available', 'assigned'):
-                    move.pick_state = 'assigned'
-                else:
-                    move.pick_state = 'waiting'
-            elif move.picking_id:
-                if move.state in ('partially_available', 'assigned'):
-                    move.pick_state = 'picked'
-                else:
-                    move.pick_state = 'error'
-
-
-
 
 
 class ProcurementRule(models.Model):
@@ -186,35 +203,11 @@ class ProcurementRule(models.Model):
 
         if values.get('sale_line_id', False):
             sol = self.env['sale.order.line'].browse(values['sale_line_id'])
-            vals.update(need_force_pick=sol.order_id.need_force_pick)
+            vals.update(manual_pick=sol.order_id.manual_pick)
+
+        vals.update({
+            'sale_price': values.get('sale_price'),
+            'sale_id': values.get('sale_id'),
+            'shipping_id': values.get('shipping_id'),
+        })
         return vals
-
-        # VALORES ORIGINALES:
-        #     POR DEFECTO
-        #     values.setdefault('company_id', self.env['res.company']._company_default_get('procurement.group'))
-        #     values.setdefault('priority', '1')
-        #     values.setdefault('date_planned', fields.Datetime.now())
-        #     ORIGINALES PARA MOVE
-        #     'name': name[:2000],
-        #     'company_id': self.company_id.id or self.location_src_id.company_id.id or self.location_id.company_id.id or values['company_id'].id,
-        #     'product_id': product_id.id,
-        #     'product_uom': product_uom.id,
-        #     'product_uom_qty': qty_left,
-        #     'partner_id': self.partner_address_id.id or (values.get('group_id', False) and values['group_id'].partner_id.id) or False,
-        #     'location_id': self.location_src_id.id,
-        #     'location_dest_id': location_id.id,
-        #     'move_dest_ids': values.get('move_dest_ids', False) and [(4, x.id) for x in values['move_dest_ids']] or [],
-        #     'rule_id': self.id,
-        #     'procure_method': self.procure_method,
-        #     'origin': origin,
-        #     'picking_type_id': self.picking_type_id.id,
-        #     'group_id': group_id,
-        #     'route_ids': [(4, route.id) for route in values.get('route_ids', [])],
-        #     'warehouse_id': self.propagate_warehouse_id.id or self.warehouse_id.id,
-        #     'date': date_expected,
-        #     'date_expected': date_expected,
-        #     'propagate': self.propagate,
-        #     'priority': values.get('priority', "1"),
-
-
-
