@@ -65,7 +65,8 @@ odoo.define('commercial_rules_pos.models', function (require) {
             _.each(actions, function(act){
                 self.actions_by_id[act.id] = act
                 var rule = self.rules_by_id[act.promotion[0]];
-                rule.action_objs.push(act)
+                if (!$.isEmptyObject(rule))
+                    rule.action_objs.push(act)
             });
         },
     });
