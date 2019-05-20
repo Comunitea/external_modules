@@ -159,7 +159,7 @@
                                                 Las facturas de nuestro proveedor
                                                 <strong t-field="obj.partner_id.name"/>
                                                 canceladas mediante
-                                                <strong>Transferencia</strong>
+                                                <strong><span t-field="object.payment_mode_id.note"/></strong>
                                                 de
                                                 <strong>
                                                     <span t-field="obj.amount_currency"/>
