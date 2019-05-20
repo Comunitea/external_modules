@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+    <record id="cash_forecast_view_tree" model="ir.ui.view">
+        <field name="name">cash.forecast.view.tree</field>
+        <field name="model">cash.forecast</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="periods"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="cash_forecast_view_form" model="ir.ui.view">
+        <field name="name">cash.forecast.view.form</field>
+        <field name="model">cash.forecast</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button class="btn-primary" name="create_lines" type="object" string="Create Forecast Lines"/>
+                </header>
+                <sheet>
+                    <div name="button_box" class="oe_right oe_button_box">
+                        <button string="All Payments" class="oe_stat_button" name="view_all_payment_items" type="object" icon="fa-list"/>
+                    </div>
+                    <group string="Cash Forecast">
+                        <field name="name"/>
+                        <field name="date"/>
+                        <field name="periods"/>
+                        <field name="period_type"/>
+                        <field name="payment_mode_ids"  widget="many2many_tags"/>
+                        <field name="company_id"/>
+                    </group>
+                    <group string="Overdue" col="8">
+                        <field name="previous_inputs"/>
+                         <button name="get_calculated_previous_inputs"
+                            type="object"
+                            help="Show previous inputs"
+                            icon="fa-search-plus"/>
+                        <field name="previous_outputs"/>
+                        <button name="get_calculated_previous_outputs"
+                            type="object"
+                            help="Show previous outputs"
+                            icon="fa-search-plus"/>
+                        <field name="previous_balance"/>
+
+                    </group>
+                    <group string="Cash Lines">
+                        <field name="cash_line_ids" nolabel="1" colspan="4"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="cash_forecast_view_filter" model="ir.ui.view">
+        <field name="name">cash.forecast.view.filter</field>
+        <field name="model">cash.forecast</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cash_forecast" model="ir.actions.act_window">
+        <field name="name">Cash Forecast</field>
+        <field name="res_model">cash.forecast</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Cash Forecast" id="menu_cash_forecast"
+      parent="account.menu_finance_entries"
+      sequence="200"
+      action="action_cash_forecast"/>
+
+    <record id="view_payments_cash_filter" model="ir.ui.view">
+        <field name="name">Payments Selection</field>
+        <field name="model">account.move.line</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <search string="Search Payments">
+                <filter name="from_invoices"
+                        string="From invoices"
+                        domain="[('stored_invoice_id', '&lt;&gt;', False)]"/>
+                <separator orientation="vertical"/>
+                <filter name="unreconciled"
+                        string="Unreconciled"
+                        domain="[('reconciled','=',False)]"
+                        help="Unreconciled payments"/>
+                <separator orientation="vertical"/>
+                <filter string="Overdue"
+                        domain="[('date_maturity','&lt;',time.strftime('%%Y-%%m-%%d'))]"
+                        help="Overdue payments" name="overdue"/>
+                <separator orientation="vertical"/>
+                <field name="account_id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="invoice_id"/>
+                <field name="invoice_user_id"/>
+                <field name="invoice_origin"/>
+                <field name="date_maturity"/>
+                <field name="reconciled"/>
+                <field name="amount_residual"/>
+                <field name="amount_residual_currency"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Partner"
+                            domain="[]"
+                            context="{'group_by':'partner_id'}"/>
+                    <filter string="Invoice"
+                            domain="[]"
+                            context="{'group_by':'stored_invoice_id'}"/>
+                    <filter string="Due Date"
+                            domain="[]"
+                            context="{'group_by':'date_maturity:day'}"/>
+                    <filter string="Month"
+                            domain="[]"
+                            context="{'group_by':'date_maturity'}"/>
+                    <filter string="Salesperson"
+                            domain="[]"
+                            context="{'group_by':'invoice_user_id'}"/>
+                    <filter name="account" string="Account"
+                            domain="[]"
+                            context="{'group_by':'account_id'}"/>
+               </group>
+           </search>
+        </field>
+    </record>
+
+     <!-- Payments -->
+    <record model="ir.actions.act_window" id="action_payments">
+        <field name="name">Payments and due list</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="context">{'search_default_account': 1}</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                                      (0, 0, {'view_mode': 'tree', 'view_id': ref('account_due_list.view_payments_tree')}),
+                                      (0, 0, {'view_mode': 'pivot', 'view_id': ref('account_due_list.view_payments_pivot')}),
+                                      (0, 0, {'view_mode': 'graph', 'view_id': ref('account_due_list.view_payments_graph')})]"/>
+        <field name="search_view_id" ref="view_payments_cash_filter"/>
+        <field name="domain">[('account_id.internal_type', 'in', ['receivable', 'payable'])]</field>
+
+    </record>
+
+    <record id="cash_forecast_line_view_tree" model="ir.ui.view">
+        <field name="name">cash.forecast.line.view.tree</field>
+        <field name="model">cash.forecast.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="month"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="initial_balance"/>
+                <field name="inputs"/>
+                 <button name="get_calculated_inputs"
+                    type="object"
+                    help="Show inputs"
+                    icon="fa-search-plus"/>
+                <field name="outputs"/>
+                <button name="get_calculated_outputs"
+                    type="object"
+                    help="Show outputs"
+                    icon="fa-search-plus"/>
+                <field name="period_balance"/>
+                <field name="final_balance"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
