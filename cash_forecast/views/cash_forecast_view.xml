@@ -107,11 +107,9 @@
                 <field name="amount_residual"/>
                 <field name="amount_residual_currency"/>
                 <group expand="0" string="Group By...">
-
                     <filter string="Invoice"
                             domain="[]"
                             context="{'group_by':'stored_invoice_id'}"/>
-
                     <filter string="Month"
                             domain="[]"
                             context="{'group_by':'date_maturity'}"/>
@@ -130,6 +128,9 @@
                     <filter name="partner" string="Partner"
                             domain="[]"
                             context="{'group_by':'partner_id'}"/>
+                     <filter name="journal" string="Journal"
+                            domain="[]"
+                            context="{'group_by':'journal_id'}"/>
                </group>
            </search>
         </field>
@@ -140,7 +141,7 @@
         <field name="name">Payments and due list</field>
         <field name="res_model">account.move.line</field>
         <field name="view_mode">tree,form,pivot,graph</field>
-        <field name="context">{'search_default_payment_mode': 1,'search_default_due_date': 1,'search_default_partner': 1}</field>
+        <field name="context">{'search_default_payment_mode': 1,'search_default_due_date': 1,'search_default_partner': 1,'search_default_journal': 1}</field>
         <field name="view_ids" eval="[(5, 0, 0),
                                       (0, 0, {'view_mode': 'tree', 'view_id': ref('account_due_list.view_payments_tree')}),
                                       (0, 0, {'view_mode': 'pivot', 'view_id': ref('account_due_list.view_payments_pivot')}),

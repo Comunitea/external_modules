@@ -110,8 +110,9 @@ class CashForecast(models.Model):
         elif type== 'output':
             move_line_domain.append(
                 ('account_id.internal_type', 'in', ('payable',)))
-
-
+        payment_mode_ids = self.payment_mode_ids.mapped('id')
+        move_line_domain.append(('payment_mode_id', 'in',
+                                 payment_mode_ids))
         return move_line_domain
 
     @api.model
