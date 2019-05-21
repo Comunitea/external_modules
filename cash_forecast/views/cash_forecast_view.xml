@@ -107,15 +107,11 @@
                 <field name="amount_residual"/>
                 <field name="amount_residual_currency"/>
                 <group expand="0" string="Group By...">
-                    <filter string="Partner"
-                            domain="[]"
-                            context="{'group_by':'partner_id'}"/>
+
                     <filter string="Invoice"
                             domain="[]"
                             context="{'group_by':'stored_invoice_id'}"/>
-                    <filter string="Due Date"
-                            domain="[]"
-                            context="{'group_by':'date_maturity:day'}"/>
+
                     <filter string="Month"
                             domain="[]"
                             context="{'group_by':'date_maturity'}"/>
@@ -125,6 +121,15 @@
                     <filter name="account" string="Account"
                             domain="[]"
                             context="{'group_by':'account_id'}"/>
+                    <filter name="payment_mode" string="Payment Mode"
+                            domain="[]"
+                            context="{'group_by':'payment_mode_id'}"/>
+                    <filter name="due_date" string="Due Date"
+                            domain="[]"
+                            context="{'group_by':'date_maturity:day'}"/>
+                    <filter name="partner" string="Partner"
+                            domain="[]"
+                            context="{'group_by':'partner_id'}"/>
                </group>
            </search>
         </field>
@@ -135,7 +140,7 @@
         <field name="name">Payments and due list</field>
         <field name="res_model">account.move.line</field>
         <field name="view_mode">tree,form,pivot,graph</field>
-        <field name="context">{'search_default_account': 1}</field>
+        <field name="context">{'search_default_payment_mode': 1,'search_default_due_date': 1,'search_default_partner': 1}</field>
         <field name="view_ids" eval="[(5, 0, 0),
                                       (0, 0, {'view_mode': 'tree', 'view_id': ref('account_due_list.view_payments_tree')}),
                                       (0, 0, {'view_mode': 'pivot', 'view_id': ref('account_due_list.view_payments_pivot')}),
