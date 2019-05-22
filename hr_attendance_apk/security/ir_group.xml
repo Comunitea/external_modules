@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="1">
-
         <record id="hr_attendance_apk.group_hr_attendance_gps" model="res.groups">
             <field name="name">Attendances GPS Manager</field>
             <field name="category_id" ref="base.module_category_human_resources"/>
             <field name="implied_ids" eval="[(4, ref('base.group_hr_attendance'))]"/>
         </record>
     </data>
+
 </openerp>
