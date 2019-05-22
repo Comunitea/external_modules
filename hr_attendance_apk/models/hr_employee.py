@@ -4,11 +4,13 @@
 import logging
 from openerp import api, models, fields, _
 from datetime import datetime
+import pytz
+
 _logger = logging.getLogger(__name__)
 
 MIN_MINUTE = 3
 
-EMPLOYEE_FIELDS = ['id', 'name', 'state', 'last_sign']
+EMPLOYEE_FIELDS = ['id', 'name', 'state', 'last_sign', 'apk_date', 'last_sign_tz', 'last_sign_hour', 'last_sign_day']
 USER_FIELDS = ['id', 'login', 'name']
 CONF_FIELDS = ['image', 'logo_color', 'min_minute']
 
@@ -16,66 +18,104 @@ CONF_FIELDS = ['image', 'logo_color', 'min_minute']
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
+    def get_time_to_user_tz(self, today):
+        utc = pytz.timezone('UTC')
+        context_tz = pytz.timezone(self.user_id.tz)
+        utc_today = utc.localize(today, is_dst=False)
+        context_today = utc_today.astimezone(context_tz)
+        return context_today
+
+    @api.multi
+    def get_last_sign_split(self):
+        for emp in self:
+            if emp.last_sign:
+                last_sign_date = datetime.strptime(emp.last_sign,'%Y-%m-%d %H:%M:%S')
+            else:
+                last_sign_date = datetime.now()
+            last_sign = self.get_time_to_user_tz(last_sign_date)
+            emp.apk_date = self.get_time_to_user_tz(datetime.now())
+
+            emp.last_sign_day = last_sign.strftime('%Y-%m-%d')
+            emp.last_sign_hour = last_sign.strftime('%H:%M')
+            emp.last_sign_tz = last_sign.strftime('%Y-%m-%d %H:%M')
+
+    last_sign_hour = fields.Char(compute="get_last_sign_split")
+    last_sign_day = fields.Char(compute="get_last_sign_split")
+    last_sign_tz = fields.Char(compute="get_last_sign_split")
+    apk_date = fields.Char(compute="get_last_sign_split")
 
     @api.model
     def attendance_action_change_apk(self, vals):
-        print vals
         employee = self.env['hr.employee'].browse(vals.get('employee_id', False))
         last_signin = self.env['hr.attendance'].search([
                         ('employee_id', '=', employee.id)], limit=1, order='name DESC')
         if last_signin:
             last_signin_datetime = datetime.strptime(last_signin.name, '%Y-%m-%d %H:%M:%S')
-
             now_datetime = datetime.now()
             diffmins = (now_datetime - last_signin_datetime).seconds/60
             if diffmins <= MIN_MINUTE and False:
                 return {'error': True, 'error_msg': (_('Not enough time between logs: {} minutes').format(diffmins))}
-
         ctx = self._context.copy()
         if 'gps_info' in vals:
             ctx.update(gps_info=vals['gps_info'])
-
         res = employee.with_context(ctx).attendance_action_change()
         if res:
             return {'error': False, 'error_msg': ''}
 
     @api.model
     def get_employee_info(self, vals):
+        user_id = vals.get('user_id', False)
+        if user_id:
+            user_id = self.env['res.users'].browse(user_id)
 
-        user_id = self.env['res.users'].browse(vals.get('user_id'))
-        if not user_id:
+        employee_id = vals.get('employee_id', False)
+
+        if not user_id and not employee_id:
             return {'error': True, 'error_msg': 'No conincide el usuario/contraseña'}
+        if employee_id:
+            employee_id = self.browse(employee_id)
+        if user_id and not employee_id:
+            domain = [('user_id', '=',user_id.id)]
+            employee_id = self.env['hr.employee'].search(domain, limit=1)
 
-        domain = [('user_id', '=',user_id.id)]
-        employee_id = self.env['hr.employee'].search(domain, limit=1)
+            if not employee_id:
+                return {'error': True, 'error_msg': 'Este usuario no tiene asignado un empleado'}
 
-        domain = [('company_id', '=', user_id.company_id.id)]
-        apk = self.env['clock.company.apk'].search(domain, limit=1)
+            domain = [('company_id', '=', user_id.company_id.id)]
+            apk = self.env['clock.company.apk'].search(domain, limit=1)
+            if not apk:
+                return {'error': True, 'error_msg': 'Esta compañia no tiene configurada la aplicación móvil'}
+        if employee_id:
+            employee = {}
+            for f in EMPLOYEE_FIELDS:
+                employee[f] = employee_id[f]
 
-        if not employee_id:
-            return {'error': True, 'error_msg': 'Este usuario no tiene asignado un empleado'}
-        if not apk:
-            return {'error': True, 'error_msg': 'Esta compañia no tiene configurada la aplicación móvil'}
-
-        res = {}
-        for f in USER_FIELDS:
-            res[f] = user_id[f]
-
-        employee = {}
-        for f in EMPLOYEE_FIELDS:
-            employee[f] = employee_id[f]
-
-        conf = {}
-        for f in CONF_FIELDS:
-            conf[f]= apk[f]
-
+            if vals.get('employee_info', False):
+                ##EQUIVALE A UIN SEARCH READ
+                return employee
+        if user_id:
+            res = {}
+            for f in USER_FIELDS:
+                res[f] = user_id[f]
+        if apk:
+            conf = {}
+            for f in CONF_FIELDS:
+                conf[f]= apk[f]
+            res['apk'] = conf
         res['employee'] = employee
-        res['apk'] = conf
         return {'error': False, 'data': res}
 
 
 class HrAttendance(models.Model):
     _inherit = "hr.attendance"
+
+    def get_name_to_user_zone(self):
+        for att in self:
+            name = datetime.strptime(att.name, '%Y-%m-%d %H:%M:%S')
+            att.name_to_user_zone= att.employee_id.get_time_to_user_tz(name).strftime('%Y-%m-%d %H:%M:%S')
+
+
+
 
     def get_logs_domain(self, vals):
          from_date = vals.get('from_date', False)
@@ -106,13 +146,16 @@ class HrAttendance(models.Model):
                 hour=False
             return hour
 
+        name = self.name_to_user_zone
+        #name = self.get_time_to_user_tz(name).strftime('%Y-%m-%d %H:%M:%S')
+
 
         if vals_type == 'sign_out':
             check_val = {'id': self.id,
                          'action': self.action == 'action' and self.action_desc.action_type or self.action or 'sign_in',
-                         'day': day(self.name),
-                         'log_out_hour': hour(self.name),
-                         'log_out': self.name,
+                         'day': day(name),
+                         'log_out_hour': hour(name),
+                         'log_out': name,
                          'worked_hours': self.worked_hours,
                          'gps_out': (self.accuracity <= min_accuracity),
                          'same_day': True}
@@ -120,17 +163,17 @@ class HrAttendance(models.Model):
         if vals_type== 'sign_in':
             check_val = {'id': self.id,
                          'action': self.action == 'action' and self.action_desc.action_type or self.action or 'sign_in',
-                         'day': day(self.name),
-                         'log_in_hour': hour(self.name),
-                         'log_in': self.name,
+                         'day': day(name),
+                         'log_in_hour': hour(name),
+                         'log_in': name,
                          'worked_hours': self.worked_hours,
                          'gps_in': (self.accuracity <= min_accuracity),
                          'same_day': True}
         if vals_type=='update':
-            check_val.update(same_day=day(self.name) < check_val['day'],
+            check_val.update(same_day=day(name) < check_val['day'],
                              gps_in=(self.accuracity <= min_accuracity),
-                             log_in_hour=hour(self.name),
-                             log_in=self.name)
+                             log_in_hour=hour(name),
+                             log_in=name)
         return check_val
 
 
@@ -179,15 +222,11 @@ class HrAttendance(models.Model):
     accuracity = fields.Float('Error')
     ip = fields.Char('IP')
     url_gps = fields.Char('Position', compute="_get_url_gps")
-
+    name_to_user_zone = fields.Char(compute=get_name_to_user_zone)
 
     @api.model
     def create(self, vals):
-        print self._context
-
         gps_info = self._context.get('gps_info', False)
         if gps_info:
             vals.update(gps_info)
-
-        print vals
         return super(HrAttendance, self).create(vals)
