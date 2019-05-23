@@ -15,7 +15,8 @@ class CashForecast(models.Model):
     periods = fields.Integer('Number of Periods')
     period_type = fields.Selection(
         selection =[('month', 'Month'),
-            ('week', 'Week'),
+                    ('week', 'Week'),
+                    ('day', 'Day')
         ], string='Type of period', default='month')
     date = fields.Date('Calculation Date', readonly=True)
     company_id = fields.Many2one(
@@ -110,9 +111,10 @@ class CashForecast(models.Model):
         elif type== 'output':
             move_line_domain.append(
                 ('account_id.internal_type', 'in', ('payable',)))
-        payment_mode_ids = self.payment_mode_ids.mapped('id')
-        move_line_domain.append(('payment_mode_id', 'in',
-                                 payment_mode_ids))
+        if self.payment_mode_ids:
+            payment_mode_ids = self.payment_mode_ids.mapped('id')
+            move_line_domain.append(('payment_mode_id', 'in',
+                                     payment_mode_ids))
         return move_line_domain
 
     @api.model
@@ -146,6 +148,8 @@ class CashForecast(models.Model):
         elif self.period_type == 'week':
             start_week = start_date - relativedelta(days=start_date.weekday())
             end_date = start_week + relativedelta(days=+6)
+        elif self.period_type == 'day':
+            end_date = start_date
         input_ids = self._get_move_lines('input', start_date, end_date)
         inputs = sum(input_ids.mapped('amount_residual'))
         output_ids = self._get_move_lines('output', start_date, end_date)
