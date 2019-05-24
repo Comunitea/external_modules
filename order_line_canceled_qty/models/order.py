@@ -65,7 +65,7 @@ class SaleOrderLine(models.Model):
                       "where sm.origin_returned_move_id isnull and sm.state = 'cancel' and sl.usage = 'customer' and sale_line_id = {}".format(line.id)
                 self._cr.execute(sql)
                 res = self._cr.fetchall()
-                if res:
+                if res[0] and res[0][0]:
                     qty_cancelled = res[0][0]
                     line.qty_cancelled = line.product_uom._compute_quantity(qty_cancelled, line.product_uom)
                 else:

@@ -1,0 +1,243 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* cash_forecast
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-26 05:41+0000\n"
+"PO-Revision-Date: 2018-09-26 05:41+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_input_ids
+msgid " Input Journal items"
+msgstr " Efectos de entrada"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_output_ids
+msgid " Output Journal items"
+msgstr " Efectos de salida"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_input_ids
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_output_ids
+msgid " Overdue Journal items"
+msgstr " Efectos vencidos"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_payment_mode_ids
+msgid " Payment Modes"
+msgstr " Modos de pago"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "All Payments"
+msgstr "All Payments"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_date
+msgid "Calculation Date"
+msgstr "Fecha de cálculo"
+
+#. module: cash_forecast
+#: model:ir.actions.act_window,name:cash_forecast.action_cash_forecast
+#: model:ir.ui.menu,name:cash_forecast.menu_cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Cash Forecast"
+msgstr "Previsión de tesorería"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_cash_line_ids
+msgid "Cash Line"
+msgstr "Línea de previsión"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Cash Lines"
+msgstr "Líneas de previsión"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Create Forecast Lines"
+msgstr "Crear/Actualizar líneas de previsión"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_create_uid
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_create_date
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_display_name
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_display_name
+msgid "Display Name"
+msgstr "Nombre a Mostrar"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_final_balance
+msgid "Final Balance"
+msgstr "Total Saldo"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_forecast_id
+msgid "Forecast"
+msgstr "Previsión"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Forecast Lines"
+msgstr "Líneas de previsión"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_start_date
+msgid "From"
+msgstr "Desde"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_id
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_id
+msgid "ID"
+msgstr "ID"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_initial_balance
+msgid "Initial Balance"
+msgstr "Saldo Inicial"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_inputs
+msgid "Inputs"
+msgstr "Entradas"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast___last_update
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line___last_update
+msgid "Last Modified on"
+msgstr "Última Modificación en"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_write_uid
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_write_uid
+msgid "Last Updated by"
+msgstr "Última Actualización por"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_write_date
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_write_date
+msgid "Last Updated on"
+msgstr "Última Actualización el"
+
+#. module: cash_forecast
+#: selection:cash.forecast,period_type:0
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_month
+msgid "Month"
+msgstr "Mes"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_periods
+msgid "Number of Periods"
+msgstr "Número de períodos"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_outputs
+msgid "Outputs"
+msgstr "Salidas"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Overdue"
+msgstr "Vencidas"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_balance
+msgid "Overdue Balance"
+msgstr "Saldo vencido"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_inputs
+msgid "Overdue Inputs"
+msgstr "Entradas vencidas"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_outputs
+msgid "Overdue Outputs"
+msgstr "Salidas vencidas"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_period_balance
+msgid "Period Balance"
+msgstr "Saldo del período"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_prev_line_id
+msgid "Previous Line"
+msgstr "Líneas previa"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
+msgid "Show inputs"
+msgstr "Mostrar entradas"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
+msgid "Show outputs"
+msgstr "Mostrar salidas"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Show previous inputs"
+msgstr "Mostrar entradas previas"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Show previous outputs"
+msgstr "Mostrar salidas previas"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_end_date
+msgid "To"
+msgstr "a"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_period_type
+msgid "Type of period"
+msgstr "Tipo de período"
+
+#. module: cash_forecast
+#: selection:cash.forecast,period_type:0
+msgid "Week"
+msgstr "Semana"
+
+#. module: cash_forecast
+#: model:ir.model,name:cash_forecast.model_cash_forecast
+msgid "cash.forecast"
+msgstr "cash.forecast"
+
+#. module: cash_forecast
+#: model:ir.model,name:cash_forecast.model_cash_forecast_line
+msgid "cash.forecast.line"
+msgstr "cash.forecast.line"
+
