@@ -123,14 +123,17 @@ class StockMove(models.Model):
         return vals
 
     def check_new_location(self, location='location_id'):
+
         ##COMPRUBA Y ESTABLECE LA NUEVA UBICACIÓN DE ORIGEN DEL MOVIMIENTO Y CAMBIA EL PICKING_TYPE EN CONSECUENCIA. ADEMAS LO SACA DE UN ALBARÁN SI LO TUVIERA
         ##REVISAR BIEN
         if not self.move_line_ids:
             return
         if not self.picking_type_id.grouped:
             return
-        default_picking_type_id = self.picking_type_id
 
+        default_picking_type_id = self.picking_type_id
+        #if not default_picking_type_id.check_sub_locs:
+        #    return
         #saco las posibles ubicaciones con albaran de las operaciones
         new_mov_locs = [line[location]._get_location_type_id() for line in self.move_line_ids]
         print ('Ubicaciones de las operaciones: {} en relación a las que tienen albaranes {}'.format(self.move_line_ids.mapped(location), new_mov_locs))
@@ -138,9 +141,11 @@ class StockMove(models.Model):
         if len(new_mov_locs) == 1:
             if new_mov_locs[0] != self[location]:
                 vals = {location: new_mov_locs[0]._get_location_type_id().id,
-                        'picking_type_id': new_mov_locs[0].picking_type_id.id,
                         'picking_id': False
                         }
+
+                if new_mov_locs[0].picking_type_id:
+                    vals.update(picking_type_id = new_mov_locs[0].picking_type_id.id)
                 print("Actualizo el movimiento con vals y reseteo picking_id si lo tuviera")
                 self.write(vals)
                 self.move_line_ids.write({'picking_id': False})

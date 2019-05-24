@@ -14,11 +14,17 @@ class StockMove(models.Model):
 
 
     def _get_new_picking_domain(self):
+
+        """
+        Al compartitr la compañia tengo que filtrar aquí por compañia, si no podría encontrar de distinta compañia
+        :return:
+        """
         domain = [
                 ('location_id', '=', self.location_id.id),
                 ('location_dest_id', '=', self.location_dest_id.id),
                 ('picking_type_id', '=', self.picking_type_id.id),
                 ('printed', '=', False),
+                ('company_id', '=', self.company_id.id),
                 ('group_id', '=', self.group_id.id),
                 ('state', 'in', ['draft', 'confirmed', 'waiting', 'partially_available', 'assigned'])]
         return domain
