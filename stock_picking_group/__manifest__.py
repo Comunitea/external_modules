@@ -12,6 +12,7 @@
     'application': False,
     'installable': True,
     'depends': [
+        'stock',
         'sale_stock',
         'stock_picking_imp',
     ],
@@ -19,7 +20,7 @@
         'views/sale_view.xml',
         'views/purchase_view.xml',
         'views/stock_move.xml',
-        'views/stock_picking.xml',
-        'views/stock_location.xml'
+        'views/stock_location.xml',
+        ##'views/stock_picking.xml'
     ],
 }
