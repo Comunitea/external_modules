@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- sale.manage.variant inherit form view -->
+    <record id="sale_manage_variant_form_add_section" model="ir.ui.view">
+        <field name="name">sale_manage_variant_form_add_section</field>
+        <field name="model">sale.manage.variant</field>
+        <field name="inherit_id" ref="sale_order_variant_mgmt.sale_manage_variant_form"/>
+        <field name="arch" type="xml">
+            <field name="product_tmpl_id" position="after">
+                <field name="layout_category_id"/>
+            </field>            
+        </field>
+    </record>
+
+</odoo>
