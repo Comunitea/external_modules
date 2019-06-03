@@ -1,0 +1,27 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_section_variant_mgmt
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-03 10:43+0000\n"
+"PO-Revision-Date: 2019-06-03 10:43+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_section_variant_mgmt
+#: model:ir.model.fields,field_description:sale_section_variant_mgmt.field_sale_manage_variant_layout_category_id
+msgid "Section"
+msgstr "Sección"
+
+#. module: sale_section_variant_mgmt
+#: model:ir.model,name:sale_section_variant_mgmt.model_sale_manage_variant
+msgid "sale.manage.variant"
+msgstr "Variantes en venta"
+
