@@ -39,6 +39,12 @@ class SaleOrderLine(models.Model):
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    @api.multi
+    def _compute_picking_ids(self):
+        for sale in self:
+            sale.picking_ids = self.env["stock.move"].search(sale.get_moves_domain()).mapped('picking_id')
+            sale.delivery_count = len(sale.picking_ids)
+
     def get_moves_domain(self):
         return [('sale_id', '=', self.id), ('state', 'not in', DOMAIN_NOT_STATE)]
 
@@ -50,6 +56,7 @@ class SaleOrder(models.Model):
 
     manual_pick = fields.Boolean('Manual Picking', help='If checked, no create pickings when confirm order', default=True)
     move_line_count = fields.Integer('Move lines', compute=_get_move_line_ids)
+    picking_ids = fields.One2many('stock.picking', compute="_compute_picking_ids", string='Pickings')
 
     @api.multi
     def action_view_move_lines(self):
@@ -62,7 +69,10 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_cancel(self):
-        ## Tengo que cancelar los movimientos sin albarnar
+        ctx = self._context.copy()
+        for order in self:
+            ctx.update(cancel_from_sale=order.id)
+            super(SaleOrder, order.with_context(ctx)).action_cancel()
+
         domain = [('picking_id', '=', False), ('sale_id', 'in', self.mapped('id'))]
         self.env['stock.move'].search(domain)._action_cancel()
-        return super(SaleOrder, self).action_cancel()

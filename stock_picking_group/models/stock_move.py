@@ -122,6 +122,17 @@ class StockMove(models.Model):
 
         return vals
 
+
+    def get_new_location_vals(self, location_field, location):
+
+        vals = {location_field: location._get_location_type_id().id}
+        if location.picking_type_id:
+            vals.update(picking_type_id = location.picking_type_id.id)
+        return vals
+
+
+
+
     def check_new_location(self, location='location_id'):
 
         ##COMPRUBA Y ESTABLECE LA NUEVA UBICACIÓN DE ORIGEN DEL MOVIMIENTO Y CAMBIA EL PICKING_TYPE EN CONSECUENCIA. ADEMAS LO SACA DE UN ALBARÁN SI LO TUVIERA
@@ -140,12 +151,7 @@ class StockMove(models.Model):
         # Si solo hay una, la nueva ubicación del movimiento es la de la operación
         if len(new_mov_locs) == 1:
             if new_mov_locs[0] != self[location]:
-                vals = {location: new_mov_locs[0]._get_location_type_id().id,
-                        'picking_id': False
-                        }
-
-                if new_mov_locs[0].picking_type_id:
-                    vals.update(picking_type_id = new_mov_locs[0].picking_type_id.id)
+                vals = self.get_new_location_vals(location, new_mov_locs[0])
                 print("Actualizo el movimiento con vals y reseteo picking_id si lo tuviera")
                 self.write(vals)
                 self.move_line_ids.write({'picking_id': False})
@@ -191,6 +197,12 @@ class StockMove(models.Model):
         for move in assigned_moves:
             move.check_new_location()
 
+    def _action_cancel(self):
+        if self._context.get('cancel_from_sale', False):
+            new_self = self.filtered(lambda x: x.sale_id == self._context['cancel_from_sale'])
+            return super(StockMove, new_self)._action_cancel()
+
+        return super()._action_cancel()
 
 class ProcurementRule(models.Model):
     _inherit = 'procurement.rule'
