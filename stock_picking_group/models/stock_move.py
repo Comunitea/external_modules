@@ -41,6 +41,8 @@ class StockMove(models.Model):
              "* Error: Move picked and not available.\n"
         )
 
+
+
     @api.multi
     def action_force_assign_picking(self, force=True):
         ctx = self._context.copy()
@@ -94,20 +96,28 @@ class StockMove(models.Model):
                 move.move_line_ids.write({'picking_id': move.picking_id.id})
         return True
 
+
+
     def _get_new_picking_domain(self):
         domain = super()._get_new_picking_domain()
-        if self.picking_type_id.grouped and (self.manual_pick or self.picking_type_id.code == 'internal'):
+        if self.picking_type_id.grouped:
             domain.remove(('group_id', '=', self.group_id.id))
-        domain += [('grouped', '=', self.picking_type_id.grouped), ('grouped_close', '=', False)]
+        if self.picking_type_id.code in ('incoming', 'outgoing'):
+            domain += [('partner_id', '=', self.shipping_id.id)]
 
         for field in self.picking_type_id.grouped_field_ids:
             domain += [(field.name, '=', self[field.name].id)]
+
+        print ('Get new picking domain {}'.format(domain))
         return domain
 
     def _get_new_picking_values(self):
         vals = super()._get_new_picking_values()
         if self._context.get('grouped', False):
             vals.update(grouped=True)
+            if self.picking_type_id.code == 'internal':
+                vals.update(partner_id=False)
+
         vals.update(grouped=self.picking_type_id and self.picking_type_id.grouped)
         return vals
 
