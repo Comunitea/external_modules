@@ -41,6 +41,8 @@ class StockMove(models.Model):
              "* Error: Move picked and not available.\n"
         )
 
+
+
     @api.multi
     def action_force_assign_picking(self, force=True):
         ctx = self._context.copy()
@@ -94,20 +96,28 @@ class StockMove(models.Model):
                 move.move_line_ids.write({'picking_id': move.picking_id.id})
         return True
 
+
+
     def _get_new_picking_domain(self):
         domain = super()._get_new_picking_domain()
-        if self.picking_type_id.grouped and (self.manual_pick or self.picking_type_id.code == 'internal'):
+        if self.picking_type_id.grouped:
             domain.remove(('group_id', '=', self.group_id.id))
-        domain += [('grouped', '=', self.picking_type_id.grouped), ('grouped_close', '=', False)]
+        if self.picking_type_id.code in ('incoming', 'outgoing'):
+            domain += [('partner_id', '=', self.shipping_id.id)]
 
         for field in self.picking_type_id.grouped_field_ids:
             domain += [(field.name, '=', self[field.name].id)]
+
+        print ('Get new picking domain {}'.format(domain))
         return domain
 
     def _get_new_picking_values(self):
         vals = super()._get_new_picking_values()
         if self._context.get('grouped', False):
             vals.update(grouped=True)
+            if self.picking_type_id.code == 'internal':
+                vals.update(partner_id=False)
+
         vals.update(grouped=self.picking_type_id and self.picking_type_id.grouped)
         return vals
 
@@ -122,25 +132,36 @@ class StockMove(models.Model):
 
         return vals
 
+
+    def get_new_location_vals(self, location_field, location):
+
+        vals = {location_field: location._get_location_type_id().id}
+        if location.picking_type_id:
+            vals.update(picking_type_id = location.picking_type_id.id)
+        return vals
+
+
+
+
     def check_new_location(self, location='location_id'):
+
         ##COMPRUBA Y ESTABLECE LA NUEVA UBICACIÓN DE ORIGEN DEL MOVIMIENTO Y CAMBIA EL PICKING_TYPE EN CONSECUENCIA. ADEMAS LO SACA DE UN ALBARÁN SI LO TUVIERA
         ##REVISAR BIEN
         if not self.move_line_ids:
             return
         if not self.picking_type_id.grouped:
             return
-        default_picking_type_id = self.picking_type_id
 
+        default_picking_type_id = self.picking_type_id
+        #if not default_picking_type_id.check_sub_locs:
+        #    return
         #saco las posibles ubicaciones con albaran de las operaciones
         new_mov_locs = [line[location]._get_location_type_id() for line in self.move_line_ids]
         print ('Ubicaciones de las operaciones: {} en relación a las que tienen albaranes {}'.format(self.move_line_ids.mapped(location), new_mov_locs))
         # Si solo hay una, la nueva ubicación del movimiento es la de la operación
         if len(new_mov_locs) == 1:
             if new_mov_locs[0] != self[location]:
-                vals = {location: new_mov_locs[0]._get_location_type_id().id,
-                        'picking_type_id': new_mov_locs[0].picking_type_id.id,
-                        'picking_id': False
-                        }
+                vals = self.get_new_location_vals(location, new_mov_locs[0])
                 print("Actualizo el movimiento con vals y reseteo picking_id si lo tuviera")
                 self.write(vals)
                 self.move_line_ids.write({'picking_id': False})
@@ -186,6 +207,12 @@ class StockMove(models.Model):
         for move in assigned_moves:
             move.check_new_location()
 
+    def _action_cancel(self):
+        if self._context.get('cancel_from_sale', False):
+            new_self = self.filtered(lambda x: x.sale_id == self._context['cancel_from_sale'])
+            return super(StockMove, new_self)._action_cancel()
+
+        return super()._action_cancel()
 
 class ProcurementRule(models.Model):
     _inherit = 'procurement.rule'

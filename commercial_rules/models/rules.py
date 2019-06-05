@@ -293,7 +293,7 @@ class PromotionsRulesConditionsExprs(models.Model):
                                   required=True, default='==')
     value = fields.Char('Value', default='0.00')
     serialised_expr = fields.Char('Expression')
-    promotion = fields.Many2one('promos.rules', 'Promotion')
+    promotion = fields.Many2one('promos.rules', 'Promotion', ondelete='cascade')
     stop_further = fields.Boolean('Stop further checks')
 
     @api.onchange('attribute')
@@ -562,7 +562,8 @@ class PromotionsRulesActions(models.Model):
     action_type = fields.Selection(ACTION_TYPES, 'Action', required=True)
     product_code = fields.Char('Product Code')
     arguments = fields.Char('Arguments')
-    promotion = fields.Many2one('promos.rules', 'Promotion')
+    promotion = fields.Many2one('promos.rules', 'Promotion',
+                                ondelete='cascade')
 
     @api.onchange('action_type')
     def on_change(self):
