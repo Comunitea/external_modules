@@ -198,7 +198,7 @@ class CashForecast(models.Model):
         payment_input_ids = self._get_payment_line('input', start_date,
                                                    end_date)
         payment_inputs = sum(payment_input_ids.mapped('amount_currency'))
-        output_ids = self._get_move_lines('output', start_date, end_date)
+        output_ids  self._get_move_lines('output', start_date, end_date)
         outputs = sum(output_ids.mapped('amount_residual'))
         payment_output_ids = self._get_payment_line('output', start_date,
                                                    end_date)
@@ -215,6 +215,10 @@ class CashForecast(models.Model):
             'outputs': outputs,
             'input_ids':[(6, 0, input_ids.ids)],
             'output_ids': [(6, 0, output_ids.ids)],
+            'payment_inputs': payment_inputs,
+            'payment_outputs': payment_outputs,
+            'payment_input_ids': [(6, 0, payment_input_ids.ids)],
+            'payment_output_ids': [(6, 0, payment_output_ids.ids)],
             'period_balance': period_balance,
             'final_balance': final_balance,
         }
@@ -281,7 +285,7 @@ class CashForecast(models.Model):
     @api.depends('previous_payment_output_ids')
     def _compute_previous_payment_outputs(self):
         for forecast in self:
-            forecast.previous_payment_outputs = sum(
+            forecast.previous_payment_outputs = -1 * sum(
                 forecast.previous_payment_output_ids.mapped(
                     'amount_currency'))
 
