@@ -198,7 +198,7 @@ class CashForecast(models.Model):
         payment_input_ids = self._get_payment_line('input', start_date,
                                                    end_date)
         payment_inputs = sum(payment_input_ids.mapped('amount_currency'))
-        output_ids  self._get_move_lines('output', start_date, end_date)
+        output_ids = self._get_move_lines('output', start_date, end_date)
         outputs = sum(output_ids.mapped('amount_residual'))
         payment_output_ids = self._get_payment_line('output', start_date,
                                                    end_date)
