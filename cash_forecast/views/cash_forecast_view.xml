@@ -34,18 +34,29 @@
                         <field name="payment_mode_ids"  widget="many2many_tags"/>
                         <field name="company_id"/>
                     </group>
-                    <group string="Overdue" col="8">
+                    <group string="Overdue" col="14">
                         <field name="previous_inputs"/>
-                         <button name="get_calculated_previous_inputs"
+                        <button name="get_calculated_previous_inputs"
                             type="object"
                             help="Show previous inputs"
+                            icon="fa-search-plus"/>
+                        <field name="previous_payment_inputs"/>
+                        <button name="get_calculated_previous_payment_inputs"
+                            type="object"
+                            help="Show previous payment inputs"
                             icon="fa-search-plus"/>
                         <field name="previous_outputs"/>
                         <button name="get_calculated_previous_outputs"
                             type="object"
                             help="Show previous outputs"
                             icon="fa-search-plus"/>
+                        <field name="previous_payment_outputs"/>
+                        <button name="get_calculated_previous_payment_outputs"
+                            type="object"
+                            help="Show previous payment inputs"
+                            icon="fa-search-plus"/>
                         <field name="previous_balance"/>
+
 
                     </group>
                     <group string="Cash Lines">
@@ -165,10 +176,20 @@
                     type="object"
                     help="Show inputs"
                     icon="fa-search-plus"/>
+                <field name="payment_inputs"/>
+                 <button name="get_calculated_payment_inputs"
+                    type="object"
+                    help="Show Payment inputs"
+                    icon="fa-search-plus"/>
                 <field name="outputs"/>
                 <button name="get_calculated_outputs"
                     type="object"
                     help="Show outputs"
+                    icon="fa-search-plus"/>
+                <field name="payment_outputs"/>
+                <button name="get_calculated_payment_outputs"
+                    type="object"
+                    help="Show Payment outputs"
                     icon="fa-search-plus"/>
                 <field name="period_balance"/>
                 <field name="final_balance"/>
