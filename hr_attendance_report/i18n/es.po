@@ -1,0 +1,187 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * hr_attendance_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-04-14 15:29+0000\n"
+"PO-Revision-Date: 2016-04-14 15:29+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "% Jor"
+msgstr "% Jor"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "(Art. 12 letra h) del Estatuto de los trabajadores Y Art 34.2 de flexibilidad laboral(10%))"
+msgstr "(Art. 12 letra h) del Estatuto de los trabajadores Y Art 34.2 de flexibilidad laboral(10%))"
+
+#. module: hr_attendance_report
+#: model:ir.actions.report.xml,name:hr_attendance_report.action_print_attendance
+msgid "Attendance"
+msgstr "Asistencia"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "CCC"
+msgstr "CCC"
+
+#. module: hr_attendance_report
+#: view:hr.employee.print.attendance.report:hr_attendance_report.hr_employee_print_assitance_report_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "Company data"
+msgstr "Datos empresa"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "Contract"
+msgstr "Contrato"
+
+#. module: hr_attendance_report
+#: field:hr.employee.print.attendance.report,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: hr_attendance_report
+#: field:hr.employee.print.attendance.report,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "Day"
+msgstr "Día"
+
+#. module: hr_attendance_report
+#: field:hr.employee.print.attendance.report,display_name:0
+#: field:ir.qweb.widget.date,display_name:0
+#: field:report.hr_attendance_report.print_attendance,display_name:0
+msgid "Display Name"
+msgstr "Display Name"
+
+#. module: hr_attendance_report
+#: field:hr.employee.print.attendance.report,from_date:0
+msgid "From"
+msgstr "Desde"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "From:"
+msgstr "Desde:"
+
+#. module: hr_attendance_report
+#: field:hr.employee.print.attendance.report,id:0
+#: field:ir.qweb.widget.date,id:0
+#: field:report.hr_attendance_report.print_attendance,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "In out hours"
+msgstr "Horas de entrada y salida"
+
+#. module: hr_attendance_report
+#: field:hr.employee.print.attendance.report,__last_update:0
+#: field:ir.qweb.widget.date,__last_update:0
+#: field:report.hr_attendance_report.print_attendance,__last_update:0
+msgid "Last Modified on"
+msgstr "Last Modified on"
+
+#. module: hr_attendance_report
+#: field:hr.employee.print.attendance.report,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: hr_attendance_report
+#: field:hr.employee.print.attendance.report,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "Name and surname"
+msgstr "Nombre y apellidos"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "Ordinary"
+msgstr "Ordinarias"
+
+#. module: hr_attendance_report
+#: view:hr.employee.print.attendance.report:hr_attendance_report.hr_employee_print_assitance_report_form
+msgid "Print"
+msgstr "Imprimir"
+
+#. module: hr_attendance_report
+#: model:ir.actions.act_window,name:hr_attendance_report.hr_employee_print_assitance_report_action
+msgid "Print attendance report"
+msgstr "Imprimir informe de asistencia"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "Signed: The worker"
+msgstr "Fdo.: El trabajador"
+
+#. module: hr_attendance_report
+#: field:hr.employee.print.attendance.report,to_date:0
+msgid "To"
+msgstr "Hasta"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "To:"
+msgstr "Hasta:"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "Total"
+msgstr "Total"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "VAT"
+msgstr "CIF"
+
+#. module: hr_attendance_report
+#: model:ir.ui.view,arch_db:hr_attendance_report.print_attendance
+msgid "<strong>Worker attendance record</strong>"
+msgstr "<strong>REGISTRO DE JORNADA DE TRABAJADORES</strong>"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "Worker data"
+msgstr "Datos trabajador"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "business name"
+msgstr "Razón social"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "naf"
+msgstr "naf"
+
+#. module: hr_attendance_report
+#: view:website:hr_attendance_report.print_attendance
+msgid "nif"
+msgstr "nif"
+
+#. module: hr_attendance_report
+#: view:hr.employee.print.attendance.report:hr_attendance_report.hr_employee_print_assitance_report_form
+msgid "or"
+msgstr "or"
