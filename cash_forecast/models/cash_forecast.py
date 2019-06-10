@@ -397,6 +397,12 @@ class CashForecastLine(models.Model):
         comodel_name='bank.payment.line', string=' Output Payment items',
         relation='cash_forecast_payment_output_lines_rel', readonly=True,
         copy=False)
+    payment_move_line_outputs = fields.Float('Payment Outputs', readonly=True,
+                                   copy=False)
+    payment_move_line_output_ids = fields.Many2many(
+        comodel_name='bank.payment.line', string=' Output Payment items',
+        relation='cash_forecast_payment_output_lines_rel', readonly=True,
+        copy=False)
     start_date = fields.Date('From', readonly=True)
     end_date = fields.Date('To', readonly=True)
 
