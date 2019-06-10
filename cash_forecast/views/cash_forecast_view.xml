@@ -191,6 +191,11 @@
                     type="object"
                     help="Show Payment outputs"
                     icon="fa-search-plus"/>
+                <field name="payment_move_line_outputs"/>
+                <button name="get_calculated_payment_move_line_outputs"
+                    type="object"
+                    help="Show Payment Move Line outputs"
+                    icon="fa-search-plus"/>
                 <field name="period_balance"/>
                 <field name="final_balance"/>
             </tree>

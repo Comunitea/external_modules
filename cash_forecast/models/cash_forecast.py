@@ -127,6 +127,24 @@ class CashForecast(models.Model):
             ])
         return move_lines_2.mapped('bank_payment_line_id')
 
+    @api.model
+    def _get_move_line_payment(self, type, date_start, date_end):
+        if type == 'input':
+            account_ids = self.env['account.payment.mode'].search([(
+                'payment_type', '=', 'inbound')]).mapped(
+                'transfer_account_id'). \
+                filtered(lambda x: x.user_type_id.type == 'receivable')
+        else:
+            account_ids = self.env['account.payment.mode'].search([(
+                'payment_type', '=', 'outbound')]).mapped(
+                'transfer_account_id'). \
+                filtered(lambda x: x.user_type_id.type == 'regular')
+        domain = self._get_move_line_domain(
+            type, date_start, date_end, account_ids)
+        move_lines = self.env['account.move.line'].search(domain)
+
+        return move_lines
+
 
     @api.multi
     def _get_move_line_domain(self, type, date_start, date_end, account_ids
@@ -204,7 +222,13 @@ class CashForecast(models.Model):
                                                    end_date)
         payment_outputs = -1 * sum(payment_output_ids.mapped(
             'amount_currency'))
-        period_balance = inputs + outputs + payment_inputs + payment_outputs
+        payment_move_line_output_ids = self._get_payment_line('output',
+                                                    start_date, end_date)
+        payment_move_line_outputs = -1 * sum(
+            payment_move_line_output_ids.mapped(
+            'amount_currency'))
+        period_balance = inputs + outputs + payment_inputs + payment_outputs\
+                         + payment_move_line_outputs
         final_balance = initial_balance + period_balance
         vals = {
             'month': start_date.month,
@@ -217,8 +241,11 @@ class CashForecast(models.Model):
             'output_ids': [(6, 0, output_ids.ids)],
             'payment_inputs': payment_inputs,
             'payment_outputs': payment_outputs,
+            'payment_move_line_outputs': payment_move_line_outputs,
             'payment_input_ids': [(6, 0, payment_input_ids.ids)],
             'payment_output_ids': [(6, 0, payment_output_ids.ids)],
+            'payment_move_line_output_ids': [(6, 0,
+                                            payment_move_line_output_ids.ids)],
             'period_balance': period_balance,
             'final_balance': final_balance,
         }
@@ -397,4 +424,10 @@ class CashForecastLine(models.Model):
         res = self.env.ref('account_payment_order.bank_payment_line_action').\
             read()[0]
         res['domain'] = [('id', 'in', self.payment_output_ids.ids)]
+        return res
+
+    def get_calculated_payment_move_line_outputs(self):
+        res = self.env.ref('account.action_account_moves_all_a').\
+            read()[0]
+        res['domain'] = [('id', 'in', self.payment_output_move_line_ids.ids)]
         return res
