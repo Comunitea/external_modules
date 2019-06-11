@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0+e\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-26 05:41+0000\n"
-"PO-Revision-Date: 2018-09-26 05:41+0000\n"
+"POT-Creation-Date: 2019-06-07 15:42+0000\n"
+"PO-Revision-Date: 2019-06-07 15:42+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,10 +26,25 @@ msgid " Output Journal items"
 msgstr " Efectos de salida"
 
 #. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_output_ids
+msgid " Output Payment items"
+msgstr "Pagos remesados"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_input_ids
+msgid " Overdue Input Payment items"
+msgstr " Cobros remesados vencidos"
+
+#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_input_ids
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_output_ids
 msgid " Overdue Journal items"
 msgstr " Efectos vencidos"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_output_ids
+msgid " Overdue Output Payment items"
+msgstr "Pagos remsesados vencidos"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_payment_mode_ids
@@ -37,9 +52,14 @@ msgid " Payment Modes"
 msgstr " Modos de pago"
 
 #. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Account"
+msgstr "Cuenta"
+
+#. module: cash_forecast
 #: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
 msgid "All Payments"
-msgstr "All Payments"
+msgstr "Todos los efectos"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_date
@@ -83,13 +103,23 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_create_date
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Creado en"
+
+#. module: cash_forecast
+#: selection:cash.forecast,period_type:0
+msgid "Day"
+msgstr "Día"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_display_name
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_display_name
 msgid "Display Name"
-msgstr "Nombre a Mostrar"
+msgstr "Nombre mostrado"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Due Date"
+msgstr "Fecha vencimiento"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_final_balance
@@ -102,20 +132,25 @@ msgid "Forecast"
 msgstr "Previsión"
 
 #. module: cash_forecast
-#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
-msgid "Forecast Lines"
-msgstr "Líneas de previsión"
-
-#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_start_date
 msgid "From"
-msgstr "Desde"
+msgstr "De"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "From invoices"
+msgstr "De facturas"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Group By..."
+msgstr "Agrupar por..."
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_id
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_id
 msgid "ID"
-msgstr "ID"
+msgstr "ID (identificación)"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_initial_balance
@@ -123,31 +158,47 @@ msgid "Initial Balance"
 msgstr "Saldo Inicial"
 
 #. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_input_ids
+msgid "Input Payment items"
+msgstr "Cobros remesados"
+
+#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_inputs
 msgid "Inputs"
 msgstr "Entradas"
 
 #. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Journal"
+msgstr "Diario"
+
+#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast___last_update
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line___last_update
 msgid "Last Modified on"
-msgstr "Última Modificación en"
+msgstr "Última modificación en"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_write_uid
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_write_uid
 msgid "Last Updated by"
-msgstr "Última Actualización por"
+msgstr "Última actualización de"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_write_date
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_write_date
 msgid "Last Updated on"
-msgstr "Última Actualización el"
+msgstr "Última actualización en"
 
 #. module: cash_forecast
 #: selection:cash.forecast,period_type:0
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_month
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
 msgid "Month"
 msgstr "Mes"
 
@@ -168,6 +219,7 @@ msgstr "Salidas"
 
 #. module: cash_forecast
 #: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
 msgid "Overdue"
 msgstr "Vencidas"
 
@@ -187,14 +239,74 @@ msgid "Overdue Outputs"
 msgstr "Salidas vencidas"
 
 #. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_inputs
+msgid "Overdue Payment Inputs"
+msgstr "Overdue Payment Inputs"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_outputs
+msgid "Overdue Payment Outputs"
+msgstr "Overdue Payment Outputs"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Overdue payments"
+msgstr "Efectos vencidos"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_inputs
+msgid "Payment Inputs"
+msgstr "Cobros remesados"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Payment Mode"
+msgstr "Modo de pago"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_outputs
+msgid "Payment Outputs"
+msgstr "Pagos remesados"
+
+#. module: cash_forecast
+#: model:ir.actions.act_window,name:cash_forecast.action_payments
+msgid "Payments and due list"
+msgstr "Efectos"
+
+#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_period_balance
 msgid "Period Balance"
-msgstr "Saldo del período"
+msgstr "Saldo de Periodo"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_prev_line_id
 msgid "Previous Line"
 msgstr "Líneas previa"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Salesperson"
+msgstr "Comercial"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Search Payments"
+msgstr "Buscar efectos"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
+msgid "Show Payment inputs"
+msgstr "Mostrar cobros remesados"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
+msgid "Show Payment outputs"
+msgstr "Mostrar pagos remesados"
 
 #. module: cash_forecast
 #: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
@@ -217,14 +329,29 @@ msgid "Show previous outputs"
 msgstr "Mostrar salidas previas"
 
 #. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Show previous payment inputs"
+msgstr "Mostrar cobros remesados vencidos"
+
+#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_end_date
 msgid "To"
-msgstr "a"
+msgstr "Para"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_period_type
 msgid "Type of period"
 msgstr "Tipo de período"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Unreconciled"
+msgstr "No conciliado"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
+msgid "Unreconciled payments"
+msgstr "Efectos sin conciliar"
 
 #. module: cash_forecast
 #: selection:cash.forecast,period_type:0
