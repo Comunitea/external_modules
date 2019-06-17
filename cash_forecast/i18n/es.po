@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-07 15:42+0000\n"
-"PO-Revision-Date: 2019-06-07 15:42+0000\n"
+"POT-Creation-Date: 2019-06-17 11:28+0000\n"
+"PO-Revision-Date: 2019-06-17 11:28+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,35 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_input_ids
-msgid " Input Journal items"
-msgstr " Efectos de entrada"
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_move_line_output_ids
+msgid " Output Payment Move Line items"
+msgstr "Pagos remesados (confirming)"
 
 #. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_output_ids
-msgid " Output Journal items"
-msgstr " Efectos de salida"
-
-#. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_output_ids
-msgid " Output Payment items"
-msgstr "Pagos remesados"
-
-#. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_input_ids
-msgid " Overdue Input Payment items"
-msgstr " Cobros remesados vencidos"
-
-#. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_input_ids
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_output_ids
-msgid " Overdue Journal items"
-msgstr " Efectos vencidos"
-
-#. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_output_ids
-msgid " Overdue Output Payment items"
-msgstr "Pagos remsesados vencidos"
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_move_line_output_ids
+msgid " Overdue Output Payment Move Line items"
+msgstr "Pagos remesados vencidos (confirming)"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_payment_mode_ids
@@ -158,6 +137,11 @@ msgid "Initial Balance"
 msgstr "Saldo Inicial"
 
 #. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_input_ids
+msgid "Input Journal items"
+msgstr "Input Journal items"
+
+#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_input_ids
 msgid "Input Payment items"
 msgstr "Cobros remesados"
@@ -213,6 +197,16 @@ msgid "Number of Periods"
 msgstr "Número de períodos"
 
 #. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_output_ids
+msgid "Output Journal items"
+msgstr "Output Journal items"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_output_ids
+msgid "Output Payment items"
+msgstr "Output Payment items"
+
+#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_outputs
 msgid "Outputs"
 msgstr "Salidas"
@@ -229,9 +223,25 @@ msgid "Overdue Balance"
 msgstr "Saldo vencido"
 
 #. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_input_ids
+msgid "Overdue Input Payment items"
+msgstr "Overdue Input Payment items"
+
+#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_inputs
 msgid "Overdue Inputs"
 msgstr "Entradas vencidas"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_input_ids
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_output_ids
+msgid "Overdue Journal items"
+msgstr "Overdue Journal items"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_output_ids
+msgid "Overdue Output Payment Items"
+msgstr "Overdue Output Payment Items"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_outputs
@@ -247,6 +257,11 @@ msgstr "Overdue Payment Inputs"
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_outputs
 msgid "Overdue Payment Outputs"
 msgstr "Overdue Payment Outputs"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_previous_payment_move_line_outputs
+msgid "Overdue Payment Outputs Move Lines"
+msgstr "Efectos de cobro vencidos"
 
 #. module: cash_forecast
 #: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
@@ -267,6 +282,11 @@ msgstr "Cobros remesados"
 #: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
 msgid "Payment Mode"
 msgstr "Modo de pago"
+
+#. module: cash_forecast
+#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_move_line_outputs
+msgid "Payment Move Line Outputs"
+msgstr "Pagos remesados (confirming)"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_payment_outputs
@@ -297,6 +317,11 @@ msgstr "Comercial"
 #: model:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
 msgid "Search Payments"
 msgstr "Buscar efectos"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
+msgid "Show Payment Move Line outputs"
+msgstr "Mostrar deuda pagos remesados (confirming)"
 
 #. module: cash_forecast
 #: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
@@ -332,6 +357,16 @@ msgstr "Mostrar salidas previas"
 #: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
 msgid "Show previous payment inputs"
 msgstr "Mostrar cobros remesados vencidos"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Show previous payment move line outputs"
+msgstr "Mostrar deuda pagos remesados vencidos (confirming)"
+
+#. module: cash_forecast
+#: model:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
+msgid "Show previous payment outputs"
+msgstr "Mostrar pagos remesados vencidos"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line_end_date

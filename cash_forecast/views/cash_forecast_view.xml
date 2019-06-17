@@ -34,7 +34,7 @@
                         <field name="payment_mode_ids"  widget="many2many_tags"/>
                         <field name="company_id"/>
                     </group>
-                    <group string="Overdue" col="14">
+                    <group string="Overdue" col="17">
                         <field name="previous_inputs"/>
                         <button name="get_calculated_previous_inputs"
                             type="object"
@@ -53,7 +53,12 @@
                         <field name="previous_payment_outputs"/>
                         <button name="get_calculated_previous_payment_outputs"
                             type="object"
-                            help="Show previous payment inputs"
+                            help="Show previous payment outputs"
+                            icon="fa-search-plus"/>
+                        <field name="previous_payment_move_line_outputs"/>
+                        <button name="get_calculated_previous_payment_move_line_outputs"
+                            type="object"
+                            help="Show previous payment move line outputs"
                             icon="fa-search-plus"/>
                         <field name="previous_balance"/>
 
