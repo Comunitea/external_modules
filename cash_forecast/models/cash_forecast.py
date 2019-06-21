@@ -290,7 +290,7 @@ class CashForecast(models.Model):
             'amount_residual'))
         previous_payment_inputs = sum(previous_payment_input_ids.mapped(
                 'amount_currency'))
-        previous_payment_outputs = sum(previous_payment_output_ids.mapped(
+        previous_payment_outputs = -1 * sum(previous_payment_output_ids.mapped(
             'amount_currency'))
         previous_balance = previous_inputs + \
                            previous_outputs + \
