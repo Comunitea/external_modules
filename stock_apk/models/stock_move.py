@@ -46,7 +46,7 @@ class StockMoveLine(models.Model):
         vals = {'id': self.id,
                 'name': self.display_name,
                 'state': self._fields['state'].convert_to_export(self.state, self),
-                'object': 'stock.move.line'
+                'model': 'stock.move.line'
         }
 
         if type != 'min':
@@ -56,7 +56,8 @@ class StockMoveLine(models.Model):
                 'product_id': self.product_id.get_apk_vals('min'),
                 'product_uom_qty': self.product_uom_qty,
                 'qty_done': self.qty_done,
-                'location_id': self.location_id.get_apk_vals('min'),
+                'ordered_qty': self.ordered_qty,
+                'location_id': self.location_id.get_apk_vals(),
                 'location_dest_id': self.location_dest_id.get_apk_vals(),
                 'product_uom_id': self.product_uom_id.get_apk_vals('min'),
                 'package_id': self.package_id.get_apk_vals('min'),
@@ -64,7 +65,7 @@ class StockMoveLine(models.Model):
                 'lot_id': self.lot_id.get_apk_vals('min'),
                 'picking_id': self.picking_id and self.picking_id.get_apk_vals('min'),
                 'product_qty': self.product_qty,
-                'tracking': self.product_id._fields['tracking'].convert_to_export(self.product_id.tracking,
+                'has_tracking': self.product_id._fields['tracking'].convert_to_export(self.product_id.tracking,
                                                                                   self.product_id),
                 'uom_to_uos': False,
                 'checked': {
@@ -175,9 +176,15 @@ class StockMoveLine(models.Model):
     
     @api.model
     def set_as_pda_done_single_line(self, vals):
-        move_line_obj = self.browse(vals['id'])
-        result = move_line_obj.write({'qty_done': move_line_obj.ordered_qty})
-        return result     
+        if isinstance(vals['id'], int):
+            move_line_obj = self.browse(vals['id'])
+            result = move_line_obj.write({'qty_done': move_line_obj.ordered_qty})
+            return result 
+        else:
+            for move in vals['id']:
+                move_line_obj = self.browse(move['id'])
+                result = move_line_obj.write({'qty_done': move_line_obj.ordered_qty})
+            return result     
 
     @api.model
     def update_line_values_apk(self, vals):
@@ -195,76 +202,8 @@ class StockMove(models.Model):
     @api.model
     def get_component_info(self, model_id, model):
         move = self.browse(model_id)
-        location = move.location_id
-        location_dest = move.location_dest_id
-        product = move.product_id
 
-        if location:
-            location_id = {
-                '0': location.id,
-                '1': location.name
-            }
-        else:
-            location_id = False
-
-        if location_dest:
-            location_dest_id = {
-                '0': location_dest.id,
-                '1': location_dest.name
-            }
-        else:
-            location_dest_id = False
-
-        if move.picking_id:
-            picking_id = {
-                '0': move.picking_id.id,
-                '1': move.picking_id.name
-            }
-        else :
-            picking_id = False
-
-        if move.product_id:
-            product_id = {
-                '0': move.product_id.id,
-                '1': move.product_id.name
-            }
-        else :
-            product_id = False
-
-        if move.product_uom:
-            product_uom = {
-                '0': move.product_uom.id,
-                '1': move.product_uom.name
-            }
-        else :
-            product_uom = False
-         
-        if move.inventory_id:
-            inventory_id = {
-                '0': move.inventory_id.id,
-                '1': move.inventory_id.name
-            }
-        else:
-            inventory_id = False
-
-        data = {
-            'display_name': move.display_name,
-            'has_tracking': move.product_id.product_tmpl_id.tracking,
-            'id': move.id,
-            'inventory_id': inventory_id,
-            'location_id': location_id,
-            'location_dest_id': location_dest_id,
-            'model': 'stock.move',
-            'name': move.name,
-            'need_check': location.need_check,
-            'need_dest_check': location_dest.need_dest_check,
-            'picking_id': picking_id,
-            'product_id': product_id,
-            'product_qty': move.product_qty,
-            'product_uom': product_uom,
-            'product_uom_qty': move.product_uom_qty,
-            'state': move.state
-        }
+        data = move.get_apk_vals()
         return data
 
     @api.multi
@@ -397,13 +336,14 @@ class StockMove(models.Model):
         vals = {'id': self.id,
                 'name': self.display_name,
                 'state': self._fields['state'].convert_to_export(self.state, self),
-                'object': 'stock.move',
+                'model': 'stock.move',
                 }
 
         if type != 'min':
             vals.update({
                 'pda_done': True if self.state == 'done' or self.quantity_done > 0 else False,
                 'user_id': self.picking_id.user_id.get_apk_vals('min'),
+                'inventory_id': self.inventory_id or False,
                 'product_id': self.product_id.get_apk_vals('min'),
                 'product_uom_qty': self.product_uom_qty,
                 'qty_done': self.quantity_done,
@@ -415,7 +355,7 @@ class StockMove(models.Model):
                 'lot_id': self.env['stock.production.lot'].get_apk_vals('min'),
                 'picking_id': self.picking_id and self.picking_id.get_apk_vals('min'),
                 'product_qty': self.product_uom_qty - self.reserved_availability,
-                'tracking': self.product_id._fields['tracking'].convert_to_export(self.product_id.tracking,
+                'has_tracking': self.product_id._fields['tracking'].convert_to_export(self.product_id.tracking,
                                                                                   self.product_id),
                 'uom_to_uos': False,
                 'checked': {
@@ -532,8 +472,6 @@ class StockMove(models.Model):
     
     @api.model
     def create_new_picking_from_moves_apk(self, vals):
-        from pprint import pprint
-        pprint(vals)
         move_lines = []
         for move in vals['moves']:
             move_lines.append(move['id'])

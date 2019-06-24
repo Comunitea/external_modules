@@ -23,88 +23,73 @@ class StockPickingType(models.Model):
     #need_confirm = fields.Boolean("Need confirm in PDA", help="If checked, this force to process with button after all requeriments done")
     #process_from_tree = fields.Boolean("Process from pda tree ops", help="If checked, allow to process op with default values from pick tree ops in pda")
 
+    @api.model
+    def get_apk_vals(self, type='normal'):
+        if not self:
+            return False
+        vals = {'id': self.id,
+                'name': self.name,
+                'code': self.code}
+        return vals
 
 
 class StockPicking(models.Model):
 
     _inherit = "stock.picking"
 
-    @api.model
-    def get_component_info(self, model_id, model='stock.picking'):
-        picking = self.browse(model_id)
+    def get_apk_info(self):
+        fields = ['id', 'note', 'name', 'scheduled_date', 'state']
 
-        if picking.location_id:
-            location_id = {
-                '0': picking.location_id.id,
-                '1': picking.location_id.name
-            }
-        else:
-            location_id = False
+        vals ={}
+        for f in fields:
+            vals[f] = self[f]
 
-        if picking.location_dest_id:
-            location_dest_id = {
-                '0': picking.location_dest_id.id,
-                '1': picking.location_dest_id.name
-            }
-        else:
-            location_dest_id = False
-        
-        if picking.move_lines:
-            move_lines = picking.move_lines.ids
-            move_count = len(picking.move_lines)
+        if self.location_id:
+            vals['location_id'] = self.location_id.get_apk_vals('min')
+
+        if self.location_dest_id:
+            vals['location_dest_id'] = self.location_dest_id.get_apk_vals('min')
+
+        if self.partner_id:
+            vals['partner_id'] = self.partner_id.get_apk_vals()
+
+        if self.picking_type_id:
+            vals['picking_type_id'] = self.picking_type_id.get_apk_vals()
+
+        if self.move_lines:
+            move_lines = self.move_lines.ids
+            move_count = len(self.move_lines)
         else:
             move_lines = False
             move_count = 0
 
-        if picking.move_line_ids:
+        if self.move_line_ids:
             move_line_ids = []
             cont = 0
-            for line in picking.move_line_ids:
-                line_data = self.env['stock.move.line'].get_component_info(line.id, 'stock.move.line')
+            for line in self.move_line_ids:
+                line_data = self.env['stock.move.line'].browse(line.id).get_apk_vals()
                 line_data.update({
                     'index': cont
                 })
                 move_line_ids.append(line_data)
                 cont += 1
-            move_done_count = len(picking.move_line_ids.filtered(lambda x: x.state == 'done' or x.state == 'assigned'))
+            move_done_count = len(self.move_line_ids.filtered(lambda x: x.state == 'done' or x.state == 'assigned'))
         else:
             move_line_ids = False
             move_done_count = 0
 
-        if picking.partner_id:
-            partner_id = {
-                '0': picking.partner_id.id,
-                '1': picking.partner_id.name
-            }
-        else:
-            partner_id = False
+        vals['model'] = 'stock.picking'
+        vals['move_count'] = move_count
+        vals['move_line_ids'] = move_line_ids
+        vals['moves'] = move_line_ids
+        vals['move_lines'] = move_lines
 
-        if picking.picking_type_id:
-            picking_type_id = {
-                '0': picking.picking_type_id.id,
-                '1': picking.picking_type_id.name,
-                '2': picking.picking_type_id.code
-            }
-        else:
-            picking_type_id = False
+        return vals
 
-        data = {
-            'id': picking.id,
-            'location_id': location_id,
-            'location_dest_id': location_dest_id,
-            'model': 'stock.picking',
-            'move_count': move_count,
-            'move_done_count': move_done_count,
-            'move_lines': move_lines,
-            'moves': move_line_ids,
-            'move_line_ids': move_line_ids,
-            'note': picking.note,
-            'name': picking.name,
-            'partner_id': partner_id,
-            'picking_type_id': picking_type_id,
-            'scheduled_date': picking.scheduled_date,
-            'state': picking.state
-        }
+    @api.model
+    def get_component_info(self, model_id, model='stock.picking'):
+        picking = self.browse(model_id)
+        data = picking.get_apk_info()
         return data
 
     @api.multi

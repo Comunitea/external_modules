@@ -62,7 +62,8 @@ class ProductProduct(models.Model):
         if not self:
             return False
         vals = {'id': self.id,
-                'name': self.short_name or self.display_name,}
+                'name': self.short_name or self.display_name
+                }
 
         if type != 'min':
             vals.update({'barcode': self.barcode,
