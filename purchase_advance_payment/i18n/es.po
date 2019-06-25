@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-25 15:56+0000\n"
-"PO-Revision-Date: 2016-04-25 15:56+0000\n"
+"POT-Creation-Date: 2019-06-25 17:11+0000\n"
+"PO-Revision-Date: 2019-06-25 17:11+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,137 +16,109 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: purchase_advance_payment
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_account_id
+msgid "Account"
+msgstr "Cuenta"
+
+#. module: purchase_advance_payment
 #: model:ir.model,name:purchase_advance_payment.model_account_voucher
 msgid "Accounting Voucher"
 msgstr "Comprobantes contables"
 
 #. module: purchase_advance_payment
-#: view:account.purchase.voucher.wizard:purchase_advance_payment.view_account_purchase_voucher_wizard
-#: code:addons/purchase_advance_payment/wizard/purchase_advance_payment_wzd.py:128
+#: code:addons/purchase_advance_payment/wizard/purchase_advance_payment_wzd.py:109
 #: model:ir.actions.act_window,name:purchase_advance_payment.action_view_account_purchase_voucher_wizard
+#: model:ir.ui.view,arch_db:purchase_advance_payment.view_account_purchase_voucher_wizard
 #, python-format
 msgid "Advance Payment"
 msgstr "Anticipo"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,amount_advance:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_amount_advance
 msgid "Amount advanced"
 msgstr "Importe anticipado"
 
 #. module: purchase_advance_payment
-#: code:addons/purchase_advance_payment/wizard/purchase_advance_payment_wzd.py:52
+#: code:addons/purchase_advance_payment/wizard/purchase_advance_payment_wzd.py:46
 #, python-format
 msgid "Amount of advance is greater than residual amount on purchase"
 msgstr "El importe anticipado es mayor que el importe pendiente en la compra"
 
 #. module: purchase_advance_payment
-#: code:addons/purchase_advance_payment/wizard/purchase_advance_payment_wzd.py:46
+#: code:addons/purchase_advance_payment/wizard/purchase_advance_payment_wzd.py:40
 #, python-format
 msgid "Amount of advance must be positive."
 msgstr "El importe anticipado debe ser positivo."
 
 #. module: purchase_advance_payment
-#: field:apply.on.account.purchase.amount,amount:0
-msgid "Amount to apply"
-msgstr "Importe a aplicar"
-
-#. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,amount_total:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_amount_total
 msgid "Amount total"
 msgstr "Importe total"
 
 #. module: purchase_advance_payment
-#: view:account.invoice:purchase_advance_payment.invoice_form_add_advance_amounts_purchase
-msgid "Apply"
-msgstr "Aplicar"
-
-#. module: purchase_advance_payment
-#: view:apply.on.account.purchase.amount:purchase_advance_payment.view_apply_on_account_purchase_wizard
-msgid "Apply amount"
-msgstr "Aplicar importe"
-
-#. module: purchase_advance_payment
-#: view:apply.on.account.purchase.amount:purchase_advance_payment.view_apply_on_account_purchase_wizard
-#: model:ir.actions.act_window,name:purchase_advance_payment.action_apply_on_acocunt_purchase_wizard
-msgid "Apply on account to invoice"
-msgstr "Aplicar entrega a cuenta a la factura"
-
-#. module: purchase_advance_payment
-#: view:account.purchase.voucher.wizard:purchase_advance_payment.view_account_purchase_voucher_wizard
-#: view:apply.on.account.purchase.amount:purchase_advance_payment.view_apply_on_account_purchase_wizard
+#: model:ir.ui.view,arch_db:purchase_advance_payment.view_account_purchase_voucher_wizard
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: purchase_advance_payment
-#: code:addons/purchase_advance_payment/wizard/apply_advanced_amount_wzd.py:39
-#, python-format
-msgid "Cannot apply a negative amount"
-msgstr "No puede aplicar un importe en negativo"
+#: model:ir.model,name:purchase_advance_payment.model_res_company
+msgid "Companies"
+msgstr "Compañías"
 
 #. module: purchase_advance_payment
-#: code:addons/purchase_advance_payment/wizard/apply_advanced_amount_wzd.py:84
-#, python-format
-msgid "Cannot apply more amount than residual on invoice."
-msgstr "No puede aplicar más importe del pendiente en la factura"
+#: model:ir.model,name:purchase_advance_payment.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
 
 #. module: purchase_advance_payment
-#: code:addons/purchase_advance_payment/wizard/apply_advanced_amount_wzd.py:36
-#, python-format
-msgid "Cannot apply more amount that current on account amount"
-msgstr "No puede aplicar más importe del que dispone actualmente como entrega a cuenta"
-
-#. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,create_uid:0
-#: field:apply.on.account.purchase.amount,create_uid:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,create_date:0
-#: field:apply.on.account.purchase.amount,create_date:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Creado en"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,currency_amount:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_currency_amount
 msgid "Curr. amount"
 msgstr "Importe divisa"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,currency_id:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_currency_id
 msgid "Currency"
-msgstr "Divisa"
+msgstr "Moneda"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,date:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_date
 msgid "Date"
 msgstr "Fecha"
 
 #. module: purchase_advance_payment
-#: view:purchase.order:purchase_advance_payment.purchase_order_form_change_button
-msgid "Deliveries & Invoices"
-msgstr "Entregas y facturas"
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,due_date:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_due_date
 msgid "Due date"
 msgstr "Fecha vencimiento"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,exchange_rate:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_exchange_rate
 msgid "Exchange rate"
 msgstr "Tasa cambio"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,id:0
-#: field:apply.on.account.purchase.amount,id:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_id
 msgid "ID"
 msgstr "ID"
 
 #. module: purchase_advance_payment
-#: help:account.purchase.voucher.wizard,due_date:0
+#: model:ir.model.fields,help:purchase_advance_payment.field_account_purchase_voucher_wizard_due_date
 msgid "If this date is set, will be written on bank entry"
-msgstr "Si este campo tiene valor, este se escribirá en el apunte del banco"
+msgstr "Si la fecha está establecida, se escribirá en el asiento del banco"
 
 #. module: purchase_advance_payment
 #: model:ir.model,name:purchase_advance_payment.model_account_invoice
@@ -154,87 +126,97 @@ msgid "Invoice"
 msgstr "Factura"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,journal_id:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_journal_id
 msgid "Journal"
 msgstr "Diario"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,write_uid:0
-#: field:apply.on.account.purchase.amount,write_uid:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_journal_currency_id
+msgid "Journal Currency"
+msgstr "Moneda del diario"
+
+#. module: purchase_advance_payment
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard___last_update
+msgid "Last Modified on"
+msgstr "Última actualización por"
+
+#. module: purchase_advance_payment
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_write_uid
 msgid "Last Updated by"
-msgstr "Últ. actualización por"
+msgstr "Última actualización por"
 
 #. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,write_date:0
-#: field:apply.on.account.purchase.amount,write_date:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_write_date
 msgid "Last Updated on"
-msgstr "Últ. actualización el"
+msgstr "Última actualización el"
 
 #. module: purchase_advance_payment
-#: view:account.purchase.voucher.wizard:purchase_advance_payment.view_account_purchase_voucher_wizard
+#: model:ir.ui.view,arch_db:purchase_advance_payment.view_account_purchase_voucher_wizard
 msgid "Make advance payment"
 msgstr "Crear anticipo"
 
 #. module: purchase_advance_payment
-#: code:addons/purchase_advance_payment/wizard/apply_advanced_amount_wzd.py:198
-#, python-format
-msgid "On account Payment"
-msgstr "Pago en cuenta"
-
-#. module: purchase_advance_payment
-#: view:account.purchase.voucher.wizard:purchase_advance_payment.view_account_purchase_voucher_wizard
+#: model:ir.ui.view,arch_db:purchase_advance_payment.view_account_purchase_voucher_wizard
 msgid "Operation"
 msgstr "Operación"
 
 #. module: purchase_advance_payment
-#: model:ir.model,name:purchase_advance_payment.model_res_partner
-msgid "Partner"
-msgstr "Empresa"
-
-#. module: purchase_advance_payment
-#: view:purchase.order:purchase_advance_payment.purchase_order_form_change_button
-#: field:purchase.order,account_voucher_ids:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_purchase_order_account_payment_ids
+#: model:ir.ui.view,arch_db:purchase_advance_payment.purchase_order_form_change_button
 msgid "Pay purchase advanced"
-msgstr "Crear anticipo"
+msgstr "Anticipos pagados"
 
 #. module: purchase_advance_payment
-#: view:account.purchase.voucher.wizard:purchase_advance_payment.view_account_purchase_voucher_wizard
+#: model:ir.ui.view,arch_db:purchase_advance_payment.view_account_purchase_voucher_wizard
 msgid "Payment Method"
-msgstr "Forma de pago"
+msgstr "Método de pago"
 
 #. module: purchase_advance_payment
-#: view:purchase.order:purchase_advance_payment.purchase_order_form_change_button
+#: model:ir.ui.view,arch_db:purchase_advance_payment.purchase_order_form_change_button
 msgid "Payment advances"
 msgstr "Anticipos"
 
 #. module: purchase_advance_payment
-#: field:account.voucher,purchase_id:0
-msgid "Purchase"
-msgstr "Compra"
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_purchase_order_payment_line_ids
+msgid "Payment move lines"
+msgstr "Pagos"
+
+#. module: purchase_advance_payment
+#: model:ir.model,name:purchase_advance_payment.model_account_payment
+msgid "Payments"
+msgstr "Pagos"
 
 #. module: purchase_advance_payment
 #: model:ir.model,name:purchase_advance_payment.model_purchase_order
 msgid "Purchase Order"
 msgstr "Pedido de compra"
 
-
 #. module: purchase_advance_payment
-#: field:account.config.settings,purchase_advance_payment_account:0
-#: field:res.company,purchase_advance_payment_account:0
-msgid "Purchase advance payment account"
-msgstr "Cuenta anticipos compra"
-
-#. module: purchase_advance_payment
-#: field:res.partner,on_account_purchase:0
-msgid "Purchase on account amount"
-msgstr "Importe de compras anticipado"
-
-#. module: purchase_advance_payment
-#: field:account.purchase.voucher.wizard,payment_ref:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_purchase_voucher_wizard_payment_ref
 msgid "Ref."
 msgstr "Ref."
 
 #. module: purchase_advance_payment
-#: field:purchase.order,amount_resisual:0
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_purchase_order_amount_resisual
 msgid "Residual amount"
 msgstr "Importe pendiente"
+
+#. module: purchase_advance_payment
+#: model:ir.model.fields,field_description:purchase_advance_payment.field_account_payment_purchase_id
+msgid "Sale"
+msgstr "Venta"
+
+#. module: purchase_advance_payment
+#: model:ir.model,name:purchase_advance_payment.model_account_config_settings
+msgid "account.config.settings"
+msgstr "Parámetros de configuración contable"
+
+#. module: purchase_advance_payment
+#: model:ir.model,name:purchase_advance_payment.model_account_purchase_voucher_wizard
+msgid "account.purchase.voucher.wizard"
+msgstr "account.purchase.voucher.wizard"
+
+#. module: purchase_advance_payment
+#: model:ir.model,name:purchase_advance_payment.model_apply_on_account_purchase_amount
+msgid "apply.on.account.purchase.amount"
+msgstr "apply.on.account.purchase.amount"
