@@ -16,9 +16,9 @@
                     <strong>With E.P. :</strong>
                 </td>
                 <td class="text-right">
-                    <span t-field="o.early_payment_disc_total"/> <span t-field="o.company_id.currency_id.symbol"/>
+                    <span t-field="o.early_payment_disc_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                 </td>
-            </tr>
+            </tr> 
         </xpath>
     </template>
 
