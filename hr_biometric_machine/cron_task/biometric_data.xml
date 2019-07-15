@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<openerp>
+    <data>
+
+        <record model="ir.cron" id="biometric_data_import_data">
+           <field name="name">Import attendance from biometric device</field>
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field name="model" eval="'biometric.data'"/>
+           <field name="function" eval="'import_data'"/>
+           <field name="args" eval="'()'"/>
+        </record>
+
+    </data>
+</openerp>

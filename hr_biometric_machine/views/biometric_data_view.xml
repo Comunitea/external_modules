@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_biometric_data_tree" model="ir.ui.view">
+            <field name="name">view.biometric.data.tree</field>
+            <field name="model">biometric.data</field>
+            <field name="arch" type="xml">
+                <tree string="Biometric Devices Attendances" create="false">
+                    <field name="employee_id" string="Employee" readonly="True"/>
+                    <field name="biometric_user_id" readonly="True"/>
+                    <field name="datetime" readonly="True"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_biometric_data_form" model="ir.ui.view">
+            <field name="name">view.biometric.data.form</field>
+            <field name="model">biometric.data</field>
+            <field name="arch" type="xml">
+                <form string="Biometric Devices Attendances" create="false">
+                    <group>
+                        <field name="employee_id" string="Employee" readonly="True"/>
+                        <field name="biometric_user_id" readonly="True"/>
+                        <field name="datetime" readonly="True"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_biometric_data_search" model="ir.ui.view">
+            <field name="name">view.biometric.data.search</field>
+            <field name="model">biometric.data</field>
+            <field name="arch" type="xml">
+                <search string="Biometric Devices Attendances">
+                    <field name="employee_id" string="Employee"/>
+                    <field name="datetime"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_biometric_data" model="ir.actions.act_window">
+            <field name="name">Biometric data without users</field>
+            <field name="res_model">biometric.data</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">
+                This view will display the attendance import
+                from the biometric device, but only will be appeared the attendance
+                which failed due to the biometric user does not have a
+                related employee configured
+                
+           </field>
+        </record>
+
+        <!-- Top menu item -->
+        <menuitem
+            name="Biometric Device"      
+            id="menu_biometric_root"
+            parent="hr.menu_hr_root"
+            groups="base.group_hr_manager"     
+            sequence="50"/>
+        
+        <menuitem
+            name="Attendances Importation" 
+            id="menu_biometric_data"
+            parent="menu_biometric_root"     
+            sequence="50"/>
+        
+        <menuitem
+            name="Attendances imported (no user)" 
+            action="action_biometric_data"
+            id="menu_biometric_data_data"
+            parent="menu_biometric_data"     
+            sequence="50"/>
+       
+    </data>
+</openerp>

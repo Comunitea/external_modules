@@ -1,0 +1,369 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_biometric_machine
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-08 15:37+0000\n"
+"PO-Revision-Date: 2019-07-08 15:37+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_biometric_machine
+#: model:ir.actions.act_window,help:hr_biometric_machine.action_biometric_data
+msgid "\n"
+"                This view will display the attendance import\n"
+"                from the biometric device, but only will be appeared the attendance\n"
+"                which failed due to the biometric user does not have a\n"
+"                related employee configured\n"
+"                \n"
+"           "
+msgstr "\n"
+"                Esta vista mostrará la importación de asistencias\n"
+"                del dispositivo biométrico, pero solo aparecerán aquellas asistencias\n"
+"                que fallaron debido a que el usuario del dispositivo biométrico no tiene\n"
+"                configurado el empleado asociado\n"
+"                \n"
+"           "
+
+#. module: hr_biometric_machine
+#: view:biometric.machine:hr_biometric_machine.view_biometric_machine_form
+msgid "192.168.0.1"
+msgstr "192.168.0.1"
+
+#. module: hr_biometric_machine
+#: field:biometric.data,action_perform:0
+msgid "Action perform"
+msgstr "Entrada/Salida"
+
+#. module: hr_biometric_machine
+#: model:ir.model,name:hr_biometric_machine.model_hr_attendance
+msgid "Attendance"
+msgstr "Asistencia"
+
+#. module: hr_biometric_machine
+#: model:ir.ui.menu,name:hr_biometric_machine.menu_biometric_data
+msgid "Attendances Importation"
+msgstr "Importación Asistencias"
+
+#. module: hr_biometric_machine
+#: model:ir.ui.menu,name:hr_biometric_machine.menu_biometric_data_data
+msgid "Attendances imported (no user)"
+msgstr "Attendances imported (sin empleado)"
+
+#. module: hr_biometric_machine
+#: view:biometric.machine:hr_biometric_machine.view_biometric_machine_form
+#: view:biometric.machine:hr_biometric_machine.view_biometric_machine_search
+#: view:biometric.machine:hr_biometric_machine.view_biometric_machine_tree
+#: model:ir.actions.act_window,name:hr_biometric_machine.action_biometric_machine
+#: model:ir.ui.menu,name:hr_biometric_machine.menu_biometric_root
+msgid "Biometric Device"
+msgstr "Dispositivo biométrico"
+
+#. module: hr_biometric_machine
+#: view:biometric.user:hr_biometric_machine.view_biometric_user_form
+#: view:biometric.user:hr_biometric_machine.view_biometric_user_search
+#: view:biometric.user:hr_biometric_machine.view_biometric_user_tree
+#: model:ir.actions.act_window,name:hr_biometric_machine.action_biometric_user
+#: model:ir.ui.menu,name:hr_biometric_machine.menu_biometric_user
+msgid "Biometric Device User"
+msgstr "Usuario dispositivo biométrico"
+
+#. module: hr_biometric_machine
+#: view:biometric.data:hr_biometric_machine.view_biometric_data_form
+#: view:biometric.data:hr_biometric_machine.view_biometric_data_search
+#: view:biometric.data:hr_biometric_machine.view_biometric_data_tree
+msgid "Biometric Devices Attendances"
+msgstr "Asistencias dispositivo biométrico"
+
+#. module: hr_biometric_machine
+#: model:ir.actions.act_window,name:hr_biometric_machine.action_biometric_data
+msgid "Biometric data without users"
+msgstr "Asistencias dispositivo biométrico (sin empleado)"
+
+#. module: hr_biometric_machine
+#: field:biometric.data.wizard,biometric_device:0
+#: field:biometric.user,biometric_device:0
+#: field:biometric.user.wizard,biometric_device:0
+msgid "Biometric device"
+msgstr "Dispositivo biométrico"
+
+#. module: hr_biometric_machine
+#: model:ir.ui.menu,name:hr_biometric_machine.menu_biometric_machine
+msgid "Biometric device config"
+msgstr "Configurar dispositivo biométrico"
+
+#. module: hr_biometric_machine
+#: view:biometric.data.wizard:hr_biometric_machine.import_attendance_from_device
+#: view:biometric.user.wizard:hr_biometric_machine.import_users_from_device
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: hr_biometric_machine
+#: field:biometric.data,create_uid:0
+#: field:biometric.data.wizard,create_uid:0
+#: field:biometric.machine,create_uid:0
+#: field:biometric.user,create_uid:0
+#: field:biometric.user.wizard,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: hr_biometric_machine
+#: field:biometric.data,create_date:0
+#: field:biometric.data.wizard,create_date:0
+#: field:biometric.machine,create_date:0
+#: field:biometric.user,create_date:0
+#: field:biometric.user.wizard,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: hr_biometric_machine
+#: field:biometric.data,datetime:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: hr_biometric_machine
+#: selection:biometric.machine,interval_max:0
+#: selection:biometric.machine,interval_min:0
+msgid "Day(s)"
+msgstr "Día(s)"
+
+#. module: hr_biometric_machine
+#: help:biometric.machine,timezone:0
+msgid "Divice timezone"
+msgstr "Zona horaria dispositivo"
+
+#. module: hr_biometric_machine
+#: view:biometric.data:hr_biometric_machine.view_biometric_data_form
+#: view:biometric.data:hr_biometric_machine.view_biometric_data_search
+#: view:biometric.data:hr_biometric_machine.view_biometric_data_tree
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: hr_biometric_machine
+#: selection:hr.attendance,state:0
+msgid "Fix"
+msgstr "Corrigeme"
+
+#. module: hr_biometric_machine
+#: selection:biometric.machine,interval_max:0
+#: selection:biometric.machine,interval_min:0
+msgid "Hour(s)"
+msgstr "Hora(s)"
+
+#. module: hr_biometric_machine
+#: field:biometric.data,id:0
+#: field:biometric.data.wizard,id:0
+#: field:biometric.machine,id:0
+#: field:biometric.user,id:0
+#: field:biometric.user.wizard,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: hr_biometric_machine
+#: field:biometric.user,biometric_id:0
+msgid "Id in biometric device"
+msgstr "Id en dispositivo biomñetrico"
+
+#. module: hr_biometric_machine
+#: view:biometric.data.wizard:hr_biometric_machine.import_attendance_from_device
+#: view:biometric.user.wizard:hr_biometric_machine.import_users_from_device
+msgid "Import"
+msgstr "Importar"
+
+#. module: hr_biometric_machine
+#: model:ir.ui.menu,name:hr_biometric_machine.menu_import_attendance_from_device
+msgid "Import attendace from device"
+msgstr "Importar asistencias desde dispositivo"
+
+#. module: hr_biometric_machine
+#: view:biometric.data.wizard:hr_biometric_machine.import_attendance_from_device
+msgid "Import attendance from device"
+msgstr "Importar asistencias desde dispositivo"
+
+#. module: hr_biometric_machine
+#: view:biometric.user.wizard:hr_biometric_machine.import_users_from_device
+#: model:ir.actions.act_window,name:hr_biometric_machine.action_import_attendance_from_device
+#: model:ir.actions.act_window,name:hr_biometric_machine.action_import_users_from_device
+#: model:ir.ui.menu,name:hr_biometric_machine.menu_import_users_from_device
+msgid "Import users from device"
+msgstr "Importar usuario desde dispositivo"
+
+#. module: hr_biometric_machine
+#: model:ir.actions.act_window,help:hr_biometric_machine.action_biometric_user
+msgid "In this view will be shown the employees import from the biometric device, use \"Import users from device\" menu to bring users from device"
+msgstr "En esta vista se mostrarñan los empleados importados desde el dispositivo biométrico, use el menú \"Importar usuarios desde dispositico\" para descargar los usuarios del dispositivo"
+
+#. module: hr_biometric_machine
+#: field:biometric.machine,ip_address:0
+msgid "Ip address"
+msgstr "Dirección IP"
+
+#. module: hr_biometric_machine
+#: sql_constraint:biometric.user:0
+msgid "It is not possible to crate more than one with the same biometric_id"
+msgstr "No es posible crear mas de uno con el mismo ID de dispositivo biométreico"
+
+#. module: hr_biometric_machine
+#: field:biometric.data,write_uid:0
+#: field:biometric.data.wizard,write_uid:0
+#: field:biometric.machine,write_uid:0
+#: field:biometric.user,write_uid:0
+#: field:biometric.user.wizard,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: hr_biometric_machine
+#: field:biometric.data,write_date:0
+#: field:biometric.data.wizard,write_date:0
+#: field:biometric.machine,write_date:0
+#: field:biometric.user,write_date:0
+#: field:biometric.user.wizard,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: hr_biometric_machine
+#: field:biometric.machine,interval_max:0
+msgid "Max allowed time"
+msgstr "Tiempo máximo permitido""
+
+#. module: hr_biometric_machine
+#: help:biometric.machine,time_interval_max:0
+msgid "Max allowed time  between two registers"
+msgstr "Máximo tiempo permitido entre dos registros"
+
+#. module: hr_biometric_machine
+#: help:biometric.machine,interval_max:0
+msgid "Max allowed time between two registers"
+msgstr "Máximo tiempo permitido entre dos registros"
+
+#. module: hr_biometric_machine
+#: field:biometric.machine,time_interval_max:0
+msgid "Max time"
+msgstr "Tiempo máximo"
+
+#. module: hr_biometric_machine
+#: field:biometric.machine,interval_min:0
+msgid "Min allowed time"
+msgstr "Tiempo mínimo permitido"
+
+#. module: hr_biometric_machine
+#: help:biometric.machine,time_interval_min:0
+msgid "Min allowed time  between two registers"
+msgstr "Tiempo mínimo permitido  entre dos registros"
+
+#. module: hr_biometric_machine
+#: help:biometric.machine,interval_min:0
+msgid "Min allowed time between two registers"
+msgstr "Tiempo mínimo permitido entre dos registros"
+
+#. module: hr_biometric_machine
+#: field:biometric.machine,time_interval_min:0
+msgid "Min time"
+msgstr "Tiempo mínimo"
+
+#. module: hr_biometric_machine
+#: selection:biometric.machine,interval_max:0
+#: selection:biometric.machine,interval_min:0
+msgid "Min(s)"
+msgstr "Min(s)"
+
+#. module: hr_biometric_machine
+#: field:biometric.machine,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: hr_biometric_machine
+#: field:biometric.user,name:0
+msgid "Name in biometric device"
+msgstr "Nombre en dispositivo biométrico"
+
+#. module: hr_biometric_machine
+#: field:biometric.machine,port:0
+msgid "Port"
+msgstr "Puerto"
+
+#. module: hr_biometric_machine
+#: field:biometric.data,biometric_user_id:0
+msgid "Related biometric user"
+msgstr "Usuario dispositivo biométrico relaccionado"
+
+#. module: hr_biometric_machine
+#: field:biometric.user,employee_id:0
+msgid "Related employee"
+msgstr "Empleado relaccionado"
+
+#. module: hr_biometric_machine
+#: selection:hr.attendance,state:0
+msgid "Right"
+msgstr "Correcto"
+
+#. module: hr_biometric_machine
+#: selection:biometric.machine,interval_max:0
+#: selection:biometric.machine,interval_min:0
+msgid "Sec(s)"
+msgstr "Segundo(s)"
+
+#. module: hr_biometric_machine
+#: field:biometric.machine,sequence:0
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: hr_biometric_machine
+#: view:hr.attendance:hr_biometric_machine.hr_attendace_form_view
+msgid "Set as Fixed"
+msgstr "Marcar como corregido"
+
+#. module: hr_biometric_machine
+#: field:hr.attendance,state:0
+msgid "State"
+msgstr "Estado"
+
+#. module: hr_biometric_machine
+#: help:hr.attendance,state:0
+msgid "The user did not register an input or an output in the correct order, then the system proposed one or more regiters to fix the problem but you must review the created register due becouse of hour could be not correct"
+msgstr "El usuario no registro una entrada/salida en el orden correcto, entonces el sistema propon e uno o mas registros para arreglar el problema, pero debes revisar estos registros creado poruqe la hora puede no ser la correcta"
+
+#. module: hr_biometric_machine
+#: view:biometric.data.wizard:hr_biometric_machine.import_attendance_from_device
+msgid "This wizard will help you for importing attendance from the selected biometric device"
+msgstr "Este asistente te ayudará a importar las asistecias del dispositivo biométrico seleccionado"
+
+#. module: hr_biometric_machine
+#: view:biometric.user.wizard:hr_biometric_machine.import_users_from_device
+msgid "This wizard will help you for importing users from the selected biometric device"
+msgstr "Este asistente te ayudará a importar los usuarios del dispositivo biométrico seleccionado"
+
+#. module: hr_biometric_machine
+#: field:biometric.machine,timezone:0
+msgid "Timezone"
+msgstr "Zona horaria"
+
+#. module: hr_biometric_machine
+#: code:addons/hr_biometric_machine/models/biometric_machine.py:151
+#, python-format
+msgid "Unexpected error: {error}"
+msgstr "Error inesperado: {error}"
+
+#. module: hr_biometric_machine
+#: model:ir.ui.menu,name:hr_biometric_machine.menu_biometric_user_user
+msgid "User"
+msgstr "Usuario"
+
+#. module: hr_biometric_machine
+#: view:biometric.data.wizard:hr_biometric_machine.import_attendance_from_device
+#: view:biometric.user.wizard:hr_biometric_machine.import_users_from_device
+msgid "or"
+msgstr "o"
+
+#. module: hr_biometric_machine
+#: view:hr.attendance:hr_biometric_machine.hr_attendace_tree_view
+msgid "red:state=='fix'"
+msgstr "red:state=='fix'"
+
