@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_biometric_user_tree" model="ir.ui.view">
+            <field name="name">view.biometric.user.tree</field>
+            <field name="model">biometric.user</field>
+            <field name="arch" type="xml">
+                <tree string="Biometric Device User"
+                    colors="red:(employee_id == False)" create="false">
+                    <field name="biometric_id"/>
+                    <field name="name"/>
+                    <field name="biometric_device"/>                 
+                    <field name="employee_id"/>                 
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_biometric_user_form" model="ir.ui.view">
+            <field name="name">view.biometric.user.form</field>
+            <field name="model">biometric.user</field>
+            <field name="arch" type="xml">
+                <form string="Biometric Device User" create="false">
+                    <group>
+                        <field name="biometric_id" readonly="True"/>
+                    <field name="name" readonly="True"/>
+                    <field name="biometric_device" readonly="True"/>                 
+                    <field name="employee_id" required="True"/> 
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_biometric_user_search" model="ir.ui.view">
+            <field name="name">view.biometric.user.search</field>
+            <field name="model">biometric.user</field>
+            <field name="arch" type="xml">
+                <search string="Biometric Device User">
+                    <field name="biometric_id"/>
+                    <field name="name"/>
+                    <field name="employee_id"/> 
+                </search>
+            </field>
+        </record>
+
+        <record id="action_biometric_user" model="ir.actions.act_window">
+            <field name="name">Biometric Device User</field>
+            <field name="res_model">biometric.user</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">In this view will be shown the employees import from the biometric device, use "Import users from device" menu to bring users from device</field>
+        </record>
+        
+        <menuitem
+            name="Biometric Device User" 
+            id="menu_biometric_user"
+            parent="menu_biometric_root"     
+            sequence="50"/>
+        
+        <menuitem
+            name="User" 
+            action="action_biometric_user"
+            id="menu_biometric_user_user"
+            parent="menu_biometric_user"     
+            sequence="50"/>
+                
+      </data>
+</odoo>
