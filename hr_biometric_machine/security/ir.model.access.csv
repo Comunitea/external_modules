@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_biometric_data,biometric.data,model_biometric_data,hr.group_hr_user,1,1,1,1
-access_biometric_machine,biometric.machine,model_biometric_machine,hr.group_hr_user,1,1,1,1
-access_biometric_user,biometric.user,model_biometric_user,hr.group_hr_user,1,1,1,1
