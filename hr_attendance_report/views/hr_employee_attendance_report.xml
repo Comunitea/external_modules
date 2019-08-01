@@ -127,7 +127,7 @@
                                                 <span t-if="totals[o.id]['extra']" t-esc="totals[o.id]['extra']"  t-esc-options='{"widget": "time"}'/>
                                             </td>
                                             <td>
-                                                <span t-if="totals[o.id]['total']" t-esc="totals[o.id]['total'] / cont_day"  t-esc-options='{"widget": "time"}'/>
+                                                <span t-if="totals[o.id]['total']" t-esc="totals[o.id]['total'] / (cont_day or 1.0)"  t-esc-options='{"widget": "time"}'/>
                                             </td>
                                         </tr>
                                     </tbody>
