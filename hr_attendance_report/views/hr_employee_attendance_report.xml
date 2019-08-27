@@ -83,7 +83,7 @@
                                     </td>
                                     <td>
                                         <t t-if="attendance['ord_hours']">
-                                            <span t-esc="attendance['ord_hours']" t-esc-options='{"widget": "time"}'/>
+                                            <span t-esc="'%s:%02.0f' % tuple(int(round(x)) for x in divmod(attendance['ord_hours']*60,60))"/>
                                         </t>
                                     </td>
                                     <td></td>
@@ -91,7 +91,7 @@
                                     <td></td>
                                     <td>
                                         <t t-if="attendance['extra']">
-                                            <span t-esc="attendance['extra']"  t-esc-options='{"widget": "time"}'/>
+                                            <span t-esc="'%s:%02.0f' % tuple(int(round(x)) for x in divmod(attendance['extra']*60,60))"/>
                                         </t>
                                     </td>
                                     <td>
@@ -115,19 +115,19 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <span t-if="totals[o.id]['total']" t-esc="totals[o.id]['total']" t-esc-options='{"widget": "time"}'/>
+                                                <span t-if="totals[o.id]['total']" t-esc="'%s:%02.0f' % tuple(int(round(x)) for x in divmod(totals[o.id]['total']*60,60))"/>
                                             </td>
                                             <td>
-                                                <span t-if="totals[o.id]['ordinary']" t-esc="totals[o.id]['ordinary']" t-esc-options='{"widget": "time"}'/>
+                                                <span t-if="totals[o.id]['ordinary']" t-esc="'%s:%02.0f' % tuple(int(round(x)) for x in divmod(totals[o.id]['ordinary']*60,60))"/>
                                             </td>
                                             <td>
                                                 <span t-if="totals[o.id]['complementary']" t-esc="totals[o.id]['complementary']"/>
                                             </td>
                                             <td>
-                                                <span t-if="totals[o.id]['extra']" t-esc="totals[o.id]['extra']"  t-esc-options='{"widget": "time"}'/>
+                                                <span t-if="totals[o.id]['extra']" t-esc="'%s:%02.0f' % tuple(int(round(x)) for x in divmod(totals[o.id]['extra']*60,60))"/>
                                             </td>
                                             <td>
-                                                <span t-if="totals[o.id]['total']" t-esc="totals[o.id]['total'] / (cont_day or 1.0)"  t-esc-options='{"widget": "time"}'/>
+                                                <span t-if="totals[o.id]['total']" t-esc="'%s:%02.0f' % tuple(int(round(x)) for x in divmod(totals[o.id]['total']*60,60))"/>
                                             </td>
                                         </tr>
                                     </tbody>
