@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <menuitem name="Signen" parent="base.menu_administration" id="base_signen" groups="base.group_no_one"/>
+    <menuitem name="Signen" parent="base.menu_administration" id="base_signen" groups="group_signen_manager"/>
 
     <record id="signen_configuration_user_view_tree" model="ir.ui.view">
         <field name="name">signen.configuration.user.view.tree</field>
