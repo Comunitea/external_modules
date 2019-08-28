@@ -10,9 +10,9 @@ _logger = logging.getLogger(__name__)
 
 MIN_MINUTE = 3
 
-EMPLOYEE_FIELDS = ['id', 'name', 'state', 'last_sign', 'apk_date', 'last_sign_tz', 'last_sign_hour', 'last_sign_day']
-USER_FIELDS = ['id', 'login', 'name']
-CONF_FIELDS = ['image', 'logo_color', 'min_minute']
+EMPLOYEE_FIELDS = ['id', 'name', 'state', 'last_sign', 'apk_date', 'last_sign_tz', 'last_sign_hour', 'last_sign_day', 'company_id']
+USER_FIELDS = ['id', 'login', 'name', 'company_id']
+CONF_FIELDS = ['image', 'logo_color', 'min_minute', 'distance_filter', 'stationary_radius', 'min_accuracity']
 
 
 class HrEmployee(models.Model):
@@ -88,7 +88,10 @@ class HrEmployee(models.Model):
         if employee_id:
             employee = {}
             for f in EMPLOYEE_FIELDS:
-                employee[f] = employee_id[f]
+                if f == 'company_id':
+                    employee[f]=employee_id[f].id or False
+                else:
+                    employee[f] = employee_id[f]
 
             if vals.get('employee_info', False):
                 ##EQUIVALE A UIN SEARCH READ
@@ -96,7 +99,10 @@ class HrEmployee(models.Model):
         if user_id:
             res = {}
             for f in USER_FIELDS:
-                res[f] = user_id[f]
+                if f == 'company_id':
+                    res[f]=user_id[f].id or False
+                else:
+                    res[f] = user_id[f]
         if apk:
             conf = {}
             for f in CONF_FIELDS:
@@ -113,9 +119,6 @@ class HrAttendance(models.Model):
         for att in self:
             name = datetime.strptime(att.name, '%Y-%m-%d %H:%M:%S')
             att.name_to_user_zone= att.employee_id.get_time_to_user_tz(name).strftime('%Y-%m-%d %H:%M:%S')
-
-
-
 
     def get_logs_domain(self, vals):
          from_date = vals.get('from_date', False)
@@ -223,6 +226,9 @@ class HrAttendance(models.Model):
     ip = fields.Char('IP')
     url_gps = fields.Char('Position', compute="_get_url_gps")
     name_to_user_zone = fields.Char(compute=get_name_to_user_zone)
+    attendance_position_ids = fields.One2many(
+        comodel_name="hr.attendance.position",
+        inverse_name="attendance_id", string="Attendance positions")
 
     @api.model
     def create(self, vals):
@@ -230,3 +236,29 @@ class HrAttendance(models.Model):
         if gps_info:
             vals.update(gps_info)
         return super(HrAttendance, self).create(vals)
+        
+
+class HrAttendancePosition(models.Model):
+    _name = "hr.attendance.position"
+
+    attendance_id = fields.Many2one(comodel_name='hr.attendance', string="User Attendance")
+    latitude = fields.Float('Latitude')
+    longitude = fields.Float('Longitude')
+
+    @api.model
+    def insert_position_apk(self, vals):
+        employee_id = vals.get('employee_id', False)
+        latitude = vals.get('latitude', False)
+        longitude = vals.get('longitude', False)
+        domain = [('employee_id', '=', employee_id)]
+        last_attendance = self.env['hr.attendance'].search(domain, limit=1, order = 'name desc')
+        if last_attendance.action == 'sign_in':
+            values = {
+                'attendance_id': last_attendance.id,
+                'latitude': latitude,
+                'longitude': longitude,
+            }
+            attendance_position = self.env['hr.attendance.position'].create(values)
+            
+            return attendance_position
+        return False

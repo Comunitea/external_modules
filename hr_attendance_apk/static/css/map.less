@@ -1,0 +1,35 @@
+.metadata-marker {
+    display: none;
+}
+.map-wrap {
+    margin-top: -92px;
+}
+#map {
+    width: 100%;
+    height: 600px;
+    background-color: grey;
+    &.full-size {
+        height: 100vh;
+    }
+}
+
+
+/* Embedded iframe */
+
+.iframe-container{
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* Ratio 16:9 ( 100%/16*9 = 56.25% ) */
+}
+.iframe-container > *{
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}

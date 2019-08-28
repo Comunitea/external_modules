@@ -29,8 +29,8 @@
                             <field name="logo_color" />
                             <field name="min_accuracity" />
                             <field name="min_minute" />
-
-
+                            <field name="distance_filter" />
+                            <field name="stationary_radius" />
                         </group>
                     </group>
 
