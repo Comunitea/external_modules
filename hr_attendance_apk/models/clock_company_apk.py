@@ -56,3 +56,21 @@ class ClockCompanyApk(models.Model):
     contact_phone= fields.Char("Contact phone")
     min_minute = fields.Integer ('Minutes between logs', default=3)
     min_accuracity = fields.Integer('Min. accuraccity', default=100)
+    distance_filter = fields.Integer('Min. Distance', default=500, help="The minimum distance\
+         (measured in meters) a device must move horizontally before an update event is generated.")
+    stationary_radius = fields.Integer('Stationary radius', default=50, helpy="When stopped, the minimum\
+         distance the device must move beyond the stationary location for aggressive background-tracking to engage.")
+
+    @api.model
+    def get_company_apk_config(self, vals):
+        company_id = vals.get('company_id', False)
+        apk_config = self.env['clock.company.apk'].search([('company_id', '=', company_id)], limit=1)
+
+        values = {
+            'interval': apk_config.min_minute*60,
+            'min_accuracity': apk_config.min_accuracity,
+            'distance_filter': apk_config.distance_filter,
+            'stationary_radius': apk_config.stationary_radius
+        }
+
+        return values
