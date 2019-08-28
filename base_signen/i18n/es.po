@@ -1,0 +1,247 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* base_signen
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-21 08:24+0000\n"
+"PO-Revision-Date: 2019-08-21 08:24+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: base_signen
+#: model:ir.ui.view,arch_db:base_signen.signen_create_user_form
+msgid "<span>El usuario no se podrá utilizar hasta confirmar la dirección de correo.</span>"
+msgstr "<span>El usuario no se podrá utilizar hasta confirmar la dirección de correo.</span>"
+
+#. module: base_signen
+#: model:ir.ui.view,arch_db:base_signen.signen_create_user_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_company_id
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user_company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_configuration_id
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: base_signen
+#: model:ir.ui.menu,name:base_signen.signen_create_user_menu
+#: model:ir.ui.view,arch_db:base_signen.signen_create_user_form
+msgid "Create user"
+msgstr "Crear usuario"
+
+#. module: base_signen
+#: model:ir.actions.act_window,name:base_signen.signen_create_user_action
+#: model:ir.ui.view,arch_db:base_signen.signen_create_user_form
+msgid "Create user in Signen"
+msgstr "Crear usuario en Signen"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_create_uid
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_create_uid
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_create_date
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_create_date
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_display_name
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_display_name
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user_display_name
+#: model:ir.model.fields,field_description:base_signen.field_signen_model_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_id
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_id
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user_id
+#: model:ir.model.fields,field_description:base_signen.field_signen_model_id
+msgid "ID"
+msgstr "ID"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report___last_update
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user___last_update
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user___last_update
+#: model:ir.model.fields,field_description:base_signen.field_signen_model___last_update
+msgid "Last Modified on"
+msgstr "Última Modifiación en"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_write_uid
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_write_uid
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_write_date
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_write_date
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_model
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_model_id
+msgid "Model"
+msgstr "Modelo"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: base_signen
+#: model:ir.model.fields,help:base_signen.field_signen_configuration_report_report_name
+msgid "Name to use for the generated report file (may contain placeholders)\n"
+"The extension can be omitted and will then come from the report type."
+msgstr "Nombre a usar para el archivo del informe generado (se pueden utilizar aquí expresiones de campos)\n"
+"La extensión puede ser omitida y se rellenará automáticamente desde el tipo de informe."
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_password
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user_password
+msgid "Password"
+msgstr "Contraseña"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_report_id
+msgid "Report"
+msgstr "Informe"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_report_name
+msgid "Report Filename"
+msgstr "Fichero del informe"
+
+#. module: base_signen
+#: model:ir.ui.view,arch_db:base_signen.signen_configuration_report_view_form
+msgid "Reports"
+msgstr "Informes"
+
+#. module: base_signen
+#: selection:sale.order,signen_status:0
+#: selection:signen.model,signen_status:0
+msgid "Signed"
+msgstr "Firmado"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_signed_by_company
+msgid "Signed by company"
+msgstr "Firmado por la compañía"
+
+#. module: base_signen
+#: model:ir.ui.menu,name:base_signen.base_signen
+msgid "Signen"
+msgstr "Signen"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_model_signen_document_id
+msgid "Signen document id"
+msgstr "id documento Signen"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_model_signen_document_url
+msgid "Signen document url"
+msgstr "URL documento Signen"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_model_signen_sended
+msgid "Signen sended"
+msgstr "Enviado a signen"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_model_signen_status
+msgid "Signen status"
+msgstr "Estado signen"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_model_signen_uploaded
+msgid "Signen uploaded"
+msgstr "Subido a signen"
+
+#. module: base_signen
+#: model:ir.ui.view,arch_db:base_signen.signen_configuration_user_view_form
+msgid "Signen users"
+msgstr "Usuarios signen"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_user_username
+#: model:ir.model.fields,field_description:base_signen.field_signen_create_user_username
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#. module: base_signen
+#: selection:sale.order,signen_status:0
+#: selection:signen.model,signen_status:0
+msgid "declined signature"
+msgstr "firma declinanada"
+
+#. module: base_signen
+#: model:ir.ui.view,arch_db:base_signen.signen_create_user_form
+msgid "or"
+msgstr "o"
+
+#. module: base_signen
+#: selection:sale.order,signen_status:0
+#: selection:signen.model,signen_status:0
+msgid "pending"
+msgstr "pendiente"
+
+#. module: base_signen
+#: model:ir.ui.menu,name:base_signen.signen_configuration_report_menu
+msgid "signen reports"
+msgstr "Informes signen"
+
+#. module: base_signen
+#: model:ir.ui.menu,name:base_signen.signen_configuration_user_menu
+msgid "signen users"
+msgstr "Usuarios Signen"
+
+#. module: base_signen
+#: model:ir.model,name:base_signen.model_signen_configuration
+msgid "signen.configuration"
+msgstr "signen.configuration"
+
+#. module: base_signen
+#: model:ir.actions.act_window,name:base_signen.signen_configuration_report_action
+#: model:ir.model,name:base_signen.model_signen_configuration_report
+msgid "signen.configuration.report"
+msgstr "signen.configuration.report"
+
+#. module: base_signen
+#: model:ir.actions.act_window,name:base_signen.signen_configuration_user_action
+#: model:ir.model,name:base_signen.model_signen_configuration_user
+msgid "signen.configuration.user"
+msgstr "signen.configuration.user"
+
+#. module: base_signen
+#: model:ir.model,name:base_signen.model_signen_create_user
+msgid "signen.create.user"
+msgstr "signen.create.user"
+
+#. module: base_signen
+#: model:ir.model,name:base_signen.model_signen_model
+msgid "signen.model"
+msgstr "signen.model"
+

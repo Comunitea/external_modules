@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem name="Signen" parent="base.menu_administration" id="base_signen" groups="base.group_no_one"/>
+
+    <record id="signen_configuration_user_view_tree" model="ir.ui.view">
+        <field name="name">signen.configuration.user.view.tree</field>
+        <field name="model">signen.configuration.user</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="username"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="signen_configuration_user_view_form" model="ir.ui.view">
+        <field name="name">signen.configuration.user.view.form</field>
+        <field name="model">signen.configuration.user</field>
+        <field name="arch" type="xml">
+            <form string="Signen users">
+                <sheet>
+                    <group>
+                        <field name="username"/>
+                        <field name="password" password="1"/>
+                        <field name="company_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="signen_configuration_user_action" model="ir.actions.act_window">
+        <field name="name">signen.configuration.user</field>
+        <field name="res_model">signen.configuration.user</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="signen users" parent="base_signen" action="signen_configuration_user_action" id="signen_configuration_user_menu"/>
+
+    <record id="signen_configuration_report_view_tree" model="ir.ui.view">
+        <field name="name">signen.configuration.report.view.tree</field>
+        <field name="model">signen.configuration.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="model"/>
+                <field name="report_id"/>
+                <field name="report_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="signen_configuration_report_view_form" model="ir.ui.view">
+        <field name="name">signen.configuration.report.view.form</field>
+        <field name="model">signen.configuration.report</field>
+        <field name="arch" type="xml">
+            <form string="Reports">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="model_id"/>
+                        <field name="report_id"/>
+                        <field name="report_name"/>
+                        <field name="signed_by_company"/>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="signen_configuration_report_action" model="ir.actions.act_window">
+        <field name="name">signen.configuration.report</field>
+        <field name="res_model">signen.configuration.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="signen reports" parent="base_signen" action="signen_configuration_report_action" id="signen_configuration_report_menu"/>
+
+
+
+    <record id="signen_signature_view_tree" model="ir.ui.view">
+        <field name="name">signen.signature.view.tree</field>
+        <field name="model">signen.signature</field>
+        <field name="arch" type="xml">
+            <tree colors="red:declined!=False;green:sign_date!=False">
+                <field name="declined" invisible="True"/>
+                <field name="partner_id"/>
+                <field name="sign_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="signen_signature_view_form" model="ir.ui.view">
+        <field name="name">signen.signature.view.form</field>
+        <field name="model">signen.signature</field>
+        <field name="arch" type="xml">
+            <form string="Signen users">
+                <sheet>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="sign_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

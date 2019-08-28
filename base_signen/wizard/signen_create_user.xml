@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="signen_create_user_form" model="ir.ui.view">
+        <field name="name">Create user in signen</field>
+        <field name="model">signen.create.user</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Create user in Signen">
+                <span>El usuario no se podrá utilizar hasta confirmar la dirección de correo.</span>
+                <group>
+                    <field name="username"/>
+                    <field name="password" password="1"/>
+                    <field name="company_id"/>
+                </group>
+                <footer>
+                    <button name="create_user" string="Create user" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Create user in Signen"
+    res_model="signen.create.user"
+    view_id="signen_create_user_form"
+    view_mode="form"
+    target="new"
+    id="signen_create_user_action"/>
+
+    <menuitem name="Create user" parent="base_signen" action="signen_create_user_action" id="signen_create_user_menu"/>
+</odoo>
