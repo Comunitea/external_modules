@@ -5,6 +5,7 @@ from odoo import fields, models, api
 from odoo import report as odoo_report
 from odoo.addons.queue_job.job import job
 from ..tools.signen import Signen
+from odoo.tools.safe_eval import safe_eval
 
 
 class SignenSignature(models.Model):
@@ -51,10 +52,14 @@ class SignenModel(models.AbstractModel):
                 obj.signen_document_url = ''
 
     def get_report(self, signen_report):
+        if signen_report.report_type == 'report':
+            report = signen_report.report_id
+        else:
+            report = safe_eval(signen_report.execute_code, globals_dict={'obj': self, 'signen_report': signen_report})
         report_name = self.env['mail.template'].render_template(
             signen_report.report_name, signen_report.model_id.model, self.id)
-        report_service = signen_report.report_id.report_name
-        if signen_report.report_id.report_type in ['qweb-html', 'qweb-pdf']:
+        report_service = report.report_name
+        if report.report_type in ['qweb-html', 'qweb-pdf']:
             result, format = self.env['report'].get_pdf(
                 [self.id], report_service), 'pdf'
         else:

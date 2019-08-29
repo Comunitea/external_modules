@@ -46,7 +46,6 @@
             <tree>
                 <field name="name"/>
                 <field name="model"/>
-                <field name="report_id"/>
                 <field name="report_name"/>
             </tree>
         </field>
@@ -61,10 +60,11 @@
                     <group>
                         <field name="name"/>
                         <field name="model_id"/>
-                        <field name="report_id"/>
+                        <field name="report_type"/>
+                        <field name="execute_code" attrs="{'invisible': [('report_type', '!=', 'code')], 'required': [('report_type', '=', 'code')]}"/>
+                        <field name="report_id" attrs="{'invisible': [('report_type', '!=', 'report')], 'required': [('report_type', '=', 'report')]}"/>
                         <field name="report_name"/>
                         <field name="signed_by_company"/>
-
                     </group>
                 </sheet>
             </form>

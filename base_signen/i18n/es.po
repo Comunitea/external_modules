@@ -245,3 +245,23 @@ msgstr "signen.create.user"
 msgid "signen.model"
 msgstr "signen.model"
 
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_report_type
+msgid "Report type"
+msgstr "Report type"
+
+#. module: base_signen
+#: selection:signen.configuration.report,report_type:0
+msgid "execute code"
+msgstr "Ejecutar código"
+
+#. module: base_signen
+#: model:ir.model.fields,field_description:base_signen.field_signen_configuration_report_execute_code
+msgid "Execute code"
+msgstr "Código a ejecutar"
+
+#. module: base_signen
+#: selection:signen.configuration.report,report_type:0
+msgid "Report"
+msgstr "Informe"

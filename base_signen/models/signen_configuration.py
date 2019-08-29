@@ -31,7 +31,9 @@ class SignenConfigurationReport(models.Model):
     model_id = fields.Many2one('ir.model', 'Model', required=True)
     model = fields.Char(related='model_id.model', readonly=True)
     report_id = fields.Many2one(
-        'ir.actions.report.xml', 'Report', required=True)
+        'ir.actions.report.xml', 'Report')
+    report_type = fields.Selection([('report', 'Report'), ('code', 'execute code')])
+    execute_code = fields.Text(default='# Variables:\n# obj:Object, signen_report:report_object')
     report_name = fields.Char(
         'Report Filename',
         help="Name to use for the generated report file (may contain placeholders)\n"
