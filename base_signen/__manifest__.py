@@ -22,12 +22,12 @@
         ],
     },
     'data': [
+        'security/signen_security.xml', 
         'views/signen_configuration.xml',
         'views/res_company.xml',
         'wizard/signen_create_user.xml',
         'data/ir_config_parameter.xml',
         'data/ir_cron.xml',
-        'security/signen_security.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,
