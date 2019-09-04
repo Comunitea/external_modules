@@ -21,3 +21,4 @@
 from . import hr_attendance_report_parser
 from . import ir_qweb
 from . import hr_attendance
+from . import resource

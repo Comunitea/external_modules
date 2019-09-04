@@ -38,6 +38,7 @@
         'wizard/employee_print_attendance_report.xml',
         'views/hr_employee_attendance_report.xml',
         'hr_attendance_report.xml',
+        'views/resource.xml',
         'data/paperformat.xml',
     ],
 }
