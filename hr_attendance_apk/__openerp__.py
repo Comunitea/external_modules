@@ -18,4 +18,5 @@
         'views/hr_attendance_view.xml',
         'views/clock_company_apk.xml',
     ],
+    'qweb': ['static/xml/*.xml'],
 }
