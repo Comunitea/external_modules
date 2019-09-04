@@ -10,17 +10,20 @@ class HrAttendance(models.Model):
 
     _inherit = 'hr.attendance'
 
-    def get_nearest_interval(self, intervals):
+    def get_nearest_interval(self, intervals, employee):
         closest_time = False
         closest_interval = False
         for interval in intervals:
             if interval[1] > datetime.now():
-                raise Exception()
+                return False
             if not closest_time or (datetime.now() - interval[1]).seconds \
                     < closest_time:
                 closest_time = (datetime.now() - interval[1]).seconds < \
                     closest_time
                 closest_interval = interval
+        if not closest_interval:
+            raise Exception(
+                'Interval not found for employee %s' % employee.name)
         return closest_interval
 
     @api.model
@@ -34,17 +37,18 @@ class HrAttendance(models.Model):
             if intervals:
                 intervals = intervals[0]
             if currently_working:
-                try:
-                    nearest_interval = self.get_nearest_interval(intervals)
-                except Exception:
-                    # Aun está en su horario por lo que pasamos al siguiente.
-                    continue
-                if (datetime.now() - nearest_interval[1]).seconds \
-                        / 60.0 / 60.0 > 1:
-                    # Aunque ya se haya pasado el momento de salida,
-                    # si ya ha pasado mas de 1 hora no se envia,
-                    # para evitar el envio continuo de emails.
-                    continue
+                if intervals:
+                    nearest_interval = self.get_nearest_interval(
+                        intervals, employee)
+                    if not nearest_interval:
+                        # Aun está en su horario por lo que pasamos al siguiente.
+                        continue
+                    if (datetime.now() - nearest_interval[1]).seconds \
+                            / 60.0 / 60.0 > 1:
+                        # Aunque ya se haya pasado el momento de salida,
+                        # si ya ha pasado mas de 1 hora no se envia,
+                        # para evitar el envio continuo de emails.
+                        continue
                 self.env.ref('hr_attendance_reminder.email_template_attendance_reminder').send_mail(employee.id)
             else:
                 for interval in intervals:
