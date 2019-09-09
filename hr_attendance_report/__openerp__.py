@@ -40,5 +40,6 @@
         'hr_attendance_report.xml',
         'views/resource.xml',
         'data/paperformat.xml',
+        'security/ir.model.access.csv'
     ],
 }
