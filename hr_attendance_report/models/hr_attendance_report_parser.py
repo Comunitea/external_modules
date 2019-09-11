@@ -78,8 +78,7 @@ class HrAttendanceReport(models.AbstractModel):
                     extra_hours = day_attendances['ord_hours'] - max_hours
                     if day_attendances['ord_hours'] > max_hours:
                         day_attendances['ord_hours'] = max_hours
-                    if extra_hours > 0.0:
-                        day_attendances['extra'] += extra_hours
+                    day_attendances['extra'] += extra_hours
                 if day_attendances['in_out_str']:
                     day_attendances['in_out_str'] = \
                         day_attendances['in_out_str'][:-3]
