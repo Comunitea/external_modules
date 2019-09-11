@@ -5,6 +5,7 @@ import logging
 from openerp import api, models, fields, _
 from datetime import datetime
 import pytz
+from pprint import pprint
 
 _logger = logging.getLogger(__name__)
 
@@ -114,6 +115,24 @@ class HrEmployee(models.Model):
 
 class HrAttendance(models.Model):
     _inherit = "hr.attendance"
+
+    @api.model
+    def get_attendance_data(self, attendance_id):
+        attendance = self.browse(attendance_id)
+        return {
+            'action': attendance.action,
+            'related_attendance_id': attendance.get_related_attendance(),
+        }
+
+    def get_related_attendance(self):
+        for attendance in self:
+            if attendance.action == 'sign_in':
+                return self.env['hr.attendance'].search([('employee_id', '=', attendance.employee_id.id)\
+                    , ('id', '>', attendance.id), ('action', '=', 'sign_out')], limit=1, order='id DESC').id or False
+            else:
+                return  self.env['hr.attendance'].search([('employee_id', '=', attendance.employee_id.id)\
+                    , ('id', '<', attendance.id), ('action', '=', 'sign_in')], limit=1, order='id DESC').id or False
+    
 
     def get_name_to_user_zone(self):
         for att in self:
