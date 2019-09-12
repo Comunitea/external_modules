@@ -3,5 +3,5 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
 
-from . import stock_move,stock_picking,sale_order, stock_location, purchase_order
+from . import stock_move,stock_picking,sale_order, stock_location, purchase_order, stock_quant_package
 

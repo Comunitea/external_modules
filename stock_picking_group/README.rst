@@ -6,7 +6,8 @@
 PFuncionalidad necesaria para la APK de almacén
 ===============================================
 
-
+Queries to update:
+delete from ir_ui_view where arch_db ilike '%manual_pick%'
 
 
 Credits

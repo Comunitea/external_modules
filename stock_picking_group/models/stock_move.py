@@ -8,23 +8,14 @@ from datetime import timedelta
 
 DOMAIN_NOT_STATE = ['draft', 'cancel']
 
-class StockMoveLine(models.Model):
-
-    _inherit = "stock.move.line"
-
 class StockMove(models.Model):
 
     _inherit = "stock.move"
 
-    manual_pick = fields.Boolean(
-        'Manual Picking',
-        help='If checked, no create pickings when confirm order',
-        default=False, copy=True)
-    sale_id = fields.Many2one(
-        'sale.order', 'Saler Order')
+    sale_id = fields.Many2one('sale.order', 'Saler Order')
     purchase_id = fields.Many2one('purchase.order', 'Purchase Order')
     sale_price = fields.Float('Sale Price')
-    shipping_id = fields.Many2one('res.partner', string='Delivery Address')
+
 
 
     pick_state = fields.Selection([
@@ -41,20 +32,16 @@ class StockMove(models.Model):
              "* Error: Move picked and not available.\n"
         )
 
-
-
     @api.multi
     def action_force_assign_picking(self, force=True):
         ctx = self._context.copy()
         ctx.update(force_assign=force)
         return self.with_context(ctx)._assign_picking()
 
-
     def get_moves_to_not_asign(self):
         to_pick = self.filtered(lambda x: x.sale_id and not x.picking_type_id.grouped)
         not_to_pick = self - to_pick
         return not_to_pick, to_pick
-
 
     def check_assign_picking_error(self):
         """
@@ -67,7 +54,7 @@ class StockMove(models.Model):
             raise ValidationError (_('Not same picking types: {}'.format(picking_type_id.mapped("code"))))
 
         if picking_type_id.code == 'outgoing' :
-            if len(self.mapped('partner_id')) > 1 or len(self.mapped('shipping_id')) > 1 :
+            if len(self.mapped('partner_id')) > 1:
                 raise ValidationError(_('Not same partner for outgoing moves: {}'.format(self.mapped('partner_id').mapped('name'))))
 
         if picking_type_id.code == 'incoming' :
@@ -75,54 +62,38 @@ class StockMove(models.Model):
                 raise ValidationError(_('Not same partner for incoming moves: {}'.format(self.mapped('partner_id').mapped('name'))))
 
         return True
-        
-    
+
     def _assign_picking(self):
-
-        if self and len(self)>1:
-            self.check_assign_picking_error()
-        print (self.picking_type_id.name)
-        force_assign = self._context.get('force_assign', False)
-        if force_assign:
-            print ("FORZANDO ASIGNACION DE PICKING")
-            to_pick = self
-        else:
-            not_to_pick, to_pick = self.get_moves_to_not_asign()
-            if not_to_pick:
-                not_to_pick._action_assign()
-        if to_pick:
-            super(StockMove, to_pick)._assign_picking()
-            for move in to_pick:
-                move.move_line_ids.write({'picking_id': move.picking_id.id})
+        self = self.filtered(lambda x: not x.picking_type_id.after_assign)
+        self.check_assign_picking_error()
+        super()._assign_picking()
+        for move in self:
+            move.move_line_ids.write({'picking_id': move.picking_id.id})
         return True
-
-
 
     def _get_new_picking_domain(self):
         domain = super()._get_new_picking_domain()
-        if self.picking_type_id.grouped:
-            domain.remove(('group_id', '=', self.group_id.id))
-        if self.picking_type_id.code in ('incoming', 'outgoing'):
-            domain += [('partner_id', '=', self.shipping_id.id)]
 
+        if self._context.get('pick_domain', False):
+            domain += self._context['pick_domain']
         for field in self.picking_type_id.grouped_field_ids:
-            domain += [(field.name, '=', self[field.name].id)]
-
-        print ('Get new picking domain {}'.format(domain))
+            if field.ttype == 'many2one':
+                domain += [(field.name, '=', self[field.name].id)]
+            else:
+                domain += [(field.name, '=', self[field.name])]
         return domain
 
     def _get_new_picking_values(self):
-        vals = super()._get_new_picking_values()
-        if self._context.get('grouped', False):
-            vals.update(grouped=True)
-            if self.picking_type_id.code == 'internal':
-                vals.update(partner_id=False)
 
-        vals.update(grouped=self.picking_type_id and self.picking_type_id.grouped)
+        vals = super()._get_new_picking_values()
+        for field in self.picking_type_id.grouped_field_ids:
+            if field.ttype == 'many2one':
+                vals.update({field.name: self[field.name].id})
+            else:
+                vals.update({field.name: self[field.name]})
         return vals
 
     def _prepare_move_split_vals(self, qty):
-
         vals = super()._prepare_move_split_vals(qty)
         if self._context.get('default_location_id', False):
             vals.update(location_id=self['location_id'].id)
@@ -132,7 +103,6 @@ class StockMove(models.Model):
 
         return vals
 
-
     def get_new_location_vals(self, location_field, location):
 
         vals = {location_field: location._get_location_type_id().id}
@@ -140,17 +110,15 @@ class StockMove(models.Model):
             vals.update(picking_type_id = location.picking_type_id.id)
         return vals
 
-
-
-
     def check_new_location(self, location='location_id'):
 
         ##COMPRUBA Y ESTABLECE LA NUEVA UBICACIÓN DE ORIGEN DEL MOVIMIENTO Y CAMBIA EL PICKING_TYPE EN CONSECUENCIA. ADEMAS LO SACA DE UN ALBARÁN SI LO TUVIERA
         ##REVISAR BIEN
         if not self.move_line_ids:
             return
-        if not self.picking_type_id.grouped:
-            return
+        #if not self.picking_type_id.grouped:
+        #    return
+
 
         default_picking_type_id = self.picking_type_id
         #if not default_picking_type_id.check_sub_locs:
@@ -186,6 +154,10 @@ class StockMove(models.Model):
                 self.check_new_location(location)
             else:
                 self.unlink()
+        if self.picking_id and self.picking_type_id != self.picking_id.picking_type_id:
+            self.picking_id = False
+            self._assign_picking()
+
 
     def _prepare_procurement_values(self):
         """
@@ -195,16 +167,13 @@ class StockMove(models.Model):
         vals.update({
             'sale_id': self.sale_id.id,
             'sale_price': self.sale_price,
-            'shipping_id': self.shipping_id.id,
-            'manual_pick': self.manual_pick
         })
         return vals
 
     def _action_assign(self):
-        super()._action_assign()
 
-        assigned_moves = self.filtered(lambda x: x.move_line_ids and x.quantity_done == 0)
-        for move in assigned_moves:
+        super()._action_assign()
+        for move in self.filtered(lambda x: x.location_id.picking_type_id and x.move_line_ids and x.quantity_done == 0):
             move.check_new_location()
 
     def _action_cancel(self):
@@ -228,13 +197,9 @@ class ProcurementRule(models.Model):
                                               values=values,
                                               group_id=group_id)
 
-        if values.get('sale_line_id', False):
-            sol = self.env['sale.order.line'].browse(values['sale_line_id'])
-            vals.update(manual_pick=sol.order_id.manual_pick)
-
         vals.update({
             'sale_price': values.get('sale_price'),
             'sale_id': values.get('sale_id'),
-            'shipping_id': values.get('shipping_id'),
+
         })
         return vals

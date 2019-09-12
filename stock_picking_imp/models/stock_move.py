@@ -29,8 +29,10 @@ class StockMove(models.Model):
                 ('state', 'in', ['draft', 'confirmed', 'waiting', 'partially_available', 'assigned'])]
         return domain
 
-    def _assign_picking(self):
+    def assign_picking(self):
+        return self._assign_picking()
 
+    def _assign_picking(self):
         """HEREDO TODO PARA SACAR TODO FUERA Y PODER HEREDAR"""
 
         """ Try to assign the moves to an existing picking that has not been
