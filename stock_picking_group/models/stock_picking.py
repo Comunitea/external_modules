@@ -80,7 +80,9 @@ class StockBatchPicking(models.Model):
     @api.multi
     def get_partner_id(self):
         for batch in self:
-            partner_id = batch.picking_ids.mapped('partner_id')
+            if batch.state == 'done':
+                partner_id = batch.picking_ids.mapped('partner_id')
+
             if len(partner_id) == 1:
                 batch.partner_id = partner_id[0]
             else:
