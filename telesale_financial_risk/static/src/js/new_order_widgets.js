@@ -106,7 +106,7 @@ var TotalsOrderWidget = NewOrderWidgets.TotalsOrderWidget.include({
             var loaded = self.ts_model.fetch('sale.order', ['id', 'name'], domain)
                 .then(function(orders){
                     if (orders[0]) {
-                        // MIG11: Quizá con notación then
+                        // MIG11: Quizá con notación then.
                         rpc.query({model: 'sale.order', method: 'get_risk_msg', args:[orders[0].id]})
                         .fail(function(unused, event){
                             //don't show error popup if it fails
