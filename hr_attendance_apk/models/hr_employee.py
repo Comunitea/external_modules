@@ -5,7 +5,6 @@ import logging
 from openerp import api, models, fields, _
 from datetime import datetime
 import pytz
-from pprint import pprint
 
 _logger = logging.getLogger(__name__)
 
@@ -114,7 +113,33 @@ class HrEmployee(models.Model):
 
 
 class HrAttendance(models.Model):
-    _inherit = "hr.attendance"
+    _inherit = "hr.attendance" 
+
+    @api.model
+    def get_google_maps_url(self):
+        for att in self:
+            origin = '{},{}'.format(att.latitude, att.longitude)
+            destination = att.get_related_attendance()
+            if destination:
+                destination_obj = self.env['hr.attendance'].browse(destination)
+                destination_point = '{},{}'.format(destination_obj.latitude, destination_obj.longitude)
+            else:
+                if att.attendance_position_ids:
+                    destination_point = '{},{}'.format(att.attendance_position_ids[-1].latitude, att.attendance_position_ids[-1].longitude)
+                else:
+                    destination_point = origin
+            waypoints = att.attendance_position_ids
+            waypoints_str = ''
+            if waypoints:
+                for point in waypoints:
+                    if point == waypoints[0]:
+                        waypoints_str = '{},{}'.format(point.latitude, point.longitude)
+                    else:
+                        waypoints_str = '{}%7C{},{}'.format(waypoints_str, point.latitude, point.longitude)
+            
+            att.google_maps_url = "https://www.google.com/maps/dir/?api=1&origin={}&destination={}&travelmode=driving&waypoints={}".format(origin, destination_point, waypoints_str)
+
+    google_maps_url = fields.Char(compute="get_google_maps_url")  
 
     @api.model
     def get_attendance_data(self, attendance_id):
@@ -180,7 +205,8 @@ class HrAttendance(models.Model):
                          'log_out': name,
                          'worked_hours': self.worked_hours,
                          'gps_out': (self.accuracity <= min_accuracity),
-                         'same_day': True}
+                         'same_day': True,
+                         'google_maps_url': self.google_maps_url}
 
         if vals_type== 'sign_in':
             check_val = {'id': self.id,
@@ -190,7 +216,8 @@ class HrAttendance(models.Model):
                          'log_in': name,
                          'worked_hours': self.worked_hours,
                          'gps_in': (self.accuracity <= min_accuracity),
-                         'same_day': True}
+                         'same_day': True,
+                         'google_maps_url': self.google_maps_url}
         if vals_type=='update':
             check_val.update(same_day=day(name) < check_val['day'],
                              gps_in=(self.accuracity <= min_accuracity),
