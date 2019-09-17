@@ -121,7 +121,7 @@ var TotalsOrderWidget = NewOrderWidgets.TotalsOrderWidget.include({
                             // IF NO MSG OR SKIP MSG WE CONFIRM THE ORDER
                             if (skip){
                                 // MIG11: Quizá con notación then
-                                rpc({model: 'sale.order', method: 'confirm_order_from_ui', args:[orders[0].id], context:{bypass_risk: true}})
+                                rpc.query({model: 'sale.order', method: 'confirm_order_from_ui', args:[orders[0].id], context:{bypass_risk: true}})
                                 .fail(function(unused, event){
                                   //don't show error popup if it fails
                                    self.ts_model.last_sale_id = false
