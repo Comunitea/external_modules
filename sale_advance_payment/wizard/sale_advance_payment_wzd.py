@@ -46,6 +46,7 @@ class AccountVoucherWizard(models.TransientModel):
                                  readonly=True)
     currency_amount = fields.Monetary("Curr. amount", readonly=True,
                                       currency_field="journal_currency_id")
+    account_id = fields.Many2one("account.account", "Account", required=True)
     payment_ref = fields.Char("Ref.")
 
     @api.constrains('amount_advance')
@@ -56,7 +57,7 @@ class AccountVoucherWizard(models.TransientModel):
         if self.env.context.get('active_id', False):
             order = self.env["sale.order"].\
                 browse(self.env.context['active_id'])
-            if self.amount_advance > order.amount_resisual:
+            if round(self.amount_advance, 2) > round(order.amount_resisual, 2):
                 raise exceptions.ValidationError(_("Amount of advance is "
                                                    "greater than residual "
                                                    "amount on sale"))
@@ -73,7 +74,10 @@ class AccountVoucherWizard(models.TransientModel):
 
         if 'amount_total' in fields:
             res.update({'amount_total': sale.amount_resisual,
-                        'currency_id': sale.pricelist_id.currency_id.id})
+                        'currency_id': sale.pricelist_id.currency_id.id,
+                        'account_id':
+                        sale.partner_id.commercial_partner_id.
+                        property_account_receivable_id.id})
 
         return res
 
@@ -122,6 +126,15 @@ class AccountVoucherWizard(models.TransientModel):
                            }
             payment = payment_obj.create(payment_res)
             payment.post()
+            payment.refresh()
+
+            for line in payment.move_line_ids:
+                if line.account_id == sale.partner_id.\
+                        commercial_partner_id.property_account_receivable_id \
+                        and line.account_id != self.account_id:
+                    line.move_id.button_cancel()
+                    line.account_id = self.account_id.id
+                    line.move_id.post()
 
         return {
             'type': 'ir.actions.act_window_close',

@@ -20,7 +20,6 @@ class PurchaseOrderLine(models.Model):
         res = super()._prepare_stock_moves(picking)
         for val in res:
             val['purchase_id'] = self.order_id.id
-            val['shipping_id'] = self.order_id.partner_id.id
         return res
 
 

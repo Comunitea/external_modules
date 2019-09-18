@@ -78,24 +78,9 @@ msgid "Grouped pick"
 msgstr "Albarán agrupado"
 
 #. module: stock_picking_group
-#: model:ir.model.fields,help:stock_picking_group.field_procurement_group_manual_pick
-#: model:ir.model.fields,help:stock_picking_group.field_sale_order_manual_pick
-#: model:ir.model.fields,help:stock_picking_group.field_stock_move_manual_pick
-msgid "If checked, no create pickings when confirm order"
-msgstr "Si está marcado, no crear albarán al confirmar el pedido"
-
-#. module: stock_picking_group
 #: model:ir.model,name:stock_picking_group.model_stock_location
 msgid "Inventory Locations"
 msgstr "Ubicaciones de inventario"
-
-#. module: stock_picking_group
-#: model:ir.model.fields,field_description:stock_picking_group.field_procurement_group_manual_pick
-#: model:ir.model.fields,field_description:stock_picking_group.field_sale_order_manual_pick
-#: model:ir.model.fields,field_description:stock_picking_group.field_stock_move_manual_pick
-#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
-msgid "Manual Picking"
-msgstr "Albaranado manual"
 
 #. module: stock_picking_group
 #: model:ir.model.fields,field_description:stock_picking_group.field_purchase_order_move_line_count

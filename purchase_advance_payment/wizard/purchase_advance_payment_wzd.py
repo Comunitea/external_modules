@@ -29,6 +29,7 @@ class AccountVoucherWizard(models.TransientModel):
     currency_id = fields.Many2one("res.currency", "Currency", readonly=True)
     currency_amount = fields.Monetary("Curr. amount", readonly=True,
                                       currency_field="journal_currency_id")
+    account_id = fields.Many2one("account.account", "Account", required=True)
     payment_ref = fields.Char("Ref.")
     due_date = fields.Date("Due date", help="If this date is set, will be "
                                             "written on bank entry")
@@ -41,7 +42,7 @@ class AccountVoucherWizard(models.TransientModel):
         if self.env.context.get('active_id', False):
             order = self.env["purchase.order"].\
                 browse(self.env.context['active_id'])
-            if self.amount_advance > order.amount_resisual:
+            if round(self.amount_advance, 2) > round(order.amount_resisual, 2):
                 raise exceptions.ValidationError(_("Amount of advance is "
                                                    "greater than residual "
                                                    "amount on purchase"))
@@ -58,7 +59,10 @@ class AccountVoucherWizard(models.TransientModel):
 
         if 'amount_total' in fields:
             res.update({'amount_total': purchase.amount_resisual,
-                        'currency_id': purchase.currency_id.id})
+                        'currency_id': purchase.currency_id.id,
+                        'account_id':
+                        purchase.partner_id.commercial_partner_id.
+                        property_account_payable_id.id})
 
         return res
 
@@ -72,6 +76,10 @@ class AccountVoucherWizard(models.TransientModel):
                  or 1.0)
         else:
             self.exchange_rate = 1.0
+        self.currency_amount = self.amount_advance * (1.0 / self.exchange_rate)
+
+    @api.onchange('exchange_rate')
+    def onchange_exchange_rate(self):
         self.currency_amount = self.amount_advance * (1.0 / self.exchange_rate)
 
     @api.multi
@@ -107,12 +115,21 @@ class AccountVoucherWizard(models.TransientModel):
                            ref('account.account_payment_method_manual_out').id
                            }
             payment = payment_obj.create(payment_res)
-            payment.post()
+            if self.currency_id != self.journal_id.currency_id:
+                payment.with_context(force_from_rate=self.exchange_rate).post()
+            else:
+                payment.post()
             payment.refresh()
 
             for line in payment.move_line_ids:
                 if line.credit and self.due_date:
                     line.date_maturity = self.due_date
+                if line.account_id == purchase.partner_id.\
+                        commercial_partner_id.property_account_payable_id and \
+                        line.account_id != self.account_id:
+                    line.move_id.button_cancel()
+                    line.account_id = self.account_id.id
+                    line.move_id.post()
 
         return {
             'type': 'ir.actions.act_window_close',

@@ -15,6 +15,7 @@
         'stock',
         'sale_stock',
         'stock_picking_imp',
+        'stock_batch_picking'
     ],
     'data': [
         'views/sale_view.xml',

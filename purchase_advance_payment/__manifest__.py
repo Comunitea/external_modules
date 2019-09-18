@@ -9,7 +9,7 @@
     "category": "Purchases",
     "description": """Allow to add advance payments on purchases and then use
  its on invoices""",
-    "depends": ["purchase", "account"],
+    "depends": ["purchase", "account", "res_currency_rate_force"],
     "data": ['wizard/purchase_advance_payment_wzd_view.xml',
              'views/purchase_view.xml',
              'security/ir.model.access.csv'],

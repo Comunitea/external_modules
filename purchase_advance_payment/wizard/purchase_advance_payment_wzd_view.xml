@@ -16,15 +16,17 @@
                         <field name="date"/>
                         <field name="amount_total"/>
                         <field name="due_date"/>
+                        <field name="account_id" domain="[('user_type_id.type', '=', 'payable')]"/>
                     </group>
                     <separator string="Operation" colspan="4"/>
                     <group colspan="4" col="4">
                         <field name="amount_advance"/>
                         <field name="currency_id"/>
                         <field name="journal_currency_id" invisible="1"/>
+                        <newline/>
+                        <field name="exchange_rate"/>
+                        <field name="currency_amount"/>
                     </group>
-                    <field name="exchange_rate"/>
-                    <field name="currency_amount"/>
                 </group>
                 <footer>
                     <button name="make_advance_payment" string="Make advance payment" type="object" class="btn-primary"/>
