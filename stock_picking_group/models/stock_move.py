@@ -63,6 +63,35 @@ class StockMove(models.Model):
 
         return True
 
+
+    def get_batch_domain(self):
+        self.ensure_one()
+        domain = [('state', 'not in', ('draft', 'done', 'cancel')),
+                  ('picking_type_id', '=', self.picking_type_id.id)]
+
+        for field in self.picking_type_id.grouped_batch_field_ids:
+            if self[field.name]:
+                if field.ttype == 'many2one':
+                    domain += [(field.name, '=', self[field.name].id)]
+                else:
+                    domain += [(field.name, '=', self[field.name])]
+        return domain
+
+    def get_batch_vals(self):
+        vals = {
+                'picking_type_id': self.picking_type_id.id,
+                'date': self.date_expected,
+                }
+        for field in self.picking_type_id.grouped_batch_field_ids:
+            if self[field.name]:
+                if field.ttype == 'many2one':
+                    vals.update({field.name: self[field.name].id})
+                else:
+                    vals.update({field.name: self[field.name]})
+
+        return vals
+
+
     def _assign_picking(self):
         self = self.filtered(lambda x: not x.picking_type_id.after_assign)
         self.check_assign_picking_error()

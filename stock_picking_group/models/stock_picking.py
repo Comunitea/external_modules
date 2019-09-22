@@ -16,7 +16,7 @@ class StockPickingType(models.Model):
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    def get_domain_for_batch_picking(self):
+    def get_batch_domain(self):
 
         self.ensure_one()
         domain = [('state', 'not in', ('done', 'cancel')),
@@ -29,14 +29,12 @@ class StockPicking(models.Model):
             if self[field.name]:
                 if field.ttype == 'many2one':
                     domain += [(field.name, '=', self[field.name].id)]
-                #elif field.ttype == 'selection':
-                #    domain += [(field.name, '=', self[field.name])]
                 else:
                     domain += [(field.name, '=', self[field.name])]
         return domain
 
 
-    def get_vals_for_new_batch(self):
+    def get_batch_vals(self):
 
         vals = {
                 'picking_type_id': self.picking_type_id.id,
@@ -58,17 +56,17 @@ class StockPicking(models.Model):
 
         sbp = self.env['stock.batch.picking']
         for pick in self:
-            domain = pick.get_domain_for_batch_picking()
+            domain = pick.get_batch_domain()
             b_id = sbp.search(domain, limit=1)
             if not b_id and create:
-                b_id = sbp.create(pick.get_vals_for_new_batch())
+                b_id = sbp.create(pick.get_batch_vals())
 
             pick.batch_picking_id = b_id and b_id.id
 
 class StockBatchPicking(models.Model):
     _inherit = 'stock.batch.picking'
 
-    partner_id = fields.Many2one('res.partner', string='Delivery Address', compute='get_partner_id', store=True)
+    partner_id = fields.Many2one('res.partner', string='Empresa', compute='get_partner_id', store=True)
 
     name = fields.Char(
         'Name', default='/',
