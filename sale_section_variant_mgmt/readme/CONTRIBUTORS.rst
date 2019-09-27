@@ -1,1 +1,0 @@
-* Javier Colmenero Fernández <javier@comunitea.com>

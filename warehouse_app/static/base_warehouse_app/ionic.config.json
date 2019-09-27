@@ -1,7 +1,0 @@
-{
-  "name": "base_warehouse_app",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "ionic-angular"
-}
