@@ -4,7 +4,7 @@
 
 {
     'name': 'Telesale',
-    'version': '0.0.1',
+    'version': '12.0.0.0',
     'author': 'Comunitea ',
     "category": "Sales",
     'license': 'AGPL-3',
@@ -13,7 +13,6 @@
         'sale',
         'web',
         'product',
-        # 'commercial_rules',
         'stock',  # stock_available ProductInfoWifget, move to other module?
     ],
     'contributors': [
