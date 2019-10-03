@@ -17,6 +17,7 @@ class ProductTemplate(models.Model):
     customer_prices_count = fields.\
         Integer(compute='_get_customer_prices_count', string='#Prices')
 
+
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
