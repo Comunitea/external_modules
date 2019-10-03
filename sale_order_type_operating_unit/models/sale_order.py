@@ -11,11 +11,12 @@ class SaleOrder(models.Model):
     @api.multi
     @api.onchange('type_id')
     def onchange_type_id(self):
-        super(SaleOrder, self).onchange_type_id()
+        res = super(SaleOrder, self).onchange_type_id()
         for order in self:
             if order.type_id.invoice_group_method_id:
                 order.invoice_group_method_id = (
                     order.type_id.invoice_group_method_id.id)
+        return res
 
     @api.multi
     def _prepare_invoice(self):
