@@ -12,7 +12,8 @@ class CustomerPrice(models.Model):
     product_id = fields.Many2one('product.product', 'Product', index=1)
     partner_id = fields.Many2one('res.partner', 'Customer', required=True)
     min_qty = fields.Float('Min Quantity', default=0.0, required=True)
-    price = fields.Float('Price', default=0.0, digits=dp.get_precision('Product Price'),
+    price = fields.Float(
+        'Price', default=0.0, digits=dp.get_precision('Product Price'),
         required=True, help="The price to purchase a product")
     date_start = fields.Date('Start Date',
                              help="Start date for this customer price")

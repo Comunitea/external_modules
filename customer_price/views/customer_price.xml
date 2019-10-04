@@ -48,6 +48,7 @@
             <field name="arch" type="xml">
                 <search string="Customer Prices">
                     <field name="product_tmpl_id" string="Template"/>
+                    <field name="product_id" string="Variant"/>
                     <field name="partner_id" string="Customer"/>
                     <field name="date_start" string="Date start"/>
                     <field name="date_end" string="Date end"/>
