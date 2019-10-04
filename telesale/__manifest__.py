@@ -11,6 +11,8 @@
     'depends': [
         'base',
         'sale',
+        'sale_management',
+        'uom',
         'web',
         'product',
         'stock',  # stock_available ProductInfoWifget, move to other module?

@@ -82,7 +82,7 @@ var TsModel = Backbone.Model.extend({
     // helper function to load data from the server
     fetch: function(model, fields, domain, ctx){
         this._load_progress = (this._load_progress || 0) + 0.05;
-        this.ts_widget.loading_message(_t('Loading')+' '+model,this._load_progress);
+        // this.ts_widget.loading_message(_t('Loading')+' '+model,this._load_progress);
         return rpc.query({model: model, method: 'search_read', args:[domain, fields]})
     },
     fetch_limited_ordered: function(model, fields, domain, limit, orderby, ctx){
@@ -119,7 +119,7 @@ var TsModel = Backbone.Model.extend({
                     self.set('company',companies[0]);
 
                     // UNITS
-                    return self.fetch('product.uom', ['name'], []);
+                    return self.fetch('uom.uom', ['name'], []);
                 }).then(function(units){
                     for (var key in units){
                         self.get('units_names').push(units[key].name)
