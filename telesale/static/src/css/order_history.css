@@ -13,6 +13,12 @@
     width: 100%;
     height: 7%;
     border-bottom: solid 1px #CECBCB;
+    display:flex;
+}
+
+.telesale .search-buttons{
+    display:flex;
+    height:100%
 }
 
 .telesale .order-history-search .input-column{

@@ -32,6 +32,7 @@
     width:100%;
     height: 63%;
     border-right: solid 1px #CECBCB;
+    display: flex;
 }
 .telesale #leftpart {
     /*position: relative;
@@ -52,6 +53,7 @@
     width: 100%;
     height: 18.5%;
     border-top: solid 1px #CECBCB;
+    display:flex;
 }
 .telesale #bottompart table{
     margin-top: 0.4vh;
@@ -61,6 +63,7 @@
     float:left;
     width:75.8%;*/
     height: 100%;
+    display: flex;
 }
 
 .telesale .bottomright {
@@ -68,11 +71,13 @@
     float:left;
     width:75.8%;*/
     height: 100%;
+    display: flex;
 }
 .telesale #bottompart  input{
     color:black;
     width:100%;
     height:50%;
+    display: flex;
 }
 .telesale #toppart  input{
     color:black;
@@ -217,7 +222,7 @@
     height: 6%;
     width:100%;
     border-bottom: solid 2px #CECBCB;
-    display: table;
+    display: flex;
 }
 .telesale #leftpart .button-order-container .functional-buttons{
     display:table-cell;
