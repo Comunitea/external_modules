@@ -16,6 +16,7 @@
         'web',
         'product',
         'stock',  # stock_available ProductInfoWifget, move to other module?
+        'account_payment_sale',
     ],
     'contributors': [
         "Comunitea ",

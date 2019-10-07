@@ -221,14 +221,14 @@
     <t t-name="CustomerListWidget">
         <div class="customer-list-content">
             <section class="top-content">
-                <div class= "col-xs-7 centerinside fullheight">
+                <div class= "col-7 centerinside fullheight">
                     <div class='centerthis searchbox'>
                         <input onclick="this.select()" id="search-client"  placeholder='Search Customers' />
                         <span class='search-clear'></span>
                     </div>
                     <span class='searchbox'></span>
                 </div>
-                <div class="col-xs-1 centerinside fullheight">
+                <div class="col-1 centerinside fullheight">
                     <div class='centerthis searchbox'>
                         <span class='button new-customer'>
                             <i class='fa fa-user'></i>
@@ -236,7 +236,7 @@
                         </span>
                     </div>
                 </div>
-                <div class= "col-xs-2 centerinside fullheight">
+                <div class= "col-2 centerinside fullheight">
                     <div class= "centerthis">
                         <span class='button next oe_hidden highlight'>
                             Select Customer
@@ -244,7 +244,7 @@
                         </span>
                     </div>
                 </div>
-                <div class= "col-xs-2 centerinside fullheight">
+                <div class= "col-2 centerinside fullheight">
                     <div class= "centerthis">
                         <span class='button next2 oe_hidden highlight'>
                             Set Delivery Address

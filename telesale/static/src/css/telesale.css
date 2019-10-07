@@ -80,7 +80,20 @@ overflow: hidden !important;
     height: 3%;
     color: gray;
     background: #393939;
+    display: flex;
 }
+
+.telesale .topbar-start {
+    width: 80%;
+    height: 100%;
+}
+
+.telesale .topbar-end {
+    width: 20%;
+    height: 100%;
+    display: flex;
+}
+
 /*Content of screens*/
 .telesale #content {
     position: relative;
@@ -118,10 +131,11 @@ overflow: hidden !important;
 /*Screens Buttons*/
 .telesale #topheader .select-screen-buttons{
     position:relative;
-    width: 88%;
+    /* width: 88%; */
     height: 100%;
     color: gray;
     background: #393939;
+    display: flex;
 
 }
 /*  ********* CUSTOM MULTICOMPANY SWITCH WIDGET ********* */
@@ -257,12 +271,12 @@ overflow: hidden !important;
     background: #ff4a4a;
 }
 
-.telesale .col-sm-1 .col-md-1 .col-lg-1 .col-xs-2 .col-sm-2 .col-md-2 .col-lg-2 .col-xs-3 .col-sm-3 .col-md-3 .col-lg-3 .col-xs-4 .col-sm-4 .col-md-4 .col-lg-4 .col-xs-5 .col-sm-5 .col-md-5 .col-lg-5 .col-xs-6 .col-sm-6 .col-md-6 .col-lg-6 .col-xs-7 .col-sm-7 .col-md-7 .col-lg-7 .col-xs-8 .col-sm-8 .col-md-8 .col-lg-8 {
+/* .telesale .col-sm-1 .col-md-1 .col-lg-1 .col-2 .col-sm-2 .col-md-2 .col-lg-2 .col-3 .col-sm-3 .col-md-3 .col-lg-3 .col-4 .col-sm-4 .col-md-4 .col-lg-4 .col-5 .col-sm-5 .col-md-5 .col-lg-5 .col-6 .col-sm-6 .col-md-6 .col-lg-6 .col-7 .col-sm-7 .col-md-7 .col-lg-7 .col-8 .col-sm-8 .col-md-8 .col-lg-8 {
     position: relative;
     min-height: 1px;
     padding-right: 0.4vw !important;
     padding-left: 0.4vw !important;
-  }
+  } */
 
 .ui-helper-hidden-accessible { display:none; }
 

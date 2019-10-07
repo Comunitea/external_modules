@@ -8,7 +8,7 @@
             <div id="placeholder-history-widget">
             </div>
             <div class="close-block">
-                <div class="col-xs-12 fullheight centerinside">
+                <div class="col-12 fullheight centerinside">
                   <div class="centerthis">
                     <button id="close-histoy">Close</button>
                   </div>
@@ -22,7 +22,7 @@
 
         <div class="customer-history-popup">
             <div class="close-block">
-                <div class="col-xs-12 fullheight centerinside">
+                <div class="col-12 fullheight centerinside">
                   <div class="centerthis">
                     <button id="close-filter">Close</button>
                   </div>

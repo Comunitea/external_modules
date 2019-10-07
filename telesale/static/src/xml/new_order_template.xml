@@ -7,19 +7,36 @@
     <t t-name="TsWidget">
         <div class="telesale">
             <input id="clearfocus" style="display:none"></input>
-            <div id="topheader">
-                <div class="col-xs-9 fullheight">
+            <!-- <div id="topheader">
+                <div class="col-9 fullheight">
                   <div id="placeholder-screen-buttons">
                   </div>
                 </div>
-                <div class="col-xs-3 fullheight">
-                    <div class="col-xs-10 fullheight">
+                <div class="col-3 fullheight">
+                    <div class="col-10 fullheight">
                         <div id="placeholder-switch-company">
                         </div>
                     </div>
-                    <div class="col-xs-2 fullheight">
+                    <div class="col-2 fullheight">
                       <div id="placeholder-session-buttons2">
                       </div>
+                    </div>
+                </div>
+            </div>
+            <input id="clearfocus" style="display:none"></input> -->
+            <div id="topheader">
+                <div class="topbar-start">
+                  <div id="placeholder-screen-buttons">
+                  </div>
+                </div>
+                <div class="topbar-end">
+                    <div class="col-10 fullheight">
+                        <div id="placeholder-switch-company">
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div id="placeholder-session-buttons2">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,27 +81,27 @@
     <t t-name="ScreenButtonWidget">
         <div class="select-screen-buttons">
             <!-- New Order -->
-            <div class="col-xs-2 fullheight">
+            <div class="col-2">
                 <button id="button_no" class="selected-screen"><t t-esc="widget.button_no"/></button>
             </div>
             <!-- Sale History -->
-            <div class="col-xs-2 fullheight">
+            <div class="col-2">
                 <button id="button_sh" class="select-screen"><t t-esc="widget.button_sh"/></button>
             </div>
             <!-- Product Catalog -->
-            <div class="col-xs-2 fullheight">
+            <div class="col-2">
                 <button id="button_pc" class="select-screen"><t t-esc="widget.button_pc"/></button>
             </div>
             <!-- Customers -->
-            <div class="col-xs-2 fullheight">
+            <div class="col-2">
                 <button id="button_so" class="select-screen"><t t-esc="widget.button_so"/></button>
             </div>
             <!-- Order History -->
-            <div class="col-xs-2 fullheight">
+            <div class="col-2">
                 <button id="button_oh" class="select-screen"><t t-esc="widget.button_oh"/></button>
             </div>
             <!-- Key shorts -->
-            <div class="col-xs-2 fullheight">
+            <div class="col-2">
               <button id="button_ks" class="select-screen"><t t-esc="widget.button_ks"/></button>
             </div>
         </div>
@@ -108,23 +125,23 @@
             </div>
             <div id="middlepart">
 
-              <div id="leftpart" class="col-xs-9 fullheight">
+              <div id="leftpart" class="col-9 fullheight">
                   <div id="placeholder-order-widget">
                   </div>
 
               </div>
 
-              <div id="rightpart" class="col-xs-3 fullheight">
+              <div id="rightpart" class="col-3 fullheight">
                 <div id="placeholder-rightpart">
                 </div>
             </div>
             </div>
             <div id="bottompart">
-                <div class="bottomleft col-xs-3 fullheight">
+                <div class="bottomleft col-3 fullheight">
                     <div id="placeholder-bottompart-left">
                     </div>
                 </div>
-                <div class="bottomright col-xs-9 fullheight">
+                <div class="bottomright col-9 fullheight">
                     <div id="placeholder-bottompart">
                     </div>
                 </div>
@@ -138,9 +155,9 @@
     <t t-name="Data-Order-Widget">
         <!-- FIRST ROW -->
         <div class="row semiheight fullwidth">
-              <div class="col-xs-4 fullheight">
+              <div class="col-4 fullheight">
                   <div class="row semiheight">
-                    <div class="col-xs-12 fullheight">
+                    <div class="col-12 fullheight">
                       <div class="fullheight centerinside fullwidth">
                         <div class="centerthis">
                             <label for="customer" id="labelpartner">Customer:</label>
@@ -151,9 +168,9 @@
                     </div>
                   </div>
                 </div>
-                <div id="inherit_me" class="col-xs-4 fullheight">
+                <div id="inherit_me" class="col-4 fullheight">
                   <div class="row semiheight">
-                    <div class="col-xs-12 fullheight">
+                    <div class="col-12 fullheight">
                       <div class="fullheight centerinside fullwidth">
                         <div class="centerthis">
                           <label for="shipp_addr">Shipp Addr:</label>
@@ -164,7 +181,7 @@
                   </div>
                 </div>
 
-                <div class="col-xs-4 fullheight">
+                <div class="col-4 fullheight">
                       <div class="row semiheight">
                           <div class="centerthis">
                             <label for="coment">Internal Notes:</label>
@@ -175,7 +192,7 @@
         </div>
         <!-- SECOND ROW -->
         <div class="row semiheight fullwidth">
-                <div class="col-xs-2 fullheight">
+                <div class="col-2 fullheight">
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
@@ -185,7 +202,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-2 fullheight">
+                <div class="col-2 fullheight">
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
@@ -195,7 +212,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-2 fullheight">
+                <div class="col-2 fullheight">
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
@@ -205,7 +222,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-1 fullheight">
+                <div class="col-1 fullheight">
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
@@ -215,7 +232,7 @@
                       </div>
                     </div>
                 </div>
-                <div class="col-xs-1 fullheight">
+                <div class="col-1 fullheight">
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                          <div class="centerthis">
@@ -225,7 +242,7 @@
                       </div>
                     </div>
                 </div>
-                 <div class="col-xs-4 fullheight">
+                 <div class="col-4 fullheight">
                     <div class="row semiheight">
                         <div class="centerthis">
                           <label for="observations">Observations:</label>
@@ -233,7 +250,7 @@
                         </div>
                     </div>
               </div>
-<!--                 <div class="col-xs-2 fullheight">
+<!--                 <div class="col-2 fullheight">
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
@@ -243,7 +260,7 @@
                       </div>
                     </div>
                 </div>
-                <div class="col-xs-2 fullheight">
+                <div class="col-2 fullheight">
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
@@ -254,7 +271,7 @@
                       </div>
                     </div>
                 </div> -->
-             <!--  <div class="col-xs-2 fullheight">
+             <!--  <div class="col-2 fullheight">
                     <div class="row semiheight">
                         <div class="centerthis">
                           <label for="customer_note">Customer Notes:</label>
@@ -277,48 +294,48 @@
     <!-- *********************************************************************************************************************************** -->
     <t t-name="Order-Widget">
         <div class="button-order-container fullheight">
-            <div class="col-xs-1 fullheight centerinside">
+            <div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button class="add-line-button" tabIndex="9">ADD</button>
               </div>
             </div>
-            <div class="col-xs-1 fullheight centerinside">
+            <div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button class="remove-line-button" tabIndex="10">REMOVE</button>
               </div>
             </div>
-            <div class="col-xs-1 fullheight centerinside">
+            <div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="ult-button" tabIndex="11">ULT</button>
               </div>
             </div>
-            <div class="col-xs-1 fullheight centerinside">
+            <div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="vua-button" tabIndex="12">VUA</button>
               </div>
             </div>
-            <div class="col-xs-1 fullheight centerinside">
+            <div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="so-button" tabIndex="13">SO</button>
               </div>
             </div>
-             <div class="col-xs-1 fullheight centerinside">
+             <div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="promo-button" tabIndex="13">CR</button>
               </div>
             </div>
-            <div class="col-xs-1 fullheight centerinside">
+            <div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="info-button" tabIndex="16">INFO</button>
               </div>
             </div>
-            <div class="col-xs-1 fullheight centerinside">
+            <div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="show-client" tabIndex="17">CUSTOMER</button>
               </div>
             </div>
             <!-- POP UP GENERIC EXAMPLE -->
-            <!-- <div class="col-xs-1 fullheight centerinside">
+            <!-- <div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="filter-client" tabIndex="18">FILTER CUSTOMER</button>
               </div>
@@ -409,7 +426,7 @@
     <!-- *********************************************************** TOTALS ORDER WIDGET *************************************************** -->
     <!-- *********************************************************************************************************************************** -->
     <t t-name="Totals-Order-Widget">
-        <div class="col-xs-2 fullheight">
+        <div class="col-2 fullheight">
             <div class="row semiheight">
                <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
@@ -432,7 +449,7 @@
                   </div>
               </div>
         </div>
-        <div class="col-xs-2 fullheight">
+        <div class="col-2 fullheight">
             <div class="row semiheight">
                 <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
@@ -454,7 +471,7 @@
                   </div>
               </div>
         </div>
-        <div class="col-xs-2 fullheight">
+        <div class="col-2 fullheight">
             <div class="row semiheight">
                 <div class="fullheight centerinside fullwidth">
                   <div class="centerthis">
@@ -477,9 +494,9 @@
                   </div>
               </div>
         </div>
-        <div class="col-xs-2 fullheight">
+        <div class="col-2 fullheight">
         </div>
-        <div class="col-xs-4 fullheight centerinside">
+        <div class="col-4 fullheight centerinside">
           <div id="buttons_order_div" class="fullheight centerinside fullwidth">
             <div class="order-button">
                   <div class="fullheight centerinside fullwidth">
