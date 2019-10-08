@@ -119,7 +119,7 @@ class CashForecast(models.Model):
         if type == 'input':
             account_ids = self.env['account.payment.mode'].search([
                 ('payment_type', '=', 'inbound'),
-                ('charge_financed', '=' , 'False')]).mapped(
+                ('charge_financed', '!=', 'True')]).mapped(
                 'transfer_account_id'). \
                 filtered(lambda x: x.user_type_id.type == 'receivable')
         else:
