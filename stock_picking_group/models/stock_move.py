@@ -140,7 +140,6 @@ class StockMove(models.Model):
         return vals
 
     def check_new_location(self, location='location_id'):
-
         ##COMPRUBA Y ESTABLECE LA NUEVA UBICACIÓN DE ORIGEN DEL MOVIMIENTO Y CAMBIA EL PICKING_TYPE EN CONSECUENCIA. ADEMAS LO SACA DE UN ALBARÁN SI LO TUVIERA
         ##REVISAR BIEN
         if not self.move_line_ids:
@@ -187,7 +186,6 @@ class StockMove(models.Model):
             self.picking_id = False
             self._assign_picking()
 
-
     def _prepare_procurement_values(self):
         """
         Pass move custom fields to the linked move
@@ -200,7 +198,7 @@ class StockMove(models.Model):
         return vals
 
     def _action_assign(self):
-
+        print ('\n\n-------------------------------\n\n FALLA AQUI\n\n----------------------------\n\n')
         super()._action_assign()
         for move in self.filtered(lambda x: x.location_id.picking_type_id and x.move_line_ids and x.quantity_done == 0):
             move.check_new_location()

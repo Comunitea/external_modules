@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_cancel_line" model="ir.ui.view">
+        <field name="name">Order Line Cancel Allowed</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree//field[@name='price_tax']" position="after">
+                <field name="cancel_state" invisible="1"/>
+                <button name="action_cancel_line" string="Cancel line"
+                        type="object" icon="fa-window-close-o "
+                        class ="text-danger"
+                        groups="order_line_cancel.group_cancel_line"
+                        attrs="{'invisible': ['|', '|', ('qty_delivered', '!=', 0), ('state', '!=', 'sale'), ('cancel_state', '=', 'cancel')]}"
+                        />
+                <button name="action_re_order_line" string="Reorder line"
+                        class="text-success"
+                        type="object" icon="fa-retweet"
+                        groups="order_line_cancel.group_cancel_line"
+                        attrs="{'invisible': ['|', ('state', '!=', 'sale'), ('cancel_state', '=', 'ready')]}"
+                        />
+            </xpath>
+            <xpath expr="//tree/field[@name='sequence']/.." position="attributes">
+                <attribute name="decoration_muted">cancel_state='cancel'</attribute>
+            </xpath>
+            <xpath expr="//form/group/group" position="inside">
+                 <field name="cancel_state" invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
