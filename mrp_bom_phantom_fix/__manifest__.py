@@ -3,7 +3,7 @@
 
 {
     'name': 'mrp bom phantom fix',
-    'version': '11.0.1.0.0',
+    'version': '12.0.1.0.0',
     'summary': 'Some fixes for the mrp phantom bom',
     'category': 'Sales',
     'author': 'Comunitea',
