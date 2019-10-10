@@ -7,6 +7,7 @@ import time
 
 class CustomerPrice(models.Model):
     _name = "customer.price"
+    _description = 'customer price'
 
     product_tmpl_id = fields.Many2one('product.template', 'Template')
     product_id = fields.Many2one('product.product', 'Product', index=1)

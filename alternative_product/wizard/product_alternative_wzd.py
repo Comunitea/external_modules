@@ -9,6 +9,7 @@ from odoo.addons import decimal_precision as dp
 class ProductAlternativeVariantWzd(models.TransientModel):
 
     _name = 'product.alternative.variant.wzd'
+    _description = 'alternative products wizard'
 
     wzd_id = fields.Many2one('product.alternative.wzd')
     name = fields.Char('Display name', readonly=True)
@@ -45,6 +46,7 @@ class ProductAlternativeVariantWzd(models.TransientModel):
 class ProductAlternativeWzd(models.TransientModel):
 
     _name = 'product.alternative.wzd'
+    _description = 'alternative products wizard'
 
     sale_order_line_id = fields.Many2one(
         'sale.order.line', string='Sale order line')

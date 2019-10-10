@@ -11,18 +11,18 @@
                 <label for="type" attrs="{'invisible': [('parent_id','=', False)]}" groups="base.group_no_one"/>
                 <div attrs="{'invisible': [('parent_id','=', False)]}">
                    <field name="type" groups="base.group_no_one" class="oe_inline"/>
-                   <button name="set_as_default" type="object" icon="fa-star" style="background-color:#FFFFFF" class="oe_inline" attrs ="{'invisible': [('default_partner_by_type', '!=', True)]}" />
-                   <button name="set_as_default" type="object" icon="fa-star-o" style="background-color:#FFFFFF" class="oe_inline far" attrs ="{'invisible': [('default_partner_by_type', '=', True)]}" />
+                   <button name="set_as_default" type="object" icon="fa-star" aria-label="default" title="default" style="background-color:#FFFFFF" class="oe_inline" attrs ="{'invisible': [('default_partner_by_type', '!=', True)]}" />
+                   <button name="set_as_default" type="object" icon="fa-star-o" aria-label="no_default" title="default" style="background-color:#FFFFFF" class="oe_inline far" attrs ="{'invisible': [('default_partner_by_type', '=', True)]}" />
                 </div>
             </field>
 
             <xpath expr="//kanban/field[@name='customer']" position="after">
                <field name="default_partner_by_type"/>
             </xpath>
-            <xpath expr="//div[contains(@class, 'oe_kanban_details')]/field[@name='name']" position="after">
+            <xpath expr="//div[hasclass('oe_kanban_details')]/field[@name='name']" position="after">
             <!--xpath expr="//div[contains(@class, 'oe_kanban_details')]" position="inside"-->
                 <t t-if="record.default_partner_by_type.raw_value === true">
-                    <i class="fa fa-star"/>
+                    <i class="fa fa-star" title="default" aria-label="default"/>
                 </t>
             </xpath>
             <xpath expr="//form/sheet/field[@name='type']" position="replace">
@@ -31,8 +31,8 @@
                     <label for="type" attrs="{'invisible': [('parent_id','=', False)]}" groups="base.group_no_one"/>
                     <div attrs="{'invisible': [('parent_id','=', False)]}">
                         <field name="type" groups="base.group_no_one" class="oe_inline"/>
-                        <button name="set_as_default" type="object" icon="fa-star" style="background-color:#FFFFFF" class="oe_edit_only oe_inline" attrs ="{'invisible': [('default_partner_by_type', '!=', True)]}" />
-                        <button name="set_as_default" type="object" icon="fa-star-o" style="background-color:#FFFFFF" class="oe_edit_only oe_inline far" attrs ="{'invisible': [('default_partner_by_type', '=', True)]}" />
+                        <button name="set_as_default" type="object" icon="fa-star" aria-label="default" title="default" style="background-color:#FFFFFF" class="oe_edit_only oe_inline" attrs ="{'invisible': [('default_partner_by_type', '!=', True)]}" />
+                        <button name="set_as_default" type="object" icon="fa-star-o" aria-label="no-default" title="default" style="background-color:#FFFFFF" class="oe_edit_only oe_inline far" attrs ="{'invisible': [('default_partner_by_type', '=', True)]}" />
                     </div>
                 </group>
             </xpath>
@@ -47,9 +47,9 @@
             <field name="is_company" position="after">
                 <field name="default_partner_by_type" invisible="1"/>
             </field>
-            <xpath expr="//div[contains(@class, 'oe_kanban_partner_categories')]" position="after">
+            <xpath expr="//div[hasclass('oe_kanban_partner_categories')]" position="after">
                 <t t-if="record.default_partner_by_type.raw_value === true">
-                    <i class="fa fa-star"/>
+                    <i class="fa fa-star" title="default" aria-label="default"/>
                 </t>
             </xpath>
         </field>
