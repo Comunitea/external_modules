@@ -113,7 +113,6 @@ class StockMove(models.Model):
         return domain
 
     def _get_new_picking_values(self):
-
         vals = super()._get_new_picking_values()
         for field in self.picking_type_id.grouped_field_ids:
             if field.ttype == 'many2one':
@@ -153,12 +152,12 @@ class StockMove(models.Model):
         #    return
         #saco las posibles ubicaciones con albaran de las operaciones
         new_mov_locs = [line[location]._get_location_type_id() for line in self.move_line_ids]
-        print ('Ubicaciones de las operaciones: {} en relación a las que tienen albaranes {}'.format(self.move_line_ids.mapped(location), new_mov_locs))
+        #print ('Ubicaciones de las operaciones: {} en relación a las que tienen albaranes {}'.format(self.move_line_ids.mapped(location), new_mov_locs))
         # Si solo hay una, la nueva ubicación del movimiento es la de la operación
         if len(new_mov_locs) == 1:
             if new_mov_locs[0] != self[location]:
                 vals = self.get_new_location_vals(location, new_mov_locs[0])
-                print("Actualizo el movimiento con vals y reseteo picking_id si lo tuviera")
+                #print("Actualizo el movimiento con vals y reseteo picking_id si lo tuviera")
                 self.write(vals)
                 self.move_line_ids.write({'picking_id': False})
 
@@ -198,7 +197,6 @@ class StockMove(models.Model):
         return vals
 
     def _action_assign(self):
-        print ('\n\n-------------------------------\n\n FALLA AQUI\n\n----------------------------\n\n')
         super()._action_assign()
         for move in self.filtered(lambda x: x.location_id.picking_type_id and x.move_line_ids and x.quantity_done == 0):
             move.check_new_location()

@@ -14,6 +14,7 @@
             </field>
             <field name="sequence_id" position="after">
                 <field name="batch_picking_sequence_id"/>
+                <field name="parent_id"/>
             </field>
         </field>
     </record>

@@ -88,7 +88,7 @@ msgstr "Ubicaciones de inventario"
 #: model:ir.ui.view,arch_db:stock_picking_group.purchase_order_form_move_line_tree
 #: model:ir.ui.view,arch_db:stock_picking_group.sale_order_form_move_line_tree
 msgid "Move lines"
-msgstr "Líneas Movimientos"
+msgstr "Movimientos"
 
 #. module: stock_picking_group
 #: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
