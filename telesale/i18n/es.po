@@ -467,7 +467,7 @@ msgstr ""
 #: code:addons/telesale/static/src/xml/order_history_template.xml:116
 #, python-format
 msgid "Canceled"
-msgstr ""
+msgstr "Cancelado"
 
 #. module: telesale
 #. openerp-web
@@ -479,7 +479,7 @@ msgstr ""
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_sale_order__chanel
 msgid "Chanel"
-msgstr ""
+msgstr "Canal"
 
 #. module: telesale
 #. openerp-web
@@ -868,12 +868,12 @@ msgstr ""
 #. module: telesale
 #: model_terms:ir.ui.view,arch_db:telesale.ts_session_opening_form_view
 msgid "Inicializate Tele Sale UI"
-msgstr ""
+msgstr "Iniciar interfaz televenta"
 
 #. module: telesale
 #: model:ir.model.fields,field_description:telesale.field_sale_order_line__standard_price
 msgid "Intercompany Price"
-msgstr ""
+msgstr "Precio intercompañía"
 
 #. module: telesale
 #. openerp-web
@@ -1258,7 +1258,7 @@ msgstr "ELIMINAR"
 #: code:addons/telesale/static/src/xml/customer_list_template.xml:133
 #, python-format
 msgid "Reference"
-msgstr "rEFERENCIA"
+msgstr "Referencia"
 
 #. module: telesale
 #. openerp-web
