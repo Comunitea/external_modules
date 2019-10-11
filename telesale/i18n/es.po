@@ -951,7 +951,7 @@ msgstr ""
 #: code:addons/telesale/static/src/xml/new_order_template.xml:478
 #, python-format
 msgid "Margin (%):"
-msgstr "MArgen (%)"
+msgstr "Margen (%)"
 
 #. module: telesale
 #. openerp-web
