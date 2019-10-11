@@ -1083,7 +1083,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                 report_file: 'sale.report_saleorder',
                 report_name: 'sale.report_saleorder',
                 report_type: 'qweb-pdf',
-                type: 'ir.actions.report.xml'
+                type: 'ir.actions.report'
             });
             this.enable_more_clicks()
         },
