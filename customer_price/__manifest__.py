@@ -12,6 +12,7 @@
     'installable': True,
     'depends': [
         'product',
+        'sale'
     ],
     'data': [
         'views/customer_price.xml',
