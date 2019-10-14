@@ -1,0 +1,46 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#       * sale_margin_percentage
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-26 15:50+0000\n"
+"PO-Revision-Date: 2019-08-26 15:50+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_margin_percentage
+#: model:ir.model.fields,help:sale_margin_percentage.field_sale_order_margin_perc
+msgid "It gives profitability by calculating percentage."
+msgstr "Muestra el beneficio calculado en porcentaje."
+
+#. module: sale_margin_percentage
+#: model:ir.model.fields,field_description:sale_margin_percentage.field_sale_order_line_margin_perc
+msgid "Margin"
+msgstr "Margen"
+
+#. module: sale_margin_percentage
+#: model:ir.model.fields,field_description:sale_margin_percentage.field_sale_order_margin_perc
+msgid "Margin %"
+msgstr "% Margen"
+
+#. module: sale_margin_percentage
+#: model:ir.model.fields,field_description:sale_margin_percentage.field_sale_order_total_purchase
+msgid "Price purchase"
+msgstr "Precio de compra"
+
+#. module: sale_margin_percentage
+#: model:ir.model,name:sale_margin_percentage.model_sale_order
+msgid "Quotation"
+msgstr "Ventas"
+
+#. module: sale_margin_percentage
+#: model:ir.model,name:sale_margin_percentage.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea pedido de venta"
