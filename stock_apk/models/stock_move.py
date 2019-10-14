@@ -464,10 +464,8 @@ class StockMove(models.Model):
 
     @api.model
     def move_validation_from_apk(self, vals):
-
         stock_move = self.env['stock.move'].browse(vals)
         stock_move.action_done_for_pda()
-
         return True
     
     @api.model

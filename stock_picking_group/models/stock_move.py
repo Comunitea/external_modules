@@ -63,6 +63,35 @@ class StockMove(models.Model):
 
         return True
 
+
+    def get_batch_domain(self):
+        self.ensure_one()
+        domain = [('state', 'not in', ('draft', 'done', 'cancel')),
+                  ('picking_type_id', '=', self.picking_type_id.id)]
+
+        for field in self.picking_type_id.grouped_batch_field_ids:
+            if self[field.name]:
+                if field.ttype == 'many2one':
+                    domain += [(field.name, '=', self[field.name].id)]
+                else:
+                    domain += [(field.name, '=', self[field.name])]
+        return domain
+
+    def get_batch_vals(self):
+        vals = {
+                'picking_type_id': self.picking_type_id.id,
+                'date': self.date_expected,
+                }
+        for field in self.picking_type_id.grouped_batch_field_ids:
+            if self[field.name]:
+                if field.ttype == 'many2one':
+                    vals.update({field.name: self[field.name].id})
+                else:
+                    vals.update({field.name: self[field.name]})
+
+        return vals
+
+
     def _assign_picking(self):
         self = self.filtered(lambda x: not x.picking_type_id.after_assign)
         self.check_assign_picking_error()
@@ -84,7 +113,6 @@ class StockMove(models.Model):
         return domain
 
     def _get_new_picking_values(self):
-
         vals = super()._get_new_picking_values()
         for field in self.picking_type_id.grouped_field_ids:
             if field.ttype == 'many2one':
@@ -111,7 +139,6 @@ class StockMove(models.Model):
         return vals
 
     def check_new_location(self, location='location_id'):
-
         ##COMPRUBA Y ESTABLECE LA NUEVA UBICACIÓN DE ORIGEN DEL MOVIMIENTO Y CAMBIA EL PICKING_TYPE EN CONSECUENCIA. ADEMAS LO SACA DE UN ALBARÁN SI LO TUVIERA
         ##REVISAR BIEN
         if not self.move_line_ids:
@@ -125,12 +152,12 @@ class StockMove(models.Model):
         #    return
         #saco las posibles ubicaciones con albaran de las operaciones
         new_mov_locs = [line[location]._get_location_type_id() for line in self.move_line_ids]
-        print ('Ubicaciones de las operaciones: {} en relación a las que tienen albaranes {}'.format(self.move_line_ids.mapped(location), new_mov_locs))
+        #print ('Ubicaciones de las operaciones: {} en relación a las que tienen albaranes {}'.format(self.move_line_ids.mapped(location), new_mov_locs))
         # Si solo hay una, la nueva ubicación del movimiento es la de la operación
         if len(new_mov_locs) == 1:
             if new_mov_locs[0] != self[location]:
                 vals = self.get_new_location_vals(location, new_mov_locs[0])
-                print("Actualizo el movimiento con vals y reseteo picking_id si lo tuviera")
+                #print("Actualizo el movimiento con vals y reseteo picking_id si lo tuviera")
                 self.write(vals)
                 self.move_line_ids.write({'picking_id': False})
 
@@ -158,7 +185,6 @@ class StockMove(models.Model):
             self.picking_id = False
             self._assign_picking()
 
-
     def _prepare_procurement_values(self):
         """
         Pass move custom fields to the linked move
@@ -171,7 +197,6 @@ class StockMove(models.Model):
         return vals
 
     def _action_assign(self):
-
         super()._action_assign()
         for move in self.filtered(lambda x: x.location_id.picking_type_id and x.move_line_ids and x.quantity_done == 0):
             move.check_new_location()

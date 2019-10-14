@@ -1,0 +1,422 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* stock_move_reassign_availability
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-09-27 07:33+0000\n"
+"PO-Revision-Date: 2019-09-27 07:33+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "(Un) Reserve"
+msgstr "(Anular) Reservar"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,help:stock_move_reassign_availability.field_move_change_reserve_wzd_state
+msgid "* New: When the stock move is created and not yet confirmed.\n"
+"* Waiting Another Move: This state can be seen when a move is waiting for another one, for example in a chained flow.\n"
+"* Waiting Availability: This state is reached when the procurement resolution is not straight forward. It may need the scheduler to run, a component to be manufactured...\n"
+"* Available: When products are reserved, it is set to 'Available'.\n"
+"* Done: When the shipment is processed, the state is 'Done'."
+msgstr "*  Nuevo: Cuando se crea el movimiento de stock y aún no ha sido confirmado.\n"
+"* Esperando otro movimiento: Este estado aparece cuando un movimiento está esperando otro, por ejemplo en un flujo encadenado.\n"
+"* En espera de disponibilidad: Este estado se alcanza cuando no hay stock disponible. Puede necesitar ejecutar el planificador, un componente a fabricar...\n"
+"* Disponible: Cuando los productos están reservados, se establece en 'Disponible'.\n"
+"* Hecho: Cuando se procesa el envío, el estado es 'Hecho'."
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "Asignar"
+msgstr "Asignar"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model,name:stock_move_reassign_availability.model_move_change_reserve_wzd
+msgid "Asistente para cambiar las reservas de almacén"
+msgstr "Asistente para cambiar las reservas de almacén"
+
+#. module: stock_move_reassign_availability
+#: selection:move.change.reserve.line,state:0
+msgid "Available"
+msgstr "Disponible"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_quantity
+msgid "Available quantity"
+msgstr "Cantidad disponible"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: stock_move_reassign_availability
+#: selection:move.change.reserve.line,state:0
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "Change reserved quants wzd"
+msgstr "Asistente para cambiar las reservas entre movimientos"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_create_uid
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_create_uid
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_create_date
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_create_date
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_location_dest_id
+msgid "Dest. Location"
+msgstr "Ubicación de destino"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_display_name
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_display_name
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: stock_move_reassign_availability
+#: selection:move.change.reserve.line,state:0
+msgid "Done"
+msgstr "Realizado"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_date_expected
+msgid "Expected Date"
+msgstr "Fecha prevista"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_id
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_id
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_product_uom_qty
+msgid "Initial Demand"
+msgstr "Demanda inicial"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line___last_update
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd___last_update
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_write_uid
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_write_uid
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_write_date
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_write_date
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_location_dest_id
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_location_id
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_location_id
+msgid "Location"
+msgstr "Ubicación"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_lot_ids
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_lot_id
+msgid "Lot"
+msgstr "Lote"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_move_id
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "Move"
+msgstr "Movimiento"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_move_str
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_move_str
+msgid "Move Str"
+msgstr "Descripción"
+
+#. module: stock_move_reassign_availability
+#: code:addons/stock_move_reassign_availability/wizard/stock_move_change_reserve_wzd.py:130
+#, python-format
+msgid "Move is waiting, youmust validate previous move"
+msgstr "El movimiento está 'Esperando otro movimiento', debes revisar el movimiento previo"
+
+#. module: stock_move_reassign_availability
+#: selection:move.change.reserve.line,state:0
+msgid "New"
+msgstr "Nuevo"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_new_reserved_availability
+msgid "New Quantity To Reseve"
+msgstr "Nueva cantidad para reservar"
+
+#. module: stock_move_reassign_availability
+#: model:ir.actions.act_window,name:stock_move_reassign_availability.action_stock_move_change_reserve_wzd_form
+msgid "Open Change Reserve Wizard"
+msgstr "Abrir asistente para cambio de reservas en movimientos"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_sequence
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_sequence
+msgid "Order when re-reserve"
+msgstr "Orden seguido para comprobar disponibilidad"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_owner_ids
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_owner_id
+msgid "Owner"
+msgstr "Propietario"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,help:stock_move_reassign_availability.field_move_change_reserve_line_owner_ids
+#: model:ir.model.fields,help:stock_move_reassign_availability.field_unreserved_available_quant_owner_id
+msgid "Owner of the quants"
+msgstr "Propietario de los quants"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_package_ids
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_package_id
+msgid "Package"
+msgstr "Paquete"
+
+#. module: stock_move_reassign_availability
+#: selection:move.change.reserve.line,state:0
+msgid "Partially Available"
+msgstr "Parcialmente disponible"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_partner_id
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_partner_id
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "Qties"
+msgstr "Cantidades"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_quant_id
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_quant_id
+msgid "Quant"
+msgstr "Stock"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_available_quantity
+msgid "Quantity Available"
+msgstr "Cantidad disponible"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_reserved_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_reserved_quantity
+msgid "Quantity Reserved"
+msgstr "Cantidad reservada"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_quantity_to_split
+msgid "Quantity To split"
+msgstr "Cantidad para dividir"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,help:stock_move_reassign_availability.field_move_change_reserve_line_reserved_availability
+#: model:ir.model.fields,help:stock_move_reassign_availability.field_unreserved_available_quant_available_quantity
+#: model:ir.model.fields,help:stock_move_reassign_availability.field_unreserved_available_quant_reserved_quantity
+msgid "Quantity that has already been reserved for this move"
+msgstr "Cantidad que ha sido ya reservada para este movimiento"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,help:stock_move_reassign_availability.field_move_change_reserve_line_new_reserved_availability
+msgid "Quantity that will be reserved for this move"
+msgstr "Cantidad que se reservará para este movimiento"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model,name:stock_move_reassign_availability.model_stock_quant
+msgid "Quants"
+msgstr "Stocks"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_reserved_move_ids
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "Reserved Moves"
+msgstr "Movimientos reservados"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_sale_id
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_sale_id
+msgid "Sale Order"
+msgstr "Pedido de venta"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_show_lots_text
+msgid "Show lots"
+msgstr "Mostrar lotes"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_show_move_packs
+msgid "Show move packs"
+msgstr "Mostrar paquetes en movimientos"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_show_quant_packs
+msgid "Show quant packs"
+msgstr "Mostrar paquetes en stock"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_origin
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_origin
+msgid "Source Document"
+msgstr "Documento de origen"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "Split"
+msgstr "Partir orden"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_location_id
+msgid "Src. Location"
+msgstr "Ubicación de origen"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_state
+msgid "State"
+msgstr "Estado"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_state
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_state
+msgid "Status"
+msgstr "Estado"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model,name:stock_move_reassign_availability.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de Stock"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "Stock disponible:"
+msgstr "Stock disponible:"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_move_id
+msgid "Stock move"
+msgstr "Movimiento"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_move_line_ids
+msgid "Stock seleccionado"
+msgstr "Stock seleccionado"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,help:stock_move_reassign_availability.field_move_change_reserve_line_product_uom_qty
+msgid "This is the quantity of products from an inventory point of view. For moves in the state 'done', this is the quantity of products that were actually moved. For other moves, this is the quantity of product that is planned to be moved. Lowering this quantity does not generate a backorder. Changing this quantity on assigned moves affects the product reservation, and should be done with care."
+msgstr "Ésta es la cantidad de productos desde un punto de vista de inventario. Para movimientos en el estado 'Realizado', ésta es la cantidad de productos que se movieron realmente. Para otros movimientos, ésta es la cantidad de producto que está planeado mover. Disminuyendo esta cantidad no se genera un pedido en espera. Cambiando esta cantidad en movimientos asignados, afecta la reserva de producto, y debe ser realizado con cuidado."
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_total_available
+msgid "Total Available"
+msgstr "Total disponible"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_total_product_uom_qty
+msgid "Total Demand"
+msgstr "Total pendiente"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_total_reserved_availability
+msgid "Total Reserved"
+msgstr "Total ya reservado"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_product_uom
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_product_uom
+msgid "Unit of Measure"
+msgstr "Unidad de medida"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_wzd_quant_ids
+msgid "Unreserved stocks"
+msgstr "Stock sin reserva"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.view_account_move_change_reserve_wzd
+#: model:ir.ui.view,arch_db:stock_move_reassign_availability.view_picking_reassign_availability
+msgid "Update reserve"
+msgstr "Cambiar reserva de stock"
+
+#. module: stock_move_reassign_availability
+#: selection:move.change.reserve.line,state:0
+msgid "Waiting Another Move"
+msgstr "Esperando otro movimiento"
+
+#. module: stock_move_reassign_availability
+#: selection:move.change.reserve.line,state:0
+msgid "Waiting Availability"
+msgstr "Esperando disponibilidad"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_move_change_reserve_line_wzd_id
+#: model:ir.model.fields,field_description:stock_move_reassign_availability.field_unreserved_available_quant_wzd_id
+msgid "Wzd"
+msgstr "Asistente"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model,name:stock_move_reassign_availability.model_move_change_reserve_line
+msgid "move.change.reserve.line"
+msgstr "move.change.reserve.line"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,name:stock_move_reassign_availability.view_account_move_change_reserve_wzd
+msgid "stock.move.change.reserve.wzd"
+msgstr "stock.move.change.reserve.wzd"
+
+#. module: stock_move_reassign_availability
+#: model:ir.model,name:stock_move_reassign_availability.model_unreserved_available_quant
+msgid "unreserved.available.quant"
+msgstr "unreserved.available.quant"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,name:stock_move_reassign_availability.view_picking_reassign_availability
+msgid "view.picking.reassign_availability"
+msgstr "view.picking.reassign_availability"
+
+#. module: stock_move_reassign_availability
+#: model:ir.ui.view,name:stock_move_reassign_availability.stock_move_change_reserve_wzd_form
+msgid "view.stock.move.change.reserve.wzd"
+msgstr "view.stock.move.change.reserve.wzd"
+

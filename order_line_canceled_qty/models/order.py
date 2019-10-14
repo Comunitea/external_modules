@@ -10,7 +10,7 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def button_cancel(self):
-        super().button_cancel(self)
+        return super().button_cancel()
         #self.filtered(lambda x:x.state == "cancel").mapped('order_line').mapped('move_ids').write({'purchase_line_id': False})
 
 class PurchaseOrderLine(models.Model):

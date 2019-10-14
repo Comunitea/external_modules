@@ -12,11 +12,12 @@ class StockPickingType(models.Model):
     grouped_batch_field_ids = fields.Many2many('ir.model.fields', string='Grupos agrupados por ....', domain=[('model_id.model', '=', 'stock.picking')], help="Los albaranes se pueden agrupar por estos campos al crear un grupo.")
     after_assign = fields.Boolean('Cancelar asignación directa', help="Se busca disponibilidad antes de asignar albarán.")
     batch_picking_sequence_id = fields.Many2one('ir.sequence', 'Secuencia de lote')
+    parent_id = fields.Many2one('stock.picking.type', string="Parent picking type")
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    def get_domain_for_batch_picking(self):
+    def get_batch_domain(self):
 
         self.ensure_one()
         domain = [('state', 'not in', ('done', 'cancel')),
@@ -29,14 +30,12 @@ class StockPicking(models.Model):
             if self[field.name]:
                 if field.ttype == 'many2one':
                     domain += [(field.name, '=', self[field.name].id)]
-                #elif field.ttype == 'selection':
-                #    domain += [(field.name, '=', self[field.name])]
                 else:
                     domain += [(field.name, '=', self[field.name])]
         return domain
 
 
-    def get_vals_for_new_batch(self):
+    def get_batch_vals(self):
 
         vals = {
                 'picking_type_id': self.picking_type_id.id,
@@ -58,17 +57,17 @@ class StockPicking(models.Model):
 
         sbp = self.env['stock.batch.picking']
         for pick in self:
-            domain = pick.get_domain_for_batch_picking()
+            domain = pick.get_batch_domain()
             b_id = sbp.search(domain, limit=1)
             if not b_id and create:
-                b_id = sbp.create(pick.get_vals_for_new_batch())
+                b_id = sbp.create(pick.get_batch_vals())
 
             pick.batch_picking_id = b_id and b_id.id
 
 class StockBatchPicking(models.Model):
     _inherit = 'stock.batch.picking'
 
-    partner_id = fields.Many2one('res.partner', string='Delivery Address', compute='get_partner_id', store=True)
+    partner_id = fields.Many2one('res.partner', string='Empresa', compute='get_partner_id', store=True)
 
     name = fields.Char(
         'Name', default='/',
