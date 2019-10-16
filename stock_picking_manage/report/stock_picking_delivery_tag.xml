@@ -137,10 +137,10 @@
             id="action_delivery_stock_picking_tag_report"
             model="stock.picking"
             report_type="qweb-pdf"
-            name="stock_picking_custom.stock_picking_tag"
-            file="stock_picking_custom.stock_picking_tag"
+            name="stock_picking_manage.stock_picking_tag"
+            file="stock_picking_manage.stock_picking_tag"
             print_report_name="'Stock picking tag- %s - %s' % (object.partner_id.name or '', object.name)"
-            paperformat="stock_picking_custom.paperformat_picking_tag"/>
+            paperformat="stock_picking_manage.paperformat_picking_tag"/>
 
 
 

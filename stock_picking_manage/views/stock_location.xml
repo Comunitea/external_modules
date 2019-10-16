@@ -30,9 +30,8 @@
         <field name="arch" type="xml">
             <field name="posx" position="before">
                 <field name="ubic"/>
-            </field>
-            <field name="usage" position="after">
-                <field name="inverse_order" attrs="{'invisible': [('usage', '!=', 'view')]}"/>
+                <field name="inverse_order"/>
+                <field name="sequence"/>
             </field>
         </field>
     </record>

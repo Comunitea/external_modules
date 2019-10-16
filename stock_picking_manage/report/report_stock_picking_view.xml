@@ -111,7 +111,7 @@
                     </td>
                     <td t-if="has_barcode">
                         <t t-if="has_barcode">
-                            <t t-call="stock_picking_custom.template_product_barcode"/>
+                            <t t-call="stock_picking_manage.template_product_barcode"/>
                         </t>
                     </td>
                     <td colspan="3">
@@ -194,16 +194,16 @@
                         <span t-field="move.product_id.uom_id" groups="product.group_uom"/>
                     </td-->
                     <td t-if="has_barcode">
-                        <t t-call="stock_picking_custom.template_product_barcode"/>
+                        <t t-call="stock_picking_manage.template_product_barcode"/>
                     </td>
                     <td align="middle">
-                        <t t-call="stock_picking_custom.quantity_template">
+                        <t t-call="stock_picking_manage.quantity_template">
                             <t t-set="o" t-value="o"/>
                             <t t-set="ml" t-value="move"/>
                         </t>
                     </td>
                     <td class="text-center">
-                        <t t-call="stock_picking_custom.location_name">
+                        <t t-call="stock_picking_manage.location_name">
                             <t t-set="object" t-value="move.location_dest_id"/>
                             <t t-set="putaway" t-value="move.default_product_dest_location_id"/>
                         </t>
@@ -244,16 +244,16 @@
                         <span t-field="move.product_id.uom_id" groups="product.group_uom"/>
                     </td-->
                     <td t-if="has_barcode">
-                        <t t-call="stock_picking_custom.template_product_barcode"/>
+                        <t t-call="stock_picking_manage.template_product_barcode"/>
                     </td>
                     <td align="middle">
-                        <t t-call="stock_picking_custom.location_name">
+                        <t t-call="stock_picking_manage.location_name">
                             <t t-set="object" t-value="move.location_id"/>
                             <t t-set="putaway" t-value="move.default_product_location_id"/>
                         </t>
                     </td>
                     <td align="middle">
-                        <t t-call="stock_picking_custom.quantity_template">
+                        <t t-call="stock_picking_manage.quantity_template">
                             <t t-set="o" t-value="o"/>
                             <t t-set="ml" t-value="move"/>
                         </t>
@@ -295,16 +295,16 @@
                         <span t-field="move.product_id.uom_id" groups="product.group_uom"/>
                     </td-->
                     <td t-if="has_barcode">
-                        <t t-call="stock_picking_custom.template_product_barcode"/>
+                        <t t-call="stock_picking_manage.template_product_barcode"/>
                     </td>
                     <td class="text-center">
-                        <t t-call="stock_picking_custom.location_name">
+                        <t t-call="stock_picking_manage.location_name">
                             <t t-set="object" t-value="move.location_id"/>
                             <t t-set="putaway" t-value="move.default_product_location_id"/>
                         </t>
                     </td>
                     <td align="middle">
-                        <t t-call="stock_picking_custom.quantity_template">
+                        <t t-call="stock_picking_manage.quantity_template">
                             <t t-set="o" t-value="o"/>
                             <t t-set="ml" t-value="move"/>
                         </t>
@@ -328,11 +328,11 @@
             </td>
         </xpath>
         <xpath expr="//table[@t-if='o.move_line_ids']" position="replace">
-            <t t-if="o.picking_type_id.code=='incoming'" t-call="stock_picking_custom.report_table_move_line_ids_incoming"/>
-            <t t-if="o.picking_type_id.code=='outgoing'" t-call="stock_picking_custom.report_table_move_line_ids_outgoing"/>
-            <t t-if="o.picking_type_id.code=='internal'" t-call="stock_picking_custom.report_table_move_line_ids_internal"/>
-            <t t-if="o.picking_type_id.code=='mrp_operation'" t-call="stock_picking_custom.report_table_move_line_ids_orig"/>
-            <t t-call="stock_picking_custom.report_table_picking_qties"/>
+            <t t-if="o.picking_type_id.code=='incoming'" t-call="stock_picking_manage.report_table_move_line_ids_incoming"/>
+            <t t-if="o.picking_type_id.code=='outgoing'" t-call="stock_picking_manage.report_table_move_line_ids_outgoing"/>
+            <t t-if="o.picking_type_id.code=='internal'" t-call="stock_picking_manage.report_table_move_line_ids_internal"/>
+            <t t-if="o.picking_type_id.code=='mrp_operation'" t-call="stock_picking_manage.report_table_move_line_ids_orig"/>
+            <t t-call="stock_picking_manage.report_table_picking_qties"/>
         </xpath>
 
         <!-- Descomentar para forzar que el fondo del PDF sea blanco. -->
@@ -433,7 +433,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <t t-call="stock_picking_custom.report_table_picking_qties_customer"/>
+                        <t t-call="stock_picking_manage.report_table_picking_qties_customer"/>
                         <p t-if="o.state in ['draft', 'waiting', 'confirmed']">
                             You do not have any products reserved for this picking.  Please click the 'Reserve' button
                             to check if products are available.
@@ -450,8 +450,8 @@
         id="action_delivery_stock_picking_customer_report"
         model="stock.picking"
         report_type="qweb-pdf"
-        name="stock_picking_custom.report_shipping_custom_customer_anz"
-        file="stock_picking_custom.report_shipping_custom_customer_anz"
+        name="stock_picking_manage.report_shipping_custom_customer_anz"
+        file="stock_picking_manage.report_shipping_custom_customer_anz"
         print_report_name="'Stock picking customer- %s - %s' % (object.partner_id.name or '', object.name)"
         />
 </odoo>

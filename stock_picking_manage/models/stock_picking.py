@@ -66,7 +66,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def get_domain(self):
-        my_categ= self.env.ref('stock_picking_custom.res_partner_delivery_carrier')
+        my_categ= self.env.ref('stock_picking_manage.res_partner_delivery_carrier')
         if my_categ:
             domain = [('id', 'in', my_categ.partner_ids.ids)]
         else:
