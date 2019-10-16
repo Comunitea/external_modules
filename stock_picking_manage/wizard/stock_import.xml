@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_import_wzd_form" model="ir.ui.view">
+        <field name="name">view.stock.import.wzd.form</field>
+        <field name="model">stock.import.wzd</field>
+        <field name="arch" type="xml">
+            <form string="Import stock move">
+                <div name="help">
+                    <h2>Select file to import</h2>
+                </div>
+                <group>
+                    <field name="name"/>
+                    <field name="picking_id"/>
+                    <field name="file" filename="filename"/>
+                </group>
+                <footer>
+                    <button name="import_products" type="object" class="btn-primary" string="Import Products"/>
+                    <button special="cancel" string="Cancel" class="oe_link"/>
+                </footer> 
+            </form>
+        </field>
+    </record>
+
+    <record id="action_import_products" model="ir.actions.act_window">
+        <field name="name">Import moves</field>
+        <field name="res_model">stock.import.wzd</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem id="menu_import_stock" name="Importar movimientos" action="action_import_products" parent="stock.menu_stock_warehouse_mgmt" sequence="999"/>
+    
+    
+</odoo>

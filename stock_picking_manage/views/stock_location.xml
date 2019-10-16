@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_set_location_barcode" model="ir.actions.server">
+        <field name="name">Actualizar codigo de barras</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="stock.model_stock_location"/>
+        <field name="binding_model_id" ref="stock.model_stock_location"/>
+        <field name="code">
+            if records: action = records.set_barcode_field()
+        </field>
+    </record>
+
+    <record id="view_location_search_custom" model="ir.ui.view">
+        <field name="name">stock.location.search</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_search"/>
+        <field name="arch" type="xml">
+            <field name="location_id" position="after">
+                <field name="barcode" string="Barcode"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_location_form_custom" model="ir.ui.view">
+        <field name="name">stock.location.form.custom_anz</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <field name="posx" position="before">
+                <field name="ubic"/>
+            </field>
+            <field name="usage" position="after">
+                <field name="inverse_order" attrs="{'invisible': [('usage', '!=', 'view')]}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

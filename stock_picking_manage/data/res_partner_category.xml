@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_partner_delivery_carrier" model="res.partner.category">
+            <field name="name">Delivery carrier</field>
+            <field name="color" eval="100"/>
+        </record>
+    </data>
+</odoo>

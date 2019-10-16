@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="stock_batch_picking_form_custom_anz">
+        <field name="name">stock.batch.picking.form.custom.anz</field>
+        <field name="model">stock.batch.picking</field>
+        <field name="inherit_id" ref="stock_batch_picking.stock_batch_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_ids']" position="attributes">
+                <attribute name="domain">
+                    [('batch_picking_id', '=', False), ('state', 'not in', ('done', 'cancel'))]
+                </attribute>
+            </xpath>
+            <field name="move_lines" position="after">
+                <div>
+                    <group class="oe_left">
+                        <field name="all_assigned" class ="oe_inline" />
+                        <field name="product_uom_qty" class ="oe_inline" />
+                        <field name="reserved_availability" class ="oe_inline" />
+                        <field name="quantity_done" class ="oe_inline" />
+
+                    </group>
+                </div>
+            </field>
+            <field name="move_lines" position="before">
+                <div>
+                    <button class="oe_link oe_right"
+                            context="{'model_dest': 'stock.move', 'field': 'product_uom_qty'}"
+                            name="force_set_qty_done"  type="object" string="↳Copy qty. to done"
+                            />
+                    <button class="oe_link oe_right"
+                            context="{'model_dest': 'stock.move', 'field': 'reserved_availability'}"
+                            name="force_set_qty_done" type="object" string="↳Copy assigned to done"
+                            attrs="{'invisible':[('reserved_availability', '=', 0), ('all_assigned','=',True)]}"/>
+                    <button class="oe_link oe_right"
+                            context="{'model_dest': 'stock.move', 'field': 'qty_available'}"
+                            name="force_set_qty_done" type="object" string="↳Copy available to done"
+                            attrs="{'invisible':[('all_assigned','=',True)]}"/>
+
+                    <button class="oe_link oe_right"
+                            context="{'model_dest': 'stock.move', 'reset': True, 'field': 'qty_done'}"
+                            name="force_set_qty_done" type="object" string="↳Reset qties" attrs="{'invisible':[('quantity_done','=',0)]}"/>
+                </div>
+            </field>
+        </field>
+    </record>
+
+    <template id="external_layout_standard_custom" inherit_id="custom_documents.external_layout_standard_custom">
+        <xpath expr="//div[hasclass('header')]" position="replace">
+            <div class="header" style="font-family: Questrial">
+                <div class="row" t-if="partner">
+                    <div class="col-xs-9" name="company_address">
+                        <span t-if="partner" t-esc="partner"
+                            t-options='{"widget": "contact", "fields": ["address", "name", "phone", "mobile", "email", "website"], "no_marker": true, "no_tag_br": True, "vat": True, "vat_label": company.country_id.vat_label, "company_address": True}'
+                        />
+                    </div>
+                    <div class="col-xs-3 mb4">
+                        <img class=" pull-right" t-if="partner.image" t-att-src="'data:image/png;base64,%s' % to_text(partner.image)" style="max-height: 100px;"/>
+                    </div>
+                </div>
+                <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                    <div class="col-xs-12">
+                        <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Descomentar para forzar que el fondo del PDF sea blanco. -->
+    <!-- <template id="report_batch_picking_force_white" inherit_id="stock_batch_picking.report_batch_picking">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <style type="text/css">
+                body.container {
+                    background-color:#fff !important;
+                }
+            </style>
+        </xpath>
+    </template> -->
+</odoo>

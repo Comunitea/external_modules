@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <delete id="view_picking_delivery_note" model="ir.ui.view"/>
+
+    <record id="view_picking_form_custom" model="ir.ui.view">
+            <field name="name">view.picking.form.custom</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="action_re_confirm"
+                        attrs="{'invisible': [('state', '!=', 'cancel')]}"
+                        string="Mark as Todo" type="object" class="oe_highlight"
+                        groups="base.group_user"/>
+                </xpath>
+
+            <!-- Que me lleve a la vista para poder imprimir las etiquetas -->
+            <div name="button_box" position="inside">
+                <button name="action_view_product_lst" type="object" class="oe_stat_button"
+                    icon="fa-list">
+                        <field name="product_ids_count" widget="statinfo" string="Products"/>
+                </button>
+            </div>
+
+
+            <field name="move_lines" position="after">
+                <div>
+                    <group class="oe_left">
+                        <field name="all_assigned" class ="oe_inline" />
+                        <field name="product_uom_qty" class ="oe_inline" />
+                        <field name="reserved_availability" class ="oe_inline" />
+                        <field name="quantity_done" class ="oe_inline" />
+
+                    </group>
+                </div>
+            </field>
+            <field name="move_lines" position="before">
+                <div>
+
+                    <button class="oe_link oe_right"
+                            context="{'model_dest': 'stock.move', 'field': 'product_uom_qty'}"
+                            name="force_set_qty_done"  type="object" string="↳Copy qty. to done"
+                            />
+                    <button class="oe_link oe_right"
+                            context="{'model_dest': 'stock.move', 'field': 'reserved_availability'}"
+                            name="force_set_qty_done" type="object" string="↳Copy assigned to done"
+                            attrs="{'invisible':[('reserved_availability', '=', 0), ('all_assigned','=',True)]}"/>
+                    <button class="oe_link oe_right"
+                            context="{'model_dest': 'stock.move', 'field': 'qty_available'}"
+                            name="force_set_qty_done" type="object" string="↳Copy available to done"
+                            attrs="{'invisible':[('all_assigned','=',True)]}"/>
+
+                    <button class="oe_link oe_right"
+                            context="{'model_dest': 'stock.move', 'reset': True, 'field': 'qty_done'}"
+                            name="force_set_qty_done" type="object" string="↳Reset qties" attrs="{'invisible':[('quantity_done','=',0)]}"/>
+
+                </div>
+            </field>
+            <field name="move_line_ids" position="before">
+                <div string="Ayudas">
+                    <!--button class="oe_link oe_right oe_edit_only" context="{'model_dest': 'stock.move.line'}" name="force_set_qty_done" type="object" string="↳Copy qty. to done"
+                            attrs="{'invisible':['|', ('picking_type_code','=','incoming'),('state','not in', ('confirmed','assigned'))]}"/-->
+                    <button class="oe_link oe_right oe_edit_only"
+                            context="{'model_dest': 'stock.move.line', 'field': 'reserved_availability'}"
+                            name="force_set_qty_done" type="object" string="↳Copy assigned to done"
+                            attrs="{'invisible':[('state','!=', 'assigned')]}"/>
+                    <button class="oe_link oe_right oe_edit_only"
+                            context="{'model_dest': 'stock.move.line', 'field': 'qty_available'}"
+                            name="force_set_qty_done" type="object" string="↳Copy available to done"
+                            attrs="{'invisible':[('state','not in', ('confirmed','assigned'))]}"/>
+                    <button class="oe_link oe_right oe_edit_only"
+                            context="{'model_dest': 'stock.move.line', 'reset': True, 'field': 'qty_done'}"
+                            name="force_set_qty_done" type="object" string="↳Reset qties" states="assigned"/>
+                </div>
+            </field>
+
+            <xpath expr="//field[@name='move_line_ids']/tree/field[@name='product_uom_qty']" position="after">
+                <button name="force_set_qty_done"
+                            string="↳Copy qty. to done"
+                            type="object"
+                            icon="fa-cart-arrow-down "
+                            context="{'model_dest': 'stock.move.line', 'field': 'product_uom_qty'}"
+                            attrs="{'invisible': [('state', '!=', 'assigned')]}"
+                            options="{&quot;warn&quot;: true}"/>
+
+            </xpath>
+            <xpath expr="//field[@name='move_line_ids']/tree/field[@name='product_uom_qty']" position="before">
+                <field name="qty_available" attrs="{'column_invisible': [('parent.picking_type_code', '=', 'incoming')]}"/>
+                <button name="force_set_qty_done"
+                        type="object"
+                        icon="fa-cart-arrow-down"
+                        string="↳Copy available to done"
+                        context="{'model_dest': 'stock.move.line', 'field': 'qty_available'}"
+                        attrs="{'invisible': [('state', 'not in', ('confirmed', 'assigned'))]}"
+                        options="{&quot;warn&quot;: true}"/>
+
+            </xpath>
+
+            <xpath expr="//field[@name='move_lines']/tree/field[@name='product_uom_qty']" position="before">
+                <field name="qty_available" attrs="{'column_invisible': [('parent.picking_type_code', '=', 'incoming')]}"/>
+                <button name="force_set_qty_done"
+                        type="object"
+                        string="↳Copy available to done"
+                        icon="fa-cart-arrow-down "
+                        context="{'model_dest': 'stock.move', 'field': 'qty_available'}"
+                        attrs="{'invisible': ['|', ('qty_available', '&lt;=', 0), ('state', 'not in', ('confirmed', 'partially_available'))]}"
+                        options="{&quot;warn&quot;: true}"/>
+
+            </xpath>
+                <xpath expr="//field[@name='move_lines']/tree/field[@name='reserved_availability']" position="after">
+                <button name="force_set_qty_done"
+                    string="↳Copy assigned to done"
+                    type="object"
+                    icon="fa-cart-arrow-down"
+                    context="{'model_dest': 'stock.move', 'field': 'reserved_availability'}"
+                    attrs="{'invisible': ['|', ('reserved_availability', '=', 0),('state', 'in', ('assigned', 'done'))]}"
+                    options="{&quot;warn&quot;: true}"/>
+
+            </xpath>
+
+            <xpath expr="//field[@name='move_lines']/tree/field[@name='product_uom_qty']" position="after">
+                <button name="force_set_qty_done"
+                    string="↳Copy qty. to done"
+                    type="object"
+                    icon="fa-cart-arrow-down"
+                    context="{'model_dest': 'stock.move', 'field': 'product_uom_qty'}"
+                    attrs="{'invisible': [('state', 'not in', ('confirmed', 'partially_available', 'assigned'))]}"
+                    options="{&quot;warn&quot;: true}"/>
+            </xpath>
+
+
+
+             <xpath expr="//field[@name='move_lines']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|',  '&amp;', ('move_line_ids', '!=', []),
+                            '|', ('is_locked', '=', True), ('state', '=', 'done'),
+                            '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)]}
+                </attribute>
+             </xpath>
+
+             <xpath expr="//field[@name='move_line_ids']/tree/field[@name='location_id']" position="attributes">
+                <attribute name="attrs">
+                        {'readonly': [('in_entire_package', '=', True)], 'column_invisible': [('parent.picking_type_code', '=', 'incoming')]}
+                </attribute>
+             </xpath>
+             <xpath expr="//field[@name='move_line_ids']/tree/field[@name='location_dest_id']" position="attributes">
+                <attribute name="attrs">
+                        {'readonly': [('in_entire_package', '=', True)], 'column_invisible': [('parent.picking_type_code', '=', 'outgoing')]}
+                </attribute>
+             </xpath>
+            </field>
+        </record>
+
+        <report
+            string="Delivery packing list"
+            id="action_report_delivery_packing_list"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="delivery_packing_list.picking_packing_list"
+            file="delivery_packing_list.picking_packing_list"
+            print_report_name="'Delivery packing list- %s - %s' % (object.partner_id.name or '', object.name)"
+        />
+
+
+    <record id="view_picking_delivery_note" model="ir.ui.view">
+        <field name="name">view.picking.delivery_note</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='tracking']" position="after">
+
+                <label for="carrier_partner_id"/>
+                <div name="carrier_partner_id">
+                    <field name="carrier_partner_id" class="oe_inline" />
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='note']" position="after">
+                <field name="delivery_note" string="Delivery note" placeholder="Add an internal note that will be printed on the delivery carrier tag "/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- stock.picking.type inherit form view -->
+    <record id="view_picking_type_form_order_field" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.order.field</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <field name="warehouse_id" position="after">            
+                <field name="order_field"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>
