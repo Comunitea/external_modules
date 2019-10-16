@@ -17,20 +17,22 @@ class StockBatchPicking(models.Model):
     quantity_done = fields.Float(
         'Quantity Done', compute='compute_picking_qties',
         digits=dp.get_precision('Product Unit of Measure'))
-    reserved_availability_lines = fields.Float(
-        'Quantity Reserved', compute='compute_picking_qties',
+    product_uom_qty = fields.Float(
+        'Quantity Ordered', compute='compute_picking_qties',
         digits=dp.get_precision('Product Unit of Measure'))
-    quantity_done_lines = fields.Float(
-        'Quantity Done', compute='compute_picking_qties',
-        digits=dp.get_precision('Product Unit of Measure'))
+    all_assigned = fields.Boolean('All assigned', compute='get_all_assigned')
+
+    @api.multi
+    def get_all_assigned(self):
+        for pick in self.mapped('picking_ids'):
+            pick.all_assigned = not any(x.state in ('partially_available', 'confirmed') for x in pick.move_lines)
 
     @api.multi
     def compute_picking_qties(self):
         for batch in self:
             batch.quantity_done = sum(x.quantity_done for x in batch.picking_ids)
             batch.reserved_availability = sum(x.reserved_availability for x in batch.picking_ids)
-            batch.quantity_done_lines = sum(x.quantity_done_lines for x in batch.picking_ids)
-            batch.reserved_availability_lines = sum(x.reserved_availability_lines for x in batch.picking_ids)
+            batch.product_uom_qty = sum(x.product_uom_qty for x in batch.picking_ids)
 
     @api.multi
     def force_set_qty_done(self):

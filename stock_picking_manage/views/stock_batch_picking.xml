@@ -17,7 +17,6 @@
                         <field name="product_uom_qty" class ="oe_inline" />
                         <field name="reserved_availability" class ="oe_inline" />
                         <field name="quantity_done" class ="oe_inline" />
-
                     </group>
                 </div>
             </field>
