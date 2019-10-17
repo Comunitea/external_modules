@@ -6,7 +6,7 @@ from odoo import models, fields
 
 class ResCompany(models.Model):
 
-    _inherit = 'res.company'
+    _inherit = "res.company"
 
-    signen_sign = fields.Binary('Company Signature')
-    signen_biometry = fields.Binary('Signature biometry')
+    signen_sign = fields.Binary("Company Signature")
+    signen_biometry = fields.Binary("Signature biometry")
