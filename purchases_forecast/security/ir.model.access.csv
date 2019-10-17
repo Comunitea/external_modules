@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_purchases_forecast,purchases.forecast,model_purchases_forecast,base.group_user,1,0,0,0
-access_purchases_forecast,purchases.forecast,model_purchases_forecast,purchase.group_purchase_user,1,1,1,1
-access_purchases_forecast_line,purchases.forecast.line,model_purchases_forecast_line,base.group_user,1,0,0,0
-access_purchases_forecast_line,purchases.forecast.line,model_purchases_forecast_line,purchase.group_purchase_user,1,1,1,1
