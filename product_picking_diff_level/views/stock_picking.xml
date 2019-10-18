@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_picking_internal_search_manage" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search.manage</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='backorder']" position="before">
+                    <filter string="Green level" name="green_level" context="{'diff_level': [-1, 25]}" domain="[('state', '=', 'assigned')]"/>
+                    <filter string="Orange level" name="orange_level" context="{'diff_level': [26, 100]}" domain="[('state', '=', 'assigned')]"/>
+                    <filter string="Red level" name="orange_level" context="{'diff_level': [100, -1]}" domain="[('state', '=', 'assigned')]"/>
+                    <separator/>
+                </xpath>
+            </field>
+    </record>
+    <record id="view_picking_form_diff_level" model="ir.ui.view">
+            <field name="name">view.picking.form.diff_level</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="priority" position="after">
+                    <field name="diff_level" attrs = "{'invisible': [('picking_type_code', '!=', 'internal')]}"/>
+                </field>
+            </field>
+    </record>
+    <record id="view_picking_tree_diff_level" model="ir.ui.view">
+            <field name="name">view.picking.form.diff_level</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="diff_level" options="{
+                        'fg_color': 'green: diff_level &lt;= 25; orange: diff_level &gt; 25 and diff_level &lt;=100; red: diff_level &gt; 100'}"/>
+                </field>
+            </field>
+    </record>
+     <record id="view_picking_type_diff_level" model="ir.ui.view">
+            <field name="name">view.picking.type.form.diff_level</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <field name="show_reserved" position="after">
+                    <field name="diff_level" />
+                </field>
+            </field>
+    </record>
+
+</odoo>
