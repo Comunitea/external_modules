@@ -202,6 +202,7 @@ class StockMove(models.Model):
             move.check_new_location()
 
     def _action_cancel(self):
+
         if self._context.get('cancel_from_sale', False):
             new_self = self.filtered(lambda x: x.sale_id == self._context['cancel_from_sale'])
             return super(StockMove, new_self)._action_cancel()

@@ -50,65 +50,6 @@
                             <div>
                                 <span t-if="o.delivery_note"><strong>Notes: </strong>  <span t-field="o.delivery_note"/></span>
                             </div>
-                            <!--div>
-                             <table class="table" width="100%">
-                                  <thead>
-                                      <tr>
-                                          <td width="33%">
-                                             <strong>Date</strong>
-                                        </td>
-                                        <td width="33%">
-                                             <strong>Carrier</strong>
-                                        </td>
-                                          <td width="33%">
-                                             <strong>Ref</strong>
-                                        </td>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr>
-                                          <td>
-                                             <span t-field="o.date"/>
-                                          </td>
-                                          <td>
-                                             <span t-field="o.carrier_id"/>
-                                          </td>
-                                          <td>
-                                             <span t-field="o.carrier_tracking_ref"/>
-                                          </td>
-
-                                      </tr>
-
-                                  </tbody>
-
-                            </table>
-                            <table class="table" width="100%">
-                                  <thead>
-                                      <tr>
-                                        <td width="33%">
-                                             <strong>Delivery packs</strong>
-                                        </td>
-                                          <td width="33%">
-                                             <strong>Weight</strong>
-                                        </td>
-                                          <td width="33%">
-                                          </td>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr>
-                                          <td>
-                                             <span t-field="o.number_of_packages"/>
-                                          </td>
-                                          <td>
-                                             <span t-field="o.weight"/><span t-field="o.weight_uom_id"/>
-                                          </td>
-
-                                      </tr>
-
-                                  </tbody>
-                            </table>
-                            </div-->
                         </div>
              </t>
           </t>

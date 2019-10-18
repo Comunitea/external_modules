@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="view_picking_internal_search_manage" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search.manage</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='Status']" position="before">
+                    <filter name="today_group_by_origin" string="Today by origin"
+                            domain="[
+                            ('state', 'not in', ('cancel', 'draft', 'done', 'waiting')),
+                            ('scheduled_date','&lt;',(context_today() - relativedelta(days=1)).strftime('%Y-%m-%d'))
+                            ]"
+                            context="{'group_by':'origin'}"
+                            help="Pickings for today grouped by origin"/>
+                    <separator/>
+                </xpath>
+            </field>
+    </record>
     <delete id="view_picking_delivery_note" model="ir.ui.view"/>
-
     <record id="view_picking_form_custom" model="ir.ui.view">
             <field name="name">view.picking.form.custom</field>
             <field name="model">stock.picking</field>
@@ -161,22 +177,23 @@
         />
 
 
+
     <record id="view_picking_delivery_note" model="ir.ui.view">
         <field name="name">view.picking.delivery_note</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@name='tracking']" position="after">
 
+
+            <xpath expr="//div[@name='tracking']" position="after">
                 <label for="carrier_partner_id"/>
                 <div name="carrier_partner_id">
                     <field name="carrier_partner_id" class="oe_inline" />
                 </div>
             </xpath>
             <xpath expr="//field[@name='note']" position="after">
-                <field name="delivery_note" string="Delivery note" placeholder="Add an internal note that will be printed on the delivery carrier tag "/>
+                <field name="delivery_note" string="Delivery note" placeholder="Add an internal note that will be printed on the delivery carrier tag"/>
             </xpath>
-
         </field>
     </record>
 
