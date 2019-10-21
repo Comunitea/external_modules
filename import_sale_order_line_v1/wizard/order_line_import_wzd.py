@@ -153,7 +153,6 @@ class SaleOrderLineImportWzd(models.TransientModel):
                         if not order in order_ids:
                             order_ids.append(order)
                         self._create_line(row_vals, order, idx)
-
                     _logger.info(_('IMPORTED LINE %s / %s') % (idx, sh.nrows - 1))
 
         return self.action_view_products(order_ids)

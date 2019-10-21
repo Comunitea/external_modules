@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_order_form_inherit_sale_stock_diff_level" model="ir.ui.view">
+        <field name="name">sale.order.form.sale.stock.diff.level</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+        <field name="arch" type="xml">
+            <field name="picking_policy" position="after">
+                <field name="diff_level"/>
+            </field>
+        </field>
+    </record>
+</odoo>
