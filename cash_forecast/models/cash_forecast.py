@@ -151,7 +151,6 @@ class CashForecast(models.Model):
                 filtered(lambda x: x.user_type_id.type == 'other')
         domain = self._get_move_line_domain(
             'payments', date_start, date_end, account_ids)
-        print(domain)
         move_lines = self.env['account.move.line'].search(domain)
         print(move_lines)
         return move_lines

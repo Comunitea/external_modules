@@ -36,7 +36,6 @@ class StockLocation(models.Model):
     @api.multi
     def get_parent_view_location_id(self):
         for location in self:
-            print (location.name)
             usage = location.usage
             if location.usage == 'view':
                 location.parent_view_location_id = location

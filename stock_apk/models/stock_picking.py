@@ -135,8 +135,6 @@ class StockPicking(models.Model):
                    'user_id': self.user_id and self.user_id.get_apk_vals(),
                    'location_id': self.location_id and self.location_id.get_apk_vals('min'),
                    'location_dest_id': self.location_dest_id and self.location_dest_id.get_apk_vals('min')})
-
-        print('Location: valores {} \n {}'.format(type, vals))
         return vals
 
 

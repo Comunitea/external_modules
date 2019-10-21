@@ -31,7 +31,4 @@ class StockMove(models.Model):
     def action_cancel_move(self):
 
         for move in self:
-            if move.move_dest_ids:
-                raise ValidationError (_('Moves with move destination. You must cancel last movment'))
             move.move_orig_ids._action_cancel()
-            move._action_cancel()

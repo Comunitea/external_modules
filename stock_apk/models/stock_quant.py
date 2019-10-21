@@ -15,7 +15,6 @@ class StockQuant(models.Model):
 
     @api.model
     def _update_reserved_quantity(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None, strict=False):
-        print("Entro en _update_reserved_quantity con {}".format(self._context))
         if self.env.context.get('forced_move_line', False):
             return []
         return super(StockQuant, self)._update_reserved_quantity(product_id=product_id, location_id=location_id, quantity=quantity, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
