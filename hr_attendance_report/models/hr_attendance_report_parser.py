@@ -73,28 +73,16 @@ class HrAttendanceReport(models.AbstractModel):
                                                     out_time.minute)
                     used_ids.append(attendance.id)
                     used_ids.append(attendance.id)
-<<<<<<< HEAD
-                max_hours = employee.calendar_id.get_working_hours_of_date(from_date_datetime)
-                extra_hours = day_attendances['ord_hours'] - max_hours
-                if day_attendances['ord_hours'] > max_hours:
-                    day_attendances['ord_hours'] = max_hours
-                if extra_hours:
-=======
                 if employee.calendar_id:
                     max_hours = employee.calendar_id.get_working_hours_of_date(from_date_datetime, resource_id=employee.resource_id.id)
                     extra_hours = day_attendances['ord_hours'] - max_hours
                     if day_attendances['ord_hours'] > max_hours:
                         day_attendances['ord_hours'] = max_hours
->>>>>>> e6e7ff81497e1591526be1d170930a7cef6c02b9
                     day_attendances['extra'] += extra_hours
                 if day_attendances['in_out_str']:
                     day_attendances['in_out_str'] = \
                         day_attendances['in_out_str'][:-3]
-<<<<<<< HEAD
-                if day_attendances['ord_hours']:
-=======
                 if day_attendances['ord_hours'] or day_attendances['extra']:
->>>>>>> e6e7ff81497e1591526be1d170930a7cef6c02b9
                     employee_attendance[employee.id].append(day_attendances)
                 from_date += relativedelta(days=1)
             totals[employee.id] = {
