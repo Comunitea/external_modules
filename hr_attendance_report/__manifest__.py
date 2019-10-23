@@ -17,4 +17,26 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import employee_print_attendance_report
+
+
+{
+    'name': 'Attendance report',
+    'summary': '',
+    'version': '11.0.0.0.0',
+    'category': 'Human Resources',
+    'website': 'comunitea.com',
+    'author': 'Comunitea',
+    'license': 'AGPL-3',
+    'application': False,
+    'installable': True,
+    'depends': [
+        'base',
+        'hr_attendance',
+    ],
+    'data': [
+        'wizard/employee_print_attendance_report.xml',
+        'views/hr_employee_attendance_report.xml',
+        'hr_attendance_report.xml',
+        'data/paperformat.xml',
+    ],
+}

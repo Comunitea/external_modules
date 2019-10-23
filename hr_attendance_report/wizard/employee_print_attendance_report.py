@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2016 Comunitea All Rights Reserved
@@ -35,5 +34,4 @@ class EmployeePrintAttendanceReport(models.TransientModel):
         datas = {'ids': self._context.get('active_ids', [])}
         res = {'from_date': self.from_date, 'to_date': self.to_date}
         datas['form'] = res
-        return self.env['report'].get_action(
-            self, 'hr_attendance_report.print_attendance', data=datas)
+        return self.env.ref('hr_attendance_report.action_print_attendance').report_action(self, data=datas)

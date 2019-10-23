@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2016 Comunitea All Rights Reserved
@@ -27,8 +26,8 @@ class HrAttendanceReport(models.AbstractModel):
     _name = 'report.hr_attendance_report.print_attendance'
 
     @api.multi
-    def render_html(self, docids, data=None):
-        report_obj = self.env['report']
+    def get_report_values(self, docids, data=None):
+        report_obj = self.env['ir.actions.report']
         report = report_obj._get_report_from_name(
             'hr_attendance_report.print_attendance')
         docs = []
@@ -73,8 +72,9 @@ class HrAttendanceReport(models.AbstractModel):
                                                     out_time.minute)
                     used_ids.append(attendance.id)
                     used_ids.append(attendance.id)
-                if employee.calendar_id:
-                    max_hours = employee.calendar_id.get_working_hours_of_date(from_date_datetime, resource_id=employee.resource_id.id)
+                if employee.resource_calendar_id:
+                    from_date2_datetime = datetime.strptime(from_date_2, '%Y-%m-%d %H:%M:%S')
+                    max_hours = employee.resource_calendar_id.get_work_hours_count(from_date_datetime, from_date2_datetime, resource_id=employee.resource_id.id)
                     extra_hours = day_attendances['ord_hours'] - max_hours
                     if day_attendances['ord_hours'] > max_hours:
                         day_attendances['ord_hours'] = max_hours
@@ -103,5 +103,4 @@ class HrAttendanceReport(models.AbstractModel):
             'data': data,
             'totals': totals
         }
-        return report_obj.render('hr_attendance_report.print_attendance',
-docargs)
+        return docargs
