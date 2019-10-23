@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<openerp>
+<odoo>
     <data>
 
         <record id="hr_employee_print_assitance_report_form" model="ir.ui.view">
@@ -32,4 +32,4 @@
             id="hr_employee_print_assitance_report_action"/>
 
     </data>
-</openerp>
+</odoo>
