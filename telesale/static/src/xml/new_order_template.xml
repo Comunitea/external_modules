@@ -334,6 +334,11 @@
                 <button id="show-client" tabIndex="17">CUSTOMER</button>
               </div>
             </div>
+             <div class="col-1 fullheight centerinside">
+              <div class="centerthis">
+                <button id="mail-button" tabIndex="18">EMAIL</button>
+              </div>
+            </div>
             <!-- POP UP GENERIC EXAMPLE -->
             <!-- <div class="col-1 fullheight centerinside">
               <div class="centerthis">
