@@ -494,6 +494,7 @@ var OrderWidget = TsBaseWidget.extend({
             'click  #ult-button': 'button_ult',
             'click  #vua-button': 'button_vua',
             'click  #so-button': 'button_so',
+            'click  #mail-button': 'button_mail',
             'click  #promo-button': 'button_promo',
             'click  #info-button': 'button_info',
             'click  #show-client': 'button_show_client',
@@ -671,7 +672,46 @@ var OrderWidget = TsBaseWidget.extend({
                 return client_id
             }
         },
-        
+        printCurrentOrder: function() {
+            var self = this;
+            self.ts_model.ready3 = $.Deferred();
+            self.print_id = false
+            var current_order = this.ts_model.get('selectedOrder')
+            if (current_order.get('erp_id') && current_order.get('erp_state') != 'draft'){
+                self.doPrint(current_order.get('erp_id'));
+            }
+            else{
+                this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
+                $.when( self.ts_model.ready3 )
+                .done(function(){
+                    var currentOrder = self.ts_model.get('selectedOrder')
+                    self.doPrint(currentOrder.get('erp_id'));
+                });
+            }
+        },
+        send_mail: function(order_id){
+            rpc.query({model: 'sale.order', method: 'action_telesale_mail', args:[order_id]})
+            .then(function(result){
+                alert(_('Email enviado'))
+            });
+        },
+        button_mail: function(){
+            var self = this;
+            var current_order = this.ts_model.get('selectedOrder')
+            self.ts_model.ready4 = $.Deferred();
+            if (current_order.get('erp_id')){
+                self.send_mail(current_order.get('erp_id'));
+            }
+            else{
+                this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
+                $.when( self.ts_model.ready4 )
+                .done(function(){
+                    var currentOrder = self.ts_model.get('selectedOrder')
+                    self.send_mail(current_order.get('erp_id'));
+                });
+            }
+
+        },
         get_order_fields: function(){
         // Called when load an order from server
             return ['partner_shipping_id','note','comercial','client_order_ref','name',

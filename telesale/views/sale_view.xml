@@ -3,7 +3,6 @@
     <data>
         
         <!-- Add chanel field to sale order tree and search views -->
-
         <record id="sale_view_order_form_telesale" model="ir.ui.view">
             <field name="name">sale.view.order.form.telesale</field>
             <field name="model">sale.order</field>

@@ -147,6 +147,12 @@ class SaleOrder(models.Model):
             'payment_mode_id': order.payment_mode_id.id,
         })
         return res
+    
+    @api.model
+    def action_telesale_mail(self, order_id):
+        self.env.ref('sale.email_template_edi_sale').send_mail(order_id)   
+        return
+        
 
 
 class SaleOrderLine(models.Model):
