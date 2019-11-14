@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="sale_order_line_add_margin" model="ir.ui.view">
+            <field name="name">sale.order.line.add.margin</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_margin.sale_margin_sale_order_line"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/form//field[@name='purchase_price']" position="after">
+                    <label for="margin_perc"/>
+                    <div name="margin_perc">
+                        <field name="margin_perc" class="oe_inline" groups="base.group_user" readonly="1"/> %%
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_margin_percentage_sale_order">
+            <field name="name">sale.order.margin.percentage.view.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_margin.sale_margin_sale_order"/>
+            <field name="arch" type="xml">
+                <field name="margin" position="after">
+                    <label for="margin_perc"/>
+                    <div>
+                        <field name="margin_perc" class="oe_inline"/>%%
+                    </div>
+                </field>
+            </field>
+        </record>
+
+</odoo>
