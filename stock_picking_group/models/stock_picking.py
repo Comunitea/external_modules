@@ -23,9 +23,6 @@ class StockPicking(models.Model):
         domain = [('state', 'not in', ('done', 'cancel')),
                   ('picking_type_id', '=', self.picking_type_id.id)]
 
-        if self._context.get('pick_domain', False):
-            domain += self._context['pick_domain']
-
         for field in self.picking_type_id.grouped_batch_field_ids:
             if self[field.name]:
                 if field.ttype == 'many2one':
@@ -33,7 +30,6 @@ class StockPicking(models.Model):
                 else:
                     domain += [(field.name, '=', self[field.name])]
         return domain
-
 
     def get_batch_vals(self):
 
@@ -93,9 +89,10 @@ class StockBatchPicking(models.Model):
         defaults = self.default_get(['name', 'picking_type_id'])
         picking_type_id = vals.get('picking_type_id', defaults.get('picking_type_id'))
         sequence_id = self.env['stock.picking.type'].browse(picking_type_id).batch_picking_sequence_id
+
         if vals.get('name', '/') == '/' and defaults.get('name', '/') == '/' and picking_type_id and sequence_id:
             vals['name'] = sequence_id.next_by_id()
-        else:
+        elif not vals.get('name', False) or vals.get('name', '/') == "":
             vals['name'] =  self.env['ir.sequence'].next_by_code('stock.batch.picking.lr')
         return super().create(vals)
 

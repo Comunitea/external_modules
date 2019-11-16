@@ -66,7 +66,7 @@ class StockMove(models.Model):
 
     def get_batch_domain(self):
         self.ensure_one()
-        domain = [('state', 'not in', ('draft', 'done', 'cancel')),
+        domain = [('state', 'in', ('assigned', 'draft')),
                   ('picking_type_id', '=', self.picking_type_id.id)]
 
         for field in self.picking_type_id.grouped_batch_field_ids:
@@ -103,8 +103,9 @@ class StockMove(models.Model):
     def _get_new_picking_domain(self):
         domain = super()._get_new_picking_domain()
 
-        if self._context.get('pick_domain', False):
-            domain += self._context['pick_domain']
+        #if self._context.get('pick_domain', False):
+        #    domain += self._context['pick_domain']
+
         for field in self.picking_type_id.grouped_field_ids:
             if field.ttype == 'many2one':
                 domain += [(field.name, '=', self[field.name].id)]
