@@ -168,7 +168,7 @@ class Signen(object):
 
     def create_user(self, username, password):
         response = self.make_request(
-            {"username": username, "password": password},
+            {"username": username, "password": password, "locale": 'es'},
             "user",
             "POST",
             add_headers={"Accept": "application/pdf"},
