@@ -116,7 +116,10 @@ class Signen(object):
                 )
             )
         sign_datas = {}
-        for receiver in json.loads(response.content)["receivers"]:
+        response_content = json.loads(response.content)
+        if 'receivers' not in response_content:
+            return {}
+        for receiver in response_content["receivers"]:
             sign_timestamp = (
                 receiver["signatures"]["1"]
                 and receiver["signatures"]["1"][0]["timestamp"]
@@ -134,7 +137,7 @@ class Signen(object):
         iv = Random.new().read(AES.block_size)
         cipher = AES.new(key, AES.MODE_CBC, iv)
 
-        signen_biometry = company.signen_biometry
+        signen_biometry = "data:image/png;base64," + company.signen_biometry
         encrypted_file = cipher.encrypt(pad(signen_biometry, AES.block_size))
         signature_key = "{}+{}".format(key, iv)
         response = self.make_request(None, "signature/public-key", "GET")

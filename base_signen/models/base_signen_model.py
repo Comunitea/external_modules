@@ -20,11 +20,13 @@ class SignenSignature(models.Model):
 
     def get_receivers_dict(self):
         self.ensure_one()
+        record_lang = self.env['res.lang'].search([("code", "=", self.partner_id.lang)], limit=1)
         return {
             "name": self.partner_id.name,
             "phone_prefix": str(self.partner_id.country_id.phone_code),
             "phone": self.partner_id.phone,
             "email": self.partner_id.email,
+            "locale": record_lang.iso_code,
         }
 
 
@@ -157,11 +159,12 @@ class SignenModel(models.AbstractModel):
                 signature_datas = signen.get_signature_status(
                     self.signen_document_id
                 )
-                for signature in self.signen_signatures:
-                    sign_date = signature_datas.get(signature.partner_id.email)
-                    signature.sign_date = sign_date
-                    if new_status == "4" and not sign_date:
-                        signature.declined = True
+                if signature_datas:
+                    for signature in self.signen_signatures:
+                        sign_date = signature_datas.get(signature.partner_id.email)
+                        signature.sign_date = sign_date
+                        if new_status == "4" and not sign_date:
+                            signature.declined = True
                 self.signen_status = new_status
                 if new_status == "2":
                     document_content = signen.file_evidences(
