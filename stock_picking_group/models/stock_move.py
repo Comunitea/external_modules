@@ -92,9 +92,17 @@ class StockMove(models.Model):
         return vals
 
 
+    def _action_assign(self):
+        return super()._action_assign()
+
     def _assign_picking(self):
-        self = self.filtered(lambda x: not x.picking_type_id.after_assign)
         self.check_assign_picking_error()
+        ctx = self._context.copy()
+        for move in self.filtered(lambda x: not x.picking_type_id.after_assign):
+            ctx.update(after_assign=True)
+            move._action_assign()
+            move.check_new_location()
+
         super()._assign_picking()
         for move in self:
             move.move_line_ids.write({'picking_id': move.picking_id.id})
@@ -196,11 +204,6 @@ class StockMove(models.Model):
             'sale_price': self.sale_price,
         })
         return vals
-
-    def _action_assign(self):
-        super()._action_assign()
-        for move in self.filtered(lambda x: x.location_id.picking_type_id and x.move_line_ids and x.quantity_done == 0):
-            move.check_new_location()
 
     def _action_cancel(self):
 

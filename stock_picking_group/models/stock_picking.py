@@ -10,7 +10,7 @@ class StockPickingType(models.Model):
 
     grouped_field_ids = fields.Many2many('ir.model.fields', string='Albaranes agrupados por ...', domain=[('model_id.model', '=', 'stock.move')], help="Los movimientos se pueden agrupar por estos campos al crear un albarán.")
     grouped_batch_field_ids = fields.Many2many('ir.model.fields', string='Grupos agrupados por ....', domain=[('model_id.model', '=', 'stock.picking')], help="Los albaranes se pueden agrupar por estos campos al crear un grupo.")
-    after_assign = fields.Boolean('Cancelar asignación directa', help="Se busca disponibilidad antes de asignar albarán.")
+    after_assign = fields.Boolean('Si está marcado, se busca disponibilidad antes de asignar el albarán.', help="Se busca disponibilidad antes de asignar albarán.")
     batch_picking_sequence_id = fields.Many2one('ir.sequence', 'Secuencia de lote')
     parent_id = fields.Many2one('stock.picking.type', string="Parent picking type")
 
