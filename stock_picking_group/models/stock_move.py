@@ -98,7 +98,7 @@ class StockMove(models.Model):
     def _assign_picking(self):
         self.check_assign_picking_error()
         ctx = self._context.copy()
-        for move in self.filtered(lambda x: not x.picking_type_id.after_assign):
+        for move in self.filtered(lambda x: x.picking_type_id.after_assign):
             ctx.update(after_assign=True)
             move._action_assign()
             move.check_new_location()
