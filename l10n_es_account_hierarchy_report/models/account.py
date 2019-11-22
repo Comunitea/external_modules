@@ -11,6 +11,8 @@ class AccountAccount(models.Model):
     @api.depends('name', 'code', 'user_type_id', 'internal_type', 'reconcile')
     @api.multi
     def _compute_digits(self):
+        if not account.code:
+            continue
         for account in self:
             label_one = self.env['account.hierarchy.label'].search([
                 ('level', '=', 1), ('code', '=', account.code[0])])
