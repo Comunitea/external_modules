@@ -20,6 +20,9 @@
 ##############################################################################
 
 from odoo import api, models, fields
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
@@ -36,4 +39,27 @@ class StockMoveLine(models.Model):
         ctx.update(model_dest="stock.move.line")
         ctx.update(field=field)
         res = move.with_context(ctx).force_set_qty_done() 
+        return True
+
+    @api.model
+    def force_set_qty_done_by_product_code_apk(self, vals):
+        default_code = vals.get('default_code', False)
+        picking = vals.get('picking', False)
+
+        product = self.env['product.product'].search([('default_code', '=', default_code)])
+        if not product:
+            return {'err': True, 'error': "No se ha encontrado ese default_code en ningún producto."}
+        _logger.info("Encontrado el producto {} con default_code: {}.".format(product.name, default_code))
+
+        move_line = self.search([('product_id', '=', product.id), ('picking_id', '=', int(picking))])
+        _logger.info("Encontrada move line {} con product_id: {} del picking {}.".format(move_line, product.id, picking))
+        move_line = self.browse(move_line.id)
+        
+        field = vals.get('field', False)
+        if not move_line:
+            return {'err': True, 'error': "No se ha encontrado ninguna línea en la que aparezca ese producto."}
+        ctx = self._context.copy()
+        ctx.update(model_dest="stock.move.line")
+        ctx.update(field=field)
+        res = move_line.with_context(ctx).force_set_qty_done() 
         return True
