@@ -20,7 +20,7 @@ class StockPicking(models.Model):
     def get_batch_domain(self):
 
         self.ensure_one()
-        domain = [('state', 'not in', ('done', 'cancel')),
+        domain = [('state', '=', 'draft'),
                   ('picking_type_id', '=', self.picking_type_id.id)]
 
         for field in self.picking_type_id.grouped_batch_field_ids:
