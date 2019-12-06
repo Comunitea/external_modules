@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_clock_company_apk_form" model="ir.ui.view">
+            <field name="name">clock.company.apk</field>
+            <field name="model">clock.company.apk</field>
+            <field name="arch" type="xml">
+                <form>
+                 <sheet>
+                    <field name="image" widget="image" class="oe_left oe_avatar" options='{"preview_image": "image", "size": [90, 90]}'/>
+                    <div class="oe_title oe_left">
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Name"/>
+                        </h1>
+                    </div>
+                    <div class="oe_right oe_button_box" name="buttons"> </div>
+                    <group>
+                        <group>
+                            <field name="welcome_message"/>
+                            <field name="company_id"/>
+                            <field name="contact_phone" />
+                        </group>
+                        <group>
+                            <field name="logo_color" />
+                            <field name="min_accuracity" />
+                            <field name="min_minute" />
+                            <field name="distance_filter" />
+                            <field name="stationary_radius" />
+                        </group>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_clock_company_apk_form" model="ir.actions.act_window">
+            <field name="name">Info apk</field>
+            <field name="res_model">clock.company.apk</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form, tree</field>
+        </record>
+
+        <record id="view_clock_company_apk_in_comapny" model="ir.ui.view">
+            <field name="name">res.company</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <field name="website" position="after">
+                    <button name="action_view_clock_company_apk_form" context="{'default_company_id': active_id}"
+                            type='object' string='Info apk' groups="hr_attendance_apk.group_hr_attendance_gps"/>
+
+                </field>
+            </field>
+        </record>
+
+</odoo>
+

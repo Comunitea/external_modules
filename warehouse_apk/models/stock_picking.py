@@ -46,19 +46,23 @@ class StockPicking(models.Model):
         ctx = picking_id._context.copy()
         ctx.update(skip_overprocessed_check=True)
         res = picking_id.with_context(ctx).button_validate()
-        if res:
-            if res['res_model'] == 'stock.immediate.transfer':
-                wiz =  self.env['stock.immediate.transfer'].with_context(res['context']).browse(res['res_id'])
-                res_inm = wiz.process()
+        try:
+            if res:
+                if res['res_model'] == 'stock.immediate.transfer':
+                    wiz =  self.env['stock.immediate.transfer'].with_context(res['context']).browse(res['res_id'])
+                    res_inm = wiz.process()
 
-                if res_inm['res_model'] == 'stock.backorder.confirmation':
-                    wiz = self.env['stock.backorder.confirmation'].with_context(res_inm['context']).browse(res_inm['res_id'])
-                    res_bord = wiz._process()
+                    if res_inm['res_model'] == 'stock.backorder.confirmation':
+                        wiz = self.env['stock.backorder.confirmation'].with_context(res_inm['context']).browse(res_inm['res_id'])
+                        res_bord = wiz._process()
 
-            if res['res_model'] == 'stock.backorder.confirmation':
-                    wiz = self.env['stock.backorder.confirmation'].with_context(res['context']).browse(res['res_id'])
-                    res_boc = wiz._process()
-        return {'err': False, 'values': {'id': picking_id.id, 'state': picking_id.state}}
+                if res['res_model'] == 'stock.backorder.confirmation':
+                        wiz = self.env['stock.backorder.confirmation'].with_context(res['context']).browse(res['res_id'])
+                        res_boc = wiz._process()
+            return {'err': False, 'values': {'id': picking_id.id, 'state': picking_id.state}}
+        except Exception as e:
+            return {'err': e}
+
 
     @api.model
     def force_set_qty_done_apk(self, vals):

@@ -18,4 +18,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import stock_move_line, stock_picking
+from . import stock_move_line, stock_picking, stock_move_location
