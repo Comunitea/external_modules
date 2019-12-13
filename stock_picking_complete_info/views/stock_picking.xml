@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_type_form_spci" model="ir.ui.view">
+            <field name="name">stock.picking.type.spci</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <field name="use_create_lots" position="before">
+                    <field name="auto_create_post_process_batch"/>
+                </field>
+            </field>
+    </record>
+    <record id="view_picking_form_spci" model="ir.ui.view">
+            <field name="name">view.picking.form.spci</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="package_level_ids" position="after">
+                    <div>
+                        <group class="oe_left">
+                            <field name="all_assigned" class ="oe_inline" />
+                            <field name="move_lines_count" class ="oe_inline" />
+                            <field name="product_uom_qty" class ="oe_inline" />
+                            <field name="reserved_availability" class ="oe_inline" />
+                            <field name="quantity_done" class ="oe_inline" />
+                            <field name="price_subtotal" class ="oe_inline" />
+
+                        </group>
+                    </div>
+                </field>
+                <field name="move_ids_without_package" position="before">
+                    <div attrs="{'invisible':[('state','not in',('confirmed', 'assigned'))]}">
+
+                        <button class="oe_link oe_right"
+                                context="{'reset': False, 'field': 'product_uom_qty'}"
+                                name="force_set_qty_done"  type="object" string="↳Copy qty. to done"
+                                attrs="{'invisible':[('quantity_done', '!=', 0)]}"/>
+
+                        <button class="oe_link oe_right"
+                                context="{'reset': False, 'field': 'reserved_availability'}"
+                                name="force_set_qty_done" type="object" string="↳Copy assigned to done"
+                                attrs="{'invisible':[('quantity_done', '!=', 0)]}"/>
+                        <button class="oe_link oe_right"
+                                context="{'reset': True}"
+                                name="force_set_qty_done" type="object" string="↳Reset qties"
+                                attrs="{'invisible':[('quantity_done','=',0)]}"/>
+
+                    </div>
+                </field>
+            </field>
+    </record>
+
+     <record id="vpicktree_spci" model="ir.ui.view">
+        <field name="name">stock.picking.tree.spci</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="info_str" />
+                <field name="move_lines_count" sum="sum_lines"/>
+                <field name="price_subtotal" sum="sum_amount"/>
+            </xpath>
+            <field name="info_str" position="attributes">
+                <attribute name="options"> {
+                    "fg_color": "green: state=='done'; orange: state=='assigned'"
+                }</attribute>
+              </field>
+            <field name="move_lines_count" position="attributes">
+                <attribute name="options"> {
+                    "fg_color": "green: move_lines_count &lt;= 25; orange: move_lines_count &gt; 25 and move_lines_count &lt;=100; red: move_lines_count &gt; 100"
+                }</attribute>
+              </field>
+        </field>
+    </record>
+    <record id="view_picking_internal_search_spci" model="ir.ui.view">
+        <field name="name">stock.picking.search.spci</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <filter name="late" position="after">
+            <separator/>
+                <field name="n_lines" filter_domain="[('n_lines', 'ilike', self)]"  string="Lines range" context="{'n_lines': True}"/>
+                <field name="n_amount" filter_domain="[('n_amount', 'ilike', self)]"  string="Amount range" context="{'n_amount': True}"/>
+            </filter>
+        </field>
+
+    </record>
+</odoo>
