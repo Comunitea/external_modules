@@ -6,9 +6,7 @@ import pytz
 
 MIN_MINUTE = 3
 
-EMPLOYEE_FIELDS = ['id', 'name', 'state', 'last_sign', 'apk_date',
-                   'last_sign_tz', 'last_sign_hour', 'last_sign_day',
-                   'company_id']
+EMPLOYEE_FIELDS = ['id', 'name', 'company_id']
 USER_FIELDS = ['id', 'login', 'name', 'company_id']
 CONF_FIELDS = ['image', 'logo_color', 'min_minute', 'distance_filter',
                'stationary_radius', 'min_accuracity']
@@ -19,30 +17,11 @@ class HrEmployee(models.Model):
 
     def get_time_to_user_tz(self, today):
         utc = pytz.timezone('UTC')
-        context_tz = pytz.timezone(self.user_id.tz)
-        utc_today = utc.localize(today, is_dst=False)
+        context_tz = utc
+        utc_today = utc.localize(today, is_dst=None)
         context_today = utc_today.astimezone(context_tz)
         return context_today
 
-    @api.multi
-    def get_last_sign_split(self):
-        for emp in self:
-            if emp.last_sign:
-                last_sign_date = datetime.strptime(emp.last_sign,
-                                                   '%Y-%m-%d %H:%M:%S')
-            else:
-                last_sign_date = datetime.now()
-            last_sign = self.get_time_to_user_tz(last_sign_date)
-            emp.apk_date = self.get_time_to_user_tz(datetime.now())
-
-            emp.last_sign_day = last_sign.strftime('%Y-%m-%d')
-            emp.last_sign_hour = last_sign.strftime('%H:%M')
-            emp.last_sign_tz = last_sign.strftime('%Y-%m-%d %H:%M')
-
-    last_sign_hour = fields.Char(compute="get_last_sign_split")
-    last_sign_day = fields.Char(compute="get_last_sign_split")
-    last_sign_tz = fields.Char(compute="get_last_sign_split")
-    apk_date = fields.Char(compute="get_last_sign_split")
 
     @api.model
     def attendance_action_change_apk(self, vals):
@@ -50,9 +29,9 @@ class HrEmployee(models.Model):
             browse(vals.get('employee_id', False))
         last_signin = self.env['hr.attendance'].\
             search([('employee_id', '=', employee.id)], limit=1,
-                   order='name DESC')
+                   order='id DESC')
         if last_signin:
-            last_signin_datetime = datetime.strptime(last_signin.name,
+            last_signin_datetime = datetime.strptime(last_signin.create_date,
                                                      '%Y-%m-%d %H:%M:%S')
             now_datetime = datetime.now()
             diffmins = (now_datetime - last_signin_datetime).seconds/60
@@ -70,6 +49,7 @@ class HrEmployee(models.Model):
 
     @api.model
     def get_employee_info(self, vals):
+
         user_id = vals.get('user_id', False)
         if user_id:
             user_id = self.env['res.users'].browse(user_id)
@@ -107,6 +87,11 @@ class HrEmployee(models.Model):
 
             if vals.get('employee_info', False):
                 # EQUIVALE A UN SEARCH READ
+                active_attendance = self.env['hr.attendance'].search([('employee_id', '=', employee_id.id)], limit=1, order='id DESC')
+                if not active_attendance.check_out:
+                    employee['state'] = 'present'
+                else:
+                    employee['state'] = 'not-present'
                 return employee
         if user_id:
             res = {}
@@ -122,12 +107,14 @@ class HrEmployee(models.Model):
                 conf[f] = apk[f]
             res['apk'] = conf
         res['employee'] = employee
+
         return {'error': False, 'data': res}
 
 
 class HrAttendance(models.Model):
     _inherit = "hr.attendance"
 
+    
     @api.model
     def get_google_maps_url(self):
         for att in self:
@@ -174,6 +161,12 @@ class HrAttendance(models.Model):
             'action': action,
             'related_attendance_id': attendance.id,
         }
+
+    def get_related_attendance(self):
+        for attendance in self:
+            return self.env['hr.attendance'].search([('employee_id', '=', attendance.employee_id.id)\
+                , ('id', '>', attendance.id)], limit=1, order='id DESC').id or False
+
 
     @api.model
     def get_name_to_user_zone(self, date):
@@ -255,31 +248,17 @@ class HrAttendance(models.Model):
         check_val = {}
         apk = employee.company_id.get_clock_apk()
         for check in checks:
-            check_action = check.check_out and 'sign_out' or 'sign_in'
 
-            if check_action == 'sign_out':
+            if check.check_out:
                 check_val = check.get_vals(vals_type='sign_out',
                                            min_accuracity=apk.min_accuracity)
 
-            elif check_action == 'sign_in' and not check_val:
-                checks_vals.\
-                    append(check.get_vals(vals_type='sign_in',
-                                          min_accuracity=apk.min_accuracity))
-                check_val = {}
+            elif not check.check_out:
+                check_val = check.get_vals(vals_type='sign_in',
+                                           min_accuracity=apk.min_accuracity)
+            
+            checks_vals.append(check_val)
 
-            elif check_action == 'sign_in' and check_val:
-                checks_vals.\
-                    append(check.get_vals(vals_type='update',
-                                          check_val=check_val,
-                                          min_accuracity=apk.min_accuracity))
-                check_val = {}
-
-            if check_val and check_val['action'] == 'sign_out' and False:
-                checks_vals.\
-                    append(check.get_vals(vals_type='update',
-                                          check_val=check_val,
-                                          min_accuracity=apk.min_accuracity))
-                check_val = {}
         return checks_vals
 
     @api.multi

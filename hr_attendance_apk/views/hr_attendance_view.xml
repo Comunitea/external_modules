@@ -24,7 +24,7 @@
                         <field name="google_maps_url" widget="url"/>
                     </group>
                     <group string="Attendance Positions">
-                        <widget type="googlemaps"/>
+                        <div widget="googlemaps"/>
                     </group>
                 </xpath>
             </field>

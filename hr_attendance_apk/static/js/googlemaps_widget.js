@@ -1,10 +1,12 @@
-openerp.hr_attendance_apk = function(instance, local) {
-    var _t = instance.web._t,
-        _lt = instance.web._lt;
-    var QWeb = instance.web.qweb;
+odoo.define('hr_attendance_apk.googlemaps', function (require) {
+    'use strict';
 
-    local.WidgetGoogleMaps = instance.web.form.FormWidget.extend({
-        start: function() {
+    var core = require('web.core');
+    var Widget = require('web.Widget');
+
+
+    var WidgetGoogleMaps = Widget.extend({
+        start: function () {
             this._super();
             this.field_manager.on("field_changed:id", this, this.display_map);
             this.display_map();
@@ -16,5 +18,9 @@ openerp.hr_attendance_apk = function(instance, local) {
         }
     });
 
-    instance.web.form.custom_widgets.add('googlemaps', 'instance.hr_attendance_apk.WidgetGoogleMaps');
-}
+    core.action_registry.add(
+        "googlemaps",
+        WidgetGoogleMaps
+    );
+    return WidgetGoogleMaps;
+});

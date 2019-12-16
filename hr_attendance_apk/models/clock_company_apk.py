@@ -1,6 +1,6 @@
 # Copyright 2019 Comunitea Servicios Tecnológicos S.L.
 
-from odoo import api, models, fields, tools
+from odoo import api, models, fields, tools, _
 
 MIN_MINUTE = 0
 
@@ -17,17 +17,20 @@ class ResCompany(models.Model):
     @api.multi
     def action_view_clock_company_apk_form(self):
         self.ensure_one()
-        action_data = self.env.\
-            ref('hr_attendance_apk.action_view_clock_company_apk_form').\
-            read()[0]
-        action_data['context'] = {'default_company_id': 1}
-        action_data['domain'] = [('id', '=', self.id)]
 
-        form_view = self.env.\
-            ref('hr_attendance_apk.view_clock_company_apk_form')
-        action_data['views'] = [(form_view.id, 'form')]
-        action_data['res_id'] = self.id
-        return action_data
+        action = {
+            'type': 'ir.actions.act_window',
+            'name': _('Info Apk'),
+            'res_model': 'clock.company.apk',
+            'domain': "[('id', '=', %s)]" % self.id,
+            'auto_search': True,
+            'views': [
+                (self.env.ref('hr_attendance_apk.view_clock_company_apk_form').id, 'form')],
+            'target': 'current',
+            'nodestroy': True,
+        }
+
+        return action
 
 
 class ClockCompanyApk(models.Model):

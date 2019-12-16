@@ -40,7 +40,7 @@
             <field name="view_mode">form, tree</field>
         </record>
 
-        <record id="view_clock_company_apk_in_comapny" model="ir.ui.view">
+        <record id="view_clock_company_apk_in_company" model="ir.ui.view">
             <field name="name">res.company</field>
             <field name="model">res.company</field>
             <field name="inherit_id" ref="base.view_company_form"/>
