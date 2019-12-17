@@ -18,12 +18,12 @@
             <field name="model">stock.picking.batch</field>
             <field name="inherit_id" ref="stock_picking_batch_extended.stock_batch_picking_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='cancel_picking']" position="attributes">
+                <xpath expr="//button[@name='cancel_picking']" position="after">
                 <button name="action_create_dest_batch" string="Create dest batch" type="object"
                         attrs="{'invisible': ['|', '|', ('batch_dest_id', '!=', False), ('state', '!=', 'done'), ('picking_dest_ids', '=', [])}"/>
                 </xpath>
                 <field name="user_id" position="before">
-                    <field name="picking_type_id" attrs="{'readonly':[('picking_ids', '!=', [])]}"/>
+                    <field name="picking_type_id" attrs="{'readonly':[('state','!=', 'draft'), ('picking_ids', '!=', [])]}"/>
                 </field>
                 <xpath expr="//field[@name='picking_ids']" position="attributes">
                     <attribute name="domain">[('picking_type_id', '=', picking_type_id), ('state', 'not in', ('done', 'cancel'))]</attribute>
