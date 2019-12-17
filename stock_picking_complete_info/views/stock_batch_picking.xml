@@ -20,7 +20,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='cancel_picking']" position="after">
                 <button name="action_create_dest_batch" string="Create dest batch" type="object"
-                        attrs="{'invisible': ['|', '|', ('batch_dest_id', '!=', False), ('state', '!=', 'done'), ('picking_dest_ids', '=', [])}"/>
+                        attrs="{'invisible': [('state', '!=', 'done')]}"/>
                 </xpath>
                 <field name="user_id" position="before">
                     <field name="picking_type_id" attrs="{'readonly':[('state','!=', 'draft'), ('picking_ids', '!=', [])]}"/>
