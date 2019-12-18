@@ -117,9 +117,10 @@ class AccountPaymentTerm(models.Model):
         if day > self.days_in_month(date):
             day = self.days_in_month(date)
         while True:
-            date += timedelta(days=1)
             if date.day == day:
                 return date
+            date += timedelta(days=1)
+
 
     @api.model
     def _after_holidays(self, partner, date, days):
