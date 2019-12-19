@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_account_move_importer_form" model="ir.ui.view">
+            <field name="name">account_move_importer.form</field>
+            <field name="model">account.admin.tools.move.importer</field>
+            <field name="arch" type="xml">
+                <form string="Account move importer">
+                    <p class="oe_grey">This wizard will import one account move from a CSV file.</p>
+                    <p class="oe_grey">Note: It will fail if any of the accounts do not exist in Odoo.</p>
+                    <group string="Account move parameters">
+                        <p class="oe_grey">Select the parameters for the account move</p>
+                        <group>
+                            <field name="ref"/>
+                            <field name="company_id"/>
+                            <newline/>
+                            <field name="journal_id" domain="[('company_id', '=', company_id)]"/>
+                            <newline/>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                    <group string="Input file">
+                        <p class="oe_grey">Select the CSV file with the lines for the account move</p>
+                        <field name="input_file" filename="input_file_name" nolabel="1"/>
+                        <group string="File format">
+                            <field name="csv_delimiter"/>
+                            <field name="csv_quotechar"/>
+                            <field name="csv_thousands_separator"/>
+                            <field name="csv_decimal_separator"/>
+                        </group>
+                        <group string="Record format">
+                            <field name="csv_code_index"/>
+                            <field name="csv_code_regexp"/>
+                            <field name="csv_ref_index"/>
+                            <field name="csv_ref_regexp"/>
+                            <field name="csv_debit_index"/>
+                            <field name="csv_debit_regexp"/>
+                            <field name="csv_credit_index"/>
+                            <field name="csv_credit_regexp"/>
+                            <field name="csv_partner_ref_index"/>
+                            <field name="csv_partner_ref_regexp"/>
+                            <field name="oerp_partner_ref_field"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Cancel" special="cancel"/>
+                        or
+                        <button string="Import" name="action_import" type="object"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_move_importer" model="ir.actions.act_window">
+            <field name="name">Import Account Move from CSV</field>
+            <field name="res_model">account.admin.tools.move.importer</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_account_move_importer_form"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_action_account_move_importer"
+            parent="menu_action_account_admin_tools_import"
+            action="action_account_move_importer"
+            sequence="20"/>
+
+</odoo>
