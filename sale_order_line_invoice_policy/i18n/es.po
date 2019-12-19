@@ -1,0 +1,48 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_order_line_invoice_policy
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-18 12:52+0000\n"
+"PO-Revision-Date: 2019-12-18 12:52+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_order_line_invoice_policy
+#: selection:sale.order.line,invoice_policy:0
+msgid "Delivered quantities"
+msgstr "Cantidades entregadas"
+
+#. module: sale_order_line_invoice_policy
+#: selection:sale.order.line,invoice_policy:0
+msgid "Inherit from product"
+msgstr "Según artículo"
+
+#. module: sale_order_line_invoice_policy
+#: model:ir.model.fields,field_description:sale_order_line_invoice_policy.field_sale_order_line__invoice_policy
+msgid "Invoicing Policy"
+msgstr "Política de Facturación"
+
+#. module: sale_order_line_invoice_policy
+#: model:ir.model.fields,help:sale_order_line_invoice_policy.field_sale_order_line__invoice_policy
+msgid "Ordered Quantity: Invoice quantities ordered by the customer.\n"
+"Delivered Quantity: Invoice quantities delivered to the customer."
+msgstr "Cantidades pedidas: Facturan según lo pedido\n Cantidades entregadas: Factura según entregado\n Según artículo: Se hereda del artículo"
+
+#. module: sale_order_line_invoice_policy
+#: selection:sale.order.line,invoice_policy:0
+msgid "Ordered quantities"
+msgstr "Cantidades pedidas"
+
+#. module: sale_order_line_invoice_policy
+#: model:ir.model,name:sale_order_line_invoice_policy.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de venta"
+
