@@ -1,0 +1,83 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* procure_supplier
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-04 09:11+0000\n"
+"PO-Revision-Date: 2019-12-04 09:11+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: procure_supplier
+#: model_terms:ir.ui.view,arch_db:procure_supplier.procure_supplier_wizard
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: procure_supplier
+#: model:ir.model,name:procure_supplier.model_procure_supplier_compute
+msgid "Check Orderpoint For supplier"
+msgstr "Comprobar abastecimientos por proveedor"
+
+#. module: procure_supplier
+#: model:ir.model.fields,field_description:procure_supplier.field_procure_supplier_compute__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: procure_supplier
+#: model:ir.model.fields,field_description:procure_supplier.field_procure_supplier_compute__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: procure_supplier
+#: model:ir.model.fields,field_description:procure_supplier.field_procure_supplier_compute__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: procure_supplier
+#: model:ir.model.fields,field_description:procure_supplier.field_procure_supplier_compute__id
+msgid "ID"
+msgstr ""
+
+#. module: procure_supplier
+#: model:ir.model.fields,field_description:procure_supplier.field_procure_supplier_compute____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: procure_supplier
+#: model:ir.model.fields,field_description:procure_supplier.field_procure_supplier_compute__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: procure_supplier
+#: model:ir.model.fields,field_description:procure_supplier.field_procure_supplier_compute__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: procure_supplier
+#: model:ir.model,name:procure_supplier.model_procurement_group
+msgid "Procurement Group"
+msgstr "Grupo de abastecimiento"
+
+#. module: procure_supplier
+#: model:ir.actions.act_window,name:procure_supplier.act_action_procure_supplier_wizard_partner_relation
+#: model:ir.actions.act_window,name:procure_supplier.action_procure_supplier_wizard
+msgid "Procurements for supplier"
+msgstr "Abastecimientos por proveedor"
+
+#. module: procure_supplier
+#: model_terms:ir.ui.view,arch_db:procure_supplier.procure_supplier_wizard
+msgid "Run Procurements"
+msgstr "Ejecutar abastecimientos"
+
+#. module: procure_supplier
+#: model_terms:ir.ui.view,arch_db:procure_supplier.procure_supplier_wizard
+msgid "or"
+msgstr "o"
+
