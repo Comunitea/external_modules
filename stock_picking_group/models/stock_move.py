@@ -100,9 +100,9 @@ class StockMove(models.Model):
         for type_id in picking_type_ids:
             type_moves = moves.filtered(lambda x: x.picking_type_id == type_id)
             ml = type_moves.mapped('move_line_ids')
-            if type_id.group_code.code == 'picking':
+            if type_id.group_code == 'picking':
                 stock_move_ids |= ml.filtered(lambda x:x.location_id != x.move_id.location_id).mapped('move_id')
-            elif type_id.group_code.code == 'location':
+            elif type_id.group_code == 'location':
                 stock_move_ids |= ml.filtered(lambda x: x.location_dest_id != x.move_id.location_dest_id).mapped('move_id')
             else:
                 stock_move_ids |= ml.filtered(lambda x: x.location_dest_id != x.move_id.location_dest_id or x.location_id != x.move_id.location_id).mapped('move_id')
