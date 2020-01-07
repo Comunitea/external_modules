@@ -18,7 +18,7 @@ class ProcurementGroup(models.Model):
                 [('categ_id','in', categ_ids)])
 
             domain = expression.AND([domain, [('product_id', 'in',
-                                               product_ids)]])
+                                               product_ids.ids)]])
         return domain
 
     @api.model
