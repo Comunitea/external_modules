@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
    !-- OPEN ITEMS -->
-    <record id="procure_supplier_wizard" model="ir.ui.view">
-        <field name="name">Procurements for supplier</field>
-        <field name="model">procure.supplier.compute</field>
+    <record id="procure_category_wizard" model="ir.ui.view">
+        <field name="name">Procurements for category</field>
+        <field name="model">procure.category.compute</field>
         <field name="arch" type="xml">
             <form>
 
