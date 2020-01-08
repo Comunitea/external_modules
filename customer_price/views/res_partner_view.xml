@@ -50,6 +50,7 @@
         <field name="inherit_id" ref="base.view_res_partner_filter" />
         <field name="arch" type="xml">
             <field name="name" position="after">
+                <field name="street"/>
                 <field name="zip"/>
                 <field name="state_id"/>
                 <field name="city"
