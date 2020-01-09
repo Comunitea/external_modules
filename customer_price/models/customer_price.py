@@ -27,9 +27,10 @@ class CustomerPrice(models.Model):
     def get_customer_price_rec(self, partner_id, product, qty, date=False):
         today = date or time.strftime('%Y-%m-%d')
         if isinstance(partner_id, (int,)):
-            partner = partner_id
+            partner = self.env['res.partner'].browse(partner_id)[
+                0].commercial_partner_id.id
         else:
-            partner = partner_id.id
+            partner = partner_id.commercial_partner_id.id
         domain = [('partner_id', '=', partner),
                   ('product_id', '=', product.id),
                   ('min_qty', '<=', qty),
