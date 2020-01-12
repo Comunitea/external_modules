@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
    !-- OPEN ITEMS -->
-    <record id="procure_supplier_wizard" model="ir.ui.view">
-        <field name="name">Procurements for supplier</field>
-        <field name="model">procure.supplier.compute</field>
+    <record id="procure_category_wizard" model="ir.ui.view">
+        <field name="name">Procurements for category</field>
+        <field name="model">procure.category.compute</field>
         <field name="arch" type="xml">
             <form>
 
@@ -17,19 +17,19 @@
         </field>
     </record>
 
-    <act_window id="action_procure_supplier_wizard"
-                name="Procurements for supplier"
-                res_model="procure.supplier.compute"
+    <act_window id="action_procure_category_wizard"
+                name="Procurements for category"
+                res_model="procure.category.compute"
                 view_type="form"
                 view_mode="form"
-                view_id="procure_supplier_wizard"
+                view_id="procure_category_wizard"
                 target="new" />
 
     <!--Add to res.partner action-->
-    <act_window id="act_action_procure_supplier_wizard_partner_relation"
-                name="Procurements for supplier"
-                res_model="procure.supplier.compute"
-                src_model="res.partner"
+    <act_window id="act_action_procure_category_wizard_partner_relation"
+                name="Procurements for Category"
+                res_model="procure.category.compute"
+                src_model="product.category"
                 view_mode="form"
                 groups="purchase.group_purchase_manager"
                 key2="client_action_multi"

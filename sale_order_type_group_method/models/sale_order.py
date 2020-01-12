@@ -13,7 +13,8 @@ class SaleOrder(models.Model):
     def onchange_type_id(self):
         res = super(SaleOrder, self).onchange_type_id()
         for order in self:
-            if order.type_id.invoice_group_method_id:
+            if not order.invoice_group_method_id and \
+                    order.type_id.invoice_group_method_id:
                 order.invoice_group_method_id = (
                     order.type_id.invoice_group_method_id.id)
         return res

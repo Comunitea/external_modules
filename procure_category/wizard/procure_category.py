@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class ProcucreCategoryCompute(models.TransientModel):
     _name = 'procure.category.compute'
-    _description = 'Check Orderpoint for cCtegory'
+    _description = 'Check Orderpoint for category'
 
     def _procure_calculation_orderpoint(self):
         with api.Environment.manage():
@@ -21,7 +21,7 @@ class ProcucreCategoryCompute(models.TransientModel):
             self = self.with_env(self.env(cr=new_cr))
 
             for company in self.env.user.company_ids:
-                self.env['procurement.group']._run_orderpoints_supplier(
+                self.env['procurement.group']._run_orderpoints_category(
                     use_new_cursor=True,
                     company_id=company.id)
             new_cr.close()

@@ -18,11 +18,11 @@ class ProcurementGroup(models.Model):
                 [('categ_id','in', categ_ids)])
 
             domain = expression.AND([domain, [('product_id', 'in',
-                                               product_ids)]])
+                                               product_ids.ids)]])
         return domain
 
     @api.model
-    def _run_orderpoints_supplier(self, use_new_cursor=False,
+    def _run_orderpoints_category(self, use_new_cursor=False,
                                   company_id=False):
         # Minimum stock rules
         self.sudo()._procure_orderpoint_confirm(use_new_cursor=use_new_cursor,

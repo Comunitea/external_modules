@@ -8,9 +8,9 @@
         <field name="arch" type="xml">
             <field name="type" position="replace">
                 <field name="default_partner_by_type" invisible="1"/>
-                <label for="type" attrs="{'invisible': [('parent_id','=', False)]}" groups="base.group_no_one"/>
+                <label for="type" attrs="{'invisible': [('parent_id','=', False)]}"/>
                 <div attrs="{'invisible': [('parent_id','=', False)]}">
-                   <field name="type" groups="base.group_no_one" class="oe_inline"/>
+                   <field name="type"  class="oe_inline"/>
                    <button name="set_as_default" type="object" icon="fa-star" aria-label="default" title="default" style="background-color:#FFFFFF" class="oe_inline" attrs ="{'invisible': [('default_partner_by_type', '!=', True)]}" />
                    <button name="set_as_default" type="object" icon="fa-star-o" aria-label="no_default" title="default" style="background-color:#FFFFFF" class="oe_inline far" attrs ="{'invisible': [('default_partner_by_type', '=', True)]}" />
                 </div>
@@ -28,9 +28,9 @@
             <xpath expr="//form/sheet/field[@name='type']" position="replace">
                 <group attributes="{'invisible': [('count_partners_by_type','=',0)]}">
                     <field name="default_partner_by_type" invisible="1"/>
-                    <label for="type" attrs="{'invisible': [('parent_id','=', False)]}" groups="base.group_no_one"/>
+                    <label for="type" attrs="{'invisible': [('parent_id','=', False)]}"/>
                     <div attrs="{'invisible': [('parent_id','=', False)]}">
-                        <field name="type" groups="base.group_no_one" class="oe_inline"/>
+                        <field name="type" class="oe_inline"/>
                         <button name="set_as_default" type="object" icon="fa-star" aria-label="default" title="default" style="background-color:#FFFFFF" class="oe_edit_only oe_inline" attrs ="{'invisible': [('default_partner_by_type', '!=', True)]}" />
                         <button name="set_as_default" type="object" icon="fa-star-o" aria-label="no-default" title="default" style="background-color:#FFFFFF" class="oe_edit_only oe_inline far" attrs ="{'invisible': [('default_partner_by_type', '=', True)]}" />
                     </div>
