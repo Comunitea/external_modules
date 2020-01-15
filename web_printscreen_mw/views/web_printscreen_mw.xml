@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<odoo>
+    <template id="assets_backend" name="web_printscreen_mw assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/web_printscreen_mw/static/src/js/web_printscreen_mw.js"></script>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="Pager">
+        <t t-jquery=".o_pager_value" t-operation="before">
+            <a id="button_export_pdf" href="javascript:void(0)">PDF</a>
+            <span> or </span>
+            <a id="button_export_excel" href="javascript:void(0)">Excel</a>
+        </t>
+    </t>
+</templates>
