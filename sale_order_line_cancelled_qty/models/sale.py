@@ -3,6 +3,16 @@
 from odoo import models, fields, api
 from odoo.addons import decimal_precision as dp
 
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    @api.multi
+    def action_cancel(self):
+        res = super(SaleOrder, self).action_cancel()
+        domain = [('state', '=','cancel'), ('sale_line_id','in', self.mapped('order_line').ids)]
+        moves_to_unlink = self.env['stock.move'].search(domain).filtered(lambda x: x.quantity_done == 0)
+        moves_to_unlink.write({'sale_line_id': False})
+        return res
 
 class SaleOrderLine(models.Model):
 

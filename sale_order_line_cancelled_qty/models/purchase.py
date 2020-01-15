@@ -1,8 +1,18 @@
 # © 2019 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import fields, models
+from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
 
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    @api.multi
+    def button_cancel(self):
+        res = super(SaleOrder, self).action_cancel()
+        domain = [('state', '=','cancel'), ('purchase_line_id','in', self.mapped('order_line').ids)]
+        moves_to_unlink = self.env['stock.move'].search(domain).filtered(lambda x: x.quantity_done == 0)
+        moves_to_unlink.write({'purchase_line_id': False})
+        return res
 
 class PurchaseOrderLine(models.Model):
 

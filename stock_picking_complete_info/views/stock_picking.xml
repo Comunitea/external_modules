@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="vpicktree_inherit_stock_picking_batch" model="ir.ui.view">
+        <field name="name">stock.picking.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock_picking_batch.vpicktree_inherit_stock_picking_batch"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='batch_id']" position="after">
+                <button name="unlink_from_batch"
+                        type="object" class="oe_stat_button"
+                        icon="fa-times"
+                        attrs="{'invisible': [('batch_id', '=', False)]}"
+                        title="Sacar de la agrupación"/>
+            </xpath>
+        </field>
+    </record>
+
+
     <record id="view_picking_type_form_spci" model="ir.ui.view">
             <field name="name">stock.picking.type.spci</field>
             <field name="model">stock.picking.type</field>
@@ -56,6 +73,7 @@
         <field name="inherit_id" ref="stock.vpicktree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
+                <field name="all_assigned"></field>
                 <field name="info_str" />
                 <field name="move_lines_count" sum="sum_lines"/>
                 <field name="price_subtotal" sum="sum_amount"/>
@@ -77,10 +95,11 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_internal_search"/>
         <field name="arch" type="xml">
-            <filter name="late" position="after">
+            <filter name="available" position="after">
+                <filter name="all_assigned" string="Preparado 100%" domain="[('all_assigned', '=', True)]" help="Pick 100 reservado"/>
             <separator/>
-                <field name="n_lines" filter_domain="[('n_lines', 'ilike', self)]"  string="Lines range" context="{'n_lines': True}"/>
-                <field name="n_amount" filter_domain="[('n_amount', 'ilike', self)]"  string="Amount range" context="{'n_amount': True}"/>
+                <field name="n_lines" filter_domain="[('n_lines', 'ilike', self)]"  string="Rango de líneas" context="{'n_lines': True}"/>
+                <field name="n_amount" filter_domain="[('n_amount', 'ilike', self)]"  string="Rango de importes" context="{'n_amount': True}"/>
             </filter>
         </field>
 
