@@ -10,23 +10,26 @@ class SaleOrderLine(models.Model):
 
     @api.multi
     def _calculate_cancelled_qty(self):
-        for line in self.filtered(lambda r: r.product_id and r.id):
+
+        if self.ids:
             sql = """
-            SELECT SUM(sm.product_uom_qty)
+            SELECT SUM(sm.product_uom_qty), sale_line_id
             FROM stock_move sm JOIN stock_location sl
                 ON sl.id = sm.location_dest_id
             WHERE sm.origin_returned_move_id IS NULL
                 AND sm.state = 'cancel'
                 AND sl.usage = 'customer'
-                AND sale_line_id = {}""".format(line.id)
-            self._cr.execute(sql)
+                AND sale_line_id in %s
+             GROUP BY sale_line_id"""
+            print(self.ids)
+            self._cr.execute(sql, (tuple(self.ids),))
             res = self._cr.fetchall()
-            if res[0] and res[0][0]:
-                qty_cancelled = res[0][0]
-                line.qty_cancelled = line.product_uom._compute_quantity(
-                    qty_cancelled, line.product_uom)
-            else:
-                line.qty_cancelled = 0.0
+            for rec in res:
+                if rec[0]:
+                    qty_cancelled = rec[0]
+                    line = self.filtered(lambda l: l.id == rec[1])
+                    line.qty_cancelled = line.product_uom._compute_quantity(
+                        qty_cancelled, line.product_uom)
 
     def _compute_qty_delivered(self):
         res = super(SaleOrderLine, self)._compute_qty_delivered()
