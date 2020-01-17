@@ -35,7 +35,7 @@ class StockPicking(models.Model):
                                        compute='_count_product_ids')
     all_assigned = fields.Boolean('All assigned', compute='_compute_state', store=True, copy=False)
     currency_id = fields.Many2one(related='sale_id.currency_id')
-    price_subtotal = fields.Monetary(string='Subtotal', currency_field='currency_id', compute='get_n_lines', store=True)
+    price_subtotal = fields.Float(string='Subtotal', currency_field='currency_id', compute='get_n_lines', store=True)
     move_lines_count = fields.Integer ('# Lines', compute='get_n_lines',store=True)
     info_str = fields.Char('Info str', compute='get_n_lines',store=True)
     n_lines = fields.Char(store=False)
@@ -67,7 +67,7 @@ class StockPicking(models.Model):
         - Done: if the picking is done.
         - Cancelled: if the picking is cancelled
         '''
-
+        print (self.name)
         self.all_assigned = False
         if not self.move_lines:
             self.state = 'draft'
@@ -86,30 +86,29 @@ class StockPicking(models.Model):
             else:
                 self.state = relevant_move_state
 
+    @api.multi
+    def act_picking_info(self):
+        for pick in self:
+            #pick.move_lines.get_price_subtotal()
+            pick.get_n_lines()
 
     @api.multi
-    @api.depends('move_lines', 'state')
+    @api.depends('move_lines.state', 'state')
     def get_n_lines(self):
+
         for pick in self:
-            if pick.picking_type_id.code == 'outgoing':
-                lines_for_total = pick.move_lines
-            else:
-                lines_for_total = pick.move_lines.mapped('move_dest_ids').filtered(lambda x: x.picking_type_id.code == 'outgoing')
+            total = {}
+
+            pick.price_subtotal = sum(x.price_subtotal for x in pick.move_lines)
             if pick.state == 'done':
                 move_lines_count_not = pick.move_lines_count = len(pick.move_lines)
-                pick.price_subtotal = sum(x.price_subtotal for x in lines_for_total.filtered(
-                    lambda x: x.state == 'done'))
                 state_text = 'Done'
             elif pick.state == 'assigned':
                 pick.move_lines_count = len(pick.move_lines)
                 move_lines_count_not = len(pick.move_lines.filtered(lambda x: x.reserved_availability))
-                pick.price_subtotal = sum(x.price_subtotal for x in lines_for_total.filtered(
-                    lambda x: x.state in ('partially_available', 'assigned')))
                 state_text = 'Assigned'
             else:
                 state_text = 'To assign'
-                pick.price_subtotal = sum(x.price_subtotal for x in lines_for_total.filtered(
-                    lambda x: x.state not in ('draft', 'cancel')))
                 move_lines_count_not = pick.move_lines_count = len(pick.move_lines)
             pick.info_str = _('{} €: {} {} of {} lines'.format(pick.price_subtotal, state_text, move_lines_count_not, pick.move_lines_count))
 

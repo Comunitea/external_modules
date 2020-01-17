@@ -9,7 +9,7 @@
             <field name="inherit_id" ref="stock_picking_batch_extended.view_create_batch_picking"/>
             <field name="arch" type="xml">
                 <field name="date" position="before">
-                    <field name="picking_type_id" readonly="1"/>
+                    <field name="picking_type_id"/>
                 </field>
             </field>
     </record>
@@ -30,16 +30,19 @@
                 </xpath>
                 <field name="move_lines" position="after">
                     <div>
-                        <group class="oe_left">
-                            <field name="all_assigned" class ="oe_inline" />
-                            <field name="move_lines_count" class ="oe_inline" />
-                            <field name="product_uom_qty" class ="oe_inline" />
-                            <field name="reserved_availability" class ="oe_inline" />
-                            <field name="quantity_done" class ="oe_inline" />
-                            <field name="picking_dest_ids" class ="oe_inline" widget="many2many_tags" readonly="1"/>
-                            <field name="batch_dest_id" class ="oe_inline" readonly="1"/>
-                            <field name="price_subtotal" class ="oe_inline" invisible="1"/>
-
+                        <group>
+                            <group>
+                                <field name="product_uom_qty" class ="oe_inline" />
+                                <field name="reserved_availability" class ="oe_inline" />
+                                <field name="quantity_done" class ="oe_inline" />
+                            </group>
+                            <group class="oe_left">
+                                <field name="all_assigned" class ="oe_inline" />
+                                <field name="move_lines_count" class ="oe_inline" />
+                                <field name="picking_dest_ids" class ="oe_inline" widget="many2many_tags" readonly="1" invisible="1"/>
+                                <field name="batch_dest_id" class ="oe_inline" readonly="1" invisible="1"/>
+                                <field name="price_subtotal" class ="oe_inline"/>
+                                </group>
                         </group>
                     </div>
                 </field>

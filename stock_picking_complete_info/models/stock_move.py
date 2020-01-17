@@ -27,8 +27,42 @@ class StockMoveLine(models.Model):
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    price_subtotal = fields.Monetary(related='sale_line_id.price_subtotal', string='Subtotal', readonly=True)
-    currency_id = fields.Many2one(related='sale_line_id.currency_id')
+    price_subtotal = fields.Monetary(string='Subtotal', currency_field='currency_id', compute='get_price_subtotal')
+    currency_id = fields.Many2one('res.currency', compute='get_price_subtotal')
+
+    @api.multi
+    def get_price_subtotal(self):
+        for move in self:
+            if move.picking_type_id.code != 'incoming':
+                sale_line_id = move.sale_line_id or move.move_dest_ids.mapped('sale_line_id')
+
+                qty = move.quantity_done if move.state=='done' else move.reserved_availability
+                if sale_line_id and len(sale_line_id) == 1:
+                    price = sale_line_id.price_unit
+                    currency_id = sale_line_id.currency_id
+                    line = sale_line_id
+                else:
+                    price = 0
+                    currency_id = False
+                    line = False
+
+            else:
+                purchase_line_id = move.purchase_line_id
+                qty = move.quantity_done if move.state == 'done' else move.reserved_availability
+                price = purchase_line_id.price_unit
+                currency_id = purchase_line_id.currency_id
+                line = purchase_line_id
+
+
+            move.price_subtotal = qty* price
+            move.currency_id = currency_id
+            if line:
+                print('{} - {} - {}'.format(line.mapped('order_id').mapped('name'), move.name, move.price_subtotal))
+            else:
+                print ('No se ha encontrado linea de pedido para el movimineto {} del picking {}'.format(move.name, move.picking_id.name))
+
+
+
 
     @api.multi
     def force_set_qty_done(self, reset=True, field='product_uom_qty'):

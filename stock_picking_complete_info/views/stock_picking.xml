@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+    <record id="action_server_act_info_picking" model="ir.actions.server">
+            <field name="name">Actualizar información</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_stock_picking" />
+            <field name="binding_model_id" ref="model_stock_picking" />
+            <field name="state">code</field>
+            <field name="code">records.act_picking_info()</field>
+        </record>
     <record id="vpicktree_inherit_stock_picking_batch" model="ir.ui.view">
         <field name="name">stock.picking.tree</field>
         <field name="model">stock.picking</field>
@@ -34,15 +41,18 @@
             <field name="arch" type="xml">
                 <field name="package_level_ids" position="after">
                     <div>
-                        <group class="oe_left">
+                    <group>
+                        <group >
                             <field name="all_assigned" class ="oe_inline" />
                             <field name="move_lines_count" class ="oe_inline" />
                             <field name="product_uom_qty" class ="oe_inline" />
+                        </group>
+                        <group>
                             <field name="reserved_availability" class ="oe_inline" />
                             <field name="quantity_done" class ="oe_inline" />
                             <field name="price_subtotal" class ="oe_inline" />
-
                         </group>
+                    </group>
                     </div>
                 </field>
                 <field name="move_ids_without_package" position="before">
@@ -73,6 +83,7 @@
         <field name="inherit_id" ref="stock.vpicktree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
+                <field name="picking_type_id"></field>
                 <field name="all_assigned"></field>
                 <field name="info_str" />
                 <field name="move_lines_count" sum="sum_lines"/>
@@ -80,7 +91,7 @@
             </xpath>
             <field name="info_str" position="attributes">
                 <attribute name="options"> {
-                    "fg_color": "green: state=='done'; orange: state=='assigned'"
+                    "fg_color": "green: all_assigned==True; orange: state=='assigned'"
                 }</attribute>
               </field>
             <field name="move_lines_count" position="attributes">

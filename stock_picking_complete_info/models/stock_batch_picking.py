@@ -36,6 +36,18 @@ class StockBatchPicking(models.Model):
     picking_dest_ids = fields.One2many('stock.picking', string='Picking enlazados', compute="compute_picking_qties")
     batch_dest_id = fields.Many2one('stock.picking.batch', string="Dest batch picking")
 
+
+    @api.multi
+    @api.constrains('picking_ids')
+    def _check_picking_type_id(self):
+        for batch in self:
+            picking_type_id = batch.picking_ids.mapped('picking_type_id')
+            if len(picking_type_id) > 1:
+                raise ValidationError ('No puedes mezclar distintos tipos de albaranes en una misma agrupación')
+            if picking_type_id and batch.picking_type_id and picking_type_id != batch.picking_type_id:
+                raise ValidationError('Todos los tipos de albaranes deben ser del mismo tipo que la agrupación que los usa')
+
+
     @api.multi
     def action_create_dest_batch(self):
         new_batchs = self.env['stock.picking.batch']
@@ -60,7 +72,7 @@ class StockBatchPicking(models.Model):
     @api.multi
     def get_all_assigned(self):
         for pick in self:
-            pick.all_assigned = all(x.state == 'assigned' for x in pick.picking_ids)
+            pick.all_assigned = all(x.all_asigned for x in pick.picking_ids)
 
     @api.multi
     def compute_picking_qties(self):
