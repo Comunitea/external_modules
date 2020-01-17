@@ -91,6 +91,7 @@ class StockPicking(models.Model):
     @api.depends('move_lines', 'state')
     def get_n_lines(self):
         for pick in self:
+            pick.move_lines_count = len(pick.move_lines)
             if pick.picking_type_id.code == 'outgoing':
                 lines_for_total = pick.move_lines
             else:
@@ -101,7 +102,7 @@ class StockPicking(models.Model):
                     lambda x: x.state == 'done'))
                 state_text = 'Done'
             elif pick.state == 'assigned':
-                pick.move_lines_count = len(pick.move_lines)
+                
                 move_lines_count_not = len(pick.move_lines.filtered(lambda x: x.reserved_availability))
                 pick.price_subtotal = sum(x.price_subtotal for x in lines_for_total.filtered(
                     lambda x: x.state in ('partially_available', 'assigned')))
@@ -110,7 +111,7 @@ class StockPicking(models.Model):
                 state_text = 'To assign'
                 pick.price_subtotal = sum(x.price_subtotal for x in lines_for_total.filtered(
                     lambda x: x.state not in ('draft', 'cancel')))
-                move_lines_count_not = pick.move_lines_count = len(pick.move_lines)
+                move_lines_count_not = pick.move_lines_count - len(pick.move_lines.filtered(lambda x: x.reserved_availability))
             pick.info_str = _('{} €: {} {} of {} lines'.format(pick.price_subtotal, state_text, move_lines_count_not, pick.move_lines_count))
 
     @api.multi
