@@ -72,7 +72,7 @@ class StockBatchPicking(models.Model):
     @api.multi
     def get_all_assigned(self):
         for pick in self:
-            pick.all_assigned = all(x.all_asigned for x in pick.picking_ids)
+            pick.all_assigned = all(x.all_assigned for x in pick.picking_ids)
 
     @api.multi
     def compute_picking_qties(self):
