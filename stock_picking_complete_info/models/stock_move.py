@@ -33,10 +33,18 @@ class StockMove(models.Model):
     @api.multi
     def get_price_subtotal(self):
         for move in self:
+            if move.state == 'done':
+                qty = move.quantity_done
+            elif move.state == 'cancel':
+                qty = 0
+            elif move.state in ('partially_available', 'assigned'):
+                qty = move.reserved_availability
+            else:
+                qty = move.product_uom_qty
+
             if move.picking_type_id.code != 'incoming':
                 sale_line_id = move.sale_line_id or move.move_dest_ids.mapped('sale_line_id')
 
-                qty = move.quantity_done if move.state=='done' else move.reserved_availability
                 if sale_line_id and len(sale_line_id) == 1:
                     price = sale_line_id.price_unit
                     currency_id = sale_line_id.currency_id
@@ -45,16 +53,14 @@ class StockMove(models.Model):
                     price = 0
                     currency_id = False
                     line = False
-
             else:
                 purchase_line_id = move.purchase_line_id
-                qty = move.quantity_done if move.state == 'done' else move.reserved_availability
                 price = purchase_line_id.price_unit
                 currency_id = purchase_line_id.currency_id
                 line = purchase_line_id
 
 
-            move.price_subtotal = qty* price
+            move.price_subtotal = qty * price
             move.currency_id = currency_id
             if line:
                 print('{} - {} - {}'.format(line.mapped('order_id').mapped('name'), move.name, move.price_subtotal))

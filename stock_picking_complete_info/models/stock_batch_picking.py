@@ -47,28 +47,6 @@ class StockBatchPicking(models.Model):
             if picking_type_id and batch.picking_type_id and picking_type_id != batch.picking_type_id:
                 raise ValidationError('Todos los tipos de albaranes deben ser del mismo tipo que la agrupación que los usa')
 
-
-    @api.multi
-    def action_create_dest_batch(self):
-        new_batchs = self.env['stock.picking.batch']
-        for batch in self:
-            if batch.picking_type_id.auto_create_post_process_batch:
-                picking_ids = batch.move_lines.mapped('move_dest_ids').mapped('picking_id')
-                picking_type_ids = picking_ids.mapped('picking_type_id')
-                for type_id in picking_type_ids:
-
-                    new_batch_vals = {'picking_type_id': type_id.id, 'user_id': batch.user_id.id, 'date': batch.date}
-                    new_batch = self.create(new_batch_vals)
-                    picking_ids.filtered(lambda x: x.picking_type_id == type_id).write({'batch_id': new_batch.id})
-                    new_batchs |= new_batch
-                    batch.batch_dest_id = new_batch
-        if new_batchs:
-            action = self.env.ref(
-                'stock_picking_batch_extended.action_stock_batch_picking_tree').read()[0]
-            action['domain'] =[('id', 'in', new_batchs.ids)]
-            return action
-
-
     @api.multi
     def get_all_assigned(self):
         for pick in self:

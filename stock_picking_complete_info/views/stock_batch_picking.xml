@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="stock_batch_picking_search" model="ir.ui.view">
+        <field name="name">batch.picking.search.spci</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch_extended.stock_batch_picking_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='no_user_id']" position="before">
+                <filter name="pendientes" string="Pendientes" domain="[('state','in', ('assigned', 'in_process'))]"/>
 
+            </xpath>
+        </field>
+
+    </record>
 
     <record id="view_create_batch_picking_spci" model="ir.ui.view">
             <field name="name">stock.picking.batch.creator.spci</field>
@@ -18,10 +29,7 @@
             <field name="model">stock.picking.batch</field>
             <field name="inherit_id" ref="stock_picking_batch_extended.stock_batch_picking_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='cancel_picking']" position="after">
-                <button name="action_create_dest_batch" string="Create dest batch" type="object"
-                        attrs="{'invisible': [('state', '!=', 'done')]}"/>
-                </xpath>
+
                 <field name="user_id" position="before">
                     <field name="picking_type_id" attrs="{'readonly':[('state','!=', 'draft'), ('picking_ids', '!=', [])]}"/>
                 </field>
@@ -84,9 +92,9 @@
                 }</attribute>
               </field>
             <field name="move_lines_count" position="attributes">
-                <attribute name="options"> {
-                    "fg_color": "green: move_lines_count &lt;= 25; orange: move_lines_count &gt; 25 and move_lines_count &lt;=100; red: move_lines_count &gt; 100"
-                }</attribute>
+                <attribute name="options">
+                    {"fg_color": "#564241: move_lines_count &lt;= 25; #7A2B27: move_lines_count &gt; 25 and move_lines_count &lt;=100; #FF0000: move_lines_count &gt; 100"}
+                </attribute>
               </field>
         </field>
     </record>

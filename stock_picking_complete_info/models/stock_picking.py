@@ -35,13 +35,21 @@ class StockPicking(models.Model):
         digits=dp.get_precision('Product Unit of Measure'))
     product_ids_count = fields.Integer('# Products',
                                        compute='_count_product_ids')
-    all_assigned = fields.Boolean('All assigned', compute='_compute_state', store=True, copy=False)
+    all_assigned = fields.Boolean('100% reservado', compute='_compute_state', store=True, copy=False)
     currency_id = fields.Many2one(related='sale_id.currency_id')
     price_subtotal = fields.Monetary(string='Subtotal', currency_field='currency_id', compute='get_n_lines', store=True)
-    move_lines_count = fields.Integer('# Lines', compute='get_n_lines', store=True)
+    move_lines_count = fields.Integer('# Lineas', compute='get_n_lines', store=True)
     info_str = fields.Char('Info str', compute='get_n_lines', store=True)
     n_lines = fields.Char(store=False)
     n_amount = fields.Char(store=False)
+
+    @api.multi
+    def write(self, vals):
+        batch_ids = self.mapped('batch_id')
+        if batch_ids and any(x.state =='in_progress' for x in batch_ids):
+            raise ValidationError('Estás intentado modificar algún albarán que ya está en una agrupación que se está realizando.\n Para poder hacerlo:\nSaca el albrán de la agrupación o ...\nCambia el estado de la agrupación')
+        return super().write(vals)
+
 
     @api.depends('move_type', 'move_lines.state', 'move_lines.picking_id')
     @api.one
@@ -69,7 +77,6 @@ class StockPicking(models.Model):
         - Done: if the picking is done.
         - Cancelled: if the picking is cancelled
         '''
-
         self.all_assigned = False
         if not self.move_lines:
             self.state = 'draft'
@@ -92,31 +99,30 @@ class StockPicking(models.Model):
     @api.depends('move_lines', 'state')
     def get_n_lines(self):
         for pick in self:
-            pick.move_lines_count = len(pick.move_lines)
-            if pick.picking_type_id.code == 'outgoing':
-                lines_for_total = pick.move_lines
-            else:
-                lines_for_total = pick.move_lines.mapped('move_dest_ids').filtered(
-                    lambda x: x.picking_type_id.code == 'outgoing')
-            if pick.state == 'done':
-                move_lines_count_not = pick.move_lines_count = len(pick.move_lines)
-                pick.price_subtotal = sum(x.price_subtotal for x in lines_for_total.filtered(
-                    lambda x: x.state == 'done'))
-                state_text = 'Done'
-            elif pick.state == 'assigned':
+            pick._compute_state()
+            pick.price_subtotal = sum(x.price_subtotal for x in pick.move_lines)
+            move_id_count= len(pick.move_lines)
+            # if pick.picking_type_id.code == 'outgoing':
+            #     lines_for_total = pick.move_lines
+            # else:
+            #     lines_for_total = pick.move_lines.mapped('move_dest_ids').filtered(
+            #         lambda x: x.picking_type_id.code == 'outgoing')
 
+            if pick.state == 'done':
+                pick.move_lines_count = len(pick.move_lines)
+                move_lines_count_not = pick.move_lines_count = len(pick.move_lines)
+                state_text = 'Validadas'
+            elif pick.state == 'assigned':
                 move_lines_count_not = len(pick.move_lines.filtered(lambda x: x.reserved_availability))
-                pick.price_subtotal = sum(x.price_subtotal for x in lines_for_total.filtered(
-                    lambda x: x.state in ('partially_available', 'assigned')))
-                state_text = 'Assigned'
+                pick.move_lines_count = move_lines_count_not
+                state_text = 'Reservadas'
             else:
-                state_text = 'To assign'
-                pick.price_subtotal = sum(x.price_subtotal for x in lines_for_total.filtered(
-                    lambda x: x.state not in ('draft', 'cancel')))
+                pick.move_lines_count = len(pick.move_lines)
+                state_text = 'Sin reserva'
                 move_lines_count_not = pick.move_lines_count - len(
                     pick.move_lines.filtered(lambda x: x.reserved_availability))
             pick.info_str = _('{} €: {} {} of {} lines'.format(pick.price_subtotal, state_text, move_lines_count_not,
-                                                               pick.move_lines_count))
+                                                               move_id_count))
 
     @api.multi
     def unlink_from_batch(self):
