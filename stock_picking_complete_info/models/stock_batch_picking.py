@@ -28,7 +28,7 @@ class StockBatchPicking(models.Model):
                                        compute='_count_product_ids')
     all_assigned = fields.Boolean('All assigned', compute='get_all_assigned')
     price_subtotal = fields.Float(string='Subtotal', currency_field='currency_id', compute='compute_picking_qties')
-    move_lines_count = fields.Integer('# Lines', compute='compute_picking_qties')
+    move_lines_count = fields.Integer('# Lines', compute='compute_move_lines_count')
     info_str = fields.Char('Info str', compute='compute_picking_qties')
     n_lines = fields.Char(store=False)
     n_amount = fields.Char(store=False)
@@ -53,12 +53,17 @@ class StockBatchPicking(models.Model):
             pick.all_assigned = all(x.all_assigned for x in pick.picking_ids)
 
     @api.multi
+    def compute_move_lines_count(self):
+        for batch in self:
+            batch.move_lines_count = sum(x.move_lines_count for x in batch.picking_ids)
+
+    @api.multi
     def compute_picking_qties(self):
         for batch in self:
             batch.quantity_done = sum(x.quantity_done for x in batch.picking_ids)
             batch.reserved_availability = sum(x.reserved_availability for x in batch.picking_ids)
             batch.product_uom_qty = sum(x.product_uom_qty for x in batch.picking_ids)
-            batch.move_lines_count = sum(x.move_lines_count for x in batch.picking_ids)
+            #batch.move_lines_count = sum(x.move_lines_count for x in batch.picking_ids)
             batch.price_subtotal = sum(x.price_subtotal for x in batch.picking_ids)
             batch.info_str = _('{} €: {} lines'.format(batch.price_subtotal, batch.move_lines_count))
             batch.picking_dest_ids = batch.move_lines.mapped('move_dest_ids').mapped('picking_id')

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+
     <record id="action_server_act_info_picking" model="ir.actions.server">
             <field name="name">Actualizar información</field>
             <field name="type">ir.actions.server</field>
@@ -83,8 +85,9 @@
         <field name="inherit_id" ref="stock.vpicktree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
-                <field name="picking_type_id"></field>
-                <field name="all_assigned"></field>
+                <field name="picking_type_id" invisible="1"/>
+                <field name="priority" />
+                <field name="all_assigned"/>
                 <field name="info_str" />
                 <field name="move_lines_count" sum="sum_lines"/>
                 <field name="price_subtotal" sum="sum_amount"/>

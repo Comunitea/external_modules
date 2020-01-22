@@ -44,6 +44,10 @@ class StockMove(models.Model):
 
             if move.picking_type_id.code != 'incoming':
                 sale_line_id = move.sale_line_id or move.move_dest_ids.mapped('sale_line_id')
+                if not sale_line_id:
+                    sale_id = move.picking_id.sale_id
+                    if sale_id:
+                        sale_line_id = sale_id.mapped('order_line').filtered(lambda x: x.product_id == move.product_id)
 
                 if sale_line_id and len(sale_line_id) == 1:
                     price = sale_line_id.price_unit
@@ -62,10 +66,10 @@ class StockMove(models.Model):
 
             move.price_subtotal = qty * price
             move.currency_id = currency_id
-            if line:
-                print('{} - {} - {}'.format(line.mapped('order_id').mapped('name'), move.name, move.price_subtotal))
-            else:
-                print ('No se ha encontrado linea de pedido para el movimineto {} del picking {}'.format(move.name, move.picking_id.name))
+            # if line:
+            #     print('{} - {} - {}'.format(line.mapped('order_id').mapped('name'), move.name, move.price_subtotal))
+            # else:
+            #     print ('No se ha encontrado linea de pedido para el movimineto {} del picking {}'.format(move.name, move.picking_id.name))
 
 
 
