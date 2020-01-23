@@ -11,7 +11,7 @@ class BasePartnerMergeAutomaticWizard(models.TransientModel):
 
     def _generate_query(self, fields, maximum_group=100):
         """Inject the additional criteria 'type IS NOT NULL' when needed.
-        There's no better way to do it, as there are no hooks for adding
+        There's no better wasy to do it, as there are no hooks for adding
         this criteria regularly.
         """
         query = super()._generate_query(
@@ -19,10 +19,10 @@ class BasePartnerMergeAutomaticWizard(models.TransientModel):
         if 'type' in fields:
             if 'WHERE' in query:
                 index = query.find('WHERE')
-                query = (query[:index + 6] + "type IS NOT NULL AND " +
+                query = (query[:index + 6] + "type = 'invoice' AND " +
                          query[index + 6:])
             else:
                 index = query.find(' GROUP BY')
-                query = (query[:index] + " WHERE type IS NOT NULL" +
+                query = (query[:index] + " WHERE type = 'invoice' NOT NULL" +
                          query[index:])
         return query

@@ -32,34 +32,7 @@
             </div>
         </field>
     </record>
-    <record id="view_partner_tree_state" model="ir.ui.view">
-        <field name="name">view.partner.tree.state</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_tree" />
-        <field name="arch" type="xml">
-            <field name="phone" position="before">
-                <field name="zip"/>
-                <field name="city"/>
-                <field name="state_id"/>
-            </field>
-        </field>
-    </record>
-    <record id="view_res_partner_filter_zip" model="ir.ui.view">
-        <field name="name">view.partner.tree.state.zip</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_res_partner_filter" />
-        <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="street"/>
-                <field name="zip"/>
-                <field name="state_id"/>
-                <field name="city"
-                       filter_domain="['|',('state_id','ilike',self),('city','ilike',self)]"/>
-            </field>
-            <xpath expr="//filter[@name='salesperson']">
-                <filter string="State" name="group_by_state_id" context="{'group_by': 'state_id'}"/>
-            </xpath>
-        </field>
-    </record>
+    
+    
 
 </odoo>
