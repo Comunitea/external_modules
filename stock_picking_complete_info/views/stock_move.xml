@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="open_move_change_reserve_wzd"
-                        string="Update reserve"
+                        string="Actualizar la reserva"
                         states='assigned,confirmed,partially_available'
                         type="object" groups="stock.group_stock_manager"/>
             </xpath>
@@ -24,7 +24,7 @@
             <field name="reserved_availability" position="after">
 
                 <button name="open_move_change_reserve_wzd"
-                        string="Update reserve"
+                        string="Actualizar la reserva"
                         type="object" icon="fa-random"
                         attrs="{'invisible': ['|',('picking_code', '=', 'incoming'), ('state', 'not in', ('assigned','confirmed','partially_available'))]}" options="{&quot;warn&quot;: true}"/>
             </field>

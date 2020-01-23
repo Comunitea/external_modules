@@ -59,16 +59,16 @@
 
                         <button class="oe_link oe_right"
                                 context="{'reset': False, 'field': 'product_uom_qty'}"
-                                name="force_set_qty_done"  type="object" string="↳Copy qty. to done"
+                                name="force_set_qty_done"  type="object" string="↳Demanda a hecho"
                                 attrs="{'invisible':[('quantity_done', '!=', 0)]}"/>
 
                         <button class="oe_link oe_right"
                                 context="{'reset': False, 'field': 'reserved_availability'}"
-                                name="force_set_qty_done" type="object" string="↳Copy assigned to done"
+                                name="force_set_qty_done" type="object" string="↳Reservado a hecho"
                                 attrs="{'invisible':[('quantity_done', '!=', 0)]}"/>
                         <button class="oe_link oe_right"
                                 context="{'reset': True}"
-                                name="force_set_qty_done" type="object" string="↳Reset qties"
+                                name="force_set_qty_done" type="object" string="↳Poner a 0"
                                 attrs="{'invisible':[('quantity_done','=',0)]}"/>
 
                     </div>
