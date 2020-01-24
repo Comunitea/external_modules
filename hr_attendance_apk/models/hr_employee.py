@@ -252,6 +252,9 @@ class HrAttendance(models.Model):
             if check.check_out:
                 check_val = check.get_vals(vals_type='sign_out',
                                            min_accuracity=apk.min_accuracity)
+                if check.check_in:
+                    check_val = check.get_vals(vals_type='update', check_val=check_val,
+                                            min_accuracity=apk.min_accuracity)
 
             elif not check.check_out:
                 check_val = check.get_vals(vals_type='sign_in',
