@@ -15,14 +15,6 @@ CONF_FIELDS = ['image', 'logo_color', 'min_minute', 'distance_filter',
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
-    def get_time_to_user_tz(self, today):
-        utc = pytz.timezone('UTC')
-        context_tz = utc
-        utc_today = utc.localize(today, is_dst=None)
-        context_today = utc_today.astimezone(context_tz)
-        return context_today
-
-
     @api.model
     def attendance_action_change_apk(self, vals):
         employee = self.env['hr.employee'].\
@@ -170,9 +162,10 @@ class HrAttendance(models.Model):
 
     @api.model
     def get_name_to_user_zone(self, date):
-        name = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
-        return self.employee_id.get_time_to_user_tz(name).\
-            strftime('%Y-%m-%d %H:%M:%S')
+        tz = pytz.timezone('Europe/Madrid')
+        name = datetime.strftime(pytz.utc.localize(datetime.strptime(date, \
+            '%Y-%m-%d %H:%M:%S')).astimezone(tz),'%Y-%m-%d %H:%M:%S')
+        return name
 
     def get_logs_domain(self, vals):
         from_date = vals.get('from_date', False)
