@@ -54,7 +54,7 @@
                                 <tr>
                                     <td><span t-field="o.name"/></td>
                                     <td></td>
-                                    <td><span t-field="o.identification_id"/></td>
+                                    <td><span t-field="o.sudo().identification_id"/></td>
                                     <td>100</td>
                                     <td>100.0</td>
                                 </tr>
