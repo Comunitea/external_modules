@@ -28,19 +28,27 @@ class StockMove(models.Model):
     _inherit = 'stock.move'
 
     price_subtotal = fields.Monetary(string='Subtotal', currency_field='currency_id', compute='get_price_subtotal')
+    price_subtotal_pending = fields.Monetary(string='Subtotal', currency_field='currency_id', compute='get_price_subtotal')
+    price_subtotal_reserved = fields.Monetary(string='Subtotal', currency_field='currency_id',
+                                             compute='get_price_subtotal')
     currency_id = fields.Many2one('res.currency', compute='get_price_subtotal')
 
     @api.multi
     def get_price_subtotal(self):
         for move in self:
+            pending_qty = 0
             if move.state == 'done':
-                qty = move.quantity_done
+                reserved_qty=qty = move.quantity_done
+                pending_qty = 0
             elif move.state == 'cancel':
                 qty = 0
-            elif move.state in ('partially_available', 'assigned'):
-                qty = move.reserved_availability
-            else:
+                reserved_qty= 0
+                pending_qty = 0
+            elif move.state in ('confirmed', 'partially_available', 'assigned'):
+                pending_qty = move.product_uom_qty - move.reserved_availability
                 qty = move.product_uom_qty
+                reserved_qty = move.reserved_availability
+
 
             if move.picking_type_id.code != 'incoming':
                 sale_line_id = move.sale_line_id or move.move_dest_ids.mapped('sale_line_id')
@@ -65,6 +73,9 @@ class StockMove(models.Model):
 
 
             move.price_subtotal = qty * price
+            move.price_subtotal_pending = pending_qty * price
+            move.price_subtotal_reserved = reserved_qty * price
+
             move.currency_id = currency_id
             # if line:
             #     print('{} - {} - {}'.format(line.mapped('order_id').mapped('name'), move.name, move.price_subtotal))

@@ -4,7 +4,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-
+from odoo.tools.float_utils import float_compare, float_round
 from odoo.addons import decimal_precision as dp
 
 
@@ -44,10 +44,14 @@ class StockPicking(models.Model):
     n_amount = fields.Char(store=False)
 
     @api.multi
+    @api.constrains('batch_id', 'picking_type_id')
+    def _check_same_picking_type(self):
+        for pick in self:
+            if pick.batch_id and pick.batch_id.picking_type_id and pick.picking_type_id != pick.batch_id.picking_type_id:
+                raise ValidationError('Todos los albaranes tienen que ser del mismo tipo de la agrupación')
+
+    @api.multi
     def write(self, vals):
-        batch_ids = self.mapped('batch_id')
-        if batch_ids and any(x.state =='in_progress' for x in batch_ids):
-            raise ValidationError('Estás intentado modificar algún albarán que ya está en una agrupación que se está realizando.\n Para poder hacerlo:\nSaca el albrán de la agrupación o ...\nCambia el estado de la agrupación')
         return super().write(vals)
 
 
@@ -100,7 +104,9 @@ class StockPicking(models.Model):
     def get_n_lines(self):
         for pick in self:
             pick._compute_state()
-            pick.price_subtotal = sum(x.price_subtotal for x in pick.move_lines)
+            price_subtotal = round(sum(x.price_subtotal for x in pick.move_lines),2)
+            price_subtotal_pending = round(sum(x.price_subtotal_pending for x in pick.move_lines),2)
+            reserved = round(sum(x.price_subtotal_reserved for x in pick.move_lines),2)
             move_id_count= len(pick.move_lines)
             # if pick.picking_type_id.code == 'outgoing':
             #     lines_for_total = pick.move_lines
@@ -121,8 +127,14 @@ class StockPicking(models.Model):
                 state_text = 'Sin reserva'
                 move_lines_count_not = pick.move_lines_count - len(
                     pick.move_lines.filtered(lambda x: x.reserved_availability))
-            pick.info_str = _('{} €: {} {} of {} lines'.format(pick.price_subtotal, state_text, move_lines_count_not,
-                                                               move_id_count))
+
+            if price_subtotal != reserved:
+                info_str = '{} de {} €. '.format(reserved, price_subtotal)
+            else:
+                info_str = '{} € '.format(price_subtotal)
+            pick.price_subtotal = reserved
+            pick.info_str = '{}{} {} de {} lines'.format(info_str, state_text, move_lines_count_not,
+                                                               move_id_count)
 
     @api.multi
     def unlink_from_batch(self):

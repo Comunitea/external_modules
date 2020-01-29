@@ -15,10 +15,12 @@ class StockBatchPickingCreator(models.TransientModel):
     picking_type_id = fields.Many2one('stock.picking.type', 'Operation Type', required=True)
 
 
+
     def get_picking_type_id(self):
         domain = [('id', 'in', self._context.get('active_ids', []))]
-        picking_type_id = self.env['stock.picking'].search_read(domain, ['picking_type_id'])
-        if not picking_type_id or len(picking_type_id) > 1:
+        picking_type_id = self.env['stock.picking'].search_read(domain, ['picking_type_id'], limit=1)
+
+        if not picking_type_id:
             return False
         return picking_type_id[0]['picking_type_id'] and picking_type_id[0]['picking_type_id'][0] or False
 
