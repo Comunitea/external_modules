@@ -36,11 +36,14 @@ class StockMove(models.Model):
 
     @api.multi
     def get_price_subtotal(self):
-        prec = 2
+        
         for move in self:
+            prec = 2
+            qty = 0
             pending_qty = 0
+            reserved_qty= 0
             if move.state == 'done':
-                reserved_qty=qty = move.quantity_done
+                reserved_qty = qty = move.quantity_done
                 pending_qty = 0
             elif move.state == 'cancel':
                 qty = 0
