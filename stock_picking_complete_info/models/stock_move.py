@@ -42,6 +42,8 @@ class StockMove(models.Model):
             qty = 0
             pending_qty = 0
             reserved_qty= 0
+            price = 0
+            price_subtotal = 0
             if move.state == 'done':
                 reserved_qty = qty = move.quantity_done
                 pending_qty = 0
