@@ -18,10 +18,33 @@ class SaleOrderLine(models.Model):
 
     _inherit = 'sale.order.line'
 
-    @api.multi
-    def _calculate_cancelled_qty(self):
+    def _compute_qty_pending(self):
 
         if self.ids:
+            if len(self.ids) == 1:
+                where = 'sm.sale_line_id = {}'.format(self.id)
+            else:
+                where = 'sm.sale_line_id in {}'.format(tuple(self.ids))
+            sql = "select " \
+                  "sale_line_id, sum(sm.product_uom_qty) as qty_ordered, sum(sml.qty_done) as qty_done " \
+                  "from stock_move sm " \
+                  "join stock_move_line sml on sm.id = sml.move_id " \
+                  "join stock_location sl on sl.id = sm.location_dest_id " \
+                  "where sm.state not in ('cancel', 'draft') and sl.usage = 'customer' and {} group by sm.sale_line_id".format(where)
+            self._cr.execute(sql)
+            res = self._cr.fetchall()
+            for line in res:
+                sol = self.filtered(lambda x: x.id == line[0])
+                qty_pending = line[1] - line[2]
+                sol.qty_pending = sol.product_uom._compute_quantity(qty_pending, sol.product_uom)
+
+    @api.multi
+    def _calculate_cancelled_qty(self):
+        if self.ids:
+            if len(self.ids) == 1:
+                where = 'sm.sale_line_id = {}'.format(self.id)
+            else:
+                where = 'sm.sale_line_id in {}'.format(tuple(self.ids))
             sql = """
             SELECT SUM(sm.product_uom_qty), sale_line_id
             FROM stock_move sm JOIN stock_location sl
@@ -29,10 +52,9 @@ class SaleOrderLine(models.Model):
             WHERE sm.origin_returned_move_id IS NULL
                 AND sm.state = 'cancel'
                 AND sl.usage = 'customer'
-                AND sale_line_id in %s
-             GROUP BY sale_line_id"""
-            print(self.ids)
-            self._cr.execute(sql, (tuple(self.ids),))
+                AND {}
+             GROUP BY sale_line_id""".format(where)
+            self._cr.execute(sql)
             res = self._cr.fetchall()
             for rec in res:
                 if rec[0]:
@@ -41,12 +63,19 @@ class SaleOrderLine(models.Model):
                     line.qty_cancelled = line.product_uom._compute_quantity(
                         qty_cancelled, line.product_uom)
 
+    @api.multi
+    @api.depends('move_ids.state', 'move_ids.scrapped',
+                 'move_ids.product_uom_qty', 'move_ids.product_uom')
     def _compute_qty_delivered(self):
         res = super(SaleOrderLine, self)._compute_qty_delivered()
         self._calculate_cancelled_qty()
+        self._compute_qty_pending()
         return res
 
     qty_cancelled = fields.Float(
         copy=False,
         digits=dp.get_precision('Product Unit of Measure'),
         default=0.0)
+
+    qty_pending = fields.Float('Cantidad pendiente', compute_sudo=True,
+                               compute='_compute_qty_delivered', store=True)
