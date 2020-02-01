@@ -36,19 +36,22 @@ class StockMove(models.Model):
     @api.multi
     def get_price_subtotal(self):
         for move in self:
+            prec = 2
+            qty = 0
             pending_qty = 0
+            reserved_qty = 0
+            price_subtotal = 0
             if move.state == 'done':
-                reserved_qty=qty = move.quantity_done
+                reserved_qty = qty = move.quantity_done
                 pending_qty = 0
             elif move.state == 'cancel':
                 qty = 0
-                reserved_qty= 0
+                reserved_qty = 0
                 pending_qty = 0
             elif move.state in ('confirmed', 'partially_available', 'assigned'):
                 pending_qty = move.product_uom_qty - move.reserved_availability
                 qty = move.product_uom_qty
                 reserved_qty = move.reserved_availability
-
 
             if move.picking_type_id.code != 'incoming':
                 sale_line_id = move.sale_line_id or move.move_dest_ids.mapped('sale_line_id')
@@ -58,7 +61,16 @@ class StockMove(models.Model):
                         sale_line_id = sale_id.mapped('order_line').filtered(lambda x: x.product_id == move.product_id)
 
                 if sale_line_id and len(sale_line_id) == 1:
-                    price = sale_line_id.price_unit
+                    price = sale_line_id.price_unit * (1 - (sale_line_id.discount or 0.0) / 100.0)
+
+                    # taxes = sale_line_id.tax_id.compute_all(price,
+                    #                 sale_line_id.order_id.currency_id, qty,
+                    #                 product=sale_line_id.product_id,
+                    #                 partner=sale_line_id.order_id.partner_shipping_id)
+
+                    currency_id = sale_line_id.currency_id
+                    prec = currency_id.decimal_places
+                    price_subtotal = round(qty * price, prec)
                     currency_id = sale_line_id.currency_id
                     line = sale_line_id
                 else:
@@ -67,21 +79,17 @@ class StockMove(models.Model):
                     line = False
             else:
                 purchase_line_id = move.purchase_line_id
-                price = purchase_line_id.price_unit
+                price = purchase_line_id.price_unit * (1 - (purchase_line_id.discount or 0.0) / 100.0)
                 currency_id = purchase_line_id.currency_id
+                prec = currency_id.decimal_places
                 line = purchase_line_id
+                price_subtotal = round(qty * price, prec)
 
-
-            move.price_subtotal = qty * price
-            move.price_subtotal_pending = pending_qty * price
-            move.price_subtotal_reserved = reserved_qty * price
+            move.price_subtotal = price_subtotal
+            move.price_subtotal_pending = round(pending_qty * price, prec)
+            move.price_subtotal_reserved = round(reserved_qty * price, prec)
 
             move.currency_id = currency_id
-            # if line:
-            #     print('{} - {} - {}'.format(line.mapped('order_id').mapped('name'), move.name, move.price_subtotal))
-            # else:
-            #     print ('No se ha encontrado linea de pedido para el movimineto {} del picking {}'.format(move.name, move.picking_id.name))
-
 
 
 
