@@ -11,9 +11,7 @@
     'application': False,
     'installable': True,
     'depends': [
-        'stock',
-        'purchase',
         'purchase_stock',
-        'sale'
+        'sale_stock'
     ]
 }
