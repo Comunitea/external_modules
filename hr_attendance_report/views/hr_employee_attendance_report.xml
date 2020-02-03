@@ -53,7 +53,7 @@
                             <tbody>
                                 <tr>
                                     <td><span t-field="o.name"/></td>
-                                    <td></td>
+                                    <td><span t-field="o.sudo().ssnid"/></td>
                                     <td><span t-field="o.sudo().identification_id"/></td>
                                     <td>100</td>
                                     <td>100.0</td>
