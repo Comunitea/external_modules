@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_attendance_gps,access.hr.attendance.gps,hr_attendance.model_hr_attendance,hr_attendance_apk.group_hr_attendance_gps,1,1,1,1
-access_hr_attendance_position,access_hr_attendance_position,model_hr_attendance_position,,1,1,1,1
+access_hr_attendance_position,access_hr_attendance_position,model_hr_attendance_position,,1,1,1,0
 access_clock_company_apk,access.clock.company.apk,hr_attendance_apk.model_clock_company_apk,,1,0,0,0
 
 
