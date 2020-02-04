@@ -32,9 +32,17 @@ class HrEmployee(models.Model):
                         'error_msg':
                         (_('Not enough time between logs: {} minutes').
                          format(diffmins))}
+            
         ctx = self._context.copy()
         if 'gps_info' in vals:
             ctx.update(gps_info=vals['gps_info'])
+            if not last_signin.check_out and ('latitude' in vals['gps_info'] and 'longitude' in vals['gps_info']):
+                position_vals = {
+                    'employee_id': vals['employee_id'],
+                    'latitude': vals['gps_info']['latitude'],
+                    'longitude': vals['gps_info']['longitude']
+                }
+                self.env['hr.attendance.position'].insert_position_apk(position_vals)
         res = employee.with_context(ctx).attendance_action_change()
         if res:
             return {'error': False, 'error_msg': ''}
@@ -310,7 +318,7 @@ class HrAttendancePosition(models.Model):
         domain = [('employee_id', '=', employee_id)]
         last_attendance = self.env['hr.attendance'].\
             search(domain, limit=1, order='id desc')
-        if last_attendance.action == 'sign_in':
+        if not last_attendance.check_out:
             values = {
                 'attendance_id': last_attendance.id,
                 'latitude': latitude,
