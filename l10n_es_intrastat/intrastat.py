@@ -176,12 +176,12 @@ class l10n_es_intrastat(models.Model):
     def _find_stock_links(self, cr, uid, invoice_line, context=None):
         sm_obj = self.pool.get('stock.move')
         sale_line = self.pool.get('sale.order.line')
-        purchase_line = self.pool.get('purchase.order.line')
         if sale_line:
             cr.execute("""
             SELECT sm.id
             FROM sale_order_line_invoice_rel solir
-            INNER JOIN stock_move sm ON (sm.sale_line_id = solir.order_line_id)
+            INNER JOIN procurement_order proc ON (proc.sale_line_id = solir.order_line_id)
+            INNER JOIN stock_move sm ON (sm.procurement_id = proc.id)
             WHERE solir.invoice_id = %s
             """, (invoice_line.invoice_id.id,))
             stock_ids = [x[0] for x in cr.fetchall()]
@@ -192,14 +192,14 @@ class l10n_es_intrastat(models.Model):
     def _find_invoice_links(self, cr, uid, stock_line, context=None):
         res_invoices = []
         res_lines = []
-        if hasattr(stock_line, 'sale_line_id'):
-            if stock_line.sale_line_id:
-                res_lines.extend( stock_line.sale_line_id.invoice_lines )
-                res_invoices.extend( stock_line.sale_line_id.order_id.invoice_ids )
+        if hasattr(stock_line, 'procurement_id'):
+            if stock_line.procurement_id.sale_line_id:
+                res_lines.extend(stock_line.procurement_id.sale_line_id.invoice_lines)
+                res_invoices.extend(stock_line.procurement_id.sale_line_id.order_id.invoice_ids)
         if hasattr(stock_line, 'purchase_line_id'):
             if stock_line.purchase_line_id:
-                res_lines.extend( stock_line.purchase_line_id.invoice_lines )
-                res_invoices.extend( stock_line.purchase_line_id.order_id.invoice_ids )
+                res_lines.extend(stock_line.purchase_line_id.invoice_lines)
+                res_invoices.extend(stock_line.purchase_line_id.order_id.invoice_ids)
         res_invoices = list(set(res_invoices))
         res_lines = list(set(res_lines))
         return res_invoices, res_lines
@@ -240,13 +240,6 @@ class l10n_es_intrastat(models.Model):
                 # Wrong declaration type for this sort of invoices
                 continue
 
-            trans_type = {
-                'out_invoice': 1,
-                'in_invoice': 1,
-                'out_refund': 2,
-                'in_refund': 2,
-            }.get(invoice.type)
-            
             for inv_line in invoice.invoice_line:
                 if not inv_line.product_id:
                     log.debug("invoice line did not have a product")
@@ -264,8 +257,6 @@ class l10n_es_intrastat(models.Model):
                         _("Product without 'Intrastat code' defined." \
                           "\nPlease review the Intrastat settings for Product '[%s] %s'.") %(inv_line.product_id.default_code, inv_line.product_id.name))
                 intrastat_code = intrastat.intrastat_code
-
-                stock_moves = self._find_stock_links(cr, uid, inv_line, context)
 
                 line_value = inv_line.price_subtotal
                 
