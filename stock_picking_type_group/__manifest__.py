@@ -30,7 +30,8 @@
         'stock',
     ],
     'data': [
-        'views/stock_picking.xml'
+        'views/stock_picking.xml',
+        'security/ir.model.access.csv'
     ],
     'installable': True,
     'auto_install': False,
