@@ -5,7 +5,7 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_internal_search"/>
             <field name="arch" type="xml">
-                <xpath expr="//filter[@name='Status']" position="before">
+                <xpath expr="//filter[@name='backorder']" position="before">
                     <filter name="today_group_by_origin" string="Today by origin"
                             domain="[
                             ('state', 'not in', ('cancel', 'draft', 'done', 'waiting')),
@@ -119,7 +119,7 @@
                         string="↳Copy available to done"
                         icon="fa-cart-arrow-down "
                         context="{'model_dest': 'stock.move', 'field': 'qty_available'}"
-                        attrs="{'invisible': ['|', ('qty_available', '&lt;=', 0), ('state', 'not in', ('confirmed', 'partially_available'))]}"
+                        attrs="{'invisible': [('qty_available','=', 0),('quantity_done', '!=', 0)]}"
                         options="{&quot;warn&quot;: true}"/>
 
             </xpath>
@@ -129,7 +129,7 @@
                     type="object"
                     icon="fa-cart-arrow-down"
                     context="{'model_dest': 'stock.move', 'field': 'reserved_availability'}"
-                    attrs="{'invisible': ['|', ('reserved_availability', '=', 0),('state', 'in', ('assigned', 'done'))]}"
+                    attrs="{'invisible': [('reserved_availability','=', 0),('quantity_done', '!=', 0)]}"
                     options="{&quot;warn&quot;: true}"/>
 
             </xpath>
@@ -140,10 +140,18 @@
                     type="object"
                     icon="fa-cart-arrow-down"
                     context="{'model_dest': 'stock.move', 'field': 'product_uom_qty'}"
-                    attrs="{'invisible': [('state', 'not in', ('confirmed', 'partially_available', 'assigned'))]}"
+                    attrs="{'invisible': [('quantity_done','=',0)]}"
                     options="{&quot;warn&quot;: true}"/>
             </xpath>
-
+            <xpath expr="//field[@name='move_lines']/tree/field[@name='quantity_done']" position="after">
+                <button name="force_set_qty_0"
+                    string="↳Unreserve"
+                    type="object"
+                    icon="fa-cart-arrow-down"
+                    context="{'model_dest': 'stock.move', 'field': 'product_uom_qty'}"
+                    attrs="{'invisible': [('quantity_done','=',0)]}"
+                    options="{&quot;warn&quot;: true}"/>
+            </xpath>
 
 
              <xpath expr="//field[@name='move_lines']" position="attributes">
@@ -196,18 +204,5 @@
             </xpath>
         </field>
     </record>
-
-    <!-- stock.picking.type inherit form view -->
-    <record id="view_picking_type_form_order_field" model="ir.ui.view">
-        <field name="name">stock.picking.type.form.order.field</field>
-        <field name="model">stock.picking.type</field>
-        <field name="inherit_id" ref="stock.view_picking_type_form"/>
-        <field name="arch" type="xml">
-            <field name="warehouse_id" position="after">            
-                <field name="order_field"/>
-            </field>
-        </field>
-    </record>
-
 
 </odoo>

@@ -94,20 +94,22 @@ class StockMove(models.Model):
 
     def _action_assign(self):
         super()._action_assign()
-        moves = self.filtered(lambda x: x.state in ('assigned', 'partially_available'))
-        picking_type_ids = moves.mapped('picking_type_id').filtered(lambda x: x.after_assign)
-        stock_move_ids = self.env['stock.move']
-        for type_id in picking_type_ids:
-            type_moves = moves.filtered(lambda x: x.picking_type_id == type_id)
-            ml = type_moves.mapped('move_line_ids')
+        moves = self.filtered(lambda x: x.state in ('assigned', 'partially_available') and x.picking_type_id.after_assign)
+        if not moves:
+            return
+        to_check = self.env['stock.move']
+        picking_type_ids = moves.mapped('picking_type_id')
+        for move in moves:
+            type_id = move.picking_type_id
+            ml = move.move_line_ids
             if type_id.group_code.code == 'picking':
-                stock_move_ids |= ml.filtered(lambda x:x.location_id != x.move_id.location_id).mapped('move_id')
+                to_check = ml.filtered(lambda x:x.location_id != x.move_id.location_id)
             elif type_id.group_code.code == 'location':
-                stock_move_ids |= ml.filtered(lambda x: x.location_dest_id != x.move_id.location_dest_id).mapped('move_id')
+                to_check = ml.filtered(lambda x: x.location_dest_id != x.move_id.location_dest_id)
             else:
-                stock_move_ids |= ml.filtered(lambda x: x.location_dest_id != x.move_id.location_dest_id or x.location_id != x.move_id.location_id).mapped('move_id')
-        for move in stock_move_ids:
-            move.check_new_location()
+                to_check =  ml.filtered(lambda x: x.location_dest_id != x.move_id.location_dest_id or x.location_id != x.move_id.location_id)
+            if to_check:
+                move.check_new_location()
 
 
     def _assign_picking(self):

@@ -27,14 +27,17 @@ class StockPicking(models.Model):
 
     _inherit = 'stock.picking'
 
-    #APK integration
+    app_integrated = fields.Boolean(related='picking_type_id.app_integrated', store=True)
+    picking_fields = fields.Char(related='picking_type_id.picking_fields', store=True)
+    move_fields = fields.Char(related='picking_type_id.move_fields', store=True)
+    move_line_fields = fields.Char(related='picking_type_id.move_line_fields', store=True)
+
     @api.model
     def action_assign_pick(self, vals):
         picking = self.browse(vals.get('id', False))
         if not picking:
             return {'err': True, 'error': "No se ha encontrado el albarán"}
-        
-        res = picking.action_assign()        
+        res = picking.action_assign()
         return res
 
     @api.model

@@ -28,9 +28,11 @@
     'license': 'AGPL-3',
     'depends': [
         'stock_picking_manage',
+        'stock_picking_type_group',
         'stock_move_location'
     ],
     'data': [
+        'views/stock_picking.xml'
     ],
     'installable': True,
     'auto_install': False,

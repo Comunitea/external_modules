@@ -26,27 +26,6 @@ class ReturnPicking(models.TransientModel):
 class StockPickingType(models.Model):
     _inherit = 'stock.picking.type'
 
-    order_field = fields.Selection([
-        ('location_id', 'Ubicación de origen'), 
-        ('location_dest_id', 'Ubicación de destino'), 
-        ('package_id', 'Paquete de origen'), 
-        ('result_package_id', 'Paquete de destino')], 'Campo de orden en movimeintos')
-    
-    def get_move_order_field(self):
-        if self.order_field in ('location_id', 'location_dest_id'):
-            return {'model': 'stock.location',
-                    'order_field': self.order_field,
-                    'field': 'sequence'}
-
-        if self.order_field in ('package_id', 'result_package_id'):
-            return {'model': 'stock.quant.package',
-                    'order_field': self.order_field,
-                    'field': 'name'}
-
-        return {'model': 'stock.location',
-                'order_field': 'location_id',
-                'field': 'sequence'}
-
 class StockPicking(models.Model):
 
     _inherit = 'stock.picking'

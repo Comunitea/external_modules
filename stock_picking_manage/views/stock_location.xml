@@ -31,7 +31,6 @@
             <field name="posx" position="before">
                 <field name="ubic"/>
                 <field name="inverse_order"/>
-                <field name="sequence"/>
             </field>
         </field>
     </record>

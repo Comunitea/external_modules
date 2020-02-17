@@ -18,4 +18,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import stock_move_line, stock_picking, stock_move_location
+from . import info_apk, stock_move_line, stock_move_location, stock_picking_type, stock_picking, stock_move,product_product
