@@ -94,6 +94,7 @@ class StockMove(models.Model):
 
     def _action_assign(self):
         super()._action_assign()
+
         moves = self.filtered(lambda x: x.state in ('assigned', 'partially_available') and x.picking_type_id.after_assign)
         if not moves:
             return

@@ -15,14 +15,6 @@ CONF_FIELDS = ['image', 'logo_color', 'min_minute', 'distance_filter',
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
-    def get_time_to_user_tz(self, today):
-        utc = pytz.timezone('UTC')
-        context_tz = utc
-        utc_today = utc.localize(today, is_dst=None)
-        context_today = utc_today.astimezone(context_tz)
-        return context_today
-
-
     @api.model
     def attendance_action_change_apk(self, vals):
         employee = self.env['hr.employee'].\
@@ -40,9 +32,17 @@ class HrEmployee(models.Model):
                         'error_msg':
                         (_('Not enough time between logs: {} minutes').
                          format(diffmins))}
+            
         ctx = self._context.copy()
         if 'gps_info' in vals:
             ctx.update(gps_info=vals['gps_info'])
+            if not last_signin.check_out and ('latitude' in vals['gps_info'] and 'longitude' in vals['gps_info']):
+                position_vals = {
+                    'employee_id': vals['employee_id'],
+                    'latitude': vals['gps_info']['latitude'],
+                    'longitude': vals['gps_info']['longitude']
+                }
+                self.env['hr.attendance.position'].insert_position_apk(position_vals)
         res = employee.with_context(ctx).attendance_action_change()
         if res:
             return {'error': False, 'error_msg': ''}
@@ -170,9 +170,14 @@ class HrAttendance(models.Model):
 
     @api.model
     def get_name_to_user_zone(self, date):
-        name = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
-        return self.employee_id.get_time_to_user_tz(name).\
-            strftime('%Y-%m-%d %H:%M:%S')
+        ctx = self._context.copy()
+        tz = pytz.timezone('UTC')
+
+        if 'tz' in ctx:
+            tz = pytz.timezone(ctx['tz'])
+        name = datetime.strftime(pytz.utc.localize(datetime.strptime(date, \
+            '%Y-%m-%d %H:%M:%S')).astimezone(tz),'%Y-%m-%d %H:%M:%S')
+        return name
 
     def get_logs_domain(self, vals):
         from_date = vals.get('from_date', False)
@@ -238,23 +243,31 @@ class HrAttendance(models.Model):
 
     @api.model
     def get_logs(self, vals):
+        
         limit = vals.get('limit', 0)
         domain = self.get_logs_domain(vals)
         checks = self.env['hr.attendance'].search(domain, limit=limit,
                                                   order='id desc')
         employee = self.env['hr.employee'].browse(vals.get('employee_id',
                                                   False))
+        ctx = self._context.copy()
+        if employee.user_id.tz:
+            ctx.update(tz=employee.user_id.tz)
+
         checks_vals = []
         check_val = {}
         apk = employee.company_id.get_clock_apk()
         for check in checks:
 
             if check.check_out:
-                check_val = check.get_vals(vals_type='sign_out',
+                check_val = check.with_context(ctx).get_vals(vals_type='sign_out',
                                            min_accuracity=apk.min_accuracity)
+                if check.check_in:
+                    check_val = check.with_context(ctx).get_vals(vals_type='update', check_val=check_val,
+                                            min_accuracity=apk.min_accuracity)
 
             elif not check.check_out:
-                check_val = check.get_vals(vals_type='sign_in',
+                check_val = check.with_context(ctx).get_vals(vals_type='sign_in',
                                            min_accuracity=apk.min_accuracity)
             
             checks_vals.append(check_val)
@@ -305,7 +318,7 @@ class HrAttendancePosition(models.Model):
         domain = [('employee_id', '=', employee_id)]
         last_attendance = self.env['hr.attendance'].\
             search(domain, limit=1, order='id desc')
-        if last_attendance.action == 'sign_in':
+        if not last_attendance.check_out:
             values = {
                 'attendance_id': last_attendance.id,
                 'latitude': latitude,

@@ -24,6 +24,12 @@
                         <field name="google_maps_url" widget="url"/>
                     </group>
                     <group string="Attendance Positions">
+                        <field name="attendance_position_ids">
+                            <tree create="false" edit="false" default_order="id">
+                                <field name="latitude"/>
+                                <field name="longitude"/>
+                            </tree>
+                        </field>
                         <div widget="googlemaps"/>
                     </group>
                 </xpath>

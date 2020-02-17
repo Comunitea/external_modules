@@ -15,7 +15,7 @@
             <field name="margin_right">7</field>
             <field name="header_spacing">5</field>
             <field name="dpi">20</field>
-            <field name="report_ids" eval="[(4, ref('hr_attendance_report.action_print_attendance'))]"/>
+            <!-- <field name="report_ids" eval="[(4, ref('hr_attendance_report.action_print_attendance'))]"/> -->
         </record>
 
     </data>
