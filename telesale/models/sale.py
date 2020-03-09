@@ -173,6 +173,7 @@ class SaleOrderLine(models.Model):
                              'date_order': time.strftime("%Y-%m-%d"),
                              'pricelist_id': pricelist_id})
         line = self.new({'order_id': order.id,
+                         'partner_id': partner_id,
                          'product_id': product_id})
         line.product_id_change()
         line._onchange_discount()
