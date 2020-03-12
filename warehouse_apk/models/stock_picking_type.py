@@ -10,9 +10,6 @@ from odoo.tools.safe_eval import safe_eval
 from odoo import api, fields, models, _
 from datetime import datetime, timedelta
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
-from odoo.addons.shipping_type.models.info_route_mixin import SHIPPING_TYPE_SEL, DEFAULT_SHIPPING_TYPE, STRING_SHIPPING_TYPE, HELP_SHIPPING_TYPE
-
-
 
 class PickingTypeGroupCode(models.Model):
 
