@@ -284,6 +284,7 @@ exports.TS_LS = core.Class.extend({
             if (partner.ref){
                 cus_name += ' | ' + partner.ref
             }
+            cus_name += ' | ID' + partner.id
             this.partner_name_id[cus_name] = partner.id;
             if(partner.ref){
                 this.partner_ref_id[partner.ref] = partner.id;
