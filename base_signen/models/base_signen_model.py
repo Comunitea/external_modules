@@ -52,7 +52,7 @@ class SignenModel(models.AbstractModel):
 
     def _compute_signen_document_url(self):
         for obj in self:
-            base_url = "https://webapp.signen.com/document/sended/"
+            base_url = "https://signature.tecalis.com/document/sended/"
             if obj.signen_document_id:
                 obj.signen_document_url = base_url + obj.signen_document_id
             else:

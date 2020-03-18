@@ -19,7 +19,7 @@ class Signen(object):
         self.__auth = "Basic {}".format(b64_auth)
         self.__apikey = apikey
         self.__jwt = False
-        self.__url = "https://api.signen.com"
+        self.__url = "https://signature.api.tecalis.com"
         self.__nologin = nologin
 
     def __enter__(self):
