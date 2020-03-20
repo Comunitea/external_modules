@@ -7,8 +7,21 @@ class RmaOrderLine(models.Model):
 
     _inherit = "rma.order.line"
 
-    @api.onchange("lot_id")
-    def onchange_lot_id_warranty(self):
+    @api.model
+    def create(self, vals):
+        res = super().create(vals)
+        res.calculate_under_warranty()
+        return res
+
+    @api.multi
+    def write(self, vals):
+        res = super().write(vals)
+        if "lot_id" in vals:
+            for rma in self:
+                rma.calculate_under_warranty()
+        return res
+
+    def calculate_under_warranty(self):
         if self.lot_id:
             if (
                 self.lot_id.warranty_termination
