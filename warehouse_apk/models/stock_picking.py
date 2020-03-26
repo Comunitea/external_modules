@@ -87,5 +87,15 @@ class StockPicking(models.Model):
             return {'err': True, 'error': "No se ha encontrado el albarán."}
         ctx = self._context.copy()
         ctx.update(reset=True)
-        res = picking.with_context(ctx).force_set_qty_done() 
+        res = picking.with_context(ctx).force_set_qty_done()
         return True
+
+    @api.model
+    def process_qr_lines(self, vals):
+        qr_codes = self.browse(vals.get('qr_codes', False))
+        if not qr_codes:
+            return {'err': True, 'error': "No se han recibido datos del código QR."}
+        print(qr_codes)
+        return True
+
+    

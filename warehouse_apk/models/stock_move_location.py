@@ -33,6 +33,9 @@ class StockMoveLocationWizard(models.TransientModel):
         location_barcode = vals.get('location_barcode', False)
         if location_barcode:
             location_id = self.env['stock.location'].search([('barcode', '=', location_barcode)], limit=1)
+            if len(location_id) == 0:
+                _logger.error("No se han encontrado ubicaciones con el barcode: {}".format(location_barcode))
+                return {'err': True, 'error': "No se ha encontrado la ubicación."}
             _logger.info("Ubicaciones encontradas: {}".format(location_id))
         else:
             _logger.error("No se han encontrado ubicaciones con el barcode: {}".format(location_barcode))
@@ -176,6 +179,10 @@ class StockMoveLocationWizardLine(models.TransientModel):
         ]
         res = self.env['stock.quant'].read_group(search_args, ['quantity'], [])
         max_quantity = res[0]['quantity']
+
+        if max_quantity == None or max_quantity <= 0:
+            _logger.error("No hay cantidades disponibles para este producto.")
+            return {'err': True, 'error': "No hay cantidades disponibles para este producto."}
 
         move_line = self.create({
             'origin_location_id': origin_location_id,
