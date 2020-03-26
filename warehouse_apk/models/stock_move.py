@@ -55,7 +55,14 @@ class StockMove(models.Model):
                      'product_uom_qty': 0,
                      'product_uom_id': move.product_uom.id}
         for line in reading:
-            self.env['stock.move.line'].create(move_vals).write({'lot_name': line[0], 'qty_done': line[1]})
+            if '[' in line[0]:
+                line[0] = line[0].replace('[', '')
+                line[0] = line[0].replace(']', '')
+                codes = line[0].split(',')
+                for code in codes:
+                    self.env['stock.move.line'].create(move_vals).write({'lot_name': code, 'qty_done': line[1]})
+            else:
+                self.env['stock.move.line'].create(move_vals).write({'lot_name': line[0], 'qty_done': line[1]})
         return True
 
     @api.model
