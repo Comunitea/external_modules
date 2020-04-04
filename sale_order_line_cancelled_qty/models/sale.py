@@ -18,24 +18,24 @@ class SaleOrderLine(models.Model):
 
     _inherit = 'sale.order.line'
 
+    @api.multi
+    @api.depends('move_ids.state')
     def _compute_qty_pending(self):
-
         if self.ids:
             if len(self.ids) == 1:
                 where = 'sm.sale_line_id = {}'.format(self.id)
             else:
                 where = 'sm.sale_line_id in {}'.format(tuple(self.ids))
             sql = "select " \
-                  "sale_line_id, sum(sm.product_uom_qty) as qty_ordered, sum(sml.qty_done) as qty_done " \
+                  "sale_line_id, sum(sm.product_uom_qty) as qty_ordered " \
                   "from stock_move sm " \
-                  "join stock_move_line sml on sm.id = sml.move_id " \
                   "join stock_location sl on sl.id = sm.location_dest_id " \
-                  "where sm.state not in ('cancel', 'draft') and sl.usage = 'customer' and {} group by sm.sale_line_id".format(where)
+                  "where sm.state not in ('done', 'cancel', 'draft') and sl.usage = 'customer' and {} group by sm.sale_line_id".format(where)
             self._cr.execute(sql)
             res = self._cr.fetchall()
             for line in res:
                 sol = self.filtered(lambda x: x.id == line[0])
-                qty_pending = line[1] - line[2]
+                qty_pending = line[1]
                 sol.qty_pending = sol.product_uom._compute_quantity(qty_pending, sol.product_uom)
 
     @api.multi
@@ -78,4 +78,4 @@ class SaleOrderLine(models.Model):
         default=0.0)
 
     qty_pending = fields.Float('Cantidad pendiente', compute_sudo=True,
-                               compute='_compute_qty_delivered', store=True)
+                               compute='_compute_qty_pending', store=True)
