@@ -1,0 +1,755 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#       * rappel
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-14 18:35+0000\n"
+"PO-Revision-Date: 2020-04-14 18:35+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: rappel
+#: model:mail.template,body_html:rappel.rappel_mail_advice
+msgid "\n"
+"\n"
+"\n"
+"<meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n"
+"                        <title>Rebate Program ${ctx['partner_name']}</title>\n"
+"                        <style>\n"
+"                            span.oe_mail_footer_access {\n"
+"                                display:block;\n"
+"                                text-align:center;\n"
+"                                color:grey;\n"
+"                            }\n"
+"                        </style>\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"     <div style=\"font-size:13px;font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"                            <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Dear Sir or Madam,</p>\n"
+"                            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">\n"
+"                                % for line in ctx['values']:\n"
+"                                <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">We are writing to inform you of the current status of your rebate program <em>${line.concepto}</em>.\n"
+"                                    % if line.advice_timing == 'fixed':\n"
+"                                        With ${line.timing} days left of\n"
+"                                    % endif\n"
+"                                    % if line.advice_timing == 'variable':\n"
+"                                        After ${line.timing}% of\n"
+"                                    % endif\n"
+"                                  the quarter your total purchase amount for this period is:\n"
+"                                </p>\n"
+"                                %if line.curr_qty:\n"
+"                                    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Amount: ${line.curr_qty} €</p>\n"
+"                                %endif\n"
+"                                % endfor\n"
+"                            </div>\n"
+"                            <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">If you have any questions, please do not hesitate to contact your account manager ${object.user_id.name}.</p>\n"
+"                            <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Best regards.</p>\n"
+"                            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;\">\n"
+"                                <h3 style=\"font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\"><span style=\"text-transform: uppercase;\">${object.company_id.name}<br></span></h3>\n"
+"                            </div>\n"
+"                            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;\">\n"
+"                                <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
+"                                % if object.company_id.street:\n"
+"                                    ${object.company_id.street}<br>\n"
+"                                % endif\n"
+"                                % if object.company_id.street2:\n"
+"                                    ${object.company_id.street2}<br>\n"
+"                                % endif\n"
+"                                % if object.company_id.city or object.company_id.zip:\n"
+"                                    ${object.company_id.zip} ${object.company_id.city}<br>\n"
+"                                % endif\n"
+"                                % if object.company_id.country_id:\n"
+"                                    ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br>\n"
+"                                % endif\n"
+"                                </span>\n"
+"                                % if object.company_id.phone:\n"
+"                                    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
+"                                        Phone:&nbsp; ${object.company_id.phone}\n"
+"                                    </div>\n"
+"                                % endif\n"
+"                                % if object.company_id.website:\n"
+"                                    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">\n"
+"                                        Web :&nbsp;<a href=\"${object.company_id.website}\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\">${object.company_id.website}</a>\n"
+"                                    </div>\n"
+"                                %endif\n"
+"                                <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"></p>\n"
+"                            </div>\n"
+"                        </div>\n"
+"\n"
+"\n"
+"                \n"
+"                "
+msgstr "\n"
+"\n"
+"\n"
+"<meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n"
+"                        <title>Rappel ${ctx['partner_name']}</title>\n"
+"                        <style>\n"
+"                            span.oe_mail_footer_access {\n"
+"                                display:block;\n"
+"                                text-align:center;\n"
+"                                color:grey;\n"
+"                            }\n"
+"                        </style>\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"     <div style=\"font-size:13px;font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"                            <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Estimado cliente:</p>\n"
+"                            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">\n"
+"                                % for line in ctx['values']:\n"
+"                                <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">En relación a su rápel <em>${line.concepto}</em>.\n"
+"                                    % if line.advice_timing == 'fixed':\n"
+"                                        A falta de ${line.timing} días para la finalización del mismo.\n"
+"                                    % endif\n"
+"                                    % if line.advice_timing == 'variable':\n"
+"                                         Transcurrido el ${line.timing}% del periodo computable.\n"
+"                                    % endif\n"
+"                                   Le informamos que la situación actual de su importe de compras a fecha de hoy es de:\n"
+"                                </p>\n"
+"                                %if line.curr_qty:\n"
+"                                    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Cantidad: ${line.curr_qty} €</p>\n"
+"                                %endif\n"
+"                                % endfor\n"
+"                            </div>\n"
+"                            <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Si tiene cualquier pregunta al respecto, no dude en contactar con su comercial habitual ${object.user_id.name}.</p>\n"
+"                            <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Reciba un cordial saludo.</p>\n"
+"                            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;\">\n"
+"                                <h3 style=\"font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\"><span style=\"text-transform: uppercase;\">${object.company_id.name}<br></span></h3>\n"
+"                            </div>\n"
+"                            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;\">\n"
+"                                <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
+"                                % if object.company_id.street:\n"
+"                                    ${object.company_id.street}<br>\n"
+"                                % endif\n"
+"                                % if object.company_id.street2:\n"
+"                                    ${object.company_id.street2}<br>\n"
+"                                % endif\n"
+"                                % if object.company_id.city or object.company_id.zip:\n"
+"                                    ${object.company_id.zip} ${object.company_id.city}<br>\n"
+"                                % endif\n"
+"                                % if object.company_id.country_id:\n"
+"                                    ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br>\n"
+"                                % endif\n"
+"                                </span>\n"
+"                                % if object.company_id.phone:\n"
+"                                    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
+"                                        Teléfono:&nbsp; ${object.company_id.phone}\n"
+"                                    </div>\n"
+"                                % endif\n"
+"                                % if object.company_id.website:\n"
+"                                    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">\n"
+"                                        Web :&nbsp;<a href=\"${object.company_id.website}\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\">${object.company_id.website}</a>\n"
+"                                    </div>\n"
+"                                %endif\n"
+"                                <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"></p>\n"
+"                            </div>\n"
+"                        </div>\n"
+"\n"
+"\n"
+"                \n"
+"                "
+
+#. module: rappel
+#: selection:rappel.advice.email,advice_timing:0
+msgid "% Period"
+msgstr "% Periodo"
+
+#. module: rappel
+#: selection:res.partner.rappel.rel,periodicity:0
+msgid "Annual"
+msgstr "Anual"
+
+#. module: rappel
+#: code:addons/rappel/wizard/compute_rappel_invoice.py:86
+#, python-format
+msgid "Any invoice created!"
+msgstr "¡Ninguna factura creada!"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__attachment_ids
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__attachment_ids
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__attachment_ids
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__attachment_ids
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__attachment_ids
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__attachment_ids
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__attachment_ids
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__attachment_ids
+msgid "Attachments"
+msgstr "Adjuntos"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "By sections"
+msgstr "Por tramos"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "Calc Configuration"
+msgstr "Configuración cálculo"
+
+#. module: rappel
+#: model:ir.actions.server,name:rappel.ir_cron_calculate_rappel_ir_actions_server
+#: model:ir.cron,cron_name:rappel.ir_cron_calculate_rappel
+#: model:ir.cron,name:rappel.ir_cron_calculate_rappel
+msgid "Calculate rappels"
+msgstr "Calcular rapels"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_invoice
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__product_categ_id
+msgid "Category"
+msgstr "Categoría"
+
+#. module: rappel
+#: model_terms:ir.actions.act_window,help:rappel.action_rappel_type
+msgid "Click to create a new rappel type."
+msgstr "Click para crear un nuevo rápel"
+
+#. module: rappel
+#: model_terms:ir.actions.act_window,help:rappel.action_rappel_sales
+msgid "Click to create a new rappel."
+msgstr "Click para crear un nuevo rápel"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__code
+msgid "Code"
+msgstr "Código"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_type_form
+msgid "Code..."
+msgstr "Código..."
+
+#. module: rappel
+#: model:ir.ui.menu,name:rappel.menu_rappel_rappel_calculated
+msgid "Computed Rappels"
+msgstr "Rapels calculados"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__name
+msgid "Concept"
+msgstr "Concepto"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "Concept..."
+msgstr "Concepto..."
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_invoice
+msgid "Create"
+msgstr "Crear"
+
+#. module: rappel
+#: model:ir.actions.act_window,name:rappel.action_rappel_invoice
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_invoice
+msgid "Create rappel invoices"
+msgstr "Crear facturas rápel"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__create_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__create_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__create_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__create_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__create_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__create_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__create_uid
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__create_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__create_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__create_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__create_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__create_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__create_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__create_date
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__curr_qty
+msgid "Curr. qty"
+msgstr "Cant. actual"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__amount
+msgid "Current Amount"
+msgstr "Importe actual"
+
+#. module: rappel
+#: model:ir.actions.act_window,name:rappel.action_rappel_info
+#: model:ir.ui.menu,name:rappel.menu_rappel_rappel_info
+msgid "Current Info Rappels"
+msgstr "Info. rapels actuales"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__partner_id
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__partner_id
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__partner_id
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_calculated_filter
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_info_filter
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__customer_ids
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "Customers"
+msgstr "Clientes"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__date_end
+msgid "Date End"
+msgstr "Fecha final"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__date_start
+msgid "Date Start"
+msgstr "Fecha inicial"
+
+#. module: rappel
+#: selection:rappel.advice.email,advice_timing:0
+msgid "Days to finish"
+msgstr "Días para terminar"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__display_name
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__display_name
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__display_name
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__display_name
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__display_name
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__display_name
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__display_name
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "Email Advice Timing"
+msgstr "Tiempos para avisos por email"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__advice_timing_ids
+msgid "Email Timing Advice"
+msgstr "Tiempos para avisos por email"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__date_end
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__date_end
+msgid "End date"
+msgstr "Fecha final"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__fix_qty
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "Fix"
+msgstr "Cant. fija"
+
+#. module: rappel
+#: selection:rappel,calc_mode:0
+msgid "Fixed"
+msgstr "Fijo"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__calc_mode
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__advice_timing
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__calc_mode
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "Fixed/Variable"
+msgstr "Fija/Variable"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__rappel_from
+msgid "From"
+msgstr "De"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__global_application
+msgid "Global"
+msgstr "Global"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__group_by_partner
+msgid "Group By Partner"
+msgstr "Agrupar por empresa"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__id
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__id
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__id
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__id
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__id
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__id
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__id
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__id
+msgid "ID"
+msgstr "ID"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__invoice_id
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__invoice_date
+msgid "Invoice Date"
+msgstr "Fecha factura"
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Linea de Factura"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__journal_id
+msgid "Journal"
+msgstr "Diario"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel____last_update
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email____last_update
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated____last_update
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info____last_update
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd____last_update
+#: model:ir.model.fields,field_description:rappel.field_rappel_section____last_update
+#: model:ir.model.fields,field_description:rappel.field_rappel_type____last_update
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__last_settlement_date
+msgid "Last Settlement Date"
+msgstr "Últ. fecha liquidación"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__write_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__write_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__write_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__write_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__write_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__write_uid
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__write_uid
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__write_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__write_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__write_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__write_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_invoice_wzd__write_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__write_date
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__write_date
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: rappel
+#: selection:res.partner.rappel.rel,periodicity:0
+msgid "Monthly"
+msgstr "Mensual"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_type_form
+msgid "Name..."
+msgstr "Nombre..."
+
+#. module: rappel
+#: model:mail.template,subject:rappel.rappel_mail_advice
+msgid "Notice of rebate program"
+msgstr "Aviso del estado del rápel"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "Other data"
+msgstr "Otra información"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_calculated_filter
+msgid "Pending to invoice"
+msgstr "Pendiente de facturar"
+
+#. module: rappel
+#: selection:rappel,calc_amount:0
+msgid "Percent"
+msgstr "Porcentaje"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__calc_amount
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__calc_amount
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "Percent/Quantity"
+msgstr "Porcentaje/Cantidad"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__periodicity
+msgid "Periodicity"
+msgstr "Periodicidad"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: rappel
+#: code:addons/rappel/models/rappel.py:39
+#, python-format
+msgid "Product and category are empty"
+msgstr "El producto o la categoróa están vacíos"
+
+#. module: rappel
+#: model:ir.model.fields,help:rappel.field_rappel_type__product_id
+msgid "Product used to invoice rappels this type."
+msgstr "Producto usado para facturar rapels de este tipo."
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__quantity
+#: selection:rappel,calc_amount:0
+#: selection:rappel,qty_type:0
+msgid "Quantity"
+msgstr "Cantidad"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__qty_type
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__qty_type
+msgid "Quantity type"
+msgstr "Tipo de cantidad"
+
+#. module: rappel
+#: selection:res.partner.rappel.rel,periodicity:0
+msgid "Quarterly"
+msgstr "Trimestral"
+
+#. module: rappel
+#: model:ir.actions.act_window,name:rappel.action_rappel_sales
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__rappel_id
+#: model:ir.model.fields,field_description:rappel.field_rappel_calculated__rappel_id
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__rappel_id
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__rappel_id
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__rappel_id
+#: model:ir.ui.menu,name:rappel.menu_rappel_config_sale
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+#: model_terms:ir.ui.view,arch_db:rappel.view_partner_form_add_rappel
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_calculated_filter
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_info_filter
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_tree
+msgid "Rappel"
+msgstr "Rápel"
+
+#. module: rappel
+#: model:ir.actions.act_window,name:rappel.action_view_rappel_info
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_current_info_tree
+msgid "Rappel Info"
+msgstr "Info. rápel"
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_rappel
+msgid "Rappel Model"
+msgstr "Rápel"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_type_form
+msgid "Rappel Type"
+msgstr "Tipo de rápel"
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_rappel_type
+msgid "Rappel Type Model"
+msgstr "Tipo de rápel"
+
+#. module: rappel
+#: model:ir.actions.act_window,name:rappel.action_rappel_type
+#: model:ir.ui.menu,name:rappel.menu_rappel_types_sale
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_type_tree
+msgid "Rappel Types"
+msgstr "Tipos de rápel"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_calculated_form
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_calculated_tree
+msgid "Rappel calculated"
+msgstr "Rápel calculado"
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_rappel_calculated
+msgid "Rappel computed"
+msgstr "Rapels calculados"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_type__product_id
+msgid "Rappel product"
+msgstr "Producto rápel"
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_rappel_section
+msgid "Rappel section model"
+msgstr "Tramo rápel"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.rappel_form
+msgid "Rappel type..."
+msgstr "Tipo de rápel..."
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_res_partner__rappel_ids
+#: model:ir.model.fields,field_description:rappel.field_res_users__rappel_ids
+#: model:ir.ui.menu,name:rappel.menu_rappel_rappel_sale
+#: model_terms:ir.ui.view,arch_db:rappel.view_partner_form_add_rappel
+msgid "Rappels"
+msgstr "Rapels"
+
+#. module: rappel
+#: model:ir.actions.act_window,name:rappel.action_rappel_calculated
+msgid "Rappels computed"
+msgstr "Rapels calculados"
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de venta"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_calculated_filter
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_filter
+msgid "Search Rappel"
+msgstr "Buscar rápel"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_info_filter
+msgid "Search Rappel Info"
+msgstr "Buscar info. rápel"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_type_filter
+msgid "Search Rappel Type"
+msgstr "Buscar tipos de rápel"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__section_id
+msgid "Section"
+msgstr "Tramo"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__sections
+msgid "Sections"
+msgstr "Tramos"
+
+#. module: rappel
+#: selection:res.partner.rappel.rel,periodicity:0
+msgid "Semiannual"
+msgstr "Semestral"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__date_start
+#: model:ir.model.fields,field_description:rappel.field_res_partner_rappel_rel__date_start
+msgid "Start date"
+msgstr "Fecha de inicio"
+
+#. module: rappel
+#: code:addons/rappel/wizard/compute_rappel_invoice.py:29
+#, python-format
+msgid "The rappel %s of %s with period %s - %s is already invoiced"
+msgstr "El rápel %s de %s perteneciente al periodo %s - %s ya está facturado"
+
+#. module: rappel
+#: code:addons/rappel/models/rappel_info.py:26
+#, python-format
+msgid "Timing must be between 0 and 100 %"
+msgstr "Los tiempos deben de estar entre 0 y 100%"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel__type_id
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_filter
+msgid "Type"
+msgstr "Tipo"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_current_info__section_goal
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__rappel_until
+msgid "Until"
+msgstr "Hasta"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_rappel_advice_email__timing
+#: model:ir.model.fields,field_description:rappel.field_rappel_section__percent
+#: selection:rappel,qty_type:0
+msgid "Value"
+msgstr "Valor"
+
+#. module: rappel
+#: selection:rappel,calc_mode:0
+msgid "Variable"
+msgstr "Variable"
+
+#. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_account_invoice_line__no_rappel
+#: model:ir.model.fields,field_description:rappel.field_sale_order_line__no_rappel
+msgid "W/O Rappel"
+msgstr "Sin rápel"
+
+#. module: rappel
+#: model:ir.model.fields,help:rappel.field_rappel_advice_email__advice_timing
+msgid "fixed: days to finish, % days"
+msgstr "fijo: días para terminar, % días"
+
+#. module: rappel
+#: model_terms:ir.ui.view,arch_db:rappel.view_rappel_invoice
+msgid "or"
+msgstr "o"
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_rappel_advice_email
+msgid "rappel.advice.email"
+msgstr ""
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_rappel_current_info
+msgid "rappel.current.info"
+msgstr ""
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_rappel_invoice_wzd
+msgid "rappel.invoice.wzd"
+msgstr ""
+
+#. module: rappel
+#: model:ir.model,name:rappel.model_res_partner_rappel_rel
+msgid "res.partner.rappel.rel"
+msgstr ""

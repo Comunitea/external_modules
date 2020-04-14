@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rappel_type,access_rappel_type,model_rappel_type,base.group_user,1,1,1,1
+access_rappel,access_rappel,model_rappel,base.group_user,1,1,1,1
+access_rappel_section,access_rappel_section,model_rappel_section,base.group_user,1,1,1,1
+access_rappel_calculated,access_rappel_calculated,model_rappel_calculated,base.group_user,1,1,1,1
+access_rappel_current_info,access_rappel_current_info,model_rappel_current_info,base.group_user,1,1,1,1
+access_res_partner_rappel_rel,access_res_partner_rappel_rel,model_res_partner_rappel_rel,base.group_user,1,1,1,1
+access_rappel_advice_email,access_rappel_advice_email,model_rappel_advice_email,base.group_user,1,1,1,1
