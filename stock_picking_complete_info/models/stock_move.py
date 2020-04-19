@@ -21,7 +21,11 @@ class StockMoveLine(models.Model):
         if reset:
             self.filtered(lambda x: x.qty_done > 0 and x.state != 'done').write({'qty_done': 0})
         else:
-            for move in self.filtered(lambda x: not x.qty_done):
+            if self._context.get('update_qty_done'):
+                move_lines = self
+            else:
+                move_lines = self.filtered(lambda x: not x.qty_done)
+            for move in move_lines:
                 move.qty_done = move[field]
 
 
@@ -92,8 +96,8 @@ class StockMove(models.Model):
         for move in self.filtered(lambda x: x.state in ('confirmed', 'assigned', 'partially_available')):
             if move.move_line_ids:
                 move.move_line_ids.force_assigned_qty_done(reset, field)
-            else:
-                move.quantity_done = not reset and move[field] or 0.0
+            #else:
+            #    move.quantity_done = not reset and move[field] or 0.0
 
     def _prepare_procurement_values(self):
         res = super(StockMove, self). \

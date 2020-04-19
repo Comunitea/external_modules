@@ -57,10 +57,10 @@
                 <field name="move_lines" position="before">
                     <div attrs="{'invisible':[('state','not in',('in_progress', 'assigned'))]}">
 
-                        <button class="oe_link oe_right"
+                        <!--button class="oe_link oe_right"
                                 context="{'reset': False, 'field': 'product_uom_qty'}"
                                 name="force_set_qty_done"  type="object" string="↳Demanda a hecho"
-                                attrs="{'invisible':[('quantity_done', '!=', 0)]}"/>
+                                attrs="{'invisible':[('quantity_done', '!=', 0)]}"/-->
 
                         <button class="oe_link oe_right"
                                 context="{'reset': False, 'field': 'reserved_availability'}"

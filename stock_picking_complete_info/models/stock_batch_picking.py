@@ -59,10 +59,12 @@ class StockBatchPicking(models.Model):
 
     @api.multi
     def force_set_qty_done(self):
+        return self.mapped('picking_ids').force_set_qty_done()
         field = self._context.get('field', 'product_uom_qty')
         reset = self._context.get('reset', True)
+        return self.mapped('picking_ids').force_set_qty_done()
         states = ('confirmed', 'assigned')
-        for picking in self.mapped('picking_ids'):
+        for picking in self.mapped('picking_ids').force_set_qty_done():
             if picking.state not in states:
                 raise ValidationError(_('State {} incorrect for {}'.format(picking.state, picking.name)))
             picking.move_lines.force_set_qty_done(reset, field)
