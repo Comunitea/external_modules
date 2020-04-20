@@ -8,5 +8,5 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     warranty_duration = fields.Integer(
-        "Warranty duration (in days)", default=730
+        "Warranty duration (in days)", default=1095
     )
