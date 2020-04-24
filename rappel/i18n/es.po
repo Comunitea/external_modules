@@ -725,6 +725,12 @@ msgid "W/O Rappel"
 msgstr "Sin rápel"
 
 #. module: rappel
+#: model:ir.model.fields,field_description:rappel.field_product_product__no_rappel
+#: model:ir.model.fields,field_description:rappel.field_product_template__no_rappel
+msgid "Without rappel"
+msgstr "Sin rápel"
+
+#. module: rappel
 #: model:ir.model.fields,help:rappel.field_rappel_advice_email__advice_timing
 msgid "fixed: days to finish, % days"
 msgstr "fijo: días para terminar, % días"
