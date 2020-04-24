@@ -11,6 +11,15 @@ class DeliveryCarrier(models.Model):
     carrier_type = fields.Selection([])
     carrier_services = fields.One2many('delivery.carrier.service', 'carrier_id')
 
+    def get_tracking_link(self, picking):
+        ''' Ask the tracking link to the service provider
+
+        :param picking: record of stock.picking
+        :return str: an URL containing the tracking link or False
+        '''
+        self.ensure_one()
+        if hasattr(self, '%s_get_tracking_link' % self.carrier_type):
+            return getattr(self, '%s_get_tracking_link' % self.carrier_type)(picking)
 
 class DeliveryCarrierService(models.Model):
 
