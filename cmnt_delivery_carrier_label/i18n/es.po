@@ -61,6 +61,11 @@ msgid "Carrier Type"
 msgstr "Tipo transportista"
 
 #. module: cmnt_delivery_carrier_label
+#: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
+msgid "Print shipping label"
+msgstr "Volver a imprimir etiqueta de envío"
+
+#. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_stock_picking__carrier_weight
 msgid "Carrier Weight"
 msgstr "Peso transportista"

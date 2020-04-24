@@ -17,8 +17,10 @@
                 help="Create Shipping Label 🚚"
                 attrs="{'invisible': ['|', '|', ('carrier_id', '=', False), ('state', '!=', 'done'), ('carrier_tracking_ref', '!=', False)]}"
                 string="Shipping Label 🚚" type="object"/>
+                <button name="print_created_labels" type="object"
+                    attrs="{'invisible': ['|', '|', ('carrier_id', '=', False), ('state', '!=', 'done'), ('carrier_tracking_ref', '==', False)]}"
+                    string="Print shipping label"/>
             </button>
-
         </field>
     </record>
 </odoo>
