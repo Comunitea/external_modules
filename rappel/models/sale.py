@@ -15,3 +15,11 @@ class SaleOrderLine(models.Model):
         vals = super()._prepare_invoice_line(qty)
         vals['no_rappel'] = self.no_rappel
         return vals
+
+    @api.multi
+    @api.onchange('product_id')
+    def product_id_change(self):
+        res = super().product_id_change()
+        if self.product_id and self.product_id.no_rappel:
+            self.no_rappel = self.product_id.no_rappel
+        return res

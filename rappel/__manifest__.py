@@ -41,6 +41,7 @@ Rappel Management
              'wizard/compute_rappel_invoice_view.xml',
              'security/ir.model.access.csv',
              'views/sale_view.xml',
+             'views/product_view.xml',
              'views/account_invoice_view.xml'],
     'installable': True,
     'application': False,
