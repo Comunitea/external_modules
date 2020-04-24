@@ -119,11 +119,13 @@ class StockPicking(models.Model):
             streets.append(unidecode(partner.street))
         if partner.street2:
             streets.append(unidecode(partner.street2))
+        if not streets or not partner.city or not partner.zip or not partner.zip:
+            raise UserError('Review partner data')
         if self.carrier_id.account_id.file_format not in ("PDF", "ZPL"):
             raise UserError("Format file not supported by cex")
         if not self.carrier_service:
             raise UserError("Set service to the picking")
-        if not self.carrier_weight:
+        if not self.carrier_weight or self.carrier_weight == 0.0:
             raise UserError("Set weight to the picking")
         data = {
             "solicitante": self.carrier_id.account_id.cex_solicitante,
@@ -153,7 +155,7 @@ class StockPicking(models.Model):
             "codPosIntDest": "",
             "contacDest": partner.name[:40] or "",
             "telefDest": phone[:15],
-            "emailDest": partner.email[:75] or "",
+            "emailDest": partner.email and partner.email[:75] or "",
             "contacOtrs": "",
             "telefOtrs": "",
             "emailOtrs": "",
@@ -214,7 +216,7 @@ class StockPicking(models.Model):
                 context_attachment = self.env.context.copy()
                 if self.carrier_id.account_id.printer:
                     self.carrier_id.account_id.printer.print_document(
-                        None, label["file"], doc_format="raw"
+                        None, b64decode(label["file"]), doc_format="raw"
                     )
                 # remove default_type setted for stock_picking
                 # as it would try to define default value of attachement
