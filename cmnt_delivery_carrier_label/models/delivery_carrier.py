@@ -21,6 +21,7 @@ class DeliveryCarrier(models.Model):
         if hasattr(self, '%s_get_tracking_link' % self.carrier_type):
             return getattr(self, '%s_get_tracking_link' % self.carrier_type)(picking)
 
+
 class DeliveryCarrierService(models.Model):
 
     _name = 'delivery.carrier.service'

@@ -3,7 +3,7 @@ from odoo import models, api, fields, _
 from odoo.exceptions import UserError
 from datetime import date
 from unidecode import unidecode
-from base64 import b64decode,b64encode
+from base64 import b64decode, b64encode
 import requests
 import re
 import json
@@ -11,7 +11,6 @@ import json
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
-
 
     @api.multi
     def _generate_cex_label(self, package_ids=None):
@@ -54,9 +53,10 @@ class StockPicking(models.Model):
                         + "_"
                         + self.carrier_tracking_ref
                         + ".pdf",
-                        "file": b64decode(label_result['etiqueta1']),
+                        "file": b64decode(label_result["etiqueta1"]),
                         "file_type": "pdf",
-                    } for label_result in rjson["etiqueta"]
+                    }
+                    for label_result in rjson["etiqueta"]
                 ]
             else:
                 self.cex_result = rjson["etiqueta"][0]["etiqueta2"]
@@ -66,9 +66,12 @@ class StockPicking(models.Model):
                         + "_"
                         + self.carrier_tracking_ref
                         + ".txt",
-                        "file": b64encode(label_result['etiqueta2'].encode('utf-8')),
+                        "file": b64encode(
+                            label_result["etiqueta2"].encode("utf-8")
+                        ),
                         "file_type": "txt",
-                    }  for label_result in rjson["etiqueta"]
+                    }
+                    for label_result in rjson["etiqueta"]
                 ]
         else:
             raise UserError(
@@ -119,9 +122,9 @@ class StockPicking(models.Model):
         if self.carrier_id.account_id.file_format not in ("PDF", "ZPL"):
             raise UserError("Format file not supported by cex")
         if not self.carrier_service:
-            raise UserError('Set service to the picking')
+            raise UserError("Set service to the picking")
         if not self.carrier_weight:
-            raise UserError('Set weight to the picking')
+            raise UserError("Set weight to the picking")
         data = {
             "solicitante": self.carrier_id.account_id.cex_solicitante,
             "canalEntrada": "",
@@ -210,11 +213,9 @@ class StockPicking(models.Model):
                     data["package_id"] = label["package_id"]
                 context_attachment = self.env.context.copy()
                 if self.carrier_id.account_id.printer:
-                    printer = (
-                        self.env.user.printing_printer_id
-                        or self.env["printing.printer"].get_default()
+                    self.carrier_id.account_id.printer.print_document(
+                        None, label["file"], doc_format="raw"
                     )
-                    printer.print_document(None, label["file"], "raw")
                 # remove default_type setted for stock_picking
                 # as it would try to define default value of attachement
                 if "default_type" in context_attachment:
