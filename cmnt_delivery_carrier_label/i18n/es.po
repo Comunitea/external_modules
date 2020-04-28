@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 17:46+0000\n"
-"PO-Revision-Date: 2020-04-23 17:46+0000\n"
+"POT-Creation-Date: 2020-04-28 07:58+0000\n"
+"PO-Revision-Date: 2020-04-28 07:58+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier__account_id
 msgid "Account"
 msgstr "Cuenta"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,help:cmnt_delivery_carrier_label.field_delivery_carrier_service__auto_apply
+msgid "Apply automatically this carrier service."
+msgstr "Aplicar automáticamente."
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,help:cmnt_delivery_carrier_label.field_delivery_carrier_service__country_id
+msgid "Apply only if delivery country match."
+msgstr "Aplicar sólo si el país de entrega concuerda."
 
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__attachment_ids
@@ -61,14 +71,19 @@ msgid "Carrier Type"
 msgstr "Tipo transportista"
 
 #. module: cmnt_delivery_carrier_label
-#: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
-msgid "Print shipping label"
-msgstr "Volver a imprimir etiqueta de envío"
-
-#. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_stock_picking__carrier_weight
 msgid "Carrier Weight"
 msgstr "Peso transportista"
+
+#. module: cmnt_delivery_carrier_label
+#: selection:delivery.carrier,carrier_type:0
+msgid "Correos Express"
+msgstr "Correos Express"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__country_id
+msgid "Country"
+msgstr "País"
 
 #. module: cmnt_delivery_carrier_label
 #: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
@@ -91,14 +106,24 @@ msgid "Delivery Methods"
 msgstr "Método de envío"
 
 #. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__auto_apply
+msgid "Detect Automatically"
+msgstr "Detectar automáticamente"
+
+#. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__state_ids
+msgid "Federal States"
+msgstr "Provincias"
+
+#. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service____last_update
@@ -121,10 +146,15 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: cmnt_delivery_carrier_label
-#: code:addons/cmnt_delivery_carrier_label/models/stock_picking.py:11
+#: code:addons/cmnt_delivery_carrier_label/models/stock_picking.py:13
 #, python-format
 msgid "No label is configured for the selected delivery method."
-msgstr ""
+msgstr "No se ha configurado una etiqueta para este método de entrega."
+
+#. module: cmnt_delivery_carrier_label
+#: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
+msgid "Print shipping label"
+msgstr "Volver a imprimir etiqueta de envío"
 
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_carrier_account__printer

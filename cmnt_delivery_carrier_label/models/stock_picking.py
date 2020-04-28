@@ -1,6 +1,6 @@
 # © 2020 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import _, fields, models
+from odoo import _, fields, models, api
 from odoo.exceptions import UserError
 from base64 import b64decode
 
@@ -29,3 +29,35 @@ class StockPicking(models.Model):
             self.carrier_id.account_id.printer.print_document(
                 None, b64decode(label.datas), doc_format="raw"
             )
+
+    @api.model
+    def create(self, vals):
+        res = super(StockPicking, self).create(vals)
+        res.onchange_partner_id_or_carrier_id()
+        return res
+
+    @api.onchange('partner_id', 'carrier_id')
+    def onchange_partner_id_or_carrier_id(self):
+        self.ensure_one()
+
+        if self.carrier_id:
+            state_id = self.env['res.country.state']
+            if self.partner_id.state_id.id:
+                state_id = self.partner_id.state_id
+
+            available_services = self.env['delivery.carrier.service'].search([
+                ('carrier_id', '=', self.carrier_id.id),
+                ('auto_apply', '=', True)
+            ]).filtered(lambda x: state_id in x.state_ids and len(x.state_ids) >= 1)
+
+            regular_service = self.env['delivery.carrier.service'].search([
+                ('carrier_id', '=', self.carrier_id.id),
+                ('auto_apply', '=', True)
+            ]).filtered(lambda x: len(x.state_ids) == 0)      
+
+            if available_services:
+                self.carrier_service = available_services[0].id
+            elif regular_service:
+                self.carrier_service = regular_service[0].id
+            else:
+                self.carrier_service = None
