@@ -42,22 +42,34 @@ class StockPicking(models.Model):
 
         if self.carrier_id:
             state_id = self.env['res.country.state']
+            country_id = self.env['res.country']
             if self.partner_id.state_id.id:
                 state_id = self.partner_id.state_id
+                country_id = self.partner_id.country_id
 
             available_services = self.env['delivery.carrier.service'].search([
                 ('carrier_id', '=', self.carrier_id.id),
-                ('auto_apply', '=', True)
-            ]).filtered(lambda x: state_id in x.state_ids and len(x.state_ids) >= 1)
+                ('auto_apply', '=', True),
+                ('state_ids', 'in', state_id.id)
+            ])
 
             regular_service = self.env['delivery.carrier.service'].search([
                 ('carrier_id', '=', self.carrier_id.id),
-                ('auto_apply', '=', True)
-            ]).filtered(lambda x: len(x.state_ids) == 0)      
+                ('auto_apply', '=', True),
+                ('country_id', '=', country_id.id)
+            ]).filtered(lambda x: len(x.state_ids) == 0)
+
+            international_service = self.env['delivery.carrier.service'].search([
+                ('carrier_id', '=', self.carrier_id.id),
+                ('auto_apply', '=', True),
+                ('country_id', '=', None)
+            ]).filtered(lambda x: len(x.state_ids) == 0)    
 
             if available_services:
                 self.carrier_service = available_services[0].id
             elif regular_service:
                 self.carrier_service = regular_service[0].id
+            elif international_service:
+                self.carrier_service = international_service[0].id
             else:
                 self.carrier_service = None
