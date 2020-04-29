@@ -29,3 +29,7 @@ class DeliveryCarrierService(models.Model):
     name = fields.Char()
     carrier_code = fields.Char()
     carrier_id = fields.Many2one('delivery.carrier')
+    auto_apply = fields.Boolean(string='Detect Automatically', help="Apply automatically this carrier service.")
+    country_id = fields.Many2one('res.country', string='Country',
+        help="Apply only if delivery country match.")
+    state_ids = fields.Many2many('res.country.state', domain="[('country_id', '=', country_id)]", string='Federal States')

@@ -16,6 +16,9 @@
                         <tree editable="top">
                             <field name="name"/>
                             <field name="carrier_code"/>
+                            <field name="country_id"/>
+                            <field name="state_ids" widget="many2many_tags"/>
+                            <field name="auto_apply"/>
                         </tree>
                     </field>
                 </page>
