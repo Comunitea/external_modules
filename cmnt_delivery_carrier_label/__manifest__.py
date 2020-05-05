@@ -14,6 +14,10 @@
         'base_report_to_printer'
     ],
     'data': [
-        'views/delivery_carrier.xml', 'views/stock_picking.xml', 'views/carrier_account.xml', 'security/ir.model.access.csv'
+        'views/delivery_carrier.xml',
+        'views/stock_picking.xml',
+        'views/carrier_account.xml',
+        'security/ir.model.access.csv',
+        'data/ir_cron.xml'
     ],
 }

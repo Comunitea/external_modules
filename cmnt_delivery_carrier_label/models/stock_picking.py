@@ -16,6 +16,7 @@ class StockPicking(models.Model):
     carrier_weight = fields.Float()
     carrier_packages = fields.Integer(default=1)
     carrier_service = fields.Many2one('delivery.carrier.service')
+    delivered = fields.Boolean()
 
     def print_created_labels(self):
         self.ensure_one()
@@ -63,7 +64,7 @@ class StockPicking(models.Model):
                 ('carrier_id', '=', self.carrier_id.id),
                 ('auto_apply', '=', True),
                 ('country_id', '=', None)
-            ]).filtered(lambda x: len(x.state_ids) == 0)    
+            ]).filtered(lambda x: len(x.state_ids) == 0)
 
             if available_services:
                 self.carrier_service = available_services[0].id
@@ -73,3 +74,14 @@ class StockPicking(models.Model):
                 self.carrier_service = international_service[0].id
             else:
                 self.carrier_service = None
+
+    def check_shipment_status(self):
+        raise NotImplementedError()
+
+    @api.model
+    def cron_check_shipment_status(self):
+        pickings = self.env['stock.picking'].search([
+            ('delivered', '=', False), ('carrier_tracking_ref', '!=', False)
+        ])
+        for picking in pickings:
+            picking.check_shipment_status()
