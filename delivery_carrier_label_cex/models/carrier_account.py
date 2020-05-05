@@ -3,9 +3,7 @@ from odoo import api, fields, models
 
 
 class CarrierAccount(models.Model):
-    _inherit = 'carrier.account'
+    _inherit = "carrier.account"
 
-    cex_codRte = fields.Char(
-        string='Correos Express codRte')
-    cex_solicitante = fields.Char(
-        string='Correos Express Solicitante')
+    cex_codRte = fields.Char(string="Correos Express codRte")
+    cex_solicitante = fields.Char(string="Correos Express Solicitante")

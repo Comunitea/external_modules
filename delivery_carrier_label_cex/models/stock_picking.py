@@ -1,12 +1,28 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import models, api, fields, _
-from odoo.exceptions import UserError
-from datetime import date
-from unidecode import unidecode
-from base64 import b64decode, b64encode
-import requests
-import re
 import json
+import os
+import re
+from base64 import b64decode, b64encode
+from datetime import date
+from xml.dom.minidom import parseString
+
+import requests
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+from unidecode import unidecode
+
+try:
+    import genshi
+    import genshi.template
+except (ImportError, IOError) as err:
+    import logging
+
+    logging.getLogger(__name__).warn("Module genshi is not available")
+
+loader = genshi.template.TemplateLoader(
+    os.path.join(os.path.dirname(__file__), "template"), auto_reload=True
+)
 
 
 class StockPicking(models.Model):
@@ -37,10 +53,7 @@ class StockPicking(models.Model):
                 "mensajeRetorno": "\n\nEl servidor está tardando mucho en responder.",
             }
         except:
-            rjson = {
-                "codigoRetorno": 999,
-                "mensajeRetorno": "\n\n" + response.text,
-            }
+            rjson = {"codigoRetorno": 999, "mensajeRetorno": "\n\n" + response.text}
         retorno = rjson["codigoRetorno"]
         message = rjson["mensajeRetorno"]
 
@@ -49,10 +62,7 @@ class StockPicking(models.Model):
             if self.carrier_id.account_id.file_format == "PDF":
                 return [
                     {
-                        "name": self.name
-                        + "_"
-                        + self.carrier_tracking_ref
-                        + ".pdf",
+                        "name": self.name + "_" + self.carrier_tracking_ref + ".pdf",
                         "file": b64decode(label_result["etiqueta1"]),
                         "file_type": "pdf",
                     }
@@ -62,21 +72,15 @@ class StockPicking(models.Model):
                 self.cex_result = rjson["etiqueta"][0]["etiqueta2"]
                 return [
                     {
-                        "name": self.name
-                        + "_"
-                        + self.carrier_tracking_ref
-                        + ".txt",
-                        "file": b64encode(
-                            label_result["etiqueta2"].encode("utf-8")
-                        ),
+                        "name": self.name + "_" + self.carrier_tracking_ref + ".txt",
+                        "file": b64encode(label_result["etiqueta2"].encode("utf-8")),
                         "file_type": "txt",
                     }
                     for label_result in rjson["etiqueta"]
                 ]
         else:
             raise UserError(
-                _("CEX Error: %s %s")
-                % (retorno or 999, message or "Webservice ERROR.")
+                _("CEX Error: %s %s") % (retorno or 999, message or "Webservice ERROR.")
             )
 
         return False
@@ -86,9 +90,7 @@ class StockPicking(models.Model):
         self.ensure_one()
         # TODO check pack operation no disponible en v 12
         if self.has_packages:
-            return len(
-                self.move_line_ids.filtered(lambda ml: ml.result_package_id)
-            )
+            return len(self.move_line_ids.filtered(lambda ml: ml.result_package_id))
 
     def _get_cex_label_data(self):
         self.ensure_one()
@@ -120,7 +122,7 @@ class StockPicking(models.Model):
         if partner.street2:
             streets.append(unidecode(partner.street2))
         if not streets or not partner.city or not partner.zip or not partner.zip:
-            raise UserError('Review partner data')
+            raise UserError("Review partner data")
         if self.carrier_id.account_id.file_format not in ("PDF", "ZPL"):
             raise UserError("Format file not supported by cex")
         if not self.carrier_service:
@@ -177,8 +179,7 @@ class StockPicking(models.Model):
             "password": "string",
             "listaInformacionAdicional": [
                 {
-                    "tipoEtiqueta": self.carrier_id.account_id.file_format
-                    == "PDF"
+                    "tipoEtiqueta": self.carrier_id.account_id.file_format == "PDF"
                     and "1"
                     or "2",
                     "etiquetaPDF": "",
@@ -197,9 +198,7 @@ class StockPicking(models.Model):
 
         for pick in self:
             if package_ids:
-                shipping_labels = pick._generate_cex_label(
-                    package_ids=package_ids
-                )
+                shipping_labels = pick._generate_cex_label(package_ids=package_ids)
             else:
                 shipping_labels = pick._generate_cex_label()
             for label in shipping_labels:
@@ -232,3 +231,46 @@ class StockPicking(models.Model):
                 self.carrier_packages = number_of_packages
             return self.generate_cex_labels()
         return super().action_generate_carrier_label()
+
+    def check_shipment_status(self):
+        self.ensure_one()
+        if self.carrier_id.carrier_type == "cex":
+            url = "https://www.correosexpress.com/wpsc/apiRestSeguimientoEnvios/rest/seguimientoEnvios"
+            username = self.carrier_id.account_id.account
+            password = self.carrier_id.account_id.password
+            vals = {
+                "solicitante": self.carrier_id.account_id.cex_solicitante,
+                "dato": self.carrier_tracking_ref,
+            }
+            tmpl = loader.load("check_status.xml")
+            xml = tmpl.generate(**vals).render()
+            try:
+                response = requests.post(
+                    url,
+                    auth=(username, password),
+                    data=xml,
+                    timeout=5000,
+                    headers={"Content-Type": "text/xml; charset=utf-8"},
+                )
+                xml_start = response.content.decode().find("<")
+                result_xml = parseString(response.content.decode()[xml_start:])
+                state_nodes = result_xml.getElementsByTagName("EstadoEnvios")
+                for state_node in state_nodes:
+                    if (
+                        state_node.getElementsByTagName("CodEstado")
+                        and state_node.getElementsByTagName("CodEstado")[
+                            0
+                        ].firstChild.data
+                        == "12"
+                    ):
+                        self.delivered = True
+                        break
+            except (requests.exceptions.Timeout, requests.exceptions.ReadTimeout):
+                rjson = {
+                    "codigoRetorno": 999,
+                    "mensajeRetorno": "\n\nEl servidor está tardando mucho en responder.",
+                }
+            except:
+                rjson = {"codigoRetorno": 999, "mensajeRetorno": "\n\n" + response.text}
+        else:
+            return super().check_shipment_status()
