@@ -19,6 +19,7 @@ function OdooApi (host, db) {
             res['error_msg'] = code
         }
         return res
+
     }
     this.login = function(user, password) {
         this.odoo_user = user;
@@ -28,12 +29,11 @@ function OdooApi (host, db) {
         odoo_api.context = {'lang': 'es_ES'}
         var promise = new Promise(function(resolve, reject) {
             $.xmlrpc({
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 url: odoo_api.odoo_host + 'xmlrpc/common',
                 methodName: 'login',
                 params: [odoo_api.odoo_db, user, password],
                 timeout: 10000,
-                context:odoo_api.context,
                 success: function(response, status, jqXHR) {
                     if (response[0]) {odoo_api
                         odoo_api.odoo_uid = response[0];

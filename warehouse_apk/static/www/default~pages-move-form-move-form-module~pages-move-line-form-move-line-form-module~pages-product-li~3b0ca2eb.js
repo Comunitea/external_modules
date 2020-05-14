@@ -9,7 +9,7 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-footer>\n  <form [formGroup]=\"ScanReader\" class =\"alignBottom\" *ngIf=\"scanner.active_scanner\">\n    <ion-item>\n      <ion-label item-start>Scan: </ion-label>\n      <ion-input #scan type=\"text\" formControlName=\"scan\" ></ion-input>\n    \n      <button ion-button icon-only item-end clear (click)=\"submitScan()\">\n        <ion-icon name=\"barcode\"></ion-icon>\n      </button>\n    </ion-item>   \n  </form>\n</ion-footer>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-footer>\n  <form [formGroup]=\"ScanReader\" class =\"alignBottom\" *ngIf=\"scanner.active_scanner\">\n    <ion-item>\n      <ion-label item-start>Scan: </ion-label>\n      <ion-input #scan type=\"text\" formControlName=\"scan\" ></ion-input>\n    \n      <button ion-button icon-only item-end clear (click)=\"submitScan()\">\n        <ion-icon name=\"barcode\"></ion-icon>\n      </button>\n      <button ion-button icon-only item-end clear (click)=\"resetScan()\">\n        <ion-icon name=\"flash-off-outline\"></ion-icon>\n      </button>\n    </ion-item>   \n  </form>\n</ion-footer>");
 
 /***/ }),
 
@@ -22,7 +22,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-buttons end>\n  <!-- Commented voice function -->\n  <button ion-button icon-only item-end (click)=\"change_volume()\">\n    <ion-icon *ngIf=\"audio.active_audio\" name=\"megaphone\"></ion-icon>\n    <ion-icon *ngIf=\"!audio.active_audio\" name=\"volume-off\"></ion-icon>\n  </button>\n  <button *ngIf=\"voice.available\" ion-button icon-only item-end (click)=\"change_escuchando()\">\n    <ion-icon *ngIf=\"voice.active_voice\" name=\"mic\"></ion-icon>\n    <ion-icon *ngIf=\"!voice.active_voice\" name=\"mic-off\"></ion-icon>\n  </button>\n\n  <button *ngIf=\"!voice.available\" disabled=\"disabled\" class=\"disabled\" ion-button icon-only item-end>\n    <ion-icon name=\"mic\"></ion-icon>\n  </button>\n    \n  <button *ngIf=\"!disabled_reader\" ion-button icon-only item-end (click)=\"change_hide_scan_form()\">\n    <ion-icon name=\"barcode\"></ion-icon>\n  </button>\n  <button *ngIf=\"disabled_reader\" disabled=\"disabled\" class=\"disabled\" ion-button icon-only item-end>\n    <ion-icon name=\"barcode\"></ion-icon>\n  </button>\n</ion-buttons>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-buttons end>\n  <!--ion-back-button class=\"cmnt-front\" [name]=\"arrow-undo-circle-outline\" ></ion-back-button-->\n  <!-- Commented voice function -->\n  <button icon-only item-end class=\"cmnt-button\" (click)=\"change_volume()\">\n    <ion-icon *ngIf=\"audio.active_audio\"  class=\"cmnt-front\" name=\"megaphone\"></ion-icon>\n    <ion-icon *ngIf=\"!audio.active_audio\"  class=\"cmnt-front\" name=\"volume-off\"></ion-icon>\n  </button>\n  <button *ngIf=\"voice.available\" class=\"cmnt-button\" icon-only item-end (click)=\"change_escuchando()\">\n    <ion-icon *ngIf=\"voice.active_voice\" class=\"cmnt-front\" name=\"mic\"></ion-icon>\n    <ion-icon *ngIf=\"!voice.active_voice\" class=\"cmnt-front\" name=\"mic-off\"></ion-icon>\n  </button>\n\n  <!--button *ngIf=\"!voice.available\" class=\"disabled cmnt-back\" ion-button icon-only item-end>\n    <ion-icon name=\"mic\" class=\"cmnt-front\"></ion-icon>\n  </button-->\n    \n  <button *ngIf=\"!disabled_reader\" class=\"cmnt-button\" ion-button icon-only item-end (click)=\"change_hide_scan_form()\">\n    <ion-icon name=\"barcode\" class=\"cmnt-front\"></ion-icon>\n  </button>\n  <button *ngIf=\"disabled_reader\" disabled=\"disabled\" class=\"disabled cmnt-button\" ion-button icon-only item-end>\n    <ion-icon name=\"barcode\" class=\"cmnt-front\"></ion-icon>\n  </button>\n</ion-buttons>");
 
 /***/ }),
 
@@ -74,14 +74,11 @@ var ScannerFooterComponent = /** @class */ (function () {
             scan: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]()
         });
     }
-    ScannerFooterComponent.prototype.handleKeyboardEvent = function (event) {
-        var _this = this;
-        this.scanner.key_press(event);
-        this.scanner.timeout.then(function (val) {
-            _this.scan_read(val);
-        });
-    };
     ScannerFooterComponent.prototype.ngOnInit = function () { };
+    ScannerFooterComponent.prototype.resetScan = function () {
+        this.ScanReader.value['scan'] = '';
+        this.ScanReader.controls.scan.setValue('');
+    };
     ScannerFooterComponent.prototype.scan_read = function (val) {
         this.audio.play('barcode_ok');
         this.scanner_reading = val;
@@ -90,8 +87,9 @@ var ScannerFooterComponent = /** @class */ (function () {
     ScannerFooterComponent.prototype.submitScan = function () {
         if (this.ScanReader) {
             this.audio.play('barcode_ok');
-            this.scanner_reading = this.ScanReader.value['scan'];
-            this.scanner_reading_changed.emit(this.scanner_reading);
+            var scanner_reading = this.ScanReader.value['scan'];
+            this.ScanReader.value['scan'] = '';
+            this.scanner_reading_changed.emit(scanner_reading);
         }
     };
     ScannerFooterComponent.ctorParameters = function () { return [
@@ -99,12 +97,6 @@ var ScannerFooterComponent = /** @class */ (function () {
         { type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"] },
         { type: _services_audio_service__WEBPACK_IMPORTED_MODULE_4__["AudioService"] }
     ]; };
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"])('document:keydown', ['$event']),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [KeyboardEvent]),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
-    ], ScannerFooterComponent.prototype, "handleKeyboardEvent", null);
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
         Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", String)
@@ -220,8 +212,8 @@ var ScannerHeaderComponent = /** @class */ (function () {
         });
     };
     ScannerHeaderComponent.prototype.change_volume = function () {
-        this.audio.active_audio = !this.audio.active_audio;
-        this.scanner_options['sound'] = this.audio.active_audio;
+        this.audio.ActiveAudio = !this.audio.ActiveAudio;
+        this.scanner_options['sound'] = this.audio.ActiveAudio;
         this.save_scanner_options();
     };
     ScannerHeaderComponent.prototype.change_escuchando = function () {
@@ -248,7 +240,7 @@ var ScannerHeaderComponent = /** @class */ (function () {
         });
     };
     ScannerHeaderComponent.prototype.update_show_vals = function () {
-        this.audio.active_audio = this.scanner_options['sound'];
+        this.audio.ActiveAudio = this.scanner_options['sound'];
         this.voice.active_voice = this.scanner_options['microphone'];
         this.scanner.active_scanner = this.scanner_options['reader'];
     };
@@ -335,9 +327,9 @@ var ScannerService = /** @class */ (function () {
         if (!this.state) { //ignore returns
         }
         else {
-            //este 250 es el tiempo en resetear sin pulsaciones
-            if (this.timeStamp + 400 < new Date().getTime()) {
-                this.code = "";
+            //este 50 es el tiempo en resetear sin pulsaciones
+            if (this.timeStamp + 350 < new Date().getTime()) {
+                this.code = '';
                 this.is_order = false;
             }
             this.timeStamp = new Date().getTime();

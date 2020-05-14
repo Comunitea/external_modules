@@ -212,10 +212,6 @@ class InfoApk(models.AbstractModel):
         pprint.PrettyPrinter(indent=2).pprint(vals)
         return vals
 
-
-
-
-
 class StockMove(models.Model):
 
     _inherit = ['info.apk', 'stock.move']

@@ -22,7 +22,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-grid *ngIf=\"not_allowed_fields && move_lines\">\n  <ion-row>\n    <ion-col size=\"10\" *ngIf=\"not_allowed_fields.indexOf('product_id') == -1\">\n      <div style=\"font-size: small\"><strong>Producto</strong></div>\n    </ion-col>  \n\n    <ion-col size=\"2\" *ngIf=\"not_allowed_fields.indexOf('reserved_availability') == -1\">\n      <div style=\"font-size: small\"><strong>Qty</strong></div>\n    </ion-col>\n\n    <!--ion-col size=\"2\">\n      <div><strong>Reservada</strong></div>\n    </ion-col>\n    \n    <ion-col size=\"2\">\n      <div><strong>Hecha</strong></div>\n    </ion-col-->\n  </ion-row>\n\n  <ion-row class=\"product_link\" *ngFor=\"let line of move_lines_info\" [ngClass]=\"{'success': line.quantity_done == line.product_uom_qty}\">\n    <ion-col size=\"10\" *ngIf=\"not_allowed_fields.indexOf('product_id') == -1\">\n      <div (click)=\"open_link(line.id)\" style=\"font-size: small\">{{line.product_id[1]}}</div>\n    </ion-col>\n    \n    <!--ion-col size=\"2\">\n      <div *ngIf=\"(line.quantity_done != 0 || (line.state != 'confirmed' && line.state != 'partially_available' && line.state != 'assigned')); else link_product_uom_qty\">\n        <strong class=\"ion-hide-sm-up\">Pedida: </strong>{{line.product_uom_qty}}\n      </div>\n    </ion-col>\n\n    <ng-template #link_product_uom_qty>\n      <div (click)=\"force_set_qty_done(line.id, 'product_uom_qty', 'stock.move')\" >{{line.product_uom_qty}}</div>\n    </ng-template-->\n    \n    <ion-col size=\"2\" *ngIf=\"not_allowed_fields.indexOf('product_uom_qty') == -1 && not_allowed_fields.indexOf('quantity_done') == -1\">\n      <div *ngIf=\"(line.quantity_done != 0 || line.reserved_availability == 0 || code == 'incoming' || (line.state == 'done' || line.state == 'assigned')); else link_qty_done\" \n        style=\"font-size: small\">\n        {{line.quantity_done}} // {{line.product_uom_qty}}\n      </div>\n    </ion-col>\n\n    <ng-template #link_qty_done>\n      <div (click)=\"force_set_assigned_qty_done(line.id)\" \n        style=\"font-size: small\">\n        {{line.quantity_done}} // {{line.product_uom_qty}}\n      </div>\n    </ng-template>\n    \n    <!--ion-col size=\"2\">\n      <div>{{line.quantity_done}}</div>\n    </ion-col-->\n     \n  </ion-row>\n</ion-grid>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-grid *ngIf=\"moves\" style=\"padding: 0px\">\n  <ion-row>\n    <ion-col size=\"8\" >\n      <div style=\"font-size: small\"><strong></strong></div>\n    </ion-col>  \n    <ion-col size=\"2\" >\n      <div style=\"font-size: small\"><strong>Cant</strong></div>\n    </ion-col>\n    <ion-col size=\"2\" >\n      <div style=\"font-size: small\"><strong>Hecho</strong></div>\n    </ion-col>\n  </ion-row>\n\n  <div *ngFor=\"let line of moves; index as i; let even = even; let odd =  odd\" [ngClass]=\"{'row-odd': odd, 'row-even': even}\">\n    <ion-row style=\"align-items: center\">\n      <ion-col size=9>\n        <ion-row  style=\"padding: 0px\">\n    <!-- [ngClass]=\"{'success': line.quantity_done == line.product_uom_qty}\">-->\n           <ion-col size=\"11\" (click)=\"open_link(line.id)\"> <ion-icon  size=\"normal\" name=\"{{TrackingIcon[line.tracking.value]}}\">\n            </ion-icon>\n            <span class=\"product-link\"\n            style=\"font-size: small; \"> {{line.product_id['name']}}</span>\n          </ion-col>  \n          <!--ion-col size=\"2\" *ngIf=\"line['reserved_availability'] != null\">\n          {{line.state.value}}\n            <span style=\"font-size: small\">R. {{line.reserved_availability}} de {{line.product_uom_qty}}</span>\n          </ion-col-->\n          <!--ion-col size=\"1\" *ngIf=\"line['quantity_done'] != null\">\n            <span style=\"font-size: small\">{{line.quantity_done}}</span>\n          </ion-col-->\n          <ion-col *ngIf=\"line['quantity_done'] != null\" class=\"state_icon\" style=\"text-align: right\">\n            <ion-icon  size=\"normal\" style=\"vertical-align: bottom\" class=\"{{'state_'+ line.state.value}} \" name=\"{{StateIcon[line.state['value']]}}\">\n          </ion-icon>\n          </ion-col>\n        </ion-row>\n        <!--div *ngIf=\"line['move_line_ids']\">\n          <div *ngFor=\"let sml of line['move_line_ids']\" >\n            <ion-row \n                (click)=\"force_set_qty_done(sml.id, 'product_uom_qty', 'stock.move')\">\n                \n                <ion-col size=\"8\" style=\"font-size: small; text-align: end\">\n                  <span *ngIf=\"sml.location_id != line.location_id\" class=\"product-link\"> {{sml.location_id.name || \" >\"}}</span> \n                  <span *ngIf=\"sml.location_dest_id != line.location_dest_id\" class=\"product-link\"> {{\"> \" || sml.location_dest_id.name}}</span> \n                  <span *ngIf=\"sml.qty_done || sml.product_uom_qty\"> {{sml.qty_done || sml.product_uom_qty}} </span>\n                </ion-col>\n                <ion-col size=\"2\">\n                  <ion-badge style=\"vertical-align: bottom; margin-left: 3px\" \n                  *ngIf=\"line.tracking.value != 'serial' && (sml.lot_id || sml.lot_name) \">\n                      {{sml.lot_id.name || sml.lot_name}}: {{sml.product_uom_qty}}\n                  </ion-badge>\n                </ion-col>\n            </ion-row>\n          </div>\n        </div--> \n      </ion-col>\n      <ion-col size=3 class=\"min80\" *ngIf=\"line.state.value == 'done'\">\n      <ion-button         \n                      size=\"small\"\n                      class=\"min80\"\n                      (click)=\"line.set_as_qty_done()\">\n                      <span> {{line.quantity_done}} </span>\n                      <ion-icon slot=\"end\" name=\"checkmark-done-circle-outline\"></ion-icon>\n                      <span style=\"padding-left: 8px\" slot=\"end\">{{line.product_uom_qty}}</span>\n                      </ion-button>\n      </ion-col>\n      <ion-col size=3 class=\"min80\" style=\"text-align: right\" *ngIf=\"line.state.value!='done'\">\n        <ion-button         \n                  *ngIf=\"line.quantity_done == 0 && ['assigned', 'partially_available'].indexOf(line.state.value) != -1\" \n                      size=\"small\"\n                      class=\"min80 {{'move_state_'+ line.field_status}} \"\n                      (click)=\"line.set_as_qty_done()\">\n                      <span> {{line.quantity_done}} </span>\n                      <ion-icon slot=\"end\" name=\"cart-outline\"></ion-icon>\n                      <span style=\"padding-left: 8px\" slot=\"end\">{{line.product_uom_qty}}</span>\n                      </ion-button>\n        <ion-button         \n                  *ngIf=\"line.quantity_done == 0 && ['confirmed'].indexOf(line.state.value) != -1\" \n                      size=\"small\"\n                      class=\"min80 {{'move_state_'+ line.field_status}}\"\n                      (click)=\"line.set_as_qty_done()\">\n                      <span> {{line.quantity_done}} </span>\n                      <ion-icon slot=\"end\" name=\"trash-bin-outline\"></ion-icon>\n                      <span style=\"padding-left: 8px\" slot=\"end\">{{line.product_uom_qty}}</span>\n                      </ion-button>\n        <ion-button         \n                  *ngIf=\"line.quantity_done != 0 && ['assigned', 'partially_available'].indexOf(line.state.value) != -1\" \n                      size=\"small\"\n                      class=\"min80 {{'move_state_'+ line.field_status}}\"\n                      (click)=\"line.set_as_qty_done()\">\n                      <span> {{line.quantity_done}} </span>\n                      <ion-icon slot=\"end\" name=\"checkmark-circle-outline\"></ion-icon>\n                      <span style=\"padding-left: 8px\" slot=\"end\">{{line.product_uom_qty}}</span>\n                      </ion-button>\n        <ion-button         \n                  *ngIf=\"['done'].indexOf(line.state.value) != -1\" \n                      size=\"small\"\n                      class=\"min80 {{'move_state_'+ line.field_status}}\">\n                      <span> {{line.quantity_done}} </span>\n                      <ion-icon slot=\"end\" name=\"checkmark-done-circle-outline\"></ion-icon>\n                      <span style=\"padding-left: 8px\" slot=\"end\">{{line.product_uom_qty}}</span>\n                      </ion-button>\n      </ion-col>\n    </ion-row>\n  </div>\n</ion-grid>");
 
 /***/ }),
 
@@ -35,7 +35,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n    <app-scanner-header slot=\"end\"></app-scanner-header>\n    <ion-title>Detalles de la operación</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-card *ngIf=\"picking_data && not_allowed_fields\">\n\n    <ion-card-header>\n      <ion-row>\n        <ion-col>\n          <ion-card-title *ngIf=\"not_allowed_fields.indexOf('display_name') == -1\">{{picking_data.display_name}}</ion-card-title>\n          <ion-card-subtitle *ngIf=\"not_allowed_fields.indexOf('picking_type_id') == -1\">{{picking_data.picking_type_id[1]}}</ion-card-subtitle>\n        </ion-col>\n        <ion-col>\n          <ion-button size=\"small\" class=\"button-text\" (click)=\"presentActionSheet()\">Opciones</ion-button>\n        </ion-col>\n      </ion-row>\n    </ion-card-header>\n\n    <ion-card-content>\n      <div *ngIf=\"not_allowed_fields.indexOf('scheduled_date') == -1\">{{picking_data.scheduled_date}}</div>\n      <div *ngIf=\"not_allowed_fields.indexOf('location_id') == -1\"><span class=\"location\" (click)=\"open_link(picking_data.location_id[0])\">{{picking_data.location_id[1]}}</span></div>\n      <div *ngIf=\"not_allowed_fields.indexOf('location_dest_id') == -1\"><span class=\"location\" (click)=\"open_link(picking_data.location_dest_id[0])\">{{picking_data.location_dest_id[1]}}</span></div>\n      <div *ngIf=\"not_allowed_fields.indexOf('priority') == -1\" [ngSwitch]=\"picking_data.priority\">\n        <ion-text *ngSwitchCase=\"0\">No Urgente</ion-text>\n        <ion-text *ngSwitchCase=\"1\">Normal</ion-text>\n        <ion-text *ngSwitchCase=\"2\">Urgente</ion-text>\n        <ion-text *ngSwitchCase=\"3\">Muy Urgente</ion-text>\n      </div>\n      <div *ngIf=\"picking_data.note && not_allowed_fields.indexOf('scheduled_date') == -1\">{{picking_data.note}}</div>\n    </ion-card-content>\n\n  </ion-card>\n\n  <div>\n\n    <ion-card *ngIf=\"move_lines && move_line_ids\">\n      <ion-card-header>\n        <ion-row>\n          <ion-col>\n            <ion-card-title *ngIf=\"!active_operation; else detailed_title\">Operaciones</ion-card-title>\n          </ion-col>\n          <!-- <ion-col class=\"ion-text-right\">\n            <ion-item>\n              <ion-label>Detalles:</ion-label>\n              <ion-toggle [(ngModel)]=\"active_operation\" color=\"primary\"></ion-toggle>\n            </ion-item>\n          </ion-col> -->\n        </ion-row>\n      </ion-card-header>\n\n      <ng-template #detailed_title>\n        <ion-card-title>Operaciones detalladas</ion-card-title>\n      </ng-template>\n\n      <ion-card-content *ngIf=\"move_lines || move_line_ids\">\n        <app-move-line-list *ngIf=\"!active_operation && move_lines; else detailed_grid\" [not_allowed_fields]=\"not_allowed_ml_fields\" [scanner_reading]=\"scanner_reading\" [code]=\"picking_code\" [move_lines]=\"move_lines\"></app-move-line-list>\n\n        <ion-grid *ngIf=\"!active_operation\">          \n          <ion-row>\n            <ion-col>\n              \n            </ion-col>\n            \n            <ion-col size=\"2\">\n                <strong>Total:</strong>\n            </ion-col>\n          \n            <ion-col size=\"4\">\n              <div>{{picking_data.quantity_done}} // {{picking_data.product_uom_qty}}</div>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n\n        <ng-template #detailed_grid>\n          <app-move-line-details-list *ngIf=\"move_line_ids\" [not_allowed_fields]=\"not_allowed_m_fields\" [code]=\"picking_code\" [scanner_reading]=\"scanner_reading\"  [move_line_ids]=\"move_line_ids\"></app-move-line-details-list>\n        </ng-template>\n\n      </ion-card-content>\n    </ion-card>\n\n  </div>\n</ion-content>\n\n<app-scanner-footer (scanner_reading_changed)=\"onReadingEmitted($event)\" [scanner_reading]=\"scanner_reading\"></app-scanner-footer>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar class=\"cmnt-front\">\n    <ion-buttons slot=\"start\">\n      <ion-menu-button  class=\"cmnt-front\"></ion-menu-button>\n    </ion-buttons>\n    <app-scanner-header class=\"cmnt-back\" slot=\"end\">\n    </app-scanner-header>\n    <ion-title class=\"cmnt-button\" \n      style=\"padding-inline-end: 0px; padding-inline-start: 0px;\">{{data && data['picking_type_id']['name']}}</ion-title>\n    \n  </ion-toolbar>\n</ion-header>\n\n<ion-content *ngIf=\"data\">\n  <ion-card >\n    <ion-card-header>\n      <ion-row>\n         <ion-col class=\"product-link\" (click)=\"Navigate(0)\">Anterior\n        </ion-col>\n        \n        <!-- <ion-col *ngIf=\"data.ready_to_validate\" class=\"link\" (click)=\"button_validate(data.picking_id.id)\">Validar\n        </ion-col> -->\n        <ion-col class=\"ion-text-center\">\n          <span *ngIf=\"data && data.active_location_id\">{{data.active_location_id.name}}</span>\n        </ion-col>\n        <ion-col class=\"product-link ion-text-right\" (click)=\"Navigate(1)\">Siguiente\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col size=\"8\">\n          <ion-card-title >{{data.apk_name}}</ion-card-title>\n          <ion-card-subtitle class=\"ion-text-right {{'state_'+ data.state.value}}\" >\n              <ion-badge style=\"margin-right: 15px\" class=\"ion-text-left {{'back_state_'+ data.state.value}}\"># {{ data['move_line_count']}} </ion-badge>\n               <ion-badge class=\"ion-text-right {{'back_state_'+ data.state.value}}\">{{data.state.name}}</ion-badge>\n          </ion-card-subtitle>\n        </ion-col>\n        <!-- BOTONES ALBARAN -->\n        <ion-col size=\"4\" style=\"text-align-last: end\">\n          <ion-button class=\"em3\" (click)=\"presentActionSheet()\">\n          <ion-icon slot=\"icon-only\" name=\"apps-outline\"></ion-icon>\n          </ion-button>\n\n          <ion-button class=\"em3\" (click)=\"NavigatePickingList()\">\n          <ion-icon slot=\"icon-only\" name=\"arrow-undo-outline\"></ion-icon>\n          </ion-button>\n\n          <!--ion-button size=\"small\" (click)=\"ValidatePick()\">\n            <ion-icon slot=\"icon-only\" name=\"arrow-undo-outline\"></ion-icon>\n          </ion-button-->\n        </ion-col>\n      </ion-row>\n    </ion-card-header>\n    <ion-card-content>\n      <div>\n        <span *ngIf=\"data['scheduled_date']\"><strong>Fecha: </strong></span>\n        <span *ngIf=\"data['scheduled_date']\">{{data.scheduled_date}}</span>\n        <span *ngIf=\"data['priority']\" style=\"margin-left: 10px\"><strong>{{data.priority['name'] + \" \"}}</strong></span>\n        <span *ngIf=\"data.sale_id\" style=\"margin-left: 10px\" class=\"product-link\" (click) = \"OpenModal('sale.order', data.sale_id.id)\"><strong>{{data.sale_id.name}}</strong></span>\n      </div>\n      <div>\n        De <span class=\"product-link\" *ngIf=\"data['location_id']\" color=\"primary\" (click)=\"open_link(data.location_id['id'])\">{{data.location_id['name']}} </span> para\n        <span class=\"product-link\" *ngIf=\"data['location_dest_id']\" color=\"primary\" (click)=\"open_link(data.location_dest_id['id'])\">{{data.location_dest_id['name']}} </span>\n        <!--span *ngIf=\"data['location_id']\" class=\"location\" (click)=\"open_link(data.location_id['id'])\"> De {{data.location_id['name']}}</span>\n        <span *ngIf=\"data['location_dest_id']\" class=\"location\" (click)=\"open_link(data.location_dest_id['id'])\">Para {{data.location_dest_id['name']}}</span-->\n      </div>\n      <div *ngIf=\"data['note']\">\n        {{data.note}}\n      </div>\n    </ion-card-content>\n\n  </ion-card>\n  <div>\n    <ion-card *ngIf=\"data['move_lines']\">\n      <ion-card-header>\n        <!--ion-row>\n          <ion-col>\n            <ion-card-title>Movimientos: <span>{{ data['move_line_count']}}</span> </ion-card-title>\n          </ion-col>\n        </ion-row-->\n      </ion-card-header>\n      <ion-card-content *ngIf=\"data['move_lines']\">\n        <app-move-line-list \n          [scanner_reading]=\"scanner_reading\" \n          [code]=\"picking_code\" \n          [move_lines]=\"data['move_lines']\">\n        </app-move-line-list>\n      </ion-card-content>\n    </ion-card>\n\n  </div>\n</ion-content>\n\n<app-scanner-footer (scanner_reading_changed)=\"onReadingEmitted($event)\" [scanner_reading]=\"scanner_reading\"></app-scanner-footer>");
 
 /***/ }),
 
@@ -238,23 +238,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm5/router.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/__ivy_ngcc__/fesm5/ionic-angular.js");
 /* harmony import */ var _services_stock_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/stock.service */ "./src/app/services/stock.service.ts");
+/* harmony import */ var _services_audio_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/audio.service */ "./src/app/services/audio.service.ts");
+
 
 
 
 
 
 var MoveLineListComponent = /** @class */ (function () {
-    function MoveLineListComponent(router, alertCtrl, 
+    function MoveLineListComponent(router, alertCtrl, audio, 
     /* private audio: AudioService, */
     route, stock) {
         this.router = router;
         this.alertCtrl = alertCtrl;
+        this.audio = audio;
         this.route = route;
         this.stock = stock;
     }
     MoveLineListComponent.prototype.ngOnInit = function () {
         if (this.move_lines) {
-            this.move_lines_info = this.move_lines;
+            this.StateIcon = this.stock.getStateIcon('stock.move');
+            this.TrackingIcon = this.stock.getTrackingIcon('stock.move');
+            this.moves = this.move_lines;
             this.picking = this.route.snapshot.paramMap.get('id');
         }
         else {
@@ -262,22 +267,23 @@ var MoveLineListComponent = /** @class */ (function () {
         }
     };
     MoveLineListComponent.prototype.open_link = function (move) {
+        this.audio.play('click');
         this.router.navigateByUrl('/move-form/' + move);
     };
     MoveLineListComponent.prototype.get_move_lines_list = function () {
         var _this = this;
-        this.stock.get_move_lines_list(Number(this.picking)).then(function (lines_data) {
-            _this.move_lines_info = lines_data;
-        })
+        this.stock.get_move_lines_list(Number(this.picking)).then((function (LinesData) {
+            _this.moves = LinesData;
+        }))
             .catch(function (error) {
             _this.presentAlert('Error al recuperar los movimientos:', error);
         });
     };
     MoveLineListComponent.prototype.force_set_qty_done = function (move_id) {
         var _this = this;
-        this.stock.force_set_qty_done(Number(move_id), 'stock.move').then(function (lines_data) {
-            console.log(lines_data);
-            if (lines_data == true) {
+        this.stock.force_set_qty_done(Number(move_id), 'stock.move').then(function (LinesData) {
+            console.log(LinesData);
+            if (LinesData == true) {
                 _this.get_move_lines_list();
             }
         })
@@ -287,9 +293,9 @@ var MoveLineListComponent = /** @class */ (function () {
     };
     MoveLineListComponent.prototype.force_set_assigned_qty_done = function (move_id) {
         var _this = this;
-        this.stock.force_set_assigned_qty_done(Number(move_id), 'stock.move').then(function (lines_data) {
-            console.log(lines_data);
-            if (lines_data == true) {
+        this.stock.force_set_assigned_qty_done(Number(move_id), 'stock.move').then(function (LinesData) {
+            console.log(LinesData);
+            if (LinesData === true) {
                 _this.get_move_lines_list();
             }
         })
@@ -302,11 +308,13 @@ var MoveLineListComponent = /** @class */ (function () {
             var alert;
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.alertCtrl.create({
-                            header: titulo,
-                            subHeader: texto,
-                            buttons: ['Ok']
-                        })];
+                    case 0:
+                        this.audio.play('error');
+                        return [4 /*yield*/, this.alertCtrl.create({
+                                header: titulo,
+                                subHeader: texto,
+                                buttons: ['Ok']
+                            })];
                     case 1:
                         alert = _a.sent();
                         return [4 /*yield*/, alert.present()];
@@ -320,6 +328,7 @@ var MoveLineListComponent = /** @class */ (function () {
     MoveLineListComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["AlertController"] },
+        { type: _services_audio_service__WEBPACK_IMPORTED_MODULE_5__["AudioService"] },
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"] },
         { type: _services_stock_service__WEBPACK_IMPORTED_MODULE_4__["StockService"] }
     ]; };
@@ -351,6 +360,7 @@ var MoveLineListComponent = /** @class */ (function () {
         }),
         Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["AlertController"],
+            _services_audio_service__WEBPACK_IMPORTED_MODULE_5__["AudioService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
             _services_stock_service__WEBPACK_IMPORTED_MODULE_4__["StockService"]])
     ], MoveLineListComponent);
@@ -452,6 +462,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_audio_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/audio.service */ "./src/app/services/audio.service.ts");
 /* harmony import */ var _services_voice_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../services/voice.service */ "./src/app/services/voice.service.ts");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm5/common.js");
+/* harmony import */ var _services_scanner_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../services/scanner.service */ "./src/app/services/scanner.service.ts");
 
 
 
@@ -464,7 +475,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var StockPickingPage = /** @class */ (function () {
-    function StockPickingPage(odoo, router, alertCtrl, audio, voice, stock, route, location, loadingController, actionSheetController) {
+    function StockPickingPage(modalController, scanner, odoo, router, alertCtrl, audio, voice, stock, route, location, loadingController, actionSheetController) {
+        this.modalController = modalController;
+        this.scanner = scanner;
         this.odoo = odoo;
         this.router = router;
         this.alertCtrl = alertCtrl;
@@ -477,30 +490,89 @@ var StockPickingPage = /** @class */ (function () {
         this.actionSheetController = actionSheetController;
         this.moves = ['up', 'down', 'left', 'right'];
     }
+    StockPickingPage.prototype.handleKeyboardEvent = function (event) {
+        var _this = this;
+        if (this.stock.GetModelInfo('App', 'ActivePage') === 'StockPickingPage') {
+            this.scanner.key_press(event);
+            this.scanner.timeout.then(function (val) {
+                _this.onReadingEmitted(val);
+            });
+        }
+    };
+    StockPickingPage.prototype.OpenModal = function (ModelO, Id) {
+        this.router.navigateByUrl('/info-sale-order/' + Id);
+        // return this.presentModal({Model: ModelO, Id: IdO});
+    };
+    StockPickingPage.prototype.Navigate = function (inc) {
+        this.router.navigateByUrl('/stock-picking/' + this.NextPrev[inc]);
+    };
+    StockPickingPage.prototype.ionViewDidLeave = function () {
+    };
+    StockPickingPage.prototype.ionViewDidEnter = function () {
+        var _this = this;
+        this.stock.SetModelInfo('App', 'ActivePage', 'StockPickingPage');
+        this.ActiveOperation = false;
+        this.picking = this.route.snapshot.paramMap.get('id');
+        this.GetPickingInfo(this.picking);
+        this.voice.voice_command_refresh$.subscribe(function (VoiceData) {
+            console.log(VoiceData);
+            _this.voice_command_check();
+        });
+        this.audio.play('click');
+    };
     StockPickingPage.prototype.ngOnInit = function () {
         var _this = this;
         this.odoo.isLoggedIn().then(function (data) {
-            if (data == false) {
+            if (data === false) {
                 _this.router.navigateByUrl('/login');
             }
-            _this.active_operation = false;
-            _this.picking = _this.route.snapshot.paramMap.get('id');
-            _this.get_picking_info(_this.picking);
-            _this.voice.voice_command_refresh$.subscribe(function (data) {
-                _this.voice_command_check();
-            });
-            _this.audio.play('click');
         })
             .catch(function (error) {
             _this.presentAlert('Error al comprobar tu sesión:', error);
         });
+    };
+    StockPickingPage.prototype.go_back = function () {
+        this.audio.play('click');
+        this.location.back();
+    };
+    StockPickingPage.prototype.do_local_search = function (val) {
+        return false;
+    };
+    StockPickingPage.prototype.check_Scanner = function (val) {
+        var _this = this;
+        // compruebo si hay un lote y ven algún movimiento
+        if (this.data) {
+            if (this.do_local_search(val)) {
+                return;
+            }
+            // Busco los moviemintos que pertenecemn a esta albrán
+            //
+            var model_1 = 'stock.move';
+            // tslint:disable-next-line:prefer-const
+            var ids = [];
+            for (var _i = 0, _a = this.data['move_lines']; _i < _a.length; _i++) {
+                var move = _a[_i];
+                ids.push(move['id']);
+            }
+            var domain = [];
+            this.stock.get_obj_by_scanreader(model_1, val, ids, domain).then(function (MoveToNavigate) {
+                if (MoveToNavigate !== false) {
+                    // Comprobar casod e que devuelva varios ids
+                    _this.router.navigateByUrl('/move-form/' + MoveToNavigate[0]);
+                }
+            })
+                .catch(function (error) {
+                _this.presentAlert('error al buscar en ' + val + 'en ' + model_1, error);
+            });
+        }
     };
     StockPickingPage.prototype.onReadingEmitted = function (val) {
         if (this.moves.includes(val)) {
             this.page_controller(val);
         }
         else {
-            this.scanner_reading = val;
+            this.ScannerReading = val;
+            return this.check_Scanner(val);
         }
     };
     StockPickingPage.prototype.presentAlert = function (titulo, texto) {
@@ -525,30 +597,32 @@ var StockPickingPage = /** @class */ (function () {
             });
         });
     };
-    // Navigation 
+    // Navigation
     StockPickingPage.prototype.page_controller = function (direction) {
-        if (direction == 'up') {
-            console.log("up");
+        if (direction === 'up') {
+            console.log('up');
         }
-        else if (direction == 'down') {
-            console.log("down");
+        else if (direction === 'down') {
+            console.log('down');
         }
-        else if (direction == 'left') {
-            console.log("left");
+        else if (direction === 'left') {
+            console.log('left');
         }
-        else if (direction == 'right') {
-            console.log("right");
+        else if (direction === 'right') {
+            console.log('right');
         }
     };
-    StockPickingPage.prototype.open_link = function (location_id) {
-        this.router.navigateByUrl('/stock-location/' + location_id);
+    StockPickingPage.prototype.open_link = function (LocationId) {
+        this.audio.play('click');
+        this.router.navigateByUrl('/stock-location/' + LocationId);
     };
     StockPickingPage.prototype.action_assign = function () {
         var _this = this;
-        this.stock.action_assign(this.picking).then(function (lines_data) {
-            if (lines_data == true) {
-                console.log("Reloading");
-                _this.get_picking_info(_this.picking);
+        // Las funciones debería devolver ya la  recarga para ahorrar una llamada
+        this.stock.action_assign(this.picking).then(function (data) {
+            if (data === true) {
+                console.log('Reloading');
+                _this.GetPickingInfo(_this.picking);
             }
         })
             .catch(function (error) {
@@ -558,15 +632,15 @@ var StockPickingPage = /** @class */ (function () {
     StockPickingPage.prototype.button_validate = function () {
         var _this = this;
         this.presentLoading();
-        this.stock.button_validate(Number(this.picking)).then(function (lines_data) {
-            if (lines_data && lines_data['err'] == false) {
-                console.log("Reloading");
+        this.stock.button_validate(Number(this.picking)).then(function (data) {
+            if (data && data['err'] === false) {
+                console.log('Reloading');
                 _this.loading.dismiss();
                 _this.location.back();
             }
-            else if (lines_data['err'] != false) {
+            else if (data['err'] !== false) {
                 _this.loading.dismiss();
-                _this.presentAlert('Error al validar el albarán:', lines_data['err']);
+                _this.presentAlert('Error al validar el albarán:', data['err']);
             }
         })
             .catch(function (error) {
@@ -574,18 +648,16 @@ var StockPickingPage = /** @class */ (function () {
             _this.presentAlert('Error al validar el albarán:', error);
         });
     };
-    StockPickingPage.prototype.force_set_qty_done = function (move_id, field, model) {
+    StockPickingPage.prototype.force_set_qty_done = function (MoveId, field, model) {
         if (model === void 0) { model = 'stock.picking'; }
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
             var _this = this;
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.stock.force_set_qty_done(Number(move_id), field, model).then(function (lines_data) {
-                            if (lines_data == true) {
-                                console.log("Reloading");
-                                _this.move_lines = false;
-                                _this.move_line_ids = false;
-                                _this.get_picking_info(_this.picking);
+                    case 0: return [4 /*yield*/, this.stock.force_set_qty_done(Number(MoveId), field, model).then(function (data) {
+                            if (data === true) {
+                                console.log('Reloading');
+                                _this.GetPickingInfo(_this.picking);
                             }
                         })
                             .catch(function (error) {
@@ -598,18 +670,16 @@ var StockPickingPage = /** @class */ (function () {
             });
         });
     };
-    StockPickingPage.prototype.force_reset_qties = function (pick_id) {
+    StockPickingPage.prototype.force_reset_qties = function (PickId) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
             var _this = this;
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.stock.force_reset_qties(Number(pick_id), 'stock.picking').then(function (lines_data) {
-                            console.log(lines_data);
-                            if (lines_data == true) {
-                                console.log("Reloading");
-                                _this.move_lines = false;
-                                _this.move_line_ids = false;
-                                _this.get_picking_info(_this.picking);
+                    case 0: return [4 /*yield*/, this.stock.force_reset_qties(Number(PickId), 'stock.picking').then(function (data) {
+                            console.log(data);
+                            if (data === true) {
+                                console.log('Reloading');
+                                _this.GetPickingInfo(_this.picking);
                             }
                         })
                             .catch(function (error) {
@@ -644,53 +714,69 @@ var StockPickingPage = /** @class */ (function () {
             });
         });
     };
-    StockPickingPage.prototype.get_picking_info = function (picking) {
+    StockPickingPage.prototype.NavigatePickingList = function () {
+        this.audio.play('click');
+        var ActiveIds = this.stock.GetModelInfo('stock.picking', 'ActiveIds');
+        this.router.navigateByUrl('/stock-picking-list');
+    };
+    StockPickingPage.prototype.ApplyPickData = function (data) {
+        this.data = data;
+        this.NextPrev = this.stock.GetNextPrev('stock.picking', data['id']);
+    };
+    StockPickingPage.prototype.GetPickingInfo = function (PickId, index) {
         var _this = this;
-        this.stock.get_picking_info(picking).then(function (data) {
-            _this.picking_data = data[0];
-            _this.picking_code = data[0].group_code[0];
-            if (_this.picking_data && _this.picking_data['picking_fields']) {
-                _this.not_allowed_fields = _this.picking_data['picking_fields'].split(',');
-                console.log(_this.not_allowed_fields);
-            }
-            if (_this.picking_data && _this.picking_data['move_fields']) {
-                _this.not_allowed_m_fields = _this.picking_data['move_fields'].split(',');
-                console.log(_this.not_allowed_m_fields);
-            }
-            if (_this.picking_data && _this.picking_data['move_line_fields']) {
-                _this.not_allowed_ml_fields = _this.picking_data['move_line_fields'].split(',');
-                console.log(_this.not_allowed_ml_fields);
-            }
-            _this.move_lines = _this.picking_data['move_lines'];
-            _this.move_line_ids = _this.picking_data['move_line_ids'];
+        if (index === void 0) { index = 0; }
+        this.stock.GetPickingInfo(PickId, index).then(function (data) {
+            _this.ApplyPickData(data);
         })
             .catch(function (error) {
-            _this.presentAlert('Error al recuperar el picking:', error);
+            _this.presentAlert('Error al recuperar el movimiento:', error);
         });
     };
+    StockPickingPage.prototype.get_picking_info = function (PickId) {
+        return this.GetPickingInfo(PickId);
+    };
+    /* this.stock.GetPicking([], picking, 'form').then((data) => {
+      if (data){
+        this.data = data[0];
+        this.stock.get_move_lines_list(this.data['id']).then((moves) => {
+            this.move_lines = moves;
+            })
+          .catch((error) => {
+            this.presentAlert('Error al recuperar el picking:', error);
+          })
+        }
+    })
+    .catch((error)=>{
+      this.presentAlert('Error al recuperar el picking:', error);
+      }); */
     // Voice command
     StockPickingPage.prototype.voice_command_check = function () {
-        console.log("voice_command_check");
+        console.log('voice_command_check');
         console.log(this.voice.voice_command);
         if (this.voice.voice_command) {
-            var voice_command_register = this.voice.voice_command;
-            console.log("Recibida orden de voz: " + voice_command_register);
-            if (this.check_if_value_in_responses("validar", voice_command_register) && this.picking_data['show_validate']) {
-                console.log("entra al validate");
+            var VoiceCommandRegister = this.voice.voice_command;
+            console.log('Recibida orden de voz: ' + VoiceCommandRegister);
+            if (this.check_if_value_in_responses('validar', VoiceCommandRegister) && this.data['show_validate']) {
+                console.log('entra al validate');
                 this.button_validate();
             }
-            else if (this.picking_data && (this.picking_data['state'] == 'confirmed' || this.picking_data['state'] == 'assigned') && this.check_if_value_in_responses("hecho", voice_command_register)) {
-                console.log("entra al hecho");
-                this.force_set_qty_done(this.picking_data['id'], 'product_qty', 'stock.picking');
+            else if (this.data &&
+                (['confirmed', 'assigned'].indexOf(this.data['state'].value) >= -1 &&
+                    this.check_if_value_in_responses('hecho', VoiceCommandRegister))) {
+                console.log('entra al hecho');
+                this.force_set_qty_done(this.data['id'], 'product_qty', 'stock.picking');
             }
-            else if (this.picking_data && (this.picking_data['state'] == 'confirmed' || this.picking_data['state'] == 'assigned') && this.check_if_value_in_responses("reiniciar", voice_command_register)) {
-                console.log("entra al reset");
-                this.force_reset_qties(this.picking_data['id']);
+            else if (this.data &&
+                (['confirmed', 'assigned'].indexOf(this.data['state'].value) >= -1 &&
+                    this.check_if_value_in_responses('reiniciar', VoiceCommandRegister))) {
+                console.log('entra al reset');
+                this.force_reset_qties(this.data['id']);
             }
         }
     };
     StockPickingPage.prototype.check_if_value_in_responses = function (value, dict) {
-        if (value == dict[0] || value == dict[1] || value == dict[2]) {
+        if (value === dict[0] || value === dict[1] || value === dict[2]) {
             return true;
         }
         else {
@@ -699,46 +785,61 @@ var StockPickingPage = /** @class */ (function () {
     };
     StockPickingPage.prototype.create_buttons = function () {
         var _this = this;
+        // tslint:disable-next-line:prefer-const
         var buttons = [{
-                text: 'Cancel',
+                text: '',
                 icon: 'close',
                 role: 'cancel',
                 handler: function () {
                     console.log('Cancel clicked');
                 }
             }];
-        if (this.picking_data['show_validate']) {
-            var button = {
-                text: 'Validar',
-                icon: '',
-                role: '',
-                handler: function () {
-                    _this.button_validate();
-                }
-            };
-            buttons.push(button);
-        }
-        if (this.picking_data && (this.picking_data['state'] == 'confirmed' || this.picking_data['state'] == 'assigned')) {
-            var button = {
-                text: 'Reservas a hecho',
-                icon: '',
-                role: '',
-                handler: function () {
-                    _this.force_set_qty_done(_this.picking_data['id'], 'product_qty', 'stock.picking');
-                }
-            };
+        if (this.data && true) {
+            if (this.data['field_status'] || this.data['state'].value === 'assigned') {
+                var button = {
+                    text: 'Validar',
+                    icon: '',
+                    role: '',
+                    handler: function () {
+                        _this.button_validate();
+                    }
+                };
+                buttons.push(button);
+            }
+            if (['assigned', 'confirmed'].indexOf(this.data['state'].value) > -1) {
+                var button = {
+                    text: 'Comprobar disponibilidad',
+                    icon: '',
+                    role: '',
+                    handler: function () {
+                        _this.action_assign();
+                    }
+                };
+                buttons.push(button);
+            }
+            if (['assigned', 'confirmed'].indexOf(this.data['state'].value) > -1) {
+                var button = {
+                    text: 'Anular reserva',
+                    icon: '',
+                    role: '',
+                    handler: function () {
+                        _this.action_assign();
+                    }
+                };
+                buttons.push(button);
+            }
             var buttonReset = {
                 text: 'Reset',
                 icon: '',
                 role: '',
                 handler: function () {
-                    _this.force_reset_qties(_this.picking_data['id']);
+                    _this.force_reset_qties(_this.data['id']);
                 }
             };
-            buttons.push(button);
-            buttons.push(buttonReset);
+            // buttons.push(button);
+            // buttons.push(buttonReset);
         }
-        /* if (this.picking_data['show_check_availability']) {
+        /* if (this.data['show_check_availability']) {
           actionSheet.buttons.push({
             text: 'Asignar',
               handler: () => {
@@ -753,10 +854,11 @@ var StockPickingPage = /** @class */ (function () {
             var actionSheet;
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.actionSheetController.create({
-                            header: 'Opciones',
-                            buttons: this.create_buttons()
-                        })];
+                    case 0:
+                        this.audio.play('click');
+                        return [4 /*yield*/, this.actionSheetController.create({
+                                buttons: this.create_buttons()
+                            })];
                     case 1:
                         actionSheet = _a.sent();
                         return [4 /*yield*/, actionSheet.present()];
@@ -768,6 +870,8 @@ var StockPickingPage = /** @class */ (function () {
         });
     };
     StockPickingPage.ctorParameters = function () { return [
+        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"] },
+        { type: _services_scanner_service__WEBPACK_IMPORTED_MODULE_9__["ScannerService"] },
         { type: _services_odoo_service__WEBPACK_IMPORTED_MODULE_1__["OdooService"] },
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] },
         { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"] },
@@ -782,7 +886,7 @@ var StockPickingPage = /** @class */ (function () {
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"])(),
         Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", String)
-    ], StockPickingPage.prototype, "scanner_reading", void 0);
+    ], StockPickingPage.prototype, "ScannerReading", void 0);
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"])(),
         Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Boolean)
@@ -791,13 +895,21 @@ var StockPickingPage = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"])(),
         Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Object)
     ], StockPickingPage.prototype, "pick", void 0);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["HostListener"])('document:keydown', ['$event']),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [KeyboardEvent]),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
+    ], StockPickingPage.prototype, "handleKeyboardEvent", null);
     StockPickingPage = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
             selector: 'app-stock-picking',
             template: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(/*! raw-loader!./stock-picking.page.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/pages/stock-picking/stock-picking.page.html")).default,
             styles: [Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(/*! ./stock-picking.page.scss */ "./src/app/pages/stock-picking/stock-picking.page.scss")).default]
         }),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_services_odoo_service__WEBPACK_IMPORTED_MODULE_1__["OdooService"],
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"],
+            _services_scanner_service__WEBPACK_IMPORTED_MODULE_9__["ScannerService"],
+            _services_odoo_service__WEBPACK_IMPORTED_MODULE_1__["OdooService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"],
             _services_audio_service__WEBPACK_IMPORTED_MODULE_6__["AudioService"],

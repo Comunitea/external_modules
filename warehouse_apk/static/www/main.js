@@ -724,42 +724,54 @@ var routes = [
     { path: 'logout',
         loadChildren: function () { return __webpack_require__.e(/*! import() | pages-logout-logout-module */ "pages-logout-logout-module").then(__webpack_require__.bind(null, /*! ./pages/logout/logout.module */ "./src/app/pages/logout/logout.module.ts")).then(function (m) { return m.LogoutPageModule; }); }
     },
-    { path: 'stock-picking/:id/:code',
-        loadChildren: function () { return Promise.all(/*! import() | pages-stock-picking-stock-picking-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-picking-stock-picking-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-picking/stock-picking.module */ "./src/app/pages/stock-picking/stock-picking.module.ts")).then(function (m) { return m.StockPickingPageModule; }); }
+    { path: 'stock-picking/:id',
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-picking-stock-picking-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-picking-stock-picking-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-picking/stock-picking.module */ "./src/app/pages/stock-picking/stock-picking.module.ts")).then(function (m) { return m.StockPickingPageModule; }); }
     },
-    { path: 'stock-picking-list/:id/:view/:code',
-        loadChildren: function () { return Promise.all(/*! import() | pages-stock-picking-list-stock-picking-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-picking-list-stock-picking-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-picking-list/stock-picking-list.module */ "./src/app/pages/stock-picking-list/stock-picking-list.module.ts")).then(function (m) { return m.StockPickingListPageModule; }); }
+    { path: 'stock-picking',
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-picking-stock-picking-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-picking-stock-picking-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-picking/stock-picking.module */ "./src/app/pages/stock-picking/stock-picking.module.ts")).then(function (m) { return m.StockPickingPageModule; }); }
+    },
+    { path: 'stock-picking/:id/:code',
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-picking-stock-picking-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-picking-stock-picking-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-picking/stock-picking.module */ "./src/app/pages/stock-picking/stock-picking.module.ts")).then(function (m) { return m.StockPickingPageModule; }); }
+    },
+    { path: 'stock-picking-list',
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-picking-list-stock-picking-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-picking-list-stock-picking-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-picking-list/stock-picking-list.module */ "./src/app/pages/stock-picking-list/stock-picking-list.module.ts")).then(function (m) { return m.StockPickingListPageModule; }); }
+    },
+    { path: 'stock-picking-list/:id/:filter',
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-picking-list-stock-picking-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-picking-list-stock-picking-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-picking-list/stock-picking-list.module */ "./src/app/pages/stock-picking-list/stock-picking-list.module.ts")).then(function (m) { return m.StockPickingListPageModule; }); }
     },
     { path: 'product/:id',
-        loadChildren: function () { return Promise.all(/*! import() | pages-product-product-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-product-product-module")]).then(__webpack_require__.bind(null, /*! ./pages/product/product.module */ "./src/app/pages/product/product.module.ts")).then(function (m) { return m.ProductPageModule; }); }
+        loadChildren: function () { return Promise.all(/*! import() | pages-product-product-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-product-product-module")]).then(__webpack_require__.bind(null, /*! ./pages/product/product.module */ "./src/app/pages/product/product.module.ts")).then(function (m) { return m.ProductPageModule; }); }
     },
     { path: 'product-list',
-        loadChildren: function () { return Promise.all(/*! import() | pages-product-list-product-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-product-list-product-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/product-list/product-list.module */ "./src/app/pages/product-list/product-list.module.ts")).then(function (m) { return m.ProductListPageModule; }); }
+        loadChildren: function () { return Promise.all(/*! import() | pages-product-list-product-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-product-list-product-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/product-list/product-list.module */ "./src/app/pages/product-list/product-list.module.ts")).then(function (m) { return m.ProductListPageModule; }); }
     },
     { path: 'stock-location-list',
-        loadChildren: function () { return Promise.all(/*! import() | pages-stock-location-list-stock-location-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-location-list-stock-location-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-location-list/stock-location-list.module */ "./src/app/pages/stock-location-list/stock-location-list.module.ts")).then(function (m) { return m.StockLocationListPageModule; }); }
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-location-list-stock-location-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-location-list-stock-location-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-location-list/stock-location-list.module */ "./src/app/pages/stock-location-list/stock-location-list.module.ts")).then(function (m) { return m.StockLocationListPageModule; }); }
     },
     { path: 'stock-location/:id',
-        loadChildren: function () { return Promise.all(/*! import() | pages-stock-location-stock-location-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-location-stock-location-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-location/stock-location.module */ "./src/app/pages/stock-location/stock-location.module.ts")).then(function (m) { return m.StockLocationPageModule; }); }
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-location-stock-location-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-location-stock-location-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-location/stock-location.module */ "./src/app/pages/stock-location/stock-location.module.ts")).then(function (m) { return m.StockLocationPageModule; }); }
     },
     { path: 'stock-quant-list/:id',
-        loadChildren: function () { return Promise.all(/*! import() | pages-stock-quant-list-stock-quant-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-quant-list-stock-quant-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-quant-list/stock-quant-list.module */ "./src/app/pages/stock-quant-list/stock-quant-list.module.ts")).then(function (m) { return m.StockQuantListPageModule; }); }
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-quant-list-stock-quant-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-quant-list-stock-quant-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-quant-list/stock-quant-list.module */ "./src/app/pages/stock-quant-list/stock-quant-list.module.ts")).then(function (m) { return m.StockQuantListPageModule; }); }
     },
     { path: 'stock-location-product-list/:id',
-        loadChildren: function () { return Promise.all(/*! import() | pages-stock-location-product-list-stock-location-product-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-location-product-list-stock-location-product-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-location-product-list/stock-location-product-list.module */ "./src/app/pages/stock-location-product-list/stock-location-product-list.module.ts")).then(function (m) { return m.StockLocationProductListPageModule; }); }
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-location-product-list-stock-location-product-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-location-product-list-stock-location-product-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-location-product-list/stock-location-product-list.module */ "./src/app/pages/stock-location-product-list/stock-location-product-list.module.ts")).then(function (m) { return m.StockLocationProductListPageModule; }); }
     },
     { path: 'stock-picking-type-list',
-        loadChildren: function () { return Promise.all(/*! import() | pages-stock-picking-type-list-stock-picking-type-list-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("pages-stock-picking-type-list-stock-picking-type-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-picking-type-list/stock-picking-type-list.module */ "./src/app/pages/stock-picking-type-list/stock-picking-type-list.module.ts")).then(function (m) { return m.StockPickingTypeListPageModule; }); }
+        loadChildren: function () { return __webpack_require__.e(/*! import() | pages-stock-picking-type-list-stock-picking-type-list-module */ "pages-stock-picking-type-list-stock-picking-type-list-module").then(__webpack_require__.bind(null, /*! ./pages/stock-picking-type-list/stock-picking-type-list.module */ "./src/app/pages/stock-picking-type-list/stock-picking-type-list.module.ts")).then(function (m) { return m.StockPickingTypeListPageModule; }); }
     },
     { path: 'stock-move-location',
-        loadChildren: function () { return Promise.all(/*! import() | pages-stock-move-location-stock-move-location-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-move-location-stock-move-location-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-move-location/stock-move-location.module */ "./src/app/pages/stock-move-location/stock-move-location.module.ts")).then(function (m) { return m.StockMoveLocationPageModule; }); }
+        loadChildren: function () { return Promise.all(/*! import() | pages-stock-move-location-stock-move-location-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-stock-move-location-stock-move-location-module")]).then(__webpack_require__.bind(null, /*! ./pages/stock-move-location/stock-move-location.module */ "./src/app/pages/stock-move-location/stock-move-location.module.ts")).then(function (m) { return m.StockMoveLocationPageModule; }); }
     },
     { path: 'move-line-form/:id',
-        loadChildren: function () { return Promise.all(/*! import() | pages-move-line-form-move-line-form-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-move-line-form-move-line-form-module")]).then(__webpack_require__.bind(null, /*! ./pages/move-line-form/move-line-form.module */ "./src/app/pages/move-line-form/move-line-form.module.ts")).then(function (m) { return m.MoveLineFormPageModule; }); }
+        loadChildren: function () { return Promise.all(/*! import() | pages-move-line-form-move-line-form-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-move-line-form-move-line-form-module")]).then(__webpack_require__.bind(null, /*! ./pages/move-line-form/move-line-form.module */ "./src/app/pages/move-line-form/move-line-form.module.ts")).then(function (m) { return m.MoveLineFormPageModule; }); }
     },
     { path: 'move-form/:id',
-        loadChildren: function () { return Promise.all(/*! import() | pages-move-form-move-form-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~23c37453"), __webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-move-form-move-form-module")]).then(__webpack_require__.bind(null, /*! ./pages/move-form/move-form.module */ "./src/app/pages/move-form/move-form.module.ts")).then(function (m) { return m.MoveFormPageModule; }); }
-    }
+        loadChildren: function () { return Promise.all(/*! import() | pages-move-form-move-form-module */[__webpack_require__.e("default~pages-move-form-move-form-module~pages-move-line-form-move-line-form-module~pages-product-li~3b0ca2eb"), __webpack_require__.e("pages-move-form-move-form-module")]).then(__webpack_require__.bind(null, /*! ./pages/move-form/move-form.module */ "./src/app/pages/move-form/move-form.module.ts")).then(function (m) { return m.MoveFormPageModule; }); }
+    },
+    { path: 'info-sale-order/:id',
+        loadChildren: function () { return __webpack_require__.e(/*! import() | pages-info-sale-order-info-sale-order-module */ "pages-info-sale-order-info-sale-order-module").then(__webpack_require__.bind(null, /*! ./pages/info-sale-order/info-sale-order.module */ "./src/app/pages/info-sale-order/info-sale-order.module.ts")).then(function (m) { return m.InfoSaleOrderPageModule; }); }
+    },
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -788,7 +800,7 @@ var AppRoutingModule = /** @class */ (function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("ion-menu-toggle > ion-item.active {\n  color: var(--ion-color-primary);\n  font-weight: bold;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2tpa28vaW9uaWM0L3dhcmVob3VzZV9tYW5hZ2VyX2Fwa18xMS9zcmMvYXBwL2FwcC5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvYXBwLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksK0JBQUE7RUFDQSxpQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvYXBwLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLW1lbnUtdG9nZ2xlID4gaW9uLWl0ZW0uYWN0aXZlIHtcbiAgICBjb2xvcjogdmFyKC0taW9uLWNvbG9yLXByaW1hcnkpO1xuICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xufSIsImlvbi1tZW51LXRvZ2dsZSA+IGlvbi1pdGVtLmFjdGl2ZSB7XG4gIGNvbG9yOiB2YXIoLS1pb24tY29sb3ItcHJpbWFyeSk7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xufSJdfQ== */");
+/* harmony default export */ __webpack_exports__["default"] = ("ion-menu-toggle > ion-item.active {\n  color: var(--ion-color-primary);\n  font-weight: bold;\n}\n\n.product-link {\n  color: var(--ion-color-primary);\n  font-weight: bold;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2tpa28vaW9uaWM0L3dhcmVob3VzZV9tYW5hZ2VyX2Fwa18xMS9zcmMvYXBwL2FwcC5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvYXBwLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksK0JBQUE7RUFDQSxpQkFBQTtBQ0NKOztBREVBO0VBQ0ksK0JBQUE7RUFDQSxpQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvYXBwLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLW1lbnUtdG9nZ2xlID4gaW9uLWl0ZW0uYWN0aXZlIHtcbiAgICBjb2xvcjogdmFyKC0taW9uLWNvbG9yLXByaW1hcnkpO1xuICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xufVxuXG4ucHJvZHVjdC1saW5rIHtcbiAgICBjb2xvcjogdmFyKC0taW9uLWNvbG9yLXByaW1hcnkpO1xuICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xufSIsImlvbi1tZW51LXRvZ2dsZSA+IGlvbi1pdGVtLmFjdGl2ZSB7XG4gIGNvbG9yOiB2YXIoLS1pb24tY29sb3ItcHJpbWFyeSk7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xufVxuXG4ucHJvZHVjdC1saW5rIHtcbiAgY29sb3I6IHZhcigtLWlvbi1jb2xvci1wcmltYXJ5KTtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG59Il19 */");
 
 /***/ }),
 
@@ -807,10 +819,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/__ivy_ngcc__/fesm5/ionic-angular.js");
 /* harmony import */ var _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic-native/splash-screen/ngx */ "./node_modules/@ionic-native/splash-screen/__ivy_ngcc__/ngx/index.js");
 /* harmony import */ var _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic-native/status-bar/ngx */ "./node_modules/@ionic-native/status-bar/__ivy_ngcc__/ngx/index.js");
-/* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/__ivy_ngcc__/fesm5/ionic-storage.js");
-/* harmony import */ var _services_odoo_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/odoo.service */ "./src/app/services/odoo.service.ts");
-/* harmony import */ var _services_audio_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/audio.service */ "./src/app/services/audio.service.ts");
-
+/* harmony import */ var _services_stock_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/stock.service */ "./src/app/services/stock.service.ts");
+/* harmony import */ var _services_audio_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/audio.service */ "./src/app/services/audio.service.ts");
 
 
 
@@ -819,13 +829,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var AppComponent = /** @class */ (function () {
-    function AppComponent(player, platform, splashScreen, statusBar, storage, OdooService) {
+    function AppComponent(player, platform, splashScreen, statusBar, stock) {
         this.player = player;
         this.platform = platform;
         this.splashScreen = splashScreen;
         this.statusBar = statusBar;
-        this.storage = storage;
-        this.OdooService = OdooService;
+        this.stock = stock;
         this.appPages = [
             {
                 title: 'Entrar',
@@ -871,14 +880,14 @@ var AppComponent = /** @class */ (function () {
             _this.statusBar.styleDefault();
             _this.splashScreen.hide();
         });
+        this.stock.InitVars();
     };
     AppComponent.ctorParameters = function () { return [
-        { type: _services_audio_service__WEBPACK_IMPORTED_MODULE_7__["AudioService"] },
+        { type: _services_audio_service__WEBPACK_IMPORTED_MODULE_6__["AudioService"] },
         { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"] },
         { type: _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__["SplashScreen"] },
         { type: _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__["StatusBar"] },
-        { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_5__["Storage"] },
-        { type: _services_odoo_service__WEBPACK_IMPORTED_MODULE_6__["OdooService"] }
+        { type: _services_stock_service__WEBPACK_IMPORTED_MODULE_5__["StockService"] }
     ]; };
     AppComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -886,12 +895,11 @@ var AppComponent = /** @class */ (function () {
             template: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(/*! raw-loader!./app.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/app.component.html")).default,
             styles: [Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(/*! ./app.component.scss */ "./src/app/app.component.scss")).default]
         }),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_services_audio_service__WEBPACK_IMPORTED_MODULE_7__["AudioService"],
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_services_audio_service__WEBPACK_IMPORTED_MODULE_6__["AudioService"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"],
             _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__["SplashScreen"],
             _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__["StatusBar"],
-            _ionic_storage__WEBPACK_IMPORTED_MODULE_5__["Storage"],
-            _services_odoo_service__WEBPACK_IMPORTED_MODULE_6__["OdooService"]])
+            _services_stock_service__WEBPACK_IMPORTED_MODULE_5__["StockService"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -920,10 +928,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/__ivy_ngcc__/fesm5/ionic-storage.js");
 /* harmony import */ var _ionic_native_native_audio_ngx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ionic-native/native-audio/ngx */ "./node_modules/@ionic-native/native-audio/__ivy_ngcc__/ngx/index.js");
 /* harmony import */ var _ionic_native_speech_recognition_ngx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ionic-native/speech-recognition/ngx */ "./node_modules/@ionic-native/speech-recognition/__ivy_ngcc__/ngx/index.js");
-/* harmony import */ var _ionic_native_text_to_speech_ngx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ionic-native/text-to-speech/ngx */ "./node_modules/@ionic-native/text-to-speech/__ivy_ngcc__/ngx/index.js");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
-
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
 
 
 
@@ -941,13 +947,13 @@ var AppModule = /** @class */ (function () {
     }
     AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-            declarations: [_app_component__WEBPACK_IMPORTED_MODULE_11__["AppComponent"]],
+            declarations: [_app_component__WEBPACK_IMPORTED_MODULE_10__["AppComponent"]],
             entryComponents: [],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"],
                 _ionic_storage__WEBPACK_IMPORTED_MODULE_7__["IonicStorageModule"].forRoot(),
                 _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonicModule"].forRoot(),
-                _app_routing_module__WEBPACK_IMPORTED_MODULE_12__["AppRoutingModule"],
+                _app_routing_module__WEBPACK_IMPORTED_MODULE_11__["AppRoutingModule"],
             ],
             providers: [
                 _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_6__["StatusBar"],
@@ -955,9 +961,8 @@ var AppModule = /** @class */ (function () {
                 { provide: _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouteReuseStrategy"], useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonicRouteStrategy"] },
                 _ionic_native_native_audio_ngx__WEBPACK_IMPORTED_MODULE_8__["NativeAudio"],
                 _ionic_native_speech_recognition_ngx__WEBPACK_IMPORTED_MODULE_9__["SpeechRecognition"],
-                _ionic_native_text_to_speech_ngx__WEBPACK_IMPORTED_MODULE_10__["TextToSpeech"]
             ],
-            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_11__["AppComponent"]]
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_10__["AppComponent"]]
         })
     ], AppModule);
     return AppModule;
@@ -1022,27 +1027,27 @@ var AudioService = /** @class */ (function () {
             });
         });
     };
-    AudioService.prototype.preload = function (key, asset) {
+    AudioService.prototype.preload = function (Key, Asset) {
         if (this.audioType === 'html5') {
             var audio = {
-                key: key,
-                asset: asset,
+                key: Key,
+                asset: Asset,
                 type: 'html5'
             };
             this.sounds.push(audio);
         }
         else {
-            this.nativeAudio.preloadSimple(key, asset);
+            this.nativeAudio.preloadSimple(Key, Asset);
             var audio = {
-                key: key,
-                asset: key,
+                key: Key,
+                asset: Key,
                 type: 'native'
             };
             this.sounds.push(audio);
         }
     };
     AudioService.prototype.play = function (key) {
-        if (this.active_audio == true) {
+        if (this.ActiveAudio === true) {
             var audio = this.sounds.find(function (sound) {
                 return sound.key === key;
             });
@@ -1272,6 +1277,1218 @@ var OdooService = /** @class */ (function () {
         Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_ionic_storage__WEBPACK_IMPORTED_MODULE_2__["Storage"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], OdooService);
     return OdooService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/stock.service.ts":
+/*!*******************************************!*\
+  !*** ./src/app/services/stock.service.ts ***!
+  \*******************************************/
+/*! exports provided: StockService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StockService", function() { return StockService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm5/core.js");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/__ivy_ngcc__/fesm5/ionic-angular.js");
+/* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/__ivy_ngcc__/fesm5/ionic-storage.js");
+/* harmony import */ var _odoo_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./odoo.service */ "./src/app/services/odoo.service.ts");
+
+
+
+
+
+var StockService = /** @class */ (function () {
+    function StockService(odooCon, alertCtrl, storage) {
+        this.odooCon = odooCon;
+        this.alertCtrl = alertCtrl;
+        this.storage = storage;
+        this.STOCK_FIELDS = {
+            'stock.picking': {
+                tree: ['id', 'name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'picking_fields'],
+                form: ['id', 'name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'group_code',
+                    'picking_type_id', 'priority', 'note', 'move_lines', 'move_line_ids', 'quantity_done', 'picking_fields',
+                    'reserved_availability', 'product_uom_qty', 'show_check_availability',
+                    'show_validate']
+            },
+            'stock.move': {
+                tree: ['id', 'product_id', 'product_uom_qty', 'reserved_availability', 'quantity_done', 'tracking'],
+                form: ['id', 'product_id', 'product_uom_qty', 'reserved_availability', 'quantity_done', 'state', 'tracking']
+            },
+            'stock.move.line': {
+                tree: ['id', 'product_id', 'product_uom_qty', 'qty_available', 'qty_done', 'location_id', 'location_dest_id', 'lot_id',
+                    'package_id', 'result_package_id', 'tracking'],
+                form: ['id', 'product_id', 'product_uom_qty', 'qty_available', 'qty_done', 'location_id', 'location_dest_id', 'lot_id',
+                    'package_id', 'result_package_id', 'state', 'picking_id', 'tracking']
+            },
+            'product.product': {
+                tree: ['id', 'name', 'default_code', 'list_price', 'qty_available', 'virtual_available'],
+                form: ['id', 'name', 'default_code', 'list_price', 'standard_price', 'qty_available', 'virtual_available', 'categ_id', 'tracking',
+                    'barcode', 'description_short', 'image_medium'],
+                'location-tree': ['id', 'name', 'default_code', 'list_price', 'last_purchase_price', 'qty_available', 'virtual_available', 'tracking',
+                    'barcode', 'uom_id']
+            },
+            'stock.location': {
+                tree: ['id', 'display_name', 'usage', 'company_id'],
+                form: ['id', 'display_name', 'usage', 'company_id', 'picking_type_id']
+            },
+            'stock.quant': {
+                tree: ['id', 'product_id', 'reserved_quantity', 'quantity'],
+                form: ['id', 'product_id', 'reserved_quantity', 'quantity', 'location_id']
+            },
+            'stock.picking.type': {
+                tree: ['id', 'name', 'color', 'warehouse_id', 'code'],
+                form: ['id', 'name', 'color', 'warehouse_id', 'code', 'count_picking_ready',
+                    'count_picking_waiting', 'count_picking_late', 'group_code',
+                    'count_picking_backorders', 'rate_picking_late', 'rate_picking_backorders']
+            }
+        };
+        this.BINARYPOSITION = { product_id: 0, location_id: 1, lot_id: 2, package_id: 3, location_dest_id: 4, result_package_id: 5, qty_done: 6 };
+        this.FLAG_PROP = { view: 1, req: 2, done: 4 };
+        this.Domains = {};
+        this.SetDomainsStates();
+    }
+    StockService.prototype.GetModelInfo = function (model, key) {
+        if ((Object.keys(this.ModelInfo).indexOf(model) !== -1) && (Object.keys(this.ModelInfo[model]).indexOf(key) !== -1)) {
+            return this.ModelInfo[model][key];
+        }
+        return false;
+    };
+    StockService.prototype.SetModelInfo = function (model, key, value) {
+        if (Object.keys(this.ModelInfo).indexOf(model) === -1) {
+            this.ModelInfo[model] = {};
+        }
+        if (Object.keys(this.ModelInfo[model]).indexOf(key) === -1) {
+            this.ModelInfo[model][key] = value;
+        }
+        else {
+            this.ModelInfo[model][key] = value;
+        }
+    };
+    StockService.prototype.Mapped = function (Object, Element) {
+        var push = true;
+        for (var _i = 0, Object_1 = Object; _i < Object_1.length; _i++) {
+            var Obj = Object_1[_i];
+            if (Element['value'] === Obj['value']) {
+                push = false;
+                break;
+            }
+        }
+        if (push) {
+            Object.push(Element);
+        }
+        return Object;
+    };
+    StockService.prototype.InitVars = function () {
+        this.ModelInfo = {};
+        for (var _i = 0, _a = ['stock.picking.type', 'stock.location', 'stock.move', 'stock.picking']; _i < _a.length; _i++) {
+            var model = _a[_i];
+            this.SetModelInfo(model, 'name', model);
+        }
+    };
+    StockService.prototype.read_status = function (StatusField, campo, propiedad) {
+        var field = parseInt(StatusField.charAt(this.BINARYPOSITION[campo]));
+        return (field & this.FLAG_PROP[propiedad]) === this.FLAG_PROP[propiedad];
+    };
+    StockService.prototype.write_status = function (status_field, campo, propiedad, value) {
+        if (value === void 0) { value = true; }
+        var ActVal = this.read_status(status_field, campo, propiedad);
+        var field = parseInt(status_field.charAt(this.BINARYPOSITION[campo]));
+        if (ActVal && !value) {
+            field -= this.FLAG_PROP[propiedad];
+            return status_field.slice(0, this.BINARYPOSITION[campo]) + field + status_field.slice(this.BINARYPOSITION[campo] + 1);
+        }
+        if (!ActVal && value) {
+            field += this.FLAG_PROP[propiedad];
+            return status_field.slice(0, this.BINARYPOSITION[campo]) + field + status_field.slice(this.BINARYPOSITION[campo] + 1);
+        }
+        return status_field;
+    };
+    // PickinDomain
+    StockService.prototype.GetDomains = function (key) {
+        return this.Domains[key];
+    };
+    StockService.prototype.SetDomains = function (key, data) {
+        this.Domains[key] = data;
+        console.log('Escribiendo el dominio: ' + key + ' -> ' + data + ' <-');
+    };
+    StockService.prototype.SetDomainsStates = function () {
+        var options = { day: 'numeric', month: 'numeric', year: 'numeric',
+            hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h24' };
+        this.Domains['state'] = ['state', 'in', ['assigned', 'partially_available', 'confirmed']];
+        this.Domains['state_ready'] = [['state', '=', 'assigned']];
+        this.Domains['state_waiting'] = [['state', 'in', ['waiting', 'confirmed']]];
+        this.Domains['state_late'] = [
+            ['state', 'in', ['assigned', 'waiting', 'confirmed']],
+            ['scheduled_date', '<', new Date().toLocaleString('es-ES', options)]
+        ];
+        this.Domains['state_backorders'] = [['state', 'in', ['waiting', 'confirmed', 'assigned']], ['backorder_id', '!=', false]];
+    };
+    StockService.prototype.get_obj_by_scanreader = function (model_to_search, search_str, search_in_data, domain) {
+        var _this = this;
+        var values = { model: model_to_search, search_str: search_str, ids: search_in_data, domain: domain };
+        var promise = new Promise(function (resolve, reject) {
+            _this.odooCon.execute('info.apk', 'find_apk_object', values).then(function (done) {
+                console.log(done);
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al realizar la consulta:' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.getStateIcon = function (model) {
+        if (model === 'stock.model') {
+            return {
+                confirmed: 'battery-dead-outline',
+                waiting: 'battery-charging-outline',
+                partially_available: 'battery-half-outline',
+                assigned: 'battery-full-outline'
+            };
+        }
+        return {
+            confirmed: 'battery-dead-outline',
+            waiting: 'battery-charging-outline',
+            partially_available: 'battery-half-outline',
+            assigned: 'battery-full-outline'
+        };
+    };
+    StockService.prototype.getTrackingIcon = function (model) {
+        var TrackingIcon = {
+            none: 'phone-portrait-outline',
+            serial: 'barcode-outline',
+            lot: 'pricetag-outline',
+        };
+        return TrackingIcon;
+    };
+    StockService.prototype.GetStates = function (Model, Field, Type) {
+        var _this = this;
+        if (Type === void 0) { Type = 'Selection'; }
+        var self = this;
+        var values = { model: Model, field: Field, type: Type };
+        self.odooCon.execute('info.apk', 'get_field_group', values).then(function (data) {
+            _this.SetModelInfo(Model, 'filter_' + Field, data);
+        })
+            .catch(function (err) {
+            console.log('Error al calcular los campos de un modelo: ' + err.msg.error_msg);
+        });
+    };
+    StockService.prototype.RemoveMoveLineId = function (MoveId, SmlIds) {
+        var self = this;
+        var values = { move_id: MoveId,
+            sml_ids: SmlIds };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('stock.move.line', 'remove_line_id', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al elliminar la linea ubicación a los movimientos pendientes: ' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.AssignLocationToMoves = function (MoveId, SmlIds, FieldId, ActiveLocationId, Barcode, Confirm) {
+        var self = this;
+        var values = { move_id: MoveId,
+            sml_ids: SmlIds,
+            field: FieldId,
+            active_location_id: ActiveLocationId,
+            barcode: Barcode,
+            confirm: Confirm,
+        };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('stock.move.line', 'assign_location_to_moves', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al asignar ubicación a los movimientos pendientes: ' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.AssignLocationId = function (MoveId, LocationId, LocationField) {
+        var self = this;
+        var values = { id: MoveId, location_field: LocationField, location_id: LocationId };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('stock.move', 'assign_location_id', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al quitar la reserva del movimiento: ' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.CleanLots = function (MoveId) {
+        var self = this;
+        var values = { id: MoveId, model: 'stock.move' };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('stock.move', 'clean_lots', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al quitar la reserva del movimiento: ' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.ActionAssign = function (MoveId) {
+        var self = this;
+        var values = { id: MoveId, model: 'stock.move' };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('stock.move', 'move_assign_apk', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al quitar la reserva del movimiento: ' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.MoveUnReserve = function (MoveId) {
+        var self = this;
+        var values = { id: MoveId, model: 'stock.move' };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('stock.move', 'move_unreserve_apk', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al quitar la reserva del movimiento: ' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.get_apk_object = function (values) {
+        var self = this;
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al realizar la consulta: ' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.GetPicking = function (domain, id, view, offset, limit, search) {
+        if (domain === void 0) { domain = []; }
+        if (id === void 0) { id = null; }
+        if (view === void 0) { view = 'tree'; }
+        if (offset === void 0) { offset = 0; }
+        if (limit === void 0) { limit = 0; }
+        if (search === void 0) { search = null; }
+        var values = {
+            domain: domain,
+            id: id,
+            model: 'stock.picking',
+            offset: offset,
+            limit: limit,
+            search: search
+        };
+        return this.get_apk_object(values);
+    };
+    // Pickings
+    StockService.prototype.get_picking_list_no_usar = function (view_domain, type_id, offset, limit, search) {
+        if (view_domain === void 0) { view_domain = null; }
+        if (type_id === void 0) { type_id = null; }
+        if (offset === void 0) { offset = 0; }
+        if (limit === void 0) { limit = 0; }
+        if (search === void 0) { search = null; }
+        var self = this;
+        var domain = [];
+        if (view_domain) {
+            view_domain.forEach(function (lit_domain) {
+                domain.push(lit_domain);
+            });
+        }
+        if (type_id) {
+            domain.push(['picking_type_id', '=', Number(type_id)]);
+        }
+        if (search) {
+            domain.push(['name', 'ilike', '%' + search + '%']);
+        }
+        var values = {
+            domain: domain,
+            model: 'stock.picking',
+            offset: offset,
+            limit: limit
+        };
+        return this.get_apk_object(values);
+    };
+    StockService.prototype.get_picking_info = function (picking_id, view, offset, limit, search) {
+        if (view === void 0) { view = 'tree'; }
+        if (offset === void 0) { offset = 0; }
+        if (limit === void 0) { limit = 0; }
+        if (search === void 0) { search = null; }
+        var values = {
+            fields_type: view,
+            domain: [['id', '=', picking_id]],
+            model: 'stock.picking',
+            offset: 0,
+            limit: 1
+        };
+        return this.get_apk_object(values);
+    };
+    StockService.prototype.GetPickingTypesMenu = function () {
+        var self = this;
+        var Domain = [['app_integrated', '=', true]];
+        var values = { domain: Domain, model: 'stock.picking.type' };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.GetPickingTypes = function (Code, Search, Offset, Limit) {
+        if (Code === void 0) { Code = null; }
+        if (Search === void 0) { Search = null; }
+        if (Offset === void 0) { Offset = 0; }
+        if (Limit === void 0) { Limit = 0; }
+        var self = this;
+        var Domain = [];
+        if (Search) {
+            Domain = ['|'];
+            Domain.push(['barcode', 'ilike', '%' + Search + '%']);
+            Domain.push(['name', 'ilike', '%' + Search + '%']);
+        }
+        else {
+            if (Code) {
+                if (Code == 'all') {
+                    Domain = [];
+                }
+                else {
+                    Domain = [['barcode', '=', Code]];
+                }
+            }
+        }
+        Domain.push(['app_integrated', '=', true]);
+        var values = { domain: Domain,
+            model: 'stock.picking.type',
+            view: 'tree',
+            limit: Limit,
+            offset: Offset };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.GetNextPrev = function (model, id) {
+        // Saca el prev y el next de una lista
+        var ActiveIds = [];
+        ActiveIds = this.GetModelInfo(model, 'ActiveIds');
+        if (ActiveIds) {
+            var max = ActiveIds.length;
+            if (max === 1) {
+                return [id, id];
+            }
+            var pos = ActiveIds.indexOf(id);
+            if (pos === 0) {
+                return [ActiveIds[max - 1], ActiveIds[pos + 1]];
+            }
+            if (pos === (max - 1)) {
+                return [ActiveIds[pos - 1], ActiveIds[0]];
+            }
+            return [ActiveIds[pos - 1], ActiveIds[pos + 1]];
+        }
+    };
+    StockService.prototype.GetPickingList = function (Search, Offset, Limit, State) {
+        var _this = this;
+        if (Search === void 0) { Search = null; }
+        if (Offset === void 0) { Offset = 0; }
+        if (Limit === void 0) { Limit = 0; }
+        if (State === void 0) { State = null; }
+        var self = this;
+        if (State && State['value'] === 'all') {
+            State = null;
+        }
+        var TypeId = this.GetModelInfo('stock.picking.type', 'PickingTypeId');
+        var DomainName = this.GetModelInfo('stock.picking.type', 'DomainName');
+        var ActiveIds = this.GetModelInfo('stock.picking', 'ActiveIds') || [];
+        var values = { picking_type_id: TypeId,
+            domain_name: DomainName,
+            active_ids: ActiveIds,
+            state: State,
+            search: Search,
+            limit: Limit,
+            offset: Offset };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('stock.picking', 'get_picking_list', values).then(function (done) {
+                var ActiveIds = [];
+                for (var _i = 0, done_1 = done; _i < done_1.length; _i++) {
+                    var pick = done_1[_i];
+                    ActiveIds.push(pick['id']);
+                }
+                _this.SetModelInfo('stock.picking', 'ActiveIds', ActiveIds);
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.action_assign = function (pick_id) {
+        var self = this;
+        var model;
+        var values = {
+            id: pick_id
+        };
+        model = 'stock.picking';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'action_assign_pick', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.button_validate = function (pick_id) {
+        var self = this;
+        var model;
+        var values = {
+            id: pick_id
+        };
+        model = 'stock.picking';
+        var promise = new Promise(function (resolve, reject) {
+            console.log('button validate pick');
+            console.log(pick_id);
+            self.odooCon.execute(model, 'button_validate_pick', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(err.msg.error_msg);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.GetPickingInfo = function (PickId, index) {
+        if (index === void 0) { index = 0; }
+        var self = this;
+        var values = { id: PickId, index: index, model: 'stock.picking', view: 'form' };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (data) {
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.GetMoveInfo = function (MoveId, index) {
+        if (index === void 0) { index = 0; }
+        var self = this;
+        var values = { id: MoveId, index: index, model: 'stock.move', view: 'form' };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (data) {
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.DoMoveValidate = function (PickId, SmId) {
+        var self = this;
+        var values = { id: PickId, move_id: SmId };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('stock.picking', 'action_done_apk', values).then(function (data) {
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.ChangeLineLocationId = function (MoveId, MoveLineId, FieldLocation, OldLocationId, NewLocationBarcode) {
+        var self = this;
+        var values = { move_id: MoveId,
+            sml_ids: MoveLineId,
+            field_location: FieldLocation,
+            old_loc_id: OldLocationId,
+            new_loc_id: NewLocationBarcode };
+        var model = 'stock.move.line';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'update_move_location', values).then(function (data) {
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.ChangeLineLotId = function (MoveId, MoveLineId, OldLotName, NewLotId) {
+        var self = this;
+        var values = { move_id: MoveId, sml_ids: MoveLineId, new_lot_id: NewLotId, old_lot_name: OldLotName };
+        var model = 'stock.move.line';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'change_line_lot_id', values).then(function (data) {
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.CreateMoveLots = function (MoveId, LotNames, ActiveLocationId) {
+        var self = this;
+        var values = { id: MoveId, lot_names: LotNames, active_location: ActiveLocationId };
+        var model = 'stock.move';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'create_move_lots', values).then(function (data) {
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.CreateNewSmlId = function (MoveId) {
+        var self = this;
+        var values = { id: MoveId };
+        var model = 'stock.move';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'create_new_sml_id', values).then(function (data) {
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.UpdateSmlIdField = function (MoveId, SmlId, DictValues) {
+        var self = this;
+        var values = {
+            move_id: MoveId,
+            sml_id: SmlId,
+            values: DictValues
+        };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('stock.move.line', 'update_sml_field', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.set_move_qty_done_from_apk = function (move_id, qty_done) {
+        var self = this;
+        var values = {
+            id: move_id,
+            quantity_done: qty_done
+        };
+        var model = 'stock.move';
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'set_qty_done_from_apk', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    // Move_lines
+    StockService.prototype.find_move_line_id = function (code, picking_id) {
+        var self = this;
+        var values = { code: code, picking_id: picking_id };
+        var model = 'stock.move.line';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'find_move_line_id', values).then(function (data) {
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.get_move_line_info = function (move_id, index) {
+        if (index === void 0) { index = 0; }
+        var self = this;
+        var values = { id: move_id, index: index };
+        var model = 'stock.move.line';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'get_move_line_info_apk', values).then(function (data) {
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.get_move_lines_list_search = function (line_ids) {
+        var self = this;
+        var domain = [['id', 'in', line_ids]];
+        var model = 'stock.move';
+        var fields = this.STOCK_FIELDS[model].tree;
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.search_read(model, domain, fields, 0, 0).then(function (data) {
+                for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
+                    var sm_id = data_1[_i];
+                    sm_id.model = model;
+                }
+                resolve(data);
+            })
+                .catch(function (err) {
+                reject(err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.get_move_lines_list = function (picking_id) {
+        var self = this;
+        var domain = [['picking_id', '=', parseInt(picking_id)]];
+        var values = {
+            domain: domain,
+            model: 'stock.move',
+            offset: 0,
+            limit: 0
+        };
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                console.log(done);
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al realizar la consulta:' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.get_move_lines_details_list = function (picking_id) {
+        var self = this;
+        var domain = [['picking_id', '=', parseInt(picking_id)]];
+        var values = {
+            domain: domain,
+            model: 'stock.move.line',
+            offset: 0,
+            limit: 0
+        };
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                console.log(done);
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al realizar la consulta:' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.force_set_assigned_qty_done = function (move_id, model) {
+        if (model === void 0) { model = 'stock.move'; }
+        var self = this;
+        var values = {
+            id: move_id
+        };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'force_set_qty_done_apk', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.set_qty_done_from_apk = function (move_id, qty_done) {
+        var self = this;
+        var values = {
+            id: move_id,
+            qty_done: qty_done
+        };
+        var model = 'stock.move.line';
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'set_qty_done_from_apk', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.force_set_reserved_qty_done = function (move_id, model) {
+        if (model === void 0) { model = 'stock.move'; }
+        var self = this;
+        var values = {
+            id: move_id
+        };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'force_set_reserved_qty_done_apk', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.force_set_qty_done = function (move_id, field, model) {
+        if (model === void 0) { model = 'stock.move.line'; }
+        var self = this;
+        var values = {
+            id: move_id,
+            field: field
+        };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'force_set_qty_done_apk', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.force_set_qty_done_by_product_code_apk = function (product_code, field, model, picking) {
+        if (model === void 0) { model = 'stock.move.line'; }
+        var self = this;
+        var values = {
+            default_code: product_code,
+            field: field,
+            picking: picking
+        };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'force_set_qty_done_by_product_code_apk', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.force_reset_qties = function (pick_id, model) {
+        if (model === void 0) { model = 'stock.picking'; }
+        var self = this;
+        var values = {
+            id: pick_id
+        };
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'force_reset_qties_apk', values).then(function (done) {
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar');
+            });
+        });
+        return promise;
+    };
+    // Products
+    StockService.prototype.get_product_list = function (offset, limit, search) {
+        if (offset === void 0) { offset = 0; }
+        if (limit === void 0) { limit = 0; }
+        if (search === void 0) { search = null; }
+        var self = this;
+        var domain = [];
+        if (search) {
+            domain.push('|', ['name', 'ilike', '%' + search + '%'], ['default_code', 'ilike', '%' + search + '%']);
+        }
+        var values = {
+            domain: domain,
+            model: 'product.product',
+            offset: offset,
+            limit: limit
+        };
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                console.log(done);
+                resolve(done);
+            })
+                .catch(function (err) {
+                console.log(err);
+                reject(false);
+                console.log('Error al realizar la consulta:' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.get_product_info = function (product_id) {
+        var self = this;
+        var domain = [['id', '=', product_id]];
+        var values = {
+            domain: domain,
+            model: 'product.product',
+            offset: 0,
+            limit: 0,
+            fields: ['id', 'name', 'default_code', 'list_price', 'standard_price', 'qty_available', 'virtual_available', 'categ_id', 'tracking',
+                'barcode', 'description_short', 'image_medium', 'stock_quant_ids']
+        };
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                console.log(done);
+                resolve(done);
+            })
+                .catch(function (err) {
+                console.log(err);
+                reject(false);
+                console.log('Error al realizar la consulta:' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.get_location_products = function (location, offset, limit, search) {
+        if (offset === void 0) { offset = 0; }
+        if (limit === void 0) { limit = 0; }
+        var self = this;
+        var domain = [];
+        if (location) {
+            domain.push(['product_tmpl_id.location_id', 'child_of', Number(location)]);
+        }
+        if (search) {
+            domain.push(['default_code', 'ilike', search]);
+        }
+        var values = {
+            domain: domain,
+            model: 'product.product',
+            offset: offset,
+            limit: limit,
+            fields: ['id', 'display_name', 'default_code', 'qty_available', 'tracking', 'barcode', 'uom_id']
+        };
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                console.log(done);
+                resolve(done);
+            })
+                .catch(function (err) {
+                console.log(err);
+                reject(false);
+                console.log('Error al realizar la consulta:' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    // Location
+    StockService.prototype.get_location_list = function (LocationState, offset, limit, search) {
+        if (offset === void 0) { offset = 0; }
+        if (limit === void 0) { limit = 0; }
+        if (search === void 0) { search = null; }
+        var self = this;
+        var domain = [];
+        if (LocationState !== 'all') {
+            domain = [['usage', '=', LocationState]];
+        }
+        if (search) {
+            domain.push(['name', 'ilike', search]);
+        }
+        var values = {
+            domain: domain,
+            model: 'stock.location',
+            offset: offset,
+            limit: limit
+        };
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                console.log(done);
+                resolve(done);
+            })
+                .catch(function (err) {
+                console.log(err);
+                reject(false);
+                console.log('Error al realizar la consulta:' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.get_location_info = function (location_id) {
+        var self = this;
+        var domain = [['id', '=', location_id]];
+        var values = {
+            domain: domain,
+            model: 'stock.location',
+            offset: 0,
+            limit: 0,
+            fields: ['id', 'display_name', 'usage', 'company_id']
+        };
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                console.log(done);
+                resolve(done);
+            })
+                .catch(function (err) {
+                console.log(err);
+                reject(false);
+                console.log('Error al realizar la consulta:' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    // Quants
+    StockService.prototype.get_location_quants = function (location, offset, limit, search, ftype) {
+        if (offset === void 0) { offset = 0; }
+        if (limit === void 0) { limit = 0; }
+        if (ftype === void 0) { ftype = null; }
+        var self = this;
+        var domain = [];
+        if (location) {
+            domain.push(['location_id', 'child_of', Number(location)]);
+        }
+        if (search) {
+            domain.push(['product_id.default_code', 'ilike', search]);
+        }
+        var values = {
+            domain: domain,
+            model: 'stock.quant',
+            offset: offset,
+            limit: limit
+        };
+        if (ftype != null) {
+            values['fields'] = ['id', 'product_id', 'reserved_quantity', 'quantity', 'location_id'];
+        }
+        console.log(values);
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute('info.apk', 'get_apk_object', values).then(function (done) {
+                console.log(done);
+                resolve(done);
+            })
+                .catch(function (err) {
+                console.log(err);
+                reject(false);
+                console.log('Error al realizar la consulta:' + err.msg.error_msg);
+            });
+        });
+        return promise;
+    };
+    // Move location
+    StockService.prototype.create_new_move_location = function (location_barcode) {
+        var self = this;
+        var model;
+        var values = {
+            location_barcode: location_barcode
+        };
+        model = 'wiz.stock.move.location';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'create_wiz_from_apk', values).then(function (done) {
+                // tslint:disable-next-line:no-string-literal
+                if (done['error'] === true) {
+                    reject(done['error']);
+                }
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar:' + err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.create_new_move_location_line = function (location_move_id, location_id, location_dest_id, product_barcode) {
+        var self = this;
+        var model;
+        var values = {
+            origin_location_id: location_id,
+            product_barcode: product_barcode,
+            move_location_wizard_id: location_move_id,
+            destination_location_id: location_dest_id
+        };
+        model = 'wiz.stock.move.location.line';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'create_wiz_line_from_apk', values).then(function (done) {
+                if (done['error'] === true) {
+                    reject(done['error']);
+                }
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar:' + err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.change_qty = function (line_id, qty) {
+        var self = this;
+        var model;
+        var values = {
+            id: line_id,
+            move_quantity: qty
+        };
+        model = 'wiz.stock.move.location.line';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'edit_wiz_line_qty_from_apk', values).then(function (done) {
+                if (done['error'] === true) {
+                    reject(done['error']);
+                }
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar:' + err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.change_move_location = function (location_move_id, type, location_id) {
+        var self = this;
+        var model;
+        var values;
+        if (type === 'origin') {
+            values = {
+                id: location_move_id,
+                origin_location_id: location_id
+            };
+        }
+        else if (type === 'destination') {
+            values = {
+                id: location_move_id,
+                destination_location_id: location_id
+            };
+        }
+        model = 'wiz.stock.move.location';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'edit_wiz_location_from_apk', values).then(function (done) {
+                if (done['error'] === true) {
+                    reject(done['error']);
+                }
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar:' + err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.set_multiple_move_location = function (LocationMoveId, type) {
+        var self = this;
+        var model;
+        var values;
+        values = {
+            id: LocationMoveId,
+            action: type
+        };
+        model = 'wiz.stock.move.location';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'set_multiple_move_location', values).then(function (done) {
+                if (done['error'] === true) {
+                    reject(done['error']);
+                }
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar:' + err);
+            });
+        });
+        return promise;
+    };
+    StockService.prototype.action_move_location = function (LocationMoveId) {
+        var self = this;
+        var model;
+        var values;
+        values = {
+            id: LocationMoveId
+        };
+        model = 'wiz.stock.move.location';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'action_move_location_apk', values).then(function (done) {
+                if (done['error'] === true) {
+                    reject(done['error']);
+                }
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar:' + err);
+            });
+        });
+        return promise;
+    };
+    // QR
+    StockService.prototype.process_qr_lines = function (qr_codes) {
+        var self = this;
+        var model;
+        var values;
+        values = {
+            qr_codes: qr_codes
+        };
+        model = 'stock.picking';
+        var promise = new Promise(function (resolve, reject) {
+            self.odooCon.execute(model, 'process_qr_lines', values).then(function (done) {
+                if (done['error'] === true) {
+                    reject(done['error']);
+                }
+                resolve(done);
+            })
+                .catch(function (err) {
+                reject(false);
+                console.log('Error al validar:' + err);
+            });
+        });
+        return promise;
+    };
+    StockService.ctorParameters = function () { return [
+        { type: _odoo_service__WEBPACK_IMPORTED_MODULE_4__["OdooService"] },
+        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["AlertController"] },
+        { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"] }
+    ]; };
+    StockService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_odoo_service__WEBPACK_IMPORTED_MODULE_4__["OdooService"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["AlertController"],
+            _ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"]])
+    ], StockService);
+    return StockService;
 }());
 
 

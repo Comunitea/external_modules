@@ -1,18 +1,5 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["pages-stock-picking-list-stock-picking-list-module"],{
 
-/***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/components/picking-list/picking-list.component.html":
-/*!***********************************************************************************************************!*\
-  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/components/picking-list/picking-list.component.html ***!
-  \***********************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-grid *ngIf=\"not_allowed_fields\">\n\n  <ion-row>\n    <ion-col *ngIf=\"not_allowed_fields.indexOf('display_name') == -1\">\n        <div><strong>Nombre</strong></div>\n    </ion-col>\n    \n    <ion-col *ngIf=\"not_allowed_fields.indexOf('location_id') == -1\">\n        <div><strong>Origen</strong></div>\n    </ion-col>\n\n    <ion-col *ngIf=\"not_allowed_fields.indexOf('location_dest_id') == -1\">\n      <div><strong>Destino</strong></div>\n    </ion-col>\n    \n    <ion-col *ngIf=\"not_allowed_fields.indexOf('scheduled_date') == -1\" class=\"ion-align-self-center ion-text-center\">\n      <div><strong>Previsto</strong></div>\n    </ion-col>\n    <ion-col *ngIf=\"not_allowed_fields.indexOf('state') == -1\" class=\"ion-align-self-center ion-text-center\">\n      <div><strong>Estado</strong></div>\n    </ion-col>\n  </ion-row>\n\n  <ion-row *ngFor=\"let pick of picks\" (click)=\"open_link(pick.id, code)\">\n    <ion-col *ngIf=\"not_allowed_fields.indexOf('display_name') == -1\">\n      <div>{{pick.display_name}}</div>\n    </ion-col>\n    \n    <ion-col *ngIf=\"not_allowed_fields.indexOf('location_id') == -1\">\n      <div>{{pick.location_id[1]}}</div>\n    </ion-col>\n  \n    <ion-col *ngIf=\"not_allowed_fields.indexOf('location_dest_id') == -1\">\n      <div>{{pick.location_dest_id[1]}}</div>\n    </ion-col>\n    \n    <ion-col *ngIf=\"not_allowed_fields.indexOf('scheduled_date') == -1\" class=\"ion-align-self-center ion-text-center\">\n      <div>{{pick.scheduled_date}}h</div>\n    </ion-col>\n  \n    <ion-col *ngIf=\"not_allowed_fields.indexOf('state') == -1\"  [ngClass]=\"{'success': pick.state == 'done',\n    'danger': pick.state == 'cancel', \n    'primary': pick.state == 'assigned', \n    'secondary': pick.state == 'confirmed', \n    'tertiary': pick.state == 'waiting', \n    'medium': pick.state == 'draft'}\" [ngSwitch]=\"pick.state\" class=\"ion-align-self-center ion-text-center\">\n      <div *ngSwitchCase=\"'draft'\">Borrador</div>\n      <div *ngSwitchCase=\"'waiting'\">Faltan operaciones</div>\n      <div *ngSwitchCase=\"'confirmed'\">En espera</div>\n      <div *ngSwitchCase=\"'assigned'\">Preparado</div>\n      <div *ngSwitchCase=\"'done'\">Hecho</div>\n      <div *ngSwitchCase=\"'cancel'\">Cancel</div>\n    </ion-col>\n  </ion-row>\n</ion-grid>");
-
-/***/ }),
-
 /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/pages/stock-picking-list/stock-picking-list.page.html":
 /*!*************************************************************************************************************!*\
   !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/pages/stock-picking-list/stock-picking-list.page.html ***!
@@ -22,74 +9,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n    <ion-title>Listado de operaciones</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-card>\n    <ion-card-content>\n      <ion-row>\n        <ion-toolbar>\n          <ion-searchbar type=\"text\" (ionInput)=\"get_search_results($event)\" autocomplete=\"on\" showCancelButton=\"always\"></ion-searchbar>\n        </ion-toolbar>\n      </ion-row>\n\n      <app-picking-list [code]=\"current_code\" [not_allowed_fields]=\"not_allowed_fields\" [picks]=\"pickings\"></app-picking-list>\n\n      <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadData($event)\">\n        <ion-infinite-scroll-content\n          loadingSpinner=\"bubbles\"\n          loadingText=\"Cargando más productos...\">\n        </ion-infinite-scroll-content>\n      </ion-infinite-scroll>\n    </ion-card-content>\n  </ion-card>\n</ion-content>");
-
-/***/ }),
-
-/***/ "./src/app/components/picking-list/picking-list.component.scss":
-/*!*********************************************************************!*\
-  !*** ./src/app/components/picking-list/picking-list.component.scss ***!
-  \*********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("ion-col {\n  cursor: pointer;\n}\nion-col.success {\n  color: var(--ion-color-success);\n}\nion-col.danger {\n  color: var(--ion-color-danger);\n}\nion-col.primary {\n  color: var(--ion-color-primary);\n}\nion-col.secondary {\n  color: var(--ion-color-secondary);\n}\nion-col.tertiary {\n  color: var(--ion-color-tertiary);\n}\nion-col.medium {\n  color: var(--ion-color-medium);\n}\n/* Medias */\n@media screen and (max-width: 576px) {\n  ion-grid > ion-row:first-child {\n    display: none;\n  }\n\n  ion-grid > ion-row {\n    border: 1px black solid;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2tpa28vaW9uaWM0L3dhcmVob3VzZV9tYW5hZ2VyX2Fwa18xMS9zcmMvYXBwL2NvbXBvbmVudHMvcGlja2luZy1saXN0L3BpY2tpbmctbGlzdC5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvY29tcG9uZW50cy9waWNraW5nLWxpc3QvcGlja2luZy1saXN0LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBbUJJLGVBQUE7QUNqQko7QURESTtFQUNJLCtCQUFBO0FDR1I7QURESTtFQUNJLDhCQUFBO0FDR1I7QURESTtFQUNJLCtCQUFBO0FDR1I7QURESTtFQUNJLGlDQUFBO0FDR1I7QURESTtFQUNJLGdDQUFBO0FDR1I7QURESTtFQUNJLDhCQUFBO0FDR1I7QURFQSxXQUFBO0FBQ0E7RUFDSTtJQUNJLGFBQUE7RUNDTjs7RURDRTtJQUNJLHVCQUFBO0VDRU47QUFDRiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcGlja2luZy1saXN0L3BpY2tpbmctbGlzdC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImlvbi1jb2wge1xuICAgICYuc3VjY2VzcyB7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1pb24tY29sb3Itc3VjY2Vzcyk7XG4gICAgfVxuICAgICYuZGFuZ2VyIHtcbiAgICAgICAgY29sb3I6IHZhcigtLWlvbi1jb2xvci1kYW5nZXIpO1xuICAgIH1cbiAgICAmLnByaW1hcnkge1xuICAgICAgICBjb2xvcjogdmFyKC0taW9uLWNvbG9yLXByaW1hcnkpO1xuICAgIH1cbiAgICAmLnNlY29uZGFyeSB7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1pb24tY29sb3Itc2Vjb25kYXJ5KTtcbiAgICB9XG4gICAgJi50ZXJ0aWFyeSB7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1pb24tY29sb3ItdGVydGlhcnkpO1xuICAgIH1cbiAgICAmLm1lZGl1bSB7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1pb24tY29sb3ItbWVkaXVtKTtcbiAgICB9XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4vKiBNZWRpYXMgKi9cbkBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDU3NnB4KSB7XG4gICAgaW9uLWdyaWQgPiBpb24tcm93OmZpcnN0LWNoaWxkIHtcbiAgICAgICAgZGlzcGxheTogbm9uZTtcbiAgICB9XG4gICAgaW9uLWdyaWQgPiBpb24tcm93IHtcbiAgICAgICAgYm9yZGVyOiAxcHggYmxhY2sgc29saWQ7XG4gICAgfVxufSIsImlvbi1jb2wge1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG5pb24tY29sLnN1Y2Nlc3Mge1xuICBjb2xvcjogdmFyKC0taW9uLWNvbG9yLXN1Y2Nlc3MpO1xufVxuaW9uLWNvbC5kYW5nZXIge1xuICBjb2xvcjogdmFyKC0taW9uLWNvbG9yLWRhbmdlcik7XG59XG5pb24tY29sLnByaW1hcnkge1xuICBjb2xvcjogdmFyKC0taW9uLWNvbG9yLXByaW1hcnkpO1xufVxuaW9uLWNvbC5zZWNvbmRhcnkge1xuICBjb2xvcjogdmFyKC0taW9uLWNvbG9yLXNlY29uZGFyeSk7XG59XG5pb24tY29sLnRlcnRpYXJ5IHtcbiAgY29sb3I6IHZhcigtLWlvbi1jb2xvci10ZXJ0aWFyeSk7XG59XG5pb24tY29sLm1lZGl1bSB7XG4gIGNvbG9yOiB2YXIoLS1pb24tY29sb3ItbWVkaXVtKTtcbn1cblxuLyogTWVkaWFzICovXG5AbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1NzZweCkge1xuICBpb24tZ3JpZCA+IGlvbi1yb3c6Zmlyc3QtY2hpbGQge1xuICAgIGRpc3BsYXk6IG5vbmU7XG4gIH1cblxuICBpb24tZ3JpZCA+IGlvbi1yb3cge1xuICAgIGJvcmRlcjogMXB4IGJsYWNrIHNvbGlkO1xuICB9XG59Il19 */");
-
-/***/ }),
-
-/***/ "./src/app/components/picking-list/picking-list.component.ts":
-/*!*******************************************************************!*\
-  !*** ./src/app/components/picking-list/picking-list.component.ts ***!
-  \*******************************************************************/
-/*! exports provided: PickingListComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PickingListComponent", function() { return PickingListComponent; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm5/router.js");
-
-
-
-var PickingListComponent = /** @class */ (function () {
-    function PickingListComponent(router) {
-        this.router = router;
-    }
-    PickingListComponent.prototype.ngOnInit = function () { };
-    PickingListComponent.prototype.open_link = function (pick_id, code) {
-        this.router.navigateByUrl('/stock-picking/' + pick_id + '/' + code);
-    };
-    PickingListComponent.ctorParameters = function () { return [
-        { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] }
-    ]; };
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Object)
-    ], PickingListComponent.prototype, "picks", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Object)
-    ], PickingListComponent.prototype, "code", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Object)
-    ], PickingListComponent.prototype, "not_allowed_fields", void 0);
-    PickingListComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-            selector: 'app-picking-list',
-            template: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(/*! raw-loader!./picking-list.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/components/picking-list/picking-list.component.html")).default,
-            styles: [Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(/*! ./picking-list.component.scss */ "./src/app/components/picking-list/picking-list.component.scss")).default]
-        }),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
-    ], PickingListComponent);
-    return PickingListComponent;
-}());
-
-
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar class=\"cmnt-front\">\n    <ion-buttons slot=\"start\" >\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n    <ion-title>Listado de Albaranes</ion-title>\n      <ion-buttons slot=\"end\" class=\"cmnt-front\">\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-card>\n    <ion-card-content>\n      <ion-row>\n        <ion-toolbar>\n          <ion-searchbar type=\"text\" (ionInput)=\"get_search_results($event)\" autocomplete=\"on\" showCancelButton=\"always\"></ion-searchbar>\n        </ion-toolbar>\n\n\n      </ion-row>\n      <ion-row>\n      <ion-col class=\"action-button\"><ion-button (click)=\"Navigate('stock-picking-type-list')\"><ion-icon class=\"primary\" name=\"arrow-undo-circle-outline\" ></ion-icon></ion-button></ion-col>\n\n      <ion-col>\n          \n      </ion-col>\n      <ion-col *ngIf=\"States\" size=3>\n        <ion-select (ionChange)=\"ChangeStateFilter()\" [(ngModel)]=\"StateValue\" interface=\"popover\" okText=\"Aplicar\" cancelText=\"Cancelar\">\n          <ion-select-option *ngFor=\"let state of States\" value='{{state.value}}'>{{state.name}}</ion-select-option>\n        </ion-select>\n        \n      </ion-col>\n      </ion-row>\n      <!--app-picking-list *ngIf=\"pickings\" [code]=\"current_code\" [filter]=\"filter\" [picks]=\"pickings\"></app-picking-list-->\n\n      <ion-row *ngFor=\"let pick of pickings; let even = even; let odd =  odd\" (click)=\"OpenLink(pick.id)\" [ngClass]=\"{'row-odd': odd, 'row-even': even}\" style=\"min-height: 30px\">\n        <ion-col class=\"ion-align-self-center\">\n          <span class=\"product-link \">{{pick.apk_name}}</span>\n        </ion-col>\n        <ion-col class=\"ion-align-self-center ion-text-center\" size=\"1\">\n            <span>{{pick.move_line_count}}</span>\n        </ion-col>\n        <ion-col class=\"ion-align-self-center ion-text-left\" *ngIf=\"pick.default_location.value === 'location_id'\">\n          <div>{{pick.location_id.name}}</div>\n        </ion-col>\n        <ion-col class=\"ion-align-self-center  ion-text-left\" *ngIf=\"pick.default_location.value === 'location_dest_id'\">\n          <div>{{pick.location_dest_id.name}}</div>\n        </ion-col>\n         \n        <ion-col size=\"3\n        \" class=\"ion-align-self-center ion-text-center\">\n        {{pick.scheduled_date}}\n        <!--/ion-col>\n        <ion-col  class=\"ion-align-self-center\"-->\n        <ion-icon  size=\"normal\" class=\"{{'state_'+ pick.state.value}} \" name=\"{{StateIcon[pick.state.value]}}\"></ion-icon>\n        </ion-col>\n      </ion-row>\n\n      <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadData($event)\">\n        <ion-infinite-scroll-content\n          loadingSpinner=\"bubbles\"\n          loadingText=\"Cargando más productos...\">\n        </ion-infinite-scroll-content>\n      </ion-infinite-scroll>\n    </ion-card-content>\n  </ion-card>\n</ion-content>");
 
 /***/ }),
 
@@ -110,8 +30,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm5/router.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/__ivy_ngcc__/fesm5/ionic-angular.js");
 /* harmony import */ var _stock_picking_list_page__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stock-picking-list.page */ "./src/app/pages/stock-picking-list/stock-picking-list.page.ts");
-/* harmony import */ var _components_picking_list_picking_list_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/picking-list/picking-list.component */ "./src/app/components/picking-list/picking-list.component.ts");
-/* harmony import */ var _shared_shared_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../shared/shared.module */ "./src/app/shared/shared.module.ts");
+/* harmony import */ var _shared_shared_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../shared/shared.module */ "./src/app/shared/shared.module.ts");
 
 
 
@@ -119,7 +38,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
+//import { PickingListComponent } from '../../components/picking-list/picking-list.component';
 
 var routes = [
     {
@@ -134,13 +53,14 @@ var StockPickingListPageModule = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
             imports: [
                 _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
-                _shared_shared_module__WEBPACK_IMPORTED_MODULE_8__["SharedModule"],
+                _shared_shared_module__WEBPACK_IMPORTED_MODULE_7__["SharedModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
                 _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonicModule"],
                 _angular_router__WEBPACK_IMPORTED_MODULE_4__["RouterModule"].forChild(routes)
             ],
-            entryComponents: [_components_picking_list_picking_list_component__WEBPACK_IMPORTED_MODULE_7__["PickingListComponent"]],
-            declarations: [_stock_picking_list_page__WEBPACK_IMPORTED_MODULE_6__["StockPickingListPage"], _components_picking_list_picking_list_component__WEBPACK_IMPORTED_MODULE_7__["PickingListComponent"]]
+            // entryComponents: [ PickingListComponent ],
+            // declarations: [ StockPickingListPage, PickingListComponent ]
+            declarations: [_stock_picking_list_page__WEBPACK_IMPORTED_MODULE_6__["StockPickingListPage"]]
         })
     ], StockPickingListPageModule);
     return StockPickingListPageModule;
@@ -195,28 +115,29 @@ var StockPickingListPage = /** @class */ (function () {
         this.alertCtrl = alertCtrl;
         this.audio = audio;
         this.stock = stock;
-        var options = { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h24' };
-        this.view_domain = {
-            'ready': [['state', '=', 'assigned']],
-            'waiting': [['state', 'in', ['waiting', 'confirmed']]],
-            'late': [['state', 'in', ['assigned', 'waiting', 'confirmed']], ['scheduled_date', '<', new Date().toLocaleString('es-ES', options)]],
-            'backorders': [['state', 'in', ['waiting', 'confirmed', 'assigned']], ['backorder_id', '!=', false]]
-        };
-        this.offset = 0;
-        this.limit = 25;
-        this.limit_reached = false;
+        // this.offset = 0;
+        // this.limit = 5;
+        // this.limit_reached = false;
     }
+    StockPickingListPage.prototype.ionViewDidEnter = function () {
+        this.offset = 0;
+        this.limit = this.MaxNumber = 25;
+        this.limit_reached = false;
+        this.GetPickingList(null, this.offset, this.limit);
+    };
     StockPickingListPage.prototype.ngOnInit = function () {
         var _this = this;
         this.odoo.isLoggedIn().then(function (data) {
-            if (data == false) {
+            if (data === false) {
                 _this.router.navigateByUrl('/login');
             }
             else {
-                _this.current_type_id = _this.route.snapshot.paramMap.get('id');
-                _this.view_selector = _this.route.snapshot.paramMap.get('view');
-                _this.current_code = _this.route.snapshot.paramMap.get('code');
-                _this.get_picking_list();
+                // Lo voy a cambiar por
+                _this.StateValue = '';
+                _this.StateIcon = _this.stock.getStateIcon('stock.move');
+                _this.States = _this.stock.GetModelInfo('stock.picking', 'filter_state');
+                var All = { name: 'Todos', value: 'all' };
+                _this.States.push(All);
             }
         })
             .catch(function (error) {
@@ -226,7 +147,11 @@ var StockPickingListPage = /** @class */ (function () {
     StockPickingListPage.prototype.onReadingEmitted = function (val) {
         this.scanner_reading = val;
         this.search = val;
-        this.get_picking_list(this.search);
+        this.offset = 0;
+        this.GetPickingList(this.search, this.offset, this.limit);
+    };
+    StockPickingListPage.prototype.Navigate = function (Url) {
+        return this.router.navigateByUrl('/' + Url);
     };
     StockPickingListPage.prototype.presentAlert = function (titulo, texto) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
@@ -250,33 +175,63 @@ var StockPickingListPage = /** @class */ (function () {
             });
         });
     };
-    StockPickingListPage.prototype.get_picking_list = function (search) {
+    StockPickingListPage.prototype.OpenLink = function (PickId) {
+        this.router.navigateByUrl('/stock-picking/' + PickId + '/1');
+    };
+    StockPickingListPage.prototype.ChangeStateFilter = function () {
+        var _this = this;
+        if (this.StateValue === '') {
+            this.State = null;
+        }
+        else {
+            this.State = this.States.filter(function (x) { return x['value'] === _this.StateValue; })[0];
+        }
+        this.offset = 0;
+        this.GetPickingList(this.search, this.offset, this.limit);
+    };
+    StockPickingListPage.prototype.GetPickingList = function (search, offset, limit) {
         var _this = this;
         if (search === void 0) { search = null; }
-        this.offset = 0;
         this.limit_reached = false;
-        this.stock.get_picking_list(this.view_domain[this.view_selector], this.current_type_id, this.offset, this.limit, search).then(function (picking_list) {
-            _this.pickings = picking_list;
-            if (_this.pickings[0] && _this.pickings[0]['picking_fields']) {
-                _this.not_allowed_fields = _this.pickings[0]['picking_fields'].split(',');
-                console.log(_this.not_allowed_fields);
-            }
-            if (Object.keys(picking_list).length < 25) {
+        this.stock.GetPickingList(search, offset, limit, this.State).then(function (data) {
+            _this.pickings = data;
+            if (data.length < _this.MaxNumber) {
                 _this.limit_reached = true;
             }
-            if (Object.keys(_this.pickings).length == 1) {
-                _this.router.navigateByUrl('/stock-picking/' + _this.pickings[0]['id'] + '/' + _this.current_code);
-            }
-            _this.audio.play('click');
-        })
-            .catch(function (error) {
-            console.log(error);
-            _this.presentAlert('Error al recuperador el listado de operaciones:', error);
+            // if (Object.keys(this.pickings).length === 1){
+            //  this.stock.SetModelInfo('stock.picking', 'ActiveId', data[0]['id']);
+            //  this.router.navigateByUrl('/stock-picking/' + data[0]['id']);
+            // }
         });
     };
+    /*
+    get_picking_list(search = null){
+      this.offset = 0;
+      this.limit_reached = false;
+      this.stock.GetPicking(this.compute_domain(search), null, 'tree', this.offset, this.limit, search).then((picking_list: Array<{}>) => {
+        this.pickings = picking_list;
+        // if (this.pickings[0] && this.pickings[0]['picking_fields']) {
+        //  this.not_allowed_fields = this.pickings[0]['picking_fields'].split(',');
+        //  console.log(this.not_allowed_fields);
+        // }
+        if (Object.keys(picking_list).length < 25){
+          this.limit_reached = true;
+        }
+        if (Object.keys(this.pickings).length == 1){
+          this.router.navigateByUrl('/stock-picking/'+this.pickings[0]['id']);
+        }
+  
+        this.audio.play('click');
+      })
+      .catch((error) => {
+        console.log(error);
+        this.presentAlert('Error al recuperador el listado de operaciones:', error);
+      });
+    } */
     StockPickingListPage.prototype.get_search_results = function (ev) {
         this.search = ev.target.value;
-        this.get_picking_list(this.search);
+        this.offset = 0;
+        this.GetPickingList(this.search, this.offset, this.limit);
     };
     // Infinitescroll
     StockPickingListPage.prototype.loadData = function (event) {
@@ -295,13 +250,14 @@ var StockPickingListPage = /** @class */ (function () {
     StockPickingListPage.prototype.picking_list_infinite_scroll_add = function () {
         var _this = this;
         this.offset += this.limit;
-        this.stock.get_picking_list(this.view_domain[this.view_selector], this.current_type_id, this.offset, this.limit, this.search).then(function (data) {
-            var current_length = Object.keys(_this.pickings).length;
-            if (Object.keys(data).length < 25) {
+        this.stock.GetPickingList(this.search, this.offset, this.limit, this.State).then(function (data) {
+            if (data.length < _this.MaxNumber) {
                 _this.limit_reached = true;
             }
-            for (var k in data)
-                _this.pickings[current_length + Number(k)] = data[k];
+            for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
+                var pick = data_1[_i];
+                _this.pickings.push(pick);
+            }
         })
             .catch(function (error) {
             _this.presentAlert('Error al recuperador el listado de operaciones:', error);

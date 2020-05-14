@@ -9,7 +9,7 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n    <app-scanner-header slot=\"end\"></app-scanner-header>\n    <ion-title>Movimiento</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n<ion-card *ngIf=\"data\">\n\n    <ion-card-header>\n      <ion-card-title class=\"ion-text-center\">{{data.display_name}}</ion-card-title>\n    </ion-card-header>\n  \n    <ion-card-content class=\"ion-text-center\">\n      <div class=\"product_img\" class=\"ion-text-center\">\n        <ion-img *ngIf=\"data.base64\" src=\"data:image/jpeg;base64,{{ data['image'] }}\" ></ion-img>\n        <ion-img *ngIf=\"!data.base64\" src=\"{{ data['image'] }}\"></ion-img>\n      </div>\n      <ion-label>\n        <strong>  {{data.display_name}} </strong>\n      </ion-label>\n      <div><strong>Pick: </strong>{{data.picking_id['id'] && data.picking_id['display_name']}}</div>\n      <div><strong>Referencia: </strong>{{data.default_code}}</div>\n      <div><strong>{{data.location_id['display_name']}} >> {{data.location_dest_id['display_name']}}</strong></div>\n      <ion-row>\n         <ion-col *ngIf=\"data.state != 'cancel' && data.state != 'done'\"><ion-badge class=\"link\" (click)=\"changeqty(-1)\"> - </ion-badge>\n        </ion-col>\n        <ion-col *ngIf=\"data.state != 'cancel' && data.state != 'done'\" class=\"link\" (click)=\"changeqty(0)\"><strong>Cantidad: </strong><br/>\n          <ion-badge class=\"primary\"> {{data.qty_done}} de {{data.product_uom_qty}} </ion-badge> \n        </ion-col>\n        <ion-col *ngIf=\"data.state != 'cancel' && data.state != 'done'\"><ion-badge class=\"link\" (click)=\"changeqty(+1)\"> + </ion-badge>\n        </ion-col>\n      </ion-row>\n\n      <ion-row>\n        <ion-col class=\"link\" (click)=\"get_move_line_info(data.id, -1)\">Anterior\n        </ion-col>\n        <ion-col *ngIf=\"data.ready_to_validate\" class=\"link\" (click)=\"button_validate(data.picking_id.id)\">Validar\n        </ion-col>\n        <ion-col *ngIf=\"!data.ready_to_validate\" class=\"link\" (click)=\"action_confirm(data.id)\">Confirmar\n        </ion-col>\n        <ion-col class=\"link\" (click)=\"get_move_line_info(data.id, +1)\">Siguiente\n        </ion-col>\n      </ion-row>\n    </ion-card-content>\n  \n  </ion-card>\n</ion-content>\n\n<app-scanner-footer (scanner_reading_changed)=\"onReadingEmitted($event)\" [scanner_reading]=\"scanner_reading\"></app-scanner-footer>\n\n<ng-template #lineDoneTemplate>\n  <ion-col><strong>Cantidad: </strong><br/>\n    <ion-badge class=\"secondary\"> {{data.qty_done}} de {{data.product_uom_qty}} </ion-badge>\n  </ion-col>\n</ng-template>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n    <app-scanner-header slot=\"end\"></app-scanner-header>\n\n     <ion-title class=\"cmnt-button\" style=\"padding-inline-end: 0px; padding-inline-start: 0px;\">\n      {{data.picking_id['id'] && data.picking_id['display_name']}}: {{data['product_id'] && data['product_id']['apk_name']}}\n      </ion-title>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n<ion-card *ngIf=\"data\">\n    <ion-card-header>\n      <ion-card-title class=\"ion-text-center\">{{data.apk_name}}</ion-card-title>\n    </ion-card-header>\n  \n    <ion-card-content class=\"ion-text-center\">\n      <div class=\"product_img\" class=\"ion-text-center\">\n        <ion-img *ngIf=\"data.base64\" src=\"data:image/jpeg;base64,{{ data['image'] }}\" ></ion-img>\n        <ion-img *ngIf=\"!data.base64\" src=\"{{ data['image'] }}\"></ion-img>\n      </div>\n      <!--ion-label>\n        <strong>  {{data.display_name}} </strong>\n      </ion-label-->\n      <div><strong>Albarán: </strong>{{data.picking_id['id'] && data.picking_id['display_name']}}</div>\n      <div><strong>Referencia: </strong>{{data.default_code}}</div>\n      <div><strong>{{data.location_id['display_name']}} >> {{data.location_dest_id['display_name']}}</strong></div>\n      <ion-row>\n         <ion-col *ngIf=\"data.state != 'cancel' && data.state != 'done'\"><ion-badge class=\"link\" (click)=\"ChangeQty(-1)\"> - </ion-badge>\n        </ion-col>\n        <ion-col *ngIf=\"data.state != 'cancel' && data.state != 'done'\" class=\"link\" (click)=\"ChangeQty(0)\"><strong>Cantidad: </strong><br/>\n          <ion-badge class=\"primary\"> {{data.qty_done}} de {{data.product_uom_qty}} </ion-badge> \n        </ion-col>\n        <ion-col *ngIf=\"data.state != 'cancel' && data.state != 'done'\"><ion-badge class=\"link\" (click)=\"ChangeQty(+1)\"> + </ion-badge>\n        </ion-col>\n      </ion-row>\n\n      <ion-row>\n        <ion-col class=\"link\" (click)=\"get_move_line_info(data.id, -1)\">Anterior\n        </ion-col>\n        <ion-col *ngIf=\"data.ready_to_validate\" class=\"link\" (click)=\"button_validate(data.picking_id.id)\">Validar\n        </ion-col>\n        <ion-col *ngIf=\"!data.ready_to_validate\" class=\"link\" (click)=\"action_confirm(data.id)\">Confirmar\n        </ion-col>\n        <ion-col class=\"link\" (click)=\"get_move_line_info(data.id, +1)\">Siguiente\n        </ion-col>\n      </ion-row>\n    </ion-card-content>\n  \n  </ion-card>\n</ion-content>\n\n<app-scanner-footer (scanner_reading_changed)=\"onReadingEmitted($event)\" [scanner_reading]=\"scanner_reading\"></app-scanner-footer>\n\n<ng-template #lineDoneTemplate>\n  <ion-col><strong>Cantidad: </strong><br/>\n    <ion-badge class=\"secondary\"> {{data.qty_done}} de {{data.product_uom_qty}} </ion-badge>\n  </ion-col>\n</ng-template>");
 
 /***/ }),
 
@@ -151,13 +151,17 @@ var MoveLineFormPage = /** @class */ (function () {
             this.scanner_reading = val;
         }
     };
-    // Navigation 
+    // Navigation
+    MoveLineFormPage.prototype.go_back = function () {
+        this.audio.play('click');
+        this.location.back();
+    };
     MoveLineFormPage.prototype.page_controller = function (direction) {
-        if (direction == 'up') {
+        if (direction === 'up') {
             console.log("up");
             this.router.navigateByUrl('/stock-picking/' + this.data['picking_id']['id'] + '/' + this.data['picking_id']['code']);
         }
-        else if (direction == 'down') {
+        else if (direction === 'down') {
             console.log("down");
             if (this.data['ready_to_validate']) {
                 this.button_validate(this.data['picking_id']['id']);
@@ -166,11 +170,11 @@ var MoveLineFormPage = /** @class */ (function () {
                 this.action_confirm();
             }
         }
-        else if (direction == 'left') {
+        else if (direction === 'left') {
             console.log("left");
             this.get_move_line_info(this.data['id'], -1);
         }
-        else if (direction == 'right') {
+        else if (direction === 'right') {
             console.log("right");
             this.get_move_line_info(this.data['id'], +1);
         }
@@ -197,8 +201,8 @@ var MoveLineFormPage = /** @class */ (function () {
             });
         });
     };
-    MoveLineFormPage.prototype.changeqty = function (qty) {
-        if (qty == 0) {
+    MoveLineFormPage.prototype.ChangeQty = function (qty) {
+        if (qty === 0) {
             this.data['qty_done'] = this.data['product_uom_qty'];
         }
         else {
@@ -210,7 +214,7 @@ var MoveLineFormPage = /** @class */ (function () {
         if (index === void 0) { index = 0; }
         this.stock.get_move_line_info(move, index).then(function (data) {
             console.log(data);
-            if (data['image'] == false) {
+            if (data['image'] === false) {
                 data['base64'] = false;
                 data['image'] = _this.placeholder;
             }
@@ -235,16 +239,16 @@ var MoveLineFormPage = /** @class */ (function () {
             _this.presentAlert('Error al validar el albarán:', error);
         });
     };
-    MoveLineFormPage.prototype.button_validate = function (picking_id) {
+    MoveLineFormPage.prototype.button_validate = function (PickingId) {
         var _this = this;
         this.presentLoading();
-        this.stock.button_validate(Number(picking_id)).then(function (lines_data) {
-            if (lines_data && lines_data['err'] == false) {
-                console.log("Reloading");
+        this.stock.button_validate(Number(PickingId)).then(function (lines_data) {
+            if (lines_data && lines_data['err'] === false) {
+                console.log('Reloading');
                 _this.loading.dismiss();
                 _this.location.back();
             }
-            else if (lines_data['err'] != false) {
+            else if (lines_data['err'] !== false) {
                 _this.loading.dismiss();
                 _this.presentAlert('Error al validar el albarán:', lines_data['err']);
             }

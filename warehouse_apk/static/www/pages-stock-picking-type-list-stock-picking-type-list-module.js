@@ -9,7 +9,7 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-grid>\n  <ion-row>\n    <ion-col size-xs=\"12\" size-sm=\"6\" size-lg=\"4\" *ngFor=\"let picking_type of picking_types\">\n      <ion-card>\n        <ion-card-header>\n          <ion-card-title>{{picking_type.name}}</ion-card-title>\n          <ion-card-subtitle [ngClass]=\"{ \n            'primary': picking_type.color == 0, \n            'secondary': picking_type.color == 1, \n            'tertiary': picking_type.color == 2, \n            'medium': picking_type.color == 3,\n            'success': picking_type.color == 4,\n            'warning': picking_type.color == 5}\">{{picking_type.warehouse_id[1]}}</ion-card-subtitle>\n        </ion-card-header>\n\n        <ion-card-content>\n          <ion-row>\n            <ion-col [ngSwitch]=\"picking_type.code\">\n              <ion-button size=\"small\" class=\"button-text\" (click)=\"open_link(picking_type.id, 'ready', picking_type.code)\" *ngSwitchCase=\"'incoming'\">{{picking_type.count_picking_ready}} por recibir</ion-button>\n              <ion-button size=\"small\" class=\"button-text\" (click)=\"open_link(picking_type.id, 'ready', picking_type.code)\" *ngSwitchCase=\"'outgoing'\">{{picking_type.count_picking_ready}} por hacer</ion-button>\n              <ion-button size=\"small\" class=\"button-text\" (click)=\"open_link(picking_type.id, 'ready', picking_type.code)\" *ngSwitchCase=\"'internal'\">{{picking_type.count_picking_ready}} traspasos</ion-button>\n            </ion-col>\n            <ion-col>\n              <div class=\"link\" (click)=\"open_link(picking_type.id, 'waiting', picking_type.code)\">{{picking_type.count_picking_waiting}} en espera</div>\n              <div class=\"link\" (click)=\"open_link(picking_type.id, 'late', picking_type.code)\" *ngIf=\"picking_type.count_picking_late\">{{picking_type.count_picking_late}} retrasados</div>\n              <ion-progress-bar *ngIf=\"picking_type.count_picking_late\" color=\"primary\" type=\"determinate\" [value]=\"picking_type.rate_picking_late/100\"></ion-progress-bar>\n              <div class=\"link\" (click)=\"open_link(picking_type.id, 'backorders', picking_type.code)\" *ngIf=\"picking_type.count_picking_backorders\">{{picking_type.count_picking_backorders}} pendientes</div>\n              <ion-progress-bar *ngIf=\"picking_type.count_picking_backorders\" color=\"primary\" type=\"determinate\" [value]=\"picking_type.rate_picking_backorders/100\"></ion-progress-bar>\n            </ion-col>\n          </ion-row>\n        </ion-card-content>\n      </ion-card>\n    </ion-col>\n  </ion-row>\n</ion-grid> ");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-grid>\n  <ion-row>\n    <ion-col size-xs=\"12\" size-sm=\"6\" size-lg=\"4\" *ngFor=\"let picking_type of picking_types\">\n      <ion-card>\n        <ion-card-header style=\"padding-top: 10px; padding-bottom: 10px; min-height: 10px;\">\n          <ion-card-title>{{picking_type.name}}</ion-card-title>\n          <ion-card-subtitle [ngClass]=\"{ \n            'primary': picking_type.color == 0, \n            'secondary': picking_type.color == 1, \n            'tertiary': picking_type.color == 2, \n            'medium': picking_type.color == 3,\n            'success': picking_type.color == 4,\n            'warning': picking_type.color == 5}\">{{picking_type.warehouse_id[1]}}</ion-card-subtitle>\n        </ion-card-header>\n\n        <ion-card-content style=\"padding-top: 10px; padding-bottom: 10px; min-height: 10px;\">\n          <ion-row>\n            <ion-col [ngSwitch]=\"picking_type.code\">\n              <ion-button size=\"small\" class=\"button-text\" (click)=\"open_link(picking_type.id, 'ready')\">{{picking_type.count_picking_ready}} Por hacer</ion-button>\n            </ion-col>\n            <ion-col>\n              <div class=\"link\" (click)=\"open_link(picking_type.id, 'waiting')\">{{picking_type.count_picking_waiting}} en espera</div>\n              <div class=\"link\" (click)=\"open_link(picking_type.id, 'late')\" *ngIf=\"picking_type.count_picking_late\">{{picking_type.count_picking_late}} retrasados</div>\n              <ion-progress-bar *ngIf=\"picking_type.count_picking_late\" color=\"primary\" type=\"determinate\" [value]=\"picking_type.rate_picking_late/100\"></ion-progress-bar>\n              <div class=\"link\" (click)=\"open_link(picking_type.id, 'backorders')\" *ngIf=\"picking_type.count_picking_backorders\">{{picking_type.count_picking_backorders}} pendientes</div>\n              <ion-progress-bar *ngIf=\"picking_type.count_picking_backorders\" color=\"primary\" type=\"determinate\" [value]=\"picking_type.rate_picking_backorders/100\"></ion-progress-bar>\n            </ion-col>\n          </ion-row>\n        </ion-card-content>\n      </ion-card>\n    </ion-col>\n  </ion-row>\n</ion-grid> ");
 
 /***/ }),
 
@@ -22,7 +22,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n    <ion-toolbar>\n      <ion-buttons slot=\"start\">\n        <ion-menu-button></ion-menu-button>\n      </ion-buttons>\n      <ion-title>Inventario</ion-title>\n    </ion-toolbar>\n  </ion-header>\n  \n  <ion-content>\n    <ion-card>\n      <ion-row *ngIf=\"picking_menu\">\n        <ion-col col-2 class=\"ion-align-self-center ion-text-center\" \n          [ngClass]=\"{'selected': current_selected_type == option.value}\" \n          *ngFor=\"let option of picking_menu\" \n          (click)=\"get_picking_types(option.value, search)\">\n          <ion-icon class=\"icon\" [name]=\"option.icon\"></ion-icon\n          >\n          <br/>\n          {{option.name}}\n        </ion-col>\n      </ion-row>\n\n      <ion-row>\n        <ion-toolbar>\n          <ion-searchbar type=\"text\" (ionInput)=\"get_search_results($event)\" autocomplete=\"on\" showCancelButton=\"always\"></ion-searchbar>\n        </ion-toolbar>\n      </ion-row>\n    </ion-card>\n    <ion-card>\n      <app-picking-type-info [picking_types]=\"picking_types\"></app-picking-type-info>\n    </ion-card>\n\n    <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadData($event)\">\n      <ion-infinite-scroll-content\n        loadingSpinner=\"bubbles\"\n        loadingText=\"Cargando más productos...\">\n      </ion-infinite-scroll-content>\n    </ion-infinite-scroll>\n  </ion-content>\n  ");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n    <ion-toolbar class=\"cmnt-front\">\n      <ion-buttons slot=\"start\">\n        <ion-menu-button></ion-menu-button>\n      </ion-buttons>\n      <ion-title>Inventario</ion-title>\n    </ion-toolbar>\n  </ion-header>\n  \n  <ion-content>\n    <ion-card>\n      <ion-row *ngIf=\"TypeMenu\">\n        \n        <ion-col col=2 class=\"ion-align-self-center ion-text-center\" \n          (click)=\"GetPickingTypes('all' , null)\">\n            <ion-icon class=\"icon\" name=\"book\"></ion-icon>\n          <!--p>{{menu1.code.name}} </p-->\n        </ion-col>  \n        <ion-col size=10> \n          <ion-row>\n            <ion-col class=\"ion-text-center product-link\" size=4 \n                [ngClass]=\"{'selected': Code == menu1.barcode}\" \n                *ngFor=\"let menu1 of TypeMenu; index as i\" \n                (click)=\"GetPickingTypes(menu1.name, null)\">\n                {{menu1.name}}\n            </ion-col>\n          </ion-row>\n        </ion-col>\n      </ion-row>\n\n      <ion-row>\n        <ion-toolbar>\n          <ion-searchbar type=\"text\" [ngModel]=\"search\" (ionInput)=\"get_search_results($event)\" autocomplete=\"on\" showCancelButton=\"always\"></ion-searchbar>\n        </ion-toolbar>\n      </ion-row>\n    </ion-card>\n    \n    <ion-card>\n      <ion-grid>\n        <ion-row>\n          <ion-col size-xs=\"12\" size-sm=\"6\" size-lg=\"4\" *ngFor=\"let picking_type of picking_types\">\n            <ion-card>\n              <ion-card-header style=\"padding-top: 5px; padding-bottom: 5px; min-height: 10px;\">\n                <ion-card-title>{{picking_type.name}}</ion-card-title>\n              </ion-card-header>\n\n              <ion-card-content style=\"padding-top: 5px; padding-bottom: 5px; min-height: 10px;\">\n                <ion-row>\n                  <ion-col style=\"text-align: center\" [ngSwitch]=\"picking_type.code\">\n                    <ion-button size=\"small\" class=\"button-text cmnt-front\" (click)=\"OpenTypeId(picking_type.barcode, picking_type.id, 'count_picking_ready')\">{{picking_type.count_picking_ready}} Por hacer</ion-button>\n                  </ion-col>\n                  <ion-col>\n                    <div class=\"link\" (click)=\"OpenTypeId(picking_type.barcode, picking_type.id, 'count_picking_waiting')\">{{picking_type.count_picking_waiting}} en espera</div>\n                    <div class=\"link\" (click)=\"OpenTypeId(picking_type.barcode,picking_type.id, 'count_picking_late')\" *ngIf=\"picking_type.count_picking_late\">{{picking_type.count_picking_late}} retrasados</div>\n                    <ion-progress-bar *ngIf=\"picking_type.count_picking_late\" color=\"primary\" type=\"determinate\" [value]=\"picking_type.rate_picking_late/100\"></ion-progress-bar>\n                    <!--div class=\"link\" (click)=\"OpenTypeId(picking_type.id, 'count_picking_backorders')\" *ngIf=\"picking_type.count_picking_backorders\">{{picking_type.count_picking_backorders}} pendientes</div-->\n                    <!--ion-progress-bar *ngIf=\"picking_type.count_picking_backorders\" color=\"primary\" type=\"determinate\" [value]=\"picking_type.rate_picking_backorders/100\"></ion-progress-bar-->\n                  </ion-col>\n                </ion-row>\n              </ion-card-content>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n        </ion-grid> \n      <!--app-picking-type-info [picking_types]=\"picking_types\"></app-picking-type-info-->\n    </ion-card>\n\n    <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadData($event)\">\n      <ion-infinite-scroll-content\n        loadingSpinner=\"bubbles\"\n        loadingText=\"Cargando más productos...\">\n      </ion-infinite-scroll-content>\n    </ion-infinite-scroll>\n  </ion-content>\n  ");
 
 /***/ }),
 
@@ -52,19 +52,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm5/router.js");
+/* harmony import */ var _services_stock_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/stock.service */ "./src/app/services/stock.service.ts");
+
 
 
 
 var PickingTypeInfoComponent = /** @class */ (function () {
-    function PickingTypeInfoComponent(router) {
+    function PickingTypeInfoComponent(router, odoostock) {
         this.router = router;
+        this.odoostock = odoostock;
     }
     PickingTypeInfoComponent.prototype.ngOnInit = function () { };
-    PickingTypeInfoComponent.prototype.open_link = function (pick_type, view, code) {
-        this.router.navigateByUrl('/stock-picking-list/' + pick_type + '/' + view + '/' + code);
+    PickingTypeInfoComponent.prototype.open_link = function (pick_type, filter) {
+        var picking_domain = [['picking_type_id', '=', pick_type], this.odoostock.GetDomains('state')];
+        this.odoostock.SetDomains('picking', picking_domain);
+        this.router.navigateByUrl('/stock-picking-list/' + pick_type + '/' + filter);
     };
     PickingTypeInfoComponent.ctorParameters = function () { return [
-        { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] }
+        { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
+        { type: _services_stock_service__WEBPACK_IMPORTED_MODULE_3__["StockService"] }
     ]; };
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
@@ -76,7 +82,7 @@ var PickingTypeInfoComponent = /** @class */ (function () {
             template: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(/*! raw-loader!./picking-type-info.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/components/picking-type-info/picking-type-info.component.html")).default,
             styles: [Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(/*! ./picking-type-info.component.scss */ "./src/app/components/picking-type-info/picking-type-info.component.scss")).default]
         }),
-        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _services_stock_service__WEBPACK_IMPORTED_MODULE_3__["StockService"]])
     ], PickingTypeInfoComponent);
     return PickingTypeInfoComponent;
 }());
@@ -183,34 +189,9 @@ var StockPickingTypeListPage = /** @class */ (function () {
         this.alertCtrl = alertCtrl;
         this.audio = audio;
         this.stock = stock;
-        this.picking_menu = [
-            {
-                'value': 'all',
-                'name': 'Todos',
-                'icon': 'book',
-                'size': 3
-            },
-            {
-                'value': 'incoming',
-                'name': 'Por recibir',
-                'icon': 'log-in',
-                'size': 3
-            },
-            {
-                'value': 'internal',
-                'name': 'Traspasos',
-                'icon': 'sync',
-                'size': 3
-            },
-            {
-                'value': 'outgoing',
-                'name': 'Por hacer',
-                'icon': 'log-out',
-                'size': 3
-            }
-        ];
+        this.TypeMenu = [];
         this.offset = 0;
-        this.limit = 25;
+        this.limit = 10;
         this.limit_reached = false;
         this.picking_codes = [
             'incoming',
@@ -218,18 +199,21 @@ var StockPickingTypeListPage = /** @class */ (function () {
             'internal'
         ];
     }
+    StockPickingTypeListPage.prototype.ionViewDidEnter = function () {
+        this.FillMenuTypes();
+    };
     StockPickingTypeListPage.prototype.ngOnInit = function () {
-        var _this = this;
+        this.stock.GetStates('stock.picking', 'state');
+        var self = this;
         this.odoo.isLoggedIn().then(function (data) {
-            if (data == false) {
-                _this.router.navigateByUrl('/login');
+            if (data === false) {
+                self.router.navigateByUrl('/login');
             }
             else {
-                _this.get_picking_types();
             }
         })
             .catch(function (error) {
-            _this.presentAlert('Error al comprobar tu sesión:', error);
+            self.presentAlert('Error al comprobar tu sesión:', error);
         });
     };
     StockPickingTypeListPage.prototype.presentAlert = function (titulo, texto) {
@@ -254,34 +238,58 @@ var StockPickingTypeListPage = /** @class */ (function () {
             });
         });
     };
-    StockPickingTypeListPage.prototype.get_picking_types = function (picking_state, search) {
+    StockPickingTypeListPage.prototype.FillMenuTypes = function () {
         var _this = this;
-        if (picking_state === void 0) { picking_state = null; }
-        if (search === void 0) { search = null; }
-        if (picking_state && picking_state != 'all') {
-            this.current_selected_type = picking_state;
-            picking_state = [picking_state];
-        }
-        else {
-            this.current_selected_type = 'all';
-            picking_state = this.picking_codes;
-        }
-        this.offset = 0;
-        this.limit_reached = false;
-        this.stock.get_picking_types(picking_state, this.offset, this.limit, search).then(function (picking_type_list) {
-            _this.picking_types = picking_type_list;
-            if (Object.keys(picking_type_list).length < 25) {
-                _this.limit_reached = true;
+        this.TypeMenu = [];
+        var self = this;
+        this.stock.GetPickingTypesMenu().then(function (data) {
+            for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
+                var menu = data_1[_i];
+                var NewMenu = { code: menu['code'],
+                    name: menu['apk_name'],
+                    icon: menu['icon'] || 'sync',
+                    id: menu['id'],
+                    size: 2 };
+                self.TypeMenu.push(NewMenu);
             }
-            _this.audio.play('click');
+            self.Code = self.stock.GetModelInfo('stock.picking.type', 'Code');
+            if (!self.Code) {
+                self.GetPickingTypes('all');
+            }
+            else {
+                self.GetPickingTypes(self.Code);
+            }
         })
             .catch(function (error) {
             _this.presentAlert('Error al recuperador el listado de operaciones:', error);
         });
     };
+    StockPickingTypeListPage.prototype.GetPickingTypes = function (Code, search) {
+        var _this = this;
+        if (Code === void 0) { Code = null; }
+        if (search === void 0) { search = null; }
+        this.audio.play('click');
+        this.limit_reached = false;
+        if (Code) {
+            this.search = null;
+            this.stock.SetModelInfo('stock.picking.type', 'Code', Code);
+        }
+        var self = this;
+        this.stock.GetPickingTypes(Code, search, this.offset, this.limit).then(function (TypeIds) {
+            self.picking_types = TypeIds;
+            if (TypeIds.length < 10) {
+                _this.limit_reached = true;
+            }
+        })
+            .catch(function (error) {
+            self.presentAlert('Error al recuperador el listado de operaciones:', error);
+        });
+    };
     StockPickingTypeListPage.prototype.get_search_results = function (ev) {
-        this.search = ev.target.value;
-        this.get_picking_types(this.current_selected_type, this.search);
+        if (ev.target.value.length > 3) {
+            this.search = ev.target.value;
+            this.GetPickingTypes(null, this.search);
+        }
     };
     // Infinitescroll
     StockPickingTypeListPage.prototype.loadData = function (event) {
@@ -300,20 +308,15 @@ var StockPickingTypeListPage = /** @class */ (function () {
     StockPickingTypeListPage.prototype.picking_list_infinite_scroll_add = function () {
         var _this = this;
         this.offset += this.limit;
-        var picking_state;
-        if (this.current_selected_type == 'all') {
-            picking_state = this.picking_codes;
-        }
-        else {
-            picking_state = [this.current_selected_type];
-        }
-        this.stock.get_picking_types(picking_state, this.offset, this.limit, this.search).then(function (picking_type_list) {
-            var current_length = Object.keys(_this.picking_types).length;
-            if (Object.keys(picking_type_list).length < 25) {
+        this.stock.GetPickingTypes(this.Code, this.search, this.offset, this.limit).then(function (data) {
+            if (data.length < 10) {
                 _this.limit_reached = true;
             }
-            for (var k in picking_type_list)
-                _this.picking_types[current_length + Number(k)] = picking_type_list[k];
+            // if (data) {this.picking_types.push(data)};
+            for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
+                var type = data_2[_i];
+                _this.picking_types.push(type);
+            }
         })
             .catch(function (error) {
             _this.presentAlert('Error al recuperador el listado de operaciones:', error);
@@ -321,6 +324,13 @@ var StockPickingTypeListPage = /** @class */ (function () {
     };
     StockPickingTypeListPage.prototype.toggleInfiniteScroll = function () {
         this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+    };
+    StockPickingTypeListPage.prototype.OpenTypeId = function (Code, PickingTypeId, DomainName) {
+        this.audio.play('click');
+        this.stock.SetModelInfo('stock.picking.type', 'Code', Code);
+        this.stock.SetModelInfo('stock.picking.type', 'PickingTypeId', PickingTypeId);
+        this.stock.SetModelInfo('stock.picking.type', 'DomainName', DomainName);
+        this.router.navigateByUrl('/stock-picking-list');
     };
     StockPickingTypeListPage.ctorParameters = function () { return [
         { type: _services_odoo_service__WEBPACK_IMPORTED_MODULE_4__["OdooService"] },
