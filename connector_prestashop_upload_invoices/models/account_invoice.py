@@ -1,7 +1,10 @@
 # © 2020 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+from ftplib import FTP
+import io
 from odoo import _, models
 from odoo.exceptions import UserError
+from odoo.addons.queue_job.job import job
 
 
 class AccountInvoice(models.Model):
@@ -15,32 +18,32 @@ class AccountInvoice(models.Model):
                 "invoice_line_ids.sale_line_ids.order_id.prestashop_bind_ids"
             ):
 
-                report = self.env.ref("account.account_invoices")
-                if report.report_type in ["qweb-html", "qweb-pdf"]:
-                    result, format = report.render_qweb_pdf([invoice.id])
-                else:
-                    res = report.render([invoice.id])
-                    if not res:
-                        raise UserError(
-                            _("Unsupported report type %s found.")
-                            % report.report_type
-                        )
-                    result, format = res
-                for sale_bind in invoice.mapped(
-                    "invoice_line_ids.sale_line_ids.order_id.prestashop_bind_ids"
-                ):
-                    if not sale_bind.backend_id.invoice_report_folder:
-                        continue
-                    report_name = sale_bind.name
-                    ext = "." + format
-                    if not report_name.endswith(ext):
-                        report_name += ext
-                    with open(
-                        "{}/{}".format(
-                            sale_bind.backend_id.invoice_report_folder,
-                            report_name,
-                        ),
-                        "wb",
-                    ) as f:
-                        f.write(result)
+                invoice.with_delay()._upload_report_to_prestashop()
         return res
+
+    @job(default_channel='root.prestashop')
+    def _upload_report_to_prestashop(self):
+        self.ensure_one()
+        report = self.env.ref("account.account_invoices")
+        if report.report_type in ["qweb-html", "qweb-pdf"]:
+            result, format = report.render_qweb_pdf([self.id])
+        else:
+            res = report.render([self.id])
+            if not res:
+                raise UserError(
+                    _("Unsupported report type %s found.")
+                    % report.report_type
+                )
+            result, format = res
+        for sale_bind in self.mapped("invoice_line_ids.sale_line_ids.order_id.prestashop_bind_ids"):
+            if not sale_bind.backend_id.ftp_report_folder:
+                continue
+            report_name = sale_bind.name
+            ext = "." + format
+            if not report_name.endswith(ext):
+                report_name += ext
+            ftp = FTP(sale_bind.backend_id.ftp_host)
+            ftp.login(sale_bind.backend_id.ftp_user, sale_bind.backend_id.ftp_password)
+            ftp.cwd(sale_bind.backend_id.ftp_report_folder)
+            ftp.storbinary("STOR " + report_name, io.BytesIO(result))
+            ftp.quit()

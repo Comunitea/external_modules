@@ -7,4 +7,7 @@ class PrestashopBackend(models.Model):
 
     _inherit = 'prestashop.backend'
 
-    invoice_report_folder = fields.Char()
+    ftp_report_folder = fields.Char()
+    ftp_host = fields.Char()
+    ftp_user = fields.Char()
+    ftp_password = fields.Char()
