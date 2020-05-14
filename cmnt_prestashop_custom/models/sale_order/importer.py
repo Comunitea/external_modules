@@ -14,3 +14,22 @@ class SaleOrderImportMapper(Component):
             ps_state_id, unwrap=1
         )
         return {"prestashop_state": state.id}
+
+
+class SaleOrderLineMapper(Component):
+    _inherit = "prestashop.sale.order.line.mapper"
+
+    @mapping
+    def tax_id(self, record):
+        taxes = (
+            record.get("associations", {})
+            .get("taxes", {})
+            .get(self.backend_record.get_version_ps_key("tax"), [])
+        )
+        if not isinstance(taxes, list):
+            taxes = [taxes]
+        result = self.env["account.tax"].browse()
+        for ps_tax in taxes:
+            result |= self._find_tax(ps_tax["id"])
+        if result:
+            return {"tax_id": [(6, 0, result.ids)]}
