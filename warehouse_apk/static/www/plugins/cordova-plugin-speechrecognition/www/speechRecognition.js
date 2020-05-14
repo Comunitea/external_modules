@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-speechrecognition.SpeechRecognition", function(require, exports, module) {
-module.exports = {
+cordova.define("cordova-plugin-speechrecognition.SpeechRecognition", function(require, exports, module) { module.exports = {
   isRecognitionAvailable: function(successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, 'SpeechRecognition', 'isRecognitionAvailable', []);
   },
