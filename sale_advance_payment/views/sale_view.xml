@@ -15,6 +15,12 @@
                     <field name="account_payment_ids" nolabel="1" colspan="4" context="{'form_view_ref': 'account.view_account_payment_form','tree_view_ref': 'account.view_account_payment_tree'}"/>
                 </page>
             </notebook>
+            <field name="amount_total" position="after">
+                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                    <label for="amount_residual"/>
+                </div>
+                <field name="amount_residual" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+            </field>
         </field>
     </record>
 

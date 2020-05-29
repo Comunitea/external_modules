@@ -22,12 +22,12 @@ class SaleOrder(models.Model):
             for line in sale.account_payment_ids:
                 if line.state != 'draft':
                     advance_amount += line.amount
-            sale.amount_resisual = sale.amount_total - advance_amount
+            sale.amount_residual = sale.amount_total - advance_amount
 
     account_payment_ids = fields.One2many('account.payment', 'sale_id',
                                           string="Pay sale advanced",
                                           readonly=True)
-    amount_resisual = fields.Float('Residual amount', readonly=True,
+    amount_residual = fields.Float('Residual amount', readonly=True,
                                    compute="_get_amount_residual")
     payment_line_ids = fields.Many2many('account.move.line',
                                         string="Payment move lines",

@@ -79,15 +79,21 @@ class AccountVoucherWizard(models.TransientModel):
 
     @api.onchange('journal_id', 'date', 'amount_advance')
     def onchange_date(self):
-        if self.currency_id:
-            self.exchange_rate = 1.0 / \
-                (self.env["res.currency"].with_context(date=self.date).
-                 _get_conversion_rate(self.currency_id,
-                                      self.journal_currency_id)
-                 or 1.0)
-        else:
-            self.exchange_rate = 1.0
-        self.currency_amount = self.amount_advance * (1.0 / self.exchange_rate)
+        sale_obj = self.env['sale.order']
+
+        sale_ids = self.env.context.get('active_ids', [])
+        if sale_ids:
+            sale_id = sale_ids[0]
+            sale = self.env['sale.order'].browse(sale_id)
+            if self.currency_id:
+                self.exchange_rate = 1.0 / \
+                    (self.env["res.currency"].
+                    _get_conversion_rate(sale.company_id.currency_id,self.currency_id,
+                                        sale.company_id, self.date)
+                    or 1.0)
+            else:
+                self.exchange_rate = 1.0
+            self.currency_amount = self.amount_advance * (1.0 / self.exchange_rate)
 
     @api.multi
     def make_advance_payment(self):
