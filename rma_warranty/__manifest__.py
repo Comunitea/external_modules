@@ -17,6 +17,7 @@
     'data': [
         'views/product.xml',
         'views/stock_production_lot.xml',
+        'data/ir_config_parameter.xml',
         'views/rma_order_line.xml'
     ],
 }
