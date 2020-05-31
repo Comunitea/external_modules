@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import info_apk, sale_order
+from . import info_apk, sale_order, stock_inventory
 from . import stock_move_line, stock_move_location, stock_picking_type
-from . import stock_picking, stock_move, product_product
+from . import stock_picking, stock_move, product_product, stock_quant
 from . import main, stock_location, stock_warehouse, stock_production_lot

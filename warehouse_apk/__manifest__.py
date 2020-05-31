@@ -34,7 +34,8 @@
     'data': [
         'views/stock_move.xml',
         'views/stock_picking.xml',
-        'views/stock_warehouse.xml'
+        'views/stock_warehouse.xml',
+        'views/product.xml'
     ],
     'installable': True,
     'auto_install': False,

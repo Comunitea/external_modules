@@ -6,8 +6,8 @@
             <field name="inherit_id" ref="stock.vpicktree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
-                    <field name="app_integrated" readonly="1"/>
-                    <field name="field_status" readonly="1"/>
+                    <field name="app_integrated" invisible="1"/>
+                    <field name="field_status" invisible="1"/>
                 </xpath>
             </field>
      </record>
@@ -22,7 +22,7 @@
                 </xpath>
                 <xpath expr="//field[@name='picking_type_code']" position="after">
                     <field name="app_integrated" readonly="1"/>
-                    <field name="field_status" readonly="1"/>
+                    <field name="field_status" invisible="1" readonly="1"/>
                 </xpath>
 
             </field>

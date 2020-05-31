@@ -25,3 +25,7 @@ class StockProductionLot(models.Model):
                                                  lot_id=self,
                                                  strict=strict).filtered(lambda quant: float_compare(quant.quantity - quant.reserved_quantity, need_qty, precision_digits=precision_digits) >= 0)
         return quants
+
+    def compute_location_id(self):
+        domain = [('quantity', '>', 0), ('lot_id', '=', self.id)]
+        return self.env['stock.quant'].search(domain, limit=1).location_id

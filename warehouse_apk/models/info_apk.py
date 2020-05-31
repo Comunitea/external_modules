@@ -36,6 +36,15 @@ class InfoApk(models.AbstractModel):
             obj.apk_name = obj.display_name
 
     apk_name = fields.Char(compute="compute_apk_name")
+    apk_warehouse_id = fields.Many2one('stock.warehouse', compute="compute_warehouse_id")
+
+    @api.multi
+    def compute_warehouse_id(self):
+
+        company_user = self.env.user.company_id
+        wh_id = self.env['stock.warehouse'].search([('company_id', '=', company_user.id)], limit=1)
+        for loc in self:
+            loc.apk_warehouse_id = wh_id.id
 
     def return_fields(self, mode='tree'):
         return ['id', 'display_name']
@@ -194,6 +203,20 @@ class InfoApk(models.AbstractModel):
         pprint.PrettyPrinter(indent=2).pprint(vals)
         print("\n -------------------------------------")
         return vals
+
+    @api.model
+    def change_field_value(self, values):
+        model = values.get('model')
+        id = values.get('id')
+        field = values.get('field')
+        value = values.get('value')
+        try:
+            self.env[model].browse(id)[field] = value
+            return [{field: value}]
+        except:
+            raise ValueError('error al escribir {} en el campo {}. Model {}. Id {}'.format(model, id, field, value))
+        return
+
 
     @api.model
     def get_field_group(self, values):

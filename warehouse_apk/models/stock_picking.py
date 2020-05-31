@@ -21,7 +21,7 @@
 
 from odoo import _, api, models, fields
 from odoo.addons import decimal_precision as dp
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 import time
 import pprint
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -46,6 +46,8 @@ class StockPicking(models.Model):
     field_status = fields.Boolean(compute="compute_field_status")
     default_location = fields.Selection(related='picking_type_id.group_code.default_location')
     group_code = fields.Selection(related='picking_type_id.group_code.code')
+    barcode_re = fields.Char(related='picking_type_id.warehouse_id.barcode_re')
+    product_re = fields.Char(related='picking_type_id.warehouse_id.product_re')
 
     @api.multi
     def compute_field_status(self):
@@ -54,9 +56,9 @@ class StockPicking(models.Model):
 
 
     def return_fields(self, mode='tree'):
-        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'sale_id', 'move_line_count', 'picking_type_id', 'default_location', 'field_status']
+        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'sale_id', 'move_line_count', 'picking_type_id', 'default_location', 'field_status', 'priority']
         if mode == 'form':
-            res += ['field_status', 'group_code']
+            res += ['field_status', 'group_code', 'barcode_re', 'product_re']
         return res
 
     def _compute_picking_count_domains(self):
@@ -89,6 +91,7 @@ class StockPicking(models.Model):
         return self.get_model_object(values)
 
     def get_model_object(self, values={}):
+
         res = super().get_model_object(values=values)
         if values.get('view', 'tree') == 'tree':
             return res
@@ -107,6 +110,13 @@ class StockPicking(models.Model):
 
     @api.model
     def action_done_apk(self, values):
+        return self.button_validate_pick(values)
+        picking = self.browse(values.get('id', False))
+        if not picking:
+            return {'err': True, 'error': "No se ha encontrado el albarán"}
+        res = picking.action_done()
+        return True
+
 
         pick = self.browse(values.get('id', False))
         move_id = self.browse(values.get('move_id', False))
@@ -116,7 +126,7 @@ class StockPicking(models.Model):
 
 
     @api.model
-    def action_assign_pick(self, vals):
+    def action_assign_apk(self, vals):
         picking = self.browse(vals.get('id', False))
         if not picking:
             return {'err': True, 'error': "No se ha encontrado el albarán"}
@@ -124,14 +134,26 @@ class StockPicking(models.Model):
         return res
 
     @api.model
+    def do_unreserve_apk(self, vals):
+
+        picking = self.browse(vals.get('id', False))
+        if not picking:
+            return {'err': True, 'error': "No se ha encontrado el albarán"}
+        res = picking.do_unreserve()
+        return True
+
+
+    @api.model
     def button_validate_pick(self, vals):
         picking_id = self.browse(vals.get('id', False))
         if not picking_id:
             return {'err': True, 'error': "No se ha encontrado el albarán"}
-
+        if all(move_line.qty_done == 0 for move_line in picking_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel'))):
+            raise ValidationError ('No hay ninguna cantidad hecha para validar')
         ctx = picking_id._context.copy()
         ctx.update(skip_overprocessed_check=True)
-        res = picking_id.with_context(ctx).button_validate()
+        return picking_id.with_context(ctx).button_validate()
+
         try:
             if res:
                 if res['res_model'] == 'stock.immediate.transfer':
@@ -181,4 +203,90 @@ class StockPicking(models.Model):
         print(qr_codes)
         return True
 
-    
+    @api.model
+    def find_pick_by_name(self, vals):
+        domain = [('name', 'ilike', vals['name'])]
+        res = self.search_read(domain, ['id'], limit=1)
+        if res:
+            print("------------- Busco el albarán {} y devuelvo  el id".format(vals['name'], res[0]['id']))
+            return res[0]['id']
+        print("------------- Busco el albarán {} y no encuentro nada".format(vals['name']))
+        return False
+
+    @api.model
+    def find_serial_for_move(self, vals):
+        lot_name = vals.get('lot_id', False)
+        picking_id = vals.get('picking_id', False)
+        remove = vals.get('remove', False)
+        if not picking_id:
+            return
+        if not lot_name:
+            return
+        lot_names = lot_name.split(',')
+        for lot_name in lot_names:
+            lot = self.env['stock.production.lot'].search([('name', '=', lot_name)], limit=1)
+            if lot:
+                res = self.serial_for_move(picking_id, lot, remove)
+                if res:
+                    move = res
+        if move:
+            move._recompute_state()
+            return move.get_model_object()
+        return False
+
+    @api.model
+    def serial_for_move(self, picking_id, lot, remove):
+        lot_id = lot.id
+        product_id = lot.product_id.id
+        new_location_id = lot.compute_location_id()
+
+        domain = [('picking_id', '=', picking_id), ('product_id', '=', product_id)]
+
+        if False and remove:
+            domain += [('lot_id', '=', lot_id)]
+            line = self.env['stock.move.line'].search(domain, limit=1, order='lot_id desc')
+            line.qty_done = 0
+            line.write_status('lot_id', 'done', False)
+            line.write_status('qty_done', 'done', False)
+        else:
+            # caso 1. COnfirmar el lote que hay
+            lot_domain = domain + [('lot_id', '=', lot_id)]
+            line = self.env['stock.move.line'].search(lot_domain, limit=1, order='lot_id desc')
+            if line:
+                ## si es lote +1 , si es serial = 1
+                if line.product_id.tracking == 'serial':
+                    line.qty_done = 1
+                else:
+                    line.qty_done += 1
+                line.write_status('lot_id', 'done', True)
+                line.write_status('qty_done', 'done', True)
+            else:
+                # Caso 2. Hay una vacía con lot_id = False:
+                lot_domain = domain + [('lot_id', '=', False)]
+                line = self.env['stock.move.line'].search(lot_domain, limit=1, order= 'lot_id desc')
+                if not line:
+                    lot_domain = domain + [('lot_id', '!=', lot_id), ('qty_done', '=', 0)]
+                    line = self.env['stock.move.line'].search(lot_domain, limit=1, order='lot_id desc')
+                if line:
+                    move = line.move_id
+                    line.unlink()
+                    result = move._update_reserved_quantity(1, 1, location_id=move.location_id, lot_id=lot, strict=False)
+                    if result == 0:
+                        raise UserError ('No se ha podido reservar el lote {}. Comprueba que no está    en otro movimiento'.format(lot.name))
+                    lot_domain = domain + [('lot_id', '=', lot_id)]
+                    line = self.env['stock.move.line'].search(lot_domain, limit=1, order='lot_id desc')
+                    if line:
+                        line.qty_done = 1
+                        line.write_status('lot_id', 'done', True)
+                        line.write_status('qty_done', 'done', True)
+        move = line.move_id
+        ##devuelvo un objeto movimietno para actualizar la vista de la app
+        if not move:
+            return False
+        return move
+
+
+
+
+
+
