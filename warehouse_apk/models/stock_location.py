@@ -32,6 +32,8 @@ class StockLocation(models.Model):
 
     @api.model
     def change_inventory_line_qty(self, values):
+        import pdb;
+        pdb.set_trace()
         line_id = values.get('id', False)
         line_id = self.env['stock.inventory.line'].browse(line_id)
         lot_name = values.get('serial', False)
@@ -43,7 +45,7 @@ class StockLocation(models.Model):
         wh_code = values.get('wh_code', False)
         product_qty = values.get('product_qty', False)
         inc = values.get('inc', False)
-        strict = product_id == False
+        strict = product_id = False
         if not product_id and wh_code:
             product = self.env['product.product'].search([('wh_code', '=', wh_code)])
             product_id = product and product.id or False
@@ -107,7 +109,31 @@ class StockLocation(models.Model):
             values.update(inventory_id=line_id.inventory_id.id)
 
         else:
-            raise ValidationError('Falta algún dato')
+            if inventory_id and product_id:
+                inventory_id = self.env['stock.inventory'].browse(inventory_id)
+                pre_filter = inventory_id.filter
+                pre_product_id = inventory_id.product_id
+                inventory_product_id = self.env['product.product'].browse(product_id)
+                inventory_id.filter = 'product'
+                inventory_id.product_id = inventory_product_id
+                inventory_id._get_inventory_lines_values()
+                vals = {'line_ids':[(0, 0, line_values) for line_values in inventory_id._get_inventory_lines_values()]}
+                if vals['line_ids']:
+                    inventory_id.write(vals)
+                    inventory_id.product_id = pre_product_id
+                    inventory_id.filter = pre_filter
+                else:
+                    if not location_id:
+                        location_id = inventory_id.location_id.id
+                    line_vals = {'inventory_id': inventory_id.id,
+                                 'product_id': product_id,
+                                 'location_id': location_id,
+                                 }
+                    self.env['stock.inventory.line'].create(line_vals)
+                values.update(ActiveProduct=product_id)
+
+            else:
+                raise ValidationError('Falta algún dato')
         return self.get_apk_inventory(values)
 
 
@@ -143,31 +169,63 @@ class StockLocation(models.Model):
             return lines
         product_id = values.get('product_id', False)
         location_id = values.get('location_id', False)
+        active_location = values.get('active_location', 0)
+        active_product = values.get('active_product', 0)
+        filter_line = values.get('filter', {})
+        if active_product:
+            filter_line['product_id'] = active_product
+        if active_location:
+            filter_line['location_id'] = active_location
+
         if location_id == -1:
             location_id = False
-        filter_line = values.get('filter', False)
+
+
         inventory_id = values.get('inventory_id', False)
-        empty_location_ids = []
-        res = {}
-        res ['ActiveLocation'] = 0
+        res = {'inventory': True, 'inventory_id': 0}
+        res['ActiveLocation'] = active_location
+        res['ActiveProduct'] = active_product
+
         if inventory_id:
             inventory_id = self.env['stock.inventory'].browse(inventory_id)
         else:
             domain = [('filter', 'in', ['none', 'partial', 'product']), ('state', '=', 'confirm'), ('location_id', '=', self.id)]
             inventory_id = self.env['stock.inventory'].search(domain, limit=1)
+
         if filter_line:
             line_domain = [('inventory_id', '=', inventory_id.id)]
             filter_location_id = filter_line.get('location_id', False)
             if filter_location_id:
                 line_domain += [('location_id', '=', filter_location_id)]
                 res['ActiveLocation'] = filter_location_id
-                empty_location_ids.append(self.env['stock.location'].search([('id', '=', filter_location_id)]))
             if filter_line.get('product_id', False):
                 line_domain += [('product_id', '=', filter_line.get('product_id', False))]
             lines = self.env['stock.inventory.line'].search(line_domain)
         else:
             lines = inventory_id.line_ids
+        res = {'inventory': True, 'inventory_id': 0, 'inventory_location_ids': []}
         if inventory_id:
+            empty_location = values.get('empty_location', False)
+            if empty_location:
+                product = inventory_id.product_id
+                if product:
+                    product_id = product.id
+                if not product_id:
+                    product_id = values.get('active_product', False)
+
+                if not product_id:
+                    raise ValidationError('Para qe artículo?')
+                empty_location_id =self.search([('barcode', '=', empty_location)])
+                if empty_location_id:
+                    ## Creo una linea nueva para este artículo
+                    vals = {'inventory_id': inventory_id.id,
+                            'product_id': product_id,
+                            'location_id': empty_location_id.id}
+                    if inventory_id.product_id:
+                        vals.update(location_id=empty_location_id.id)
+                    self.env['stock.inventory.line'].create(vals)
+
+
             LineIndex = -1
             ProductIndex = -1
             LocationIndex = -1
@@ -178,23 +236,7 @@ class StockLocation(models.Model):
             res['product_re'] = self.apk_warehouse_id.product_re
             line_ids = filter_lines(lines.sorted(key=lambda r: r.location_id.removal_priority))
             lines = {}
-            empty_location = values.get('empty_location', False)
-            empty_location_ids = []
-            if empty_location:
-                l_id = self.env['stock.location'].search([('barcode', '=', empty_location)])
-                if l_id:
-                    empty_location_ids.append(l_id)
-                    #res['ActiveLocation'] = l_id.id
-            for empty_location_id in empty_location_ids:
-                if empty_location_id in line_ids.mapped('location_id'):
-                    continue
-                LocationIndex += 1
-                barcode = empty_location_id.barcode
-                lines[barcode] = {'id': empty_location_id.id,
-                                  'LocationIndex': LocationIndex,
-                                  'name': empty_location_id.name,
-                                  'barcode': empty_location_id.barcode,
-                                  'product_ids': {}}
+
             for line in line_ids:
                 barcode = line.location_id.barcode
                 code = line.product_id.wh_code
@@ -236,13 +278,10 @@ class StockLocation(models.Model):
                 loc['product_ids'] = product_ids
                 res_lines.append(loc)
             res['inventory_location_ids'] = res_lines
-            print("#######################################\n#######################################")
-            pprint.PrettyPrinter(indent=2).pprint(res)
-            print("#######################################\n#######################################")
-            pprint.PrettyPrinter(indent=2).pprint(values)
-            print("#######################################\n#######################################")
-            return res
-        res = {'inventory': True, 'inventory_id': 0}
+
+        if len(res['inventory_location_ids']) == 1:
+            res['ActiveLocation'] = res['inventory_location_ids'][0]['id']
+
         print("#######################################\n#######################################")
         pprint.PrettyPrinter(indent=2).pprint(res)
         print("#######################################\n#######################################")
@@ -275,19 +314,39 @@ class StockLocation(models.Model):
     @api.model
     def new_inventory(self, values):
         location_id = self.env['stock.location'].browse(values.get('location_id'))
+        product_id = self.env['product.product'].browse(values.get('product_id'))
         filter_name = values.get('filter')
-        if filter_name == 'none':
-            filter_name = 'Todos'
+        if not product_id:
+            if filter_name == 'none':
+                filter_name = 'Todos'
+            else:
+                filter_name = 'Manual'
+            vals = {'location_id': location_id.id,
+                    'filter': values.get('filter'),
+                    'name': '{}: {}'.format(location_id.name, filter_name)}
         else:
-            filter_name = 'Manual'
-        vals = {'location_id': location_id.id,
-                'filter': values.get('filter'),
-                'name': '{}: {}'.format(location_id.name, filter_name)}
+            company_user = self.env.user.company_id
+            wh_id = self.env['stock.warehouse'].search([('company_id', '=', company_user.id)], limit=1)
+            location_id = wh_id.lot_stock_id
+            vals = {'product_id': product_id.id,
+                    'location_id': location_id.id,
+                    'filter': 'product',
+                    'name': product_id.default_code}
         inventory = self.env['stock.inventory'].create(vals)
         inventory.action_start()
         values.update(inventory_id=inventory.id,
                       filter=False,
                       stock_inventory=True)
+        if product_id:
+            strat_id = location_id.putaway_strategy_id
+            ## si el inventario no tiene líneas creo una en la ubicación predeterminada si el producto la tiene
+            line = product_id.product_putaway_ids.filtered(lambda x: x.putaway_id == strat_id)
+            if line:
+                self.env['stock.inventory.line'].create(
+                    {'product_id': product_id.id,
+                     'location_id': line.fixed_location_id.id,
+                     'inventory_id': inventory.id})
+            return {'location_id': location_id.id}
         return location_id.get_model_object(values)
 
 

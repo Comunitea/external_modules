@@ -28,12 +28,12 @@ class StockQuant(models.Model):
             if self.env['stock.location'].browse(location_id).child_ids:
                 show_location = True
         if product_id:
-            where_product = ' and pp.id = product_id'
+            where_product = ' and pp.id = {} ' .format(product_id)
         else:
             where_product = ''
         lot_id = values.get('lot_id', False)
         if lot_id:
-            where_lot = ' and pp.id = lot_id'
+            where_lot = ' and pp.id = {} '.format(lot_id)
         else:
             where_lot = ''
         package_id = values.get('package_id', False)
@@ -50,7 +50,7 @@ class StockQuant(models.Model):
               "join product_product pp on pp.id = sq.product_id " \
               "join product_template pt on pt.id = pp.product_tmpl_id " \
               "left join stock_production_lot spl on spl.id = sq.lot_id " \
-              "where sl.parent_path ilike '%/{}/%' {}" \
+              "where sl.parent_path ilike '%/{}/%' {} " \
               "group by pp.id, pp.default_code, pt.tracking, pt.name, sl.name, sl.barcode, sl.removal_priority, spl.id, spl.name, sl.id " \
               "order by sl.removal_priority asc".format(location_id, where_product, where_lot)
 

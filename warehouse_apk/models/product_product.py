@@ -34,7 +34,7 @@ class ProductProduct(models.Model):
                                "Ean 13, Referencia interna, id, id de prestahsop ...")
 
     def return_fields(self, mode='tree'):
-        return ['id', 'display_name', 'default_code', 'list_price', 'qty_available', 'virtual_available', 'tracking', 'wh_code']
+        return ['id', 'apk_name', 'default_code', 'list_price', 'qty_available', 'virtual_available', 'tracking', 'wh_code']
 
     def m2o_dict(self, field):
         if field:

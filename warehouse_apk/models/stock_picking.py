@@ -152,25 +152,8 @@ class StockPicking(models.Model):
             raise ValidationError ('No hay ninguna cantidad hecha para validar')
         ctx = picking_id._context.copy()
         ctx.update(skip_overprocessed_check=True)
-        return picking_id.with_context(ctx).button_validate()
-
-        try:
-            if res:
-                if res['res_model'] == 'stock.immediate.transfer':
-                    wiz =  self.env['stock.immediate.transfer'].with_context(res['context']).browse(res['res_id'])
-                    res_inm = wiz.process()
-
-                    if res_inm['res_model'] == 'stock.backorder.confirmation':
-                        wiz = self.env['stock.backorder.confirmation'].with_context(res_inm['context']).browse(res_inm['res_id'])
-                        res_bord = wiz._process()
-
-                if res['res_model'] == 'stock.backorder.confirmation':
-                        wiz = self.env['stock.backorder.confirmation'].with_context(res['context']).browse(res['res_id'])
-                        res_boc = wiz._process()
-            return {'err': False, 'values': {'id': picking_id.id, 'state': picking_id.state}}
-        except Exception as e:
-            return {'err': e}
-
+        picking_id.with_context(ctx).button_validate()
+        return picking_id.get_model_object({'view': 'form'})
 
     @api.model
     def force_set_qty_done_apk(self, vals):

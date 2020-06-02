@@ -39,6 +39,11 @@ class InfoApk(models.AbstractModel):
     apk_warehouse_id = fields.Many2one('stock.warehouse', compute="compute_warehouse_id")
 
     @api.multi
+    def compute_apk_name(self):
+        for obj in self:
+            obj.apk_name = obj.display_name
+
+    @api.multi
     def compute_warehouse_id(self):
 
         company_user = self.env.user.company_id
