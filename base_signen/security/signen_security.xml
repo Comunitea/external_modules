@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_signen_manager" model="res.groups">
+        <field name="name">Signen Manager</field>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+    <record id="signen_user" model="ir.rule">
+            <field name="name">Signen user multi-company</field>
+            <field name="model_id" ref="model_signen_configuration_user"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+</odoo>

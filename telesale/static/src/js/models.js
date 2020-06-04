@@ -93,7 +93,7 @@ var TsModel = Backbone.Model.extend({
         return  ['display_name', 'default_code', 'uom_id', 'barcode']
     },
     _get_partner_fields: function(){
-        return  ['parent_id', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type']
+        return  ['id', 'parent_id', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type']
     },
     // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
     // OVERWRITED IN MODULE TELESALE MANAGE VARIANTS because dificult to inherit because of the deferred return
@@ -526,6 +526,7 @@ var TsModel = Backbone.Model.extend({
             if (partner_obj.ref){
                 res += ' | ' + partner_obj.ref
             }
+            res += ' | ID' + partner_obj.id
         }
         return res;
     },

@@ -14,6 +14,7 @@ sandbox/
 upgrade.py
 *.log
 *.pyc
+*.pyo
 atlassian-ide-plugin.xml
 *~
 devel_*

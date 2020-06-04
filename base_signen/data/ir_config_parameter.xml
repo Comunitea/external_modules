@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="signen_api_key" model="ir.config_parameter">
+        <field name="key">signen.api.key</field>
+        <field name="value">-</field>
+    </record>
+</odoo>
