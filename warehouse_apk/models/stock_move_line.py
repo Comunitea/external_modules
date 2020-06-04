@@ -116,8 +116,6 @@ class StockMoveLine(models.Model):
 
     def get_model_object(self, values={}):
         res = super().get_model_object(values)
-
-
         ids = [x['id'] for x in res]
         move_line_ids = self.browse(ids)
         for index in range(0, len(res)):
@@ -288,7 +286,7 @@ class StockMoveLine(models.Model):
         if new_lot_id:
             lot_id = self.env['stock.production.lot']
             # Busco y o creo el lote
-            lot_id = lot_id.find_or_create_lot(new_lot_id, move_id.product_id)
+            lot_id = lot_id.find_or_create_lot(new_lot_id, move_id.product_id, not move.picking_type_id.use_existing_lots)
             bit_lot = True
         else:
             lot_id = False

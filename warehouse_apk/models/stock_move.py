@@ -47,7 +47,13 @@ class StockMove(models.Model):
     apk_order = fields.Integer(compute='compute_move_order')
     active_location_id = fields.Many2one('stock.location', copy=False)
     picking_field_status = fields.Boolean(related = 'picking_id.field_status')
+    move_line_location_id = fields.Many2one('stock.location', compute="compute_move_line_location_id")
 
+    @api.multi
+    def compute_move_line_location_id(self):
+        for sm in self:
+            loc_ids = sm.mapped('move_line_ids').mapped('location_id')
+            sm.move_line_location_id = loc_ids[:1]
     @api.multi
     def compute_move_order(self):
         for move in self:
@@ -160,10 +166,9 @@ class StockMove(models.Model):
         res['active_location_id'] = self.get_default_location()
         return res
 
-
     def return_fields(self, view='tree'):
         fields = ['id', 'product_id', 'product_uom_qty', 'reserved_availability', 'quantity_done', 'tracking', 'state',
-                  'picking_id', 'move_lines_count', 'field_status', 'wh_code',
+                  'picking_id', 'move_lines_count', 'field_status', 'wh_code', 'move_line_location_id',
                   'location_id', 'location_dest_id']
         if view == 'form':
             fields += ['barcode_re', 'default_location', 'picking_field_status', 'field_status_apk', 'sale_id' , 'product_uom', 'active_location_id']
@@ -246,16 +251,18 @@ class StockMove(models.Model):
             ## encuentro o creo los lotes que falten
             lot_ids = self.env['stock.production.lot']
             for lot in lot_names:
-                lot_id = lot_ids.find_or_create_lot(lot, move.product_id)
-                lot_ids |= lot_id
+                lot_id = lot_ids.find_or_create_lot(lot, move.product_id, not move.picking_type_id.use_existing_lots)
+                if lot_id:
+                    lot_ids |= lot_id
             ##filtro todos los movimientos que no tengan lote y se lo añado
             sml_ids = move.move_line_ids.filtered(lambda x: not x.lot_id)
             for sml in sml_ids:
                 sml.lot_id = lot_ids[0]
                 sml.write_status('lot_id', 'done')
-
+                sml.qty_done = 1
+                sml.write_status('qty_done', 'done')
                 lot_ids -= sml.lot_id
-                ## Si no se confirmo la ubicación, lo hago
+                ## Si no se confirmó la ubicación, lo hago
                 if active_location_id and not sml._read_status(sml.field_status_apk, move.default_location, 'done'):
                     sml[move.default_location] = active_location_id
                 ## Si se acaban los lotes, salgo

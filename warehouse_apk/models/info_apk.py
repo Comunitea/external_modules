@@ -38,6 +38,30 @@ class InfoApk(models.AbstractModel):
     apk_name = fields.Char(compute="compute_apk_name")
     apk_warehouse_id = fields.Many2one('stock.warehouse', compute="compute_warehouse_id")
 
+
+    def get_apk_product(self, code):
+        product_domain = [('wh_code', '=', code)]
+        product_id = self.env['product.product'].search(product_domain)
+        if len(product_id)>1:
+            raise ValueError ('Se han encontrado varios productos para este código {}'.format(code))
+        return product_id
+
+    def get_apk_lot(self, code, product_id):
+        domain = [('name', '=', code)]
+        if product_id:
+            domain += [('product_id', '=', product_id)]
+        lot_id = self.env['stock.production.lot'].search(domain)
+        if len(lot_id)>1:
+            raise ValueError ('Se han encontrado varios lotes para este código {}'.format(code))
+        return lot_id
+
+    def get_apk_location(self, code):
+        domain = [('barcode', '=', code)]
+        location_id = self.env['stock.location'].search(domain)
+        if len(location_id) > 1:
+            raise ValueError('Se han encontrado varias ubicaciones para este código {}'.format(code))
+        return location_id
+
     @api.multi
     def compute_apk_name(self):
         for obj in self:

@@ -29,6 +29,7 @@
     'depends': [
         'sale_stock',
         'stock_move_location',
+        'stock_picking_batch_extended',
         'stock_picking_type_group'
     ],
     'data': [

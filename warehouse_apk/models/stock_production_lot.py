@@ -8,10 +8,10 @@ class StockProductionLot(models.Model):
     _inherit ="stock.production.lot"
 
 
-    def find_or_create_lot(self, lot_name, product_id):
+    def find_or_create_lot(self, lot_name, product_id, create):
         domain = [('name', '=', lot_name), ('product_id', '=', product_id.id)]
         lot_id = self.search(domain, limit=1)
-        if not lot_id:
+        if not lot_id and create:
             val = {'name': lot_name, 'product_id': product_id.id}
             lot_id = lot_id.create(val)
         return lot_id
