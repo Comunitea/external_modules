@@ -10,9 +10,10 @@ class StockMoveLine(models.Model):
 
     def _action_done(self):
         res = super()._action_done()
-        for move_line in self.filtered(
-            lambda r: r.picking_id.picking_type_id.code == "outgoing"
-        ):
+        ## El action done de odoo tiene un bug y devuelve un self con un elemento borrado 
+        # si se procesa mas cantidad que la que se reserva por lo que falla aquí
+        for move_line in self.filtered(lambda r: r.exists()
+                        and r.picking_id.picking_type_id.code == "outgoing"):
             if move_line.lot_id and move_line.product_id.warranty_duration:
                 if (
                     move_line.lot_id.warranty_termination

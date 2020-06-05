@@ -29,13 +29,16 @@ class ProductProduct(models.Model):
     _inherit = ['info.apk', 'product.product']
 
     tracking = fields.Selection(related='product_tmpl_id.tracking')
+    wh_code = fields.Char(string='Unique WH Product Code',
+                          help="Código univoco para identificar el producto en con la pistola: "
+                               "Ean 13, Referencia interna, id, id de prestahsop ...")
 
     def return_fields(self, mode='tree'):
-        return ['id', 'display_name', 'default_code', 'list_price', 'qty_available', 'virtual_available', 'tracking']
+        return ['id', 'apk_name', 'default_code', 'list_price', 'qty_available', 'virtual_available', 'tracking', 'wh_code']
 
     def m2o_dict(self, field):
         if field:
-            return {'id': field.id, 'name': field.apk_name, 'default_code': field.default_code, 'barcode': field.barcode}
+            return {'id': field.id, 'name': field.apk_name, 'default_code': field.default_code, 'barcode': field.barcode, 'wh_code': field.wh_code}
         else:
             return {'id': False}
 

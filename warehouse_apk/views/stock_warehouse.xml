@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
                 <field name="code" position="after">
                     <field name="barcode_re"/>
+                    <field name="product_re"/>
                 </field>
             </field>
      </record>
