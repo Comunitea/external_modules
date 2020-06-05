@@ -9,8 +9,7 @@ class StockProductionLot(models.Model):
 
 
     def find_or_create_lot(self, lot_name, product_id, create):
-        domain = [('name', '=', lot_name), ('product_id', '=', product_id.id)]
-        lot_id = self.search(domain, limit=1)
+        lot_id = self.env['info.apk'].get_apk_lot(lot_name, product_id.id)
         if not lot_id and create:
             val = {'name': lot_name, 'product_id': product_id.id}
             lot_id = lot_id.create(val)

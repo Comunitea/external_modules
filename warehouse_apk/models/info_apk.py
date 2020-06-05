@@ -182,7 +182,6 @@ class InfoApk(models.AbstractModel):
             obj_ids = model_id.search(domain, offset=offset, limit=limit)
         else:
             obj_ids = self
-
         vals = []
         if not obj_ids:
             return vals

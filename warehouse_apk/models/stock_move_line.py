@@ -200,8 +200,7 @@ class StockMoveLine(models.Model):
             sml_id.qty_done = qty_done
             sml_id.write_status('qty_done', 'done', True)
         elif values.get('new_lot_name', False):
-            lot_domain = [('product_id', '=', sml_id.product_id.id), ('name', '=', values['new_lot_name'])]
-            lot_id = self.env['stock.production.lot'].search(lot_domain)
+            lot_id = self.get_apk_lot(values['new_lot_name'], sml_id.product_id.id)
             ##Busco un lote que tenga la cantidad suficiente. Si hay una cantidad hecha, esa, si no la cantidad del move_line
             need_qty = sml_id.qty_done or sml_id.product_uom_qty
             if lot_id:

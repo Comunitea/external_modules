@@ -162,8 +162,7 @@ class StockLocation(models.Model):
 
         lot_id = self.env['stock.production.lot']
         if lot_name:
-            lot_domain = [('product_id', '=', product_id.id), ('name', '=', lot_name)]
-            lot_id = lot_id.search(lot_domain)
+            lot_id = self.get_apk_lot(lot_name, product_id.id)
             if not lot_id and create_lot:
                 ## lo creo, a saber debe venir la orden de crear en el values de la pda
                 new_lot_vals = {'product_id': product_id.id, 'name': lot_name}

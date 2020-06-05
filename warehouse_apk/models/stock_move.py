@@ -52,8 +52,10 @@ class StockMove(models.Model):
     @api.multi
     def compute_move_line_location_id(self):
         for sm in self:
-            loc_ids = sm.mapped('move_line_ids').mapped('location_id')
-            sm.move_line_location_id = loc_ids[:1]
+            if sm.move_line_ids:
+                loc_ids = sm.mapped('move_line_ids').mapped(sm.default_location)
+                sm.move_line_location_id = loc_ids[:1]
+
     @api.multi
     def compute_move_order(self):
         for move in self:
