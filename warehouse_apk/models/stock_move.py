@@ -163,8 +163,11 @@ class StockMove(models.Model):
             if not move_id or len(move_id) != 1:
                 return res
         res['product_id']['image'] = move_id.product_id.image_medium
-        values = {'domain': [('move_id', '=', move_id.id)]}
-        res['move_line_ids'] = self.env['stock.move.line'].get_model_object(values)
+        values.update(view='form', model='stock.move.line')
+        res['move_line_ids'] = self.env['stock.move.line'].search(
+            [('move_id', '=', move_id.id)],
+            limit=values.get('sml_limit', 0),
+            offset=values.get('sml_offset', 0)).get_model_object()
         res['active_location_id'] = self.get_default_location()
         return res
 
@@ -173,7 +176,7 @@ class StockMove(models.Model):
                   'picking_id', 'move_lines_count', 'field_status', 'wh_code', 'move_line_location_id',
                   'location_id', 'location_dest_id']
         if view == 'form':
-            fields += ['barcode_re', 'default_location', 'picking_field_status', 'field_status_apk', 'sale_id' , 'product_uom', 'active_location_id']
+            fields += ['barcode_re', 'default_location', 'picking_field_status', 'field_status_apk', 'sale_id' , 'product_uom', 'active_location_id', 'move_lines_count']
         return fields
 
     @api.model
@@ -371,7 +374,6 @@ class StockMove(models.Model):
             picking_id = self.search_read([('id', '=', move_id)], ['picking_id'])
             if not picking_id:
                 return False
-
         if not move_id:
             return False
         move = self.browse(move_id)

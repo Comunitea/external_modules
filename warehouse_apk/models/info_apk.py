@@ -156,9 +156,9 @@ class InfoApk(models.AbstractModel):
 
     @api.model
     def get_apk_object(self, values):
+
         model = values.get('model', False)
         id = values.get('id', False)
-
         if id:
             id = int(id)
             res = self.env[model].browse(id).get_model_object(values)

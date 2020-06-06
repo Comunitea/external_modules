@@ -33,8 +33,8 @@ class StockPickingBatch(models.Model):
     scheduled_date = fields.Datetime(
         'Scheduled Date', compute='_compute_scheduled_date', inverse='_set_scheduled_date', store=True,
         index=True, track_visibility='onchange')
-    sale_ids = fields.One2many('sale.order', string='Ventas', compute="_compute_sale_ids")
-    sale_id = fields.Many2one('sale.order', string='Ventas', compute="_compute_sale_ids")
+    order_ids = fields.One2many('sale.order', string='Ventas', compute="_compute_sale_ids")
+    order_id = fields.One2many('sale.order', string='Ventas', compute="_compute_sale_ids")
     location_id = fields.Many2one(related="picking_type_id.default_location_src_id")
     location_dest_id = fields.Many2one(related="picking_type_id.default_location_dest_id")
     priority = fields.Selection (related='picking_ids.priority')
