@@ -34,6 +34,7 @@
             <field name="arch" type="xml">
                  <field name="default" position="after">
                      <field name="app_integrated"/>
+                     <field name="allow_overprocess"/>
                  </field>
                 <xpath expr="//group[@name='base_erp']" position="after">
                         <group string="APP" attrs="{'invisible': [('app_integrated', '=', False)]}">

@@ -296,7 +296,7 @@
                                 </struct></value>
                             </member>
                             <member>
-                                <name>apk_order</name>
+                                <name>removal_priority</name>
                                 <value><int>10</int></value>
                             </member>
                         </struct></value>

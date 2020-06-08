@@ -293,6 +293,7 @@ class StockPickingBatch(models.Model):
         if False and remove:
             domain += [('lot_id', '=', lot_id)]
             line = self.env['stock.move.line'].search(domain, limit=1, order='lot_id desc')
+
             line.qty_done = 0
             line.write_status('lot_id', 'done', False)
             line.write_status('qty_done', 'done', False)
@@ -300,6 +301,7 @@ class StockPickingBatch(models.Model):
             # caso 1. COnfirmar el lote que hay
             lot_domain = domain + [('lot_id', '=', lot_id)]
             line = self.env['stock.move.line'].search(lot_domain, limit=1, order='lot_id desc')
+
             if line:
                 ## si es lote +1 , si es serial = 1
                 if line.product_id.tracking == 'serial':
@@ -328,6 +330,8 @@ class StockPickingBatch(models.Model):
                         line.write_status('lot_id', 'done', True)
                         line.write_status('qty_done', 'done', True)
         move = line.move_id
+        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
+            raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         ##devuelvo un objeto movimietno para actualizar la vista de la app
         if not move:
             return False

@@ -20,6 +20,7 @@
 ##############################################################################
 
 from odoo import api, models, fields
+from odoo.exceptions import ValidationError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -44,12 +45,13 @@ class StockMove(models.Model):
     default_location = fields.Selection(related='picking_type_id.group_code.default_location')
     barcode_re = fields.Char(related='picking_type_id.warehouse_id.barcode_re')
     product_re = fields.Char(related='picking_type_id.warehouse_id.product_re')
-    apk_order = fields.Integer(compute='compute_move_order')
+    removal_priority = fields.Integer(compute='compute_move_order', store=True)
     active_location_id = fields.Many2one('stock.location', copy=False)
     picking_field_status = fields.Boolean(related = 'picking_id.field_status')
     move_line_location_id = fields.Many2one('stock.location', compute="compute_move_line_location_id")
 
     @api.multi
+
     def compute_move_line_location_id(self):
         for sm in self:
             if sm.move_line_ids:
@@ -57,13 +59,15 @@ class StockMove(models.Model):
                 sm.move_line_location_id = loc_ids[:1]
 
     @api.multi
+    @api.depends('move_line_ids.location_id', 'move_line_ids.location_dest_id')
     def compute_move_order(self):
         for move in self:
             field = move.default_location
-            sml = move.move_lines.filtered(lambda x: not x.read_status(field, 'done'))
-            if not sml:
-                sml = move.move_line_ids
-            move.apk_order = min(sml[field].removal_priority)
+            sml = move.move_line_ids
+            if sml:
+                move.removal_priority = min([x.removal_priority for x in sml.mapped(field)])
+            else:
+                move.removal_priority = 999999
 
     # @api.depends('move_line_ids.field_status')
     # def compute_field_status(self):
@@ -164,10 +168,15 @@ class StockMove(models.Model):
                 return res
         res['product_id']['image'] = move_id.product_id.image_medium
         values.update(view='form', model='stock.move.line')
-        res['move_line_ids'] = self.env['stock.move.line'].search(
+        sml_ids = self.env['stock.move.line'].search(
             [('move_id', '=', move_id.id)],
-            limit=values.get('sml_limit', 0),
-            offset=values.get('sml_offset', 0)).get_model_object()
+            limit=values.get('sml_limit', 20),
+            offset=values.get('sml_offset', 0))
+        if sml_ids:
+            res['move_line_ids'] = sml_ids.get_model_object()
+        else:
+            res['move_line_ids'] = []
+
         res['active_location_id'] = self.get_default_location()
         return res
 
@@ -186,6 +195,8 @@ class StockMove(models.Model):
             return {'err': True, 'error': "No se ha encontrado el movimiento."}
         for move_line in move.move_line_ids:
             move_line.qty_done = move_line.product_uom_qty
+        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
+            raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         return True
 
     def compute_active_location_id(self, field_location, move):
@@ -294,6 +305,8 @@ class StockMove(models.Model):
         move._recompute_state()
         ## Devuelvo la información del moviemitno para ahorrar una llamada desde la apk
         values = {'id': move.id, 'model': 'stock.move', 'view': 'form'}
+        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
+            raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         return self.env['info.apk'].get_apk_object(values)
 
     @api.model
@@ -340,6 +353,8 @@ class StockMove(models.Model):
 
         if move:
             move._recompute_state()
+            if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
+                raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
             return move.get_model_object()
         return False
 

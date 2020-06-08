@@ -41,13 +41,15 @@ class StockMoveLine(models.Model):
                                               "Bit 1 - Visible\nBit 2 - Requerido\nBit 3 - Hecho\n"
                                               "Validable cuando bit 3 está a 0")
     field_status = fields.Boolean('Ready', compute="compute_field_status", store=True)
-    apk_order = fields.Integer(compute='compute_move_order')
+    removal_priority = fields.Integer(compute='compute_move_order', store=True)
+
 
     @api.multi
+    @api.depends('location_id', 'location_dest_id')
     def compute_move_order(self):
         for move in self:
             field = move.move_id.default_location
-            move.apk_order = move[field].removal_priority
+            move.removal_priority = move[field].removal_priority
 
     @api.depends('field_status_apk')
     def compute_field_status(self):
@@ -130,7 +132,7 @@ class StockMoveLine(models.Model):
 
     def return_fields(self, mode='tree'):
         return ['id', 'product_uom_qty', 'qty_done', 'location_id', 'location_dest_id', 'lot_id', 'field_status_apk', 'lot_name',
-                'package_id', 'result_package_id', 'tracking', 'state', 'apk_order']
+                'package_id', 'result_package_id', 'tracking', 'state', 'removal_priority']
 
     @api.model
     def remove_line_id(self, values):
@@ -315,6 +317,7 @@ class StockMoveLine(models.Model):
         confirm = values['confirm']
         active_location_id = values['active_location_id']
         move_id = self.env['stock.move'].browse(move_id)
+        import pdb; pdb.set_trace()
         location_id = self.env['stock.location'].get_location_from_apk_values(barcode, move_id)
         if not location_id:
             raise ValidationError ('No se ha encontrado una ubicación para {}'.format(barcode))
