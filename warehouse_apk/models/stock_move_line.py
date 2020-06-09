@@ -22,7 +22,7 @@
 from odoo import api, models, fields
 import logging
 from odoo.tools import float_is_zero, float_compare
-
+from odoo.exceptions import ValidationError
 _logger = logging.getLogger(__name__)
 
 BINARYPOSITION = {'product_id': 0, 'location_id': 1, 'lot_id': 2, 'package_id': 3, 'location_dest_id': 4, 'result_package_id': 5, 'qty_done': 6}
@@ -41,13 +41,15 @@ class StockMoveLine(models.Model):
                                               "Bit 1 - Visible\nBit 2 - Requerido\nBit 3 - Hecho\n"
                                               "Validable cuando bit 3 está a 0")
     field_status = fields.Boolean('Ready', compute="compute_field_status", store=True)
-    apk_order = fields.Integer(compute='compute_move_order')
+    removal_priority = fields.Integer(compute='compute_move_order', store=True)
+
 
     @api.multi
+    @api.depends('location_id', 'location_dest_id')
     def compute_move_order(self):
         for move in self:
             field = move.move_id.default_location
-            move.apk_order = move[field].removal_priority
+            move.removal_priority = move[field].removal_priority
 
     @api.depends('field_status_apk')
     def compute_field_status(self):
@@ -116,8 +118,6 @@ class StockMoveLine(models.Model):
 
     def get_model_object(self, values={}):
         res = super().get_model_object(values)
-
-
         ids = [x['id'] for x in res]
         move_line_ids = self.browse(ids)
         for index in range(0, len(res)):
@@ -132,7 +132,7 @@ class StockMoveLine(models.Model):
 
     def return_fields(self, mode='tree'):
         return ['id', 'product_uom_qty', 'qty_done', 'location_id', 'location_dest_id', 'lot_id', 'field_status_apk', 'lot_name',
-                'package_id', 'result_package_id', 'tracking', 'state', 'apk_order']
+                'package_id', 'result_package_id', 'tracking', 'state', 'removal_priority']
 
     @api.model
     def remove_line_id(self, values):
@@ -202,8 +202,7 @@ class StockMoveLine(models.Model):
             sml_id.qty_done = qty_done
             sml_id.write_status('qty_done', 'done', True)
         elif values.get('new_lot_name', False):
-            lot_domain = [('product_id', '=', sml_id.product_id.id), ('name', '=', values['new_lot_name'])]
-            lot_id = self.env['stock.production.lot'].search(lot_domain)
+            lot_id = self.get_apk_lot(values['new_lot_name'], sml_id.product_id.id)
             ##Busco un lote que tenga la cantidad suficiente. Si hay una cantidad hecha, esa, si no la cantidad del move_line
             need_qty = sml_id.qty_done or sml_id.product_uom_qty
             if lot_id:
@@ -260,6 +259,11 @@ class StockMoveLine(models.Model):
         return self.env['info.apk'].get_apk_object(values)
 
 
+    def update_lot_line(self, new_lot_id):
+        self.lot_id = False
+        new_location = Quant
+
+
     @api.model
     def change_line_lot_id(self, values):
         ##Actuliza lotes de los movimientos
@@ -283,7 +287,7 @@ class StockMoveLine(models.Model):
         if new_lot_id:
             lot_id = self.env['stock.production.lot']
             # Busco y o creo el lote
-            lot_id = lot_id.find_or_create_lot(new_lot_id, move_id.product_id)
+            lot_id = lot_id.find_or_create_lot(new_lot_id, move_id.product_id, not move.picking_type_id.use_existing_lots)
             bit_lot = True
         else:
             lot_id = False
@@ -302,8 +306,40 @@ class StockMoveLine(models.Model):
     def confirm_bit_qty_done(self, value=True):
         return self.write_status('qty_done', 'done', value)
 
+
+
     @api.model
     def assign_location_to_moves(self, values):
+        move_id = values['move_id']
+        sml_ids = values ['sml_ids']
+        field_id = values['field']
+        barcode = values['barcode']
+        confirm = values['confirm']
+        active_location_id = values['active_location_id']
+        move_id = self.env['stock.move'].browse(move_id)
+        import pdb; pdb.set_trace()
+        location_id = self.env['stock.location'].get_location_from_apk_values(barcode, move_id)
+        if not location_id:
+            raise ValidationError ('No se ha encontrado una ubicación para {}'.format(barcode))
+        move_id.active_location_id = location_id
+        default_location = move_id.default_location
+        if sml_ids:
+            sml_ids = self.env['stock.move.line'].browse(sml_ids)
+        else:
+            if move_id:
+                sml_ids = move_id.move_line_ids.filtered(lambda x: x[default_location].barcode == barcode or not (x.read_status('lot_id', 'done') and x.read_status('qty_done', 'done')))
+        if not sml_ids:
+            move_id.active_location_id = location_id
+            'Creo un movimiento desde esta ubicación para este producto'
+            sml_ids = move_id.create_new_sml_id({})
+        sml_ids.write_status(default_location, 'done', True)
+        sml_ids.write({default_location: location_id.id})
+        values = {'id': move_id, 'model': 'stock.move', 'view': 'form'}
+        return move_id.get_model_object(values)
+
+
+    @api.model
+    def assign_location_to_moves_bis(self, values):
         move_id = values['move_id']
         sml_ids = values ['sml_ids']
         field_id = values['field']
@@ -413,7 +449,7 @@ class StockMoveLine(models.Model):
 
     @api.model
     def set_qty_done_from_apk(self, vals):
-        move_line_id = vals.get('id', False)
+        move_line_id = vals.get('move_line_id', False)
         qty_done = vals.get('qty_done', False)
         if not move_line_id or not qty_done:
             return {'err': True, 'error': "No se ha enviado la línea o la cantidad a modificar."}
@@ -424,6 +460,11 @@ class StockMoveLine(models.Model):
             move_line.update({
                 'qty_done': qty_done
             })
+
+            print ("APK. Se ha actualizado el movimeinto {}:{} con cantidad {}".format(move_line.id, move_line.display_name, move_line.qty_done))
             return True
         except Exception as e:
+            print("APK. Error al actualizar el movimeinto {}:{} con cantidad {}".format(move_line.id,
+                                                                                      move_line.dsiplay_name,
+                                                                                      move_line.qty_done))
             return {'err': True, 'error': e}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="default_warranty" model="ir.config_parameter">
+        <field name="key">rma.default_warranty</field>
+        <field name="value">1095</field>
+    </record>
+    <record id="minimum_warranty" model="ir.config_parameter">
+        <field name="key">rma.minimum_warranty</field>
+        <field name="value">180</field>
+    </record>
+</odoo>

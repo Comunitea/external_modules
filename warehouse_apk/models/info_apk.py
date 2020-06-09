@@ -36,6 +36,44 @@ class InfoApk(models.AbstractModel):
             obj.apk_name = obj.display_name
 
     apk_name = fields.Char(compute="compute_apk_name")
+    apk_warehouse_id = fields.Many2one('stock.warehouse', compute="compute_warehouse_id")
+
+
+    def get_apk_product(self, code):
+        product_domain = [('wh_code', '=', code)]
+        product_id = self.env['product.product'].search(product_domain)
+        if len(product_id)>1:
+            raise ValueError ('Se han encontrado varios productos para este código {}'.format(code))
+        return product_id
+
+    def get_apk_lot(self, code, product_id):
+        domain = [('name', '=', code)]
+        if product_id:
+            domain += [('product_id', '=', product_id)]
+        lot_id = self.env['stock.production.lot'].search(domain)
+        if len(lot_id)>1:
+            raise ValueError ('Se han encontrado varios lotes para este código {}'.format(code))
+        return lot_id
+
+    def get_apk_location(self, code):
+        domain = [('barcode', '=', code)]
+        location_id = self.env['stock.location'].search(domain)
+        if len(location_id) > 1:
+            raise ValueError('Se han encontrado varias ubicaciones para este código {}'.format(code))
+        return location_id
+
+    @api.multi
+    def compute_apk_name(self):
+        for obj in self:
+            obj.apk_name = obj.display_name
+
+    @api.multi
+    def compute_warehouse_id(self):
+
+        company_user = self.env.user.company_id
+        wh_id = self.env['stock.warehouse'].search([('company_id', '=', company_user.id)], limit=1)
+        for loc in self:
+            loc.apk_warehouse_id = wh_id.id
 
     def return_fields(self, mode='tree'):
         return ['id', 'display_name']
@@ -118,9 +156,9 @@ class InfoApk(models.AbstractModel):
 
     @api.model
     def get_apk_object(self, values):
+
         model = values.get('model', False)
         id = values.get('id', False)
-
         if id:
             id = int(id)
             res = self.env[model].browse(id).get_model_object(values)
@@ -144,7 +182,6 @@ class InfoApk(models.AbstractModel):
             obj_ids = model_id.search(domain, offset=offset, limit=limit)
         else:
             obj_ids = self
-
         vals = []
         if not obj_ids:
             return vals
@@ -194,6 +231,20 @@ class InfoApk(models.AbstractModel):
         pprint.PrettyPrinter(indent=2).pprint(vals)
         print("\n -------------------------------------")
         return vals
+
+    @api.model
+    def change_field_value(self, values):
+        model = values.get('model')
+        id = values.get('id')
+        field = values.get('field')
+        value = values.get('value')
+        try:
+            self.env[model].browse(id)[field] = value
+            return [{field: value}]
+        except:
+            raise ValueError('error al escribir {} en el campo {}. Model {}. Id {}'.format(model, id, field, value))
+        return
+
 
     @api.model
     def get_field_group(self, values):

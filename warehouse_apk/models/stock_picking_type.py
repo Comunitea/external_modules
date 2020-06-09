@@ -33,7 +33,7 @@ class PickingTypeGroupCode(models.Model):
                                               "Validable cuando bit 3 está a 0")
     default_location = fields.Selection(selection=[('location_id', 'Origen'), ('location_dest_id', 'Destino')], string="Tipo de ubicación por defecto")
     icon = fields.Char("Icono")
-
+    allow_overprocess = fields.Boolean('Overprocess', help="Permitir realizar más cantidad que la reservada")
     def return_fields(self, mode='tree'):
         return ['code', 'name', 'app_integrated', 'icon']
 
@@ -57,7 +57,7 @@ class StockPickingType(models.Model):
     field_status_apk = fields.Char(related="group_code.field_status_apk")
     default_location = fields.Selection(related="group_code.default_location")
     group_code_code = fields.Selection(related="group_code.code", store=True)
-
+    allow_overprocess = fields.Boolean(related='group_code.allow_overprocess')
     def return_fields(self, mode='tree'):
 
         fields = ['id', 'apk_name', 'color', 'warehouse_id', 'code', 'name', 'count_picking_ready', 'count_picking_waiting',
