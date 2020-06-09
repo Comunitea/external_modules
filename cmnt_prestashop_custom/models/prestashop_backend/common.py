@@ -10,3 +10,4 @@ class PrestashopBackend(models.Model):
         [("url", "URL"), ("db", "Database")], default="url"
     )
     resize_images = fields.Boolean()
+    start_import_date = fields.Datetime()

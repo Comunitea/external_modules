@@ -9,6 +9,7 @@
                 <group>
                     <field name="import_image_type"/>
                     <field name="resize_images"/>
+                    <field name="start_import_date"/>
                 </group>
             </xpath>
         </field>
