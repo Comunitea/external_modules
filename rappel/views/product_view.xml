@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_form_view_add_no_rappel" model="ir.ui.view">
+        <field name="name">product.template.common.form.add_no_rappel</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <div name="options" position="inside">
+                <div>
+                    <field name="no_rappel"/>
+                    <label for="no_rappel"/>
+                </div>
+            </div>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,188 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* cmnt_delivery_carrier_label
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-28 07:58+0000\n"
+"PO-Revision-Date: 2020-04-28 07:58+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier__account_id
+msgid "Account"
+msgstr "Cuenta"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,help:cmnt_delivery_carrier_label.field_delivery_carrier_service__auto_apply
+msgid "Apply automatically this carrier service."
+msgstr "Aplicar automáticamente."
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,help:cmnt_delivery_carrier_label.field_delivery_carrier_service__country_id
+msgid "Apply only if delivery country match."
+msgstr "Aplicar sólo si el país de entrega concuerda."
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__attachment_ids
+msgid "Attachments"
+msgstr "Adjuntos"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model,name:cmnt_delivery_carrier_label.model_carrier_account
+msgid "Base account datas"
+msgstr ""
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__carrier_id
+msgid "Carrier"
+msgstr "Transportista"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__carrier_code
+msgid "Carrier Code"
+msgstr "Código transportista"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_stock_picking__carrier_packages
+msgid "Carrier Packages"
+msgstr "Número de paquetes"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_stock_picking__carrier_service
+msgid "Carrier Service"
+msgstr "Servicio transportista"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier__carrier_services
+msgid "Carrier Services"
+msgstr "Servicios transportista"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier__carrier_type
+msgid "Carrier Type"
+msgstr "Tipo transportista"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_stock_picking__carrier_weight
+msgid "Carrier Weight"
+msgstr "Peso transportista"
+
+#. module: cmnt_delivery_carrier_label
+#: selection:delivery.carrier,carrier_type:0
+msgid "Correos Express"
+msgstr "Correos Express"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__country_id
+msgid "Country"
+msgstr "País"
+
+#. module: cmnt_delivery_carrier_label
+#: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
+msgid "Create Shipping Label 🚚"
+msgstr "Crear etiqueta de envío"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model,name:cmnt_delivery_carrier_label.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Método de envío"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__auto_apply
+msgid "Detect Automatically"
+msgstr "Detectar automáticamente"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__state_ids
+msgid "Federal States"
+msgstr "Provincias"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: cmnt_delivery_carrier_label
+#: code:addons/cmnt_delivery_carrier_label/models/stock_picking.py:13
+#, python-format
+msgid "No label is configured for the selected delivery method."
+msgstr "No se ha configurado una etiqueta para este método de entrega."
+
+#. module: cmnt_delivery_carrier_label
+#: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
+msgid "Print shipping label"
+msgstr "Volver a imprimir etiqueta de envío"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_carrier_account__printer
+msgid "Printer"
+msgstr "Impresora"
+
+#. module: cmnt_delivery_carrier_label
+#: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_delivery_carrier_form
+msgid "Services"
+msgstr "Servicios"
+
+#. module: cmnt_delivery_carrier_label
+#: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
+msgid "Shipping Label 🚚"
+msgstr ""
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model,name:cmnt_delivery_carrier_label.model_stock_picking
+msgid "Transfer"
+msgstr "Albarán"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_carrier_account__test_enviroment
+msgid "Use test enviroment"
+msgstr "Usar entorno test"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model,name:cmnt_delivery_carrier_label.model_delivery_carrier_service
+msgid "delivery.carrier.service"
+msgstr ""
+
