@@ -49,11 +49,17 @@ class StockMove(models.Model):
     active_location_id = fields.Many2one('stock.location', copy=False)
     picking_field_status = fields.Boolean(related = 'picking_id.field_status')
     move_line_location_id = fields.Many2one('stock.location', compute="compute_move_line_location_id")
+    apk_filter_by_qty = fields.Char(compute="compute_move_line_location_id")
+    apk_order = fields.Integer(string="Apk order")
 
     @api.multi
-
     def compute_move_line_location_id(self):
         for sm in self:
+            if sm.quantity_done < sm.reserved_availability:
+                sm.apk_filter_by_qty = 'Pendientes'
+            elif sm.quantity_done >= sm.reserved_availability:
+                sm.apk_filter_by_qty = 'Hechos'
+
             if sm.move_line_ids:
                 loc_ids = sm.mapped('move_line_ids').mapped(sm.default_location)
                 sm.move_line_location_id = loc_ids[:1]
@@ -128,7 +134,8 @@ class StockMove(models.Model):
         vals['field_status_apk'] = self.get_default_field_status()
         return vals
 
-    def find_model_object(self, domain=[], search_str='', ids = []):
+
+    def find_model_object(self, domain=[], search_str='', ids=[]):
         product_domain = domain
         if ids:
             product_domain += [('id', 'in', ids)]
@@ -154,6 +161,19 @@ class StockMove(models.Model):
             return self.move_line_ids[0][self['default_location']].get_model_object()[0]
         else:
             return self[self['default_location']].get_model_object()[0]
+
+    @api.model
+    def get_relative_move_info(self, values):
+        move_id = values.get('move_id', 0)
+        filter = values.get('filter_moves', 'Pendientes')
+        inc= values.get('inc', 0)
+        move_id = self.browse(move_id)
+        apk_order = move_id.apk_order
+        batch_id = move_id.picking_id.batch_id
+        move_domain = batch_id.get_move_domain_for_picking(filter, batch_id, inc=inc, limit=1, apk_order=apk_order)
+        new_move = self.search(move_domain) or move_id
+        values = {'view': 'form'}
+        return new_move.get_model_object(values)
 
     def get_model_object(self, values={}):
         res = super().get_model_object(values=values)
@@ -185,7 +205,7 @@ class StockMove(models.Model):
                   'picking_id', 'move_lines_count', 'field_status', 'wh_code', 'move_line_location_id',
                   'location_id', 'location_dest_id']
         if view == 'form':
-            fields += ['barcode_re', 'default_location', 'picking_field_status', 'field_status_apk', 'sale_id' , 'product_uom', 'active_location_id', 'move_lines_count']
+            fields += ['apk_order','barcode_re', 'default_location', 'picking_field_status', 'field_status_apk', 'sale_id' , 'product_uom', 'active_location_id', 'move_lines_count']
         return fields
 
     @api.model
@@ -339,7 +359,7 @@ class StockMove(models.Model):
         move_id = vals.get('move_id', False)
         quantity_done = vals.get('quantity_done', False)
         inc = vals.get('inc', False)
-
+        filter = vals.get('filter_moves', 'Todos')
         if not move_id or not (quantity_done or inc):
             return {'err': True, 'error': "No se ha enviado la línea o la cantidad a modificar."}
         move = self.browse(move_id)
@@ -350,7 +370,6 @@ class StockMove(models.Model):
             move.quantity_done += inc
         else:
             move.quantity_done = quantity_done
-
         if move:
             move._recompute_state()
             if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:

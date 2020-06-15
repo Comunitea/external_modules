@@ -33,8 +33,10 @@ class StockPickingBatch(models.Model):
     scheduled_date = fields.Datetime(
         'Scheduled Date', compute='_compute_scheduled_date', inverse='_set_scheduled_date', store=True,
         index=True, track_visibility='onchange')
-    sale_ids = fields.One2many('sale.order', string='Ventas', compute="_compute_sale_ids")
-    sale_id = fields.Many2one('sale.order', string='Ventas', compute="_compute_sale_ids")
+    sale_ids = fields.One2many('sale.order', string='Ventas', compute="_compute_order_ids")
+    sale_id = fields.Many2one('sale.order', string='Venta', compute="_compute_order_ids")
+    purchase_ids = fields.One2many('purchase.order', string='Compras', compute="_compute_order_ids")
+    purchase_id = fields.Many2one('purchase.order', string='Compra', compute="_compute_order_ids")
     location_id = fields.Many2one(related="picking_type_id.default_location_src_id")
     location_dest_id = fields.Many2one(related="picking_type_id.default_location_dest_id")
     priority = fields.Selection (related='picking_ids.priority')
@@ -81,11 +83,15 @@ class StockPickingBatch(models.Model):
         self.picking_type_id = self.picking_ids.mapped('picking_type_id')
 
     @api.multi
-    def _compute_sale_ids(self):
+    def _compute_order_ids(self):
         for batch in self:
             batch.sale_ids = batch.picking_ids.mapped('sale_id')
             if batch.sale_ids:
                 batch.sale_id = batch.sale_ids[0]
+            batch.purchase_ids = batch.picking_ids.mapped('purchase_id')
+            if batch.purchase_ids:
+                batch.purchase_id = batch.purchase_ids[0]
+
     @api.one
     @api.depends('move_lines.date_expected')
     def _compute_scheduled_date(self):
@@ -106,7 +112,7 @@ class StockPickingBatch(models.Model):
                'pick_state', 'sale_id', 'move_line_count', 'picking_type_id',
                'default_location', 'field_status', 'priority']
         if mode == 'form':
-            res += ['field_status', 'group_code', 'barcode_re', 'product_re']
+            res += ['field_status', 'group_code', 'barcode_re', 'product_re', 'sale_ids', 'purchase_ids']
         return res
 
     def _compute_picking_count_domains(self):
@@ -142,27 +148,67 @@ class StockPickingBatch(models.Model):
         return self.get_model_object(values)
 
 
-    def get_move_domain_for_picking(self, picking_id):
-        return  [('picking_id.batch_id', '=', picking_id.id)]
+    def get_move_domain_for_picking(self, filter, batch_id, inc=0, limit = 0, apk_order = 0):
+        sql = "select move_id from stock_move_line sml " \
+              "join stock_move sm on sm.id = sml.move_id " \
+              "join stock_picking sp on sp.id = sml.picking_id " \
+              "where sp.batch_id = {}".format(batch_id.id)
+        if filter == 'Pendientes':
+            sql += " and qty_done != sml.product_uom_qty"
+        if filter == 'Completados':
+            sql += " and qty_done == sml.product_uom_qty"
+        order = ''
+        if apk_order > 0:
+            if inc == -1:
+                sql += " and sm.apk_order < {}".format(apk_order)
+                order = ' order by sm.apk_order desc'
+            else:
+                sql += " and sm.apk_order > {}".format(apk_order)
+                order = ' order by sm.apk_order asc'
+
+        if order:
+            sql += order
+        if limit > 0:
+            sql += ' limit {}'.format(limit)
+        self._cr.execute(sql)
+        move_ids = self._cr.fetchall()
+        if move_ids:
+            if len(move_ids) > 1:
+                res_ids = [x[0] for x in move_ids]
+                domain = [('id', 'in', res_ids)]
+            else:
+                domain = [('id', '=', move_ids[0])]
+        else:
+            domain = [('id', '=', 0)]
+        return domain
+
+    def assign_order_moves(self):
+        cont = 0
+        for move in self.move_lines.sorted(key=lambda r: r.location_id.removal_priority):
+            move.apk_order = cont
+            cont+=1
+
+    def prepare_for_pda(self):
+        self.user_id = self.env.user
+        if self.state == 'draft':
+            self.state == 'in_progress'
+            self.assign_order_moves()
 
     def get_model_object(self, values={}):
-
         res = super().get_model_object(values=values)
         picking_id = self
         if picking_id:
-            picking_id.user_id = self.env.user
-            if picking_id.state == 'draft':
-                picking_id.state == 'in_progress'
+            picking_id.prepare_for_pda()
         if values.get('view', 'tree') == 'tree':
             return res
-
         if not picking_id:
             domain = values.get('domain', [])
             limit = values.get('limit', 1)
             move_id = self.search(domain, limit)
             if not picking_id or len(picking_id) != 1:
                 return res
-        values = {'domain': self.get_move_domain_for_picking(picking_id)}
+
+        values = {'domain': self.get_move_domain_for_picking(values.get('filter_moves', 'Todos'), picking_id)}
         res['move_lines'] = self.env['stock.move'].get_model_object(values)
         #print ("------------------------------Move lines")
         #pprint.PrettyPrinter(indent=2).pprint(res['move_lines'])
@@ -278,9 +324,11 @@ class StockPickingBatch(models.Model):
             raise ValidationError('Se han encontrado varias opciones. No hay info suficiente para el código {}'.format(lot_name))
         values = {
             'move_id': move_line_id.move_id.id,
+            'filter_moves': vals.get('filter_moves', 'Todos'),
             'location_id': move_line_id.location_id.id,
             'inc': 1}
         return move_line_id.move_id.set_qty_done_from_apk(values)
+
 
     @api.model
     def serial_for_move(self, picking_id, lot, remove):

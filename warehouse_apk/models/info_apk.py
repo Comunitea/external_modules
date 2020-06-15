@@ -79,6 +79,10 @@ class InfoApk(models.AbstractModel):
         return ['id', 'display_name']
 
     def selection_dict(self, f_obj, field_value):
+        print ("Selection dict para {}: {}".format(f_obj, field_value))
+        selection = [x for x in f_obj['selection'] if x[0] == field_value]
+        if not selection:
+            return {'name': 'Indefinido', 'value': False}
         val = {'name': [x for x in f_obj['selection'] if x[0] == field_value][0][1],
                'value': field_value}
         return val
@@ -132,7 +136,6 @@ class InfoApk(models.AbstractModel):
             field_value = obj[field]
             if f_obj['type'] in ['many2many', 'one2many']:
                 field, list_ids = field_value.m2m_dict(obj[field])
-
                 val_obj[string] = field
                 val_obj['{}_list_ids'.format(field['string'])] = list_ids
             elif f_obj['type'] == 'many2one':
@@ -205,13 +208,14 @@ class InfoApk(models.AbstractModel):
             fields_list = values.get('fields', self.env[model].return_fields(view))
         fields_get = obj_ids.fields_get()
         for obj in obj_ids:
+
             val_obj = {}
             for field in fields_list:
                 f_obj = fields_get[field]
                 field_value = obj[field]
                 if f_obj['type'] in ['many2many', 'one2many']:
-                    field, list_ids = field_value.m2m_dict(obj[field])
-                    val_obj[field] = field
+                    value_ids, list_ids = field_value.m2m_dict(obj[field])
+                    val_obj[field] = value_ids or []
                     val_obj['{}_list_ids'.format(field)] = list_ids
                 elif f_obj['type'] == 'many2one':
                     val_obj[field] = field_value.m2o_dict(field_value)

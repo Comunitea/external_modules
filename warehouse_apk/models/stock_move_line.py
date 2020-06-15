@@ -317,7 +317,6 @@ class StockMoveLine(models.Model):
         confirm = values['confirm']
         active_location_id = values['active_location_id']
         move_id = self.env['stock.move'].browse(move_id)
-        import pdb; pdb.set_trace()
         location_id = self.env['stock.location'].get_location_from_apk_values(barcode, move_id)
         if not location_id:
             raise ValidationError ('No se ha encontrado una ubicación para {}'.format(barcode))

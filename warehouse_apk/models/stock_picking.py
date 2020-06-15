@@ -115,19 +115,6 @@ class StockPicking(models.Model):
     @api.model
     def action_done_apk(self, values):
         return self.button_validate_apk(values)
-        picking = self.browse(values.get('id', False))
-        if not picking:
-            return {'err': True, 'error': "No se ha encontrado el albarán"}
-        res = picking.action_done()
-        return True
-
-
-        pick = self.browse(values.get('id', False))
-        move_id = self.browse(values.get('move_id', False))
-        pick.action_done()
-        values = {'id': move_id, 'model': 'stock.move', 'view': 'form', 'message': 'El albarán {} esta hecho'.format(pick.name)}
-        return self.env['info.apk'].get_apk_object(values)
-
 
     @api.model
     def action_assign_apk(self, vals):
