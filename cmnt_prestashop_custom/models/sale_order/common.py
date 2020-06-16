@@ -38,7 +38,7 @@ class PrestashopSaleOrder(models.Model):
         if backend.start_import_date:
             if not since_date:
                 filters = {'date': '1'}
-            filters['filter[date_upd]'] = '>[{}]'.format(backend.start_import_date)
+            filters['filter[date_add]'] = '>[{}]'.format(backend.start_import_date)
         now_fmt = fields.Datetime.now()
         self.env['prestashop.sale.order'].import_batch(
             backend, filters=filters, priority=5, max_retries=0)
