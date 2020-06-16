@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="purchase_order_add_early_payment" inherit_id="purchase.report_purchaseorder_document">
+        <xpath expr="//div[@class='col-xs-4 pull-right']/table" position="inside">
+            <tr class="border-black ep_disc">
+                <td>
+                    <strong>E.P. Disc. :</strong>
+                </td>
+                <td class="text-right">
+                    <span t-field="o.early_payment_discount"/> %
+                </td>
+            </tr>
+            <tr class="ep_disc">
+                <td>
+                    <strong>With E.P. :</strong>
+                </td>
+                <td class="text-right">
+                    <span t-field="o.early_payment_disc_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                </td>
+            </tr> 
+        </xpath>
+    </template>
+
+</odoo>

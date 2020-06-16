@@ -56,7 +56,7 @@ class StockPicking(models.Model):
 
 
     def return_fields(self, mode='tree'):
-        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'sale_id', 'move_line_count', 'picking_type_id', 'default_location', 'field_status', 'priority']
+        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'purchase_id', 'sale_id', 'move_line_count', 'picking_type_id', 'default_location', 'field_status', 'priority']
         if mode == 'form':
             res += ['field_status', 'group_code', 'barcode_re', 'product_re']
         return res
@@ -115,19 +115,6 @@ class StockPicking(models.Model):
     @api.model
     def action_done_apk(self, values):
         return self.button_validate_apk(values)
-        picking = self.browse(values.get('id', False))
-        if not picking:
-            return {'err': True, 'error': "No se ha encontrado el albarán"}
-        res = picking.action_done()
-        return True
-
-
-        pick = self.browse(values.get('id', False))
-        move_id = self.browse(values.get('move_id', False))
-        pick.action_done()
-        values = {'id': move_id, 'model': 'stock.move', 'view': 'form', 'message': 'El albarán {} esta hecho'.format(pick.name)}
-        return self.env['info.apk'].get_apk_object(values)
-
 
     @api.model
     def action_assign_apk(self, vals):
