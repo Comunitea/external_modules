@@ -51,6 +51,7 @@ class StockMove(models.Model):
     move_line_location_id = fields.Many2one('stock.location', compute="compute_move_line_location_id")
     apk_filter_by_qty = fields.Char(compute="compute_move_line_location_id")
     apk_order = fields.Integer(string="Apk order")
+    batch_id = fields.Many2one(related='picking_id.batch_id')
 
     @api.multi
     def compute_move_line_location_id(self):
@@ -172,8 +173,7 @@ class StockMove(models.Model):
         batch_id = move_id.picking_id.batch_id
         move_domain = batch_id.get_move_domain_for_picking(filter, batch_id, inc=inc, limit=1, apk_order=apk_order)
         new_move = self.search(move_domain) or move_id
-        values = {'view': 'form'}
-        return new_move.get_model_object(values)
+        return new_move.id
 
     def get_model_object(self, values={}):
         res = super().get_model_object(values=values)
@@ -202,10 +202,10 @@ class StockMove(models.Model):
 
     def return_fields(self, view='tree'):
         fields = ['id', 'product_id', 'product_uom_qty', 'reserved_availability', 'quantity_done', 'tracking', 'state',
-                  'picking_id', 'move_lines_count', 'field_status', 'wh_code', 'move_line_location_id',
+                   'move_lines_count', 'field_status', 'wh_code', 'move_line_location_id',
                   'location_id', 'location_dest_id']
         if view == 'form':
-            fields += ['apk_order','barcode_re', 'default_location', 'picking_field_status', 'field_status_apk', 'sale_id' , 'product_uom', 'active_location_id', 'move_lines_count']
+            fields += ['apk_order','batch_id', 'picking_id', 'barcode_re', 'default_location', 'picking_field_status', 'field_status_apk', 'sale_id' , 'product_uom', 'active_location_id', 'move_lines_count']
         return fields
 
     @api.model

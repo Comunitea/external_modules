@@ -79,7 +79,6 @@ class InfoApk(models.AbstractModel):
         return ['id', 'display_name']
 
     def selection_dict(self, f_obj, field_value):
-        print ("Selection dict para {}: {}".format(f_obj, field_value))
         selection = [x for x in f_obj['selection'] if x[0] == field_value]
         if not selection:
             return {'name': 'Indefinido', 'value': False}
