@@ -167,7 +167,7 @@ class StockMove(models.Model):
     def get_relative_move_info(self, values):
         move_id = values.get('move_id', 0)
         filter = values.get('filter_moves', 'Pendientes')
-        inc= values.get('inc', 0)
+        inc = values.get('inc', 0)
         move_id = self.browse(move_id)
         apk_order = move_id.apk_order
         batch_id = move_id.picking_id.batch_id

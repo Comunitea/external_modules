@@ -31,8 +31,7 @@ class StockPickingBatch(models.Model):
     product_re = fields.Char(related='picking_type_id.warehouse_id.product_re')
     picking_type_id = fields.Many2one('stock.picking.type', 'Operation Type', compute='_compute_picking_type_id', store = True)
     scheduled_date = fields.Datetime(
-        'Scheduled Date', compute='_compute_scheduled_date', inverse='_set_scheduled_date', store=True,
-        index=True, track_visibility='onchange')
+        'Scheduled Date', compute='_compute_scheduled_date', inverse='_set_scheduled_date', store=True)
     sale_ids = fields.One2many('sale.order', string='Ventas', compute="_compute_order_ids")
     sale_id = fields.Many2one('sale.order', string='Venta', compute="_compute_order_ids")
     purchase_ids = fields.One2many('purchase.order', string='Compras', compute="_compute_order_ids")
@@ -93,7 +92,7 @@ class StockPickingBatch(models.Model):
                 batch.purchase_id = batch.purchase_ids[0]
 
     @api.one
-    @api.depends('move_lines.date_expected')
+    @api.depends('pick_state')
     def _compute_scheduled_date(self):
         self.scheduled_date = min(self.move_lines.mapped('date_expected') or [fields.Datetime.now()])
 
@@ -129,7 +128,6 @@ class StockPickingBatch(models.Model):
 
     @api.model
     def get_picking_list(self, values):
-        ##import pdb; pdb.set_trace()
         domain = []
         if values.get('picking_type_id', False):
             domain += [('picking_type_id', '=', values['picking_type_id'])]
@@ -177,7 +175,7 @@ class StockPickingBatch(models.Model):
                 res_ids = [x[0] for x in move_ids]
                 domain = [('id', 'in', res_ids)]
             else:
-                domain = [('id', '=', move_ids[0])]
+                domain = [('id', '=', move_ids[0][0])]
         else:
             domain = [('id', '=', 0)]
         return domain
