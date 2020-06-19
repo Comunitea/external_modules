@@ -464,6 +464,6 @@ class StockMoveLine(models.Model):
             return True
         except Exception as e:
             print("APK. Error al actualizar el movimeinto {}:{} con cantidad {}".format(move_line.id,
-                                                                                      move_line.dsiplay_name,
+                                                                                      move_line.display_name,
                                                                                       move_line.qty_done))
             return {'err': True, 'error': e}
