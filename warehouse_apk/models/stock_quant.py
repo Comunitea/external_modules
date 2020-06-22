@@ -103,13 +103,13 @@ class StockQuant(models.Model):
                 ## Hay lote
                 if not create_loc:
                     for lot in location['lot_ids']:
-                        if lot['name'] == quant[8]:
+                        if lot['name'] == quant[8] or False:
                             create_lot = False
                             break
                         lot_index += 1
                 if create_lot:
-                    lot = {'id': quant[7],
-                           'name': quant[8],
+                    lot = {'id': quant[7] or False,
+                           'name': quant[8] or False,
                            'quantity': quant[9],
                            'reserved_quantity': quant[10]}
                     #location['lot_ids'].append(lot)
