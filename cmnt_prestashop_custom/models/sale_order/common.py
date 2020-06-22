@@ -1,6 +1,6 @@
 # © 2020 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.addons.queue_job.job import job
 from datetime import timedelta
 
@@ -23,6 +23,13 @@ class SaleOrde(models.Model):
                     if order.state == "done":
                         order.action_unlock()
                     order.action_cancel()
+        return res
+
+    @api.model
+    def create(self, vals):
+        res = super().create(vals)
+        if res.prestashop_state.trigger_cancel:
+            res.action_cancel()
         return res
 
 
