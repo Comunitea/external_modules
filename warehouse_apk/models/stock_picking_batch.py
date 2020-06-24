@@ -146,7 +146,7 @@ class StockPickingBatch(models.Model):
         return self.get_model_object(values)
 
 
-    def get_move_domain_for_picking(self, filter, batch_id, inc=0, limit = 0, apk_order = 0):
+    def get_move_domain_for_picking(self, filter, batch_id, inc=0, limit = 0, apk_order = -1):
         sql = "select move_id from stock_move_line sml " \
               "join stock_move sm on sm.id = sml.move_id " \
               "join stock_picking sp on sp.id = sml.picking_id " \
@@ -158,10 +158,10 @@ class StockPickingBatch(models.Model):
         order = ''
         #if apk_order > 0:
         if inc == -1:
-            if apk_order > 0: sql += " and sm.apk_order < {}".format(apk_order)
+            if apk_order > -1: sql += " and sm.apk_order < {}".format(apk_order)
             order = ' order by sm.apk_order desc'
         else:
-            if apk_order > 0: sql += " and sm.apk_order > {}".format(apk_order)
+            if apk_order > -1: sql += " and sm.apk_order > {}".format(apk_order)
             order = ' order by sm.apk_order asc'
 
         if order:
@@ -205,7 +205,6 @@ class StockPickingBatch(models.Model):
             move_id = self.search(domain, limit)
             if not picking_id or len(picking_id) != 1:
                 return res
-
         values = {'domain': self.get_move_domain_for_picking(values.get('filter_moves', 'Todos'), picking_id)}
         res['move_lines'] = self.env['stock.move'].get_model_object(values)
         #print ("------------------------------Move lines")

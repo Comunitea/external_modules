@@ -106,6 +106,7 @@ class StockPicking(models.Model):
             move_id = self.search(domain, limit)
             if not picking_id or len(picking_id) != 1:
                 return res
+
         values = {'domain': self.get_move_domain_for_picking(picking_id)}
         res['move_lines'] = self.env['stock.move'].get_model_object(values)
         #print ("------------------------------Move lines")
