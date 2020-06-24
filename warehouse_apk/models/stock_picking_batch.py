@@ -156,13 +156,13 @@ class StockPickingBatch(models.Model):
         if filter == 'Completados':
             sql += " and qty_done == sml.product_uom_qty"
         order = ''
-        if apk_order > 0:
-            if inc == -1:
-                sql += " and sm.apk_order < {}".format(apk_order)
-                order = ' order by sm.apk_order desc'
-            else:
-                sql += " and sm.apk_order > {}".format(apk_order)
-                order = ' order by sm.apk_order asc'
+        #if apk_order > 0:
+        if inc == -1:
+            if apk_order > 0: sql += " and sm.apk_order < {}".format(apk_order)
+            order = ' order by sm.apk_order desc'
+        else:
+            if apk_order > 0: sql += " and sm.apk_order > {}".format(apk_order)
+            order = ' order by sm.apk_order asc'
 
         if order:
             sql += order
