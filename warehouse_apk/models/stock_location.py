@@ -381,6 +381,8 @@ class StockLocation(models.Model):
         print("#######################################\n#######################################")
         pprint.PrettyPrinter(indent=2).pprint(values)
         res = super().get_model_object(values=values)
+        if not values.get('show_stock', False):
+            return res
         ##Si pideninventario, si no quants
         res[0]['empty'] = True
         if values.get('stock_inventory', True):

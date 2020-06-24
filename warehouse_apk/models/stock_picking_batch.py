@@ -163,11 +163,12 @@ class StockPickingBatch(models.Model):
         else:
             if apk_order > -1: sql += " and sm.apk_order > {}".format(apk_order)
             order = ' order by sm.apk_order asc'
-
+        sql += " group by move_id, sm.apk_order "
         if order:
             sql += order
         if limit > 0:
             sql += ' limit {}'.format(limit)
+        # sql += " group by move_id"
         self._cr.execute(sql)
         move_ids = self._cr.fetchall()
         if move_ids:
