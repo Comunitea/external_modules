@@ -24,7 +24,7 @@ class AccountInvoice(models.Model):
     @job(default_channel='root.prestashop')
     def _upload_report_to_prestashop(self):
         self.ensure_one()
-        report = self.env.ref("account.account_invoices")
+        report = self.env.ref("account.account_invoices_without_payment")
         if report.report_type in ["qweb-html", "qweb-pdf"]:
             result, format = report.render_qweb_pdf([self.id])
         else:
