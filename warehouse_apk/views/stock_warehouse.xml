@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="action_create_inventory_from_strat" model="ir.actions.server">
+        <field name="name">Inventariar</field>
+        <field name="model_id" ref="stock.model_product_putaway"/>
+        <field name="binding_model_id" ref="stock.model_product_putaway"/>
+        <field name="state">code</field>
+        <field name="code">records.generate_inventory()</field>
+    </record>
      <record id="stock_warehouse_form_apk" model="ir.ui.view">
             <field name="name">stock.warehouse.form.apk</field>
             <field name="model">stock.warehouse</field>

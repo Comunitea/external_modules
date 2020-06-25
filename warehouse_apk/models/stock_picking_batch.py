@@ -235,14 +235,13 @@ class StockPickingBatch(models.Model):
     def button_validate_apk(self, vals):
         batch_id = self.browse(vals.get('id', False))
         if not batch_id:
-            return {'err': True, 'error': "No se ha encontrado el albarán"}
+            raise ValidationError ("No se ha encontrado el albarán")
         if all(move_line.qty_done == 0 for move_line in batch_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel'))):
             raise ValidationError ('No hay ninguna cantidad hecha para validar')
         ctx = batch_id._context.copy()
         ctx.update(skip_overprocessed_check=True)
         for pick in batch_id.picking_ids:
             pick.with_context(ctx).action_done()
-
         return batch_id.get_model_object({'view': 'form'})
 
     @api.model

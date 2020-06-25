@@ -5,6 +5,43 @@ from odoo import api, models, fields
 import pprint
 from odoo.exceptions import ValidationError
 
+class ProductPutaway(models.Model):
+    _inherit = "product.putaway"
+
+    @api.multi
+    def generate_inventory(self):
+
+        si_ids = self.env['stock.inventory']
+
+        sil = self.env['stock.inventory.line']
+        sfps = self.env['stock.fixed.putaway.strat']
+        domain = [('name', '=', 'STOCK')]
+        sfp_id = self.env['product.putaway'].search(domain)
+        sfps_ids = sfps.search([('putaway_id', '=', sfp_id.id)])
+        strat_name = sfp_id.name
+        for line in sfps_ids:
+            name = '{}:{}'.format(strat_name, line.fixed_location_id.name)
+            domain = [('name', '=', name), ('location_id', '=', line.fixed_location_id.id), ('state', '=', 'draft'), ('filter', '=', 'products')]
+            si_id = si_ids.search(domain)
+            if not si_id:
+                val = {'name': name, 'location_id': line.fixed_location_id.id, 'filter': 'products', 'exhausted': True}
+                si_id = si_ids.create(val)
+            si_ids |= si_id
+            si_id.write({'product_ids': [(4, line.product_id.id)]})
+        for si in si_ids:
+            si.action_start()
+
+
+
+
+
+
+
+
+
+
+
+
 class StockLocation(models.Model):
     _name = 'stock.location'
     _inherit = ['info.apk', 'stock.location']
@@ -29,6 +66,13 @@ class StockLocation(models.Model):
     def return_fields(self, mode='tree'):
         return ['id', 'name', 'usage', 'barcode', 'display_name', 'location_id', 'removal_priority']
 
+    @api.model
+    def delete_inventory_obj(self, values):
+        line_id = values.get('line_id', False)
+        if line_id:
+            self.env['stock.inventory.line'].browse(line_id).unlink()
+        return self.get_apk_inventory(values)
+
 
     @api.model
     def change_inventory_line_qty(self, values):
@@ -50,10 +94,7 @@ class StockLocation(models.Model):
                     values.update(wh_code=False, serial=lot, lot_name=lot)
                     res = self.change_inventory_line_qty(values)
                 return res
-
-
         ## de momento lo pongo aquí como un parámetro
-
         create_lot = values.get('create_lot', True)
         line_id = values.get('id', False)
         line_id = self.env['stock.inventory.line'].browse(line_id)

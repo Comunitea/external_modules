@@ -16,8 +16,6 @@ class PickingTypeGroupCode(models.Model):
     _name = 'picking.type.group.code'
     _inherit = ['info.apk', 'picking.type.group.code']
 
-
-
     app_integrated = fields.Boolean('Show in app', default=False)
     tree_picking_fields = fields.Char('Pick fields (tree)')
     tree_move_fields = fields.Char('Move fields (tree)')
