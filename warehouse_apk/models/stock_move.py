@@ -172,8 +172,16 @@ class StockMove(models.Model):
         apk_order = move_id.apk_order
         batch_id = move_id.picking_id.batch_id
         move_domain = batch_id.get_move_domain_for_picking(filter, batch_id, inc=inc, limit=1, apk_order=apk_order)
-        new_move = self.search(move_domain) or move_id
-        return new_move.id
+        new_move = self.search(move_domain)
+        if not new_move:
+            apk_order = -1
+            move_domain = batch_id.get_move_domain_for_picking(filter, batch_id, inc=inc, limit=1, apk_order=apk_order)
+            new_move = self.search(move_domain)
+
+        if not new_move or new_move.id == move_id.id:
+            return move_id.id
+        print ("Busco movimiento para {} y encuentro {}".format(move_id, new_move.id))
+        return new_move.get_model_object(values)
 
     def get_model_object(self, values={}):
         res = super().get_model_object(values=values)
