@@ -10,9 +10,7 @@ class ProductPutaway(models.Model):
 
     @api.multi
     def generate_inventory(self):
-
         si_ids = self.env['stock.inventory']
-
         sil = self.env['stock.inventory.line']
         sfps = self.env['stock.fixed.putaway.strat']
         domain = [('name', '=', 'STOCK')]
@@ -30,17 +28,6 @@ class ProductPutaway(models.Model):
             si_id.write({'product_ids': [(4, line.product_id.id)]})
         for si in si_ids:
             si.action_start()
-
-
-
-
-
-
-
-
-
-
-
 
 class StockLocation(models.Model):
     _name = 'stock.location'
@@ -310,7 +297,7 @@ class StockLocation(models.Model):
         if inventory_id:
             inventory_id = self.env['stock.inventory'].browse(inventory_id)
         else:
-            domain = [('filter', 'in', ['none', 'partial', 'product']), ('state', '=', 'confirm'), ('location_id', '=', self.id)]
+            domain = [('filter', 'in', ['none', 'partial', 'product', 'products']), ('state', '=', 'confirm'), ('location_id', '=', self.id)]
             inventory_id = self.env['stock.inventory'].search(domain, limit=1)
         if not inventory_id:
             res = {'inventory': False,
