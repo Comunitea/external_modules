@@ -196,8 +196,15 @@ class StockMove(models.Model):
                 return res
         res['product_id']['image'] = move_id.product_id.image_medium
         values.update(view='form', model='stock.move.line')
+        domain = [('move_id', '=', move_id.id)]
+        filter = values.get('filter_move_lines', 'Todos')
+        if filter == 'Pendientes':
+            domain += [('field_status', '=', False)]
+        elif filter == 'Realizados':
+            domain += [('field_status', '=', True)]
+
         sml_ids = self.env['stock.move.line'].search(
-            [('move_id', '=', move_id.id)],
+            domain,
             limit=values.get('sml_limit', 20),
             offset=values.get('sml_offset', 0))
         if sml_ids:
@@ -263,16 +270,30 @@ class StockMove(models.Model):
         new_sml_id = sml_id.create(move_vals)
         move_id._recompute_state()
         if self:
-            values = {'id': move_id, 'model': 'stock.move', 'view': 'form'}
+            values = {'id': move_id, 'model': 'stock.move', 'view': 'form', 'filter_move_lines': values.get('filter_move_lines', 'Todos')}
             return move_id.get_model_object(values)
         return new_sml_id
 
     @api.model
-    def create_move_lots(self, vals):
+    def delete_move_line(self, vals):
+        sml_id = vals.get('sml_id', False)
+        sml_id = self.env['stock.move.line'].browse(sml_id)
+        move_id = sml_id.move_id
+        qty = sml_id.qty_done
+        sml_id.unlink()
+        move_id._update_reserved_quantity(qty, qty, move_id.location_id, lot_id=False, strict=False)
+        move_id._recompute_state()
+        values = {'id': move_id.id, 'model': 'stock.move', 'view': 'form', 'filter_move_lines': vals.get('filter_move_lines', 'Todos')}
+        if not move_id.picking_type_id.allow_overprocess and move_id.quantity_done > move_id.product_uom_qty:
+            raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
+        return self.env['info.apk'].get_apk_object(values)
 
+
+    @api.model
+    def create_move_lots(self, vals):
         move_id = vals.get('id', False)
         lot_names = vals.get('lot_names', False)
-        active_location_id = vals.get('active_location_id', False)
+        active_location_id = vals.get('active_location', False)
         if not move_id or not lot_names:
             return False
 
@@ -286,8 +307,13 @@ class StockMove(models.Model):
 
         for sml_id in sml_with_lot_ids:
             sml_id.write_status('lot_id', 'done')
+            #sml_id[move.default_location] = active_location_id
+            if move.active_location_id:
+                sml_id.write_status(move.default_location, 'done')
             if move.tracking == 'serial':
+                sml_id.write_status('qty_done', 'done')
                 sml_id.write_status(move['default_location'], 'done')
+                sml_id.qty_done = 1
             lot_names.pop(lot_names.index(sml_id.lot_id.name))
 
         ##Si aún quedan lotes
@@ -299,40 +325,36 @@ class StockMove(models.Model):
                 if lot_id:
                     lot_ids |= lot_id
             ##filtro todos los movimientos que no tengan lote y se lo añado
-            sml_ids = move.move_line_ids.filtered(lambda x: not x.lot_id)
+            sml_ids = move.move_line_ids.filtered(lambda x: not x.lot_id or not x.read_status('lot_id', 'done'))
             for sml in sml_ids:
-                sml.lot_id = lot_ids[0]
-                sml.write_status('lot_id', 'done')
-                sml.qty_done = 1
-                sml.write_status('qty_done', 'done')
-                lot_ids -= sml.lot_id
-                ## Si no se confirmó la ubicación, lo hago
-                if active_location_id and not sml._read_status(sml.field_status_apk, move.default_location, 'done'):
-                    sml[move.default_location] = active_location_id
-                ## Si se acaban los lotes, salgo
-                if len(lot_ids)==0:
+                ## Por cada movimiento quito el primero, genero nueva reserva forzando el lote
+                if not lot_ids:
                     break
-            if move.active_location_id:
-                sml_ids.write_status(move.default_location, 'done')
+                sml.unlink()
+                reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_ids[0], strict=False)
+                if reserved:
+                    lot_ids -= lot_ids[0]
+                new_move = move.move_line_ids[-1]
+                new_move.write_status('lot_id', 'done')
+                new_move.qty_done = 1
+                new_move.write_status('qty_done', 'done')
+                #new_move[move.default_location] = active_location_id
+                if move.active_location_id:
+                    new_move.write_status(move.default_location, 'done')
             ## Si quedan lotes, tengo que crear un movieminto por cada lote
             if lot_ids:
                 for lot_id in lot_ids:
-                    move_vals = move._prepare_move_line_vals()
-
+                    reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_id, strict=False)
+                    new_move = move.move_line_ids[-1]
+                    new_move.write_status('lot_id', 'done')
+                    new_move.qty_done = 1
+                    new_move.write_status('qty_done', 'done')
+                    new_move[move.default_location] = active_location_id
                     if move.active_location_id:
-                        move_vals[move.default_location] = active_location_id
-
-                    qty_done = 1
-                    move_vals.update(lot_id=lot_id.id, qty_done=qty_done)
-                    new_sml_ids = sml_ids.create(move_vals)
-                    new_sml_ids.write_status(move.default_location, 'done')
-                    new_sml_ids.write_status('lot_id', 'done')
-                    if move.tracking == 'serial':
-                        new_sml_ids.write_status('qty_done', 'done')
-                        new_sml_ids.qty_done = 1
+                        new_move.write_status(move.default_location, 'done')
         move._recompute_state()
         ## Devuelvo la información del moviemitno para ahorrar una llamada desde la apk
-        values = {'id': move.id, 'model': 'stock.move', 'view': 'form'}
+        values = {'id': move.id, 'model': 'stock.move', 'view': 'form', 'filter_move_lines': vals.get('filter_move_lines', 'Todos')}
         if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
             raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         return self.env['info.apk'].get_apk_object(values)
@@ -351,7 +373,7 @@ class StockMove(models.Model):
         move = self.browse(values.get('id'))
         if move:
             move._do_unreserve()
-        values = {'id': move.id, 'model': 'stock.move', 'view': 'form'}
+        values = {'id': move.id, 'model': 'stock.move', 'view': 'form', 'filter_move_lines': values.get('filter_move_lines', 'Todos')}
         return self.env['info.apk'].get_apk_object(values)
 
     @api.model
@@ -359,7 +381,7 @@ class StockMove(models.Model):
         move = self.browse(values.get('id'))
         if move:
             move.move_line_ids.write({'lot_name': '', 'lot_id': False, 'qty_done': 0})
-        values = {'id': move.id, 'model': 'stock.move', 'view': 'form'}
+        values = {'id': move.id, 'model': 'stock.move', 'view': 'form', 'filter_move_lines': values.get('filter_move_lines', 'Todos')}
         return self.env['info.apk'].get_apk_object(values)
 
     @api.model
@@ -385,13 +407,6 @@ class StockMove(models.Model):
             return move.get_model_object()
         return False
 
-
-    @api.model
-    def split_apk(self):
-        move_id = vals.get('id', False)
-        quantity_done = vals.get('quantity_done', False)
-
-
     @api.model
     def assign_location_id(self, values):
 
@@ -405,7 +420,7 @@ class StockMove(models.Model):
         for move in smls:
             move.write_status(move.default_location, 'done')
         smls.write({move.default_location: location_id})
-        values = {'id': move.id, 'model': 'stock.move', 'view': 'form'}
+        values = {'id': move.id, 'model': 'stock.move', 'view': 'form', 'filter_move_lines': values.get('filter_move_lines', 'Todos')}
         return self.env['info.apk'].get_apk_object(values)
 
     @api.model

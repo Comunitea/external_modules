@@ -64,6 +64,19 @@ class StockLocation(models.Model):
     @api.model
     def change_inventory_line_qty(self, values):
 
+        def create_new_inv_line(inventory_id, product_id, location_id):
+            pre_filter = inventory_id.filter
+            pre_product = inventory_id.product_id
+            inventory_id.filter = 'product'
+            inventory_id.product_id = product_id
+            line_vals = inventory_id._get_inventory_lines_values()
+            ctx = self._context.copy()
+            ctx.update(default_inventory_id = inventory_id.id, default_company_id = inventory_id.company_id.id)
+            self.env['stock.inventory.line'].with_context(ctx).create(line_vals)
+            inventory_id.product_id = pre_product
+            inventory_id.filter = pre_filter
+            print("Creo una nueva línea para el artículo sin tracking")
+
         def write_qty():
             if product_id.tracking != 'serial':
                 if product_qty:
@@ -173,15 +186,10 @@ class StockLocation(models.Model):
                       ('inventory_id', '=', inventory_id.id),
                       ('product_id', '=', product_id.id)]
             line_id = self.env['stock.inventory.line'].search(domain)
-
-            line_vals = {'inventory_id': inventory_id.id,
-                         'product_id': product_id.id,
-                         'location_id': location_id.id,
-                         'product_qty': 1
-                         }
-
-            self.env['stock.inventory.line'].create(line_vals)
-            print("Creo una nueva línea para el artículo sin tracking")
+            if line_id:
+                line_id.product_qty += 1
+            else:
+                create_new_inv_line(inventory_id, product_id, location_id)
             values.update(product_id=product_id.id,
                           active_product=product_id.id,
                           active_location=location_id.id)
@@ -207,14 +215,7 @@ class StockLocation(models.Model):
             if line_id:
                 raise ValidationError ('Ya hay una línea sin lote para el artículo {}'.format(product_id.wh_code))
             else:
-                ## creo una línea nueva pero sin lote
-                line_vals = {'inventory_id': inventory_id.id,
-                             'product_id': product_id.id,
-                             'location_id': location_id.id,
-                             'product_qty': 0
-                             }
-                self.env['stock.inventory.line'].create(line_vals)
-                print("Creo una nueva línea para el artículo sin tracking")
+                create_new_inv_line(inventory_id, product_id, location_id)
                 values.update(
                           active_location=location_id.id)
                 return self.get_apk_inventory(values)
@@ -328,7 +329,7 @@ class StockLocation(models.Model):
                 if not product_id:
                     product_id = values.get('active_product', False)
                 if not product_id:
-                    raise ValidationError('Para qe artículo?')
+                    raise ValidationError('Para que artículo?')
                 empty_location_id = self.search([('barcode', '=', empty_location)])
                 if empty_location_id:
                     ## Creo una linea nueva para este artículo
@@ -355,7 +356,7 @@ class StockLocation(models.Model):
                 barcode = line.location_id.barcode
                 code = line.product_id.wh_code
                 if not barcode in lines.keys():
-                    LocationIndex+=1
+                    LocationIndex += 1
                     lines[barcode] = {'id': line.location_id.id,
                                       'LocationIndex': LocationIndex,
                                       'show': True,
@@ -370,6 +371,7 @@ class StockLocation(models.Model):
                                                             'tracking': line.product_id.tracking,
                                                             'theoretical_qty': 0,
                                                             'product_qty': 0,
+                                                            'barcode_length': 0,
                                                             'line_ids': []}
                 LineIndex += 1
                 val = {
@@ -379,6 +381,8 @@ class StockLocation(models.Model):
                     'qty_dirty': line.product_qty > 0,
                     'theoretical_qty': line.theoretical_qty,
                     'product_qty': line.product_qty}
+                if line.prod_lot_id:
+                    lines[barcode]['product_ids'][code]['barcode_length'] = len(line.prod_lot_id.name)
                 lines[barcode]['product_ids'][code]['theoretical_qty'] += line.theoretical_qty
                 lines[barcode]['product_ids'][code]['product_qty'] += line.product_qty
                 lines[barcode]['product_ids'][code]['line_ids'].append(val)
@@ -395,6 +399,9 @@ class StockLocation(models.Model):
 
         if len(res['inventory_location_ids']) == 1:
             res['ActiveLocation'] = res['inventory_location_ids'][0]['id']
+            product_ids = res['inventory_location_ids'][0]['product_ids']
+            if len(product_ids) == 1:
+                res['barcode_length'] = product_ids[0]['barcode_length']
         if not res['ActiveLocation']:
             res['ActiveLocation'] = inventory_id.location_id.id
 
