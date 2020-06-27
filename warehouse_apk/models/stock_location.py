@@ -63,7 +63,6 @@ class StockLocation(models.Model):
 
     @api.model
     def change_inventory_line_qty(self, values):
-
         def create_new_inv_line(inventory_id, product_id, location_id):
             pre_filter = inventory_id.filter
             pre_product = inventory_id.product_id
@@ -249,6 +248,8 @@ class StockLocation(models.Model):
 
     @api.model
     def delete_inventory_location(self, values):
+        print ("Entrando en delete ...")
+
         location_id = values.get('location_id', False)
         product_id = values.get('product_id', False)
         inventory_id = values.get('inventory_id', False)
@@ -277,6 +278,8 @@ class StockLocation(models.Model):
             elif location_id:
                 return lines.filtered(lambda x: x.location_id.id == location_id)
             return lines
+
+        max_serial_lines = values.get('max_serial_lines', 15)
         product_id = values.get('product_id', False)
         location_id = values.get('location_id', False)
         active_location = values.get('active_location', 0)
@@ -349,7 +352,7 @@ class StockLocation(models.Model):
             res['inventory_name'] = inventory_id.name
             res['barcode_re'] = self.apk_warehouse_id.barcode_re
             res['product_re'] = self.apk_warehouse_id.product_re
-            line_ids = filter_lines(lines.sorted(key=lambda r: r.location_id.removal_priority))
+            line_ids = filter_lines(lines.sorted(key=lambda r: (r.location_id.removal_priority, r.write_date), reverse = True))
             lines = {}
 
             for line in line_ids:
@@ -385,7 +388,8 @@ class StockLocation(models.Model):
                     lines[barcode]['product_ids'][code]['barcode_length'] = len(line.prod_lot_id.name)
                 lines[barcode]['product_ids'][code]['theoretical_qty'] += line.theoretical_qty
                 lines[barcode]['product_ids'][code]['product_qty'] += line.product_qty
-                lines[barcode]['product_ids'][code]['line_ids'].append(val)
+                if len(lines[barcode]['product_ids'][code]['line_ids']) < max_serial_lines:
+                    lines[barcode]['product_ids'][code]['line_ids'].append(val)
             res_lines = []
             for barcode in lines.keys():
                 loc = lines[barcode]
