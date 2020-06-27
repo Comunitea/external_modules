@@ -9,13 +9,16 @@ class ProductPutaway(models.Model):
     _inherit = "product.putaway"
 
     @api.multi
-    def generate_inventory(self):
+    def generate_inventory(self, fixed_location_id=False):
         si_ids = self.env['stock.inventory']
         sil = self.env['stock.inventory.line']
         sfps = self.env['stock.fixed.putaway.strat']
         domain = [('name', '=', 'STOCK')]
         sfp_id = self.env['product.putaway'].search(domain)
-        sfps_ids = sfps.search([('putaway_id', '=', sfp_id.id)])
+        lines_domain = [('putaway_id', '=', sfp_id.id)]
+        if fixed_location_id:
+            lines_domain += [('fixed_location_id', '=', 'id')]
+        sfps_ids = sfps.search(lines_domain)
         strat_name = sfp_id.name
         for line in sfps_ids:
             name = '{}:{}'.format(strat_name, line.fixed_location_id.name)
@@ -486,3 +489,34 @@ class StockLocation(models.Model):
         for loc in self.search([('usage', '=', 'internal')]):
             print (loc.name)
             loc.barcode = loc.name
+
+
+    @api.multi
+    def generate_inventory(self):
+        si_ids = self.env['stock.inventory']
+        sfps = self.env['stock.fixed.putaway.strat']
+        putaway_strategy_id = False
+        location_id = self
+        while not putaway_strategy_id and location_id:
+            putaway_strategy_id = location_id.putaway_strategy_id
+            if not putaway_strategy_id:
+                location_id = location_id.location_id
+
+        if not putaway_strategy_id:
+            raise ValidationError ('No se ha encontrado estrategia de traslado para la ubicación')
+
+        lines_domain = [('putaway_id', '=', putaway_strategy_id.id), ('fixed_location_id', 'child_of', self.id)]
+        sfps_ids = sfps.search(lines_domain)
+        strat_name = putaway_strategy_id.name
+        for line in sfps_ids:
+            name = '{}:{}'.format(strat_name, line.fixed_location_id.name)
+            domain = [('name', '=', name), ('location_id', '=', line.fixed_location_id.id), ('state', '=', 'draft'),
+                      ('filter', '=', 'products')]
+            si_id = si_ids.search(domain)
+            if not si_id:
+                val = {'name': name, 'location_id': line.fixed_location_id.id, 'filter': 'products', 'exhausted': True}
+                si_id = si_ids.create(val)
+            si_ids |= si_id
+            si_id.write({'product_ids': [(4, line.product_id.id)]})
+        for si in si_ids:
+            si.action_start()
