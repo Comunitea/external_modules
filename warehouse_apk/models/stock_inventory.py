@@ -19,7 +19,6 @@ class StockInventory(models.Model):
         product_id = values.get('product_id', False)
         location_id = values.get('location_id', False)
         ean_ids = values.get('ean_ids', '')
-
         vals = []
         domain = [('inventory_id', '=', inventory_id.id), ('product_id', '=', product_id), ('location_id', '=', location_id)]
         sil = self.env['stock.inventory.line']
@@ -45,16 +44,19 @@ class StockInventory(models.Model):
             line_id = sil.search(line_domain, limit=1)
             if not line_id:
                 vals = {'product_id': product_id,
-                            'location_id': location_id,
-                            'inventory_id': inventory_id.id,
-                            'prod_lot_id': lot_id.id}
+                        'location_id': location_id,
+                        'inventory_id': inventory_id.id,
+                        'prod_lot_id': lot_id.id}
                 line_id = sil.create(vals)
                 line_id._compute_theoretical_qty()
+            else:
+                if not line_id.prod_lot_id:
+                    line_id.prod_lot_id = lot_id
             line_id.product_qty = 1
-
         inventory_id.product_id = pre_product
         inventory_id.filter = pre_filter
         values.update(
             active_product=product_id,
             active_location=location_id)
+        values.pop('ean_ids')
         return self.env['stock.location'].get_apk_inventory(values)
