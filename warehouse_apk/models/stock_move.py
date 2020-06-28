@@ -203,12 +203,16 @@ class StockMove(models.Model):
         elif filter == 'Realizados':
             domain += [('field_status', '=', True)]
 
+        limit = 10# values.get('sml_limit', 15)
+        offset = 0# values.get('sml_offset', 0)
         sml_ids = self.env['stock.move.line'].search(
             domain,
-            limit=values.get('sml_limit', 20),
-            offset=values.get('sml_offset', 0))
+            limit=limit,
+            offset=offset,
+            order= 'lot_id, write_date asc')
+
         if sml_ids:
-            res['move_line_ids'] = sml_ids.get_model_object()
+            res['move_line_ids'] = sml_ids.sorted(lambda r: r.lot_id).get_model_object()
         else:
             res['move_line_ids'] = []
 
@@ -298,8 +302,10 @@ class StockMove(models.Model):
             return False
 
         ## Los moviemintos que no tengan lotes, le añado los que tengo, si no llegan añado nuevo. No borro ningún movimiento.
-        ## Podría utilizar el lot_name pero me parece más limpio así, se crean y se añaden a los stock_move_line
+        ## Podría utilizar el lot_name pero me parece más limpio así, se crean y se añaden a los stock_move_line pq sino tendríamos
+        ## distinta lógica según el tipo de albarán
         move = self.browse(move_id)
+
         ## Actulizazo como hechos los movimientos que tengan lote en la lista y los quito para no crearlos
         if not active_location_id:
             active_location_id = move.active_location_id.id
@@ -330,11 +336,21 @@ class StockMove(models.Model):
                 ## Por cada movimiento quito el primero, genero nueva reserva forzando el lote
                 if not lot_ids:
                     break
-                sml.unlink()
-                reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_ids[0], strict=False)
-                if reserved:
+
+                if move.location_id.should_bypass_reservation()\
+                    or move.product_id.type == 'consu':
+                    sml.lot_id = lot_ids[0]
                     lot_ids -= lot_ids[0]
-                new_move = move.move_line_ids[-1]
+                    new_move = sml
+                else:
+                    sml.unlink()
+                    reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_ids[0], strict=False)
+                    if reserved:
+                        lot_ids -= lot_ids[0]
+                    else:
+                        raise ValidationError('No se ha podido reservar el lote {}'.format(lot_ids[0]))
+                    new_move = move.move_line_ids[-1]
+
                 new_move.write_status('lot_id', 'done')
                 new_move.qty_done = 1
                 new_move.write_status('qty_done', 'done')
@@ -358,6 +374,29 @@ class StockMove(models.Model):
         if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
             raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         return self.env['info.apk'].get_apk_object(values)
+
+    @api.model
+    def load_eans(self, values):
+        move_id = values.get('move_id', False)
+        if not move_id:
+            raise ValidationError("No hay un movimiento padre para estos números")
+        location_id = values.get('location_id', False)
+        if not location_id:
+            raise ValidationError("No hay una ubicación definida")
+        ean_ids = values.get('ean_ids', '')
+        vals = []
+        if ean_ids:
+            ean_ids = values.get('ean_ids').split()
+        else:
+            ean_ids = []
+        values.pop('ean_ids')
+        if not ean_ids:
+            raise ValidationError ("No hay ningún número de serie")
+
+        vals = {'lot_names': ean_ids,
+             'active_location_id': location_id,
+             'id': move_id}
+        return self.create_move_lots(vals)
 
     @api.model
     def move_assign_apk(self, values):

@@ -42,5 +42,16 @@ class ProductProduct(models.Model):
         else:
             return {'id': False}
 
-
-
+    @api.model
+    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+        if not args:
+            args = []
+        if name:
+            positive_operators = ['=', 'ilike', '=ilike', 'like', '=like']
+            product_ids = []
+            if operator in positive_operators:
+                product_ids = self._search([('wh_code', '=', name)] + args, limit=limit,
+                                           access_rights_uid=name_get_uid)
+            if product_ids:
+                return self.browse(product_ids).name_get()
+        return super()._name_search(name=name, args=args, operator=operator, limit=100, name_get_uid=name_get_uid)

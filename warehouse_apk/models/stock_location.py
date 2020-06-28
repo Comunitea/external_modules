@@ -54,7 +54,7 @@ class StockLocation(models.Model):
             obj.apk_name = obj.name
 
     def return_fields(self, mode='tree'):
-        return ['id', 'name', 'usage', 'barcode', 'display_name', 'location_id', 'removal_priority']
+        return ['id', 'name', 'usage', 'barcode', 'display_name', 'location_id', 'removal_priority', 'usage']
 
     @api.model
     def delete_inventory_obj(self, values):

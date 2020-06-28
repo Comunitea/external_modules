@@ -312,7 +312,7 @@ class StockMoveLine(models.Model):
     @api.model
     def assign_location_to_moves(self, values):
         move_id = values['move_id']
-        sml_ids = values ['sml_ids']
+        #sml_ids = values ['sml_ids']
         field_id = values['field']
         barcode = values['barcode']
         confirm = values['confirm']
@@ -323,11 +323,8 @@ class StockMoveLine(models.Model):
             raise ValidationError ('No se ha encontrado una ubicación para {}'.format(barcode))
         move_id.active_location_id = location_id
         default_location = move_id.default_location
-        if sml_ids:
-            sml_ids = self.env['stock.move.line'].browse(sml_ids)
-        else:
-            if move_id:
-                sml_ids = move_id.move_line_ids.filtered(lambda x: x[default_location].barcode == barcode or not (x.read_status('lot_id', 'done') and x.read_status('qty_done', 'done')))
+        if move_id:
+            sml_ids = move_id.move_line_ids.filtered(lambda x: x[default_location].barcode == barcode or not (x.read_status('lot_id', 'done') and x.read_status('qty_done', 'done')))
         if not sml_ids:
             move_id.active_location_id = location_id
             'Creo un movimiento desde esta ubicación para este producto'
