@@ -44,6 +44,7 @@ class AccountInvoice(models.Model):
                 report_name += ext
             ftp = FTP_TLS(sale_bind.backend_id.ftp_host)
             ftp.login(sale_bind.backend_id.ftp_user, sale_bind.backend_id.ftp_password)
+            ftp.prot_p()
             ftp.cwd(sale_bind.backend_id.ftp_report_folder)
             ftp.storbinary("STOR " + report_name, io.BytesIO(result))
             ftp.quit()
