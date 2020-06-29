@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, models, fields
-
+from odoo.exceptions import ValidationError
 from odoo.tools import float_is_zero, float_compare
 
 class StockProductionLot(models.Model):
     _inherit ="stock.production.lot"
 
-
     def find_or_create_lot(self, lot_name, product_id, create):
         lot_id = self.env['info.apk'].get_apk_lot(lot_name, product_id.id)
-        if not lot_id and create:
+        if not lot_id:
+            if not create:
+                raise ValidationError ('El nº de serie {} no exsite. Debes utilizar nº de serie existentes')
             val = {'name': lot_name, 'product_id': product_id.id}
             lot_id = lot_id.create(val)
+
         return lot_id
 
     def is_enough_to_change(self, location_id, need_qty, strict=True):
