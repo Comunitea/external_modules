@@ -348,7 +348,7 @@ class StockMove(models.Model):
 
                     if not reserved:
                         ## buscon el move line con ese lote
-                        ocup_dom = [('location_id', '=', sml.location_id.id), ('product_id', '=', move.product_id.id), ('qty_done', '=', 0),  ('lot_id', '=', sml.lot_id.id)]
+                        ocup_dom = [('location_id', '=', move.location_id.id), ('product_id', '=', move.product_id.id), ('qty_done', '=', 0),  ('lot_id', '=', lot_ids[0].id)]
                         ocup_move_line = self.env['stock.move.line'].search(ocup_dom)
                         if ocup_move_line:
                             move_to_update = ocup_move_line.move_id
