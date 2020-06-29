@@ -28,7 +28,7 @@ class ProductProduct(models.Model):
     _name = 'product.product'
     _inherit = ['info.apk', 'product.product']
 
-    tracking = fields.Selection(related='product_tmpl_id.tracking')
+    #tracking = fields.Selection(related='product_tmpl_id.tracking')
     wh_code = fields.Char(string='Unique WH Product Code',
                           help="Código univoco para identificar el producto en con la pistola: "
                                "Ean 13, Referencia interna, id, id de prestahsop ...")

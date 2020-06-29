@@ -345,9 +345,19 @@ class StockMove(models.Model):
                 else:
                     sml.unlink()
                     reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_ids[0], strict=False)
+
+                    if not reserved:
+                        ## buscon el move line con ese lote
+                        ocup_dom = [('location_id', '=', sml.location_id.id), ('product_id', '=', move.product_id.id), ('qty_done', '=', 0),  ('lot_id', '=', sml.lot_id.id)]
+                        ocup_move_line = self.env['stock.move.line'].search(ocup_dom)
+                        if ocup_move_line:
+                            move_to_update = ocup_move_line.move_id
+                            ocup_move_line.unlink()
+                            reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_ids[0], strict=False)
+                            move_to_update._update_reserved_quantity(1, 1, move.location_id, strict=False)
                     if reserved:
                         lot_ids -= lot_ids[0]
-                    else:
+                    if not reserved:
                         raise ValidationError('No se ha podido reservar el lote {}'.format(lot_ids[0]))
                     new_move = move.move_line_ids[-1]
 
