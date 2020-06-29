@@ -31,7 +31,7 @@ class StockPickingBatch(models.Model):
     product_re = fields.Char(related='picking_type_id.warehouse_id.product_re')
     picking_type_id = fields.Many2one('stock.picking.type', 'Operation Type', compute='_compute_picking_type_id', store = True)
     scheduled_date = fields.Datetime(
-        'Scheduled Date', compute='_compute_scheduled_date', inverse='_set_scheduled_date', store=True)
+        'Scheduled Date', compute='_compute_scheduled_date')
     sale_ids = fields.One2many('sale.order', string='Ventas', compute="_compute_order_ids")
     sale_id = fields.Many2one('sale.order', string='Venta', compute="_compute_order_ids")
     purchase_ids = fields.One2many('purchase.order', string='Compras', compute="_compute_order_ids")
@@ -46,13 +46,12 @@ class StockPickingBatch(models.Model):
         ('assigned', 'Ready'),
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
-    ], string='Status', compute='_compute_pick_state',
-        copy=False, index=True, store=True)
+    ], string='Status', compute='_compute_pick_state')
 
-    @api.depends('picking_ids.state')
-    @api.one
+
+    @api.multi
     def _compute_pick_state(self):
-        return
+
         ''' State of a picking depends on the state of its related stock.move
         - Draft: only used for "planned pickings"
         - Waiting: if the picking is not ready to be sent so if
@@ -65,22 +64,24 @@ class StockPickingBatch(models.Model):
         - Done: if the picking is done.
         - Cancelled: if the picking is cancelled
         '''
-        if not self.picking_ids:
-            self.pick_state = 'draft'
-        elif any(pick.state == 'draft' for pick in self.picking_ids):  # TDE FIXME: should be all ?
-            self.pick_state = 'draft'
-        elif all(pick.state == 'cancel' for pick in self.picking_ids):
-            self.pick_state = 'cancel'
-        elif all(pick.state in ['cancel', 'done'] for pick in self.picking_ids):
-            self.pick_state = 'done'
-        elif any(pick.state in ['waiting', 'confirmed'] for pick in self.picking_ids):
-            self.pick_state = 'confirmed'
-        elif all(pick.state == 'assigned' for pick in self.picking_ids):  # TDE FIXME: should be all ?
-            self.pick_state = 'assigned'
-        else:
-            self.pick_state = 'draft'
+        for batch in self:
+            if not batch.picking_ids:
+                batch.pick_state = 'draft'
+            elif any(pick.state == 'draft' for pick in batch.picking_ids):  # TDE FIXME: should be all ?
+                batch.pick_state = 'draft'
+            elif all(pick.state == 'cancel' for pick in batch.picking_ids):
+                batch.pick_state = 'cancel'
+            elif all(pick.state in ['cancel', 'done'] for pick in batch.picking_ids):
+                batch.pick_state = 'done'
+            elif any(pick.state in ['waiting', 'confirmed'] for pick in batch.picking_ids):
+                batch.pick_state = 'confirmed'
+            elif all(pick.state == 'assigned' for pick in batch.picking_ids):  # TDE FIXME: should be all ?
+                batch.pick_state = 'assigned'
+            else:
+                batch.pick_state = 'draft'
+
     @api.one
-    @api.depends('picking_ids')
+    @api.depends('picking_ids.picking_type_id')
     def _compute_picking_type_id(self):
         self.picking_type_id = self.picking_ids.mapped('picking_type_id')
 
@@ -94,14 +95,10 @@ class StockPickingBatch(models.Model):
             if batch.purchase_ids:
                 batch.purchase_id = batch.purchase_ids[0]
 
-    @api.one
-    @api.depends('pick_state')
+    @api.multi
     def _compute_scheduled_date(self):
-        self.scheduled_date = min(self.move_lines.mapped('date_expected') or [fields.Datetime.now()])
-
-    @api.one
-    def _set_scheduled_date(self):
-        self.move_lines.write({'date_expected': self.scheduled_date})
+        for batch in self:
+            batch.scheduled_date = min(batch.move_lines.mapped('date_expected'), fields.Datetime.now())
 
     @api.multi
     def compute_field_status(self):
@@ -124,7 +121,7 @@ class StockPickingBatch(models.Model):
             'count_picking_waiting': [('state', 'in', ('confirmed', 'waiting'))],
             'count_picking_ready': [('state', '=', 'assigned')],
             'count_picking': [('state', 'in', ('assigned', 'waiting', 'confirmed'))],
-            'count_picking_late': [('scheduled_date', '<', time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)), ('state', 'in', ('assigned', 'waiting', 'confirmed'))],
+            'count_picking_late': [('date', '<', time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)), ('state', 'in', ('assigned', 'waiting', 'confirmed'))],
             'count_picking_backorders': [('backorder_id', '!=', False), ('state', 'in', ('confirmed', 'assigned', 'waiting'))],
         }
         return domains
@@ -134,12 +131,13 @@ class StockPickingBatch(models.Model):
         domain = []
         if values.get('picking_type_id', False):
             domain += [('picking_type_id', '=', values['picking_type_id'])]
-        if values.get('domain_name', False):
+        if values.get('state', False):
+            domain += [('state', '=', values['state']['value'])]
+        elif values.get('domain_name', False):
             domain += self._compute_picking_count_domains()[values['domain_name']]
         if values.get('search', False):
             domain += [('name', 'ilike', values['search'] )]
-        if values.get('state', False):
-            domain += [('state', '=', values['state']['value'])]
+
         if not domain and values.get('active_ids'):
             domain += [('id', 'in', values.get['active_ids'])]
         values['domain'] = domain
@@ -188,21 +186,18 @@ class StockPickingBatch(models.Model):
         cont = 0
         for move in self.move_lines.sorted(key=lambda r: r.location_id.removal_priority):
             move.apk_order = cont
-            cont+=1
-
-    def prepare_for_pda(self):
-        self.user_id = self.env.user
-        if self.state == 'draft':
-            self.state == 'in_progress'
-            self.assign_order_moves()
+            cont += 1
 
     def get_model_object(self, values={}):
         res = super().get_model_object(values=values)
         picking_id = self
-        if picking_id:
-            picking_id.prepare_for_pda()
+
+
         if values.get('view', 'tree') == 'tree':
             return res
+        if picking_id:
+            picking_id.state == 'in_progress'
+            picking_id.user_id = self.env.user
         if not picking_id:
             domain = values.get('domain', [])
             limit = values.get('limit', 1)

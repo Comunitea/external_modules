@@ -191,7 +191,7 @@ class StockMove(models.Model):
         if not move_id:
             domain = values.get('domain', [])
             limit = values.get('limit', 1)
-            move_id = self.search(domain, limit)
+            move_id = self.search(domain, limit, order="apk_order asc")
             if not move_id or len(move_id) != 1:
                 return res
         res['product_id']['image'] = move_id.product_id.image_medium

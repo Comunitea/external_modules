@@ -60,3 +60,9 @@ class StockInventory(models.Model):
             active_location=location_id)
         values.pop('ean_ids')
         return self.env['stock.location'].get_apk_inventory(values)
+
+    def post_inventory100(self):
+        # The inventory is posted as a single step which means quants cannot be moved from an internal location to another using an inventory
+        # as they will be moved to inventory loss, and other quants will be created to the encoded quant location. This is a normal behavior
+        # as quants cannot be reuse from inventory location (users can still manually move the products before/after the inventory if they want).
+        self.mapped('move_ids').filtered(lambda move: move.state != 'done')[:100]._action_done()
