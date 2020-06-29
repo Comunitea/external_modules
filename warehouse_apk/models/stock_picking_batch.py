@@ -47,11 +47,12 @@ class StockPickingBatch(models.Model):
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
     ], string='Status', compute='_compute_pick_state',
-        copy=False, index=True, readonly=True, store=True, track_visibility='onchange')
+        copy=False, index=True, store=True)
 
     @api.depends('picking_ids.state')
     @api.one
     def _compute_pick_state(self):
+        return
         ''' State of a picking depends on the state of its related stock.move
         - Draft: only used for "planned pickings"
         - Waiting: if the picking is not ready to be sent so if
@@ -76,6 +77,8 @@ class StockPickingBatch(models.Model):
             self.pick_state = 'confirmed'
         elif all(pick.state == 'assigned' for pick in self.picking_ids):  # TDE FIXME: should be all ?
             self.pick_state = 'assigned'
+        else:
+            self.pick_state = 'draft'
     @api.one
     @api.depends('picking_ids')
     def _compute_picking_type_id(self):

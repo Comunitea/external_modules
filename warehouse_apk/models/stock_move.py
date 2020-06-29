@@ -336,7 +336,6 @@ class StockMove(models.Model):
                 ## Por cada movimiento quito el primero, genero nueva reserva forzando el lote
                 if not lot_ids:
                     break
-
                 if move.location_id.should_bypass_reservation()\
                     or move.product_id.type == 'consu':
                     sml.lot_id = lot_ids[0]
@@ -345,9 +344,19 @@ class StockMove(models.Model):
                 else:
                     sml.unlink()
                     reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_ids[0], strict=False)
+
+                    if not reserved:
+                        ## buscon el move line con ese lote
+                        ocup_dom = [('move_id.picking_type_id', '=', move.picking_type_id.id), ('product_id', '=', move.product_id.id), ('state', '=', 'assigned'), ('lot_id', '=', lot_ids[0].id)]
+                        ocup_move_line = self.env['stock.move.line'].search(ocup_dom)
+                        if ocup_move_line:
+                            move_to_update = ocup_move_line.move_id
+                            ocup_move_line.unlink()
+                            reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_ids[0], strict=False)
+                            move_to_update._update_reserved_quantity(1, 1, move.location_id, strict=False)
                     if reserved:
                         lot_ids -= lot_ids[0]
-                    else:
+                    if not reserved:
                         raise ValidationError('No se ha podido reservar el lote {}'.format(lot_ids[0]))
                     new_move = move.move_line_ids[-1]
 
