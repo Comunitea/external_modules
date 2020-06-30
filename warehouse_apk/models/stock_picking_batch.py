@@ -22,8 +22,14 @@ class StockPickingBatch(models.Model):
         for pick in self:
             pick.move_line_count = len(pick.move_line_ids)
 
+    @api.multi
+    def compute_total_quantity_done(self):
+        for pick in self:
+            pick.total_quantity_done = sum(x.reserved_availability for x in pick.move_lines)
+
     app_integrated = fields.Boolean(related='picking_type_id.app_integrated')
     move_line_count = fields.Integer('# Operaciones', compute="compute_move_line_count")
+    total_quantity_done = fields.Integer('# Cantidad', compute="compute_total_quantity_done")
     field_status = fields.Boolean(compute="compute_field_status")
     default_location = fields.Selection(related='picking_type_id.group_code.default_location')
     group_code = fields.Selection(related='picking_type_id.group_code.code')
@@ -98,8 +104,8 @@ class StockPickingBatch(models.Model):
     @api.multi
     def _compute_scheduled_date(self):
         for batch in self:
-            batch.scheduled_date = min(batch.move_lines.mapped('date_expected'), fields.Datetime.now())
 
+            batch.scheduled_date = min(batch.move_lines.mapped('date_expected') or [fields.Datetime.now()])
     @api.multi
     def compute_field_status(self):
         for pick in self:
@@ -108,7 +114,7 @@ class StockPickingBatch(models.Model):
 
     def return_fields(self, mode='tree'):
         res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date',
-               'pick_state', 'sale_id', 'move_line_count', 'picking_type_id', 'purchase_id',
+               'pick_state', 'sale_id', 'move_line_count', 'picking_type_id', 'purchase_id', 'total_quantity_done',
                'default_location', 'field_status', 'priority']
         if mode == 'form':
             res += ['field_status', 'group_code', 'barcode_re', 'product_re', 'sale_ids', 'purchase_ids']
