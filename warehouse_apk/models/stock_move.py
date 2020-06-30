@@ -347,17 +347,22 @@ class StockMove(models.Model):
 
                     if not reserved:
                         ## buscon el move line con ese lote
-                        ocup_dom = [('move_id.picking_type_id', '=', move.picking_type_id.id), ('product_id', '=', move.product_id.id), ('state', '=', 'assigned'), ('lot_id', '=', lot_ids[0].id)]
+                        ocup_dom = [('move_id.picking_type_id', '=', move.picking_type_id.id),
+                                    ('product_id', '=', move.product_id.id),
+                                    ('state', '=', 'assigned'),
+                                    ('lot_id', '=', lot_ids[0].id)]
                         ocup_move_line = self.env['stock.move.line'].search(ocup_dom)
                         if ocup_move_line:
                             move_to_update = ocup_move_line.move_id
                             ocup_move_line.unlink()
                             reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_ids[0], strict=False)
-                            move_to_update._update_reserved_quantity(1, 1, move.location_id, strict=False)
-                    if reserved:
-                        lot_ids -= lot_ids[0]
+                            if move_to_update._update_reserved_quantity(1, 1, move.location_id, strict=False) == 1:
+                                move_to_update.write({'state': 'assigned'})
+
                     if not reserved:
                         raise ValidationError('No se ha podido reservar el lote {}'.format(lot_ids[0]))
+                    move.write({'state': 'assigned'})
+                    lot_ids -= lot_ids[0]
                     new_move = move.move_line_ids[-1]
 
                 new_move.write_status('lot_id', 'done')

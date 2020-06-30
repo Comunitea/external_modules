@@ -336,7 +336,6 @@ class StockPickingBatch(models.Model):
         lot_id = lot.id
         product_id = lot.product_id.id
         new_location_id = lot.compute_location_id()
-
         domain = [('picking_id.batch_id', '=', picking_id), ('product_id', '=', product_id)]
 
         if False and remove:
@@ -369,9 +368,23 @@ class StockPickingBatch(models.Model):
                 if line:
                     move = line.move_id
                     line.unlink()
-                    result = move._update_reserved_quantity(1, 1, location_id=move.location_id, lot_id=lot, strict=False)
-                    if result == 0:
-                        raise UserError ('No se ha podido reservar el lote {}. Comprueba que no está    en otro movimiento'.format(lot.name))
+                    reserved = move._update_reserved_quantity(1, 1, location_id=move.location_id, lot_id=lot, strict=False)
+                    if reserved == 0:
+                        ocup_dom = [('move_id.picking_type_id', '=', move.picking_type_id.id),
+                                    ('product_id', '=', move.product_id.id),
+                                    ('state', '=', 'assigned'),
+                                    ('lot_id', '=', lot_id)]
+                        ocup_move_line = self.env['stock.move.line'].search(ocup_dom)
+                        if ocup_move_line:
+                            move_to_update = ocup_move_line.move_id
+                            ocup_move_line.unlink()
+                            reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot, strict=False)
+                            if move_to_update._update_reserved_quantity(1, 1, move.location_id, strict=False) == 1:
+                                move_to_update.write({'state': 'assigned'})
+                            if reserved == 0:
+                                raise UserError ('No se ha podido reservar el lote {}. Comprueba que no está en otro movimiento'.format(lot.name))
+                            move.write({'state': 'assigned'})
+
                     lot_domain = domain + [('lot_id', '=', lot_id)]
                     line = self.env['stock.move.line'].search(lot_domain, limit=1, order='lot_id desc')
                     if line:

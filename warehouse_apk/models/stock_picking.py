@@ -235,7 +235,6 @@ class StockPicking(models.Model):
         lot_id = lot.id
         product_id = lot.product_id.id
         new_location_id = lot.compute_location_id()
-
         domain = [('picking_id', '=', picking_id), ('product_id', '=', product_id)]
 
         if False and remove:
