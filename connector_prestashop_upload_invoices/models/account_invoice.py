@@ -1,6 +1,6 @@
 # © 2020 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from ftplib import FTP, FTP_TLS
+import paramiko
 import io
 from odoo import _, models
 from odoo.exceptions import UserError
@@ -42,9 +42,9 @@ class AccountInvoice(models.Model):
             ext = "." + format
             if not report_name.endswith(ext):
                 report_name += ext
-            ftp = FTP_TLS(sale_bind.backend_id.ftp_host)
-            ftp.login(sale_bind.backend_id.ftp_user, sale_bind.backend_id.ftp_password)
-            ftp.prot_p()
-            ftp.cwd(sale_bind.backend_id.ftp_report_folder)
-            ftp.storbinary("STOR " + report_name, io.BytesIO(result))
-            ftp.quit()
+            transport = paramiko.Transport((sale_bind.backend_id.ftp_host, sale_bind.backend_id.ftp_port))
+            transport.connect(None, sale_bind.backend_id.ftp_user, sale_bind.backend_id.ftp_password)
+            sftp = paramiko.SFTPClient.from_transport(transport)
+            sftp.chdir(sale_bind.backend_id.ftp_report_folder)
+            sftp.putfo(io.BytesIO(result), report_name)
+            sftp.close()
