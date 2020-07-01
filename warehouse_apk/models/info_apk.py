@@ -217,9 +217,10 @@ class InfoApk(models.AbstractModel):
                     val_obj[field] = value_ids or []
                     val_obj['{}_list_ids'.format(field)] = list_ids
                 elif f_obj['type'] == 'many2one':
+
                     val_obj[field] = field_value.m2o_dict(field_value)
                 elif f_obj['type'] in ['datetime', 'date']:
-                    val_obj[field] = field_value.strftime('%d-%m')
+                    val_obj[field] = field_value.strftime('%d %H:%M')
                 elif f_obj['type'] == 'selection':
                     val_obj[field] = self.selection_dict(f_obj, field_value)
                 else:
@@ -311,3 +312,4 @@ class StockWarehouse(models.Model):
 class ProductCategory(models.Model):
     _name = 'product.category'
     _inherit = ['info.apk', 'product.category']
+

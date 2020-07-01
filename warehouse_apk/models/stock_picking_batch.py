@@ -23,13 +23,13 @@ class StockPickingBatch(models.Model):
             pick.move_line_count = len(pick.move_line_ids)
 
     @api.multi
-    def compute_total_quantity_done(self):
+    def compute_total_reserved_availability(self):
         for pick in self:
-            pick.total_quantity_done = sum(x.reserved_availability for x in pick.move_lines)
+            pick.total_reserved_availability = sum(x.reserved_availability for x in pick.move_lines)
 
     app_integrated = fields.Boolean(related='picking_type_id.app_integrated')
     move_line_count = fields.Integer('# Operaciones', compute="compute_move_line_count")
-    total_quantity_done = fields.Integer('# Cantidad', compute="compute_total_quantity_done")
+    total_reserved_availability = fields.Integer('# Cantidad', compute="compute_total_reserved_availability")
     field_status = fields.Boolean(compute="compute_field_status")
     default_location = fields.Selection(related='picking_type_id.group_code.default_location')
     group_code = fields.Selection(related='picking_type_id.group_code.code')
@@ -104,7 +104,6 @@ class StockPickingBatch(models.Model):
     @api.multi
     def _compute_scheduled_date(self):
         for batch in self:
-
             batch.scheduled_date = min(batch.move_lines.mapped('date_expected') or [fields.Datetime.now()])
     @api.multi
     def compute_field_status(self):
@@ -114,7 +113,7 @@ class StockPickingBatch(models.Model):
 
     def return_fields(self, mode='tree'):
         res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date',
-               'pick_state', 'sale_id', 'move_line_count', 'picking_type_id', 'purchase_id', 'total_quantity_done',
+               'pick_state', 'sale_id', 'move_line_count', 'picking_type_id', 'purchase_id', 'total_reserved_availability',
                'default_location', 'field_status', 'priority']
         if mode == 'form':
             res += ['field_status', 'group_code', 'barcode_re', 'product_re', 'sale_ids', 'purchase_ids']
@@ -372,7 +371,7 @@ class StockPickingBatch(models.Model):
                     if reserved == 0:
                         ocup_dom = [('move_id.picking_type_id', '=', move.picking_type_id.id),
                                     ('product_id', '=', move.product_id.id),
-                                    ('state', '=', 'assigned'),
+                                    ('state', 'in', ('assigned', 'partially_available')),
                                     ('lot_id', '=', lot_id)]
                         ocup_move_line = self.env['stock.move.line'].search(ocup_dom)
                         if ocup_move_line:

@@ -349,7 +349,7 @@ class StockMove(models.Model):
                         ## buscon el move line con ese lote
                         ocup_dom = [('move_id.picking_type_id', '=', move.picking_type_id.id),
                                     ('product_id', '=', move.product_id.id),
-                                    ('state', '=', 'assigned'),
+                                    ('state', 'in', ('assigned', 'partially_available')),
                                     ('lot_id', '=', lot_ids[0].id)]
                         ocup_move_line = self.env['stock.move.line'].search(ocup_dom)
                         if ocup_move_line:
@@ -358,7 +358,6 @@ class StockMove(models.Model):
                             reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_ids[0], strict=False)
                             if move_to_update._update_reserved_quantity(1, 1, move.location_id, strict=False) == 1:
                                 move_to_update.write({'state': 'assigned'})
-
                     if not reserved:
                         raise ValidationError('No se ha podido reservar el lote {}'.format(lot_ids[0]))
                     move.write({'state': 'assigned'})
