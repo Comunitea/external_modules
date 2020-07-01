@@ -188,16 +188,16 @@ class StockPickingBatch(models.Model):
         return domain
 
     def assign_order_moves(self):
-        cont = 0
-        for move in self.move_lines.sorted(key=lambda r: r.location_id.removal_priority):
+        cont = 1
+        field_location = self.picking_type_id.group_code.default_location or 'location_id'
+        self.move_lines.filtered(lambda x: not x.move_line_ids).write({'apk_order': 0})
+        for move in self.move_line_ids.sorted(key=lambda r: r[field_location].removal_priority).mapped('move_id'):
             move.apk_order = cont
             cont += 1
 
     def get_model_object(self, values={}):
         res = super().get_model_object(values=values)
         picking_id = self
-
-
         if values.get('view', 'tree') == 'tree':
             return res
         if picking_id:
@@ -234,13 +234,22 @@ class StockPickingBatch(models.Model):
         return True
 
 
+    def check_allow_pda_validation(self):
+        if any(x.location_id.usage == 'view' for x in self.move_line_ids):
+            raise ValidationError('No puedes poner una cantidad en un aubicación de tipo vista')
+
+
     @api.model
     def button_validate_apk(self, vals):
         batch_id = self.browse(vals.get('id', False))
         if not batch_id:
             raise ValidationError ("No se ha encontrado el albarán")
         if all(move_line.qty_done == 0 for move_line in batch_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel'))):
-            raise ValidationError ('No hay ninguna cantidad hecha para validar')
+            batch_id.message_post("No hay ninguna cantidad parta validar")
+            return False
+        if batch_id.check_allow_pda_validation():
+            batch_id.message_post("No se a superado la validación incial del inventario")
+            return False
         ctx = batch_id._context.copy()
         ctx.update(skip_overprocessed_check=True)
         for pick in batch_id.picking_ids:
