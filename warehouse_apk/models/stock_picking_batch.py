@@ -400,7 +400,7 @@ class StockPickingBatch(models.Model):
                         line.write_status('lot_id', 'done', True)
                         line.write_status('qty_done', 'done', True)
         move = line.move_id
-        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
+        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.reserved_quantity:
             raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         ##devuelvo un objeto movimietno para actualizar la vista de la app
         if not move:

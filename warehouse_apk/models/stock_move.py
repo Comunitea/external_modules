@@ -52,6 +52,7 @@ class StockMove(models.Model):
     active_location_id = fields.Many2one('stock.location', copy=False)
     picking_field_status = fields.Boolean(related = 'picking_id.field_status')
     move_line_location_id = fields.Many2one('stock.location', compute="compute_move_line_location_id")
+    wh_location = fields.Char(related="move_line_location_id.name")
     apk_filter_by_qty = fields.Char(compute="compute_move_line_location_id")
     apk_order = fields.Integer(string="Apk order", default=0)
     batch_id = fields.Many2one(related='picking_id.batch_id')

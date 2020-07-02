@@ -218,7 +218,6 @@ class InfoApk(models.AbstractModel):
                     val_obj[field] = value_ids or []
                     val_obj['{}_list_ids'.format(field)] = list_ids
                 elif f_obj['type'] == 'many2one':
-
                     val_obj[field] = field_value.m2o_dict(field_value)
                 elif f_obj['type'] in ['datetime', 'date']:
                     val_obj[field] = field_value.strftime('%d %H:%M')
