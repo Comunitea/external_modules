@@ -240,7 +240,7 @@ class StockMove(models.Model):
             return {'err': True, 'error': "No se ha encontrado el movimiento."}
         for move_line in move.move_line_ids:
             move_line.qty_done = move_line.product_uom_qty
-        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
+        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.reserved_availability:
             raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         return True
 
@@ -390,7 +390,7 @@ class StockMove(models.Model):
         move._recompute_state()
         ## Devuelvo la información del moviemitno para ahorrar una llamada desde la apk
         values = {'id': move.id, 'model': 'stock.move', 'view': 'form', 'filter_move_lines': vals.get('filter_move_lines', 'Todos')}
-        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
+        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.reserved_availability:
             raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         return self.env['info.apk'].get_apk_object(values)
 
@@ -460,7 +460,7 @@ class StockMove(models.Model):
             move.quantity_done = quantity_done
         if move:
             move._recompute_state()
-            if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
+            if not move.picking_type_id.allow_overprocess and move.quantity_done > move.reserved_availability:
                 raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
             return move.get_model_object()
         return False
