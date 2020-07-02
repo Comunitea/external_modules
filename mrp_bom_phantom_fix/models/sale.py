@@ -13,7 +13,7 @@ class SaleOrder(models.Model):
     def _compute_has_packs(self):
         for order in self:
             has_packs = False
-            for line in self.order_line:
+            for line in order.order_line:
                 if line.pack_components:
                     has_packs = True
                     break
