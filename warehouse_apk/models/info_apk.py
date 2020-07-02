@@ -314,3 +314,7 @@ class ProductCategory(models.Model):
     _name = 'product.category'
     _inherit = ['info.apk', 'product.category']
 
+class ResPartner(models.Model):
+    _name = 'res.partner'
+    _inherit = ['info.apk', 'res.partner']
+

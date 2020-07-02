@@ -56,7 +56,7 @@ class StockPicking(models.Model):
 
 
     def return_fields(self, mode='tree'):
-        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'purchase_id', 'sale_id', 'move_line_count', 'picking_type_id', 'default_location', 'field_status', 'priority']
+        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'purchase_id', 'sale_id', 'move_line_count', 'picking_type_id', 'default_location', 'field_status', 'priority', 'partner_id']
         if mode == 'form':
             res += ['field_status', 'group_code', 'barcode_re', 'product_re']
         return res
@@ -85,7 +85,7 @@ class StockPicking(models.Model):
         if values.get('state', False):
             domain += [('state', '=', values['state']['value'])]
         if not domain and values.get('active_ids'):
-            domain += [('id', 'in', values.get['active_ids'])]
+            domain += [('id', 'in', values.get('active_ids'))]
 
         values['domain'] = domain
         return self.get_model_object(values)

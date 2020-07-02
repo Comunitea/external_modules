@@ -112,7 +112,7 @@ class StockPickingBatch(models.Model):
 
 
     def return_fields(self, mode='tree'):
-        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date',
+        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'partner_id',
                'pick_state', 'sale_id', 'move_line_count', 'picking_type_id', 'purchase_id', 'total_reserved_availability',
                'default_location', 'field_status', 'priority']
         if mode == 'form':
@@ -144,7 +144,7 @@ class StockPickingBatch(models.Model):
             domain += [('name', 'ilike', values['search'] )]
 
         if not domain and values.get('active_ids'):
-            domain += [('id', 'in', values.get['active_ids'])]
+            domain += [('id', 'in', values.get('active_ids'))]
         values['domain'] = domain
         ## Cambio el valor de dominio por ids de picking
         batch_ids = self.env['stock.picking'].search(domain).mapped('batch_id').ids
