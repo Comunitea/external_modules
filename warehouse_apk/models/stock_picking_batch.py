@@ -112,7 +112,7 @@ class StockPickingBatch(models.Model):
 
 
     def return_fields(self, mode='tree'):
-        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'partner_id',
+        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'partner_id', 'state',
                'pick_state', 'sale_id', 'move_line_count', 'picking_type_id', 'purchase_id', 'total_reserved_availability',
                'default_location', 'field_status', 'priority']
         if mode == 'form':
@@ -400,7 +400,7 @@ class StockPickingBatch(models.Model):
                         line.write_status('lot_id', 'done', True)
                         line.write_status('qty_done', 'done', True)
         move = line.move_id
-        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.reserved_quantity:
+        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.reserved_availability:
             raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         ##devuelvo un objeto movimietno para actualizar la vista de la app
         if not move:

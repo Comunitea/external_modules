@@ -47,9 +47,11 @@ class InfoApk(models.AbstractModel):
         return product_id
 
     def get_apk_lot(self, code, product_id):
+        if code == product_id.wh_code or code == product_id.default_code:
+            return False
         domain = [('name', '=', code)]
         if product_id:
-            domain += [('product_id', '=', product_id)]
+            domain += [('product_id', '=', product_id.id)]
         lot_id = self.env['stock.production.lot'].search(domain)
         if len(lot_id)>1:
             raise ValueError ('Se han encontrado varios lotes para este código {}'.format(code))
@@ -316,4 +318,9 @@ class ProductCategory(models.Model):
 class ResPartner(models.Model):
     _name = 'res.partner'
     _inherit = ['info.apk', 'res.partner']
+
+    @api.multi
+    def compute_apk_name(self):
+        for obj in self:
+            obj.apk_name = obj.commercial_partner_id.name
 

@@ -86,7 +86,6 @@ class StockPicking(models.Model):
             domain += [('state', '=', values['state']['value'])]
         if not domain and values.get('active_ids'):
             domain += [('id', 'in', values.get('active_ids'))]
-
         values['domain'] = domain
         return self.get_model_object(values)
 

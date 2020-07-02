@@ -69,14 +69,17 @@ class StockLocation(models.Model):
         def create_new_inv_line(inventory_id, product_id, location_id):
             pre_filter = inventory_id.filter
             pre_product = inventory_id.product_id
+            exhausted = inventory_id.exhausted
             inventory_id.filter = 'product'
             inventory_id.product_id = product_id
+            inventory_id.exhausted = True
             line_vals = inventory_id._get_inventory_lines_values()
             ctx = self._context.copy()
             ctx.update(default_inventory_id = inventory_id.id, default_company_id = inventory_id.company_id.id)
             self.env['stock.inventory.line'].with_context(ctx).create(line_vals)
             inventory_id.product_id = pre_product
             inventory_id.filter = pre_filter
+            inventory_id.exhausted = exhausted
             print("Creo una nueva línea para el artículo sin tracking")
 
         def write_qty():
@@ -100,8 +103,6 @@ class StockLocation(models.Model):
         create_lot = values.get('create_lot', True)
         line_id = values.get('id', False)
         line_id = self.env['stock.inventory.line'].browse(line_id)
-
-
         wh_code = values.get('wh_code', False)
         product_qty = values.get('product_qty', False)
         inc = values.get('inc', False)
@@ -109,6 +110,8 @@ class StockLocation(models.Model):
         print("change_inventory_line_qty con values:\n#######################################")
         pprint.PrettyPrinter(indent=2).pprint(values)
         inventory_id = self.env['stock.inventory'].browse(values.get('inventory_id', False))
+        if not inventory_id:
+                raise ValidationError('No ha definido un inventario para ajustar')
         print('Para el inventario la linea {}'.format(inventory_id.display_name))
         if line_id:
             ## Nunca para lotes o series
@@ -117,18 +120,17 @@ class StockLocation(models.Model):
             product_id = line_id.product_id
             inventory_id = line_id.inventory_id
         else:
-            location_id = self.env['stock.location'].browse(values.get('location_id', False))
-
+            location_id = values.get('location_id', False)
+            location_id = self.env['stock.location'].browse(location_id)
             if not location_id:
                 raise ValidationError('No ha definido ubicación para ajustar')
             print('Para la ubicación la linea {}'.format(location_id.display_name))
 
-            if not inventory_id:
-                raise ValidationError('No ha definido un inventario para ajustar')
+
             if product_id:
                 product_id = self.env['product.product'].browse(product_id)
                 ## tengo que verificar que el wh_code no es ningún serie este producto
-                lot_id = self.get_apk_lot(wh_code, product_id.id)
+                lot_id = self.get_apk_lot(wh_code, product_id)
                 strict_product = self.get_apk_product(wh_code)
 
                 if not lot_id and strict_product or lot_id and lot_id.product_id == strict_product:
@@ -163,6 +165,7 @@ class StockLocation(models.Model):
                               ('prod_lot_id.name', '=', lot_name),
                               ('inventory_id', '=', inventory_id.id)]
                     line_id = self.env['stock.inventory.line'].search(domain)
+
 
                 # if line_id:
                 #     print('Vuelvo a entrar con la línea {}'.format(line_id.id))
@@ -200,7 +203,7 @@ class StockLocation(models.Model):
 
         lot_id = self.env['stock.production.lot']
         if lot_name:
-            lot_id = self.get_apk_lot(lot_name, product_id.id)
+            lot_id = self.get_apk_lot(lot_name, product_id)
             if not lot_id and create_lot:
                 ## lo creo, a saber debe venir la orden de crear en el values de la pda
                 new_lot_vals = {'product_id': product_id.id, 'name': lot_name}
@@ -213,7 +216,7 @@ class StockLocation(models.Model):
                       ('product_id', '=', product_id.id),
                       ('prod_lot_id', '=', False)]
             line_id = self.env['stock.inventory.line'].search(domain)
-            print ("Hay ya una línea vacía, no hago nada")
+
             if line_id:
                 raise ValidationError ('Ya hay una línea sin lote para el artículo {}'.format(product_id.wh_code))
             else:
