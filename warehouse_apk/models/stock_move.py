@@ -31,6 +31,9 @@ FLAG_PROP = {'view': 1, 'req': 2, 'done': 4};
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
+    order = 'picking_id, sequence, id'
+
+
     @api.multi
     def _compute_move_lines_count(self):
         for sm in self:
@@ -50,7 +53,7 @@ class StockMove(models.Model):
     picking_field_status = fields.Boolean(related = 'picking_id.field_status')
     move_line_location_id = fields.Many2one('stock.location', compute="compute_move_line_location_id")
     apk_filter_by_qty = fields.Char(compute="compute_move_line_location_id")
-    apk_order = fields.Integer(string="Apk order")
+    apk_order = fields.Integer(string="Apk order", default=0)
     batch_id = fields.Many2one(related='picking_id.batch_id')
 
     @api.multi
@@ -141,7 +144,7 @@ class StockMove(models.Model):
         if ids:
             product_domain += [('id', 'in', ids)]
         product_domain += ['|', ('product_id.barcode', '=', search_str), ('product_id.wh_code', '=', search_str)]
-        res = self.search_read(product_domain, ['id', 'apk_name'])
+        res = self.search_read(product_domain, ['id', 'apk_name'], order ='apk_order')
         if res:
             return [x['id'] for x in res]
             ## Busco en los lotes:
@@ -184,6 +187,8 @@ class StockMove(models.Model):
         return new_move.get_model_object(values)
 
     def get_model_object(self, values={}):
+
+        values.update(order='apk_order asc')
         res = super().get_model_object(values=values)
         if values.get('view', 'tree') == 'tree':
             return res
@@ -191,7 +196,7 @@ class StockMove(models.Model):
         if not move_id:
             domain = values.get('domain', [])
             limit = values.get('limit', 1)
-            move_id = self.search(domain, limit, order="apk_order asc")
+            move_id = self.search(domain, limit, order="apk_order")
             if not move_id or len(move_id) != 1:
                 return res
         res['product_id']['image'] = move_id.product_id.image_medium

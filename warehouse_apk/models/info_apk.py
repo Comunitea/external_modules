@@ -178,10 +178,11 @@ class InfoApk(models.AbstractModel):
         limit = values.get('limit', 0)
         model = values.get('model', self._name)
         view = values.get('view', 'tree')
+        order = values.get('order', False)
         if not self:
             model_id = self.env[model]
             if not model: return []
-            obj_ids = model_id.search(domain, offset=offset, limit=limit)
+            obj_ids = model_id.search(domain, offset=offset, limit=limit, order=order)
         else:
             obj_ids = self
         vals = []
@@ -312,4 +313,8 @@ class StockWarehouse(models.Model):
 class ProductCategory(models.Model):
     _name = 'product.category'
     _inherit = ['info.apk', 'product.category']
+
+class ResPartner(models.Model):
+    _name = 'res.partner'
+    _inherit = ['info.apk', 'res.partner']
 
