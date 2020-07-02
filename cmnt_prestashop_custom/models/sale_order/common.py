@@ -13,7 +13,7 @@ class SaleOrde(models.Model):
 
     def write(self, vals):
         res = super().write(vals)
-        for order in self:
+        for order in self.with_context(bypass_risk=True):
             if vals.get("prestashop_state"):
                 state = order.prestashop_state
                 if state.trigger_cancel:
