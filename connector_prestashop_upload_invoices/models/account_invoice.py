@@ -16,8 +16,7 @@ class AccountInvoice(models.Model):
         for invoice in self:
             if invoice.type == "out_invoice" and invoice.mapped(
                 "invoice_line_ids.sale_line_ids.order_id.prestashop_bind_ids"
-            ):
-
+            ) and invoice.state in ('open', 'paid'):
                 invoice.with_delay()._upload_report_to_prestashop()
         return res
 
