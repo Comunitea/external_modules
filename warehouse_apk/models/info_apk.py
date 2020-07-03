@@ -88,6 +88,21 @@ class InfoApk(models.AbstractModel):
                'value': field_value}
         return val
 
+    def get_many2one_dict_values(self, field):
+        many2one = self.fields_get()[field]
+        options = self.env[many2one['relation']].read_group([('wh_code', '!=', False)], ['id'], ['wh_code'])
+        res = []
+        for option in options:
+            res.append({'name': option['wh_code'], 'value' : option['wh_code']})
+        return res
+
+    def get_selection_dict_values(self, field):
+        selection = self.fields_get()[field]['selection']
+        res = []
+        for option in selection:
+            res.append({'name': option[1], 'value': option[0]})
+        return res
+
     def m2o_dict(self, field):
         if field:
             return {'id': field.id, 'name': field.apk_name}
@@ -231,11 +246,11 @@ class InfoApk(models.AbstractModel):
         if view == 'form' and vals:
             vals = vals[0]
 
-        print("\n VALORES: ---------------------------")
-        pprint.PrettyPrinter(indent=2).pprint(values)
-        print("\n REGISTRO: ---------------------------")
-        pprint.PrettyPrinter(indent=2).pprint(vals)
-        print("\n -------------------------------------")
+        # print("\n VALORES: ---------------------------")
+        # pprint.PrettyPrinter(indent=2).pprint(values)
+        # print("\n REGISTRO: ---------------------------")
+        # pprint.PrettyPrinter(indent=2).pprint(vals)
+        # print("\n -------------------------------------")
         return vals
 
     @api.model

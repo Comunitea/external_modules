@@ -7,6 +7,12 @@ import time
 import pprint
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
+PICK_STATES =  {'Borrador': 'draft',
+                'En proceso': 'in_progress',
+                'Disponible': 'assigned',
+                'Hecho': 'done',
+                'Cancelado': 'cancel'}
+
 class StockPickingBatch(models.Model):
 
     _inherit = ['info.apk', 'stock.picking.batch']
@@ -24,12 +30,25 @@ class StockPickingBatch(models.Model):
 
     @api.multi
     def compute_total_reserved_availability(self):
-        for pick in self:
-            pick.total_reserved_availability = sum(x.reserved_availability for x in pick.move_lines)
+        sql = "select sp.batch_id, sum(case when sml.state = 'done' then qty_done else product_uom_qty end), sum(qty_done) from stock_move_line sml " \
+              "join stock_picking sp on sp.id = sml.picking_id where sp.batch_id in %s group by sp.batch_id"
+        self._cr.execute(sql, [tuple(self.ids)])
+        result = self._cr.fetchall()
+        qties = dict()
+        for res in result:
+            qties[res[0]] = {}
+            qties[res[0]]['total_reserved_availability'] = res[1]
+            qties[res[0]]['total_qty_done'] = res[2]
+        list = qties.keys()
+        for batch in self:
+            if batch.id in list:
+                batch.total_reserved_availability = qties[batch.id]['total_reserved_availability']
+                batch.total_qty_done = qties[batch.id]['total_qty_done']
 
     app_integrated = fields.Boolean(related='picking_type_id.app_integrated')
     move_line_count = fields.Integer('# Operaciones', compute="compute_move_line_count")
-    total_reserved_availability = fields.Integer('# Cantidad', compute="compute_total_reserved_availability")
+    total_reserved_availability = fields.Integer('# Cantidad Reservada', compute="compute_total_reserved_availability")
+    total_qty_done = fields.Integer('# Cantidad Hecha', compute="compute_total_reserved_availability")
     field_status = fields.Boolean(compute="compute_field_status")
     default_location = fields.Selection(related='picking_type_id.group_code.default_location')
     group_code = fields.Selection(related='picking_type_id.group_code.code')
@@ -53,7 +72,6 @@ class StockPickingBatch(models.Model):
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
     ], string='Status', compute='_compute_pick_state')
-
 
     @api.multi
     def _compute_pick_state(self):
@@ -113,10 +131,11 @@ class StockPickingBatch(models.Model):
 
     def return_fields(self, mode='tree'):
         res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'partner_id', 'state',
-               'pick_state', 'sale_id', 'move_line_count', 'picking_type_id', 'purchase_id', 'total_reserved_availability',
-               'default_location', 'field_status', 'priority']
+               'pick_state', 'sale_id', 'move_line_count', 'picking_type_id',
+               'purchase_id', 'total_reserved_availability', 'default_location', 'field_status', 'priority']
         if mode == 'form':
-            res += ['field_status', 'group_code', 'barcode_re', 'product_re', 'sale_ids', 'purchase_ids']
+            res += ['field_status', 'group_code', 'barcode_re', 'product_re', 'notes',
+                    'sale_ids', 'purchase_ids', 'total_reserved_availability', 'total_qty_done']
         return res
 
     def _compute_picking_count_domains(self):
@@ -131,25 +150,45 @@ class StockPickingBatch(models.Model):
         }
         return domains
 
+
     @api.model
     def get_picking_list(self, values):
-        domain = []
-        if values.get('picking_type_id', False):
-            domain += [('picking_type_id', '=', values['picking_type_id'])]
-        if values.get('state', False):
-            domain += [('state', '=', values['state']['value'])]
+
+        domain = values.get('domain', [])
+        domain += [('batch_id', '!=', False)]
+        filter_values = values.get('filter_values', {})
+        ## AÑADO DOMINIO POR STATE
+        state = False
+        f_state = filter_values.get('filter_pick_state', False)
+        state = values.get('state', False)
+        if f_state:
+            domain += [('batch_id.state', 'in', f_state)]
+            values['domain_name'] = False
+        elif state:
+            domain += [('state', '=', state)]
         elif values.get('domain_name', False):
             domain += self._compute_picking_count_domains()[values['domain_name']]
+        if values.get('picking_type_id', False):
+            domain += [('batch_id.picking_type_id', '=', values['picking_type_id'])]
         if values.get('search', False):
-            domain += [('name', 'ilike', values['search'] )]
-
-        if not domain and values.get('active_ids'):
-            domain += [('id', 'in', values.get('active_ids'))]
-        values['domain'] = domain
+            ## busco en la venta, compra y albarnes ademas de en el nombre del batch
+            domain += ['|', '|', '|', ('name', 'ilike', values['search']),
+                       ('purchase_id.name', 'ilike', values['search']),
+                       ('sale_id.name', 'ilike', values['search']),
+                       ('batch_id.name', 'ilike', values['search'] )]
+        ##if not domain and values.get('active_ids'):
+        ##    domain += [('id', 'in', values.get('active_ids'))]
         ## Cambio el valor de dominio por ids de picking
-        batch_ids = self.env['stock.picking'].search(domain).mapped('batch_id').ids
+        batch_ids = self.env['stock.picking'].search_read(domain, ['batch_id'])
+        print ("Dominio para el listado de agrupaciones con values:{} \n: {}".format(values, domain))
+        batch_ids = [x['batch_id'][0] for x in batch_ids]
         values['domain'] = [('id', 'in', batch_ids)]
-        return self.get_model_object(values)
+
+        res = self.get_model_object(values)
+        if res:
+            res[0]['count_batch_ids'] = self.search_count(values['domain'])
+        return res
+
 
 
     def get_move_domain_for_picking(self, filter, batch_id, inc=0, limit = 0, apk_order = -1):

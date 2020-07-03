@@ -379,14 +379,17 @@ class StockMove(models.Model):
             ## Si quedan lotes, tengo que crear un movieminto por cada lote
             if lot_ids:
                 for lot_id in lot_ids:
+                    if move.quantity_done >= move.reserved_availability:
+                        break
                     reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot_id, strict=False)
-                    new_move = move.move_line_ids[-1]
-                    new_move.write_status('lot_id', 'done')
-                    new_move.qty_done = 1
-                    new_move.write_status('qty_done', 'done')
-                    new_move[move.default_location] = active_location_id
-                    if move.active_location_id:
-                        new_move.write_status(move.default_location, 'done')
+                    if reserved:
+                        new_move = move.move_line_ids[-1]
+                        new_move.write_status('lot_id', 'done')
+                        new_move.qty_done = 1
+                        new_move.write_status('qty_done', 'done')
+                        new_move[move.default_location] = active_location_id
+                        if move.active_location_id:
+                            new_move.write_status(move.default_location, 'done')
         move._recompute_state()
         ## Devuelvo la información del moviemitno para ahorrar una llamada desde la apk
         values = {'id': move.id, 'model': 'stock.move', 'view': 'form', 'filter_move_lines': vals.get('filter_move_lines', 'Todos')}
@@ -411,6 +414,9 @@ class StockMove(models.Model):
         values.pop('ean_ids')
         if not ean_ids:
             raise ValidationError ("No hay ningún número de serie")
+        move = self.browse(move_id)
+        if move.quantity_done >= move.reserved_availability:
+            raise ValidationError ("No puedes hacer más cantidad que lo que tienes reservado")
 
         vals = {'lot_names': ean_ids,
              'active_location_id': location_id,
