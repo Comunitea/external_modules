@@ -8,11 +8,11 @@ class StockProductionLot(models.Model):
     _inherit ="stock.production.lot"
 
     def find_or_create_lot(self, lot_name, product_id, create):
-        lot_id = self.env['info.apk'].get_apk_lot(lot_name, product_id)
+        lot_id = self.env['info.apk'].get_apk_lot(lot_name.upper(), product_id)
         if not lot_id:
             if not create:
-                raise ValidationError ('El nº de serie {} no exsite. Debes utilizar nº de serie existentes')
-            val = {'name': lot_name, 'product_id': product_id.id}
+                raise ValidationError ('El nº de serie {} no existe. Debes utilizar nº de serie existentes.')
+            val = {'name': lot_name.upper(), 'product_id': product_id.id}
             lot_id = lot_id.create(val)
 
         return lot_id

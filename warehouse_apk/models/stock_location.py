@@ -203,10 +203,10 @@ class StockLocation(models.Model):
 
         lot_id = self.env['stock.production.lot']
         if lot_name:
-            lot_id = self.get_apk_lot(lot_name, product_id)
+            lot_id = self.get_apk_lot(lot_name.upper(), product_id)
             if not lot_id and create_lot:
                 ## lo creo, a saber debe venir la orden de crear en el values de la pda
-                new_lot_vals = {'product_id': product_id.id, 'name': lot_name}
+                new_lot_vals = {'product_id': product_id.id, 'name': lot_name.upper()}
                 lot_id = self.env['stock.production.lot'].create(new_lot_vals)
                 print ("Creo un nuevo lote para {}: {}: {}".format(product_id.display_name, lot_id.id, lot_id.name))
 
