@@ -12,6 +12,9 @@ from Crypto.PublicKey import RSA
 from base64 import b64encode
 import hashlib
 
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 class Signen(object):
     def __init__(self, username="", password="", apikey="", nologin=False):
@@ -48,7 +51,7 @@ class Signen(object):
             headers["JWT"] = self.__jwt
             headers["Authorization"] = "Bearer {}".format(self.__jwt)
         return requests.request(
-            method, url, headers=headers, json=data, files=files
+            method, url, headers=headers, json=data, files=files, verify=False
         )
 
     def upload_file(self, filename, file_data, receivers_data):
