@@ -25,8 +25,8 @@ from openerp import api, fields, models
 class HrAttendanceReport(models.AbstractModel):
     _name = "report.hr_attendance_report.print_attendance"
 
-    @api.multi
-    def get_report_values(self, docids, data=None):
+    @api.model
+    def _get_report_values(self, docids, data=None):
         report_obj = self.env["ir.actions.report"]
         report = report_obj._get_report_from_name(
             "hr_attendance_report.print_attendance"
@@ -66,24 +66,15 @@ class HrAttendanceReport(models.AbstractModel):
                 for attendance in attendances:
 
                     in_time = fields.Datetime.context_timestamp(
-                        self,
-                        datetime.strptime(
-                            attendance.check_in, "%Y-%m-%d %H:%M:%S"
-                        ),
+                        self ,attendance.check_in,
                     )
                     out_time = fields.Datetime.context_timestamp(
-                        self,
-                        datetime.strptime(
-                            attendance.check_out, "%Y-%m-%d %H:%M:%S"
-                        ),
+                        self, attendance.check_out,
                     )
                     day_attendances["ord_hours"] += attendance.worked_hours
 
                     fields.Datetime.context_timestamp(
-                        self,
-                        datetime.strptime(
-                            attendances[0].check_in, "%Y-%m-%d %H:%M:%S"
-                        ),
+                        self, attendances[0].check_in
                     )
                     day_attendances["in_out_str"] += (
                         "%02d:%02d-%02d:%02d | "
@@ -103,7 +94,6 @@ class HrAttendanceReport(models.AbstractModel):
                     max_hours = employee.resource_calendar_id.get_work_hours_count(
                         from_date_datetime,
                         from_date2_datetime,
-                        resource_id=employee.resource_id.id,
                     )
                     extra_hours = day_attendances["ord_hours"] - max_hours
                     if day_attendances["ord_hours"] > max_hours:
