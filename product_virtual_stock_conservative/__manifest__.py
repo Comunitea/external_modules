@@ -8,6 +8,6 @@
     'description': """Add virtual stock conservative computation to products. stock real - outgoing stock""",
     'author': 'Comunitea',
     'website': 'www.comunitea.com',
-    "depends": ['stock'],
+    "depends": ['stock', 'stock_available_unreserved'],
     "data": ["views/product_view.xml"],
 }
