@@ -86,6 +86,7 @@ class StockMoveLine(models.Model):
         return True
 
     ## APK
+
     @api.model
     def get_move_line_info_apk(self, vals):
         move_id = vals.get('id', False)
@@ -111,23 +112,45 @@ class StockMoveLine(models.Model):
                 move_line = new_move
         product_id = move_line.move_id.product_id.with_context(location=move_line.move_id.location_id.id)
         data = {'id': move_line.id,
-                'name': product_id.display_name,
+                'display_name': product_id.display_name,
+                'state': move_line.state,
                 'image': product_id.image_medium,
                 'barcode': product_id.barcode,
+                'picking_id': {'id': move_line.picking_id.id,
+                                'display_name': move_line.picking_id.display_name,
+                                'code': move_line.picking_id.picking_type_code},
                 'tracking': product_id.tracking,
                 'default_code': product_id.default_code,
                 'qty_available': product_id.qty_available,
                 'location_id': {'id': move_line.location_id.id,
-                                'name': move_line.location_id.name,
+                                'display_name': move_line.location_id.display_name,
                                 'barcode': move_line.location_id.barcode},
                 'location_dest_id': {'id': move_line.location_dest_id.id,
-                                     'name': move_line.location_dest_id.name,
+                                     'display_name': move_line.location_dest_id.display_name,
                                      'barcode': move_line.location_dest_id.barcode},
                 'product_uom_qty': move_line.product_uom_qty,
                 'uom_move': {'uom_id': move_line.product_uom_id.id, 'name': move_line.product_uom_id.name},
                 'qty_done': move_line.qty_done,
                 'lot_id': {'id': move_line.lot_id and move_line.lot_id.id or False,
-                           'name': move_line.lot_id and move_line.lot_id.name or ''}
+                           'name': move_line.lot_id and move_line.lot_id.name or ''},
+                'ready_to_validate': sum(line.qty_done for line in move_line.picking_id.move_line_ids) == sum(line.product_uom_qty for line in move_line.picking_id.move_line_ids)
                 }
-        print(data)
         return data
+
+
+    @api.model
+    def set_qty_done_from_apk(self, vals):
+        move_line_id = vals.get('id', False)
+        qty_done = vals.get('qty_done', False)
+        if not move_line_id or not qty_done:
+            return {'err': True, 'error': "No se ha enviado la línea o la cantidad a modificar."}
+        move_line = self.browse(move_line_id)
+        if not move_line:
+            return {'err': True, 'error': "La línea introducida no existe."}
+        try:
+            move_line.update({
+                'qty_done': qty_done
+            })
+            return True
+        except Exception as e:
+            return {'err': True, 'error': e}

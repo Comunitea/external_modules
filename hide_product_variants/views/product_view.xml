@@ -3,7 +3,7 @@
     <data>
 
         <!-- Avoid Menu of product Variants -->
-        <delete model="ir.ui.menu" search="[('id','=',ref('product.menu_products'))]"/>
+        <delete model="ir.ui.menu" search="[('id','=',ref('sale.menu_products'))]"/>
         <menuitem id="menu_products2" action="product.product_normal_action_sell" parent="sale.menu_product" groups="group_no_variants" sequence="10"/>
         <delete model="ir.ui.menu" search="[('id','=',ref('stock.menu_product_variant_config_stock'))]"/>
         <menuitem

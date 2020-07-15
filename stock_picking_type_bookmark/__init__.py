@@ -2,7 +2,7 @@
 ##############################################################################
 #    License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 #    Copyright (C) 2019 Comunitea Servicios Tecnológicos S.L. All Rights Reserved
-#    Vicente Ángel Gutiérrez <vicente@comunitea.com>
+#    Kiko Sánchez <kiko@comunitea.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published
@@ -18,5 +18,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import info_apk, stock_move_line, stock_move_location, stock_picking_type
-from . import stock_picking, stock_move
+
+from . import models
+#from .pre_init_hook import pre_init_hook

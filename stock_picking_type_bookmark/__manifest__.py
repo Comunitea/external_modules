@@ -18,5 +18,23 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import info_apk, stock_move_line, stock_move_location, stock_picking_type
-from . import stock_picking, stock_move
+{
+    'name': 'Stock Picking Type Bookmark',
+    'version': '11.0.0.0.0',
+    'summary': 'Add bookmark to picking type for users',
+    'category': 'Custom',
+    'author': 'comunitea',
+    'website': 'www.comunitea.com',
+    'license': 'AGPL-3',
+    'depends': [
+        'stock',
+    ],
+    'data': [
+        'views/stock_picking_type.xml',
+        "security/ir.model.access.csv"
+    ],
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+    #'post_init_hook': 'pre_init_hook',
+}

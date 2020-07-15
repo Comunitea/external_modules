@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_type_tree_bookmark" model="ir.ui.view">
+            <field name="name">stock.picking.type.tree.bookmark</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="decoration-muted">is_bookmarked==False</attribute>
+                </xpath>
+                <field position="after" name="name">
+                    <field invisible="1" name="is_bookmarked" />
+                    <button name="compute_bookmark"
+                            string="Bookmark"
+                            type="object" icon="fa-star"
+                            />
+                </field>
+
+            </field>
+    </record>
+    <record id="view_pickingtype_filter_bookmark" model="ir.ui.view">
+        <field name="name">stock.picking.type.filter.bookmark</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_pickingtype_filter"/>
+        <field name="arch" type="xml">
+            <field name="warehouse_id" position="after">
+              <filter name="is_bookmarked" string="Bookmark" context="{'is_bookmark': True}"/>
+              <separator/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
