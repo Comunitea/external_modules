@@ -100,7 +100,7 @@ class HrAttendanceReport(models.AbstractModel):
                     from_date2_datetime = datetime.strptime(
                         from_date_2, "%Y-%m-%d %H:%M:%S"
                     )
-                    max_hours = employee.resource_calendar_id.get_work_hours_count(
+                    max_hours = employee.resource_calendar_id.with_context(exclude_public_holidays=True).get_work_hours_count(
                         from_date_datetime,
                         from_date2_datetime,
                         resource_id=employee.resource_id.id,
