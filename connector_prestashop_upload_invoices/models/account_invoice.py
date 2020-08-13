@@ -1,6 +1,6 @@
 # © 2020 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from ftplib import FTP
+import paramiko
 import io
 from odoo import _, models
 from odoo.exceptions import UserError
@@ -16,15 +16,14 @@ class AccountInvoice(models.Model):
         for invoice in self:
             if invoice.type == "out_invoice" and invoice.mapped(
                 "invoice_line_ids.sale_line_ids.order_id.prestashop_bind_ids"
-            ):
-
+            ) and invoice.state in ('open', 'paid'):
                 invoice.with_delay()._upload_report_to_prestashop()
         return res
 
     @job(default_channel='root.prestashop')
     def _upload_report_to_prestashop(self):
         self.ensure_one()
-        report = self.env.ref("account.account_invoices")
+        report = self.env.ref("account.account_invoices_without_payment")
         if report.report_type in ["qweb-html", "qweb-pdf"]:
             result, format = report.render_qweb_pdf([self.id])
         else:
@@ -42,8 +41,9 @@ class AccountInvoice(models.Model):
             ext = "." + format
             if not report_name.endswith(ext):
                 report_name += ext
-            ftp = FTP(sale_bind.backend_id.ftp_host)
-            ftp.login(sale_bind.backend_id.ftp_user, sale_bind.backend_id.ftp_password)
-            ftp.cwd(sale_bind.backend_id.ftp_report_folder)
-            ftp.storbinary("STOR " + report_name, io.BytesIO(result))
-            ftp.quit()
+            transport = paramiko.Transport((sale_bind.backend_id.ftp_host, sale_bind.backend_id.ftp_port))
+            transport.connect(None, sale_bind.backend_id.ftp_user, sale_bind.backend_id.ftp_password)
+            sftp = paramiko.SFTPClient.from_transport(transport)
+            sftp.chdir(sale_bind.backend_id.ftp_report_folder)
+            sftp.putfo(io.BytesIO(result), report_name)
+            sftp.close()

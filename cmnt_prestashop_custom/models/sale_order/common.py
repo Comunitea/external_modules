@@ -1,6 +1,6 @@
 # © 2020 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.addons.queue_job.job import job
 from datetime import timedelta
 
@@ -13,7 +13,7 @@ class SaleOrde(models.Model):
 
     def write(self, vals):
         res = super().write(vals)
-        for order in self:
+        for order in self.with_context(bypass_risk=True):
             if vals.get("prestashop_state"):
                 state = order.prestashop_state
                 if state.trigger_cancel:
@@ -23,6 +23,13 @@ class SaleOrde(models.Model):
                     if order.state == "done":
                         order.action_unlock()
                     order.action_cancel()
+        return res
+
+    @api.model
+    def create(self, vals):
+        res = super().create(vals)
+        if res.prestashop_state.trigger_cancel:
+            res.action_cancel()
         return res
 
 
@@ -38,7 +45,7 @@ class PrestashopSaleOrder(models.Model):
         if backend.start_import_date:
             if not since_date:
                 filters = {'date': '1'}
-            filters['filter[date_upd]'] = '>[{}]'.format(backend.start_import_date)
+            filters['filter[date_add]'] = '>[{}]'.format(backend.start_import_date)
         now_fmt = fields.Datetime.now()
         self.env['prestashop.sale.order'].import_batch(
             backend, filters=filters, priority=5, max_retries=0)

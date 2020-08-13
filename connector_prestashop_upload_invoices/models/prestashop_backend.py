@@ -9,5 +9,6 @@ class PrestashopBackend(models.Model):
 
     ftp_report_folder = fields.Char()
     ftp_host = fields.Char()
+    ftp_port = fields.Integer()
     ftp_user = fields.Char()
     ftp_password = fields.Char()

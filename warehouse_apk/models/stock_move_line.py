@@ -118,16 +118,17 @@ class StockMoveLine(models.Model):
 
     def get_model_object(self, values={}):
         res = super().get_model_object(values)
-        ids = [x['id'] for x in res]
-        move_line_ids = self.browse(ids)
-        for index in range(0, len(res)):
-            move_line_ids = move_line_ids.filtered(lambda x: x.id == res[index]['id'])
-            for ml in move_line_ids:
-                move_id = ml.move_id
-                if move_id.tracking != 'none':
-                    res[index].update(lot_id=self.m2o_dict(ml.lot_id))
+        index = 0
+        for sml in self:
+            move_id = sml.move_id
+            if move_id.tracking != 'none':
+                if sml.lot_id:
+                    res[index].update(lot_id=self.m2o_dict(sml.lot_id))
+                    if sml.read_status('lot_id', 'done'):
+                        res[index].update(lot_name=sml.lot_id.name)
                 else:
                     res[index].update(lot_id=False)
+            index += 1
         return res
 
     def return_fields(self, mode='tree'):
@@ -202,7 +203,7 @@ class StockMoveLine(models.Model):
             sml_id.qty_done = qty_done
             sml_id.write_status('qty_done', 'done', True)
         elif values.get('new_lot_name', False):
-            lot_id = self.get_apk_lot(values['new_lot_name'], sml_id.product_id.id)
+            lot_id = self.get_apk_lot(values['new_lot_name'].upper(), sml_id.product_id)
             ##Busco un lote que tenga la cantidad suficiente. Si hay una cantidad hecha, esa, si no la cantidad del move_line
             need_qty = sml_id.qty_done or sml_id.product_uom_qty
             if lot_id:
@@ -311,23 +312,19 @@ class StockMoveLine(models.Model):
     @api.model
     def assign_location_to_moves(self, values):
         move_id = values['move_id']
-        sml_ids = values ['sml_ids']
+        #sml_ids = values ['sml_ids']
         field_id = values['field']
         barcode = values['barcode']
         confirm = values['confirm']
         active_location_id = values['active_location_id']
         move_id = self.env['stock.move'].browse(move_id)
-        import pdb; pdb.set_trace()
         location_id = self.env['stock.location'].get_location_from_apk_values(barcode, move_id)
         if not location_id:
             raise ValidationError ('No se ha encontrado una ubicación para {}'.format(barcode))
         move_id.active_location_id = location_id
         default_location = move_id.default_location
-        if sml_ids:
-            sml_ids = self.env['stock.move.line'].browse(sml_ids)
-        else:
-            if move_id:
-                sml_ids = move_id.move_line_ids.filtered(lambda x: x[default_location].barcode == barcode or not (x.read_status('lot_id', 'done') and x.read_status('qty_done', 'done')))
+        if move_id:
+            sml_ids = move_id.move_line_ids.filtered(lambda x: x[default_location].barcode == barcode or not (x.read_status('lot_id', 'done') and x.read_status('qty_done', 'done')))
         if not sml_ids:
             move_id.active_location_id = location_id
             'Creo un movimiento desde esta ubicación para este producto'
@@ -465,6 +462,6 @@ class StockMoveLine(models.Model):
             return True
         except Exception as e:
             print("APK. Error al actualizar el movimeinto {}:{} con cantidad {}".format(move_line.id,
-                                                                                      move_line.dsiplay_name,
+                                                                                      move_line.display_name,
                                                                                       move_line.qty_done))
             return {'err': True, 'error': e}

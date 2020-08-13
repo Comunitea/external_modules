@@ -56,7 +56,7 @@ class StockPicking(models.Model):
 
 
     def return_fields(self, mode='tree'):
-        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'sale_id', 'move_line_count', 'picking_type_id', 'default_location', 'field_status', 'priority']
+        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'state', 'purchase_id', 'sale_id', 'move_line_count', 'picking_type_id', 'default_location', 'field_status', 'priority', 'partner_id']
         if mode == 'form':
             res += ['field_status', 'group_code', 'barcode_re', 'product_re']
         return res
@@ -85,8 +85,7 @@ class StockPicking(models.Model):
         if values.get('state', False):
             domain += [('state', '=', values['state']['value'])]
         if not domain and values.get('active_ids'):
-            domain += [('id', 'in', values.get['active_ids'])]
-
+            domain += [('id', 'in', values.get('active_ids'))]
         values['domain'] = domain
         return self.get_model_object(values)
 
@@ -106,6 +105,7 @@ class StockPicking(models.Model):
             move_id = self.search(domain, limit)
             if not picking_id or len(picking_id) != 1:
                 return res
+
         values = {'domain': self.get_move_domain_for_picking(picking_id)}
         res['move_lines'] = self.env['stock.move'].get_model_object(values)
         #print ("------------------------------Move lines")
@@ -115,19 +115,6 @@ class StockPicking(models.Model):
     @api.model
     def action_done_apk(self, values):
         return self.button_validate_apk(values)
-        picking = self.browse(values.get('id', False))
-        if not picking:
-            return {'err': True, 'error': "No se ha encontrado el albarán"}
-        res = picking.action_done()
-        return True
-
-
-        pick = self.browse(values.get('id', False))
-        move_id = self.browse(values.get('move_id', False))
-        pick.action_done()
-        values = {'id': move_id, 'model': 'stock.move', 'view': 'form', 'message': 'El albarán {} esta hecho'.format(pick.name)}
-        return self.env['info.apk'].get_apk_object(values)
-
 
     @api.model
     def action_assign_apk(self, vals):
@@ -247,7 +234,6 @@ class StockPicking(models.Model):
         lot_id = lot.id
         product_id = lot.product_id.id
         new_location_id = lot.compute_location_id()
-
         domain = [('picking_id', '=', picking_id), ('product_id', '=', product_id)]
 
         if False and remove:

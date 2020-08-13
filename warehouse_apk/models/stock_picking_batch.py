@@ -7,6 +7,12 @@ import time
 import pprint
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
+PICK_STATES =  {'Borrador': 'draft',
+                'En proceso': 'in_progress',
+                'Disponible': 'assigned',
+                'Hecho': 'done',
+                'Cancelado': 'cancel'}
+
 class StockPickingBatch(models.Model):
 
     _inherit = ['info.apk', 'stock.picking.batch']
@@ -22,8 +28,27 @@ class StockPickingBatch(models.Model):
         for pick in self:
             pick.move_line_count = len(pick.move_line_ids)
 
+    @api.multi
+    def compute_total_reserved_availability(self):
+        sql = "select sp.batch_id, sum(case when sml.state = 'done' then qty_done else product_uom_qty end), sum(qty_done) from stock_move_line sml " \
+              "join stock_picking sp on sp.id = sml.picking_id where sp.batch_id in %s group by sp.batch_id"
+        self._cr.execute(sql, [tuple(self.ids)])
+        result = self._cr.fetchall()
+        qties = dict()
+        for res in result:
+            qties[res[0]] = {}
+            qties[res[0]]['total_reserved_availability'] = res[1]
+            qties[res[0]]['total_qty_done'] = res[2]
+        list = qties.keys()
+        for batch in self:
+            if batch.id in list:
+                batch.total_reserved_availability = qties[batch.id]['total_reserved_availability']
+                batch.total_qty_done = qties[batch.id]['total_qty_done']
+
     app_integrated = fields.Boolean(related='picking_type_id.app_integrated')
     move_line_count = fields.Integer('# Operaciones', compute="compute_move_line_count")
+    total_reserved_availability = fields.Integer('# Cantidad Reservada', compute="compute_total_reserved_availability")
+    total_qty_done = fields.Integer('# Cantidad Hecha', compute="compute_total_reserved_availability")
     field_status = fields.Boolean(compute="compute_field_status")
     default_location = fields.Selection(related='picking_type_id.group_code.default_location')
     group_code = fields.Selection(related='picking_type_id.group_code.code')
@@ -31,10 +56,11 @@ class StockPickingBatch(models.Model):
     product_re = fields.Char(related='picking_type_id.warehouse_id.product_re')
     picking_type_id = fields.Many2one('stock.picking.type', 'Operation Type', compute='_compute_picking_type_id', store = True)
     scheduled_date = fields.Datetime(
-        'Scheduled Date', compute='_compute_scheduled_date', inverse='_set_scheduled_date', store=True,
-        index=True, track_visibility='onchange')
-    sale_ids = fields.One2many('sale.order', string='Ventas', compute="_compute_sale_ids")
-    sale_id = fields.Many2one('sale.order', string='Ventas', compute="_compute_sale_ids")
+        'Scheduled Date', compute='_compute_scheduled_date')
+    sale_ids = fields.One2many('sale.order', string='Ventas', compute="_compute_order_ids")
+    sale_id = fields.Many2one('sale.order', string='Venta', compute="_compute_order_ids")
+    purchase_ids = fields.One2many('purchase.order', string='Compras', compute="_compute_order_ids")
+    purchase_id = fields.Many2one('purchase.order', string='Compra', compute="_compute_order_ids")
     location_id = fields.Many2one(related="picking_type_id.default_location_src_id")
     location_dest_id = fields.Many2one(related="picking_type_id.default_location_dest_id")
     priority = fields.Selection (related='picking_ids.priority')
@@ -45,12 +71,11 @@ class StockPickingBatch(models.Model):
         ('assigned', 'Ready'),
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
-    ], string='Status', compute='_compute_pick_state',
-        copy=False, index=True, readonly=True, store=True, track_visibility='onchange')
+    ], string='Status', compute='_compute_pick_state')
 
-    @api.depends('picking_ids.state')
-    @api.one
+    @api.multi
     def _compute_pick_state(self):
+
         ''' State of a picking depends on the state of its related stock.move
         - Draft: only used for "planned pickings"
         - Waiting: if the picking is not ready to be sent so if
@@ -63,38 +88,41 @@ class StockPickingBatch(models.Model):
         - Done: if the picking is done.
         - Cancelled: if the picking is cancelled
         '''
-        if not self.picking_ids:
-            self.pick_state = 'draft'
-        elif any(pick.state == 'draft' for pick in self.picking_ids):  # TDE FIXME: should be all ?
-            self.pick_state = 'draft'
-        elif all(pick.state == 'cancel' for pick in self.picking_ids):
-            self.pick_state = 'cancel'
-        elif all(pick.state in ['cancel', 'done'] for pick in self.picking_ids):
-            self.pick_state = 'done'
-        elif any(pick.state in ['waiting', 'confirmed'] for pick in self.picking_ids):
-            self.pick_state = 'confirmed'
-        elif all(pick.state == 'assigned' for pick in self.picking_ids):  # TDE FIXME: should be all ?
-            self.pick_state = 'assigned'
+        for batch in self:
+            if not batch.picking_ids:
+                batch.pick_state = 'draft'
+            elif any(pick.state == 'draft' for pick in batch.picking_ids):  # TDE FIXME: should be all ?
+                batch.pick_state = 'draft'
+            elif all(pick.state == 'cancel' for pick in batch.picking_ids):
+                batch.pick_state = 'cancel'
+            elif all(pick.state in ['cancel', 'done'] for pick in batch.picking_ids):
+                batch.pick_state = 'done'
+            elif any(pick.state in ['waiting', 'confirmed'] for pick in batch.picking_ids):
+                batch.pick_state = 'confirmed'
+            elif all(pick.state == 'assigned' for pick in batch.picking_ids):  # TDE FIXME: should be all ?
+                batch.pick_state = 'assigned'
+            else:
+                batch.pick_state = 'draft'
+
     @api.one
-    @api.depends('picking_ids')
+    @api.depends('picking_ids.picking_type_id')
     def _compute_picking_type_id(self):
         self.picking_type_id = self.picking_ids.mapped('picking_type_id')
 
     @api.multi
-    def _compute_sale_ids(self):
+    def _compute_order_ids(self):
         for batch in self:
             batch.sale_ids = batch.picking_ids.mapped('sale_id')
             if batch.sale_ids:
                 batch.sale_id = batch.sale_ids[0]
-    @api.one
-    @api.depends('move_lines.date_expected')
+            batch.purchase_ids = batch.picking_ids.mapped('purchase_id')
+            if batch.purchase_ids:
+                batch.purchase_id = batch.purchase_ids[0]
+
+    @api.multi
     def _compute_scheduled_date(self):
-        self.scheduled_date = min(self.move_lines.mapped('date_expected') or [fields.Datetime.now()])
-
-    @api.one
-    def _set_scheduled_date(self):
-        self.move_lines.write({'date_expected': self.scheduled_date})
-
+        for batch in self:
+            batch.scheduled_date = min(batch.move_lines.mapped('date_expected') or [fields.Datetime.now()])
     @api.multi
     def compute_field_status(self):
         for pick in self:
@@ -102,11 +130,12 @@ class StockPickingBatch(models.Model):
 
 
     def return_fields(self, mode='tree'):
-        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date',
+        res = ['id', 'apk_name', 'location_id', 'location_dest_id', 'scheduled_date', 'partner_id', 'state',
                'pick_state', 'sale_id', 'move_line_count', 'picking_type_id',
-               'default_location', 'field_status', 'priority']
+               'purchase_id', 'total_reserved_availability', 'default_location', 'field_status', 'priority']
         if mode == 'form':
-            res += ['field_status', 'group_code', 'barcode_re', 'product_re']
+            res += ['field_status', 'group_code', 'barcode_re', 'product_re', 'notes',
+                    'sale_ids', 'purchase_ids', 'total_reserved_availability', 'total_qty_done']
         return res
 
     def _compute_picking_count_domains(self):
@@ -116,53 +145,110 @@ class StockPickingBatch(models.Model):
             'count_picking_waiting': [('state', 'in', ('confirmed', 'waiting'))],
             'count_picking_ready': [('state', '=', 'assigned')],
             'count_picking': [('state', 'in', ('assigned', 'waiting', 'confirmed'))],
-            'count_picking_late': [('scheduled_date', '<', time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)), ('state', 'in', ('assigned', 'waiting', 'confirmed'))],
+            'count_picking_late': [('date', '<', time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)), ('state', 'in', ('assigned', 'waiting', 'confirmed'))],
             'count_picking_backorders': [('backorder_id', '!=', False), ('state', 'in', ('confirmed', 'assigned', 'waiting'))],
         }
         return domains
 
+
     @api.model
     def get_picking_list(self, values):
-        ##import pdb; pdb.set_trace()
-        domain = []
-        if values.get('picking_type_id', False):
-            domain += [('picking_type_id', '=', values['picking_type_id'])]
-        if values.get('domain_name', False):
+
+        domain = values.get('domain', [])
+        domain += [('batch_id', '!=', False)]
+        filter_values = values.get('filter_values', {})
+        ## AÑADO DOMINIO POR STATE
+        state = False
+        f_state = filter_values.get('filter_pick_state', False)
+        state = values.get('state', False)
+        if f_state:
+            domain += [('batch_id.state', 'in', f_state)]
+            values['domain_name'] = False
+        elif state:
+            domain += [('state', '=', state)]
+        elif values.get('domain_name', False):
             domain += self._compute_picking_count_domains()[values['domain_name']]
+        if values.get('picking_type_id', False):
+            domain += [('batch_id.picking_type_id', '=', values['picking_type_id'])]
         if values.get('search', False):
-            domain += [('name', 'ilike', values['search'] )]
-        if values.get('state', False):
-            domain += [('state', '=', values['state']['value'])]
-        if not domain and values.get('active_ids'):
-            domain += [('id', 'in', values.get['active_ids'])]
-        values['domain'] = domain
+            ## busco en la venta, compra y albarnes ademas de en el nombre del batch
+            domain += ['|', '|', '|', ('name', 'ilike', values['search']),
+                       ('purchase_id.name', 'ilike', values['search']),
+                       ('sale_id.name', 'ilike', values['search']),
+                       ('batch_id.name', 'ilike', values['search'] )]
+        ##if not domain and values.get('active_ids'):
+        ##    domain += [('id', 'in', values.get('active_ids'))]
         ## Cambio el valor de dominio por ids de picking
-        batch_ids = self.env['stock.picking'].search(domain).mapped('batch_id').ids
+        batch_ids = self.env['stock.picking'].search_read(domain, ['batch_id'])
+        print ("Dominio para el listado de agrupaciones con values:{} \n: {}".format(values, domain))
+        batch_ids = [x['batch_id'][0] for x in batch_ids]
         values['domain'] = [('id', 'in', batch_ids)]
-        return self.get_model_object(values)
+
+        res = self.get_model_object(values)
+        if res:
+            res[0]['count_batch_ids'] = self.search_count(values['domain'])
+        return res
 
 
-    def get_move_domain_for_picking(self, picking_id):
-        return  [('picking_id.batch_id', '=', picking_id.id)]
+
+    def get_move_domain_for_picking(self, filter, batch_id, inc=0, limit = 0, apk_order = -1):
+        sql = "select move_id from stock_move_line sml " \
+              "join stock_move sm on sm.id = sml.move_id " \
+              "join stock_picking sp on sp.id = sml.picking_id " \
+              "where sp.batch_id = {}".format(batch_id.id)
+        if filter == 'Pendientes':
+            sql += " and qty_done != sml.product_uom_qty"
+        if filter == 'Completados':
+            sql += " and qty_done == sml.product_uom_qty"
+        order = ''
+        #if apk_order > 0:
+        if inc == -1:
+            if apk_order > -1: sql += " and sm.apk_order < {}".format(apk_order)
+            order = ' order by sm.apk_order desc'
+        else:
+            if apk_order > -1: sql += " and sm.apk_order > {}".format(apk_order)
+            order = ' order by sm.apk_order asc'
+        sql += " group by move_id, sm.apk_order "
+        if order:
+            sql += order
+        if limit > 0:
+            sql += ' limit {}'.format(limit)
+        # sql += " group by move_id"
+        self._cr.execute(sql)
+        move_ids = self._cr.fetchall()
+        if move_ids:
+            if len(move_ids) > 1:
+                res_ids = [x[0] for x in move_ids]
+                domain = [('id', 'in', res_ids)]
+            else:
+                domain = [('id', '=', move_ids[0][0])]
+        else:
+            domain = [('id', '=', 0)]
+        return domain
+
+    def assign_order_moves(self):
+        cont = 1
+        field_location = self.picking_type_id.group_code.default_location or 'location_id'
+        self.move_lines.filtered(lambda x: not x.move_line_ids).write({'apk_order': 0})
+        for move in self.move_line_ids.sorted(key=lambda r: r[field_location].removal_priority).mapped('move_id'):
+            move.apk_order = cont
+            cont += 1
 
     def get_model_object(self, values={}):
-
         res = super().get_model_object(values=values)
         picking_id = self
-        if picking_id:
-            picking_id.user_id = self.env.user
-            if picking_id.state == 'draft':
-                picking_id.state == 'in_progress'
         if values.get('view', 'tree') == 'tree':
             return res
-
+        if picking_id:
+            picking_id.state == 'in_progress'
+            picking_id.user_id = self.env.user
         if not picking_id:
             domain = values.get('domain', [])
             limit = values.get('limit', 1)
             move_id = self.search(domain, limit)
             if not picking_id or len(picking_id) != 1:
                 return res
-        values = {'domain': self.get_move_domain_for_picking(picking_id)}
+        values = {'domain': self.get_move_domain_for_picking(values.get('filter_moves', 'Todos'), picking_id)}
         res['move_lines'] = self.env['stock.move'].get_model_object(values)
         #print ("------------------------------Move lines")
         #pprint.PrettyPrinter(indent=2).pprint(res['move_lines'])
@@ -187,18 +273,26 @@ class StockPickingBatch(models.Model):
         return True
 
 
+    def check_allow_pda_validation(self):
+        if any(x.location_id.usage == 'view' for x in self.move_line_ids):
+            raise ValidationError('No puedes poner una cantidad en un aubicación de tipo vista')
+
+
     @api.model
     def button_validate_apk(self, vals):
         batch_id = self.browse(vals.get('id', False))
         if not batch_id:
-            return {'err': True, 'error': "No se ha encontrado el albarán"}
+            raise ValidationError ("No se ha encontrado el albarán")
         if all(move_line.qty_done == 0 for move_line in batch_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel'))):
-            raise ValidationError ('No hay ninguna cantidad hecha para validar')
+            batch_id.message_post("No hay ninguna cantidad parta validar")
+            return False
+        if batch_id.check_allow_pda_validation():
+            batch_id.message_post("No se a superado la validación incial del inventario")
+            return False
         ctx = batch_id._context.copy()
         ctx.update(skip_overprocessed_check=True)
         for pick in batch_id.picking_ids:
             pick.with_context(ctx).action_done()
-
         return batch_id.get_model_object({'view': 'form'})
 
     @api.model
@@ -278,16 +372,17 @@ class StockPickingBatch(models.Model):
             raise ValidationError('Se han encontrado varias opciones. No hay info suficiente para el código {}'.format(lot_name))
         values = {
             'move_id': move_line_id.move_id.id,
+            'filter_moves': vals.get('filter_moves', 'Todos'),
             'location_id': move_line_id.location_id.id,
             'inc': 1}
         return move_line_id.move_id.set_qty_done_from_apk(values)
+
 
     @api.model
     def serial_for_move(self, picking_id, lot, remove):
         lot_id = lot.id
         product_id = lot.product_id.id
         new_location_id = lot.compute_location_id()
-
         domain = [('picking_id.batch_id', '=', picking_id), ('product_id', '=', product_id)]
 
         if False and remove:
@@ -320,9 +415,23 @@ class StockPickingBatch(models.Model):
                 if line:
                     move = line.move_id
                     line.unlink()
-                    result = move._update_reserved_quantity(1, 1, location_id=move.location_id, lot_id=lot, strict=False)
-                    if result == 0:
-                        raise UserError ('No se ha podido reservar el lote {}. Comprueba que no está    en otro movimiento'.format(lot.name))
+                    reserved = move._update_reserved_quantity(1, 1, location_id=move.location_id, lot_id=lot, strict=False)
+                    if reserved == 0:
+                        ocup_dom = [('move_id.picking_type_id', '=', move.picking_type_id.id),
+                                    ('product_id', '=', move.product_id.id),
+                                    ('state', 'in', ('assigned', 'partially_available')),
+                                    ('lot_id', '=', lot_id)]
+                        ocup_move_line = self.env['stock.move.line'].search(ocup_dom)
+                        if ocup_move_line:
+                            move_to_update = ocup_move_line.move_id
+                            ocup_move_line.unlink()
+                            reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot, strict=False)
+                            if move_to_update._update_reserved_quantity(1, 1, move.location_id, strict=False) == 1:
+                                move_to_update.write({'state': 'assigned'})
+                            if reserved == 0:
+                                raise UserError ('No se ha podido reservar el lote {}. Comprueba que no está en otro movimiento'.format(lot.name))
+                            move.write({'state': 'assigned'})
+
                     lot_domain = domain + [('lot_id', '=', lot_id)]
                     line = self.env['stock.move.line'].search(lot_domain, limit=1, order='lot_id desc')
                     if line:
@@ -330,7 +439,7 @@ class StockPickingBatch(models.Model):
                         line.write_status('lot_id', 'done', True)
                         line.write_status('qty_done', 'done', True)
         move = line.move_id
-        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.product_uom_qty:
+        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.reserved_availability:
             raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
         ##devuelvo un objeto movimietno para actualizar la vista de la app
         if not move:

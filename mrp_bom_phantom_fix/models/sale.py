@@ -13,7 +13,7 @@ class SaleOrder(models.Model):
     def _compute_has_packs(self):
         for order in self:
             has_packs = False
-            for line in self.order_line:
+            for line in order.order_line:
                 if line.pack_components:
                     has_packs = True
                     break
@@ -24,6 +24,49 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     pack_components = fields.Text(compute='_compute_pack_components')
+
+    @api.model
+    def _get_bom_component_qty_wt_line(self, product, product_uom, bom):
+        bom_quantity = product_uom._compute_quantity(1, bom.product_uom_id)
+        boms, lines = bom.explode(product, bom_quantity)
+        components = {}
+        for line, line_data in lines:
+            product = line.product_id.id
+            uom = line.product_uom_id
+            qty = line.product_qty
+            if components.get(product, False):
+                if uom.id != components[product]['uom']:
+                    from_uom = uom
+                    to_uom = self.env['uom.uom'].browse(components[product]['uom'])
+                    qty = from_uom._compute_quantity(qty, to_uom)
+                components[product]['qty'] += qty
+            else:
+                # To be in the uom reference of the product
+                to_uom = self.env['product.product'].browse(product).uom_id
+                if uom.id != to_uom.id:
+                    from_uom = uom
+                    qty = from_uom._compute_quantity(qty, to_uom)
+                components[product] = {'qty': qty, 'uom': to_uom.id}
+        return components
+
+    def _compute_margin(self, order_id, product_id, product_uom_id):
+        bom = self.env['mrp.bom']._bom_find(product=product_id)
+        if bom and bom.type == 'phantom':
+            pack_price = 0.0
+            quantities = self._get_bom_component_qty_wt_line(product_id, product_uom_id, bom)
+            for product_id in quantities.keys():
+                pack_product = self.env['product.product'].browse(product_id)
+                frm_cur = self.env.user.company_id.currency_id
+                to_cur = order_id.pricelist_id.currency_id
+                purchase_price = pack_product.standard_price
+                if product_uom_id != pack_product.uom_id:
+                    purchase_price = pack_product.uom_id._compute_price(purchase_price, product_uom_id)
+                price = frm_cur._convert(
+                    purchase_price, to_cur, order_id.company_id or self.env.user.company_id,
+                    order_id.date_order or fields.Date.today(), round=False)
+                pack_price += price * quantities[product_id]['qty']
+            return pack_price
+        return super()._compute_margin(order_id, product_id, product_uom_id)
 
     @api.multi
     def _compute_qty_delivered(self):

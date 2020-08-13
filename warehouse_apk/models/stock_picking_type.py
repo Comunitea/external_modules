@@ -16,8 +16,6 @@ class PickingTypeGroupCode(models.Model):
     _name = 'picking.type.group.code'
     _inherit = ['info.apk', 'picking.type.group.code']
 
-
-
     app_integrated = fields.Boolean('Show in app', default=False)
     tree_picking_fields = fields.Char('Pick fields (tree)')
     tree_move_fields = fields.Char('Move fields (tree)')
@@ -58,6 +56,7 @@ class StockPickingType(models.Model):
     default_location = fields.Selection(related="group_code.default_location")
     group_code_code = fields.Selection(related="group_code.code", store=True)
     allow_overprocess = fields.Boolean(related='group_code.allow_overprocess')
+
     def return_fields(self, mode='tree'):
 
         fields = ['id', 'apk_name', 'color', 'warehouse_id', 'code', 'name', 'count_picking_ready', 'count_picking_waiting',

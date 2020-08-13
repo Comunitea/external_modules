@@ -47,9 +47,11 @@ class InfoApk(models.AbstractModel):
         return product_id
 
     def get_apk_lot(self, code, product_id):
+        if code == product_id.wh_code or code == product_id.default_code:
+            return False
         domain = [('name', '=', code)]
         if product_id:
-            domain += [('product_id', '=', product_id)]
+            domain += [('product_id', '=', product_id.id)]
         lot_id = self.env['stock.production.lot'].search(domain)
         if len(lot_id)>1:
             raise ValueError ('Se han encontrado varios lotes para este código {}'.format(code))
@@ -79,9 +81,27 @@ class InfoApk(models.AbstractModel):
         return ['id', 'display_name']
 
     def selection_dict(self, f_obj, field_value):
+        selection = [x for x in f_obj['selection'] if x[0] == field_value]
+        if not selection:
+            return {'name': 'Indefinido', 'value': False}
         val = {'name': [x for x in f_obj['selection'] if x[0] == field_value][0][1],
                'value': field_value}
         return val
+
+    def get_many2one_dict_values(self, field):
+        many2one = self.fields_get()[field]
+        options = self.env[many2one['relation']].read_group([('wh_code', '!=', False)], ['id'], ['wh_code'])
+        res = []
+        for option in options:
+            res.append({'name': option['wh_code'], 'value' : option['wh_code']})
+        return res
+
+    def get_selection_dict_values(self, field):
+        selection = self.fields_get()[field]['selection']
+        res = []
+        for option in selection:
+            res.append({'name': option[1], 'value': option[0]})
+        return res
 
     def m2o_dict(self, field):
         if field:
@@ -132,7 +152,6 @@ class InfoApk(models.AbstractModel):
             field_value = obj[field]
             if f_obj['type'] in ['many2many', 'one2many']:
                 field, list_ids = field_value.m2m_dict(obj[field])
-
                 val_obj[string] = field
                 val_obj['{}_list_ids'.format(field['string'])] = list_ids
             elif f_obj['type'] == 'many2one':
@@ -176,10 +195,11 @@ class InfoApk(models.AbstractModel):
         limit = values.get('limit', 0)
         model = values.get('model', self._name)
         view = values.get('view', 'tree')
+        order = values.get('order', False)
         if not self:
             model_id = self.env[model]
             if not model: return []
-            obj_ids = model_id.search(domain, offset=offset, limit=limit)
+            obj_ids = model_id.search(domain, offset=offset, limit=limit, order=order)
         else:
             obj_ids = self
         vals = []
@@ -205,18 +225,19 @@ class InfoApk(models.AbstractModel):
             fields_list = values.get('fields', self.env[model].return_fields(view))
         fields_get = obj_ids.fields_get()
         for obj in obj_ids:
+
             val_obj = {}
             for field in fields_list:
                 f_obj = fields_get[field]
                 field_value = obj[field]
                 if f_obj['type'] in ['many2many', 'one2many']:
-                    field, list_ids = field_value.m2m_dict(obj[field])
-                    val_obj[field] = field
+                    value_ids, list_ids = field_value.m2m_dict(obj[field])
+                    val_obj[field] = value_ids or []
                     val_obj['{}_list_ids'.format(field)] = list_ids
                 elif f_obj['type'] == 'many2one':
                     val_obj[field] = field_value.m2o_dict(field_value)
                 elif f_obj['type'] in ['datetime', 'date']:
-                    val_obj[field] = field_value.strftime('%d-%m')
+                    val_obj[field] = field_value.strftime('%d %H:%M')
                 elif f_obj['type'] == 'selection':
                     val_obj[field] = self.selection_dict(f_obj, field_value)
                 else:
@@ -225,11 +246,11 @@ class InfoApk(models.AbstractModel):
         if view == 'form' and vals:
             vals = vals[0]
 
-        print("\n VALORES: ---------------------------")
-        pprint.PrettyPrinter(indent=2).pprint(values)
-        print("\n REGISTRO: ---------------------------")
-        pprint.PrettyPrinter(indent=2).pprint(vals)
-        print("\n -------------------------------------")
+        # print("\n VALORES: ---------------------------")
+        # pprint.PrettyPrinter(indent=2).pprint(values)
+        # print("\n REGISTRO: ---------------------------")
+        # pprint.PrettyPrinter(indent=2).pprint(vals)
+        # print("\n -------------------------------------")
         return vals
 
     @api.model
@@ -308,3 +329,13 @@ class StockWarehouse(models.Model):
 class ProductCategory(models.Model):
     _name = 'product.category'
     _inherit = ['info.apk', 'product.category']
+
+class ResPartner(models.Model):
+    _name = 'res.partner'
+    _inherit = ['info.apk', 'res.partner']
+
+    @api.multi
+    def compute_apk_name(self):
+        for obj in self:
+            obj.apk_name = obj.commercial_partner_id.name
+

@@ -76,7 +76,7 @@ class StockPicking(models.Model):
                 self.carrier_service = None
 
     def check_shipment_status(self):
-        raise NotImplementedError()
+        return True
 
     @api.model
     def cron_check_shipment_status(self):

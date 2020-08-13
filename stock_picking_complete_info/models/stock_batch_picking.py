@@ -32,7 +32,7 @@ class StockBatchPicking(models.Model):
     info_str = fields.Char('Info str', compute='compute_picking_qties')
     n_lines = fields.Char(store=False)
     n_amount = fields.Char(store=False)
-    picking_type_id = fields.Many2one('stock.picking.type', 'Operation Type', required=True)
+    picking_type_id = fields.Many2one('stock.picking.type', 'Operation Type')
     picking_dest_ids = fields.One2many('stock.picking', string='Picking enlazados', compute="compute_picking_qties")
     batch_dest_id = fields.Many2one('stock.picking.batch', string="Dest batch picking")
 
