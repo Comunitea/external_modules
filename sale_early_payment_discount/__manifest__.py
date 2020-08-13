@@ -1,16 +1,13 @@
-# -*- coding: utf-8 -*-
 # © 2017 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
-    'name' : 'Early payment discount',
-    'description' : """ Adds early payment discount
-                    """,
-    'version' : '10.0.1.0.0',
-    'author' : 'Pexego',
-    'depends' : ['base', 'product', 'account', 'sale', 'sale_stock', 'stock',
-                 'stock_account', 'decimal_precision',
-                 'account_analytic_default'],
+    'name' : 'Early payment discount for sales',
+    'summary' : """Adds early payment discount for sales""",
+    'version' : '12.0.1.0.0',
+    'author' : 'Comunitea',
+    'maintainer' : 'Comunitea',
+    'depends' : ['sale_stock', 'account'],
     'category' : 'Enterprise Specific Modules',
     'data' : ['security/ir.model.access.csv',
               'security/security.xml',
