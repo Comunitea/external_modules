@@ -161,7 +161,6 @@ class AccountAdminToolsMoveImporter(models.TransientModel):
                          ('company_id', '=', self.company_id.id)])
                     if not accounts:
                         raise exceptions.Warning(
-                            _('Error'),
                             _("Account not found: %s!") % record_code)
 
                     partner = False
