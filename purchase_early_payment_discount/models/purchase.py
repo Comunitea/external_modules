@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2017 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -103,9 +102,9 @@ class PurchaseOrder(models.Model):
                 self.early_payment_discount = early_discs[0].\
                     early_payment_discount
             else:
-                early_discs = self.env['account.early.payment.discount'].search(
-                    [('partner_id', '=', False),
-                     ('payment_term_id', '=', self.payment_term_id.id)])
+                early_discs = self.env['account.early.payment.discount'].\
+                    search([('partner_id', '=', False),
+                            ('payment_term_id', '=', self.payment_term_id.id)])
                 if early_discs:
                     self.early_payment_discount = early_discs[0].\
                         early_payment_discount
