@@ -138,7 +138,7 @@ class StockPicking(models.Model):
     def button_validate_apk(self, vals):
         picking_id = self.browse(vals.get('id', False))
         if not picking_id:
-            return {'err': True, 'error': "No se ha encontrado el albarán"}
+            raise ValidationError ('No se ha encontrado el albarán')
         if all(move_line.qty_done == 0 for move_line in picking_id.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel'))):
             raise ValidationError ('No hay ninguna cantidad hecha para validar')
         ctx = picking_id._context.copy()

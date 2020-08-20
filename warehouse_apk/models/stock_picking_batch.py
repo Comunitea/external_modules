@@ -180,7 +180,7 @@ class StockPickingBatch(models.Model):
         ##    domain += [('id', 'in', values.get('active_ids'))]
         ## Cambio el valor de dominio por ids de picking
         batch_ids = self.env['stock.picking'].search_read(domain, ['batch_id'])
-        print ("Dominio para el listado de agrupaciones con values:{} \n: {}".format(values, domain))
+        ## print ("Dominio para el listado de agrupaciones con values:{} \n: {}".format(values, domain))
         batch_ids = [x['batch_id'][0] for x in batch_ids]
         values['domain'] = [('id', 'in', batch_ids)]
 

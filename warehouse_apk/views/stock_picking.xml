@@ -21,7 +21,7 @@
                     <field name="field_status" groups="stock.group_tracking_lot" attrs="{'invisible': [('parent.app_integrated','=', False)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='picking_type_code']" position="after">
-                    <field name="app_integrated" readonly="1"/>
+                    <field name="app_integrated" invisible="1" readonly="1"/>
                     <field name="field_status" invisible="1" readonly="1"/>
                 </xpath>
 
