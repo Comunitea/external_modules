@@ -66,8 +66,9 @@ class StockMove(models.Model):
                 sm.apk_filter_by_qty = 'Hechos'
 
             if sm.move_line_ids:
-                loc_ids = sm.mapped('move_line_ids').mapped(sm.default_location)
-                sm.move_line_location_id = loc_ids[:1]
+                if sm.default_location:
+                    loc_ids = sm.mapped('move_line_ids').mapped(sm.default_location)
+                    sm.move_line_location_id = loc_ids[:1]
 
     @api.multi
     @api.depends('move_line_ids.location_id', 'move_line_ids.location_dest_id')
