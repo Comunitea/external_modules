@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2017 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -20,7 +19,7 @@ class AccountInvoice(models.Model):
         res = super(AccountInvoice, self).purchase_order_change()
         self.early_payment_discount = early_disc
         return res
-    
+
 
     @api.onchange('partner_id', 'company_id')
     def _onchange_partner_id(self):
@@ -47,4 +46,3 @@ class AccountInvoice(models.Model):
         if early_disc and self.type == 'in_invoice':
             self.early_payment_discount = early_disc
         return res
-  

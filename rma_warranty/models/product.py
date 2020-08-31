@@ -8,5 +8,5 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     warranty_duration = fields.Integer(
-        "Warranty duration (in days)", default=lambda r: r.env['ir.config_parameter'].get_param('rma.default_warranty', default=0)
+        "Warranty duration (in days)", default=lambda r: r.env['ir.config_parameter'].sudo().get_param('rma.default_warranty', default=0)
     )
