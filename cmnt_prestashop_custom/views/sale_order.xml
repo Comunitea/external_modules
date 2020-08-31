@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <field name="prestashop_bind_ids" position="after">
                 <group>
+                    <field name="prestashop_transaction"/>
                     <field name="prestashop_state"/>
                 </group>
             </field>
