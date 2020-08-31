@@ -15,6 +15,22 @@ class SaleOrderImportMapper(Component):
         )
         return {"prestashop_state": state.id}
 
+    @mapping
+    def prestashop_transaction(self, record):
+        payment_adapter = self.component(
+            usage='backend.adapter',
+            model_name='__not_exist_prestashop.payment'
+        )
+        payment_ids = payment_adapter.search({
+            'filter[order_reference]': record['reference']
+        })
+        transactions = []
+        for payment_id in payment_ids:
+            payment = payment_adapter.read(payment_id)
+            if payment.get('transaction_id'):
+                transactions.append(payment['transaction_id'])
+        return {"prestashop_transaction": ','.join(transactions)}
+
 
 class SaleOrderLineMapper(Component):
     _inherit = "prestashop.sale.order.line.mapper"
