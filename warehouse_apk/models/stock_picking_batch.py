@@ -196,10 +196,10 @@ class StockPickingBatch(models.Model):
               "join stock_move sm on sm.id = sml.move_id " \
               "join stock_picking sp on sp.id = sml.picking_id " \
               "where sp.batch_id = {}".format(batch_id.id)
-        if filter == 'Pendientes':
-            sql += " and qty_done != sml.product_uom_qty"
-        if filter == 'Completados':
-            sql += " and qty_done == sml.product_uom_qty"
+        #if filter == 'Pendientes':
+        #    sql += " and qty_done < sml.product_uom_qty"
+        #if filter == 'Hechos':
+        #    sql += " and qty_done >= sml.product_uom_qty"
         order = ''
         #if apk_order > 0:
         if inc == -1:
@@ -209,6 +209,11 @@ class StockPickingBatch(models.Model):
             if apk_order > -1: sql += " and sm.apk_order > {}".format(apk_order)
             order = ' order by sm.apk_order asc'
         sql += " group by move_id, sm.apk_order "
+
+        if filter == 'Pendientes':
+            sql += " having sum(sml.qty_done) < sum(sml.product_uom_qty) "
+        if filter == 'Hechos':
+            sql += " having sum(sml.qty_done) >= sum(sml.product_uom_qty) "
         if order:
             sql += order
         if limit > 0:

@@ -28,6 +28,7 @@ _logger = logging.getLogger(__name__)
 BINARYPOSITION = {'product_id': 0, 'location_id': 1, 'lot_id': 2, 'package_id': 3, 'location_dest_id': 4, 'result_package_id': 5, 'qty_done': 6}
 FLAG_PROP = {'view': 1, 'req': 2, 'done': 4};
 
+
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
@@ -56,6 +57,7 @@ class StockMove(models.Model):
     apk_filter_by_qty = fields.Char(compute="compute_move_line_location_id")
     apk_order = fields.Integer(string="Apk order", default=0)
     batch_id = fields.Many2one(related='picking_id.batch_id')
+    total_qty_done = fields.Integer(related="batch_id.total_qty_done")
 
     @api.multi
     def compute_move_line_location_id(self):
@@ -228,7 +230,7 @@ class StockMove(models.Model):
 
     def return_fields(self, view='tree'):
         fields = ['id', 'product_id', 'product_uom_qty', 'reserved_availability', 'quantity_done', 'tracking', 'state',
-                   'move_lines_count', 'field_status', 'wh_code', 'move_line_location_id',
+                   'move_lines_count', 'field_status', 'wh_code', 'move_line_location_id', 'total_qty_done',
                   'location_id', 'location_dest_id']
         if view == 'form':
             fields += ['apk_order','batch_id', 'picking_id', 'barcode_re', 'default_location', 'picking_field_status', 'field_status_apk', 'sale_id' , 'product_uom', 'active_location_id', 'move_lines_count']
@@ -302,8 +304,10 @@ class StockMove(models.Model):
 
     @api.model
     def create_move_lots(self, vals):
+
         move_id = vals.get('id', False)
         lot_names = vals.get('lot_names', False)
+        move = self.browse(move_id)
         active_location_id = vals.get('active_location', False)
         if not move_id or not lot_names:
             return False
@@ -311,11 +315,12 @@ class StockMove(models.Model):
         ## Los moviemintos que no tengan lotes, le añado los que tengo, si no llegan añado nuevo. No borro ningún movimiento.
         ## Podría utilizar el lot_name pero me parece más limpio así, se crean y se añaden a los stock_move_line pq sino tendríamos
         ## distinta lógica según el tipo de albarán
-        move = self.browse(move_id)
+
 
         ## Actulizazo como hechos los movimientos que tengan lote en la lista y los quito para no crearlos
         if not active_location_id:
-            active_location_id = move.active_location_id.id
+            active_location = move.active_location_id or move.move_line_location_id
+            active_location_id = active_location.id
         sml_with_lot_ids = move.move_line_ids.filtered(lambda x: x.lot_id.name in lot_names)
 
         for sml_id in sml_with_lot_ids:
@@ -375,7 +380,7 @@ class StockMove(models.Model):
                 new_move.qty_done = 1
                 new_move.write_status('qty_done', 'done')
                 #new_move[move.default_location] = active_location_id
-                if move.active_location_id:
+                if move.active_location_id or active_location_id and move.tracking == 'serial':
                     new_move.write_status(move.default_location, 'done')
             ## Si quedan lotes, tengo que crear un movieminto por cada lote
             if lot_ids:
