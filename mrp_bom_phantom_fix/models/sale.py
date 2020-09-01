@@ -82,6 +82,9 @@ class SaleOrderLine(models.Model):
                 moves = line.move_ids.filtered(
                     lambda r: r.state == 'done' and not r.scrapped)
                 quantities = line._get_bom_component_qty(bom)
+                if set([x for x in quantities.keys()]) - set(moves.mapped('product_id.id')):
+                    line.qty_delivered = 0
+                    continue
                 delivered_qties = {}
                 returned_qties = {}
                 for move in moves:

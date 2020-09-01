@@ -10,6 +10,7 @@ class SaleOrde(models.Model):
     _inherit = "sale.order"
 
     prestashop_state = fields.Many2one("sale.order.state")
+    prestashop_transaction = fields.Char()
 
     def write(self, vals):
         res = super().write(vals)
@@ -17,9 +18,12 @@ class SaleOrde(models.Model):
             if vals.get("prestashop_state"):
                 state = order.prestashop_state
                 if state.trigger_cancel:
-                    order.invoice_ids.filtered(
-                        lambda r: r.state == "draft"
-                    ).action_cancel()
+                    if not order.invoice_ids.filtered(
+                        lambda r: r.state != "draft"
+                    ):
+                        order.invoice_ids.filtered(
+                            lambda r: r.state == "draft"
+                        ).action_cancel()
                     if order.state == "done":
                         order.action_unlock()
                     order.action_cancel()
@@ -34,24 +38,27 @@ class SaleOrde(models.Model):
 
 
 class PrestashopSaleOrder(models.Model):
-    _inherit = 'prestashop.sale.order'
+    _inherit = "prestashop.sale.order"
 
-    @job(default_channel='root.prestashop')
+    @job(default_channel="root.prestashop")
     def import_orders_since(self, backend, since_date=None, **kwargs):
         """ Prepare the import of orders modified on PrestaShop """
         filters = None
         if since_date:
-            filters = {'date': '1', 'filter[date_upd]': '>[%s]' % (since_date)}
+            filters = {"date": "1", "filter[date_upd]": ">[%s]" % (since_date)}
         if backend.start_import_date:
             if not since_date:
-                filters = {'date': '1'}
-            filters['filter[date_add]'] = '>[{}]'.format(backend.start_import_date)
+                filters = {"date": "1"}
+            filters["filter[date_add]"] = ">[{}]".format(
+                backend.start_import_date
+            )
         now_fmt = fields.Datetime.now()
-        self.env['prestashop.sale.order'].import_batch(
-            backend, filters=filters, priority=5, max_retries=0)
+        self.env["prestashop.sale.order"].import_batch(
+            backend, filters=filters, priority=5, max_retries=0
+        )
         if since_date:
-            filters = {'date': '1', 'filter[date_add]': '>[%s]' % since_date}
-        self.env['prestashop.mail.message'].import_batch(backend, filters)
+            filters = {"date": "1", "filter[date_add]": ">[%s]" % since_date}
+        self.env["prestashop.mail.message"].import_batch(backend, filters)
 
         # substract a 10 second margin to avoid to miss an order if it is
         # created in prestashop at the exact same time odoo is checking.
