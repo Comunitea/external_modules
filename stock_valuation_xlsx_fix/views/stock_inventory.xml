@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<menuitem id="stock_account.menu_valuation"
+          name="Inventory Valuation"
+          parent="stock.menu_warehouse_report"
+          sequence="110"
+          action="stock_account.action_stock_inventory_valuation"/>
+<menuitem id="stock_valuation_xlsx_action"
+          parent="stock.menu_warehouse_report"
+          name="Stock Valuation XLSX"
+          sequence="109"
+          action="stock_valuation_xlsx.stock_valuation_xlsx_action"/>
+
+</odoo>
