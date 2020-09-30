@@ -1,7 +1,7 @@
 # © 2020 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import io
-
+from ftplib import FTP, FTP_TLS
 import paramiko
 from odoo import _, models
 from odoo.addons.queue_job.job import job
@@ -31,15 +31,31 @@ class SaleOrder(models.Model):
             ext = "." + format
             if not report_name.endswith(ext):
                 report_name += ext
-            transport = paramiko.Transport(
-                (sale_bind.backend_id.ftp_host, sale_bind.backend_id.ftp_port)
-            )
-            transport.connect(
-                None,
-                sale_bind.backend_id.ftp_user,
-                sale_bind.backend_id.ftp_password,
-            )
-            sftp = paramiko.SFTPClient.from_transport(transport)
-            sftp.chdir(sale_bind.backend_id.ftp_report_folder)
-            sftp.putfo(io.BytesIO(result), report_name)
-            sftp.close()
+            if sale_bind.backend_id.ftp_protocol == "sftp":
+                transport = paramiko.Transport(
+                    (sale_bind.backend_id.ftp_host, sale_bind.backend_id.ftp_port)
+                )
+                transport.connect(
+                    None,
+                    sale_bind.backend_id.ftp_user,
+                    sale_bind.backend_id.ftp_password,
+                )
+                sftp = paramiko.SFTPClient.from_transport(transport)
+                sftp.chdir(sale_bind.backend_id.ftp_report_folder)
+                sftp.putfo(io.BytesIO(result), report_name)
+                sftp.close()
+            elif sale_bind.backend_id.ftp_protocol in ("ftps", "ftp"):
+                if sale_bind.backend_id.ftp_protocol == "ftps":
+                    ftp = FTP_TLS()
+                else:
+                    ftp = FTP()
+                ftp.connect(
+                    sale_bind.backend_id.ftp_host, sale_bind.backend_id.ftp_port
+                )
+                ftp.login(
+                    sale_bind.backend_id.ftp_user, sale_bind.backend_id.ftp_password
+                )
+                ftp.prot_p()
+                ftp.cwd(sale_bind.backend_id.ftp_report_folder)
+                ftp.storbinary("STOR " + report_name, io.BytesIO(result))
+                ftp.quit()
