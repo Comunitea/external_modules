@@ -36,6 +36,7 @@ class InfoApk(models.AbstractModel):
             obj.apk_name = obj.display_name
 
     apk_name = fields.Char(compute="compute_apk_name")
+    wh_code = fields.Char("Wh code")
     apk_warehouse_id = fields.Many2one('stock.warehouse', compute="compute_warehouse_id")
 
 
@@ -53,7 +54,7 @@ class InfoApk(models.AbstractModel):
         if product_id:
             domain += [('product_id', '=', product_id.id)]
         lot_id = self.env['stock.production.lot'].search(domain)
-        if len(lot_id)>1:
+        if len(lot_id) > 1:
             raise ValueError ('Se han encontrado varios lotes para este código {}'.format(code))
         return lot_id
 
@@ -339,3 +340,6 @@ class ResPartner(models.Model):
         for obj in self:
             obj.apk_name = obj.commercial_partner_id.name
 
+class ResUser(models.Model):
+    _name = 'res.users'
+    _inherit = ['info.apk', 'res.users']
