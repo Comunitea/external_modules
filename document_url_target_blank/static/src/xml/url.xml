@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="mail.Attachment">
+        <t t-jquery="div.o_attachment_wrap a[t-elif='!editable']" t-operation="attributes">
+            <attribute name="target">_blank</attribute>
+        </t>
+        <t t-jquery="div.caption a" t-operation="attributes">
+            <attribute name="target">_blank</attribute>
+        </t>
+        <t t-jquery="div[t-if='!editable'] a" t-operation="attributes">
+            <attribute name="target">_blank</attribute>
+        </t>
+        <t t-jquery="a.o_attachment_download" t-operation="attributes">
+            <attribute name="target">_blank</attribute>
+        </t>
+    </t>
+
+</templates>

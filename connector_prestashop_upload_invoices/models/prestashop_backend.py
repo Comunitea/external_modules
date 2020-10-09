@@ -5,8 +5,13 @@ from odoo import fields, models
 
 class PrestashopBackend(models.Model):
 
-    _inherit = 'prestashop.backend'
+    _inherit = "prestashop.backend"
 
+    ftp_protocol = fields.Selection(
+        [("ftp", "FTP (INSECURE)"), ("ftps", "FTPS"), ("sftp", "SFTP")],
+        default="sftp",
+        required=True,
+    )
     ftp_report_folder = fields.Char()
     ftp_host = fields.Char()
     ftp_port = fields.Integer()
