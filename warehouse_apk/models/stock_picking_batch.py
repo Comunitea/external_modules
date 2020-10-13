@@ -353,7 +353,7 @@ class StockPickingBatch(models.Model):
         moves_to_recompute = self.env['stock.move']
         ## Detexto cual es el producto
         product_id = ""
-        new = True
+        new = False
         if new:
             lot = self.env['stock.production.lot'].search([('name', '=', lot_name)])
             if lot:
