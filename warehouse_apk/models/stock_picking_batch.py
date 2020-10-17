@@ -345,6 +345,7 @@ class StockPickingBatch(models.Model):
         batch_id = self.browse(batch_id)
         lot_names = lot_name.split(',')
         product_id = ""
+
         lot_ids = self.env['stock.production.lot'].search([('name', 'in', lot_names)])
         domain = [('picking_id.batch_id', '=', batch_id.id),
                   ('product_id.tracking', '=', 'none'),
@@ -370,7 +371,6 @@ class StockPickingBatch(models.Model):
             return move_id.get_model_object()
 
         ## NO se han encontrado numeros de serie, miro si es un producto.
-
         if not move_line_id:
             raise ValidationError ('No se ha encontrado ningún artículo para el código {}'.format(lot_name))
         if len(move_line_id) > 1:
