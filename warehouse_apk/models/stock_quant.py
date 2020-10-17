@@ -129,5 +129,5 @@ class StockQuant(models.Model):
                 product['location_ids'].append(location)
             if create_product:
                 res.append(product)
-        pprint.PrettyPrinter(indent=2).pprint(res)
+        ##pprint.PrettyPrinter(indent=2).pprint(res)
         return res

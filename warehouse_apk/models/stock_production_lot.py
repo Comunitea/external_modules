@@ -14,7 +14,6 @@ class StockProductionLot(models.Model):
                 raise ValidationError ('El nº de serie {} no existe. Debes utilizar nº de serie existentes.')
             val = {'name': lot_name.upper(), 'product_id': product_id.id}
             lot_id = lot_id.create(val)
-
         return lot_id
 
     def is_enough_to_change(self, location_id, need_qty, strict=True):

@@ -163,18 +163,15 @@ class StockMoveLine(models.Model):
         domain = domain_base + [('lot_id.name', '=', code)]
         res = self.search_read(domain, ['id'], limit=1)
         if res:
-            print ("Encuentro lote")
             return res[0]['id']
         domain = domain_base + [('product_id.barcode', '=', code)]
         res = self.search_read(domain, ['id'], limit=1)
         if res:
-            print("Encuentro barcode")
             return res[0]['id']
 
         domain = domain_base + [('product_id.default_code', '=', code)]
         res = self.search_read(domain, ['id'], limit=1)
         if res:
-            print("Encuentro ref")
             return res[0]['id']
             return self.get_move_line_info_apk({'move_id': res[0]['id']})
         return False
@@ -457,11 +454,10 @@ class StockMoveLine(models.Model):
             move_line.update({
                 'qty_done': qty_done
             })
-
-            print ("APK. Se ha actualizado el movimeinto {}:{} con cantidad {}".format(move_line.id, move_line.display_name, move_line.qty_done))
+            _logger.info("APK. Se ha actualizado el movimeinto {}:{} con cantidad {}".format(move_line.id, move_line.display_name, move_line.qty_done))
             return True
         except Exception as e:
-            print("APK. Error al actualizar el movimeinto {}:{} con cantidad {}".format(move_line.id,
+            _logger.info("APK. Error al actualizar el movimeinto {}:{} con cantidad {}".format(move_line.id,
                                                                                       move_line.display_name,
                                                                                       move_line.qty_done))
             return {'err': True, 'error': e}

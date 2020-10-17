@@ -169,8 +169,8 @@ class InfoApk(models.AbstractModel):
         res['items'] = items
         res['image'] = False
 
-        print("\n MODAL: ---------------------------")
-        pprint.PrettyPrinter(indent=2).pprint(res)
+        #print("\n MODAL: ---------------------------")
+        #pprint.PrettyPrinter(indent=2).pprint(res)
         return res
 
 
