@@ -12,8 +12,12 @@ class StockProductionLot(models.Model):
         if not lot_id:
             if not create:
                 raise ValidationError ('El nº de serie {} no existe. Debes utilizar nº de serie existentes.')
+            sql = "select * from stock_production_lot where name = {}".format(lot_name.upper())
+            self._cr.execute(sql)
+            if self._cr.fetchall():
+                raise ValidationError ('La pda no permite crear números de serie duplicados. Deberás anular los números de serie')
             val = {'name': lot_name.upper(), 'product_id': product_id.id}
-            lot_id = lot_id.create(val)
+            lot_id = self.create(val)
         return lot_id
 
     def is_enough_to_change(self, location_id, need_qty, strict=True):

@@ -333,6 +333,8 @@ class StockPickingBatch(models.Model):
 
     @api.model
     def find_serial_for_move(self, vals):
+        ##PUNTO DE ENTRADA PARA LOS STOCK PICKINGS##
+
         ## Esta es la función que se llama cuando se detecta la entrada de un número de serie en la vista de listado de alabran
         # En esta funciuón miro si es un serial, si no busco en el barcode o en el wh_code a ver si encuentro un producto
         lot_name = vals.get('lot_id', False)
@@ -343,13 +345,18 @@ class StockPickingBatch(models.Model):
         if not lot_name:
             return
         batch_id = self.browse(batch_id)
-        lot_names = lot_name.split(',')
+        lot_names = lot_name.upper().split(',')
         product_id = ""
+        batch_move_lines = batch_id.move_line_ids
 
-        lot_ids = self.env['stock.production.lot'].search([('name', 'in', lot_names)])
+        lot_ids = self.env['stock.production.lot'].search([('name', 'in', lot_names),
+                                                           ('product_id', 'in', batch_move_lines.mapped('product_id').ids)])
         domain = [('picking_id.batch_id', '=', batch_id.id),
                   ('product_id.tracking', '=', 'none'),
-                  '|', ('product_id.wh_code', 'in', lot_names), ('product_id.barcode', 'in', lot_names)]
+                  '|', '|',
+                  ('product_id.default_code', 'in', lot_names),
+                  ('product_id.wh_code', 'in', lot_names),
+                  ('product_id.barcode', 'in', lot_names)]
         move_line_id = self.env['stock.move.line'].search(domain)
 
         if lot_ids and move_line_id:
@@ -358,23 +365,28 @@ class StockPickingBatch(models.Model):
         if lot_ids:
             ## Detecto cual es el producto
             product_id = lot_ids.mapped('product_id')
-            if len(product_id) != 1 :
+
+            if len(product_id) != 1:
                 raise ValidationError(
-                    'No se ha podido definir el producto o hay varios productos %s para un numero de serie' %product_id.mapped('display_name'))
-            ## Detecto cual es el movimiento
+                    'No se ha podido definir el producto, o hay varios productos %s para los numero de serie %s' %(product_id.mapped('default_code'), lot_ids.mapped('name')))
+
             move_id = batch_id.move_lines.filtered(lambda x:x.product_id == product_id)
+            if not move_id:
+                raise ValidationError ('No hay movimiento para el artículo {} en los lotes {}'.format(product_id.default_code, lot_ids.mapped('name')))
+
             if len(move_id) != 1:
-                raise ValidationError(
-                    'No se ha podido definir el movimiento o hay varios movimeintos %s para un numero de serie' %move_id.mapped('display_name'))
+                raise ValidationError('No se ha podido definir el movimiento para los números de serie' % lot_ids.mapped('name'))
+
             move_id.update_move_lot_apk(move_id, lot_ids, active_location=False)
             move_id._recompute_state()
             return move_id.get_model_object()
 
+        move_line_id = move_line_id.filtered(lambda x: x.product_id.tracking == 'none')
         ## NO se han encontrado numeros de serie, miro si es un producto.
         if not move_line_id:
-            raise ValidationError ('No se ha encontrado ningún artículo para el código {}'.format(lot_name))
+            raise ValidationError ('No se ha encontrado ningún artículo válido ni lote para el código {}'.format(lot_names))
         if len(move_line_id) > 1:
-            raise ValidationError('Se han encontrado varias opciones. No hay info suficiente para el código {}'.format(lot_name))
+            raise ValidationError('Se han encontrado varias opciones. No hay info suficiente para el código {}'.format(lot_names))
         values = {
             'move_id': move_line_id.move_id.id,
             'filter_moves': vals.get('filter_moves', 'Todos'),

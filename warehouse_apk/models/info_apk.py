@@ -48,14 +48,14 @@ class InfoApk(models.AbstractModel):
         return product_id
 
     def get_apk_lot(self, code, product_id):
-        if code == product_id.wh_code or code == product_id.default_code:
-            return False
         domain = [('name', '=', code)]
         if product_id:
+            if code == product_id.barcode or code == product_id.default_code or code == product_id.wh_code:
+                raise ValueError ('No puedes crear el lote {} para el producto {}. El lote esta en los campos del producto'.format(code, product_id.default_code))
             domain += [('product_id', '=', product_id.id)]
         lot_id = self.env['stock.production.lot'].search(domain)
         if len(lot_id) > 1:
-            raise ValueError ('Se han encontrado varios lotes para este código {}'.format(code))
+            raise ValueError ('Se han encontrado varios lotes para este código {} y este productp: '.format(code, product_id.display_name))
         return lot_id
 
     def get_apk_location(self, code):

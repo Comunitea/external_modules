@@ -44,14 +44,15 @@ class StockQuant(models.Model):
               "select pp.id as product_id, pp.default_code, pt.name, pt.tracking, " \
               "sl.id as location_id, sl.name as loc_name, sl.barcode as loc_barcode , " \
               "spl.id as lot_id, spl.name as lot_name, " \
-              "sum(sq.quantity), sum(sq.reserved_quantity) " \
+              "sum(sq.quantity), sum(sq.reserved_quantity), " \
+              "pp.wh_code " \
               "from stock_quant sq " \
               "join stock_location sl on sl.id = sq.location_id " \
               "join product_product pp on pp.id = sq.product_id " \
               "join product_template pt on pt.id = pp.product_tmpl_id " \
               "left join stock_production_lot spl on spl.id = sq.lot_id " \
               "where sl.parent_path ilike '%/{}/%' {} " \
-              "group by pp.id, pp.default_code, pt.tracking, pt.name, sl.name, sl.barcode, sl.removal_priority, spl.id, spl.name, sl.id " \
+              "group by pp.id, pp.default_code, pt.tracking, pt.name, sl.name, sl.barcode, sl.removal_priority, spl.id, spl.name, sl.id, pp.wh_code " \
               "order by sl.removal_priority asc".format(location_id, where_product, where_lot)
 
         self._cr.execute(sql)
@@ -74,7 +75,8 @@ class StockQuant(models.Model):
                 product = {'id': quant[0],
                            'folded': False,
                            'default_code': quant[1],
-                           'name': quant[2],
+                           'name': quant[2] or quant[1],
+                           'wh_code': quant[11] or quant[1],
                            'tracking': quant[3],
                            'location_ids': [],
                            'quantity': 0,
@@ -91,7 +93,7 @@ class StockQuant(models.Model):
                 location = {'id': quant[4],
                             'folded': True,
                             'show_location': show_location,
-                            'name': quant[5],
+                            'name': quant[5] ,
                             'barcode': quant[6],
                             'lot_ids': [],
                             'quantity': 0,

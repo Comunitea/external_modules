@@ -34,6 +34,19 @@ class StockMove(models.Model):
 
     order = 'picking_id, sequence, id'
 
+    @api.multi
+    def auto_cancel_duplicate_serial(self):
+
+        _logger.info("Anulando lotes ....")
+        if self.state != 'done':
+            raise ValidationError ('Solo en movimientos realizados')
+        _logger.info("Anulando lotes ....")
+        for lot_id in self.move_line_ids.mapped('lot_id'):
+            new_name = '{} - Cancelado {}'.format(lot_id.name, self.id)
+            _logger.info(">>>> {}  ->  {}".format(lot_id.name, new_name))
+            lot_id.name = new_name
+
+
 
     @api.multi
     def _compute_move_lines_count(self):
@@ -215,10 +228,15 @@ class StockMove(models.Model):
         limit = 10# values.get('sml_limit', 15)
         offset = 0# values.get('sml_offset', 0)
         sml_ids = self.env['stock.move.line'].search(
-            domain,
+            domain + [('qty_done', '!=', 0)],
             limit=limit,
             offset=offset,
-            order= 'lot_id, write_date asc')
+            order= 'qty_done desc, lot_id desc')
+
+        sml_ids += self.env['stock.move.line'].search(
+            domain + [('qty_done', '=', 0)],
+            limit=1,
+            offset=0)
 
         if sml_ids:
             res['move_line_ids'] = sml_ids.sorted(lambda r: r.lot_id).get_model_object()
@@ -304,6 +322,9 @@ class StockMove(models.Model):
 
     @api.model
     def create_move_lots(self, vals):
+
+        #PUNTO DE ENTRADA PARA CUANDO LLEGA DESDE LA PANTALLA DEL MOVIMEINTO DE LA APP
+        print("#PUNTO DE ENTRADA PARA CUANDO LLEGA DESDE LA PANTALLA DEL MOVIMEINTO DE LA APP")
 
         move_id = vals.get('id', False)
         lot_names = vals.get('lot_names', False)
