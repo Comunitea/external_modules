@@ -21,8 +21,8 @@
 
                 </field>
                 <xpath expr="//footer" position="inside">
-<button string="Anular lotes" type="object" attrs="{'invisible': ['|', ('tracking', '!=', 'serial'), ('state', '!=', 'done')]}"
-                            name="auto_cancel_duplicate_serial"/>
+                    <button string="Anular lotes" type="object" attrs="{'invisible': ['|', ('tracking', '!=', 'serial'), ('state', '!=', 'done')]}"
+                    name="auto_cancel_duplicate_serial"/>
                 </xpath>
             </field>
      </record>
