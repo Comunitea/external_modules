@@ -12,7 +12,7 @@ class StockProductionLot(models.Model):
         if not lot_id:
             if not create:
                 raise ValidationError ('El nº de serie {} no existe. Debes utilizar nº de serie existentes.')
-            sql = "select * from stock_production_lot where name = {}".format(lot_name.upper())
+            sql = "select * from stock_production_lot where name = '{}'".format(lot_name.upper())
             self._cr.execute(sql)
             if self._cr.fetchall():
                 raise ValidationError ('La pda no permite crear números de serie duplicados. Deberás anular los números de serie')
