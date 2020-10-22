@@ -455,6 +455,8 @@ class StockMoveLine(models.Model):
                 'qty_done': qty_done
             })
             _logger.info("APK. Se ha actualizado el movimeinto {}:{} con cantidad {}".format(move_line.id, move_line.display_name, move_line.qty_done))
+            values = {'id': move_id, 'model': 'stock.move', 'view': 'form'}
+            res = self.env['info.apk'].get_apk_object(values)
             return True
         except Exception as e:
             _logger.info("APK. Error al actualizar el movimeinto {}:{} con cantidad {}".format(move_line.id,
