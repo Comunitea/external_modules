@@ -20,14 +20,24 @@ class SaleOrderLine(models.Model):
     @api.one
     @api.depends('chained_discount')
     def _compute_discount(self):
-        if not self.chained_discount:
-            self.discount = 0.0
-            return
-        splited_discount = self.chained_discount.split('+')
-        disc = 0.00
-        for val in splited_discount:
-            disc += float(val)
-        self.discount = disc
+        # if not self.chained_discount:
+        #     self.discount = 0.0
+        #     return
+        # splited_discount = self.chained_discount.split('+')
+        # disc = 0.00
+        # for val in splited_discount:
+        #     disc += float(val)
+        # self.discount = disc
+        if self.chained_discount:
+            splited_discount = self.chained_discount.split('+')
+            disc = 0.00
+            cum_disc = 1
+            for val in splited_discount:
+                cum_disc = cum_disc * (1 - float(val)/100)
+                #disc += float(val)
+            self.discount = (1- cum_disc) * 100
+        else:
+            self.discount = 0
 
     discount = fields.Float(string='Discount (%)',
                             digits=dp.get_precision('Discount'),
