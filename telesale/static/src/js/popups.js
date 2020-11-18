@@ -35,7 +35,7 @@ var SoldHistoryWidget = TsBaseWidget.extend({
         var model = new Model("product.product")
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
-        var loaded = model.call("get_history_product_info",[product_id, partner_id])
+        var loaded = model.call("get_history_product_info",[product_id, partner_id], self.ts_model.get_user_ctx())
         .then(function(result){
             self.line_results = result
         });

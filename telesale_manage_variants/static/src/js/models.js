@@ -102,7 +102,8 @@ TsModels.TsModel = TsModels.TsModel.extend({
                     // PRODUCTS
                     var product_fields = self._get_product_fields();
                     var model = new Model('product.product');
-                    return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true]]]);
+                    // return model.call("fetch_product_data",[product_fields, [ ['sale_ok', '=', true], ['id', 'in', [17245, 9689]] ]], self.get_user_ctx());
+                    return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true],  ]], self.get_user_ctx());
                 }).then(function(products){
                     // TODO OPTIMIZAR
                     self.db.add_products(products);
@@ -120,7 +121,8 @@ TsModels.TsModel = TsModels.TsModel.extend({
 
                     // PARTNERS
                     var partner_fields = self._get_partner_fields();
-                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
+                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery'], ['id', 'in', [9651]]], self.get_user_ctx())
+                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']], self.get_user_ctx())
                 }).then(function(customers){
                     for (var key in customers){
                         var customer = customers[key];
@@ -134,23 +136,23 @@ TsModels.TsModel = TsModels.TsModel.extend({
                     self.db.add_partners(customers);
 
                     // TAXES
-                    return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']]);
+                    return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']], self.get_user_ctx());
                 }).then(function(taxes) {
                     self.set('taxes', taxes);
                     self.db.add_taxes(taxes);
 
                     // FISCAL POSITION TAX
-                    return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id']);
+                    return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id'], self.get_user_ctx());
                 }).then(function(fposition_map) {
                     self.db.add_taxes_map(fposition_map);
 
                     // FISCAL POSITION
-                    return self.fetch('account.fiscal.position', ['name', 'tax_ids']);
+                    return self.fetch('account.fiscal.position', ['name', 'tax_ids'], self.get_user_ctx());
                 }).then(function(fposition) {
                     self.db.add_fiscal_position(fposition);
 
                     //PRICELIST
-                    return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]]);
+                    return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]], self.get_user_ctx());
                 }).then(function(pricelists) {
                     for (var key in pricelists){
                         var pricelist_name = pricelists[key].name;
@@ -173,8 +175,9 @@ TsModels.TsModel = TsModels.TsModel.extend({
                     self.db.add_countries(countries);
                     // ADDED BECAUSE DIFICULT INHERIT
                     var template_fields = ['name', 'display_name', 'product_variant_ids', 'product_variant_count']
+                    // var template_domain = [['sale_ok','=',true], ['id', 'in', [5123, 7269]]]
                     var template_domain = [['sale_ok','=',true]]
-                    return self.fetch('product.template', template_fields, template_domain)           
+                    return self.fetch('product.template', template_fields, template_domain, self.get_user_ctx())           
                 }).then(function(templates){
                     self.db.add_templates(templates);
 

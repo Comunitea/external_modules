@@ -173,7 +173,7 @@ var DataOrderWidget = TsBaseWidget.extend({
             else {
                 var partner_obj = self.ts_model.db.get_partner_by_id(partner_id);
                 var model = new Model("sale.order");
-                model.call("ts_onchange_partner_id", [partner_id])
+                model.call("ts_onchange_partner_id", [partner_id], self.ts_model.get_user_ctx())
                 .then(function(result){
 
                     var cus_name = self.ts_model.getComplexName(partner_obj);
@@ -373,7 +373,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
         var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
         var model = new Model("sale.order.line");
-        return model.call("ts_product_id_change", [product_id, customer_id, pricelist_id])
+        return model.call("ts_product_id_change", [product_id, customer_id, pricelist_id], self.ts_model.get_user_ctx())
         .then(function(result){
             var product_obj = self.ts_model.db.get_product_by_id(product_id);
             self.model.set('code', product_obj.default_code || "");
@@ -396,7 +396,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
         var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
         var model = new Model("sale.order.line");
-        return model.call("ts_product_uom_change", [product_id, customer_id, pricelist_id, qty])
+        return model.call("ts_product_uom_change", [product_id, customer_id, pricelist_id, qty], self.ts_model.get_user_ctx())
         .then(function(result){
             self.model.set('pvp', self.ts_model.my_round(result.price_unit));
             var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
@@ -840,7 +840,7 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
             var partner_id = this.ts_model.db.partner_name_id[partner_name];
             if (product_id && partner_id){
                 var model = new Model('product.product');
-                model.call("get_product_info",[product_id,partner_id])
+                model.call("get_product_info",[product_id,partner_id], self.ts_model.get_user_ctx())
                     .then(function(result){
                         self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
                         self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";

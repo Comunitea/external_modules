@@ -95,6 +95,9 @@ var TsModel = Backbone.Model.extend({
     _get_partner_fields: function(){
         return  ['id', 'parent_id', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type']
     },
+    get_user_ctx: function(){
+        return {context: this.session.user_context}
+    },
     // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
     // OVERWRITED IN MODULE TELESALE MANAGE VARIANTS because dificult to inherit because of the deferred return
     load_server_data: function(){
@@ -129,7 +132,7 @@ var TsModel = Backbone.Model.extend({
                     // PRODUCTS
                     var product_fields = self._get_product_fields();
                     var model = new Model('product.product');
-                    return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true]]]);
+                    return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true]]], self.get_user_ctx());
                 }).then(function(products){
                     // TODO OPTIMIZAR
                     self.db.add_products(products);
@@ -147,7 +150,7 @@ var TsModel = Backbone.Model.extend({
 
                     // PARTNERS
                     var partner_fields = self._get_partner_fields();
-                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
+                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']],  self.get_user_ctx())
                 }).then(function(customers){
                     for (var key in customers){
                         var customer = customers[key];
@@ -161,23 +164,23 @@ var TsModel = Backbone.Model.extend({
                     self.db.add_partners(customers);
 
                     // TAXES
-                    return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']]);
+                    return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']], self.get_user_ctx());
                 }).then(function(taxes) {
                     self.set('taxes', taxes);
                     self.db.add_taxes(taxes);
 
                     // FISCAL POSITION TAX
-                    return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id']);
+                    return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id'], self.get_user_ctx());
                 }).then(function(fposition_map) {
                     self.db.add_taxes_map(fposition_map);
 
                     // FISCAL POSITION
-                    return self.fetch('account.fiscal.position', ['name', 'tax_ids']);
+                    return self.fetch('account.fiscal.position', ['name', 'tax_ids'], self.get_user_ctx());
                 }).then(function(fposition) {
                     self.db.add_fiscal_position(fposition);
 
                     //PRICELIST
-                    return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]]);
+                    return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]], self.get_user_ctx());
                 }).then(function(pricelists) {
                     for (var key in pricelists){
                         var pricelist_name = pricelists[key].name;
@@ -186,14 +189,14 @@ var TsModel = Backbone.Model.extend({
                     self.db.add_pricelist(pricelists);
 
                     //STATES
-                    return self.fetch('res.country.state', ['name']);
+                    return self.fetch('res.country.state', ['name'], self.get_user_ctx());
                 }).then(function(states) {
                     for (var key in states){
                         var state_name = states[key].name;
                         self.get('state_names').push(state_name);
                     }
                     self.db.add_states(states);
-                    return self.fetch('res.country', ['name']);
+                    return self.fetch('res.country', ['name'], self.get_user_ctx());
                 }).then(function(countries) {
                     for (var key in countries){
                         var country_name = countries[key].name;
@@ -617,6 +620,7 @@ var Orderline = Backbone.Model.extend({
             price_unit: this.get('pvp'),
             tax_ids: this.get('taxes_ids'),
             discount: this.get('discount') || 0.0,
+            name: this.get('description')
         };
     },
     get_price_without_tax: function(){
@@ -872,7 +876,7 @@ var Order = Backbone.Model.extend({
           self.ts_model.get('sold_lines').reset(cache_sold_lines)
       }
       else{
-          var loaded = model.call("get_last_lines_by",[period, client_id])
+          var loaded = model.call("get_last_lines_by",[period, client_id], self.ts_model.get_user_ctx())
               .then(function(order_lines){
                       if (!order_lines){
                         order_lines = []

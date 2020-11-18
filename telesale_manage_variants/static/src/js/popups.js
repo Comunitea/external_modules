@@ -186,7 +186,7 @@ var GridWidget = TsBaseWidget.extend({
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
-        var loaded = model.call("ts_get_grid_structure",[template_id, partner_id, pricelist_id])
+        var loaded = model.call("ts_get_grid_structure",[template_id, partner_id, pricelist_id],  self.ts_model.get_user_ctx())
         .then(function(result){
             self.column_attrs =result.column_attrs
             self.row_attrs = result.row_attrs
@@ -227,7 +227,7 @@ var GridWidget = TsBaseWidget.extend({
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         var qty = parseFloat($(input_field).val());
         var product_id = parseInt($(input_field).parent().parent().parent()[0].getAttribute('variant-id'))
-        return model.call("ts_product_uom_change", [product_id, partner_id, pricelist_id, qty])
+        return model.call("ts_product_uom_change", [product_id, partner_id, pricelist_id, qty],  self.ts_model.get_user_ctx())
         .then(function(result){
             var input_field = self.aux_field
             $(input_field).parent().parent().next().children()[1].children[0].value = result.price_unit.toFixed(2)

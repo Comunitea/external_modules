@@ -141,7 +141,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         var search_str = product_name.replace('*', '%')
         var search_barcode = product_barcode.replace('*', '%')
-        var loaded = model.call("ts_search_products", [search_str, search_barcode, partner_id, pricelist_id, offset])
+        var loaded = model.call("ts_search_products", [search_str, search_barcode, partner_id, pricelist_id, offset], self.ts_model.get_user_ctx())
         .then(function(result){
             self.catalog_products = result['products'];
             self.result_str = result['result_str']
@@ -270,7 +270,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         var qty = parseFloat($(input_field).val());
         var product_id = parseInt($(input_field).parent().parent()[0].getAttribute('product-id'))
-        return model.call("ts_product_uom_change", [product_id, partner_id, pricelist_id, qty])
+        return model.call("ts_product_uom_change", [product_id, partner_id, pricelist_id, qty], self.ts_model.get_user_ctx())
         .then(function(result){
             var input_field = self.aux_field
             $(input_field).parent().next().children()[0].value = result.price_unit.toFixed(2);
