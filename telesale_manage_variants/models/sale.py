@@ -62,7 +62,6 @@ class SaleOrder(models.Model):
         for line in order_lines:
             mode = line.pop('mode')
             line.pop('cid')
-
             if mode == 'template_single':
                 vals = self._get_ts_template_line_vals(order_obj, line)
                 t_template_line.create(vals)
