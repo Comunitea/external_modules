@@ -10,8 +10,14 @@ class SaleOrder(models.Model):
 
     @api.model
     def _get_ts_template_line_vals(self, order_obj, line):
+
+        ctx = {'lang': order_obj.partner_id.lang,
+               'partner': order_obj.partner_id.id,
+               'date': order_obj.date_order,
+               'pricelist': order_obj.pricelist_id.id}
+
         t_product = self.env['product.product']
-        product_obj = t_product.browse(line['product_id'])
+        product_obj = t_product.with_context(ctx).browse(line['product_id'])
         product_uom_id = line.get('product_uom', False)
         product_uom_qty = line.get('qty', 0.0)
         vals = {
@@ -32,7 +38,11 @@ class SaleOrder(models.Model):
     @api.model
     def _get_ts_parent_template_line_vals(self, order_obj, line, total_qty):
         t_product = self.env['product.product']
-        product_obj = t_product.browse(line['product_id'])
+        ctx = {'lang': order_obj.partner_id.lang,
+               'partner': order_obj.partner_id.id,
+               'date': order_obj.date_order,
+               'pricelist': order_obj.pricelist_id.id}
+        product_obj = t_product.with_context(ctx).browse(line['product_id'])
         vals = {
             'order_id': order_obj.id,
             'product_template': product_obj.product_tmpl_id.id,
