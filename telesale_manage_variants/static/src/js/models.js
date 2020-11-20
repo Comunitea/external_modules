@@ -121,8 +121,8 @@ TsModels.TsModel = TsModels.TsModel.extend({
 
                     // PARTNERS
                     var partner_fields = self._get_partner_fields();
-                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery'], ['id', 'in', [9651]]], self.get_user_ctx())
-                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']], self.get_user_ctx())
+                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery'], ['id', 'in', [9651]]], self.get_user_ctx())
+                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']], self.get_user_ctx())
                 }).then(function(customers){
                     for (var key in customers){
                         var customer = customers[key];
