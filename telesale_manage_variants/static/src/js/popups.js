@@ -103,28 +103,34 @@ var GridWidget = TsBaseWidget.extend({
     set_cell_vals: function(line_model, line_vals){
         line_model.set('qty', line_vals.qty);
         line_model.set('pvp', line_vals.price);
+        line_model.set('description', line_vals.name);
         line_model.set('discount', line_vals.discount);
         line_model.set('taxes_ids', line_vals.tax_ids || []); 
         line_model.update_line_values();
     },
 
-
     // Adds a new variant line from the Grid
     prototipe_add: function(variant_id, line_vals){
-
+        var self=this;
         var template_line_model = this.line_widget.model;
 
         // Create new line
         var added_line = self.ts_widget.new_order_screen.order_widget.create_line_empty(variant_id)
         // Needed because addProductLine not set add_qty at time.
-        this.set_cell_vals(added_line, line_vals);
+        $.when(this.ts_model.get_translated_line_name(variant_id,))
+            .done(function(result){
+                line_vals['name'] = result
+                self.set_cell_vals(added_line, line_vals);
 
-        // Set line behaviour to a variant
-        added_line.mode = 'variant';
-        added_line.parent_cid = template_line_model.cid;
 
-        // Update parent_line dictionary with child line
-        template_line_model.variant_related_cid[variant_id] = added_line.cid;
+                // Set line behaviour to a variant
+                added_line.mode = 'variant';
+                added_line.parent_cid = template_line_model.cid;
+    
+                // Update parent_line dictionary with child line
+                template_line_model.variant_related_cid[variant_id] = added_line.cid;
+                self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
+            });
     },
 
     // Update a exiting line from the Grid
