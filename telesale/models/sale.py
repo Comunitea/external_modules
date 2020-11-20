@@ -102,13 +102,8 @@ class SaleOrder(models.Model):
             t_order_line.create(vals)
 
     def _get_ts_line_vals(self, order_obj, line):
-
-        ctx = {'lang': order_obj.partner_id.lang,
-               'partner': order_obj.partner_id.id,
-               'date': order_obj.date_order,
-               'pricelist': order_obj.pricelist_id.id}
         t_product = self.env['product.product']
-        product_obj = t_product.with_context(ctx).browse(line['product_id'])
+        product_obj = t_product.browse(line['product_id'])
         product_uom_id = line.get('product_uom', False)
         product_uom_qty = line.get('qty', 0.0)
         vals = {
@@ -185,8 +180,8 @@ class SaleOrderLine(models.Model):
             'discount': line.discount,
             'tax_id': [x.id for x in line.tax_id],
             'standard_price': line.product_id.standard_price,
-            'name': line.name
-
+            'name': line.name,  # customer language,
+            'display_name': line.product_id.display_name,  # user language,
         })
         return res
 

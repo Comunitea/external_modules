@@ -121,8 +121,8 @@ TsModels.TsModel = TsModels.TsModel.extend({
 
                     // PARTNERS
                     var partner_fields = self._get_partner_fields();
-                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery'], ['id', 'in', [9651]]], self.get_user_ctx())
-                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']], self.get_user_ctx())
+                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery'], ['id', 'in', [9651]]], self.get_user_ctx())
+                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']], self.get_user_ctx())
                 }).then(function(customers){
                     for (var key in customers){
                         var customer = customers[key];
@@ -248,12 +248,24 @@ TsModels.TsModel = TsModels.TsModel.extend({
                 order_model.get('orderLines').add(line);
             }
 
-
-
-
-
         }
-    }, 
+    },
+    get_translated_line_name: function(product_id){
+        var self = this;
+        var model = new Model("sale.order.line");
+        var order = self.get_order()
+        var customer_id = self.db.partner_name_id[order.get('partner')];
+        var pricelist_id = self.db.pricelist_name_id[order.get('pricelist')];
+        return model.call("ts_product_id_change", [product_id, customer_id, pricelist_id], self.get_user_ctx())
+        .then(function(result){
+            var product_obj = self.db.get_product_by_id(product_id);
+            var description = result.name;
+            if (product_obj.description_sale){
+                description = description + '\n' + product_obj.description_sale
+            }
+            return description          
+        });
+    },
 
 });
 
