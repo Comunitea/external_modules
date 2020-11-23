@@ -116,7 +116,7 @@ class ProductProduct(models.Model):
     def ts_search_products(self, product_name, product_barcode, partner_id,
                            pricelist_id, offset=0):
         res = []
-        if product_name.isdigit():
+        if product_name.replace('.', '').isdigit():
             domain = [('default_code', 'ilike', product_name)]
         else:
             domain = [('name', 'ilike', product_name)]
