@@ -11,5 +11,19 @@
                 </field>
             </field>
      </record>
+    <record id="view_stock_move_operations_with_cancel_lots" model="ir.ui.view">
+            <field name="name">stock.move.operations.form.cancel.lots</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_stock_move_operations"/>
+            <field name="arch" type="xml">
+                <field name="picking_id" position="after">
+                    <field name="tracking" invisible="1"/>
 
+                </field>
+                <xpath expr="//footer" position="inside">
+                    <button string="Anular lotes" type="object" attrs="{'invisible': ['|', ('tracking', '!=', 'serial'), ('state', '!=', 'done')]}"
+                    name="auto_cancel_duplicate_serial"/>
+                </xpath>
+            </field>
+     </record>
 </odoo>

@@ -36,6 +36,7 @@ class InfoApk(models.AbstractModel):
             obj.apk_name = obj.display_name
 
     apk_name = fields.Char(compute="compute_apk_name")
+    wh_code = fields.Char("Wh code")
     apk_warehouse_id = fields.Many2one('stock.warehouse', compute="compute_warehouse_id")
 
 
@@ -47,14 +48,14 @@ class InfoApk(models.AbstractModel):
         return product_id
 
     def get_apk_lot(self, code, product_id):
-        if code == product_id.wh_code or code == product_id.default_code:
-            return False
         domain = [('name', '=', code)]
         if product_id:
+            if code == product_id.barcode or code == product_id.default_code or code == product_id.wh_code:
+                raise ValueError ('No puedes crear el lote {} para el producto {}. El lote esta en los campos del producto'.format(code, product_id.default_code))
             domain += [('product_id', '=', product_id.id)]
         lot_id = self.env['stock.production.lot'].search(domain)
-        if len(lot_id)>1:
-            raise ValueError ('Se han encontrado varios lotes para este código {}'.format(code))
+        if len(lot_id) > 1:
+            raise ValueError ('Se han encontrado varios lotes para este código {} y este productp: '.format(code, product_id.display_name))
         return lot_id
 
     def get_apk_location(self, code):
@@ -168,8 +169,8 @@ class InfoApk(models.AbstractModel):
         res['items'] = items
         res['image'] = False
 
-        print("\n MODAL: ---------------------------")
-        pprint.PrettyPrinter(indent=2).pprint(res)
+        #print("\n MODAL: ---------------------------")
+        #pprint.PrettyPrinter(indent=2).pprint(res)
         return res
 
 
@@ -339,3 +340,6 @@ class ResPartner(models.Model):
         for obj in self:
             obj.apk_name = obj.commercial_partner_id.name
 
+class ResUser(models.Model):
+    _name = 'res.users'
+    _inherit = ['info.apk', 'res.users']

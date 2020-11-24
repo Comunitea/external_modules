@@ -174,7 +174,6 @@ class StockPicking(models.Model):
         qr_codes = self.browse(vals.get('qr_codes', False))
         if not qr_codes:
             return {'err': True, 'error': "No se han recibido datos del código QR."}
-        print(qr_codes)
         return True
 
     @api.model
@@ -182,9 +181,7 @@ class StockPicking(models.Model):
         domain = [('name', 'ilike', vals['name'])]
         res = self.search_read(domain, ['id'], limit=1)
         if res:
-            print("------------- Busco el albarán {} y devuelvo  el id".format(vals['name'], res[0]['id']))
             return res[0]['id']
-        print("------------- Busco el albarán {} y no encuentro nada".format(vals['name']))
         return False
 
     @api.model

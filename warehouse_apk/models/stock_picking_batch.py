@@ -154,20 +154,13 @@ class StockPickingBatch(models.Model):
     @api.model
     def get_picking_list(self, values):
 
+        domain_name = values.get('domain_name', False)
         domain = values.get('domain', [])
+        if domain_name:
+            domain += self._compute_picking_count_domains()[domain_name]
         domain += [('batch_id', '!=', False)]
         filter_values = values.get('filter_values', {})
         ## AÑADO DOMINIO POR STATE
-        state = False
-        f_state = filter_values.get('filter_pick_state', False)
-        state = values.get('state', False)
-        if f_state:
-            domain += [('batch_id.state', 'in', f_state)]
-            values['domain_name'] = False
-        elif state:
-            domain += [('state', '=', state)]
-        elif values.get('domain_name', False):
-            domain += self._compute_picking_count_domains()[values['domain_name']]
         if values.get('picking_type_id', False):
             domain += [('batch_id.picking_type_id', '=', values['picking_type_id'])]
         if values.get('search', False):
@@ -180,7 +173,6 @@ class StockPickingBatch(models.Model):
         ##    domain += [('id', 'in', values.get('active_ids'))]
         ## Cambio el valor de dominio por ids de picking
         batch_ids = self.env['stock.picking'].search_read(domain, ['batch_id'])
-        ## print ("Dominio para el listado de agrupaciones con values:{} \n: {}".format(values, domain))
         batch_ids = [x['batch_id'][0] for x in batch_ids]
         values['domain'] = [('id', 'in', batch_ids)]
 
@@ -240,23 +232,23 @@ class StockPickingBatch(models.Model):
             cont += 1
 
     def get_model_object(self, values={}):
+        values['order'] = 'try_validate desc, picking_type_id asc, name asc'
         res = super().get_model_object(values=values)
         picking_id = self
         if values.get('view', 'tree') == 'tree':
             return res
-        if picking_id:
-            picking_id.state == 'in_progress'
-            picking_id.user_id = self.env.user
         if not picking_id:
-            domain = values.get('domain', [])
-            limit = values.get('limit', 1)
-            move_id = self.search(domain, limit)
-            if not picking_id or len(picking_id) != 1:
-                return res
+            return res
+        picking_id.state == 'in_progress'
+        picking_id.user_id = self.env.user
+
+        domain = values.get('domain', [])
+        limit = values.get('limit', 1)
+        move_id = self.search(domain, limit)
+        if not picking_id or len(picking_id) != 1:
+            return res
         values = {'domain': self.get_move_domain_for_picking(values.get('filter_moves', 'Todos'), picking_id)}
         res['move_lines'] = self.env['stock.move'].get_model_object(values)
-        #print ("------------------------------Move lines")
-        #pprint.PrettyPrinter(indent=2).pprint(res['move_lines'])
         return res
 
     @api.model
@@ -329,7 +321,6 @@ class StockPickingBatch(models.Model):
         qr_codes = self.browse(vals.get('qr_codes', False))
         if not qr_codes:
             return {'err': True, 'error': "No se han recibido datos del código QR."}
-        print(qr_codes)
         return True
 
     @api.model
@@ -337,44 +328,79 @@ class StockPickingBatch(models.Model):
         domain = [('name', 'ilike', vals['name'])]
         res = self.search_read(domain, ['id'], limit=1)
         if res:
-            print("------------- Busco el albarán {} y devuelvo  el id".format(vals['name'], res[0]['id']))
             return res[0]['id']
-        print("------------- Busco el albarán {} y no encuentro nada".format(vals['name']))
         return False
 
     @api.model
     def find_serial_for_move(self, vals):
-        # En esta funciuón miro si es un serial, si no busco en el barcode o en el wh_code a ver si encuentro un producto
+        ##PUNTO DE ENTRADA PARA LOS STOCK PICKINGS##
+
+        ## Esta es la función que se llama cuando se detecta la entrada de un número de serie en la vista de listado de alabran
+        # En esta función miro si es un serial, si no busco en el barcode o en el wh_code a ver si encuentro un producto
         lot_name = vals.get('lot_id', False)
-        picking_id = vals.get('picking_id', False)
+        batch_id = vals.get('picking_id', False)
         remove = vals.get('remove', False)
-        if not picking_id:
+        if not batch_id:
             return
         if not lot_name:
             return
-
-        ## Miro si es un lote o varios
-        move = False
-
-        lot_names = lot_name.split(',')
-        moves_to_recompute = self.env['stock.move']
-        for lot_name in lot_names:
-            lot = self.env['stock.production.lot'].search([('name', '=', lot_name)], limit=1)
-            if lot:
-                move = self.serial_for_move(picking_id, lot, remove)
-            if move:
-                moves_to_recompute |= move
-        if moves_to_recompute:
-            moves_to_recompute._recompute_state()
-            return move.get_model_object()
-
-        ## NO se han encontrado numeros de serie, miro si es un producto.
-        domain = [('picking_id.batch_id', '=', picking_id), ('product_id.tracking', '=', 'none') , '|', ('product_id.wh_code', '=', lot_name), ('product_id.barcode', '=', lot_name)]
+        batch_id = self.browse(batch_id)
+        lot_names = lot_name.upper().split(',')
+        product_id = ""
+        batch_move_lines = batch_id.move_line_ids
+        ## Busco los posibles lotes de los productos de los movimientos
+        lot_ids = self.env['stock.production.lot'].search([('name', 'in', lot_names),
+                                                           ('product_id', 'in', batch_move_lines.mapped('product_id').ids)])
+        ## Busco las posibles líneas sin tracking
+        domain = [('picking_id.batch_id', '=', batch_id.id),
+                  ('product_id.tracking', '=', 'none'),
+                  '|', '|',
+                  ('product_id.default_code', 'in', lot_names),
+                  ('product_id.wh_code', 'in', lot_names),
+                  ('product_id.barcode', 'in', lot_names)]
         move_line_id = self.env['stock.move.line'].search(domain)
+
+        ## No puedo tener las 2 cosas
+        if lot_ids and move_line_id:
+            raise ValidationError("Se ha identificado un código como producto y como serie: %s"%lot_name)
+
+        ## Si tengo lotes
+        if lot_ids:
+            ## Detecto cual es el producto,
+            # NO permito ler lotes de distintos articulos en lote, si hay mas de uno error
+            product_id = lot_ids.mapped('product_id')
+            if len(product_id) != 1:
+                raise ValidationError(
+                    'No se ha podido definir el producto, o hay varios productos %s para los numero de serie %s' % (
+                    product_id.mapped('default_code'), lot_ids.mapped('name')))
+
+
+            ## Busco el movimiento que voy a escribir para el producto.
+            # Si hay varios, entonces salgo. Debe de hacerse entrando en el movimiento
+            # Si no hay es que error
+            move_id = batch_id.move_lines.filtered(lambda x:x.product_id == product_id)
+            if not move_id:
+                raise ValidationError(
+                    'No hay movimiento para el artículo {} de los lotes {}'.format(product_id.default_code,
+                                                                                   lot_ids.mapped('name')))
+
+            if len(move_id) != 1:
+                ##Filtrar por el primero y hacerlo en bucle ????
+                raise ValidationError(
+                    'Tienes varias líneas para {}. Debes entrar en la línea'.format(product_id.default_code))
+
+            # Actualizo el movimiento con los lotes
+            move_id.update_move_lot_apk(move_id, lot_ids, active_location=False)
+            move_id._recompute_state()
+            return move_id.get_model_object()
+
+        # Si llego aquí es un producto sin tracking.
+
         if not move_line_id:
-            raise ValidationError ('No se ha encontrado nada para el código {}'.format(lot_name))
-        if len(move_line_id)>1:
-            raise ValidationError('Se han encontrado varias opciones. No hay info suficiente para el código {}'.format(lot_name))
+            raise ValidationError ('No se ha encontrado ningún artículo válido ni lote para el código {}'.format(lot_names))
+        if len(move_line_id) > 1:
+            raise ValidationError(
+                'Tienes varias líneas para {}. Debes entrar en la línea'.format(lot_names))
         values = {
             'move_id': move_line_id.move_id.id,
             'filter_moves': vals.get('filter_moves', 'Todos'),
@@ -383,76 +409,23 @@ class StockPickingBatch(models.Model):
         return move_line_id.move_id.set_qty_done_from_apk(values)
 
 
+    def default_picking_filter_fields(self):
+        ## Heredo los campos que me interesan para los filtros por defecto serán estos
+        return {'field_1': 'user_id',
+                'field_2': 'picking_type_id',
+                'field_3': 'state'}
     @api.model
-    def serial_for_move(self, picking_id, lot, remove):
-        lot_id = lot.id
-        product_id = lot.product_id.id
-        new_location_id = lot.compute_location_id()
-        domain = [('picking_id.batch_id', '=', picking_id), ('product_id', '=', product_id)]
-
-        if False and remove:
-            domain += [('lot_id', '=', lot_id)]
-            line = self.env['stock.move.line'].search(domain, limit=1, order='lot_id desc')
-
-            line.qty_done = 0
-            line.write_status('lot_id', 'done', False)
-            line.write_status('qty_done', 'done', False)
-        else:
-            # caso 1. COnfirmar el lote que hay
-            lot_domain = domain + [('lot_id', '=', lot_id)]
-            line = self.env['stock.move.line'].search(lot_domain, limit=1, order='lot_id desc')
-
-            if line:
-                ## si es lote +1 , si es serial = 1
-                if line.product_id.tracking == 'serial':
-                    line.qty_done = 1
-                else:
-                    line.qty_done += 1
-                line.write_status('lot_id', 'done', True)
-                line.write_status('qty_done', 'done', True)
-            else:
-                # Caso 2. Hay una vacía con lot_id = False:
-                lot_domain = domain + [('lot_id', '=', False)]
-                line = self.env['stock.move.line'].search(lot_domain, limit=1, order= 'lot_id desc')
-                if not line:
-                    lot_domain = domain + [('lot_id', '!=', lot_id), ('qty_done', '=', 0)]
-                    line = self.env['stock.move.line'].search(lot_domain, limit=1, order='lot_id desc')
-                if line:
-                    move = line.move_id
-                    line.unlink()
-                    reserved = move._update_reserved_quantity(1, 1, location_id=move.location_id, lot_id=lot, strict=False)
-                    if reserved == 0:
-                        ocup_dom = [('move_id.picking_type_id', '=', move.picking_type_id.id),
-                                    ('product_id', '=', move.product_id.id),
-                                    ('state', 'in', ('assigned', 'partially_available')),
-                                    ('lot_id', '=', lot_id)]
-                        ocup_move_line = self.env['stock.move.line'].search(ocup_dom)
-                        if ocup_move_line:
-                            move_to_update = ocup_move_line.move_id
-                            ocup_move_line.unlink()
-                            reserved = move._update_reserved_quantity(1, 1, move.location_id, lot_id=lot, strict=False)
-                            if move_to_update._update_reserved_quantity(1, 1, move.location_id, strict=False) == 1:
-                                move_to_update.write({'state': 'assigned'})
-                            if reserved == 0:
-                                raise UserError ('No se ha podido reservar el lote {}. Comprueba que no está en otro movimiento'.format(lot.name))
-                            move.write({'state': 'assigned'})
-
-                    lot_domain = domain + [('lot_id', '=', lot_id)]
-                    line = self.env['stock.move.line'].search(lot_domain, limit=1, order='lot_id desc')
-                    if line:
-                        line.qty_done = 1
-                        line.write_status('lot_id', 'done', True)
-                        line.write_status('qty_done', 'done', True)
-        move = line.move_id
-        if not move.picking_type_id.allow_overprocess and move.quantity_done > move.reserved_availability:
-            raise ValidationError("No puedes procesar más cantidad de lo reservado para el movimiento")
-        ##devuelvo un objeto movimietno para actualizar la vista de la app
-        if not move:
-            return False
-        return move
-
-
-
+    def get_wh_code_filter(self, values):
+        field = values.get("field", False)
+        #field = self.default_picking_filter_fields().get(field, field)
+        if not field:
+            return
+        res = []
+        if self.fields_get()[field]["type"] == "selection":
+            res = self.get_selection_dict_values(field)
+        if self.fields_get()[field]["type"] == "many2one":
+            res = self.get_many2one_dict_values(field)
+        return res
 
 
 
