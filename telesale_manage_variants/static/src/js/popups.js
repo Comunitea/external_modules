@@ -103,7 +103,9 @@ var GridWidget = TsBaseWidget.extend({
     set_cell_vals: function(line_model, line_vals){
         line_model.set('qty', line_vals.qty);
         line_model.set('pvp', line_vals.price);
-        line_model.set('description', line_vals.name);
+        if (!$.isEmptyObject(line_vals.name)){
+            line_model.set('description', line_vals.name);
+        }
         line_model.set('discount', line_vals.discount);
         line_model.set('taxes_ids', line_vals.tax_ids || []); 
         line_model.update_line_values();
