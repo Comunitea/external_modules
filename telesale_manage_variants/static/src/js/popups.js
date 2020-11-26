@@ -117,7 +117,7 @@ var GridWidget = TsBaseWidget.extend({
         var template_line_model = this.line_widget.model;
 
         // Create new line
-        var added_line = self.ts_widget.new_order_screen.order_widget.create_line_empty(variant_id)
+        var added_line = self.ts_widget.new_order_screen.order_widget.create_line_empty(variant_id, true)
         // Needed because addProductLine not set add_qty at time.
         $.when(this.ts_model.get_translated_line_name(variant_id,))
             .done(function(result){
@@ -131,8 +131,8 @@ var GridWidget = TsBaseWidget.extend({
     
                 // Update parent_line dictionary with child line
                 template_line_model.variant_related_cid[variant_id] = added_line.cid;
-                self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
-            });
+                // self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
+        });
     },
 
     // Update a exiting line from the Grid

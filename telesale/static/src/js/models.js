@@ -776,8 +776,12 @@ var Order = Backbone.Model.extend({
     generateUniqueId: function() {
         return new Date().getTime();
     },
-    addLine: function() {
-        var line = new Orderline({ts_model: this.ts_model, order:this})
+    addLine: function(mode_variant) {
+        var options = {ts_model: this.ts_model, order:this}
+        if (mode_variant){
+            $.extend(options, {mode: 'variant'})
+        }
+        var line = new Orderline(options)
         this.get('orderLines').add(line);
         return line
     },

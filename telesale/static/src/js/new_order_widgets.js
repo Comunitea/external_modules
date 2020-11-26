@@ -718,9 +718,9 @@ var OrderWidget = TsBaseWidget.extend({
         },
 
         // Creates a line with product and unit seted
-        create_line_empty: function(product_id){
+        create_line_empty: function(product_id, variant_mode){
             var current_order= this.ts_model.get('selectedOrder');
-            var added_line = current_order.addLine();
+            var added_line = current_order.addLine(variant_mode);
             var product_obj = this.ts_model.db.get_product_by_id(product_id)
             var product_name = product_obj.display_name;
             added_line.set('product', product_name);
