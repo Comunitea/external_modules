@@ -44,7 +44,7 @@ class StockPicking(models.Model):
 
     shipment_reference = fields.Char("Shipment Reference")
     mrw_pdo_quantity = fields.Float("PDO amount", digits=dp.get_precision("Product Price"))
-    payment_on_delivery = fields.Boolean("Payment on delivery", related="carrier_id.payment_on_delivery")
+    payment_on_delivery = fields.Boolean("Payment on delivery", related="sale_id.payment_on_delivery")
     failed_shipping = fields.Boolean("Failed Shipping", default=False)
     carrier_type = fields.Selection(related="carrier_id.carrier_type")
     delivery_note = fields.Char(compute="_compute_delivery_note")
@@ -288,6 +288,8 @@ class StockPicking(models.Model):
                         },
                     }
                 }
+
+                print("TransmEnvio: {}".format(TransmEnvio))
 
                 res = client.service.TransmEnvio(
                     **TransmEnvio, _soapheaders=[headers]

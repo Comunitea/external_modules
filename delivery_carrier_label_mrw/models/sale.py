@@ -29,3 +29,4 @@ class SaleOrder(models.Model):
         'paid_shipping_picking_id',
         readonly=True
     )
+    payment_on_delivery = fields.Boolean("Payment on delivery", related="payment_mode_id.payment_on_delivery")

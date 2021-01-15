@@ -17,18 +17,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    "name": "MRW Delivery Carrier",
-    "version": "12.0.0.0.0",
-    "summary": "MRW SAGEC Integration",
-    "category": "Custom",
-    "author": "comunitea",
-    "website": "www.comunitea.com",
-    "license": "AGPL-3",
-    "depends": ["stock", "stock_picking_report_valued", "sale_shipping_info_helper", "cmnt_delivery_carrier_label"],
-    "data": ["views/stock_picking.xml", "views/account_payment_mode.xml"],
-    "external_dependencies": {"python": ["zeep"]},
-    "installable": True,
-    "auto_install": False,
-    "application": False,
-}
+
+
+from odoo import models, fields
+
+
+class AccountPaymentMode(models.Model):
+    _inherit = "account.payment.mode"
+
+    payment_on_delivery = fields.Boolean("POD", default=False)

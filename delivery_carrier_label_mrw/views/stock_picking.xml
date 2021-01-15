@@ -27,16 +27,7 @@
         </field>
     </record>
 
-    <record id="payment_on_delivery_view_delivery_carrier_form" model="ir.ui.view">
-        <field name="name">delivery.view.delivery._carrier.form</field>
-        <field name="model">delivery.carrier</field>
-        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
-        <field name="arch" type="xml">
-            <field name="company_id" position="before">
-                <field name="payment_on_delivery"/>
-            </field>
-        </field>
-    </record>
+    <delete id="delivery_carrier_label_mrw.payment_on_delivery_view_delivery_carrier_form" model="ir.ui.view"/>
 
     <record id="cmnt_delivery_carrier_mrw_carrier_account" model="ir.ui.view">
         <field name="name">cmnt.delivery.carrier.dhl.carrier.account</field>

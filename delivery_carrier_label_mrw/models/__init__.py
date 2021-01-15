@@ -17,4 +17,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import sale, delivery_carrier, carrier_account, stock_picking
+from . import sale, delivery_carrier, carrier_account, stock_picking, account_payment_mode
