@@ -289,8 +289,6 @@ class StockPicking(models.Model):
                     }
                 }
 
-                print("TransmEnvio: {}".format(TransmEnvio))
-
                 res = client.service.TransmEnvio(
                     **TransmEnvio, _soapheaders=[headers]
                 )
