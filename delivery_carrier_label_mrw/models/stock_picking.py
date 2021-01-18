@@ -76,7 +76,7 @@ class StockPicking(models.Model):
     @api.multi
     def remove_tracking_info(self):
         res = super().remove_tracking_info()
-        for pick in self:
+        for pick in self.filtered(lambda x: x.carrier_type == "mrw"):
             pick.update({"shipment_reference": False})
 
     @api.depends("sale_id")
