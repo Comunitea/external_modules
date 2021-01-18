@@ -117,8 +117,8 @@ class StockPicking(models.Model):
     @api.multi
     def mark_as_unpaid_shipping(self):
         for pick in self:
-            if pick.sale_id and pick.sale_id.paid_shipping_picking_id and pick.sale_id.paid_shipping_picking_id == pick.id:
-                sale.paid_shipping_batch_id = None
+            if pick.sale_id and pick.sale_id.paid_shipping_picking_id and pick.sale_id.paid_shipping_picking_id.id == pick.id:
+                pick.sale_id.paid_shipping_batch_id = None
 
     @api.multi
     def remove_tracking_info(self):
@@ -127,7 +127,7 @@ class StockPicking(models.Model):
 
             self.env["ir.attachment"].search(
                 [
-                    ("name", "=", "Label: {}".format(pick.name)),
+                    ("name", "in", ["Label: {}.txt".format(pick.name), "Label: {}".format(pick.name)]),
                     ("res_id", "=", pick.id),
                     ("res_model", "=", self._name),
                 ]

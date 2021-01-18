@@ -64,7 +64,7 @@ class StockPicking(models.Model):
                     self.mark_as_paid_shipping()
                 return [
                     {
-                        "name": self.name + "_" + self.carrier_tracking_ref + ".pdf",
+                        "name": "Label: {}".format(self.name),
                         "file": b64decode(label_result["etiqueta1"]),
                         "file_type": "pdf",
                     }
@@ -76,7 +76,7 @@ class StockPicking(models.Model):
                     self.mark_as_paid_shipping()
                 return [
                     {
-                        "name": self.name + "_" + self.carrier_tracking_ref + ".txt",
+                        "name": "Label: {}.txt".format(self.name),
                         "file": b64encode(label_result["etiqueta2"].encode("utf-8")),
                         "file_type": "txt",
                     }
