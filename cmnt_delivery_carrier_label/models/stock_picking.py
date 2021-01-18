@@ -3,6 +3,7 @@
 from odoo import _, fields, models, api
 from odoo.exceptions import UserError
 from base64 import b64decode
+from odoo.addons import decimal_precision as dp
 
 
 class StockPicking(models.Model):
@@ -17,6 +18,8 @@ class StockPicking(models.Model):
     carrier_packages = fields.Integer(default=1)
     carrier_service = fields.Many2one('delivery.carrier.service')
     delivered = fields.Boolean()
+    payment_on_delivery = fields.Boolean("Payment on delivery", related="sale_id.payment_on_delivery")
+    pdo_quantity = fields.Float("PDO amount", digits=dp.get_precision("Product Price"))
 
     def print_created_labels(self):
         self.ensure_one()
@@ -85,3 +88,50 @@ class StockPicking(models.Model):
         ])
         for picking in pickings:
             picking.check_shipment_status()
+
+    @api.multi
+    def button_validate(self):
+        res = super(StockPicking, self).button_validate()
+        for pick in self:
+            pick.write({
+                'pdo_quantity': pick.get_pdo_quantity()
+            })
+        return res
+
+    @api.multi
+    def get_pdo_quantity(self):
+        for pick in self:
+            pickings_total_value = 0.0
+            pick._compute_amount_all()
+            pickings_total_value += pick.amount_total
+            if pick.sale_id and (not pick.sale_id.paid_shipping_picking_id or pick.sale_id.paid_shipping_picking_id == pick):
+                pickings_total_value += pick.sale_id.shipping_amount_total
+            return pickings_total_value
+
+    @api.multi
+    def mark_as_paid_shipping(self):
+        for pick in self:
+            if pick.sale_id and not pick.sale_id.paid_shipping_picking_id:
+                pick.sale_id.paid_shipping_picking_id = pick.id
+
+    @api.multi
+    def mark_as_unpaid_shipping(self):
+        for pick in self:
+            if pick.sale_id and pick.sale_id.paid_shipping_picking_id and pick.sale_id.paid_shipping_picking_id == pick.id:
+                sale.paid_shipping_batch_id = None
+
+    @api.multi
+    def remove_tracking_info(self):
+        for pick in self:
+            pick.update({"carrier_tracking_ref": False})
+
+            self.env["ir.attachment"].search(
+                [
+                    ("name", "=", "Label: {}".format(pick.name)),
+                    ("res_id", "=", pick.id),
+                    ("res_model", "=", self._name),
+                ]
+            ).unlink()
+        
+        if pick.payment_on_delivery:
+            pick.mark_as_unpaid_shipping()

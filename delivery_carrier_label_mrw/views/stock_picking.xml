@@ -6,22 +6,11 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
         <field name="arch" type="xml">
-            <header position="inside">
-                <button name="remove_tracking_info" string="Remove Tracking" type="object"
-                    confirm="Are you sure you want to remove the tracking info of this batch?"
-                    attrs="{'invisible': [
-                        '|',('shipment_reference', '=', False),
-                        ('carrier_tracking_ref', '=', False)
-                    ]}"/>
-            </header>
             <xpath expr="//group[@name='carrier_data']" position="after">
                 <group string="MRW Data" attrs="{'invisible': [('carrier_type', '!=', 'mrw')]}">
                     <field name="carrier_type" invisible="1"/>
                     <field name="shipment_reference"/>
                     <field name="failed_shipping"/>
-                    <field name="payment_on_delivery"/>
-                    <field name="mrw_pdo_quantity"
-                        attrs="{'invisible': [('payment_on_delivery', '=', False)], 'required': [('payment_on_delivery', '!=', 'False')]}"/>
                 </group>
             </xpath>
         </field>
@@ -34,11 +23,8 @@
         <field name="model">carrier.account</field>
         <field name="inherit_id" ref="base_delivery_carrier_label.carrier_account_view_form"/>
         <field name="arch" type="xml">
-            <field name="account" position="after">
-                <field name="is_mrw_account"/>
-            </field>
             <xpath expr="//group[last()]" position="after">
-                <group string="MRW configuration" attrs="{'invisible': [('is_mrw_account', '=', False)]}">
+                <group string="MRW configuration" attrs="{'invisible': [('integration_type', '!=', 'mrw')]}">
                     <field name="mrw_account"/>
                     <field name="mrw_franchise"/>
                     <field name="mrw_frequency"/>

@@ -60,6 +60,8 @@ class StockPicking(models.Model):
         if retorno == 0:
             self.carrier_tracking_ref = rjson["datosResultado"]
             if self.carrier_id.account_id.file_format == "PDF":
+                if self.payment_on_delivery:
+                    self.mark_as_paid_shipping()
                 return [
                     {
                         "name": self.name + "_" + self.carrier_tracking_ref + ".pdf",
@@ -70,6 +72,8 @@ class StockPicking(models.Model):
                 ]
             else:
                 self.cex_result = rjson["etiqueta"][0]["etiqueta2"]
+                if self.payment_on_delivery:
+                    self.mark_as_paid_shipping()
                 return [
                     {
                         "name": self.name + "_" + self.carrier_tracking_ref + ".txt",
@@ -170,7 +174,7 @@ class StockPicking(models.Model):
             "ancho": "",
             "producto": self.carrier_service.carrier_code,
             "portes": "P",
-            "reembolso": "",  # TODO cash_on_delivery
+            "reembolso": "{}".format(self.pdo_quantity).replace(".", ",") if self.payment_on_delivery else "",
             "entrSabado": "",
             "seguro": "",
             "numEnvioVuelta": "",
