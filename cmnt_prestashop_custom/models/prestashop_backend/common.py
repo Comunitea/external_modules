@@ -18,6 +18,11 @@ class PrestashopBackend(models.Model):
         ]
     )
 
+    @api.multi
+    def synchronize_sale_states(self):
+        for backend in self:
+            self.env['prestashop.sale.order.state'].import_batch(backend)
+
     @api.constrains("product_qty_field")
     def check_product_qty_field_dependencies_installed(self):
         for backend in self:
