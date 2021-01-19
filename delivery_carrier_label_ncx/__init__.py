@@ -18,14 +18,4 @@
 #
 ##############################################################################
 
-from odoo import fields, models
-
-
-class SaleOrder(models.Model):
-    _inherit = "sale.order"
-
-    paid_shipping_picking_id = fields.Many2one(
-        'stock.picking',
-        'paid_shipping_picking_id',
-        readonly=True
-    )
+from . import models

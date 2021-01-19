@@ -23,7 +23,7 @@ from odoo import api, fields, models
 class CarrierAccount(models.Model):
     _inherit = "carrier.account"
 
-    is_mrw_account = fields.Boolean('MRW')
+    integration_type = fields.Selection(selection_add=[("mrw", "MRW")])
     mrw_account = fields.Char("MRW Client Code")
     mrw_franchise = fields.Char("MRW Franchise Code")
     mrw_saturday_delivery = fields.Selection([("S", "Yes"), ("N", "No")], default="N")

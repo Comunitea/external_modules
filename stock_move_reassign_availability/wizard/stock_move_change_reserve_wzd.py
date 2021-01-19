@@ -191,7 +191,7 @@ class MoveChangeReserveLine(models.TransientModel):
         return self.wzd_id.autorefresh(move_ids)
 
 class MoveChangeQuantWzd(models.TransientModel):
-    """Create a stock.batch.picking from stock.picking
+    """Create a stock.picking.batch from stock.picking
     """
 
     _name = 'move.change.reserve.wzd'

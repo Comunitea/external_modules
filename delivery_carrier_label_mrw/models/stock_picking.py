@@ -26,7 +26,6 @@ from requests import Session
 
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
-from odoo.addons import decimal_precision as dp
 from zeep import Client
 from zeep.cache import SqliteCache
 from zeep.plugins import HistoryPlugin
@@ -43,20 +42,9 @@ class StockPicking(models.Model):
     _inherit = "stock.picking"
 
     shipment_reference = fields.Char("Shipment Reference")
-    mrw_pdo_quantity = fields.Float("PDO amount", digits=dp.get_precision("Product Price"))
-    payment_on_delivery = fields.Boolean("Payment on delivery", related="carrier_id.payment_on_delivery")
     failed_shipping = fields.Boolean("Failed Shipping", default=False)
     carrier_type = fields.Selection(related="carrier_id.carrier_type")
     delivery_note = fields.Char(compute="_compute_delivery_note")
-
-    @api.multi
-    def button_validate(self):
-        res = super(StockPicking, self).button_validate()
-        for pick in self:
-            pick.write({
-                'mrw_pdo_quantity': pick.get_mrw_pdo_quantity()
-            })
-        return res
 
     def print_created_labels(self):
         if self.carrier_type == "mrw":
@@ -87,19 +75,9 @@ class StockPicking(models.Model):
 
     @api.multi
     def remove_tracking_info(self):
-        for pick in self:
-            pick.update({"carrier_tracking_ref": False, "shipment_reference": False})
-
-            self.env["ir.attachment"].search(
-                [
-                    ("name", "=", "Label: {}".format(pick.name)),
-                    ("res_id", "=", pick.id),
-                    ("res_model", "=", self._name),
-                ]
-            ).unlink()
-        
-        if pick.payment_on_delivery:
-            pick.mark_as_unpaid_shipping()
+        res = super().remove_tracking_info()
+        for pick in self.filtered(lambda x: x.carrier_type == "mrw"):
+            pick.update({"shipment_reference": False})
 
     @api.depends("sale_id")
     def _compute_delivery_note(self):
@@ -110,17 +88,6 @@ class StockPicking(models.Model):
             if delivery_note.strip() == "":
                 delivery_note = "N/A"
             pick.delivery_note = delivery_note[:45]
-
-    @api.multi
-    def get_mrw_pdo_quantity(self):
-        for pick in self:
-            if pick.carrier_type == "mrw":
-                pickings_total_value = 0.0
-                pick._compute_amount_all()
-                pickings_total_value += pick.amount_total
-                if pick.sale_id and (not pick.sale_id.paid_shipping_picking_id or pick.sale_id.paid_shipping_picking_id == pick):
-                    pickings_total_value += pick.sale_id.shipping_amount_total
-                return pickings_total_value
             
     def create_tracking_client(self):
         session = Session()
@@ -277,7 +244,7 @@ class StockPicking(models.Model):
                             "Reembolso": self.carrier_id.account_id.mrw_delivery_pdo
                             if self.payment_on_delivery
                             else "N",
-                            "ImporteReembolso": "{}".format(self.mrw_pdo_quantity).replace(".", ",")
+                            "ImporteReembolso": "{}".format(self.pdo_quantity).replace(".", ",")
                             if self.carrier_id.account_id.mrw_delivery_pdo != "N"
                             and self.payment_on_delivery
                             else "",
@@ -351,6 +318,40 @@ class StockPicking(models.Model):
         if self.payment_on_delivery:
             self.mark_as_paid_shipping()
 
+    def get_state_id(self, partner_id):
+        if partner_id.country_id and partner_id.zip:
+            city_zip = self.env["res.city.zip"].search(
+                [
+                    ("name", "=", partner_id.zip),
+                    ("city_id.country_id", "=", partner_id.country_id.id),
+                ],
+                limit=1,
+            )
+            if not city_zip:
+                # Portugal
+                city_zip = self.env["res.city.zip"].search(
+                    [
+                        ("name", "=", partner_id.zip.replace(" ", "-")),
+                        ("city_id.country_id", "=", partner_id.country_id.id),
+                    ],
+                    limit=1,
+                )
+                if not city_zip:
+                    # Portugal 2
+                    city_zip = self.env["res.city.zip"].search(
+                        [
+                            (
+                                "name",
+                                "=",
+                                partner_id.zip[:4] + "-" + partner_id.zip[4:],
+                            ),
+                            ("city_id.country_id", "=", partner_id.country_id.id),
+                        ],
+                        limit=1,
+                    )
+            if city_zip:
+                return {"state_id": city_zip.city_id.state_id.id}
+
     def check_delivery_address(self):
         if self.carrier_type == "mrw":   
             if not self.partner_id.state_id:
@@ -404,15 +405,3 @@ class StockPicking(models.Model):
             else:
                 _logger.error(_("Error: {}").format(res["MensajeSeguimiento"]))
                 return
-
-    @api.multi
-    def mark_as_paid_shipping(self):
-        for pick in self:
-            if pick.sale_id and not pick.sale_id.paid_shipping_picking_id:
-                pick.sale_id.paid_shipping_picking_id = pick.id
-
-    @api.multi
-    def mark_as_unpaid_shipping(self):
-        for pick in self:
-            if pick.sale_id and pick.sale_id.paid_shipping_picking_id and pick.sale_id.paid_shipping_picking_id == pick.id:
-                sale.paid_shipping_batch_id = None

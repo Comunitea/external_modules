@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_stock_location_picking_type" model="ir.ui.view">
+        <field name="name">stock.location.picking.type.form</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="usage" position="after">
+                <field name="picking_type_id"/>
+            </field>
+        </field>
+    </record>
+</odoo>

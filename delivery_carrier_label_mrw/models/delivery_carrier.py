@@ -26,7 +26,6 @@ class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
     carrier_type = fields.Selection(selection_add=[("mrw", "MRW")])
-    payment_on_delivery = fields.Boolean("Payment on delivery")
 
     def mrw_get_tracking_link(self, picking):
         return "https://www.mrw.es/seguimiento_envios/MRW_resultados_consultas.asp?modo=nacional&envio={}".format(
