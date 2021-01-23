@@ -7,8 +7,8 @@
         <field name="inherit_id" ref="base_delivery_carrier_label.carrier_account_view_form"/>
         <field name="arch" type="xml">
             <field name="password" position="after">
-                <field name="cex_codRte"/>
-                <field name="cex_solicitante"/>
+                <field name="cex_codRte" attrs="{'invisible': [('integration_type', '!=', 'cex')]}"/>
+                <field name="cex_solicitante" attrs="{'invisible': [('integration_type', '!=', 'cex')]}"/>
             </field>
         </field>
     </record>

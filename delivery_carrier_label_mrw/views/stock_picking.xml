@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- stock.picking Form View -->
+    <record id="cmnt_delivery_carrier_mrw_view_picking_withcarrier_out_form" model="ir.ui.view">
+        <field name="name">cmnt.delivery.carrier.mrw.view.picking.withcarrier.out.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='carrier_data']" position="after">
+                <group string="MRW Data" attrs="{'invisible': [('carrier_type', '!=', 'mrw')]}">
+                    <field name="carrier_type" invisible="1"/>
+                    <field name="shipment_reference"/>
+                    <field name="failed_shipping"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <delete id="delivery_carrier_label_mrw.payment_on_delivery_view_delivery_carrier_form" model="ir.ui.view"/>
+
+    <record id="cmnt_delivery_carrier_mrw_carrier_account" model="ir.ui.view">
+        <field name="name">cmnt.delivery.carrier.dhl.carrier.account</field>
+        <field name="model">carrier.account</field>
+        <field name="inherit_id" ref="base_delivery_carrier_label.carrier_account_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[last()]" position="after">
+                <group string="MRW configuration" attrs="{'invisible': [('integration_type', '!=', 'mrw')]}">
+                    <field name="mrw_account"/>
+                    <field name="mrw_franchise"/>
+                    <field name="mrw_frequency"/>
+                    <field name="mrw_saturday_delivery"/>
+                    <field name="mrw_830_delivery"/>
+                    <field name="mrw_delivery_hangle"/>
+                    <field name="mrw_instant_notice"/>
+                    <field name="mrw_delivery_pdo"/>
+                    <field name="mrw_goods_type"/>
+                    <field name="mrw_mail_notification"/>
+                    <field name="mrw_phone_notification"/>
+                    <field name="mrw_notice_type"/>
+                    <separator/>
+                    <h3>Tracking Service</h3>
+                    <field name="mrw_tracking_service_url"/>
+                    <field name="mrw_tracking_service_test_url"/>
+                    <field name="mrw_tracking_user"/>
+                    <field name="mrw_tracking_password"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

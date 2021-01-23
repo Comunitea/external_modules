@@ -9,3 +9,4 @@ class CarrierAccount(models.Model):
 
     test_enviroment = fields.Boolean('Use test enviroment')
     printer = fields.Many2one('printing.printer')
+    integration_type = fields.Selection(string='Integration type', selection=[('none', 'None')])

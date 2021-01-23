@@ -1,0 +1,241 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* stock_picking_group
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-03 17:15+0000\n"
+"PO-Revision-Date: 2019-06-03 17:15+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_picking_group
+#: selection:stock.move,pick_state:0
+msgid "(Partially) Available"
+msgstr "(Parcialmente) Disponible"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_picking_form_picking_group
+msgid "(RE) Assign pick"
+msgstr "(RE) Asignar albarán"
+
+#. module: stock_picking_group
+#: model:ir.model.fields,help:stock_picking_group.field_stock_move_pick_state
+msgid "* Waiting: Move waiting. Not picked allowed.\n"
+"* Available: Move is (partially) available. Can be picked.\n"
+"* Picked: Move picked* Error: Move picked and not available.\n"
+""
+msgstr "* En espera: Moviemientos en espera. No puede realizarse.\n"
+"* Disponible: El movimiento está (parcialmente) disponible. Puede ser realizado.\n"
+"* Picked: Movimiento realizado* Error: Movimiento realizado y no disponible.\n"
+""
+
+#. module: stock_picking_group
+#: model:ir.model.fields,field_description:stock_picking_group.field_stock_move_shipping_id
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "Delivery Address"
+msgstr "Dirección de entrega"
+
+#. module: stock_picking_group
+#: selection:stock.move,pick_state:0
+msgid "Done"
+msgstr "Realizado"
+
+#. module: stock_picking_group
+#: selection:stock.move,pick_state:0
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: stock_picking_group
+#: selection:stock.move,pick_state:0
+msgid "Error"
+msgstr "Error"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "From Purchase order"
+msgstr "Desde pedido de compra"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "From Sale order"
+msgstr "Desde pedido de venta"
+
+#. module: stock_picking_group
+#: model:ir.model.fields,field_description:stock_picking_group.field_stock_picking_type_grouped_field_ids
+msgid "Grouped Field"
+msgstr "Campos de agrupamiento"
+
+#. module: stock_picking_group
+#: model:ir.model.fields,field_description:stock_picking_group.field_stock_picking_type_grouped
+msgid "Grouped pick"
+msgstr "Albarán agrupado"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_stock_location
+msgid "Inventory Locations"
+msgstr "Ubicaciones de inventario"
+
+#. module: stock_picking_group
+#: model:ir.model.fields,field_description:stock_picking_group.field_purchase_order_move_line_count
+#: model:ir.model.fields,field_description:stock_picking_group.field_sale_order_move_line_count
+#: model:ir.ui.view,arch_db:stock_picking_group.purchase_order_form_move_line_tree
+#: model:ir.ui.view,arch_db:stock_picking_group.sale_order_form_move_line_tree
+msgid "Move lines"
+msgstr "Movimientos"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "Moves pending to put in a picking"
+msgstr "Movimientos pendientes de poner en un albarán"
+
+#. module: stock_picking_group
+#: code:addons/stock_picking_group/models/stock_move.py:75
+#, python-format
+msgid "Not same partner for incoming moves: {}"
+msgstr "No es el mismo proveedor para estas entradas: {}"
+
+#. module: stock_picking_group
+#: code:addons/stock_picking_group/models/stock_move.py:71
+#, python-format
+msgid "Not same partner for outgoing moves: {}"
+msgstr "No es el mismo cliente para estas salidas: {}"
+
+#. module: stock_picking_group
+#: code:addons/stock_picking_group/models/stock_move.py:67
+#, python-format
+msgid "Not same picking types: {}"
+msgstr "No son los mismos tipos de albarán: {}"
+
+#. module: stock_picking_group
+#: model:ir.model.fields,field_description:stock_picking_group.field_stock_location_picking_type_id
+msgid "Operation Type"
+msgstr "Tipo de operación"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_picking_form_picking_group
+msgid "Order Info."
+msgstr "Información."
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "Origin Purchase"
+msgstr "Compra origen"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "Origin Sale"
+msgstr "Venta origen"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_stock_move_line
+msgid "Packing Operation"
+msgstr "Operación de empaquetado"
+
+#. module: stock_picking_group
+#: model:ir.model.fields,field_description:stock_picking_group.field_stock_move_pick_state
+msgid "Pick status"
+msgstr "Estado del movimeinto"
+
+#. module: stock_picking_group
+#: selection:stock.move,pick_state:0
+msgid "Picked"
+msgstr "Realizado"
+
+#. module: stock_picking_group
+#: model:ir.model.fields,help:stock_picking_group.field_stock_picking_type_grouped
+msgid "Picked manually created from moves"
+msgstr "Linea creada manualmente desde los movimientos"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "Picking type"
+msgstr "Tipo de albarán"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_procurement_group
+msgid "Procurement Requisition"
+msgstr "Petición de abastecimiento"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_procurement_rule
+msgid "Procurement Rule"
+msgstr "Regla de abastecimiento"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_purchase_order
+#: model:ir.model.fields,field_description:stock_picking_group.field_stock_move_purchase_id
+msgid "Purchase Order"
+msgstr "Pedido de compra"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Línea de pedido de compra"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_sale_order
+msgid "Quotation"
+msgstr "Presupuesto"
+
+#. module: stock_picking_group
+#: model:ir.model.fields,field_description:stock_picking_group.field_stock_move_sale_price
+msgid "Sale Price"
+msgstr "Precio de venta"
+
+#. module: stock_picking_group
+#: model:ir.model.fields,field_description:stock_picking_group.field_stock_move_sale_id
+msgid "Saler Order"
+msgstr "Pedido de venta"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de ventas"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de Stock"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "Stock moves that are ready to be picked"
+msgstr "Los movimientos están preparados para realizarse"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "Supplier"
+msgstr "Proveedor"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_stock_picking_type
+msgid "The operation type determines the picking view"
+msgstr "El tipo de operación determina la vista de la operación"
+
+#. module: stock_picking_group
+#: model:ir.model,name:stock_picking_group.model_stock_picking
+msgid "Transfer"
+msgstr "Transferir"
+
+#. module: stock_picking_group
+#: selection:stock.move,pick_state:0
+msgid "Waiting (draft, move or availability"
+msgstr "En espera (borrador, movmiento o disponibilidad)"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "With picking"
+msgstr "Con albarán"
+
+#. module: stock_picking_group
+#: model:ir.ui.view,arch_db:stock_picking_group.view_move_search_group
+msgid "Without Picking"
+msgstr "Sin albarán"
+

@@ -7,6 +7,7 @@
         <field name="inherit_id" ref="base_delivery_carrier_label.carrier_account_view_form"/>
         <field name="arch" type="xml">
             <field name="password" position="after">
+                <field name="integration_type"/>
                 <field name="test_enviroment"/>
                 <field name="printer"/>
             </field>

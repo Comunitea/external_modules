@@ -5,9 +5,19 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
         <field name="arch" type="xml">
+            <header position="inside">
+                <button name="remove_tracking_info" string="Remove Tracking" type="object"
+                    confirm="Are you sure you want to remove the tracking info of this batch?"
+                    attrs="{'invisible': [
+                        ('carrier_tracking_ref', '=', False)
+                    ]}"/>
+            </header>
             <field name="shipping_weight" position="replace">
                 <field name="carrier_weight"/>
                 <field name="carrier_packages"/>
+                <field name="payment_on_delivery"/>
+                <field name="pdo_quantity"
+                    attrs="{'invisible': [('payment_on_delivery', '=', False)], 'required': [('payment_on_delivery', '!=', 'False')]}"/>
             </field>
             <field name="carrier_id" position="after">
                 <field name="carrier_service"/>

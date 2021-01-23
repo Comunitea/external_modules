@@ -11,12 +11,16 @@
     'license': 'AGPL-3',
     'depends': [
         'base_delivery_carrier_label',
-        'base_report_to_printer'
+        'base_report_to_printer',
+        'account_payment_mode',
+        'stock_picking_report_valued',
+        'sale_shipping_info_helper'
     ],
     'data': [
         'views/delivery_carrier.xml',
         'views/stock_picking.xml',
         'views/carrier_account.xml',
+        "views/account_payment_mode.xml",
         'security/ir.model.access.csv',
         'data/ir_cron.xml'
     ],

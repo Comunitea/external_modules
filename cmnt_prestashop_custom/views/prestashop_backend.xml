@@ -5,6 +5,9 @@
         <field name="model">prestashop.backend</field>
         <field name="inherit_id" ref="connector_prestashop.view_prestashop_backend_form"/>
         <field name="arch" type="xml">
+            <button name="synchronize_basedata" position="after">
+                <button name="synchronize_sale_states" type="object" string="Synchronize sale states"/>
+            </button>
             <xpath expr="//field[@name='matching_product_template']/../.." position="before">
                 <group>
                     <field name="import_image_type"/>
