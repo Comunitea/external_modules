@@ -49,7 +49,7 @@ class StockPicking(models.Model):
     carrier_type = fields.Selection(related="carrier_id.carrier_type")
     delivery_note = fields.Char(compute="_compute_delivery_note")
 
-    def nacex_connect(self, method, data):
+    def nacex_connect(self, method, data, etiqueta=False):
         ncx_url = "http://pda.nacex.com/nacex_ws/ws?method={}&data={}&user={}&pass={}".format(
             method,
             data,
@@ -62,9 +62,13 @@ class StockPicking(models.Model):
         try:
             with urllib.request.urlopen(ncx_url) as response:
                 html = response.read()
-                html = html.decode('UTF-8', 'ignore')
-                res = html.split('|')
-
+                if not etiqueta:
+                    html = html.decode('UTF-8', 'ignore')
+                    res = html.split('|')
+                else:
+                    res = html.decode('UTF-8', 'ignore').replace('\r\n', ' ')
+                    if res.startswith("ERROR"):
+                        return res.split('|')
                 return res
         except Exception as e:
             _logger.error(_("Access error message: {}").format(e))
@@ -84,8 +88,8 @@ class StockPicking(models.Model):
             [("res_id", "=", self.id), ("res_model", "=", self._name)]
         )
         for label in labels:
-            if label.mimetype == "application/x-pdf":
-                doc_format = "pdf"
+            if label.mimetype == "image/png":
+                doc_format = "png"
             else:
                 doc_format = "raw"
             self.carrier_id.account_id.printer.print_document(
@@ -134,12 +138,9 @@ class StockPicking(models.Model):
             self.carrier_id.account_id.ncx_printer_model
         )
 
-        res = self.nacex_connect("getEtiqueta", nacex_data)
+        res = self.nacex_connect("getEtiqueta", nacex_data, True)
 
-        if res and res[0] == 'ERROR':
-            return label
-        else:
-            return res
+        return res
 
     def _generate_ncx_label(self):
         if self.carrier_tracking_ref:
@@ -206,43 +207,52 @@ class StockPicking(models.Model):
                 )
                 return
             
-            if label and label[0] != "ERROR":
-                file_b64 = base64.b64encode(label)
-                if self.carrier_id.account_id.file_format == "PDF":
-                    attachment_values = {
-                        "name": "Label: {}".format(self.name),
-                        "type": "binary",
-                        "datas": file_b64,
-                        "datas_fname": "Label" + self.name + ".pdf",
-                        "store_fname": self.name,
-                        "res_model": self._name,
-                        "res_id": self.id,
-                        "mimetype": "application/x-pdf"
-                        if self.carrier_id.account_idncx_printer_model != "IMAGEN_B"
-                        else "image/png",
-                    }
-                else:
-                    attachment_values = {
-                        "name": "Label: {}".format(self.name),
-                        "type": "binary",
-                        "datas": file_b64,
-                        "datas_fname": "Label" + self.name + ".txt",
-                        "store_fname": self.name,
-                        "res_model": self._name,
-                        "res_id": self.id,
-                        "mimetype": "text/plain",
-                    }
-                self.env["ir.attachment"].create(attachment_values)
-            elif label and label[0] == "ERROR":
-                _logger.error(
-                    _("Error while trying to retrieve the label: {}").format(
-                        label[1]
+            try:
+                if label and label[0] != "ERROR":
+                    if self.carrier_id.account_id.ncx_printer_model == "IMAGEN_B":
+                        file_b64 = self.base64_url_decode(label)
+
+                        attachment_values = {
+                            "name": "Label: {}".format(self.name),
+                            "type": "binary",
+                            "datas": base64.b64encode(file_b64),
+                            "datas_fname": "Label" + self.name + ".png",
+                            "store_fname": self.name,
+                            "res_model": self._name,
+                            "res_id": self.id,
+                            "mimetype": "image/png",
+                        }
+                        
+                    else:
+                        file_b64 = base64.b64encode(str.encode(label))
+                        attachment_values = {
+                            "name": "Label: {}".format(self.name),
+                            "type": "binary",
+                            "datas": file_b64,
+                            "datas_fname": "Label" + self.name + ".txt",
+                            "store_fname": self.name,
+                            "res_model": self._name,
+                            "res_id": self.id,
+                            "mimetype": "text/plain",
+                        }
+                    self.env["ir.attachment"].create(attachment_values)
+                elif label and label[0] == "ERROR":
+                    _logger.error(
+                        _("Error while trying to retrieve the label: {}").format(
+                            label[1]
+                        )
                     )
-                )
-            else:
+                else:
+                    _logger.error(
+                        _("Error while trying to retrieve the label")
+                    )
+            except Exception as e:
                 _logger.error(
-                    _("Error while trying to retrieve the label")
+                    _(
+                        "Connection error: {}, while trying to save the label."
+                    ).format(e)
                 )
+                return
         else:
             raise UserError(
                 _("There was an error connecting to Nacex. Check the connection log.")
@@ -286,3 +296,8 @@ class StockPicking(models.Model):
             else:
                 _logger.error(_("Error: after requesting shipment status"))
                 return
+
+    def base64_url_decode(self, label):
+        padding_factor = (4 - len(label) % 4) % 4
+        label += "="*padding_factor 
+        return base64.b64decode(str(label).translate(dict(zip(map(ord, u'-_'), u'+/'))))
