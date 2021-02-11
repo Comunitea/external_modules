@@ -125,7 +125,7 @@ class StockPicking(models.Model):
             streets.append(unidecode(partner.street))
         if partner.street2:
             streets.append(unidecode(partner.street2))
-        if not streets or not partner.city or not partner.zip or not partner.zip:
+        if not streets or not partner.city or not partner.zip or not partner.zip or not partner.name:
             raise UserError("Review partner data")
         if self.carrier_id.account_id.file_format not in ("PDF", "ZPL"):
             raise UserError("Format file not supported by cex")
