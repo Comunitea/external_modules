@@ -40,7 +40,7 @@ class StockMove(models.Model):
 
     @api.multi
     def get_price_subtotal(self):
-        
+
         for move in self:
 
             qty = 0
@@ -73,7 +73,11 @@ class StockMove(models.Model):
                         currency_id = sale_line_id.currency_id
                 else:
                     purchase_line_id = move.purchase_line_id
-                    price = purchase_line_id.price_unit * (1 - (purchase_line_id.discount or 0.0) / 100.0)
+                    if 'discount' in purchase_line_id.fields_get():
+                        discount = purchase_line_id.discount
+                    else:
+                        discount = 0.0
+                    price = purchase_line_id.price_unit * (1 - discount / 100.0)
                     currency_id = purchase_line_id.currency_id
             except:
                 print ('Error en {} >> {}'.format(move.id, move.display_name))
