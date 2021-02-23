@@ -47,3 +47,7 @@ class StockWarehouseOrderpoint(models.Model):
 
     def button_compute_orderpoint_quantities(self):
         self.compute_orderpoint_quantities(self)
+
+    @api.model
+    def _cron_compute_orderpoints(self):
+        self.compute_orderpoint_quantities()

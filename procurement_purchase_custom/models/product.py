@@ -2,7 +2,7 @@ import logging
 
 from odoo import api, fields, models, _
 
-from dateutil import relativedelta
+from dateutil.relativedelta import relativedelta
 
 _logger = logging.getLogger(__name__)
 
@@ -105,6 +105,10 @@ class ProductProduct(models.Model):
                           % (product.name, product.twelve_months_ago,
                              product.six_months_ago, product.last_month_ago)
             )
+
+    @api.model
+    def _cron_compute_last_sales(self):
+        self.compute_last_sales()
 
     def button_compute_last_sales(self):
         self.compute_last_sales(self)
