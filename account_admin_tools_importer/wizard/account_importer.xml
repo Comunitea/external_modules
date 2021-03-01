@@ -42,7 +42,6 @@
         <record id="action_account_importer" model="ir.actions.act_window">
             <field name="name">Import Accounts from CSV</field>
             <field name="res_model">account.admin.tools.importer</field>
-            <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="view_account_importer_form"/>
             <field name="target">new</field>
@@ -51,8 +50,7 @@
         <menuitem id="menu_action_account_admin_tools"
             name="Admin Tools"
             parent="account.menu_finance"
-            sequence="999"
-            groups="base.group_system"/>
+            sequence="999"/>
 
         <menuitem id="menu_action_account_admin_tools_import"
             name="Import"
