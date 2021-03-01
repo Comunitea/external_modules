@@ -96,6 +96,8 @@ class StockPicking(models.Model):
             pick.write({
                 'pdo_quantity': pick.get_pdo_quantity()
             })
+            if pick.picking_type_id.code == "outgoing" and pick.carrier_id.account_id.print_on_validate:
+                pick.action_generate_carrier_label()
         return res
 
     @api.multi

@@ -162,6 +162,16 @@ msgid "Printer"
 msgstr "Impresora"
 
 #. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_carrier_account__print_on_validate
+msgid "Print on validate"
+msgstr "Imprimir al validar"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,help:cmnt_delivery_carrier_label.field_carrier_account__print_on_validate
+msgid "Will get and print the labels if there is a printer selected."
+msgstr "Obtendrá e imprimirá las etiquetas si hay una impresora seleccionada."
+
+#. module: cmnt_delivery_carrier_label
 #: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_delivery_carrier_form
 msgid "Services"
 msgstr "Servicios"

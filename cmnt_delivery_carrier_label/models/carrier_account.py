@@ -10,3 +10,4 @@ class CarrierAccount(models.Model):
     test_enviroment = fields.Boolean('Use test enviroment')
     printer = fields.Many2one('printing.printer')
     integration_type = fields.Selection(string='Integration type', selection=[('none', 'None')])
+    print_on_validate = fields.Boolean('Print on validate', help="Will get and print the labels if there is a printer selected.", default=False)
