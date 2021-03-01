@@ -44,7 +44,7 @@ class AccountAdminToolsImporter(models.TransientModel):
     csv_name_regexp = fields.Char('Name regexp', size=32, required=True,
                                   default=r'^.*$')
 
-    @api.multi
+    
     def _find_brother_account_id(self, account_code):
         """
         Finds a brother account given an account code.
@@ -62,7 +62,7 @@ class AccountAdminToolsImporter(models.TransientModel):
                 brother_account_code = brother_account_code[:-1]
         return None
 
-    @api.multi
+   
     def action_import(self):
         """
         Imports the accounts from the CSV file using the options from the

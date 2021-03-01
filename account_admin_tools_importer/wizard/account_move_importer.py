@@ -58,7 +58,6 @@ class AccountAdminToolsMoveImporter(models.TransientModel):
     csv_partner_ref_regexp = fields.Char('Partner Ref regexp', size=32,
                                          required=True, default=r'^.*$')
 
-    @api.multi
     def _get_default_ref_field(self):
         """ This method set the default value to ref field in res.partner
              model for the oerp_partner_ref_field field
@@ -96,7 +95,7 @@ class AccountAdminToolsMoveImporter(models.TransientModel):
                 accounts_map.pop(partner.property_account_payable_id.id)
         return accounts_map
 
-    @api.multi
+ 
     def action_import(self):
         """
         Imports a CSV file into a new account move using the options from
