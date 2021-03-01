@@ -193,7 +193,7 @@ class StockPicking(models.Model):
         return data
 
     @api.multi
-    def generate_cex_labels(self, package_ids=None):
+    def generate_cex_labels(self, package_ids=False):
         """ Generate the labels.
         A list of package ids can be given, in that case it will generate
         the labels only of these packages.
