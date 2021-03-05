@@ -52,12 +52,10 @@ class StockPicking(models.Model):
     def nacex_connect(self, method, data, etiqueta=False):
         ncx_url = "http://pda.nacex.com/nacex_ws/ws?method={}&data={}&user={}&pass={}".format(
             method,
-            data,
+            urllib.parse.quote(data),
             self.carrier_id.account_id.account,
             self.carrier_id.account_id.password
         )
-
-        ncx_url = ncx_url.replace(" ", "%20")
 
         try:
             with urllib.request.urlopen(ncx_url) as response:
