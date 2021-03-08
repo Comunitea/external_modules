@@ -223,7 +223,9 @@ class StockPicking(models.Model):
                         }
                         
                     else:
-                        file_b64 = base64.b64encode(str.encode(label))
+                        # We need to replace blank spaces with line breaks
+                        replaced_label = label.replace('} {', '}\n{')
+                        file_b64 = base64.b64encode(str.encode(replaced_label))
                         attachment_values = {
                             "name": "Label: {}".format(self.name),
                             "type": "binary",
