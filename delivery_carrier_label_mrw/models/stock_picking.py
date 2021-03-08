@@ -260,9 +260,11 @@ class StockPicking(models.Model):
                     **TransmEnvio, _soapheaders=[headers]
                 )
             except Exception as e:
+                self.failed_shipping = True
                 raise AccessError(_("Access error message: {}").format(e))
 
             if res["Estado"] == "0":
+                self.failed_shipping = True
                 raise AccessError(_("Error message: {}").format(res["Mensaje"]))
             elif res["Estado"] == "1":
 
@@ -283,6 +285,7 @@ class StockPicking(models.Model):
                             "Connection error: {}, while trying to retrieve the label."
                         ).format(e)
                     )
+                    self.failed_shipping = True
                     return
 
                 if label["Estado"] == "1":
@@ -299,18 +302,23 @@ class StockPicking(models.Model):
                             "mimetype": "application/x-pdf",
                         }
                     )
+                    self.failed_shipping = False
                 elif label["Estado"] == "0":
                     raise AccessError(
                         _("Error while trying to retrieve the label: {}").format(
                             label["Mensaje"]
                         )
                     )
+                    self.failed_shipping = True
                 else:
+                    self.failed_shipping = True
                     raise AccessError(_("Error while trying to retrieve the label"))
             else:
+                self.failed_shipping = True
                 raise AccessError(_("Unknown error with the SOAP connection."))
 
         else:
+            self.failed_shipping = True
             raise AccessError(_("Not possible to establish a client."))
 
         self.print_mrw_label()

@@ -203,6 +203,7 @@ class StockPicking(models.Model):
                         "Connection error: {}, while trying to retrieve the label."
                     ).format(e)
                 )
+                self.failed_shipping = True
                 return
             
             try:
@@ -240,22 +241,27 @@ class StockPicking(models.Model):
                             label[1]
                         )
                     )
+                    self.failed_shipping = True
                 else:
                     _logger.error(
                         _("Error while trying to retrieve the label")
                     )
+                    self.failed_shipping = True
             except Exception as e:
                 _logger.error(
                     _(
                         "Connection error: {}, while trying to save the label."
                     ).format(e)
                 )
+                self.failed_shipping = True
                 return
         else:
             raise UserError(
                 _("There was an error connecting to Nacex. Check the connection log.")
             )
+            self.failed_shipping = True
 
+        self.failed_shipping = False
         self.print_ncx_label()
 
         if self.payment_on_delivery:
