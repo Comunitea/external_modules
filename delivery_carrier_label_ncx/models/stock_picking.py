@@ -149,7 +149,7 @@ class StockPicking(models.Model):
             raise UserError("Carrier service not selected.")
         if not self.carrier_id.account_id:
             raise UserError("Delivery carrier has no account.")
-        
+
         data_0 = "del_cli={}|num_cli={}|tip_ser={}|tip_cob={}|ref_cli={}|tip_env={}|bul={}|kil={}|".format(
             self.carrier_id.account_id.ncx_delegation,
             self.carrier_id.account_id.ncx_client,
@@ -170,7 +170,7 @@ class StockPicking(models.Model):
             data_0 = "{}{}".format(data_0, pod_data)
 
         data_1 = "nom_ent={}|dir_ent={}{}|pais_ent={}|cp_ent={}|pob_ent={}|tel_ent={}|obs1={}".format(
-            self.partner_id.name,
+            self.partner_id.display_name,
             self.partner_id.street or '',
             self.partner_id.street2 or '',
             self.partner_id.country_id.code,
@@ -205,7 +205,7 @@ class StockPicking(models.Model):
                 )
                 self.failed_shipping = True
                 return
-            
+
             try:
                 if label and label[0] != "ERROR":
                     if self.carrier_id.account_id.ncx_printer_model == "IMAGEN_B":
@@ -221,7 +221,7 @@ class StockPicking(models.Model):
                             "res_id": self.id,
                             "mimetype": "image/png",
                         }
-                        
+
                     else:
                         # We need to replace blank spaces with line breaks
                         replaced_label = label.replace('} {', '}\n{')
@@ -270,7 +270,7 @@ class StockPicking(models.Model):
             self.mark_as_paid_shipping()
 
     def check_delivery_address(self):
-        if self.carrier_type == "ncx":   
+        if self.carrier_type == "ncx":
             if not self.partner_id.state_id:
                 state_id = self.get_state_id(self.partner_id)
                 if not state_id:
@@ -305,5 +305,5 @@ class StockPicking(models.Model):
 
     def base64_url_decode(self, label):
         padding_factor = (4 - len(label) % 4) % 4
-        label += "="*padding_factor 
+        label += "="*padding_factor
         return base64.b64decode(str(label).translate(dict(zip(map(ord, u'-_'), u'+/'))))
