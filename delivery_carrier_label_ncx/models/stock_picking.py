@@ -19,6 +19,7 @@
 ##############################################################################
 import logging
 import base64
+import unidecode
 
 from datetime import datetime
 
@@ -52,7 +53,7 @@ class StockPicking(models.Model):
     def nacex_connect(self, method, data, etiqueta=False):
         ncx_url = "http://pda.nacex.com/nacex_ws/ws?method={}&data={}&user={}&pass={}".format(
             method,
-            urllib.parse.quote(data),
+            data,
             self.carrier_id.account_id.account,
             self.carrier_id.account_id.password
         )
@@ -141,6 +142,11 @@ class StockPicking(models.Model):
         return res
 
     def _generate_ncx_label(self):
+
+        def _unicode_url(chain):
+            chain = unidecode.unidecode(chain.replace('|', ' '))
+            return urllib.parse.quote_plus(chain)
+
         if self.carrier_tracking_ref:
             return self.print_ncx_label()
         self.check_delivery_address()
@@ -169,15 +175,18 @@ class StockPicking(models.Model):
 
             data_0 = "{}{}".format(data_0, pod_data)
 
-        data_1 = "nom_ent={}|dir_ent={}{}|pais_ent={}|cp_ent={}|pob_ent={}|tel_ent={}|obs1={}".format(
-            self.partner_id.display_name,
-            self.partner_id.street or '',
-            self.partner_id.street2 or '',
+        data_1 = "nom_ent={}|dir_ent={}{}|pais_ent={}|cp_ent={}|pob_ent={}|tel_ent={}|obs1={}|obs2={}|obs3={}|obs4={}".format(
+            _unicode_url(self.partner_id.display_name),
+            _unicode_url(self.partner_id.street) if self.partner_id.street else '',
+            _unicode_url(self.partner_id.street2) if self.partner_id.street2 else '',
             self.partner_id.country_id.code,
             self.partner_id.zip,
             self.partner_id.city,
-            self.partner_id.phone or self.partner_id.mobile or '',
-            self.delivery_note,
+            _unicode_url(self.partner_id.phone) or _unicode_url(self.partner_id.mobile) or '',
+            _unicode_url(self.delivery_note[0:38]) if self.delivery_note else '',
+            _unicode_url(self.delivery_note[38:75]) if self.delivery_note else '',
+            _unicode_url(self.delivery_note[75:113]) if self.delivery_note else '',
+            _unicode_url(self.delivery_note[113:151]) if self.delivery_note else '',
         )
 
         ncx_data = "{}{}".format(data_0, data_1)
