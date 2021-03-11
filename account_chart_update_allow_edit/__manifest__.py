@@ -4,7 +4,7 @@
 {
     'name': "Allow edit Account Chart Update data",
     "summary": "Allow change the type of registries of account_chart_update",
-    'version': "12.0.0.0.0",
+    'version': "14.0.0.0.0",
     'author': "Comunitea",
     'website': "https://comunitea.com",
     'depends': ["account_chart_update"],
