@@ -182,7 +182,7 @@ class StockPicking(models.Model):
             urllib.parse.quote(self.partner_id.country_id.code),
             urllib.parse.quote(self.partner_id.zip),
             urllib.parse.quote(self.partner_id.city),
-            _unicode_url(self.partner_id.phone) or _unicode_url(self.partner_id.mobile) or '',
+            _unicode_url(self.partner_id.phone) if self.partner_id.phone else _unicode_url(self.partner_id.mobile) if self.partner_id.mobile else '',
             _unicode_url(self.delivery_note[0:38]) if self.delivery_note else '',
             _unicode_url(self.delivery_note[38:75]) if self.delivery_note else '',
             _unicode_url(self.delivery_note[75:113]) if self.delivery_note else '',
