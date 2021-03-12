@@ -62,6 +62,7 @@ class StockPicking(models.Model):
             if self.carrier_id.account_id.file_format == "PDF":
                 if self.payment_on_delivery:
                     self.mark_as_paid_shipping()
+                self.failed_shipping = False
                 return [
                     {
                         "name": "Label: {}".format(self.name),
@@ -74,6 +75,7 @@ class StockPicking(models.Model):
                 self.cex_result = rjson["etiqueta"][0]["etiqueta2"]
                 if self.payment_on_delivery:
                     self.mark_as_paid_shipping()
+                self.failed_shipping = False
                 return [
                     {
                         "name": "Label: {}.txt".format(self.name),
@@ -86,6 +88,7 @@ class StockPicking(models.Model):
             raise UserError(
                 _("CEX Error: %s %s") % (retorno or 999, message or "Webservice ERROR.")
             )
+            self.failed_shipping = True
 
         return False
 
