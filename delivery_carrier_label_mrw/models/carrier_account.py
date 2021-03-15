@@ -54,7 +54,7 @@ class CarrierAccount(models.Model):
             ("MCV", "Samples with commercial value"),
             ("MSV", "Samples with no commercial value"),
             ("ATV", "High value"),
-            ("BTV", "Low value"),
+            ("BJV", "Low value"),
         ],
         string="Customs Duty",
     )
