@@ -140,7 +140,7 @@ class StockPicking(models.Model):
             "solicitante": self.carrier_id.account_id.cex_solicitante,
             "canalEntrada": "",
             "numEnvio": "",
-            "ref": self.origin[:20],
+            "ref": self.origin[:20] if self.origin else self.name[:20],
             "refCliente": "",
             "fecha": date.today().strftime("%d%m%Y"),
             "codRte": self.carrier_id.account_id.cex_codRte,
