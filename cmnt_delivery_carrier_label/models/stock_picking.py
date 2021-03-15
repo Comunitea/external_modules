@@ -17,7 +17,7 @@ class StockPicking(models.Model):
         )
 
     carrier_weight = fields.Float()
-    carrier_packages = fields.Integer(default=1)
+    carrier_packages = fields.Integer(default=1, copy=False)
     carrier_service = fields.Many2one('delivery.carrier.service')
     delivered = fields.Boolean()
     payment_on_delivery = fields.Boolean("Payment on delivery", related="sale_id.payment_on_delivery")
@@ -143,6 +143,6 @@ class StockPicking(models.Model):
             ).unlink()
 
             pick.failed_shipping = False
-        
+
         if pick.payment_on_delivery:
             pick.mark_as_unpaid_shipping()
