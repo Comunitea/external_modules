@@ -176,7 +176,7 @@ class StockPicking(models.Model):
             data_0 = "{}{}".format(data_0, pod_data)
 
         data_1 = "nom_ent={}|dir_ent={}{}|pais_ent={}|cp_ent={}|pob_ent={}|tel_ent={}|obs1={}|obs2={}|obs3={}|obs4={}".format(
-            _unicode_url(self.partner_id.display_name),
+            _unicode_url(self.partner_id.display_name[:50]),
             _unicode_url(self.partner_id.street) if self.partner_id.street else '',
             _unicode_url(self.partner_id.street2) if self.partner_id.street2 else '',
             urllib.parse.quote(self.partner_id.country_id.code),
