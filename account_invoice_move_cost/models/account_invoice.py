@@ -12,16 +12,58 @@ class AccountInvoice(models.Model):
             if invoice.type == 'in_invoice':
                 for line in invoice.invoice_line_ids:
                     pur_line = line.purchase_line_id
-                    if pur_line and line.price_subtotal > 0 and \
-                            line.product_id.cost_method == 'fifo':
+                    if pur_line and line.price_subtotal > 0:
                         inv_price = line._get_stock_move_price_unit()
-                        for move in pur_line.move_ids:
+                        for move in pur_line.move_ids.filtered(lambda a: a.state=='done'):
                             if move._is_in() and move.remaining_qty > 0:
                                 remaining_value = move.remaining_qty * \
                                                   inv_price
                                 move.write({
                                     'remaining_value': remaining_value})
+                        if  line.product_id.cost_method == 'average':
+                            d = {}
+
+                            for move in pur_line.move_ids.filtered(lambda a: a.state=='done'):
+
+                                if inv_price != move.price_unit:
+                                    product = move.product_id
+                                    d.setdefault(product, [])
+                                    d[product].append(
+                                        (move,
+                                        inv_price - move.price_unit)
+                                    )
+                            for product, vals_list in d.items():
+                                self._product_price_update(product, vals_list)
+                                for move, price_diff in vals_list:
+                                    move.price_unit += price_diff
+                                    move.value = move.product_uom_qty * move.price_unit
+
         return res
+
+
+
+    def _product_price_update(self, product, vals_list):
+        """Method that mimicks stock.move's product_price_update_before_done
+        method behaviour, but taking into account that calculations are made
+        on an already done moves, and prices sources are given as parameters.
+        """
+        moves_total_qty = 0
+        moves_total_diff_price = 0
+        for move, price_diff in vals_list:
+            moves_total_qty += move.product_qty
+            moves_total_diff_price += move.product_qty * price_diff
+        prev_qty_available = product.qty_available - moves_total_qty
+        if prev_qty_available <= 0:
+            prev_qty_available = 0
+        total_available = prev_qty_available + moves_total_qty
+        new_std_price = (
+            (total_available * product.standard_price +
+             moves_total_diff_price) / total_available
+        )
+        # Write the standard price, as SUPERUSER_ID, because a
+        # warehouse manager may not have the right to write on products
+        product.sudo().write({'standard_price': new_std_price})
+
 
 
 class AccountInvoiceLine(models.Model):
