@@ -9,13 +9,15 @@ from odoo.addons import decimal_precision as dp
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+    failed_shipping = fields.Boolean("Failed Shipping", default=False)
+
     def action_generate_carrier_label(self):
         raise NotImplementedError(
             _("No label is configured for the selected delivery method.")
         )
 
     carrier_weight = fields.Float()
-    carrier_packages = fields.Integer(default=1)
+    carrier_packages = fields.Integer(default=1, copy=False)
     carrier_service = fields.Many2one('delivery.carrier.service')
     delivered = fields.Boolean()
     payment_on_delivery = fields.Boolean("Payment on delivery", related="sale_id.payment_on_delivery")
@@ -96,6 +98,13 @@ class StockPicking(models.Model):
             pick.write({
                 'pdo_quantity': pick.get_pdo_quantity()
             })
+            if pick.picking_type_id.code == "outgoing" and pick.carrier_id.account_id.print_on_validate:
+                try:
+                    pick.action_generate_carrier_label()
+                    pick.failed_shipping = False
+                except Exception as e:
+                    pick.message_post(body='Ha fallado la impresión del albarán.')
+                    pick.failed_shipping = True
         return res
 
     @api.multi
@@ -132,6 +141,8 @@ class StockPicking(models.Model):
                     ("res_model", "=", self._name),
                 ]
             ).unlink()
-        
+
+            pick.failed_shipping = False
+
         if pick.payment_on_delivery:
             pick.mark_as_unpaid_shipping()

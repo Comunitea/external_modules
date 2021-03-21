@@ -55,7 +55,8 @@ class SaleOrder(models.Model):
                 ftp.login(
                     sale_bind.backend_id.ftp_user, sale_bind.backend_id.ftp_password
                 )
-                ftp.prot_p()
+                if sale_bind.backend_id.ftp_secure_data_connection:
+                    ftp.prot_p()
                 ftp.cwd(sale_bind.backend_id.ftp_report_folder)
                 ftp.storbinary("STOR " + report_name, io.BytesIO(result))
                 ftp.quit()

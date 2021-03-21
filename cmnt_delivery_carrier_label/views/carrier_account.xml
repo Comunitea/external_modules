@@ -10,6 +10,7 @@
                 <field name="integration_type"/>
                 <field name="test_enviroment"/>
                 <field name="printer"/>
+                <field name="print_on_validate"/>
             </field>
         </field>
     </record>
