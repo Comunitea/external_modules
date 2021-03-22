@@ -21,7 +21,21 @@ class StockPicking(models.Model):
     carrier_service = fields.Many2one('delivery.carrier.service')
     delivered = fields.Boolean()
     payment_on_delivery = fields.Boolean("Payment on delivery", related="sale_id.payment_on_delivery")
-    pdo_quantity = fields.Float("PDO amount", digits=dp.get_precision("Product Price"))
+    pdo_quantity = fields.Monetary(
+        compute='_compute_amount_all',
+        string='Total',
+        compute_sudo=True,
+    )
+
+    @api.multi
+    def _compute_amount_all(self):
+
+        super()._compute_amount_all()
+
+        for pick in self:
+            pick.update({
+                'pdo_quantity': pick.get_pdo_quantity()
+            })
 
     def print_created_labels(self):
         self.ensure_one()
@@ -95,9 +109,6 @@ class StockPicking(models.Model):
     def button_validate(self):
         res = super(StockPicking, self).button_validate()
         for pick in self:
-            pick.write({
-                'pdo_quantity': pick.get_pdo_quantity()
-            })
             if pick.picking_type_id.code == "outgoing" and pick.carrier_id.account_id.print_on_validate:
                 try:
                     pick.action_generate_carrier_label()
@@ -111,7 +122,6 @@ class StockPicking(models.Model):
     def get_pdo_quantity(self):
         for pick in self:
             pickings_total_value = 0.0
-            pick._compute_amount_all()
             pickings_total_value += pick.amount_total
             if pick.sale_id and (not pick.sale_id.paid_shipping_picking_id or pick.sale_id.paid_shipping_picking_id == pick):
                 pickings_total_value += pick.sale_id.shipping_amount_total
