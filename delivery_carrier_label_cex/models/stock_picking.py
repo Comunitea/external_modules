@@ -177,7 +177,7 @@ class StockPicking(models.Model):
             "ancho": "",
             "producto": self.carrier_service.carrier_code,
             "portes": "P",
-            "reembolso": "{}".format(self.pdo_quantity).replace(".", ",") if self.payment_on_delivery else "",
+            "reembolso": "{}".format(round(self.pdo_quantity,2)).replace(".", ",") if self.payment_on_delivery else "",
             "entrSabado": "",
             "seguro": "",
             "numEnvioVuelta": "",
