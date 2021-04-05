@@ -53,7 +53,7 @@ class SaleOrderLine(models.Model):
             cost_price = self.purchase_price
         else:
             cost_price = self.product_id.standard_price
-        if cost_price:
+        if cost_price and self.product_uom_qty:
             self.margin_perc = round((self.margin * 100) /
                                      (cost_price * self.product_uom_qty), 2)
 

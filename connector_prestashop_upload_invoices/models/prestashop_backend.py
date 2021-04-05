@@ -17,3 +17,4 @@ class PrestashopBackend(models.Model):
     ftp_port = fields.Integer()
     ftp_user = fields.Char()
     ftp_password = fields.Char()
+    ftp_secure_data_connection = fields.Boolean('Set up secure data connection')

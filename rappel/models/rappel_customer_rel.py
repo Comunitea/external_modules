@@ -58,13 +58,13 @@ class ResPartnerRappelRel(models.Model):
              ('date_invoice', '>=', period[0]),
              ('date_invoice', '<=', period[1]),
              ('state', 'in', ['open', 'paid', 'in_payment']),
-             ('partner_id', '=', self.partner_id.id)])
+             ('partner_id', 'child_of', [self.partner_id.id])])
         refunds = self.env['account.invoice'].search(
             [('type', '=', 'out_refund'),
              ('date_invoice', '>=', period[0]),
              ('date_invoice', '<=', period[1]),
              ('state', 'in', ['open', 'paid', 'in_payment']),
-             ('partner_id', '=', self.partner_id.id)])
+             ('partner_id', 'child_of', [self.partner_id.id])])
 
         # se buscan las rectificativas
         refund_lines = self.env['account.invoice.line'].search(

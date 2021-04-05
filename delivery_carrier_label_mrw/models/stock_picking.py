@@ -72,12 +72,31 @@ class StockPicking(models.Model):
         if self.carrier_type == "mrw":
             return self._generate_mrw_label()
         return super().action_generate_carrier_label()
-
+    
     @api.multi
     def remove_tracking_info(self):
-        res = super().remove_tracking_info()
         for pick in self.filtered(lambda x: x.carrier_type == "mrw"):
             pick.update({"shipment_reference": False})
+
+            if pick.carrier_tracking_ref:
+                client, history = pick.create_client()
+
+                if client:
+
+                    try:
+                        headers = pick.setMRWHeaders(client)
+                        res = pick.cancel_mrw_expedition(client, headers, pick.carrier_tracking_ref)
+
+                        if res:
+                            if res["Estado"] == "0":
+                                raise AccessError(_("Error message: {}").format(res["Mensaje"]))
+                            if res["Estado"] == "1":
+                                msg = _("Expedition with number %s cancelled: %s") % (pick.carrier_tracking_ref, res["Mensaje"])
+                            pick.message_post(body=msg)
+                    except Exception as e:
+                        raise AccessError(_("Access error message: {}").format(e))
+
+        return super().remove_tracking_info()
 
     @api.depends("sale_id")
     def _compute_delivery_note(self):
@@ -260,9 +279,11 @@ class StockPicking(models.Model):
                     **TransmEnvio, _soapheaders=[headers]
                 )
             except Exception as e:
+                self.failed_shipping = True
                 raise AccessError(_("Access error message: {}").format(e))
 
             if res["Estado"] == "0":
+                self.failed_shipping = True
                 raise AccessError(_("Error message: {}").format(res["Mensaje"]))
             elif res["Estado"] == "1":
 
@@ -283,6 +304,7 @@ class StockPicking(models.Model):
                             "Connection error: {}, while trying to retrieve the label."
                         ).format(e)
                     )
+                    self.failed_shipping = True
                     return
 
                 if label["Estado"] == "1":
@@ -299,18 +321,23 @@ class StockPicking(models.Model):
                             "mimetype": "application/x-pdf",
                         }
                     )
+                    self.failed_shipping = False
                 elif label["Estado"] == "0":
                     raise AccessError(
                         _("Error while trying to retrieve the label: {}").format(
                             label["Mensaje"]
                         )
                     )
+                    self.failed_shipping = True
                 else:
+                    self.failed_shipping = True
                     raise AccessError(_("Error while trying to retrieve the label"))
             else:
+                self.failed_shipping = True
                 raise AccessError(_("Unknown error with the SOAP connection."))
 
         else:
+            self.failed_shipping = True
             raise AccessError(_("Not possible to establish a client."))
 
         self.print_mrw_label()
@@ -364,7 +391,7 @@ class StockPicking(models.Model):
                     self.partner_id.state_id = state_id["state_id"]
 
     def check_shipment_status(self):
-        if pick.carrier_type == "mrw":
+        if self.carrier_type == "mrw":
             if not self.carrier_id.account_id:
                 _logger.error(_("Delivery carrier has no account."))
                 return
@@ -405,3 +432,15 @@ class StockPicking(models.Model):
             else:
                 _logger.error(_("Error: {}").format(res["MensajeSeguimiento"]))
                 return
+
+    def cancel_mrw_expedition(self, client, headers, NumeroEnvioOriginal):
+        CancelarEnvio = {
+            "request": {
+                "CancelaEnvio": {
+                    "NumeroEnvioOriginal": NumeroEnvioOriginal,
+                }
+            }
+        }
+
+        response = client.service.CancelarEnvio(**CancelarEnvio, _soapheaders=[headers])
+        return response

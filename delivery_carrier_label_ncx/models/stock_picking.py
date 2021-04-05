@@ -19,6 +19,7 @@
 ##############################################################################
 import logging
 import base64
+import unidecode
 
 from datetime import datetime
 
@@ -49,7 +50,7 @@ class StockPicking(models.Model):
     carrier_type = fields.Selection(related="carrier_id.carrier_type")
     delivery_note = fields.Char(compute="_compute_delivery_note")
 
-    def nacex_connect(self, method, data):
+    def nacex_connect(self, method, data, etiqueta=False):
         ncx_url = "http://pda.nacex.com/nacex_ws/ws?method={}&data={}&user={}&pass={}".format(
             method,
             data,
@@ -57,14 +58,16 @@ class StockPicking(models.Model):
             self.carrier_id.account_id.password
         )
 
-        ncx_url = ncx_url.replace(" ", "%20")
-
         try:
             with urllib.request.urlopen(ncx_url) as response:
                 html = response.read()
-                html = html.decode('UTF-8', 'ignore')
-                res = html.split('|')
-
+                if not etiqueta:
+                    html = html.decode('UTF-8', 'ignore')
+                    res = html.split('|')
+                else:
+                    res = html.decode('UTF-8', 'ignore').replace('\r\n', ' ')
+                    if res.startswith("ERROR"):
+                        return res.split('|')
                 return res
         except Exception as e:
             _logger.error(_("Access error message: {}").format(e))
@@ -84,8 +87,8 @@ class StockPicking(models.Model):
             [("res_id", "=", self.id), ("res_model", "=", self._name)]
         )
         for label in labels:
-            if label.mimetype == "application/x-pdf":
-                doc_format = "pdf"
+            if label.mimetype == "image/png":
+                doc_format = "png"
             else:
                 doc_format = "raw"
             self.carrier_id.account_id.printer.print_document(
@@ -134,14 +137,16 @@ class StockPicking(models.Model):
             self.carrier_id.account_id.ncx_printer_model
         )
 
-        res = self.nacex_connect("getEtiqueta", nacex_data)
+        res = self.nacex_connect("getEtiqueta", nacex_data, True)
 
-        if res and res[0] == 'ERROR':
-            return label
-        else:
-            return res
+        return res
 
     def _generate_ncx_label(self):
+
+        def _unicode_url(chain):
+            chain = unidecode.unidecode(chain.replace('|', ' '))
+            return urllib.parse.quote_plus(chain)
+
         if self.carrier_tracking_ref:
             return self.print_ncx_label()
         self.check_delivery_address()
@@ -150,7 +155,7 @@ class StockPicking(models.Model):
             raise UserError("Carrier service not selected.")
         if not self.carrier_id.account_id:
             raise UserError("Delivery carrier has no account.")
-        
+
         data_0 = "del_cli={}|num_cli={}|tip_ser={}|tip_cob={}|ref_cli={}|tip_env={}|bul={}|kil={}|".format(
             self.carrier_id.account_id.ncx_delegation,
             self.carrier_id.account_id.ncx_client,
@@ -170,15 +175,18 @@ class StockPicking(models.Model):
 
             data_0 = "{}{}".format(data_0, pod_data)
 
-        data_1 = "nom_ent={}|dir_ent={}{}|pais_ent={}|cp_ent={}|pob_ent={}|tel_ent={}|obs1={}".format(
-            self.partner_id.name,
-            self.partner_id.street or '',
-            self.partner_id.street2 or '',
-            self.partner_id.country_id.code,
-            self.partner_id.zip,
-            self.partner_id.city,
-            self.partner_id.phone or self.partner_id.mobile or '',
-            self.delivery_note,
+        data_1 = "nom_ent={}|dir_ent={}{}|pais_ent={}|cp_ent={}|pob_ent={}|tel_ent={}|obs1={}|obs2={}|obs3={}|obs4={}".format(
+            _unicode_url(self.partner_id.display_name[:50]),
+            _unicode_url(self.partner_id.street) if self.partner_id.street else '',
+            _unicode_url(self.partner_id.street2) if self.partner_id.street2 else '',
+            urllib.parse.quote(self.partner_id.country_id.code),
+            urllib.parse.quote(self.partner_id.zip),
+            urllib.parse.quote(self.partner_id.city),
+            _unicode_url(self.partner_id.phone) if self.partner_id.phone else _unicode_url(self.partner_id.mobile) if self.partner_id.mobile else '',
+            _unicode_url(self.delivery_note[0:38]) if self.delivery_note else '',
+            _unicode_url(self.delivery_note[38:75]) if self.delivery_note else '',
+            _unicode_url(self.delivery_note[75:113]) if self.delivery_note else '',
+            _unicode_url(self.delivery_note[113:151]) if self.delivery_note else '',
         )
 
         ncx_data = "{}{}".format(data_0, data_1)
@@ -204,57 +212,74 @@ class StockPicking(models.Model):
                         "Connection error: {}, while trying to retrieve the label."
                     ).format(e)
                 )
+                self.failed_shipping = True
                 return
-            
-            if label and label[0] != "ERROR":
-                file_b64 = base64.b64encode(label)
-                if self.carrier_id.account_id.file_format == "PDF":
-                    attachment_values = {
-                        "name": "Label: {}".format(self.name),
-                        "type": "binary",
-                        "datas": file_b64,
-                        "datas_fname": "Label" + self.name + ".pdf",
-                        "store_fname": self.name,
-                        "res_model": self._name,
-                        "res_id": self.id,
-                        "mimetype": "application/x-pdf"
-                        if self.carrier_id.account_idncx_printer_model != "IMAGEN_B"
-                        else "image/png",
-                    }
-                else:
-                    attachment_values = {
-                        "name": "Label: {}".format(self.name),
-                        "type": "binary",
-                        "datas": file_b64,
-                        "datas_fname": "Label" + self.name + ".txt",
-                        "store_fname": self.name,
-                        "res_model": self._name,
-                        "res_id": self.id,
-                        "mimetype": "text/plain",
-                    }
-                self.env["ir.attachment"].create(attachment_values)
-            elif label and label[0] == "ERROR":
-                _logger.error(
-                    _("Error while trying to retrieve the label: {}").format(
-                        label[1]
+
+            try:
+                if label and label[0] != "ERROR":
+                    if self.carrier_id.account_id.ncx_printer_model == "IMAGEN_B":
+                        file_b64 = self.base64_url_decode(label)
+
+                        attachment_values = {
+                            "name": "Label: {}".format(self.name),
+                            "type": "binary",
+                            "datas": base64.b64encode(file_b64),
+                            "datas_fname": "Label" + self.name + ".png",
+                            "store_fname": self.name,
+                            "res_model": self._name,
+                            "res_id": self.id,
+                            "mimetype": "image/png",
+                        }
+
+                    else:
+                        # We need to replace blank spaces with line breaks
+                        replaced_label = label.replace('} {', '}\n{')
+                        file_b64 = base64.b64encode(str.encode(replaced_label))
+                        attachment_values = {
+                            "name": "Label: {}".format(self.name),
+                            "type": "binary",
+                            "datas": file_b64,
+                            "datas_fname": "Label" + self.name + ".txt",
+                            "store_fname": self.name,
+                            "res_model": self._name,
+                            "res_id": self.id,
+                            "mimetype": "text/plain",
+                        }
+                    self.env["ir.attachment"].create(attachment_values)
+                elif label and label[0] == "ERROR":
+                    _logger.error(
+                        _("Error while trying to retrieve the label: {}").format(
+                            label[1]
+                        )
                     )
-                )
-            else:
+                    self.failed_shipping = True
+                else:
+                    _logger.error(
+                        _("Error while trying to retrieve the label")
+                    )
+                    self.failed_shipping = True
+            except Exception as e:
                 _logger.error(
-                    _("Error while trying to retrieve the label")
+                    _(
+                        "Connection error: {}, while trying to save the label."
+                    ).format(e)
                 )
+                self.failed_shipping = True
+                return
         else:
             raise UserError(
                 _("There was an error connecting to Nacex. Check the connection log.")
             )
+            self.failed_shipping = True
 
+        self.failed_shipping = False
         self.print_ncx_label()
 
         if self.payment_on_delivery:
             self.mark_as_paid_shipping()
 
     def check_delivery_address(self):
-        if self.carrier_type == "ncx":   
+        if self.carrier_type == "ncx":
             if not self.partner_id.state_id:
                 state_id = self.get_state_id(self.partner_id)
                 if not state_id:
@@ -286,3 +311,8 @@ class StockPicking(models.Model):
             else:
                 _logger.error(_("Error: after requesting shipment status"))
                 return
+
+    def base64_url_decode(self, label):
+        padding_factor = (4 - len(label) % 4) % 4
+        label += "="*padding_factor
+        return base64.b64decode(str(label).translate(dict(zip(map(ord, u'-_'), u'+/'))))

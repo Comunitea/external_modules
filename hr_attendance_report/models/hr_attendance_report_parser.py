@@ -87,7 +87,8 @@ class HrAttendanceReport(models.AbstractModel):
                     )
                     used_ids.append(attendance.id)
                     used_ids.append(attendance.id)
-                if employee.resource_calendar_id:
+                if employee.resource_calendar_id and \
+                        employee.resource_calendar_id.attendance_ids:
                     from_date2_datetime = datetime.strptime(
                         from_date_2, "%Y-%m-%d %H:%M:%S"
                     )

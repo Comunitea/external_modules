@@ -62,6 +62,7 @@ class StockPicking(models.Model):
             if self.carrier_id.account_id.file_format == "PDF":
                 if self.payment_on_delivery:
                     self.mark_as_paid_shipping()
+                self.failed_shipping = False
                 return [
                     {
                         "name": "Label: {}".format(self.name),
@@ -74,6 +75,7 @@ class StockPicking(models.Model):
                 self.cex_result = rjson["etiqueta"][0]["etiqueta2"]
                 if self.payment_on_delivery:
                     self.mark_as_paid_shipping()
+                self.failed_shipping = False
                 return [
                     {
                         "name": "Label: {}.txt".format(self.name),
@@ -86,6 +88,7 @@ class StockPicking(models.Model):
             raise UserError(
                 _("CEX Error: %s %s") % (retorno or 999, message or "Webservice ERROR.")
             )
+            self.failed_shipping = True
 
         return False
 
@@ -125,7 +128,7 @@ class StockPicking(models.Model):
             streets.append(unidecode(partner.street))
         if partner.street2:
             streets.append(unidecode(partner.street2))
-        if not streets or not partner.city or not partner.zip or not partner.zip:
+        if not streets or not partner.city or not partner.zip or not partner.zip or not partner.name:
             raise UserError("Review partner data")
         if self.carrier_id.account_id.file_format not in ("PDF", "ZPL"):
             raise UserError("Format file not supported by cex")
@@ -137,7 +140,7 @@ class StockPicking(models.Model):
             "solicitante": self.carrier_id.account_id.cex_solicitante,
             "canalEntrada": "",
             "numEnvio": "",
-            "ref": self.origin[:20],
+            "ref": self.origin[:20] if self.origin else self.name[:20],
             "refCliente": "",
             "fecha": date.today().strftime("%d%m%Y"),
             "codRte": self.carrier_id.account_id.cex_codRte,
@@ -174,7 +177,7 @@ class StockPicking(models.Model):
             "ancho": "",
             "producto": self.carrier_service.carrier_code,
             "portes": "P",
-            "reembolso": "{}".format(self.pdo_quantity).replace(".", ",") if self.payment_on_delivery else "",
+            "reembolso": "{}".format(round(self.pdo_quantity,2)).replace(".", ",") if self.payment_on_delivery else "",
             "entrSabado": "",
             "seguro": "",
             "numEnvioVuelta": "",
@@ -193,7 +196,7 @@ class StockPicking(models.Model):
         return data
 
     @api.multi
-    def generate_cex_labels(self, package_ids=None):
+    def generate_cex_labels(self, package_ids=False):
         """ Generate the labels.
         A list of package ids can be given, in that case it will generate
         the labels only of these packages.

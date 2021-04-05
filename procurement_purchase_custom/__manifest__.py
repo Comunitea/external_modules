@@ -32,6 +32,7 @@
         "views/product_views.xml",
         "views/orderpoint_views.xml",
         "views/purchase_order_views.xml",
+        "data/ir_cron.xml"
     ],
     "images": ["/static/description/icon.png"],
     "qweb": [],

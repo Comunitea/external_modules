@@ -1,0 +1,270 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* delivery_carrier_label_ncx
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-24 12:49+0000\n"
+"PO-Revision-Date: 2021-02-24 12:49+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:74
+#, python-format
+msgid "Access error message: {}"
+msgstr "Error de acceso: {}"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model,name:delivery_carrier_label_ncx.model_carrier_account
+msgid "Base account datas"
+msgstr "Datos de cuenta base"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,integration_type:0
+msgid "CEX"
+msgstr ""
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:118
+#, python-format
+msgid "Canceled expedition: {}"
+msgstr "Expedición cancelada: {}"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_delivery_carrier__carrier_type
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_stock_picking__carrier_type
+msgid "Carrier Type"
+msgstr "Tipo transportista"
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:204
+#, python-format
+msgid "Connection error: {}, while trying to retrieve the label."
+msgstr "Error de conexión: {}, mientras se intentaba recuperar la etiqueta."
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:251
+#, python-format
+msgid "Connection error: {}, while trying to save the label."
+msgstr "Error de conexión: {}, mientras se intentaba guardar la etiqueta."
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model,name:delivery_carrier_label_ncx.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Método de envío"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_stock_picking__delivery_note
+msgid "Delivery Note"
+msgstr "Nota de envío"
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:280
+#, python-format
+msgid "Delivery carrier has no account."
+msgstr "El transportista no tiene cuenta"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_pod_type:0
+msgid "Destination"
+msgstr "Destino"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_package_type:0
+msgid "Documents"
+msgstr "Documentos"
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:190
+#, python-format
+msgid "Error message: {}"
+msgstr "Error: {}"
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:247
+#, python-format
+msgid "Error while trying to retrieve the label"
+msgstr "Error al recuperar la etiqueta."
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:241
+#, python-format
+msgid "Error while trying to retrieve the label: {}"
+msgstr "Error al recuperar la etiqueta: {}"
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:297
+#, python-format
+msgid "Error: after requesting shipment status"
+msgstr "Error al solicitar el estado del envío."
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:294
+#, python-format
+msgid "Error: {}"
+msgstr "Error: {}"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_stock_picking__failed_shipping
+msgid "Failed Shipping"
+msgstr "Envío fallido"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_printer_model:0
+msgid "IMAGEN_B"
+msgstr ""
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__integration_type
+msgid "Integration type"
+msgstr "Tipo de integración"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,integration_type:0
+#: selection:delivery.carrier,carrier_type:0
+msgid "NACEX"
+msgstr ""
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__ncx_client
+msgid "NACEX Client Code"
+msgstr "Código de cliente NACEX"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__ncx_delegation
+msgid "NACEX Delegation Code"
+msgstr "Código de delegación NACEX"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__ncx_client_department
+msgid "NACEX Franchise Code"
+msgstr "Código de franquicia NACEX"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_package_type:0
+msgid "Nacex Bag"
+msgstr "Bolsa NACEX"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_package_type:0
+msgid "Nacex Cardboard Box"
+msgstr "Caja de cartón NACEX"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__ncx_package_type
+msgid "Ncx Package Type"
+msgstr "Tipo de paquete NACEX"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__ncx_payment_type
+msgid "Ncx Payment Type"
+msgstr "Tipo de pago NACEX"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__ncx_pod_type
+msgid "Ncx Pod Type"
+msgstr "Tipo de envase NACEX"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__ncx_printer_model
+msgid "Ncx Printer Model"
+msgstr "Modelo de impresora NACEX"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_pod_type:0
+msgid "No"
+msgstr ""
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,integration_type:0
+msgid "None"
+msgstr "Ninguna"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_pod_type:0
+msgid "Origin"
+msgstr "Origen"
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:272
+#, python-format
+msgid "Partner address is not complete (State missing)."
+msgstr "La dirección del receptor no está completa (provincia)"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_payment_type:0
+msgid "Payment by a third party"
+msgstr "Pago por un tercero"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_payment_type:0
+msgid "Payment on destination"
+msgstr "Pago en destino"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_payment_type:0
+msgid "Payment on origin"
+msgstr "Pago en origen"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_pod_type:0
+msgid "Payment on pick up"
+msgstr "Pago en recogida"
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_stock_picking__shipment_reference
+msgid "Shipment Reference"
+msgstr "Referencia de envío"
+
+#. module: delivery_carrier_label_ncx
+#: model_terms:ir.ui.view,arch_db:delivery_carrier_label_ncx.cmnt_delivery_carrier_ncx_view_picking_withcarrier_out_form
+msgid "Status"
+msgstr "Estado"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_printer_model:0
+msgid "TECEV4_B"
+msgstr ""
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_printer_model:0
+msgid "TECFV4_B"
+msgstr ""
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_printer_model:0
+msgid "TECSV4_B"
+msgstr ""
+
+#. module: delivery_carrier_label_ncx
+#: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:258
+#, python-format
+msgid "There was an error connecting to Nacex. Check the connection log."
+msgstr "Error al conectarse a NACEX. Revisa el log de conexión."
+
+#. module: delivery_carrier_label_ncx
+#: model:ir.model,name:delivery_carrier_label_ncx.model_stock_picking
+msgid "Transfer"
+msgstr "Albarán"
+
+#. module: delivery_carrier_label_ncx
+#: selection:carrier.account,ncx_printer_model:0
+msgid "ZEBRA_B"
+msgstr ""
+
+#. module: delivery_carrier_label_ncx
+#: model_terms:ir.ui.view,arch_db:delivery_carrier_label_ncx.cmnt_delivery_carrier_ncx_view_picking_withcarrier_out_form
+msgid "ncx Data"
+msgstr ""
+
+#. module: delivery_carrier_label_ncx
+#: model_terms:ir.ui.view,arch_db:delivery_carrier_label_ncx.cmnt_delivery_carrier_ncx_carrier_account
+msgid "ncx configuration"
+msgstr ""
