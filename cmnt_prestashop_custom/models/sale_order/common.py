@@ -9,8 +9,8 @@ class SaleOrde(models.Model):
 
     _inherit = "sale.order"
 
-    prestashop_state = fields.Many2one("sale.order.state")
-    prestashop_transaction = fields.Char()
+    prestashop_state = fields.Many2one("sale.order.state", copy=False)
+    prestashop_transaction = fields.Char(copy=False)
 
     def write(self, vals):
         res = super().write(vals)
