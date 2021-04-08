@@ -19,7 +19,7 @@
 ##############################################################################
 import logging
 import base64
-import unidecode
+import re
 
 from datetime import datetime
 
@@ -29,6 +29,7 @@ from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
 from odoo.addons import decimal_precision as dp
 from zeep import Client
+from zeep import xsd
 from zeep.cache import SqliteCache
 from zeep.plugins import HistoryPlugin
 from zeep.transports import Transport
@@ -41,6 +42,31 @@ import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+import logging.config
+
+""" logging.config.dictConfig({
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '%(name)s: %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+           'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'zeep.transports': {
+            'level': 'DEBUG',
+            'propagate': True,
+            'handlers': ['console'],
+       },
+   }
+}) """
+
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
@@ -49,29 +75,24 @@ class StockPicking(models.Model):
     failed_shipping = fields.Boolean("Failed Shipping", default=False)
     carrier_type = fields.Selection(related="carrier_id.carrier_type")
     delivery_note = fields.Char(compute="_compute_delivery_note")
+    ncx_shipping_return = fields.Boolean("Shipping with return", default=False)
 
-    def nacex_connect(self, method, data, etiqueta=False):
-        ncx_url = "http://pda.nacex.com/nacex_ws/ws?method={}&data={}&user={}&pass={}".format(
-            method,
-            data,
-            self.carrier_id.account_id.account,
-            self.carrier_id.account_id.password
-        )
+    def create_client_ncx(self):
+        session = Session()
+        session.verify = False
 
         try:
-            with urllib.request.urlopen(ncx_url) as response:
-                html = response.read()
-                if not etiqueta:
-                    html = html.decode('UTF-8', 'ignore')
-                    res = html.split('|')
-                else:
-                    res = html.decode('UTF-8', 'ignore').replace('\r\n', ' ')
-                    if res.startswith("ERROR"):
-                        return res.split('|')
-                return res
+            transport = Transport(cache=SqliteCache(), session=session)
+            history = HistoryPlugin()
+            url = "http://pda.nacex.com/nacex_ws/soap?wsdl"
+            client = Client(url, transport=transport, plugins=[history])
+
+            if client:
+                return client, history
+            else:
+                raise AccessError(_("Not possible to establish a client."))
         except Exception as e:
-            _logger.error(_("Access error message: {}").format(e))
-            return False
+            raise AccessError(_("Access error message: {}".format(e)))
 
     def print_created_labels(self):
         if self.carrier_type == "ncx":
@@ -106,16 +127,7 @@ class StockPicking(models.Model):
             pick.update({"shipment_reference": False})
 
             if pick.carrier_tracking_ref:
-                nacex_data = "expe_codigo={}".format(
-                    pick.carrier_tracking_ref,
-                )
-
-                res = self.nacex_connect("cancelExpedicion", nacex_data)
-
-                if res:
-                    _logger.info(
-                        _("Canceled expedition: {}".format(res))
-                    )
+                self.remove_tracking_ncx()
 
         return super().remove_tracking_info()
 
@@ -129,26 +141,90 @@ class StockPicking(models.Model):
                 delivery_note = "N/A"
             pick.delivery_note = delivery_note[:45]
 
-    def get_ncx_label(self, cod_exp):
-        label = False
+    def shipment_status_ncx(self):
+        client, history = self.create_client_ncx()
 
-        nacex_data = "codExp={}|modelo={}".format(
-            cod_exp,
-            self.carrier_id.account_id.ncx_printer_model
-        )
+        if client:
 
-        res = self.nacex_connect("getEtiqueta", nacex_data, True)
+            getEstadoExpedicion = {
+                "String_1": self.carrier_id.account_id.account,
+                "String_2": self.carrier_id.account_id.password,
+                "String_3": self.carrier_tracking_ref,
+            }
 
-        return res
+            with client.settings(strict=False):
+
+                service = client.create_service(
+                    '{urn:soap/types}nacexwsImplServiceSoapBinding',
+                    'http://pda.nacex.com/nacex_ws/soap')
+
+                res = service.getEstadoExpedicion(**getEstadoExpedicion)
+            if res and res[0] != "ERROR":
+                if res[4] and res[4] == 'OK':
+                    self.delivered = True
+                    msg = _("Expedition with number %s has been delivered.") % (self.carrier_tracking_ref)
+                    self.message_post(body=msg)
+                    return
+            elif res and res[0] == "ERROR":
+                _logger.error(_("Error: {}").format(res[1]))
+                return
+            else:
+                _logger.error(_("Error: after requesting shipment status"))
+                return
+
+    def remove_tracking_ncx(self):
+        client, history = self.create_client_ncx()
+
+        if client:
+            
+            arrayOfString_3 = [
+                "expe_codigo={}".format(self.carrier_tracking_ref),  
+            ]
+
+            cancelExpedicion = {
+                "String_1": self.carrier_id.account_id.account,
+                "String_2": self.carrier_id.account_id.password,
+                "arrayOfString_3": arrayOfString_3
+            }
+
+            with client.settings(strict=False):
+
+                service = client.create_service(
+                    '{urn:soap/types}nacexwsImplServiceSoapBinding',
+                    'http://pda.nacex.com/nacex_ws/soap')
+
+                res = service.cancelExpedicion(**cancelExpedicion)
+            if res and res._raw_elements and res._raw_elements[0].text == 'ERROR':
+                msg = _("Access error message: {}").format(res._raw_elements[0].text)
+                raise AccessError(msg)
+            elif res and res._raw_elements and res._raw_elements[0].text:
+                msg = _("Expedition with number %s cancelled: %s") % (self.carrier_tracking_ref, res._raw_elements[0].text)
+                self.message_post(body=msg)
+            else:
+                msg = _("Access error")
+                raise AccessError(msg)
+                    
+    def get_ncx_label(self, client, numeroEnvio):
+
+        getEtiqueta = {
+            "String_1": self.carrier_id.account_id.account,
+            "String_2": self.carrier_id.account_id.password,
+            "String_3": numeroEnvio,
+            "String_4": self.carrier_id.account_id.ncx_printer_model
+        }
+
+        with client.settings(strict=False):
+
+            service = client.create_service(
+                '{urn:soap/types}nacexwsImplServiceSoapBinding',
+                'http://pda.nacex.com/nacex_ws/soap')
+
+            label = service.getEtiqueta(**getEtiqueta)
+            return label
 
     def _generate_ncx_label(self):
-
-        def _unicode_url(chain):
-            chain = unidecode.unidecode(chain.replace('|', ' '))
-            return urllib.parse.quote_plus(chain)
-
         if self.carrier_tracking_ref:
-            return self.print_ncx_label()
+            return self.print_mrw_label()
         self.check_delivery_address()
 
         if not self.carrier_service:
@@ -156,62 +232,87 @@ class StockPicking(models.Model):
         if not self.carrier_id.account_id:
             raise UserError("Delivery carrier has no account.")
 
-        data_0 = "del_cli={}|num_cli={}|tip_ser={}|tip_cob={}|ref_cli={}|tip_env={}|bul={}|kil={}|".format(
-            self.carrier_id.account_id.ncx_delegation,
-            self.carrier_id.account_id.ncx_client,
-            self.carrier_service.carrier_code,
-            self.carrier_id.account_id.ncx_payment_type,
-            self.name,
-            self.carrier_id.account_id.ncx_package_type,
-            self.carrier_packages,
-            round(self.carrier_weight),
-        )
+        client, history = self.create_client_ncx()
 
-        if self.payment_on_delivery:
-            pod_data = "ree={}|tip_ree={}|".format(
-                self.pdo_quantity,
-                self.carrier_id.account_id.ncx_pod_type
-            )
+        if client:
 
-            data_0 = "{}{}".format(data_0, pod_data)
+            arrayOfString_3 = [
+                "del_cli={}".format(self.carrier_id.account_id.ncx_delegation),
+                "num_cli={}".format(self.carrier_id.account_id.ncx_client),
+                "tip_ser={}".format(self.carrier_service.carrier_code),
+                "tip_cob={}".format(self.carrier_id.account_id.ncx_payment_type),
+                "ref_cli={}".format(self.name),
+                "tip_env={}".format(self.carrier_id.account_id.ncx_package_type),
+                "bul={}".format(self.carrier_packages),
+                "kil={}".format(round(self.carrier_weight)),
+                "nom_ent={}".format(self.partner_id.display_name[:50]),
+                "dir_ent={} {}".format(self.partner_id.street if self.partner_id.street else '', self.partner_id.street2 if self.partner_id.street2 else ''),
+                "pais_ent={}".format(self.partner_id.country_id.code),
+                "cp_ent={}".format(self.partner_id.zip),
+                "pob_ent={}".format(self.partner_id.city),
+                "tel_ent={}".format(self.partner_id.phone if self.partner_id.phone else self.partner_id.mobile if self.partner_id.mobile else ''),
+                "obs1={}".format(self.delivery_note[0:38] if self.delivery_note else ''),
+                "obs2={}".format(self.delivery_note[38:75] if self.delivery_note else ''),
+                "obs3={}".format(self.delivery_note[75:113] if self.delivery_note else ''),
+                "obs4={}".format(self.delivery_note[113:151] if self.delivery_note else ''),
+                "ret={}".format("S" if self.ncx_shipping_return else "N"),
+                "ree={}".format(self.pdo_quantity),
+                "tip_ree={}".format(self.carrier_id.account_id.ncx_pod_type if self.payment_on_delivery else 'N'),   
+            ]
 
-        data_1 = "nom_ent={}|dir_ent={}{}|pais_ent={}|cp_ent={}|pob_ent={}|tel_ent={}|obs1={}|obs2={}|obs3={}|obs4={}".format(
-            _unicode_url(self.partner_id.display_name[:50]),
-            _unicode_url(self.partner_id.street) if self.partner_id.street else '',
-            _unicode_url(self.partner_id.street2) if self.partner_id.street2 else '',
-            urllib.parse.quote(self.partner_id.country_id.code),
-            urllib.parse.quote(self.partner_id.zip),
-            urllib.parse.quote(self.partner_id.city),
-            _unicode_url(self.partner_id.phone) if self.partner_id.phone else _unicode_url(self.partner_id.mobile) if self.partner_id.mobile else '',
-            _unicode_url(self.delivery_note[0:38]) if self.delivery_note else '',
-            _unicode_url(self.delivery_note[38:75]) if self.delivery_note else '',
-            _unicode_url(self.delivery_note[75:113]) if self.delivery_note else '',
-            _unicode_url(self.delivery_note[113:151]) if self.delivery_note else '',
-        )
+            putExpedicion = {
+                "String_1": self.carrier_id.account_id.account,
+                "String_2": self.carrier_id.account_id.password,
+                "arrayOfString_3": arrayOfString_3
+            }
 
-        ncx_data = "{}{}".format(data_0, data_1)
+            try:
+                _logger.info("putExpedicion: {}".format(putExpedicion))
+                with client.settings(strict=False):
 
-        res = self.nacex_connect("putExpedicion", ncx_data)
+                    service = client.create_service(
+                        '{urn:soap/types}nacexwsImplServiceSoapBinding',
+                        'http://pda.nacex.com/nacex_ws/soap')
 
-        if res and res[0]=='ERROR':
-            raise AccessError(_("Error message: {}").format(res[1]))
+                    res = service.putExpedicion(
+                        **putExpedicion
+                    )
+            except Exception as e:
+                try:
+                    msg = _("Access error message: {}").format(history.last_received['envelope'][0][0][1].text)
+                except:
+                    msg = _("Access error message: {}").format(e)
+                self.failed_shipping = True
+                raise AccessError(msg)
+
+        if res and res._raw_elements and res._raw_elements[0].text =='ERROR':
+            raise AccessError(_("Error message: {}").format(res._raw_elements[1].text))
         elif res:
 
             self.write(
                 {
-                    "carrier_tracking_ref": res[0],
-                    "shipment_reference": res[1],
+                    "carrier_tracking_ref": res._raw_elements[0].text,
+                    "shipment_reference": res._raw_elements[1].text,
                 }
             )
 
             try:
-                label = self.get_ncx_label(res[0])
+                label = self.get_ncx_label(client, res._raw_elements[0].text)
+                _logger.debug("label: {}".format(label))
             except Exception as e:
-                _logger.error(
-                    _(
-                        "Connection error: {}, while trying to retrieve the label."
-                    ).format(e)
-                )
+                try:
+                    _logger.error(
+                        _(
+                            "Connection error: {}, while trying to retrieve the label."
+                        ).format(history.last_received['envelope'][0][0][1].text)
+                    )
+                except:
+                    msg = _("Access error message: {}").format(e)
+                    _logger.error(
+                        _(
+                            "Connection error: {}, while trying to retrieve the label."
+                        ).format(e)
+                    )
                 self.failed_shipping = True
                 return
 
@@ -233,8 +334,10 @@ class StockPicking(models.Model):
 
                     else:
                         # We need to replace blank spaces with line breaks
-                        replaced_label = label.replace('} {', '}\n{')
-                        file_b64 = base64.b64encode(str.encode(replaced_label))
+                        label_text = ''
+                        for line in label:
+                            label_text += re.sub('[^!-~]+',' ',line).strip() + '\n'
+                        file_b64 = base64.b64encode(str.encode(label_text))
                         attachment_values = {
                             "name": "Label: {}".format(self.name),
                             "type": "binary",
@@ -295,22 +398,7 @@ class StockPicking(models.Model):
                 _logger.error(_("Delivery carrier has no account."))
                 return
 
-            data = "expe_codigo={}".format(
-                self.carrier_tracking_ref,
-            )
-
-            res = self.nacex_connect("getEstadoExpedicion", data)
-
-            if res and res[0] != "ERROR":
-                if res[4] and res[4] == 'OK':
-                    self.delivered = True
-                    return
-            elif res and res[0] == "ERROR":
-                _logger.error(_("Error: {}").format(res[1]))
-                return
-            else:
-                _logger.error(_("Error: after requesting shipment status"))
-                return
+            self.shipment_status_ncx()
 
     def base64_url_decode(self, label):
         padding_factor = (4 - len(label) % 4) % 4
