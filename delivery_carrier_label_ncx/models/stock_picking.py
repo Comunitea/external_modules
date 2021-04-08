@@ -224,7 +224,7 @@ class StockPicking(models.Model):
 
     def _generate_ncx_label(self):
         if self.carrier_tracking_ref:
-            return self.print_mrw_label()
+            return self.print_ncx_label()
         self.check_delivery_address()
 
         if not self.carrier_service:
