@@ -256,9 +256,11 @@ class StockPicking(models.Model):
                 "obs3={}".format(self.delivery_note[75:113] if self.delivery_note else ''),
                 "obs4={}".format(self.delivery_note[113:151] if self.delivery_note else ''),
                 "ret={}".format("S" if self.ncx_shipping_return else "N"),
-                "ree={}".format(self.pdo_quantity),
-                "tip_ree={}".format(self.carrier_id.account_id.ncx_pod_type if self.payment_on_delivery else 'N'),   
             ]
+
+            if self.payment_on_delivery and self.carrier_id.account_id.ncx_pod_type:
+                arrayOfString_3.append("ree={}".format(self.pdo_quantity))
+                arrayOfString_3.append("tip_ree={}".format(self.carrier_id.account_id.ncx_pod_type))
 
             putExpedicion = {
                 "String_1": self.carrier_id.account_id.account,
