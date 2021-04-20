@@ -27,6 +27,7 @@
                     <field name="ncx_delegation"/>
                     <field name="ncx_client_department"/>
                     <field name="ncx_printer_model"/>
+                    <field name="ncx_oldmodel"/>
                     <field name="ncx_payment_type"/>
                     <field name="ncx_package_type"/>
                     <field name="ncx_pod_type"/>

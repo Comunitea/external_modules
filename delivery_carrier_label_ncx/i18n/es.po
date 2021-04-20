@@ -150,6 +150,11 @@ msgid "NACEX Client Code"
 msgstr "Código de cliente NACEX"
 
 #. module: delivery_carrier_label_ncx
+#: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__ncx_oldmodel
+msgid "Old model"
+msgstr "Modelo antiguo"
+
+#. module: delivery_carrier_label_ncx
 #: model:ir.model.fields,field_description:delivery_carrier_label_ncx.field_carrier_account__ncx_delegation
 msgid "NACEX Delegation Code"
 msgstr "Código de delegación NACEX"

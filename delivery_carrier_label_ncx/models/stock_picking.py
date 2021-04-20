@@ -338,6 +338,8 @@ class StockPicking(models.Model):
                         # We need to replace blank spaces with line breaks
                         label_text = ''
                         for line in label:
+                            if len(line) > 64 and self.carrier_id.account_id.ncx_oldmodel:
+                                line = line.split("=")[0] + '=' + line.split("=")[1].replace('|', '').replace('}', '')[:29] + '|}'
                             label_text += re.sub('[^!-~]+',' ',line).strip() + '\n'
                         file_b64 = base64.b64encode(str.encode(label_text))
                         attachment_values = {
