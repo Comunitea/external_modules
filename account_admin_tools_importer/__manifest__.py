@@ -18,7 +18,8 @@ Import tools:
   balance into Odoo.
             """,
     "depends": ['account'],
-    "data": ['wizard/account_importer.xml',
+    "data": ['security/ir.model.access.csv',
+             'wizard/account_importer.xml',
              'wizard/account_move_importer.xml'],
     "installable": True,
     'license': 'AGPL-3'
