@@ -27,6 +27,7 @@ class CarrierAccount(models.Model):
     ncx_client = fields.Char("NACEX Client Code")
     ncx_delegation = fields.Char("NACEX Delegation Code")
     ncx_client_department = fields.Char("NACEX Franchise Code")
+    ncx_oldmodel = fields.Boolean(string='Old model')
     ncx_printer_model = fields.Selection(
         [
             ("TECSV4_B", "TECSV4_B"),

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-28 07:58+0000\n"
-"PO-Revision-Date: 2020-04-28 07:58+0000\n"
+"POT-Creation-Date: 2021-04-19 14:26+0000\n"
+"PO-Revision-Date: 2021-04-19 14:26+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,14 +31,14 @@ msgid "Apply only if delivery country match."
 msgstr "Aplicar sólo si el país de entrega concuerda."
 
 #. module: cmnt_delivery_carrier_label
-#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__attachment_ids
-msgid "Attachments"
-msgstr "Adjuntos"
+#: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
+msgid "Are you sure you want to remove the tracking info of this batch?"
+msgstr "¿Quieres eliminar el tracking de este albarán?"
 
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model,name:cmnt_delivery_carrier_label.model_carrier_account
 msgid "Base account datas"
-msgstr ""
+msgstr "Datos base de la cuenta"
 
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__carrier_id
@@ -76,9 +76,11 @@ msgid "Carrier Weight"
 msgstr "Peso transportista"
 
 #. module: cmnt_delivery_carrier_label
-#: selection:delivery.carrier,carrier_type:0
-msgid "Correos Express"
-msgstr "Correos Express"
+#: model:ir.actions.server,name:cmnt_delivery_carrier_label.ir_cron_check_shipment_status_ir_actions_server
+#: model:ir.cron,cron_name:cmnt_delivery_carrier_label.ir_cron_check_shipment_status
+#: model:ir.cron,name:cmnt_delivery_carrier_label.ir_cron_check_shipment_status
+msgid "Check if a shipment was delivered"
+msgstr "Comprobar si el envío fue entregado."
 
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__country_id
@@ -101,6 +103,11 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_stock_picking__delivered
+msgid "Delivered"
+msgstr "Entregado"
+
+#. module: cmnt_delivery_carrier_label
 #: model:ir.model,name:cmnt_delivery_carrier_label.model_delivery_carrier
 msgid "Delivery Methods"
 msgstr "Método de envío"
@@ -113,7 +120,12 @@ msgstr "Detectar automáticamente"
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__display_name
 msgid "Display Name"
-msgstr "Nombre mostrado"
+msgstr "Nombre"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_stock_picking__failed_shipping
+msgid "Failed Shipping"
+msgstr "Envío fallido"
 
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__state_ids
@@ -123,7 +135,12 @@ msgstr "Provincias"
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_carrier_account__integration_type
+msgid "Integration type"
+msgstr "Tipo de integración"
 
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service____last_update
@@ -141,15 +158,47 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: cmnt_delivery_carrier_label
+#: selection:carrier.account,integration_type:0
+#: selection:delivery.carrier,carrier_type:0
+msgid "NACEX"
+msgstr ""
+
+#. module: cmnt_delivery_carrier_label
 #: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_delivery_carrier_service__name
 msgid "Name"
 msgstr "Nombre"
 
 #. module: cmnt_delivery_carrier_label
-#: code:addons/cmnt_delivery_carrier_label/models/stock_picking.py:13
+#: code:addons/cmnt_delivery_carrier_label/models/stock_picking.py:16
 #, python-format
 msgid "No label is configured for the selected delivery method."
 msgstr "No se ha configurado una etiqueta para este método de entrega."
+
+#. module: cmnt_delivery_carrier_label
+#: selection:carrier.account,integration_type:0
+msgid "None"
+msgstr "Ninguna"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_account_payment_mode__payment_on_delivery
+msgid "POD"
+msgstr ""
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model,name:cmnt_delivery_carrier_label.model_account_payment_mode
+msgid "Payment Modes"
+msgstr "Modos de pago"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_sale_order__payment_on_delivery
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_stock_picking__payment_on_delivery
+msgid "Payment on delivery"
+msgstr "Pago en destino"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_carrier_account__print_on_validate
+msgid "Print on validate"
+msgstr "Imprimir al validar"
 
 #. module: cmnt_delivery_carrier_label
 #: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
@@ -162,14 +211,14 @@ msgid "Printer"
 msgstr "Impresora"
 
 #. module: cmnt_delivery_carrier_label
-#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_carrier_account__print_on_validate
-msgid "Print on validate"
-msgstr "Imprimir al validar"
+#: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
+msgid "Remove Tracking"
+msgstr "Eliminar Tracking"
 
 #. module: cmnt_delivery_carrier_label
-#: model:ir.model.fields,help:cmnt_delivery_carrier_label.field_carrier_account__print_on_validate
-msgid "Will get and print the labels if there is a printer selected."
-msgstr "Obtendrá e imprimirá las etiquetas si hay una impresora seleccionada."
+#: model:ir.model,name:cmnt_delivery_carrier_label.model_sale_order
+msgid "Sale Order"
+msgstr "Pedido de venta"
 
 #. module: cmnt_delivery_carrier_label
 #: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_delivery_carrier_form
@@ -179,7 +228,12 @@ msgstr "Servicios"
 #. module: cmnt_delivery_carrier_label
 #: model_terms:ir.ui.view,arch_db:cmnt_delivery_carrier_label.view_picking_withcarrier_out_form
 msgid "Shipping Label 🚚"
-msgstr ""
+msgstr "Etiqueta 🚚"
+
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_stock_picking__pdo_quantity
+msgid "Total"
+msgstr "Total"
 
 #. module: cmnt_delivery_carrier_label
 #: model:ir.model,name:cmnt_delivery_carrier_label.model_stock_picking
@@ -192,7 +246,16 @@ msgid "Use test enviroment"
 msgstr "Usar entorno test"
 
 #. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,help:cmnt_delivery_carrier_label.field_carrier_account__print_on_validate
+msgid "Will get and print the labels if there is a printer selected."
+msgstr "Obtendrá e imprimirá las etiquetas si hay una impresora seleccionada."
+
+#. module: cmnt_delivery_carrier_label
 #: model:ir.model,name:cmnt_delivery_carrier_label.model_delivery_carrier_service
 msgid "delivery.carrier.service"
 msgstr ""
 
+#. module: cmnt_delivery_carrier_label
+#: model:ir.model.fields,field_description:cmnt_delivery_carrier_label.field_sale_order__paid_shipping_picking_id
+msgid "paid_shipping_picking_id"
+msgstr ""
