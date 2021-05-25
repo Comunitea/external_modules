@@ -97,7 +97,7 @@ class StockPicking(models.Model):
     def print_created_labels(self):
         if self.carrier_type == "ncx":
             return self.print_ncx_label()
-        return super(StockPicking, self).button_validate()
+        return super(StockPicking, self).print_created_labels()
 
     def print_ncx_label(self):
         self.ensure_one()

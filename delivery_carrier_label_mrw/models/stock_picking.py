@@ -49,7 +49,7 @@ class StockPicking(models.Model):
     def print_created_labels(self):
         if self.carrier_type == "mrw":
             return self.print_mrw_label()
-        return super(StockPicking, self).button_validate()
+        return super(StockPicking, self).print_created_labels()
 
     def print_mrw_label(self):
         self.ensure_one()
