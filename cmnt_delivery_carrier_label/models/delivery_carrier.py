@@ -20,6 +20,8 @@ class DeliveryCarrier(models.Model):
         self.ensure_one()
         if hasattr(self, '%s_get_tracking_link' % self.carrier_type):
             return getattr(self, '%s_get_tracking_link' % self.carrier_type)(picking)
+        else:
+            return super(DeliveryCarrier, self).get_tracking_link(picking)
 
 
 class DeliveryCarrierService(models.Model):
