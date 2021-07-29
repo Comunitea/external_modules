@@ -7,7 +7,7 @@ from odoo import models, fields
 class AcountBankingMandates(models.Model):
 
     _inherit = "account.banking.mandate"
-    _order = "by_default desc, partner_bank_id desc"
+    _order = "by_default desc, signature_date desc"
 
     active = fields.\
         Boolean("Active", related="partner_bank_id.active", readonly=True,
