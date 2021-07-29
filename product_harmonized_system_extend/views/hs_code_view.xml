@@ -6,7 +6,7 @@
         <field name="model">hs.code</field>
         <field name="inherit_id" ref="product_harmonized_system.hs_code_view_form"/>
         <field name="arch" type="xml">
-            <field name="active" position="after">
+            <field name="local_code" position="after">
                 <field name="url" widget="url"/>
             </field>
         </field>
