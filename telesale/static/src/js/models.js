@@ -72,10 +72,10 @@ var TsModel = Backbone.Model.extend({
 
         this.get('orders').bind('remove', function(){ self.on_removed_order(); });
         $.when(this.load_server_data())
-            .done(function(){
+            .then(function(){
                 self.ready.resolve();
 
-            }).fail(function(){
+            }).catch(function(){
                 self.ready.reject();
             });
     },
@@ -149,7 +149,9 @@ var TsModel = Backbone.Model.extend({
 
                     // PARTNERS
                     var partner_fields = self._get_partner_fields();
-                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
+                    // MIG: No field customer
+                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
+                    return self.fetch('res.partner', partner_fields, [['type', '=', 'delivery']])
                 }).then(function(customers){
                     for (var key in customers){
                         var customer = customers[key];
@@ -210,7 +212,9 @@ var TsModel = Backbone.Model.extend({
         var def  = new $.Deferred();
         // var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
         var partner_fields = self._get_partner_fields();
-        self.fetch('res.partner', partner_fields, [['customer','=',true],['write_date','>', self.db.get_partner_write_date()]]).then(function(partners){
+        // MIG No hay campo customer, es customer rank o pasar un contexto de search_rank
+        // self.fetch('res.partner', partner_fields, [['customer','=',true],['write_date','>', self.db.get_partner_write_date()]]).then(function(partners){
+        self.fetch('res.partner', partner_fields, [['write_date','>', self.db.get_partner_write_date()]]).then(function(partners){
                 if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
                     def.resolve();
                 } else {
@@ -253,14 +257,14 @@ var TsModel = Backbone.Model.extend({
     },
     cancel_order: function(erp_id){
         var self = this;
-        // MIG11: qUIZÁS EL .DONE ES .THEM Y EL FAIL, VA COMO FUNCIÓN SUELTA SEGUIDA DE LA PRINCIPAL.
+        // MIG11: qUIZÁS EL .then ES .THEM Y EL FAIL, VA COMO FUNCIÓN SUELTA SEGUIDA DE LA PRINCIPAL.
         // .THEN(FUNCION DONE, FUNCION ERROR), VER EJEMPLOS EN POS
         rpc.query({model: 'sale.order', method: 'cancel_order_from_ui', args:[[erp_id]]})
-            .done(function(){
+            .then(function(){
                 //remove from db if success
                 self.get('selectedOrder').destroy(); // remove order from UI
             })
-            .fail(function(unused, event){
+            .catch(function(unused, event){
                 //don't show error popup if it fails
                 console.error('Failed to cancel order:',erp_id);
             });
@@ -283,7 +287,7 @@ var TsModel = Backbone.Model.extend({
         // shadow : true is to prevent a spinner to appear in case of timeout
         // MIG11: Quizá con notación then
         rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]]})
-            .done(function(orders){
+            .then(function(orders){
                 //remove from db if success
                 self.db.remove_order(order.id);
                 self._flush(index);
@@ -291,7 +295,7 @@ var TsModel = Backbone.Model.extend({
                 self.last_sale_id = orders[0]
                 self.ready2.resolve()
             })
-            .fail(function(unused, event){
+            .catch(function(unused, event){
                 //don't show error popup if it fails
                 console.error('Failed to send order:',order);
                 self._flush(index+1);
@@ -312,13 +316,13 @@ var TsModel = Backbone.Model.extend({
         // shadow : true is to prevent a spinner to appear in case of timeout
         // MIG11: Quizá con notación then
         rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]]})
-            .done(function(orders){
+            .then(function(orders){
                 //remove from db if success
                 self.get('selectedOrder').destroy(); // remove order from UI
                 self.last_sale_id = orders[0]
                 self.ready2.resolve()
             })
-            .fail(function(unused, event){
+            .catch(function(unused, event){
                 alert('Ocurrió un fallo en al mandar el pedido al servidor');
                 self.ready2.reject()
                 self.last_sale_id = false

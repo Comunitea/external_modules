@@ -562,9 +562,9 @@ var OrderWidget = TsBaseWidget.extend({
             var client_id = this.check_customer_get_id();
             if (client_id){
                 $.when(self.ts_model.get('selectedOrder').get_last_line_by('ult', client_id))
-                .done(function(){
+                .then(function(){
                 })
-                .fail(function(){
+                .catch(function(){
                     alert(_t("NOT WORKING"));
                 })
             }
@@ -574,9 +574,9 @@ var OrderWidget = TsBaseWidget.extend({
             var client_id = this.check_customer_get_id();
             if (client_id){
                 $.when(self.ts_model.get('selectedOrder').get_last_line_by('year', client_id))
-                .done(function(){
+                .then(function(){
                 })
-                .fail(function(){
+                .catch(function(){
                     alert(_t("NOT WORKING"));
                 })
             }
@@ -586,9 +586,9 @@ var OrderWidget = TsBaseWidget.extend({
             var client_id = this.check_customer_get_id();
             if (client_id){
             $.when(self.ts_model.get('selectedOrder').get_last_line_by('3month', client_id))
-            .done(function(){
+            .then(function(){
             })
-            .fail(function(){
+            .catch(function(){
                 alert(_t("NOT WORKING"));
             })
             }
@@ -604,7 +604,7 @@ var OrderWidget = TsBaseWidget.extend({
             }
            this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder(true)
            $.when( self.ts_model.ready2 )
-           .done(function(){
+           .then(function(){
                 if (self.ts_model.last_sale_id){
                     var domain = [['id', '=', self.ts_model.last_sale_id]]
                 }
@@ -616,10 +616,10 @@ var OrderWidget = TsBaseWidget.extend({
                    if (orders[0]) {
                    var my_id = orders[0].id
                    $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
-                   .done(function(){
+                   .then(function(){
                         self.ts_model.last_sale_id = false
                    })
-                   .fail(function(){
+                   .catch(function(){
                         self.ts_model.last_sale_id = false
                     });
 
@@ -683,7 +683,7 @@ var OrderWidget = TsBaseWidget.extend({
             else{
                 this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
                 $.when( self.ts_model.ready3 )
-                .done(function(){
+                .then(function(){
                     var currentOrder = self.ts_model.get('selectedOrder')
                     self.doPrint(currentOrder.get('erp_id'));
                 });
@@ -705,7 +705,7 @@ var OrderWidget = TsBaseWidget.extend({
             else{
                 this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
                 $.when( self.ts_model.ready4 )
-                .done(function(){
+                .then(function(){
                     var currentOrder = self.ts_model.get('selectedOrder')
                     self.send_mail(current_order.get('erp_id'));
                 });
@@ -992,10 +992,10 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             // Esto deshabilita los botones
             // el flujo normal es que se cargue la pantalla y aparezca habilitado de nuevo
             // cuidad is hay excepciones y no recarga la página, habŕia que llamar a la función de abaj.o
-            this.$('.confirm-button').prop('disabled', true);
-            this.$('.cancel-button').prop('disabled', true);
-            this.$('.save-button').prop('disabled', true);
-            this.$('.print-button').prop('disabled', true);
+            // this.$('.confirm-button').prop('disabled', true);
+            // this.$('.cancel-button').prop('disabled', true);
+            // this.$('.save-button').prop('disabled', true);
+            // this.$('.print-button').prop('disabled', true);
         },
         enable_more_clicks: function(){
             this.$('.confirm-button').prop('disabled', false);
@@ -1073,7 +1073,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             }
             self.saveCurrentOrder(true)
             $.when( self.ts_model.ready2 )
-            .done(function(){
+            .then(function(){
                 if (self.ts_model.last_sale_id){
                     var domain = [['id', '=', self.ts_model.last_sale_id]]
                 }
@@ -1085,17 +1085,17 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                         if (orders[0]) {
                             // MIG11: Quizá con notación then
                             rpc.query({model: 'sale.order', method: 'confirm_order_from_ui', args:[orders[0].id]})
-                              .done(function(){
+                              .then(function(){
                                     var my_id = orders[0].id
                                     $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
-                                    .done(function(){
+                                    .then(function(){
                                         self.ts_model.last_sale_id = false
                                     })
-                                    .fail(function(){
+                                    .catch(function(){
                                         self.ts_model.last_sale_id = false
                                     });
                               })
-                              .fail(function(unused, event){
+                              .catch(function(unused, event){
                                   //don't show error popup if it fails
                                    self.ts_model.last_sale_id = false
                               });
@@ -1138,7 +1138,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             else{
                 this.ts_widget.new_order_screen.totals_order_widget.saveCurrentOrder()
                 $.when( self.ts_model.ready3 )
-                .done(function(){
+                .then(function(){
                     var currentOrder = self.ts_model.get('selectedOrder')
                     self.doPrint(currentOrder.get('erp_id'));
                 });
@@ -1158,7 +1158,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             }
             if (!avoid_load){
                 $.when( self.ts_model.ready2 )
-                .done(function(){
+                .then(function(){
                     if (self.ts_model.last_sale_id){
                     var domain = [['id', '=', self.ts_model.last_sale_id]]
                     }
@@ -1170,11 +1170,11 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                            if (orders[0]) {
                            var my_id = orders[0].id
                            $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
-                           .done(function(){
+                           .then(function(){
                                 self.ts_model.last_sale_id = false
                                 self.ts_model.ready3.resolve()
                            })
-                           .fail(function(){
+                           .catch(function(){
                                 self.ts_model.last_sale_id = false
                                 self.ts_model.ready3.reject()
                            });

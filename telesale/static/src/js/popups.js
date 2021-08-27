@@ -47,7 +47,7 @@ var SoldHistoryWidget = TsBaseWidget.extend({
 
         var product_obj = this.selected_line.get_product();
         $.when(this.get_history_from_server(product_obj.id))
-        .done(function(){
+        .then(function(){
             self.renderElement();
         });
     }
@@ -57,6 +57,13 @@ var SoldHistoryWidget = TsBaseWidget.extend({
 
 var CustomerHistoryPopUp = PopUpWidget.extend({
     template: 'Customer-History-PopUp',
+    // init: function(){
+    //     var self = this
+    //     this._super(parent, options);
+    //     // Define Grid Widget
+    //     this.sold_history_widget = new SoldHistoryWidget(this, {});
+    //     this.sold_history_widget.appendTo($(this.el));
+    // },
     start: function(){
         var self = this
         // Define Grid Widget

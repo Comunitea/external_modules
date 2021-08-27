@@ -35,7 +35,7 @@ var HistorylineWidget = TsBaseWidget.extend({
         }
         else {
         $.when(self.ts_widget.new_order_screen.order_widget.load_order_from_server(self.order.id, false))
-            .done(function(){
+            .then(function(){
                 $('button#button_no').click();
             });
         }
@@ -48,7 +48,7 @@ var HistorylineWidget = TsBaseWidget.extend({
                 alert(_t('Please select a customer before adding a order line'));
         }else{
         $.when(self.ts_widget.new_order_screen.order_widget.load_order_from_server(self.order.id, 'add_lines'))
-            .done(function(){
+            .then(function(){
                 $('button#button_no').click();
             });
         }
@@ -164,10 +164,10 @@ var OrderHistoryWidget = TsBaseWidget.extend({
         // Geting my orders filter
         var my_orders = this.$('#my_orders').is(":checked");
         $.when(this.load_partner_orders(partner_id,date_start,date_end, my_orders))
-        .done(function(){
+        .then(function(){
             self.renderElement();
             self.$('#input-customer').val(partner_name);
-        }).fail(function(){
+        }).catch(function(){
            alert("Error fetching orders from server");
            this.$('#input-customer').focus();
         });

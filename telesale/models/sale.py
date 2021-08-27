@@ -46,8 +46,8 @@ class SaleOrder(models.Model):
                                              partner_obj.id),
             # 'order_policy': 'picking',
             'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
-            'requested_date': order['requested_date'] + " 19:00:00" or
-            False,
+            # 'requested_date': order['requested_date'] + " 19:00:00" or
+            # False,
             'note': order['note'],
             'observations': order['observations'],
             'warehouse_id': warehouse_id,
@@ -89,6 +89,8 @@ class SaleOrder(models.Model):
                 line_objs = t_order_line.search(domain)
                 line_objs.unlink()
             self._create_lines_from_ui(order_obj, order_lines)
+            # import pudb.remote
+            # pudb.remote.set_trace(term_size=(271, 64))
             if order['action_button'] == 'confirm':
                 order_obj.action_confirm()
             # MIG11 comentado, no dependo del commercial rules
@@ -100,6 +102,8 @@ class SaleOrder(models.Model):
         t_order_line = self.env['sale.order.line']
         for line in order_lines:
             vals = self._get_ts_line_vals(order_obj, line)
+            # import pudb.remote
+            # pudb.remote.set_trace(term_size=(271, 64))
             t_order_line.create(vals)
 
     def _get_ts_line_vals(self, order_obj, line):
@@ -109,10 +113,11 @@ class SaleOrder(models.Model):
         product_uom_qty = line.get('qty', 0.0)
         vals = {
             'order_id': order_obj.id,
+            # 'partner_id': order_obj.partner_id.id,
             'name': product_obj.display_name,
             'product_id': product_obj.id,
             'price_unit': line.get('price_unit', 0.0),
-            'product_uom': product_uom_id,
+            'product_uom': product_uom_id or 1,
             'product_uom_qty': product_uom_qty,
             'tax_id': [(6, 0, line.get('tax_ids', False))],
             'discount': line.get('discount', 0.0),
@@ -129,11 +134,13 @@ class SaleOrder(models.Model):
 
     @api.model
     def ts_onchange_partner_id(self, partner_id):
+        import ipdb; ipdb.set_trace()
         res = {}
         order_t = self.env['sale.order']
         partner = self.env['res.partner'].browse(partner_id)
 
-        order = order_t.new({'partner_id': partner_id,
+        order = order_t.new({
+                            # 'partner_id': partner_id,
                              'date_order': time.strftime("%Y-%m-%d"),
                              'pricelist_id':
                              partner.property_product_pricelist.id})

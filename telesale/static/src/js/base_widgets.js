@@ -42,24 +42,29 @@ var SynchIconWidget = TsBaseWidget.extend({
     },
 });
 
-var TsWidget = TsBaseWidget.extend({
-    template: 'TsWidget',
-    init: function() {
-        this._super(arguments[0],{});
+// MIG: Si no es TypeError: widget.getTitle is not a function
+// var TsWidget = TsBaseWidget.extend({
+//     template: 'TsWidget',
+var AbstractAction = require('web.AbstractAction');
+var TsWidget = AbstractAction.extend({
+    contentTemplate: 'TsWidget',
+    init: function(parent, action) {
+        this._super(parent, action);
         this.ts_model = new models.TsModel(this.session,{ts_widget:this});
         this.ts_widget = this; //So that Tswidget's childs have ts_widget set automatically
     },
     start: function() {
         var self = this;
-        return self.ts_model.ready.done(function(){
+        return self.ts_model.ready.then(function(){
             self.renderElement();
             self.build_widgets(); // BUILD ALL WIDGETS AND CREENS WIDGETS
+            debugger;
             self.screen_selector.set_default_screen(); // set principal screen
             self.$('.loader').animate({opacity:0},1500,'swing',function(){self.$('.loader').hide();});
             self.add_shortkey_events();
             self.$("#partner").focus();
 
-        }).fail(function(){   // error when loading models data from the backend
+        }).catch(function(){   // error when loading models data from the backend
             self.try_close();
         });
     },
@@ -86,7 +91,6 @@ var TsWidget = TsBaseWidget.extend({
     build_widgets: function() {
         var self = this;
         // --------  SCREEN WIDGETS ---------
-
         //New Order Screen (default)
         this.new_order_screen = new Screens.OrderScreenWidget(this, {});
         this.new_order_screen.appendTo(this.$('#content'));
@@ -107,9 +111,10 @@ var TsWidget = TsBaseWidget.extend({
         this.key_shorts_screen = new Screens.KeyShortsScreenWidget(this, {});
         this.key_shorts_screen.appendTo(this.$('#content'));
         
+        debugger;
         // --------  POP UP WIDGETS ---------
-        this.filter_customer_popup = new PopUps.CustomerHistoryPopUp(this, {});
-        this.filter_customer_popup.appendTo(this.$('#content'));
+        // this.filter_customer_popup = new PopUps.CustomerHistoryPopUp(this, {});
+        // this.filter_customer_popup.appendTo(this.$('#content'));
         
         // Sale History Screen
         this.sale_history_screen = new Screens.SaleHistoryScreenWidget(this, {});

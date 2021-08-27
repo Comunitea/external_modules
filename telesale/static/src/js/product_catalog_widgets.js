@@ -158,7 +158,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var offset = (this.page - 1) * 100;
 
         $.when(this.load_products_from_server(product_name, product_barcode, offset))
-        .done(function(){
+        .then(function(){
             self.renderElement();
             self.$('#search-product').val(self.last_search)
             self.$('#search-product-barcode').val(self.last_barcode_search)

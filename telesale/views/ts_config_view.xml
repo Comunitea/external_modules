@@ -5,7 +5,7 @@
         <field name="name">ts.session.opening.form.view</field>
         <field name="model">ts.config</field>
         <field name="arch" type="xml">
-            <form string="TeleSale Session Opening" version="7.0">
+            <form string="TeleSale Session Opening">
                 
                 <button name="open_ui" type="object" string="Start Session" 
                     class="oe_highlight"/>
@@ -25,7 +25,6 @@
         <field name="name">Your Session</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">ts.config</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
     </record>

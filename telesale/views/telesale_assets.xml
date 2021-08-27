@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="/telesale/static/src/css/key_shorts.css" id="ts-stylesheet"/>
         <link rel="stylesheet" href="/telesale/static/src/css/sale_history.css" id="ts-stylesheet"/>
 
+        <script type="text/javascript" src="/telesale/static/lib/backbone/backbone.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/main.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/mousetrap.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/ts_base_widget.js"></script>

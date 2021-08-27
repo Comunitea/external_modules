@@ -11,7 +11,6 @@ class TsConfig(models.Model):
                        help="An internal identification of the telesale")
 
     # Methods to open the POS
-    @api.multi
     def open_ui(self):
         assert len(self.ids) == 1, "You can open only one session at a time"
         return {

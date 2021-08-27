@@ -8,7 +8,7 @@ from openerp.exceptions import except_orm
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    @api.multi
+
     @api.depends('name', 'default_code')
     def _get_display_name(self):
         for template in self:
@@ -22,7 +22,6 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    @api.multi
     @api.depends('product_tmpl_id.name', 'default_code')
     def _get_display_name(self):
         for product in self:

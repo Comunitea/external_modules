@@ -24,9 +24,9 @@ exports.ScreenSelector = core.Class.extend({
         for(var screen_name in this.screen_set){
             this.screen_set[screen_name].hide();
         }
-        for(var popup_name in this.popup_set){
-            this.popup_set[popup_name].hide();
-        }
+        // for(var popup_name in this.popup_set){
+        //     this.popup_set[popup_name].hide();
+        // }
     },
     set_current_screen: function(screen_name){
         var new_screen = this.screen_set[screen_name];
