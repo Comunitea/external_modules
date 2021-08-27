@@ -134,7 +134,6 @@ class SaleOrder(models.Model):
 
     @api.model
     def ts_onchange_partner_id(self, partner_id):
-        import ipdb; ipdb.set_trace()
         res = {}
         order_t = self.env['sale.order']
         partner = self.env['res.partner'].browse(partner_id)

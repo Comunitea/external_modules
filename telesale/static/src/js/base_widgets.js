@@ -58,7 +58,6 @@ var TsWidget = AbstractAction.extend({
         return self.ts_model.ready.then(function(){
             self.renderElement();
             self.build_widgets(); // BUILD ALL WIDGETS AND CREENS WIDGETS
-            debugger;
             self.screen_selector.set_default_screen(); // set principal screen
             self.$('.loader').animate({opacity:0},1500,'swing',function(){self.$('.loader').hide();});
             self.add_shortkey_events();
@@ -111,7 +110,6 @@ var TsWidget = AbstractAction.extend({
         this.key_shorts_screen = new Screens.KeyShortsScreenWidget(this, {});
         this.key_shorts_screen.appendTo(this.$('#content'));
         
-        debugger;
         // --------  POP UP WIDGETS ---------
         // this.filter_customer_popup = new PopUps.CustomerHistoryPopUp(this, {});
         // this.filter_customer_popup.appendTo(this.$('#content'));
