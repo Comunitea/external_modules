@@ -1,0 +1,330 @@
+ /* Principal screen */
+.telesale {
+    font-size: 1.4vmin;
+/*    font-weight: normal;*/
+    /*position: absolute;*/
+    position: fixed; /*con los css explicitos en la carpeta views*/
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/*  ********* The black loading screen ********* */
+.telesale .loader{
+    background-color: #222;
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:100%;
+    z-index: 999;
+    text-align: center;
+    font-family: Lato;
+    color: #555555;
+}
+.telesale .scrollable-y{
+overflow: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+.telesale .loader-feedback{
+    width: 400px;
+    height: 160px;
+    margin: -60px -200px;
+    position: absolute;
+    left: 50%; top: 50%;
+    text-align: center;
+}
+.telesale .loader-feedback h1{
+    font-weight: 300;
+}
+.telesale .loader-feedback .progressbar{
+    background: rgb(73,73,73);
+    height: 1px;
+}
+.telesale .loader-feedback .progressbar > .progress{
+    height: 100%;
+    background: black;
+    width: 0%;
+    box-shadow: 0px 0px 5px rgba(255,255,255,0.35);
+}
+.telesale .loader-feedback .button{
+    display: inline-block;
+    margin: 25px auto;
+    line-height: 42px;
+    padding: 0px 16px;
+    font-size: 20px;
+    font-weight: 300;
+    border: solid 1px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.telesale .loader-feedback .button:active{
+    color: #222;
+    background: #555555;
+}
+.telesale .not-supported-browser .message{
+    width:600px;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: #d3d3d3;
+    font-size: 14px;
+}
+/* Top Bar with principal buttons */
+.telesale #topheader {
+    position:relative;
+    width: 100%;
+    height: 3%;
+    color: gray;
+    background: #393939;
+    display: flex;
+}
+
+.telesale .topbar-start {
+    width: 80%;
+    height: 100%;
+}
+
+.telesale .topbar-end {
+    width: 20%;
+    height: 100%;
+    display: flex;
+}
+
+/*Content of screens*/
+.telesale #content {
+    position: relative;
+    width: 100%;
+    height: 97%;
+    background: #F0EEEE;
+}
+
+.telesale #content button:focus{
+  background: #F5DAD6
+  }
+/******************************************** TOP BAR *******************************************************/
+/*Close button*/
+.telesale #topheader .header-button{
+    float:right;
+    height:100%;
+    padding-left:10px;
+    padding-right:10px;
+    border-right:  1px solid #3a3a3a;
+    border-left:  1px solid #3a3a3a;
+    color:#DDD;
+    line-height:200%;
+    margin-top: auto;
+    vertical-align: middle;
+    cursor: pointer;
+
+    -webkit-transition-property: background;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease-out;
+}
+.telesale #topheader button:focus{
+    background: linear-gradient(#F5DAD6, #FC1616);
+    /*border-color: #FC1616 2px;*/
+}
+/*Screens Buttons*/
+.telesale #topheader .select-screen-buttons{
+    position:relative;
+    /* width: 88%; */
+    height: 100%;
+    color: gray;
+    background: #393939;
+    display: flex;
+
+}
+/*  ********* CUSTOM MULTICOMPANY SWITCH WIDGET ********* */
+.telesale #placeholder-switch-company{
+    width: 100%;
+    height: 100%;
+    text-align: right;
+    padding-right: 10px;
+}
+.telesale #placeholder-switch-company .o_switch_company_menu{
+    width: 100%;
+    height: 100%;
+    list-style-type: none; 
+
+}
+.telesale #placeholder-switch-company .oe_topbar_name {
+    max-width: 150px;
+}
+.telesale #placeholder-switch-company a {
+   color: #ff2535;
+   line-height: 230%
+}
+
+.telesale label{
+    display:block;
+    margin:0.1vmin
+    font-weight: normal;
+}
+
+/* The notifications indicator */
+.telesale .oe_ts_synch-notification{
+    float:right;
+    color: rgba(255,255,255,0.4);
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    height:100%;
+    font-size:16px;
+    vertical-align:middle;
+    font-style: italic;
+    cursor:pointer;
+}
+.telesale .oe_ts_synch-notification.oe_inactive{
+    cursor: default;
+}
+.telesale .oe_ts_synch-notification .oe_status_red{
+    display:inline-block;
+    cursor:pointer;
+    width:16px; height:16px;
+    background: url("../img/gtk-no.png") no-repeat ;
+}
+
+.telesale .oe_ts_synch-notification .oe_status_green{
+    display:inline-block;
+    width:16px; height:16px;
+    background: url("../img/gtk-yes.png") no-repeat;
+}
+
+
+/*.telesale ol#screen-list-buttons {
+    display: inline;
+}*/
+
+.telesale li.screen-selector-button {
+    display: inline;
+}
+.telesale li.select-screen button {
+    font-weight: 900;
+}
+
+
+.telesale .tele-analysis-content{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #00FFFF;
+}
+
+.telesale .key-shorts-content{
+    width: 100%;
+    position: absolute;
+    padding-left: 1.5%;
+    top: 0;
+    bottom: 0;
+    background: #F0EEEE;
+    overflow: auto;
+}
+
+.telesale .ui-autocomplete-input{
+    color:black;
+    font-size: 1.3vmin;
+    line-height: 0;
+}
+
+.telesale input{
+    color:black;
+    padding:0.5vmin !important; /*width:100%;
+    height:50%;*/
+    height: 2vh;
+
+}
+.telesale .mandatory{
+    background:rgb(161, 161, 255);
+    width: 100%;
+
+}
+.telesale .mandatory:focus{
+    border: 1px solid black;
+}
+.telesale .warning-red{
+    background:#FF3232;
+
+}
+.telesale button:focus {
+    outline: none !important;
+    border-color: #719ECE;
+    box-shadow: 0 0 10px #FF0000;
+}
+
+.telesale input:focus {
+    outline: none !important;
+    border-color: #000000;
+    box-shadow: 0 0 10px #000000;
+}
+
+
+.telesale .center-content{
+    display:table-cell;
+    vertical-align: middle;
+}
+
+.telesale #topheader button.selected-screen{
+    background: #ff4a4a;
+}
+
+/* .telesale .col-sm-1 .col-md-1 .col-lg-1 .col-2 .col-sm-2 .col-md-2 .col-lg-2 .col-3 .col-sm-3 .col-md-3 .col-lg-3 .col-4 .col-sm-4 .col-md-4 .col-lg-4 .col-5 .col-sm-5 .col-md-5 .col-lg-5 .col-6 .col-sm-6 .col-md-6 .col-lg-6 .col-7 .col-sm-7 .col-md-7 .col-lg-7 .col-8 .col-sm-8 .col-md-8 .col-lg-8 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 0.4vw !important;
+    padding-left: 0.4vw !important;
+  } */
+
+.ui-helper-hidden-accessible { display:none; }
+
+.ui-autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  float: left;
+  display: none;
+  min-width: 160px;
+  _width: 160px;
+  padding: 4px 0;
+  margin: 2px 0 0 0;
+  list-style: none;
+  background-color: #ffffff;
+  border-color: #ccc;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+
+ .ui-menu-item > a.ui-corner-all {
+    display: block;
+    padding: 3px 15px;
+    clear: both;
+    font-weight: normal;
+    line-height: 18px;
+    color: #555555;
+    white-space: nowrap;
+
+    &.ui-state-hover, &.ui-state-active {
+      color: #ffffff;
+      text-decoration: none;
+      background-color: #0088cc;
+      border-radius: 0px;
+      -webkit-border-radius: 0px;
+      -moz-border-radius: 0px;
+      background-image: none;
+    }
+  }

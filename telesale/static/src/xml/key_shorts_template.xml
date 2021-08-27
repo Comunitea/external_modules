@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <templates id="template" xml:space="preserve">
+
+   <t t-name="Key-Shorts-Screen-Widget">
+        <div class="key-shorts-content">
+
+            <h1>Atajos de teclado para moverse rápidamente por la aplicación</h1>
+
+            <br/>
+
+            <h2>Cambio de página</h2>
+            <table class="keyshorts-table">
+                <tbody>
+                    <tr>
+                        <td>ALT + Q</td>
+                        <td>Nuevo pedido</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + W</td>
+                        <td>Histórico Ventas</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + E></td>
+                        <td>Catálogo de productos</td>
+                    </tr>
+                   <tr>
+                        <td>ALT + R</td>
+                        <td>Listado clientes</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + T</td>
+                        <td>Historial Pedidos</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + Y</td>
+                        <td>Atajos Teclado (Esta Página)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+
+            <h2>Barra de pedidos</h2>
+            <table class="keyshorts-table">
+                <tbody>
+                    <tr>
+                        <td>ALT + O</td>
+                        <td>Crear nuevo pedido</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + P</td>
+                        <td>Borrar pedido</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+
+            <h2>Barra botones de pedido</h2>
+            <table class="keyshorts-table">
+                <tbody>
+                    <tr>
+                        <td>ALT + A</td>
+                        <td>Bóton</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + S</td>
+                        <td>Eliminar línea de pedido</td>
+                    </tr>
+
+                    <tr>
+                        <td>CTRL + U</td>
+                        <td>Botón ULT</td>
+                    </tr>
+                    <tr>
+                        <td>CTRL + M</td>
+                        <td>Botón VUA</td>
+                    </tr>
+                   <tr>
+                        <td>CTRL + A</td>
+                        <td>Botón SO</td>
+                    </tr>
+                    <tr>
+                        <td>CTRL + P</td>
+                        <td>Botón PROMO</td>
+                    </tr>
+                    <tr>
+                        <td>CTRL + I</td>
+                        <td>Botón INFO</td>
+                    </tr>
+                    <tr>
+                        <td>CTRL + Q</td>
+                        <td>Botón CUSTOMER</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+
+            <h2>Manejo del pedido</h2>
+            <table class="keyshorts-table">
+                <tbody>
+                    <tr>
+                        <td>CTRL + ALT + B</td>
+                        <td>Botón BORRADOR</td>
+                    </tr>
+                    <tr>
+                        <td>CTRL + ALT + BACKSPACE</td>
+                        <td>Botón CANCELAR</td>
+                    </tr>
+                     <tr>
+                        <td>CTRL + ALT + ENTER</td>
+                        <td>Botón CONFIRMAR</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+
+            <h2>Cambios de focos</h2>
+            <table class="keyshorts-table">
+                <tbody>
+                    <tr>
+                        <td>CTRL + down</td>
+                        <td>Foco en la línea de abajo</td>
+                    </tr>
+                    <tr>
+                        <td>CTRL + up</td>
+                        <td>Foco en la línea de arriba</td>
+                    </tr>
+                    <tr>
+                        <td>CTRL + left</td>
+                        <td>Foco en botones pedidos</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + Z</td>
+                        <td>Foco en cliente</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + X</td>
+                        <td>Foco en primera línea de pedido</td>
+                    </tr>
+                    <tr>
+                        <td>ALT + C</td>
+                        <td>Foco en botón mas de últimos vendidos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </t>
+
+</templates>

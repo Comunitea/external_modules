@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <templates id="template_customer_list" xml:space="preserve">
+
+    <t t-name="CustomerListScreenWidget">
+        <div class="customer-list-screen">
+            <div id="placeholder-customer-list-widget">
+            </div>
+        </div>
+    </t>
+
+    <t t-name="CustomerLine">
+        <tr class='client-line' t-att-data-id='partner.id'>
+            <td><t t-esc='partner.name' /></td>
+            <td><t t-esc='partner.commercial_partner_name' /></td>
+            <td><t t-esc='partner.street' /></td>
+            <td><t t-esc='partner.zip and partner.zip or ""' /></td>
+            <td><t t-esc='partner.city or ""' /></td>
+            <td><t t-esc='partner.state_id and partner.state_id[1] or ""' /></td>
+            <td><t t-esc='partner.phone or partner.mobile or ""' /></td>
+            <td><t t-esc='partner.email or partner.email or ""' /></td>
+            <td>
+                <t t-if="partner.company_type == 'person'">
+                    <span class='detail company_type'>Address</span>
+                </t>
+                 <t t-if="partner.company_type == 'company'">
+                    <span class='detail company_type'>Company</span>
+                </t>
+            </td>
+        </tr>
+    </t>
+
+    <!-- VIEW DETAILS -->
+    <t t-name="CustomerDetails">
+        <section class='client-details'>
+
+            <div class='client-name'><t t-esc='partner.name' /></div>
+            <div class='edit-buttons'>
+                <div class='button edit'><i class='fa fa-pencil-square' /></div>
+            </div>
+
+            <div class='client-details-box-header clearfix'>
+                    
+                <div class='client-detail'>
+                    <span class='label'>Type</span>
+                    <t t-if="partner.company_type == 'person'">
+                        <span class='detail company_type'>Address</span>
+                    </t>
+                     <t t-if="partner.company_type == 'company'">
+                        <span class='detail company_type'>Company</span>
+                    </t>
+                </div>
+                <div class='client-detail'>
+                    <span class='label'>Comercial name</span>
+                    <t t-if='partner.comercial'>
+                        <span class='detail client-comercial'><t t-esc='partner.comercial' /></span>
+                    </t>
+                    <t t-if='!partner.comercial'>
+                        <span class='detail client-comercial'>N/A</span>
+                    </t>
+                </div>
+                <div class='client-detail'>
+                    <span class='label'>Related Partner</span>
+                    <t t-if='partner.parent_id'>
+                        <span class='detail client-parent'><t t-esc='partner.parent_id[1]' /></span>
+                    </t>
+                    <t t-if='!partner.parent_id'>
+                        <span class='detail client-parent empty'>N/A</span>
+                    </t>
+                </div>
+            </div>
+
+            <div class='client-details-box clearfix'>
+                <div class='client-details-left'>
+                    <div class='client-detail'>
+                        <span class='label'>Address</span>
+                        <t t-if='partner.address'>
+                            <span class='detail client-address'><t t-esc='partner.address' /></span>
+                        </t>
+                        <t t-if='!partner.address'>
+                            <span class='detail client-address empty'>N/A</span>
+                        </t>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Zip</span>
+                        <t t-if='partner.zip'>
+                            <span class='detail client-phone'><t t-esc='partner.zip' /></span>
+                        </t>
+                        <t t-if='!partner.zip'>
+                            <span class='detail client-phone empty'>N/A</span>
+                        </t>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Province</span>
+                        <t t-if='partner.state_id'>
+                            <span class='detail client-state'><t t-esc='partner.state_id[1]'/></span>
+                        </t>
+                        <t t-if='!partner.state_id'>
+                            <span class='detail client-state empty'>N/A</span>
+                        </t>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Country</span>
+                        <t t-if='partner.country_id'>
+                            <span class='detail client-country'><t t-esc='partner.country_id[1]'/></span>
+                        </t>
+                        <t t-if='!partner.state_id'>
+                            <span class='detail client-country empty'>N/A</span>
+                        </t>
+                    </div>
+                </div>
+                
+                <div class='client-details-right'>
+                    <div class='client-detail'>
+                        <span class='label'>Phone</span>
+                        <t t-if='partner.phone'>
+                            <span class='detail client-phone'><t t-esc='partner.phone' /></span>
+                        </t>
+                        <t t-if='!partner.phone'>
+                            <span class='detail client-phone empty'>N/A</span>
+                        </t>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Email</span>
+                        <t t-if='partner.email'>
+                            <span class='detail client-email'><t t-esc='partner.email' /></span>
+                        </t>
+                        <t t-if='!partner.email'>
+                            <span class='detail client-email empty'>N/A</span>
+                        </t>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Reference</span>
+                        <t t-if='partner.ref'>
+                            <span class='detail ref'><t t-esc='partner.ref'/></span>
+                        </t>
+                        <t t-if='!partner.ref'>
+                            <span class='detail ref empty'>N/A</span>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </t>
+
+    <!-- EDIT OR CREATE -->
+    <t t-name="CustomerDetailsEdit">
+        <section class='client-details edit'>
+
+            
+            <div><input class='detail client-name' name='name' t-att-value='partner.name' placeholder='Name'></input></div>
+            <div class='edit-buttons'>
+                        <div class='button undo'><i class='fa fa-undo' /></div>
+                        <div class='button save'><i class='fa fa-floppy-o' /></div>
+                    </div>
+
+            <div class='client-details-box-header clearfix'>
+                <div class='client-detail'>
+                        <span class='label'>Type</span>
+                        <select style="display:inline;" class="company_type" name="type_select">
+                              <option value="person">Address</option> 
+                              <option value="company" selected="1">Company</option>
+                        </select>
+                </div>
+                <div class='client-detail'>
+                        <span class='label'>Comercial name</span>
+                        <input class='detail client-comercial' name='comercial'       t-att-value='partner.comercial || ""' placeholder='Comercial name'></input>
+                </div>
+                <div class='client-detail'>
+                        <span class='label'>Related Partner</span>
+                        <input id="parent" class='detail parent'   name='parent_id'         t-att-value='partner.parent_id ? partner.parent_id[1] : ""' placeholder='Parent'></input>
+                </div>    
+            </div>
+
+            <div class='client-details-box clearfix'>
+                <div class='client-details-left'>
+                    <div class='client-detail'>
+                        <span class='label'>Street</span>
+                        <input class='detail client-address-street' name='street'       t-att-value='partner.street || ""' placeholder='Street'></input>
+                    </div>  
+                    <div class='client-detail'>
+                        <span class='label'>Postcode</span>
+                        <input class='detail client-address-zip'    name='zip'          t-att-value='partner.zip || ""' placeholder='ZIP'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>City</span>
+                        <input class='detail client-address-city'   name='city'         t-att-value='partner.city || ""' placeholder='City'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Province</span>
+                        <input id="state" class='detail client-state'   name='state_id'         t-att-value='partner.state_id ? partner.state_id[1] : ""' placeholder='Province'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Country</span>
+                        <input id="country" class='detail client-country'   name='country_id'         t-att-value='partner.country_id ? partner.country_id[1] : ""' placeholder='Country'></input>
+                    </div>
+                </div>
+
+                <div class='client-details-right'>
+                    <div class='client-detail'>
+                        <span class='label'>Phone</span>
+                        <input class='detail client-phone'  id='phone' name='phone'    type='tel'      t-att-value='partner.phone || ""'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Email</span>
+                        <input class='detail client-email'  name='email'    type='email'    t-att-value='partner.email || ""'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Reference: </span>
+                        <input class='detail ref'           name='ref'     t-att-value='partner.ref || ""'></input>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label'>Pricelist</span>
+                        <input id="pricelist" class='detail pricelist'   name='property_product_pricelist'         t-att-value='partner.pricelist_name || ""' placeholder='Pricelist'></input>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </t>
+
+    <t t-name="CustomerListWidget">
+        <div class="customer-list-content">
+            <section class="top-content">
+                <div class= "col-7 centerinside fullheight">
+                    <div class='centerthis searchbox'>
+                        <input onclick="this.select()" id="search-client"  placeholder='Search Customers' />
+                        <span class='search-clear'></span>
+                    </div>
+                    <span class='searchbox'></span>
+                </div>
+                <div class="col-1 centerinside fullheight">
+                    <div class='centerthis searchbox'>
+                        <span class='button new-customer'>
+                            <i class='fa fa-user'></i>
+                            <i class='fa fa-plus'></i>
+                        </span>
+                    </div>
+                </div>
+                <div class= "col-2 centerinside fullheight">
+                    <div class= "centerthis">
+                        <span class='button next oe_hidden highlight'>
+                            Select Customer
+                            <i class='fa fa-angle-double-right'></i>
+                        </span>
+                    </div>
+                </div>
+                <div class= "col-2 centerinside fullheight">
+                    <div class= "centerthis">
+                        <span class='button next2 oe_hidden highlight'>
+                            Set Delivery Address
+                            <i class='fa fa-angle-double-right'></i>
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="full-content">
+                <div class='window'>
+                    <section class='subwindow collapsed'>
+                        <div class='subwindow-container collapsed'>
+                            <div class='subwindow-container-fix client-details-contents'>
+                            </div>
+                        </div>
+                    </section>
+                    <section class='subwindow'>
+                        <div class='subwindow-container'>
+                            <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                <table class='client-list'>
+                                    <thead>
+                                            <th class="cl-name">Name</th>
+                                            <th class="cl-cname">Commercial Name</th>
+                                            <th class="cl-street">Address</th>
+                                            <th class="cl-zip">Zip</th>
+                                            <th class="cl-city">City</th>
+                                            <th class="cl-state">Province</th>
+                                            <th class="cl-phone">Phone</th>
+                                            <th class="cl-email">Email</th>
+                                            <th class="cl-type">Type</th>
+
+                                    </thead>
+                                    <tbody class='client-list-contents'>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+        </div>
+    </t>
+
+</templates>

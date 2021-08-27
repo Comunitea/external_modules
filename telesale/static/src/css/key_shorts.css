@@ -1,0 +1,17 @@
+.telesale .key-shorts-content .keyshorts-table{
+    width: 50%;
+    table-layout: fixed;
+    font-size: 1.4vmin;
+    line-height: 2vh;
+}
+
+.telesale .key-shorts-content .keyshorts-table tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+}
+
+.telesale .key-shorts-content .keyshorts-table thead > tr,
+.telesale .key-shorts-content .keyshorts-table tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+

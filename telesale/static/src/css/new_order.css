@@ -1,0 +1,513 @@
+/******************************************* NEW ORDER SCREEN *******************************************************/
+
+.telesale .order-screen-content{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #F0EEEE;
+}
+.telesale #pagespart {
+        position: relative;
+    width: 100%;
+    height: 3%;
+    color: #d6d2d2;
+    border-top: solid 1px #a7a7a7;
+    background: -moz-linear-gradient(#7A7A7A, #4D4D4D);
+    /* background: -webkit-gradient(linear, left top, left bottom, from(#7A7A7A), to(#636363)); */
+    background: #4c4c4c;
+}
+.telesale #toppart {
+    position: relative;
+    width: 100%;
+    height: 15%;
+    border-top: solid 1px #CECBCB;
+    border-bottom: solid 1px #CECBCB;
+}
+.telesale .row{
+  margin-left: auto;
+  margin-right: auto;
+}
+.telesale #middlepart {
+    position: relative;
+    width:100%;
+    height: 63%;
+    border-right: solid 1px #CECBCB;
+    display: flex;
+}
+.telesale #leftpart {
+    /*position: relative;
+    float:left;
+    width:75.8%;*/
+    height: 100%;
+    border-right: solid 1px #CECBCB;
+}
+.telesale #rightpart {
+    /*position: relative;
+    float: left;
+    width:24%;*/
+    height: 100%;
+}
+.telesale #bottompart {
+    position: relative;
+    /*clear:both;*/
+    width: 100%;
+    height: 18.5%;
+    border-top: solid 1px #CECBCB;
+    display:flex;
+}
+.telesale #bottompart table{
+    margin-top: 0.4vh;
+}
+.telesale .bottomleft {
+    /*position: relative;
+    float:left;
+    width:75.8%;*/
+    height: 100%;
+    display: flex;
+}
+
+.telesale .bottomright {
+    /*position: relative;
+    float:left;
+    width:75.8%;*/
+    height: 100%;
+    display: flex;
+}
+.telesale #bottompart  input{
+    color:black;
+    width:100%;
+    height:50%;
+    display: flex;
+}
+.telesale #toppart  input{
+    color:black;
+    width:100%;
+    height:2vh;
+    font-size:1.3vmin;
+}
+.telesale .semiheight{
+    height: 50%;
+}
+.telesale .notes{
+    resize: none;
+    font-size: 1.2vmin;
+}
+.telesale .fullheight{
+    height: 100%;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+}
+.telesale .fullwidth{
+    width: 100%;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+}
+.telesale .leftpartbuttons{
+    /*width: 0px;*/
+    vertical-align: middle;
+}
+
+.telesale .centerinside{
+  display: table;
+}
+
+.telesale .centerthis{
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0px;
+}
+
+.telesale #pagespart button {
+    color: black;
+    height:98%;
+    vertical-align: middle;
+    margin-right:0px;
+    font-size:1.4vmin;
+    border: 1px solid #353A7E;
+    background: #7f82ac;
+}
+.telesale div#order-selector {
+    display: inline;
+}
+.telesale #orders {
+    display: inline;
+}
+.telesale li.order-selector-button {
+    display: inline;
+}
+.telesale li.selected-order button {
+    font-weight: 900;
+}
+.telesale  button.select-order{
+    /*background: linear-gradient(#FC1616, #F5DAD6);*/
+   background: #FC1616;
+}
+.telesale #pagespart button.selected-order{
+    background: #FC1616;
+    /*background: linear-gradient(#FC1616, #F5DAD6);*/
+}
+.telesale #topheader button {
+    color: black;
+    font-size:1.4vmin;
+    height:100%;
+    width: 100%;
+    margin:0;
+    padding: 0;
+    vertical-align: middle;
+    border: 1px solid #353A7E;
+    background: #7f82ac;
+}
+.telesale div#order-selector {
+    display: inline;
+}
+
+
+/***************************************************************************************************************/
+/************************************************ TOP-PART *****************************************************/
+/***************************************************************************************************************/
+.telesale #toppart .toppart-form {
+    position: relative;
+    width: 100%;
+    height: 80%;
+    display: table;
+}
+.telesale #toppart .toppart-form2 {
+    position: relative;
+    width: 100%;
+    height: 20%;
+    display: table;
+}
+.telesale #toppart .form-col {
+    width: 19%;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+.telesale #toppart .form-col2 {
+    width: 100%;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+.telesale #toppart .toppart-form .form-col label {
+    width: 30%;
+    float: left;
+    margin-left: 7%;
+}
+.telesale #toppart .toppart-form .form-col input {
+    /*display: line;*/
+    width: 50%;
+    line-height: 10px;
+}
+.telesale #toppart .toppart-form2 .form-col2 label {
+    width: 6%;
+    float: left;
+    margin-left: 1.2%;
+}
+.telesale #toppart .toppart-form2 .form-col2 input {
+    /*display: line;*/
+    width: 90%;
+    line-height: 10px;
+}
+.telesale .red{
+    font-weight: normal;
+    color: red;
+}
+/***************************************************************************************************************/
+/************************************************ LEFT PART ****************************************************/
+/***************************************************************************************************************/
+
+.telesale #leftpart .button-order-container{
+    position: relative;
+    height: 6%;
+    width:100%;
+    border-bottom: solid 2px #CECBCB;
+    display: flex;
+}
+.telesale #leftpart .button-order-container .functional-buttons{
+    display:table-cell;
+    vertical-align: middle;
+    width: 80%;
+}
+.telesale #leftpart .button-order-container .span-state{
+    font-size: 1.5vmin;
+    width: 100%;
+    text-align: center;
+}
+.telesale #leftpart .button-order-container button {
+    color:black;
+    width:100%;
+    /*font-weight: normal;*/
+    font-size: 1.2vmin;
+    border: 2px solid #353A7E;
+    background: #7f82ac;
+   
+}
+
+/* order container Table*/
+.telesale  #leftpart .order-container{
+    position: relative;
+    height: 93%;
+    width:100%;
+    overflow:auto;
+}
+
+/* Order lines table*/
+.telesale #leftpart .order-container .order-line-table {
+    margin-top: 1vh;
+    width: 100%;
+/*    border: 1px solid #000;
+*/    font-weight: normal;
+    color:black;
+}
+
+.telesale  #leftpart .order-container .order-line-table th, .telesale  #leftpart .order-container .order-line-table td {
+    padding: 0px 8px;
+    font-size:1.4vmin;
+}
+.telesale  #leftpart .order-container .order-line-table tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+    height: 1vmin;
+}
+
+.telesale  #leftpart .order-container .order-line-table thead > tr,
+.telesale  #leftpart .order-container .order-line-table tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.telesale  #leftpart .order-container .order-line-table tr.highlight{
+    transition: all 150ms linear;
+    background: rgb(110,200,155) !important;
+    color: white;
+}
+.telesale  #leftpart .order-container .order-line-table tr.lowlight{
+    transition: all 150ms linear;
+    background: rgb(216, 238, 227);
+}
+.telesale  #leftpart .order-container .order-line-table tr.lowlight:nth-child(even){
+    transition: all 150ms linear;
+}
+
+.telesale  #leftpart .order-container .order-line-table th.header-nline{
+    width: 4%;
+}
+/*.telesale  #leftpart .order-container .order-line-table th.header-code{
+    width: 10%;
+}*/
+.telesale  #leftpart .order-container .order-line-table th.header-product{
+    width: 30%;
+}
+.telesale  #leftpart .order-container .order-line-table th.header-qty{
+    width: 9%;
+}
+.telesale  #leftpart .order-container .order-line-table th.header-unit{
+    width: 8%;
+}
+.telesale  #leftpart .order-container .order-line-table th.header-pvp{
+    width: 8%;
+}
+.telesale  #leftpart .order-container .order-line-table th.header-disc{
+    width: 8%;
+}
+
+/*.telesale  #leftpart .order-container .order-line-table td{
+    border: 1px solid #000;
+    cursor:pointer;
+    text-align: center;
+}*/
+/*fix intput to cell width*/
+.telesale  #leftpart .order-container .order-line-table td input{
+    width: 100%;
+    box-sizing: border-box;
+    color: black;
+    height: 2vmin;
+    font-size:1.3vmin;
+    font-weight: normal;
+}
+/*.telesale  #leftpart .order-container .order-line-table td.cell-nline{
+    width: 4%;
+}
+.telesale  #leftpart .order-container .order-line-table td.cell-code{
+    width: 10%;
+}
+.telesale  #leftpart .order-container .order-line-table td.cell-product{
+    width: 20%;
+}
+.telesale  #leftpart .order-container .order-line-table td.cell-unit{
+    width: 8%;
+}
+.telesale  #leftpart .order-container .order-line-table td.cell-qty{
+    width: 9%;
+}
+.telesale  #leftpart .order-container .order-line-table td.cell-pvp{
+    width: 8%;
+}
+.telesale  #leftpart .order-container .order-line-table td.cell-disc{
+    width: 8%;
+}*/
+.telesale  #leftpart .order-container .order-line-table td.cell-pvp input{
+    text-align: right;
+}
+.telesale  #leftpart .order-container .order-line-table td.cell-qty input{
+    text-align: right;
+}
+/*.telesale  #leftpart .order-container .order-line-table td.cell-disc input{
+    text-align: right;
+}*/
+.telesale  #leftpart .order-container .order-line-table .col-discount{
+    text-align: right;
+}
+.telesale  #leftpart .order-container .order-line-table .col-total{
+    text-align: right;
+}
+
+.telesale #leftpart .selected{
+    background: #97f7a3 !important;
+}
+
+/***************************************************************************************************************/
+/************************************************ RIGHT PART ****************************************************/
+/***************************************************************************************************************/
+.telesale .fullheight .overflow{
+    overflow: auto;
+}
+.telesale #bottompart table {
+    position:relative;
+    /*margin-top: 6px;*/
+    width: 100%;
+    height: 100%;
+    border: 1px solid #000;
+    /*margin-left: 3px;*/
+    color:black;
+    font-size: 1.2vmin;
+    cursor: pointer;
+}
+
+.telesale #bottompart td{
+    border: 1px solid #000;
+    /*cursor:pointer;*/
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1.2vmin;
+}
+
+.telesale #bottompart th{
+    border: 1px solid #000;
+    width: 40%;
+    /*height: 9%;*/
+    background: #7f82ac;
+    text-align: left;
+    /*padding-left: 2px;*/
+    font-size: 1.2vmin;
+    font-weight: normal;
+    text-align: center;
+
+}
+/* Sold Product table*/
+.telesale #rightpart .sold-product-table {
+    margin-top: 1vh;
+    width: 100%;
+    border: 1px solid #000;
+    font-weight: normal;
+    color:black;
+    font-size:1.4vmin;
+    overflow:auto;
+}
+
+.telesale #rightpart .sold-product-table th{
+  border: 1px solid #000;
+  height: 2vh;
+  background: #7f82ac;
+  text-align: center;
+  font-weight: normal;
+}
+.telesale #rightpart .sold-product-table th.pc-header-name{
+    width: 75%;
+}
+.telesale #rightpart .sold-product-table th.pc-header-price{
+    width: 15%;
+}
+.telesale #rightpart .sold-product-table th.pc-header-add{
+    width: 10%;
+}
+.telesale  #rightpart .sold-product-table td{
+    border: 1px solid #000;
+    cursor:pointer;
+    vertical-align: middle;
+}
+.telesale  #rightpart .sold-product-table td.pc-cell-code{
+    text-align: right;
+    padding-right: 3px;
+}
+.telesale #rightpart .pc-cell-stock{
+    text-align: center;
+}
+.telesale #rightpart .sold-product-table button {
+    color: black;
+    vertical-align: middle;
+    margin-right:0px;
+    border: 1px solid #353A7E;
+    background: #7f82ac;
+    font-size:1.5vmin;
+}
+
+
+/***************************************************************************************************************/
+/************************************************ BOTTOM PART **************************************************/
+/***************************************************************************************************************/
+
+.telesale #bottompart button {
+    color: black;
+    height:100%;
+    font-size: 1.5vmin;
+    font-weight: normal;
+    border: 2px solid #353A7E;
+    background: #7f82ac;
+}
+.telesale #bottompart .save-button {
+    background: #7f82ac;
+}
+.telesale #bottompart .cancel-button {
+    background: #d65252
+}
+.telesale #bottompart .confirm-button {
+    background: #3fab3f;
+}
+.telesale #bottompart .print-button {
+    background: #81baed;
+}
+/*.telesale #bottompart button:focus{
+  background: #eaff41
+}*/
+.telesale #bottompart .bottompart-form {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: table;
+}
+.telesale #bottompart .form-col {
+    width: 25%;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+.telesale #bottompart .form-col label {
+    width: 33%;
+    float: left;
+    margin-left: 7%;
+}
+.telesale #bottompart .form-col input {
+    width: 40%;
+}
+.telesale #bottompart .form-col input.total {
+    font-weight: normal;
+}
+.telesale #bottompart .totalorder{
+    font-size: 1.4vmin;
+    color: blue;
+}
+.telesale #bottompart .order-button {
+    width: 100%;
+    height: 25.0%;
+    /*height: 100%;*/
+}

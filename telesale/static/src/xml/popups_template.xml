@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <templates id="template_popups" xml:space="preserve">
+
+<!--     <t t-name="Customer-History-PopUp">
+
+        <div class="customer-history-pop-up">
+            <div id="placeholder-history-widget">
+            </div>
+            <div class="close-block">
+                <div class="col-12 fullheight centerinside">
+                  <div class="centerthis">
+                    <button id="close-histoy">Close</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </t> -->
+
+
+    <t t-name="Customer-History-PopUp">
+
+        <div class="customer-history-popup">
+            <div class="close-block">
+                <div class="col-12 fullheight centerinside">
+                  <div class="centerthis">
+                    <button id="close-filter">Close</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+     <t t-name="Sold-History-Widget">
+        <div class="sold-history-content">
+            <table class="sold-history-table">
+                <thead>
+                    <th class="history-date">Date</th>
+                    <th class="history-qty">Qty</th>
+                    <th class="header-price">Price</th>
+                    <th class="header-discount">Discount</th>
+
+                </thead>
+                <tbody>
+                    <t t-foreach="widget.line_results" t-as="line">
+                        <tr>
+                            <td>
+                                <span t-esc="line.date"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.qty"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.price_unit"/>
+                            </td>
+                              <td>
+                                <span t-esc="line.discount"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+     </t>
+
+</templates>
