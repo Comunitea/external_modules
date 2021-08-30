@@ -2,6 +2,7 @@ odoo.define('telesale.TsBaseWidget', function (require) {
 "use strict";
 
 var Widget = require('web.Widget');
+var SessionStorageService = require('web.SessionStorageService');
 
 // This is a base class for all Widgets in the TS.
 var TsBaseWidget = Widget.extend({

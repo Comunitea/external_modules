@@ -26,4 +26,10 @@
         <script type="text/javascript" src="/telesale/static/src/js/product_catalog_widgets.js"></script>
         <script type="text/javascript" src="/telesale/static/src/js/customer_list_widgets.js"></script>
     </template>
+
+
+    <template id="telesale.assets_common" name="TS Assets Common">
+        <t t-call-assets="telesale.assets" t-js="false" />
+        <t t-call-assets="telesale.assets" t-css="false" />
+    </template>
 </odoo>

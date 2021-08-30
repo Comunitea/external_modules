@@ -23,26 +23,20 @@
                 session_info: <t t-raw="session_info"/>,
             };
         </script>
-<!-- 
-         <script type="text/javascript">
-            var odoo = <t t-raw="json.dumps({
-                'csrf_token': request.csrf_token(None),
-                'session_info': session_info,
-                'login_number': login_number,
-                'debug': debug,
-            })"/>;
-        </script> -->
 
         <t t-call-assets="web.assets_common" t-css="true"/>
         <t t-call-assets="web.assets_backend" t-css="true"/>
-        <!-- <t t-call-assets="web_editor.summernote" t-css="false"/> -->
-        <!-- <t t-call-assets="web_editor.assets_editor" t-css="false"/> -->
-        <t t-call-assets="telesale.assets"/>
+        <t t-call-assets="telesale.assets" t-css="true"/>
 
         <script type="text/javascript" id="loading-script" t-raw="init2">
             odoo.define('web.web_client', function (require) {
                 var WebClient = require('web.AbstractWebClient');
                 var web_client = new WebClient();
+                const AbstractService = require('web.AbstractService');
+                const env = require('web.env');
+
+                owl.config.mode = env.isDebug() ? 'dev' : 'prod';
+                owl.Component.env = env;
 
                 web_client._title_changed = function() {};
                 web_client.show_application = function() {
@@ -52,6 +46,8 @@
                 $(function () {
                     web_client.setElement($(document.body));
                     web_client.start();
+                    AbstractService.prototype.deployServices(env);
+                    web_client.isStarted = true;
                 });
                 return web_client;
             });
