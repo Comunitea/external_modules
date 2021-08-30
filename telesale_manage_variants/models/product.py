@@ -84,7 +84,6 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    @api.multi
     def write(self, vals):
         """
         Set template active or archived if all of his variats are of the same

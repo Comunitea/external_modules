@@ -4,13 +4,13 @@
 
 {
     'name': 'Telesale Manage Variants',
-    'version': '10.0.0.0.0',
+    'version': '14.0.0.0.0',
     'author': 'Comunitea ',
     "category": "Custom",
     'license': 'AGPL-3',
     'depends': [
         'telesale',
-        'custom_sale_order_variant_mgmt'
+        # 'custom_sale_order_variant_mgmt'
     ],
     'contributors': [
         "Comunitea ",
