@@ -102,6 +102,7 @@ var TsModel = Backbone.Model.extend({
     load_server_data: function(){
         var self=this;
 
+        debugger;
         var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', session.uid]])
             .then(function(users){
                 self.set('user', users[0]);
@@ -114,7 +115,7 @@ var TsModel = Backbone.Model.extend({
                     'partner_id',
                     'country_id'
                 ],
-                [['id','=',users[0].company_id[0]]]);
+                [['id','=',session.user_context.allowed_company_ids[0]]]);
                 }).then(function(companies){
                     self.set('company',companies[0]);
 
@@ -259,7 +260,8 @@ var TsModel = Backbone.Model.extend({
         var self = this;
         // MIG11: qUIZÁS EL .then ES .THEM Y EL FAIL, VA COMO FUNCIÓN SUELTA SEGUIDA DE LA PRINCIPAL.
         // .THEN(FUNCION DONE, FUNCION ERROR), VER EJEMPLOS EN POS
-        rpc.query({model: 'sale.order', method: 'cancel_order_from_ui', args:[[erp_id]]})
+        debugger;
+        rpc.query({model: 'sale.order', method: 'cancel_order_from_ui', args:[[erp_id]], kwargs: {context: session.user_context}})
             .then(function(){
                 //remove from db if success
                 self.get('selectedOrder').destroy(); // remove order from UI
@@ -286,7 +288,8 @@ var TsModel = Backbone.Model.extend({
         //try to push an order to the server
         // shadow : true is to prevent a spinner to appear in case of timeout
         // MIG11: Quizá con notación then
-        rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]]})
+        debugger;
+        rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]], kwargs: {context: session.user_context}})
             .then(function(orders){
                 //remove from db if success
                 self.db.remove_order(order.id);
@@ -315,7 +318,8 @@ var TsModel = Backbone.Model.extend({
         //try to push an order to the server
         // shadow : true is to prevent a spinner to appear in case of timeout
         // MIG11: Quizá con notación then
-        rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]]})
+        debugger;
+        rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]], kwargs: {context: session.user_context}})
             .then(function(orders){
                 //remove from db if success
                 self.get('selectedOrder').destroy(); // remove order from UI
@@ -371,12 +375,12 @@ var TsModel = Backbone.Model.extend({
         var state = order_obj.state
         order_model.set('state', state);
       
-        if (order_obj.requested_date){
-            var only_date = order_obj.requested_date.split(' ');
+        if (order_obj.expected_date){
+            var only_date = order_obj.expected_date.split(' ');
             if(only_date.length > 1){
-              order_model.set('requested_date', only_date[0]);
+              order_model.set('expected_date', only_date[0]);
             }else {
-              order_model.set('requested_date', order_obj.requested_date);
+              order_model.set('expected_date', order_obj.expected_date);
             }
         }
         order_model.set('num_order',order_obj.name);
@@ -722,7 +726,7 @@ var Order = Backbone.Model.extend({
             observations: '',
             shipp_addr: '',
             date_order: this.getStrDate(),
-            requested_date: this.getStrDatePlanned(),
+            expected_date: this.getStrDatePlanned(),
             limit_credit: (0),
             customer_debt: (0),
             //order #bottompart values
@@ -873,7 +877,7 @@ var Order = Backbone.Model.extend({
             erp_id: this.get('erp_id'),
             erp_state: this.get('erp_state'),
             date_order: this.get('date_order'),
-            requested_date: this.get('requested_date'),
+            expected_date: this.get('expected_date'),
             note: this.get('coment'),
             observations: this.get('observations'),
             client_order_ref: this.get('client_order_ref'),

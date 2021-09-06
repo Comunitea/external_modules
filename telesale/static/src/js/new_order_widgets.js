@@ -82,7 +82,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
         this.$('#shipp_addr').blur(_.bind(this.set_value, this, 'shipp_addr'))
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
-        this.$('#requested_date').blur(_.bind(this.set_value, this, 'requested_date'))
+        this.$('#expected_date').blur(_.bind(this.set_value, this, 'expected_date'))
         this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
         this.$('#client_order_ref').blur(_.bind(this.set_value, this, 'client_order_ref'))
         this.$('#observations').blur(_.bind(this.set_value, this, 'observations'))
@@ -714,8 +714,8 @@ var OrderWidget = TsBaseWidget.extend({
         },
         get_order_fields: function(){
         // Called when load an order from server
-            return ['partner_shipping_id','note','comercial','client_order_ref','name',
-                    'partner_id','date_order','state','amount_total','requested_date', 'pricelist_id', 'observations']
+            return ['partner_shipping_id','note','client_order_ref','name',
+                    'partner_id','date_order','state','amount_total','expected_date', 'pricelist_id', 'observations']
 
         },
         get_line_fields: function(){

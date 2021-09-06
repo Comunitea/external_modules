@@ -46,7 +46,7 @@ class SaleOrder(models.Model):
                                              partner_obj.id),
             # 'order_policy': 'picking',
             'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
-            # 'requested_date': order['requested_date'] + " 19:00:00" or
+            # 'expected_date': order['expected_date'] + " 19:00:00" or
             # False,
             'note': order['note'],
             'observations': order['observations'],
@@ -89,8 +89,6 @@ class SaleOrder(models.Model):
                 line_objs = t_order_line.search(domain)
                 line_objs.unlink()
             self._create_lines_from_ui(order_obj, order_lines)
-            # import pudb.remote
-            # pudb.remote.set_trace(term_size=(271, 64))
             if order['action_button'] == 'confirm':
                 order_obj.action_confirm()
             # MIG11 comentado, no dependo del commercial rules
@@ -179,7 +177,6 @@ class SaleOrderLine(models.Model):
                              'date_order': time.strftime("%Y-%m-%d"),
                              'pricelist_id': pricelist_id})
         line = self.new({'order_id': order.id,
-                         'partner_id': partner_id,
                          'product_id': product_id})
         line.product_id_change()
         line._onchange_discount()
@@ -188,7 +185,7 @@ class SaleOrderLine(models.Model):
             'product_uom': line.product_uom.id,
             'product_uom_qty': line.product_uom_qty,
             'discount': line.discount,
-            'tax_id': [x.id for x in line.tax_id],
+            'tax_id': [x._origin.id for x in line.tax_id],
             'standard_price': line.product_id.standard_price
 
         })

@@ -24,9 +24,20 @@
             };
         </script>
 
-        <t t-call-assets="web.assets_common" t-css="true"/>
-        <t t-call-assets="web.assets_backend" t-css="true"/>
-        <t t-call-assets="telesale.assets" t-css="true"/>
+        <!-- <script type="text/javascript">
+            var odoo = <t t-raw="json.dumps({
+                'csrf_token': request.csrf_token(None),
+                'session_info': session_info,
+                'login_number': login_number,
+                'debug': debug,
+            })"/>;
+        </script> -->
+
+        <t t-call-assets="web.assets_common"/>
+        <t t-call-assets="web.assets_backend"/>
+        <!-- <t t-call-assets="telesale.assets"/> -->
+        <t t-call="telesale.assets_common" />
+        <!-- <t t-call="web.conditional_assets_tests"/> -->
 
         <script type="text/javascript" id="loading-script" t-raw="init2">
             odoo.define('web.web_client', function (require) {
@@ -34,9 +45,6 @@
                 var web_client = new WebClient();
                 const AbstractService = require('web.AbstractService');
                 const env = require('web.env');
-
-                owl.config.mode = env.isDebug() ? 'dev' : 'prod';
-                owl.Component.env = env;
 
                 web_client._title_changed = function() {};
                 web_client.show_application = function() {
