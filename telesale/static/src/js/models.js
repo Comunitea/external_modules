@@ -28,6 +28,7 @@ var TsModel = Backbone.Model.extend({
     initialize: function(session, attributes) {
     Backbone.Model.prototype.initialize.call(this, attributes);
         var  self = this;
+        debugger;
         this.session = session;  // openerp session
         this.ready = $.Deferred(); // used to notify the GUI that the PosModel has loaded all resources
         this.ready2 = $.Deferred(); // used to notify the GUI that thepromotion has writed in the server
@@ -83,13 +84,13 @@ var TsModel = Backbone.Model.extend({
     fetch: function(model, fields, domain, ctx){
         this._load_progress = (this._load_progress || 0) + 0.05;
         // this.ts_widget.loading_message(_t('Loading')+' '+model,this._load_progress);
-        return rpc.query({model: model, method: 'search_read', args:[domain, fields]})
+        return rpc.query({model: model, method: 'search_read', args:[domain, fields], kwargs: {context: session.user_context}})
     },
     fetch_limited_ordered: function(model, fields, domain, limit, orderby, ctx){
-        return rpc.query({model: model, method: 'search_read', args:[domain, fields], orderBy: orderby, limit:limit})
+        return rpc.query({model: model, method: 'search_read', args:[domain, fields], orderBy: orderby, limit:limit, kwargs: {context: session.user_context}})
     },
     fetch_ordered: function(model, fields, domain, orderby, ctx){
-        return rpc.query({model: model, method: 'search_read', args:[domain, fields], orderBy: orderby})
+        return rpc.query({model: model, method: 'search_read', args:[domain, fields], orderBy: orderby, kwargs: {context: session.user_context}})
     },
     _get_product_fields: function(){
         return  ['display_name', 'default_code', 'uom_id', 'barcode']
@@ -101,8 +102,6 @@ var TsModel = Backbone.Model.extend({
     // OVERWRITED IN MODULE TELESALE MANAGE VARIANTS because dificult to inherit because of the deferred return
     load_server_data: function(){
         var self=this;
-
-        debugger;
         var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', session.uid]])
             .then(function(users){
                 self.set('user', users[0]);
@@ -132,7 +131,7 @@ var TsModel = Backbone.Model.extend({
                     // PRODUCTS
                     var product_fields = self._get_product_fields();
                    
-                    return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]]})
+                    return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]], kwargs: {context: session.user_context}})
                 }).then(function(products){
                     // TODO OPTIMIZAR
                     self.db.add_products(products);
@@ -260,7 +259,6 @@ var TsModel = Backbone.Model.extend({
         var self = this;
         // MIG11: qUIZÁS EL .then ES .THEM Y EL FAIL, VA COMO FUNCIÓN SUELTA SEGUIDA DE LA PRINCIPAL.
         // .THEN(FUNCION DONE, FUNCION ERROR), VER EJEMPLOS EN POS
-        debugger;
         rpc.query({model: 'sale.order', method: 'cancel_order_from_ui', args:[[erp_id]], kwargs: {context: session.user_context}})
             .then(function(){
                 //remove from db if success
@@ -288,7 +286,6 @@ var TsModel = Backbone.Model.extend({
         //try to push an order to the server
         // shadow : true is to prevent a spinner to appear in case of timeout
         // MIG11: Quizá con notación then
-        debugger;
         rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]], kwargs: {context: session.user_context}})
             .then(function(orders){
                 //remove from db if success
@@ -318,7 +315,6 @@ var TsModel = Backbone.Model.extend({
         //try to push an order to the server
         // shadow : true is to prevent a spinner to appear in case of timeout
         // MIG11: Quizá con notación then
-        debugger;
         rpc.query({model: 'sale.order', method: 'create_order_from_ui', args:[[order]], kwargs: {context: session.user_context}})
             .then(function(orders){
                 //remove from db if success
@@ -893,7 +889,7 @@ var Order = Backbone.Model.extend({
           self.ts_model.get('sold_lines').reset(cache_sold_lines)
       }
       else{
-          var loaded = rpc.query({model: 'sale.order.line', method: 'get_last_lines_by', args:[period, client_id]})
+          var loaded = rpc.query({model: 'sale.order.line', method: 'get_last_lines_by', args:[period, client_id], kwargs: {context: session.user_context}})
               .then(function(order_lines){
                       if (!order_lines){
                         order_lines = []

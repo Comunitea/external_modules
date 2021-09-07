@@ -3,6 +3,7 @@ odoo.define('telesale.PopUps', function (require) {
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
 var rpc = require('web.rpc');
+var session = require('web.session');
 
 
 var PopUpWidget = TsBaseWidget.extend({
@@ -34,7 +35,7 @@ var SoldHistoryWidget = TsBaseWidget.extend({
         self=this;
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
-        var loaded = rpc.query({model: 'product.product', method: 'get_history_product_info', args:[product_id, partner_id]})
+        var loaded = rpc.query({model: 'product.product', method: 'get_history_product_info', args:[product_id, partner_id], kwargs: {context: session.user_context}})
         .then(function(result){
             self.line_results = result
         });

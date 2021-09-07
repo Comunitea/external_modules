@@ -7,6 +7,7 @@ var models = require('telesale.models');
 var _t = core._t;
 
 var TsBaseWidget = require('telesale.TsBaseWidget');
+var session = require('web.session');
 
 
 
@@ -172,9 +173,8 @@ var DataOrderWidget = TsBaseWidget.extend({
             }
             else {
                 var partner_obj = self.ts_model.db.get_partner_by_id(partner_id);
-                rpc.query({model: 'sale.order', method: 'ts_onchange_partner_id', args:[partner_id]})
+                rpc.query({model: 'sale.order', method: 'ts_onchange_partner_id', args:[partner_id], kwargs: {context: session.user_context}})
                 .then(function(result){
-
                     var cus_name = self.ts_model.getComplexName(partner_obj);
                     self.order_model.set('partner', cus_name);
                     self.order_model.set('partner_code', partner_obj.ref ? partner_obj.ref : "");
@@ -371,7 +371,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         }
         var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
         var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
-        return rpc.query({model: 'sale.order.line', method: 'ts_product_id_change', args:[product_id, customer_id, pricelist_id]})
+        return rpc.query({model: 'sale.order.line', method: 'ts_product_id_change', args:[product_id, customer_id, pricelist_id], kwargs: {context: session.user_context}})
         .then(function(result){
             var product_obj = self.ts_model.db.get_product_by_id(product_id);
             self.model.set('code', product_obj.default_code || "");
@@ -393,7 +393,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         var self = this;
         var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
         var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
-        return rpc.query({model: 'sale.order.line', method: 'ts_product_uom_change', args:[product_id, customer_id, pricelist_id, qty]})
+        return rpc.query({model: 'sale.order.line', method: 'ts_product_uom_change', args:[product_id, customer_id, pricelist_id, qty], kwargs: {context: session.user_context}})
         .then(function(result){
             self.model.set('pvp', self.ts_model.my_round(result.price_unit));
             var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
@@ -545,6 +545,9 @@ var OrderWidget = TsBaseWidget.extend({
                 this.ts_model.get('selectedOrder').addLine();
                 var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
                 this.ts_model.get('selectedOrder').selectLine(added_line);
+                // debugger;
+                // this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product').get(0).focus(); //set focus on line when we add one
+                // this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product')[0].focus(); //set focus on line when we add one
                 this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product').focus(); //set focus on line when we add one
             }
         },
@@ -647,6 +650,7 @@ var OrderWidget = TsBaseWidget.extend({
         button_show_client: function(){
             // var win = window.open('', '_blank');
             var client_id = this.check_customer_get_id()
+            debugger;
             if (client_id){
                 this.do_action({
                     type: 'ir.actions.act_window',
@@ -654,7 +658,7 @@ var OrderWidget = TsBaseWidget.extend({
                     res_id: client_id,
                     views: [[false, 'form']],
                     target: 'new',
-                    context: {},
+                    context: session.user_context,
                 });
             }
             else{
@@ -690,7 +694,7 @@ var OrderWidget = TsBaseWidget.extend({
             }
         },
         send_mail: function(order_id){
-            rpc.query({model: 'sale.order', method: 'action_telesale_mail', args:[order_id]})
+            rpc.query({model: 'sale.order', method: 'action_telesale_mail', args:[order_id], kwargs: {context: session.user_context}})
             .then(function(result){
                 alert(_('Email enviado'))
             });
@@ -794,6 +798,9 @@ var OrderWidget = TsBaseWidget.extend({
                     model: orderLine,
                     order: this.ts_model.get('selectedOrder'),
                 });
+                
+                // Si no hago render el wifdget de linea no tendrá $el que es cuando lo necesito
+                line.renderElement()
                 line.appendTo($content);
                 self.orderlinewidgets.push(line);
             }, this));
@@ -876,7 +883,7 @@ var ProductInfoOrderWidget = TsBaseWidget.extend({
             var partner_name = this.ts_model.get('selectedOrder').get('partner');
             var partner_id = this.ts_model.db.partner_name_id[partner_name];
             if (product_id && partner_id){
-                rpc.query({model: 'product.product', method: 'get_product_info', args:[product_id,partner_id]})
+                rpc.query({model: 'product.product', method: 'get_product_info', args:[product_id,partner_id], kwargs: {context: session.user_context}})
                     .then(function(result){
                         self.stock = self.ts_model.my_round(result.stock,2).toFixed(2);
                         self.date = result.last_date != "-" ? self.ts_model.localFormatDate(result.last_date.split(" ")[0]) : "-";
@@ -1084,7 +1091,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                     .then(function(orders){
                         if (orders[0]) {
                             // MIG11: Quizá con notación then
-                            rpc.query({model: 'sale.order', method: 'confirm_order_from_ui', args:[orders[0].id]})
+                            rpc.query({model: 'sale.order', method: 'confirm_order_from_ui', args:[orders[0].id],kwargs: {context: session.user_context}})
                               .then(function(){
                                     var my_id = orders[0].id
                                     $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )

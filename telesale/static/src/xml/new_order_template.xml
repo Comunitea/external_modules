@@ -5,6 +5,15 @@
     <!-- *************************************************************** TS WIDGET ***************************************************** -->
     <!-- *********************************************************************************************************************************** -->
     <t t-name="TsWidget">
+        <!-- dEFINO AQUIN LOS CSS porque sino no me los coge sin debug = assets -->
+        <link rel="stylesheet" href="/telesale/static/src/css/new_order.css" id="ts-stylesheet2"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/new_order.css" id="ts-stylesheet2"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/customer_list.css" id="ts-stylesheet3"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/order_history.css" id="ts-styleshee4"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/product_content.css" id="ts-stylesheet5"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/popups.css" id="ts-stylesheet6"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/key_shorts.css" id="ts-stylesheet7"/>
+        <link rel="stylesheet" href="/telesale/static/src/css/sale_history.css" id="ts-stylesheet8"/>
         <div class="telesale">
             <input id="clearfocus" style="display:none"></input>
             <!-- <div id="topheader">

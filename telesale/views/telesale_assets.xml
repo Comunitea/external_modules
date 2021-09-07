@@ -38,4 +38,5 @@
         <t t-call-assets="telesale.pos_assets_backend" t-css="false" />
         <t t-call-assets="telesale.assets" t-css="false" />
     </template>
+
 </odoo>

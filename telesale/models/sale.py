@@ -137,7 +137,7 @@ class SaleOrder(models.Model):
         partner = self.env['res.partner'].browse(partner_id)
 
         order = order_t.new({
-                            # 'partner_id': partner_id,
+                            'partner_id': partner_id,
                              'date_order': time.strftime("%Y-%m-%d"),
                              'pricelist_id':
                              partner.property_product_pricelist.id})

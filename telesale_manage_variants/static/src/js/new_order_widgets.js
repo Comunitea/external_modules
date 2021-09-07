@@ -265,6 +265,7 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
     },
 
     //Ovewwrited to focus template
+     // MIG
     button_remove_line: function(){
             var current_order = this.ts_model.get('selectedOrder');
             var selected_line = current_order.getSelectedLine();
@@ -289,19 +290,19 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
     },
     // MIG
     button_add_line: function(){
-    //         // click add line event function
-    //         var order =  this.ts_model.get('selectedOrder')
-    //         var partner_id = this.ts_model.db.partner_name_id[order.get('partner')]
-    //         if (!partner_id){
-    //             alert(_t('Please select a customer before adding a order line'));
-    //             $('#partner').focus();
-    //         }else{
-    //             this.ts_model.get('selectedOrder').addLine();
-    //             var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
-    //             this.ts_model.get('selectedOrder').selectLine(added_line);
-    //             this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-template').focus(); //set focus on line when we add one
-    //         }
-    // },
+            // click add line event function
+            var order =  this.ts_model.get('selectedOrder')
+            var partner_id = this.ts_model.db.partner_name_id[order.get('partner')]
+            if (!partner_id){
+                alert(_t('Please select a customer before adding a order line'));
+                $('#partner').focus();
+            }else{
+                this.ts_model.get('selectedOrder').addLine();
+                var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
+                this.ts_model.get('selectedOrder').selectLine(added_line);
+                this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-template').focus(); //set focus on line when we add one
+            }
+    },
 
     renderElement: function(){
         this._super();

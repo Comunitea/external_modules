@@ -6,6 +6,8 @@ var models = require('telesale.models');
 var rpc = require('web.rpc');
 var core = require('web.core');
 var _t = core._t;
+var session = require('web.session');
+
 
 var exports = {}
 
@@ -86,7 +88,7 @@ exports.SaleHistoryWidget = TsBaseWidget.extend({
         self.partner_name = current_order.get('partner')
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
-        var loaded = rpc.query({model: 'sale.order.line', method: 'ts_get_sale_history', args:[partner_id, pricelist_id, offset, self.limit]})
+        var loaded = rpc.query({model: 'sale.order.line', method: 'ts_get_sale_history', args:[partner_id, pricelist_id, offset, self.limit], kwargs: {context: session.user_context}})
         .then(function(result){
             self.history_lines = result['history_lines'];
             self.result_str = result['result_str'];

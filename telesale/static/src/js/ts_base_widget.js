@@ -5,6 +5,7 @@ var Widget = require('web.Widget');
 var SessionStorageService = require('web.SessionStorageService');
 
 // This is a base class for all Widgets in the TS.
+
 var TsBaseWidget = Widget.extend({
     init:function(parent,options){
         this._super(parent, options);

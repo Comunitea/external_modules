@@ -6,6 +6,7 @@ var models = require('telesale.models');
 var rpc = require('web.rpc');
 var core = require('web.core');
 var _t = core._t;
+var session = require('web.session');
 
 
 var ProductLineWidget = TsBaseWidget.extend({
@@ -140,7 +141,7 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         var search_str = product_name.replace('*', '%')
         var search_barcode = product_barcode.replace('*', '%')
-        var loaded = rpc.query({model: 'product.product', method: 'ts_search_products', args:[search_str, search_barcode, partner_id, pricelist_id, offset]})
+        var loaded = rpc.query({model: 'product.product', method: 'ts_search_products', args:[search_str, search_barcode, partner_id, pricelist_id, offset], kwargs: {context: session.user_context}})
         .then(function(result){
             self.catalog_products = result['products'];
             self.result_str = result['result_str']
@@ -254,7 +255,6 @@ var ProductCatalogWidget = TsBaseWidget.extend({
             var input_field = self.aux_field
             $(input_field).parent().next().children()[0].value = result.price_unit.toFixed(2);
         });
-        return
     },
     bind_onchange_events: function(){
         // this.$('.add-qty').unbind();
