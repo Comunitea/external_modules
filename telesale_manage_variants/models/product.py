@@ -31,14 +31,14 @@ class ProductTemplate(models.Model):
         for dic in read:
             variant_dic[dic['id']] = dic
 
-        for value_x in line_x.value_ids:
+        for value_x in line_x.product_template_value_ids:
             x_attr = {
                 'id': value_x.id,
                 'name': value_x.name
             }
             res['column_attrs'].append(x_attr)
             res['str_table'][value_x.id] = {}
-            for value_y in line_y.value_ids:
+            for value_y in line_y.product_template_value_ids:
                 price = 0.0
                 discount = 0.0
                 y_attr = {
@@ -51,15 +51,19 @@ class ProductTemplate(models.Model):
                 if value_y:
                     values += value_y
                 product = template.product_variant_ids.filtered(
-                    lambda x: not(values - x.attribute_value_ids))[:1]
+                    lambda x: not(values - x.product_template_attribute_value_ids))[:1]
                 if product:
                     var_info = variant_dic[product.id]
                     tax_ids = product._ts_compute_taxes(product,
                                                         var_info['taxes_id'],
                                                         partner_id)
+                    # MIG habilitar get_stock
+                    # result = self.env['sale.order.line'].\
+                    #     ts_product_id_change(product.id, partner_id,
+                    #                          pricelist_id, get_stock=False)
                     result = self.env['sale.order.line'].\
                         ts_product_id_change(product.id, partner_id,
-                                             pricelist_id, get_stock=False)
+                                             pricelist_id)
                     price = product and var_info['price'] or 0.0
                     if result.get('price_unit', 0.0):
                         price = result['price_unit']

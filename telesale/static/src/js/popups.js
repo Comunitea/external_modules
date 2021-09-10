@@ -45,12 +45,13 @@ var SoldHistoryWidget = TsBaseWidget.extend({
     refresh: function(options){
         var self = this;
         this.selected_line = options.selected_line;
-
-        var product_obj = this.selected_line.get_product();
-        $.when(this.get_history_from_server(product_obj.id))
-        .then(function(){
-            self.renderElement();
-        });
+        if (this.selected_line){
+            var product_obj = this.selected_line.get_product();
+            $.when(this.get_history_from_server(product_obj.id))
+            .then(function(){
+                self.renderElement();
+            });
+        }
     }
 
 });
@@ -58,20 +59,20 @@ var SoldHistoryWidget = TsBaseWidget.extend({
 
 var CustomerHistoryPopUp = PopUpWidget.extend({
     template: 'Customer-History-PopUp',
-    // init: function(){
-    //     var self = this
-    //     this._super(parent, options);
-    //     // Define Grid Widget
-    //     this.sold_history_widget = new SoldHistoryWidget(this, {});
-    //     this.sold_history_widget.appendTo($(this.el));
-    // },
     start: function(){
         var self = this
-        // Define Grid Widget
-        this.sold_history_widget = new SoldHistoryWidget(this, {});
-        this.sold_history_widget.appendTo($(this.el));
+        this._super();
+        this.$('#close-filter').off('click').click(function(){
+            self.ts_widget.screen_selector.show_popup('filter_customer_popup', undefined);
+            self.ts_widget.screen_selector.close_popup('filter-customer_popup');
+        })
+        // LLamo a hide en el start, que será la unica vez que entre
+        // Ya que parece que es asincrona la llamada de apendto y no puedo
+        // hacer invisible el popup despues de renderizarelo
+        this.hide()
     },
     show: function(selected_line){
+        debugger;
         var self = this;
         this.sold_history_widget = new SoldHistoryWidget(this, {});
         this.sold_history_widget.appendTo($(this.el));
@@ -83,11 +84,15 @@ var CustomerHistoryPopUp = PopUpWidget.extend({
 
         this._super();
         this.$('#close-filter').off('click').click(function(){
+            // self.ts_widget.screen_selector.show_popup('filter_customer_popup', undefined);
             self.ts_widget.screen_selector.close_popup('filter-customer_popup');
         })
     },
     hide: function(){
-        this.sold_history_widget.destroy();
+        if (this.sold_history_widget){
+
+            this.sold_history_widget.destroy();
+        }
         this._super();
     }
 });

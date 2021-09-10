@@ -24,6 +24,8 @@ exports.ScreenSelector = core.Class.extend({
         for(var screen_name in this.screen_set){
             this.screen_set[screen_name].hide();
         }
+        // Esto ya no funcona en v14
+        // Lo sustituyo por el hide
         // for(var popup_name in this.popup_set){
         //     this.popup_set[popup_name].hide();
         // }

@@ -6,9 +6,12 @@ var TsBaseWidget = require('telesale.TsBaseWidget');
 
 var PopUp = require('telesale.PopUps');
 
-var Model = require('web.DataModel');
+// var Model = require('web.DataModel');
 var core = require('web.core');
 var _t = core._t;
+
+var rpc = require('web.rpc');
+var session = require('web.session');
 
 // Set grid PopUp In 
 BaseWidgets.TsWidget.include({
@@ -192,17 +195,16 @@ var GridWidget = TsBaseWidget.extend({
     // Load Grid From server
     get_grid_from_server: function(template_id){
         self=this;
-        var model = new Model("product.template")
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
-        var loaded = model.call("ts_get_grid_structure",[template_id, partner_id, pricelist_id],  self.ts_model.get_user_ctx())
+        return rpc.query({model: 'product.template', method: 'ts_get_grid_structure', args:[template_id, partner_id, pricelist_id], kwargs: {context: session.user_context}})
         .then(function(result){
             self.column_attrs =result.column_attrs
             self.row_attrs = result.row_attrs
             self.str_table = result.str_table
         });
-        return loaded
+        // return loaded
     },
 
     // Renders the witget waiting for callback of the server
@@ -210,11 +212,15 @@ var GridWidget = TsBaseWidget.extend({
         var self = this;
         this.line_widget = options.line_widget
 
-        var template_obj = this.line_widget.get_template();
-        $.when(this.get_grid_from_server(template_obj.id))
-        .done(function(){
-            self.renderElement();
-        });
+        if (this.line_widget){
+
+            
+            var template_obj = this.line_widget.get_template();
+            $.when(this.get_grid_from_server(template_obj.id))
+            .done(function(){
+                self.renderElement();
+            });
+        }
     },
 
     check_float(input_field){
@@ -231,18 +237,16 @@ var GridWidget = TsBaseWidget.extend({
     call_product_uom_change: function(input_field){
         self=this;
         self.aux_field = input_field
-        var model = new Model("sale.order.line")
         var current_order = this.ts_model.get('selectedOrder');
         var partner_id = this.ts_model.db.partner_name_id[current_order.get('partner')];
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         var qty = parseFloat($(input_field).val());
         var product_id = parseInt($(input_field).parent().parent().parent()[0].getAttribute('variant-id'))
-        return model.call("ts_product_uom_change", [product_id, partner_id, pricelist_id, qty],  self.ts_model.get_user_ctx())
+        return rpc.query({model: 'sale.order.line', method: 'ts_product_uom_change', args:[product_id, partner_id, pricelist_id, qty], kwargs: {context: session.user_context}})
         .then(function(result){
             var input_field = self.aux_field
             $(input_field).parent().parent().next().children()[1].children[0].value = result.price_unit.toFixed(2)
         });
-        return
     },
 
     bind_onchange_events: function(){
@@ -367,7 +371,7 @@ var GridWidget = TsBaseWidget.extend({
 
         // Cancel button
         this.$('#close-filter').off('click').click(function(){
-            self.ts_widget.screen_selector.close_popup('filter_customer_popup');
+            self.ts_widget.screen_selector.close_popup('grid_popup');
         });
 
         this.bind_onchange_events();
@@ -386,10 +390,11 @@ var GridPopUp = PopUp.PopUpWidget.extend({
         // Define Grid Widget
         this.grid_widget = new GridWidget(this, {});
         this.grid_widget.appendTo($(this.el));
-
-        
+        // LLamo a hide en el start, que será la unica vez que entre
+        // Ya que parece que es asincrona la llamada de apendto y no puedo
+        // hacer invisible el popup despues de renderizarelo
+        this.hide()
     },
-
     // Render the withget to load info from server each time we show it.
     show: function(line_widget){
         this.grid_widget = new GridWidget(this, {});
@@ -402,7 +407,9 @@ var GridPopUp = PopUp.PopUpWidget.extend({
         
     },
     hide: function(){
-        this.grid_widget.destroy();
+        if (this.grid_widget){
+            this.grid_widget.destroy();
+        }
         this._super();
     }
 });

@@ -17,11 +17,11 @@
         "Javier Colmenero <javier@comunitea.com>"
     ],
     "data": [
-        # 'views/telesale_assets.xml'
+        'views/telesale_assets.xml'
     ],
     'qweb': [
-        # 'static/src/xml/new_order_template.xml',
-        # 'static/src/xml/popups_template.xml',
+        'static/src/xml/new_order_template.xml',
+        'static/src/xml/popups_template.xml',
     ],
     "installable": True
 }

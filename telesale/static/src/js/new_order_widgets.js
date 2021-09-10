@@ -650,7 +650,7 @@ var OrderWidget = TsBaseWidget.extend({
         button_show_client: function(){
             // var win = window.open('', '_blank');
             var client_id = this.check_customer_get_id()
-            debugger;
+            // debugger;
             if (client_id){
                 this.do_action({
                     type: 'ir.actions.act_window',
@@ -782,6 +782,7 @@ var OrderWidget = TsBaseWidget.extend({
         },
         // Get lines from model and render it
         renderLines: function(options){
+            // debugger;
             var self = this;
 
             // Destroy line widgets

@@ -28,7 +28,6 @@ var TsModel = Backbone.Model.extend({
     initialize: function(session, attributes) {
     Backbone.Model.prototype.initialize.call(this, attributes);
         var  self = this;
-        debugger;
         this.session = session;  // openerp session
         this.ready = $.Deferred(); // used to notify the GUI that the PosModel has loaded all resources
         this.ready2 = $.Deferred(); // used to notify the GUI that thepromotion has writed in the server

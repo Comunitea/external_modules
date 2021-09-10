@@ -214,6 +214,7 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
        this.renderElement();
     },
     renderLines: function(options){
+        // debugger;
         var self = this;
         // Destroy line widgets
         for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
@@ -238,6 +239,9 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
                     order: this.ts_model.get('selectedOrder'),
                 });
                 line.appendTo($content);
+
+                // Mig v14: PAra que tenga elemento $el la linea al guardarla
+                line.renderElement()
                 self.orderlinewidgets.push(line);
             }
         }, this));

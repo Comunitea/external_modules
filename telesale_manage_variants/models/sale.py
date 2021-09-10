@@ -45,56 +45,56 @@ class SaleOrder(models.Model):
 
     # MIG COMENT
     # @api.model
-    # def _create_lines_from_ui(self, order_obj, order_lines):
-    #     """
-    #     Overwrited to create template_lines
-    #     """
-    #     t_order_line = self.env['sale.order.line']
-    #     t_template_line = self.env['sale.order.line.template']
+    def _create_lines_from_ui(self, order_obj, order_lines):
+        """
+        Overwrited to create template_lines
+        """
+        t_order_line = self.env['sale.order.line']
+        t_template_line = self.env['sale.order.line.template']
 
-    #     child_lines = {}     # Key is parent cid, value list of variant lines
-    #     child_qty = {}     # Key is parent cid, value total qty lines
+        child_lines = {}     # Key is parent cid, value list of variant lines
+        child_qty = {}     # Key is parent cid, value total qty lines
 
-    #     # Create template_single lines and get structure to create grouping
-    #     # lines and child.
+        # Create template_single lines and get structure to create grouping
+        # lines and child.
 
-    #     # Delete template lines first, then crteate again
-    #     order_obj.template_lines.unlink()
-    #     for line in order_lines:
-    #         mode = line.pop('mode')
-    #         line.pop('cid')
-    #         if mode == 'template_single':
-    #             vals = self._get_ts_template_line_vals(order_obj, line)
-    #             t_template_line.create(vals)
-    #         elif mode == 'template_variants':
-    #             continue
-    #         elif mode == 'variant':
-    #             p_cid = line.pop('parent_cid')
-    #             if p_cid not in child_lines:
-    #                 child_lines[p_cid] = []
-    #             child_lines[p_cid].append(line)
+        # Delete template lines first, then crteate again
+        order_obj.template_lines.unlink()
+        for line in order_lines:
+            mode = line.pop('mode')
+            line.pop('cid')
+            if mode == 'template_single':
+                vals = self._get_ts_template_line_vals(order_obj, line)
+                t_template_line.create(vals)
+            elif mode == 'template_variants':
+                continue
+            elif mode == 'variant':
+                p_cid = line.pop('parent_cid')
+                if p_cid not in child_lines:
+                    child_lines[p_cid] = []
+                child_lines[p_cid].append(line)
 
-    #             if p_cid not in child_qty:
-    #                 child_qty[p_cid] = 0.0
-    #             child_qty[p_cid] += line.get('qty', 0.0)
+                if p_cid not in child_qty:
+                    child_qty[p_cid] = 0.0
+                child_qty[p_cid] += line.get('qty', 0.0)
 
-    #     # Create parent and child lines
-    #     ctx = dict(self._context)
-    #     ctx.update({'no_create_line': True})
-    #     t_template_line2 = t_template_line.with_context(ctx)
-    #     for p_cid in child_lines:
-    #         #  Create parent line
-    #         list_child_lines = child_lines[p_cid]
-    #         line = list_child_lines[0]
-    #         qty = child_qty[p_cid]
-    #         vals = self._get_ts_parent_template_line_vals(order_obj, line, qty)
-    #         template_line_obj = t_template_line2.create(vals)
+        # Create parent and child lines
+        ctx = dict(self._context)
+        ctx.update({'no_create_line': True})
+        t_template_line2 = t_template_line.with_context(ctx)
+        for p_cid in child_lines:
+            #  Create parent line
+            list_child_lines = child_lines[p_cid]
+            line = list_child_lines[0]
+            qty = child_qty[p_cid]
+            vals = self._get_ts_parent_template_line_vals(order_obj, line, qty)
+            template_line_obj = t_template_line2.create(vals)
 
-    #         #  Create child lines
-    #         for child_line in list_child_lines:
-    #             vals = self._get_ts_line_vals(order_obj, child_line)
-    #             vals.update({'template_line': template_line_obj.id})
-    #             t_order_line.create(vals)
+            #  Create child lines
+            for child_line in list_child_lines:
+                vals = self._get_ts_line_vals(order_obj, child_line)
+                vals.update({'template_line': template_line_obj.id})
+                t_order_line.create(vals)
 
 
 class SaleOrderLine(models.Model):

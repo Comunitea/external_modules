@@ -55,6 +55,7 @@ var TsWidget = AbstractAction.extend({
     },
     start: function() {
         var self = this;
+        this._super()
         return self.ts_model.ready.then(function(){
             self.renderElement();
             self.build_widgets(); // BUILD ALL WIDGETS AND CREENS WIDGETS
@@ -111,13 +112,12 @@ var TsWidget = AbstractAction.extend({
         this.key_shorts_screen.appendTo(this.$('#content'));
         
         // --------  POP UP WIDGETS ---------
-        // this.filter_customer_popup = new PopUps.CustomerHistoryPopUp(this, {});
-        // this.filter_customer_popup.appendTo(this.$('#content'));
+        this.filter_customer_popup = new PopUps.CustomerHistoryPopUp(this, {});
+        this.filter_customer_popup.appendTo(this.$('#content'));
         
         // Sale History Screen
         this.sale_history_screen = new Screens.SaleHistoryScreenWidget(this, {});
         this.sale_history_screen.appendTo(this.$('#content'));
-
         // --------  SCREEN SELECTOR ---------
         var screen_vals = this._get_screen_selector_vals();
         this.screen_selector = new Screens.ScreenSelector(screen_vals);
@@ -374,9 +374,9 @@ var TsWidget = AbstractAction.extend({
         var self = this;
 
         function close(){
-            return rpc.query({model: 'ir.model.data', method: 'search_read', args:[[['name', '=', 'action_client_ts_menu']], ['res_id']]}).pipe(function(res) {
-                window.location = '/web#action=' + res[0]['res_id'];
-            });
+            // return rpc.query({model: 'ir.model.data', method: 'search_read', args:[[['name', '=', 'action_client_ts_menu']], ['res_id']]}).pipe(function(res) {
+            //     window.location = '/web#action=' + res[0]['res_id'];
+            // });
         }
         var draft_order = true
         if(draft_order){

@@ -2,7 +2,10 @@ odoo.define('telesale_manage_variants.models2', function (require) {
 "use strict";
 var TsModels = require('telesale.models');
 var OrderSuper = TsModels.Order
-var Model = require('web.DataModel');
+var session = require('web.session');
+// var Model = require('web.DataModel');
+var rpc = require('web.rpc');
+
 
 var TsModelSuper = TsModels.TsModel
 TsModels.TsModel = TsModels.TsModel.extend({
@@ -70,10 +73,9 @@ TsModels.TsModel = TsModels.TsModel.extend({
         $.extend(res, new_vals)
         return res
     },
-        load_server_data: function(){
+    load_server_data: function(){
         var self=this;
-
-        var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', this.session.uid]])
+        var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', session.uid]])
             .then(function(users){
                 self.set('user', users[0]);
                     // COMPANY
@@ -85,12 +87,12 @@ TsModels.TsModel = TsModels.TsModel.extend({
                     'partner_id',
                     'country_id'
                 ],
-                [['id','=',users[0].company_id[0]]]);
+                [['id','=',session.user_context.allowed_company_ids[0]]]);
                 }).then(function(companies){
                     self.set('company',companies[0]);
 
                     // UNITS
-                    return self.fetch('product.uom', ['name'], []);
+                    return self.fetch('uom.uom', ['name'], []);
                 }).then(function(units){
                     for (var key in units){
                         self.get('units_names').push(units[key].name)
@@ -101,9 +103,8 @@ TsModels.TsModel = TsModels.TsModel.extend({
 
                     // PRODUCTS
                     var product_fields = self._get_product_fields();
-                    var model = new Model('product.product');
-                    // return model.call("fetch_product_data",[product_fields, [ ['sale_ok', '=', true], ['id', 'in', [17245, 9689]] ]], self.get_user_ctx());
-                    return model.call("fetch_product_data",[product_fields, [['sale_ok', '=', true],  ]], self.get_user_ctx());
+                   
+                    return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]], kwargs: {context: session.user_context}})
                 }).then(function(products){
                     // TODO OPTIMIZAR
                     self.db.add_products(products);
@@ -121,8 +122,9 @@ TsModels.TsModel = TsModels.TsModel.extend({
 
                     // PARTNERS
                     var partner_fields = self._get_partner_fields();
-                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery'], ['id', 'in', [9651]]], self.get_user_ctx())
-                    return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']], self.get_user_ctx())
+                    // MIG: No field customer
+                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
+                    return self.fetch('res.partner', partner_fields, [['type', '=', 'delivery']])
                 }).then(function(customers){
                     for (var key in customers){
                         var customer = customers[key];
@@ -136,29 +138,31 @@ TsModels.TsModel = TsModels.TsModel.extend({
                     self.db.add_partners(customers);
 
                     // TAXES
-                    return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']], self.get_user_ctx());
+                    return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']]);
                 }).then(function(taxes) {
                     self.set('taxes', taxes);
                     self.db.add_taxes(taxes);
 
                     // FISCAL POSITION TAX
-                    return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id'], self.get_user_ctx());
+                    return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id']);
                 }).then(function(fposition_map) {
                     self.db.add_taxes_map(fposition_map);
 
                     // FISCAL POSITION
-                    return self.fetch('account.fiscal.position', ['name', 'tax_ids'], self.get_user_ctx());
+                    return self.fetch('account.fiscal.position', ['name', 'tax_ids']);
                 }).then(function(fposition) {
                     self.db.add_fiscal_position(fposition);
 
                     //PRICELIST
-                    return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]], self.get_user_ctx());
+                    return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]]);
                 }).then(function(pricelists) {
                     for (var key in pricelists){
                         var pricelist_name = pricelists[key].name;
                         self.get('pricelist_names').push(pricelist_name);
                     }
                     self.db.add_pricelist(pricelists);
+
+                    //STATES
                     return self.fetch('res.country.state', ['name']);
                 }).then(function(states) {
                     for (var key in states){
@@ -173,23 +177,24 @@ TsModels.TsModel = TsModels.TsModel.extend({
                         self.get('country_names').push(country_name);
                     }
                     self.db.add_countries(countries);
-                    // ADDED BECAUSE DIFICULT INHERIT
-                    var template_fields = ['name', 'display_name', 'product_variant_ids', 'product_variant_count']
-                    // var template_domain = [['sale_ok','=',true], ['id', 'in', [5123, 7269]]]
-                    var template_domain = [['sale_ok','=',true]]
-                    return self.fetch('product.template', template_fields, template_domain, self.get_user_ctx())           
-                }).then(function(templates){
-                    self.db.add_templates(templates);
-
-                    // Set names list to autocomplete
-                    self.set('template_names', [])
-                    for (var key in templates){
-                        var tmp = templates[key]
-                        self.get('template_names').push(tmp.display_name);
-                    }
-                });
+                     // ADDED BECAUSE DIFICULT INHERIT
+                     var template_fields = ['name', 'display_name', 'product_variant_ids', 'product_variant_count']
+                     // var template_domain = [['sale_ok','=',true], ['id', 'in', [5123, 7269]]]
+                     var template_domain = [['sale_ok','=',true]]
+                     return self.fetch('product.template', template_fields, template_domain)           
+                 }).then(function(templates){
+                     self.db.add_templates(templates);
+ 
+                     // Set names list to autocomplete
+                     self.set('template_names', [])
+                     for (var key in templates){
+                         var tmp = templates[key]
+                         self.get('template_names').push(tmp.display_name);
+                     }
+                })
         return loaded;
     },
+
     build_order_create_lines: function(order_model, order_lines){
         var model_by_tmpl_id = {}
         for (var key in order_lines){
@@ -252,11 +257,10 @@ TsModels.TsModel = TsModels.TsModel.extend({
     },
     get_translated_line_name: function(product_id){
         var self = this;
-        var model = new Model("sale.order.line");
         var order = self.get_order()
         var customer_id = self.db.partner_name_id[order.get('partner')];
         var pricelist_id = self.db.pricelist_name_id[order.get('pricelist')];
-        return model.call("ts_product_id_change", [product_id, customer_id, pricelist_id], self.get_user_ctx())
+        return rpc.query({model: 'sale.order.line', method: 'ts_product_id_change', args:[product_id, customer_id, pricelist_id], kwargs: {context: session.user_context}})
         .then(function(result){
             var product_obj = self.db.get_product_by_id(product_id);
             var description = result.name;
