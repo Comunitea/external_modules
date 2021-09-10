@@ -48,9 +48,11 @@ class SaleOrder(models.Model):
     def _create_lines_from_ui(self, order_obj, order_lines):
         """
         Overwrited to create template_lines
+        MIG V14: Ya no creo las template lines, solo las variantes
+        dejo comentado el código viejo
         """
         t_order_line = self.env['sale.order.line']
-        t_template_line = self.env['sale.order.line.template']
+        # t_template_line = self.env['sale.order.line.template']
 
         child_lines = {}     # Key is parent cid, value list of variant lines
         child_qty = {}     # Key is parent cid, value total qty lines
@@ -59,13 +61,14 @@ class SaleOrder(models.Model):
         # lines and child.
 
         # Delete template lines first, then crteate again
-        order_obj.template_lines.unlink()
+        # order_obj.template_lines.unlink()
         for line in order_lines:
             mode = line.pop('mode')
             line.pop('cid')
             if mode == 'template_single':
-                vals = self._get_ts_template_line_vals(order_obj, line)
-                t_template_line.create(vals)
+                continue
+                # vals = self._get_ts_template_line_vals(order_obj, line)
+                # t_template_line.create(vals)
             elif mode == 'template_variants':
                 continue
             elif mode == 'variant':
@@ -81,26 +84,26 @@ class SaleOrder(models.Model):
         # Create parent and child lines
         ctx = dict(self._context)
         ctx.update({'no_create_line': True})
-        t_template_line2 = t_template_line.with_context(ctx)
+        # t_template_line2 = t_template_line.with_context(ctx)
         for p_cid in child_lines:
             #  Create parent line
             list_child_lines = child_lines[p_cid]
             line = list_child_lines[0]
             qty = child_qty[p_cid]
-            vals = self._get_ts_parent_template_line_vals(order_obj, line, qty)
-            template_line_obj = t_template_line2.create(vals)
+            # vals = self._get_ts_parent_template_line_vals(order_obj, line, qty)
+            # template_line_obj = t_template_line2.create(vals)
 
             #  Create child lines
             for child_line in list_child_lines:
                 vals = self._get_ts_line_vals(order_obj, child_line)
-                vals.update({'template_line': template_line_obj.id})
+                # vals.update({'template_line': template_line_obj.id})
                 t_order_line.create(vals)
 
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    # MIG COMENT
+    # MIG COMENT no lo necesito en v14 me parece
     # @api.model
     # def get_last_lines_by(self, period, client_id):
     #     """
