@@ -477,6 +477,7 @@ var OrderlineWidget = TsBaseWidget.extend({
         this.control_arrow_keys()
         // Set autocompletes of product and unit field
         this.load_input_fields();
+        this.$('.col-product').focus()
     },
 });
 
@@ -656,7 +657,7 @@ var OrderWidget = TsBaseWidget.extend({
                     type: 'ir.actions.act_window',
                     res_model: "res.partner",
                     res_id: client_id,
-                    views: [[false, 'form']],
+                    // views: [[false, 'form']],
                     target: 'new',
                     context: session.user_context,
                 });

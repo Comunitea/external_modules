@@ -92,118 +92,325 @@ var TsModel = Backbone.Model.extend({
         return rpc.query({model: model, method: 'search_read', args:[domain, fields], orderBy: orderby, kwargs: {context: session.user_context}})
     },
     _get_product_fields: function(){
-        return  ['display_name', 'default_code', 'uom_id', 'barcode']
+        return  ['display_name', 'default_code', 'uom_id', 'barcode', 'product_tmpl_id']
     },
     _get_partner_fields: function(){
         return  ['parent_id', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type']
     },
     // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded.
     // OVERWRITED IN MODULE TELESALE MANAGE VARIANTS because dificult to inherit because of the deferred return
-    load_server_data: function(){
-        var self=this;
-        var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', session.uid]])
-            .then(function(users){
-                self.set('user', users[0]);
-                    // COMPANY
-                return self.fetch('res.company',
-                [
-                    'currency_id',
-                    'name',
-                    'phone',
-                    'partner_id',
-                    'country_id'
-                ],
-                [['id','=',session.user_context.allowed_company_ids[0]]]);
-                }).then(function(companies){
-                    self.set('company',companies[0]);
+    // MIG V14 COMENTADA POR EL NUEVO METODO CON LA FUNCION LOAD_MODELS PARA FACILITAR LA HERENCIA
+    // load_server_data: function(){
+    //     var self=this;
+    //     var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', session.uid]])
+    //         .then(function(users){
+    //             self.set('user', users[0]);
+    //                 // COMPANY
+    //             return self.fetch('res.company',
+    //             [
+    //                 'currency_id',
+    //                 'name',
+    //                 'phone',
+    //                 'partner_id',
+    //                 'country_id'
+    //             ],
+    //             [['id','=',session.user_context.allowed_company_ids[0]]]);
+    //             }).then(function(companies){
+    //                 self.set('company',companies[0]);
 
-                    // UNITS
-                    return self.fetch('uom.uom', ['name'], []);
-                }).then(function(units){
-                    for (var key in units){
-                        self.get('units_names').push(units[key].name)
-                    }
+    //                 // UNITS
+    //                 return self.fetch('uom.uom', ['name'], []);
+    //             }).then(function(units){
+    //                 for (var key in units){
+    //                     self.get('units_names').push(units[key].name)
+    //                 }
 
-                    self.db.add_units(units);
-                    console.time('Test performance products');
+    //                 self.db.add_units(units);
+    //                 console.time('Test performance products');
 
-                    // PRODUCTS
-                    var product_fields = self._get_product_fields();
+    //                 // PRODUCTS
+    //                 var product_fields = self._get_product_fields();
                    
-                    return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]], kwargs: {context: session.user_context}})
-                }).then(function(products){
-                    // TODO OPTIMIZAR
-                    self.db.add_products(products);
-                    var products_list = [];
-                    var search_string = ""
-                    for (var key in products){
-                        var product_obj = self.db.get_product_by_id(products[key].id)
-                         products_list.push(product_obj);
-                         search_string += self.db._product_search_string(product_obj)
-                         self.get('products_names').push(product_obj.display_name);
-                         self.get('products_codes').push(product_obj.default_code);
-                    }
-                    self.set('product_search_string', search_string)
-                    self.get('products').reset(products_list)
+    //                 return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]], kwargs: {context: session.user_context}})
+    //             }).then(function(products){
+    //                 // TODO OPTIMIZAR
+    //                 self.db.add_products(products);
+    //                 var products_list = [];
+    //                 var search_string = ""
+    //                 for (var key in products){
+    //                     var product_obj = self.db.get_product_by_id(products[key].id)
+    //                      products_list.push(product_obj);
+    //                      search_string += self.db._product_search_string(product_obj)
+    //                      self.get('products_names').push(product_obj.display_name);
+    //                      self.get('products_codes').push(product_obj.default_code);
+    //                 }
+    //                 self.set('product_search_string', search_string)
+    //                 self.get('products').reset(products_list)
 
-                    // PARTNERS
-                    var partner_fields = self._get_partner_fields();
-                    // MIG: No field customer
-                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
-                    return self.fetch('res.partner', partner_fields, [['type', '=', 'delivery']])
-                }).then(function(customers){
-                    for (var key in customers){
-                        var customer = customers[key];
-                        var customer_name = self.getComplexName(customer);
-                        self.get('customer_names').push(customer_name);
-                        if (customer.company_type == 'company'){
-                            self.get('company_customer_names').push(customer_name);
+    //                 // PARTNERS
+    //                 var partner_fields = self._get_partner_fields();
+    //                 // MIG: No field customer
+    //                 // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
+    //                 return self.fetch('res.partner', partner_fields, [['type', '=', 'delivery']])
+    //             }).then(function(customers){
+    //                 for (var key in customers){
+    //                     var customer = customers[key];
+    //                     var customer_name = self.getComplexName(customer);
+    //                     self.get('customer_names').push(customer_name);
+    //                     if (customer.company_type == 'company'){
+    //                         self.get('company_customer_names').push(customer_name);
+    //                     }
+    //                     self.get('customer_codes').push(customers[key].ref);
+    //                 }
+    //                 self.db.add_partners(customers);
+
+    //                 // TAXES
+    //                 return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']]);
+    //             }).then(function(taxes) {
+    //                 self.set('taxes', taxes);
+    //                 self.db.add_taxes(taxes);
+
+    //                 // FISCAL POSITION TAX
+    //                 return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id']);
+    //             }).then(function(fposition_map) {
+    //                 self.db.add_taxes_map(fposition_map);
+
+    //                 // FISCAL POSITION
+    //                 return self.fetch('account.fiscal.position', ['name', 'tax_ids']);
+    //             }).then(function(fposition) {
+    //                 self.db.add_fiscal_position(fposition);
+
+    //                 //PRICELIST
+    //                 return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]]);
+    //             }).then(function(pricelists) {
+    //                 for (var key in pricelists){
+    //                     var pricelist_name = pricelists[key].name;
+    //                     self.get('pricelist_names').push(pricelist_name);
+    //                 }
+    //                 self.db.add_pricelist(pricelists);
+
+    //                 //STATES
+    //                 return self.fetch('res.country.state', ['name']);
+    //             }).then(function(states) {
+    //                 for (var key in states){
+    //                     var state_name = states[key].name;
+    //                     self.get('state_names').push(state_name);
+    //                 }
+    //                 self.db.add_states(states);
+    //                 return self.fetch('res.country', ['name']);
+    //             }).then(function(countries) {
+    //                 for (var key in countries){
+    //                     var country_name = countries[key].name;
+    //                     self.get('country_names').push(country_name);
+    //                 }
+    //                 self.db.add_countries(countries);
+    //             })
+    //     return loaded;
+    // },
+
+    models: [
+        {
+            model:  'res.users',
+            fields: ['name','company_id'],
+            domain: function(){ return [['id', '=', session.uid]]; },
+            loaded: function(self, users){ self.set('user', users[0]); },
+            
+        },{
+            model:  'res.company',
+            fields: [ 'currency_id', 'name', 'phone', 'partner_id', 'vat', 'name', 'phone', 'partner_id' , 'country_id'],
+            ids:    function(self){ return [session.user_context.allowed_company_ids[0]]; },
+            loaded: function(self, companies){ debugger; self.company = companies[0]; self.set('company', companies[0]); },
+            
+        },{
+            model:  'uom.uom',
+            fields: [ 'name'],
+            domain: null,
+            loaded: function(self, units){ 
+                for (var key in units){
+                    self.get('units_names').push(units[key].name)
+                }
+
+                self.db.add_units(units);
+                console.time('Test performance products');
+            },
+        }, {
+            model:  'product.product',
+            // fields: self._get_product_fields(),
+            domain: null,
+            loaded: function(self, products){
+                debugger;
+                // TODO OPTIMIZAR
+                self.db.add_products(products);
+                var products_list = [];
+                var search_string = ""
+                for (var key in products){
+                    var product_obj = self.db.get_product_by_id(products[key].id)
+                     products_list.push(product_obj);
+                     search_string += self.db._product_search_string(product_obj)
+                     self.get('products_names').push(product_obj.display_name);
+                     self.get('products_codes').push(product_obj.default_code);
+                }
+                self.set('product_search_string', search_string)
+                self.get('products').reset(products_list)
+            },
+        }, {
+            model:  'res.partner',
+            fields: ['parent_id', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type'],
+            // domain: function(){ return [['type', '=', 'delivery']]; },
+            domain: null,
+            loaded: function(self, customers){ 
+                for (var key in customers){
+                    var customer = customers[key];
+                    var customer_name = self.getComplexName(customer);
+                    self.get('customer_names').push(customer_name);
+                    if (customer.company_type == 'company'){
+                        self.get('company_customer_names').push(customer_name);
+                    }
+                    self.get('customer_codes').push(customers[key].ref);
+                }
+                self.db.add_partners(customers);
+            },
+        }, {
+            model:  'account.tax',
+            fields: ['amount', 'price_include', 'amount_type'],
+            domain: function(){ return [['type_tax_use','=','sale']]; },
+            loaded: function(self, taxes){ 
+                self.set('taxes', taxes);
+                self.db.add_taxes(taxes);
+            },
+        }, {
+            model:  'account.fiscal.position.tax',
+            fields: ['position_id', 'tax_src_id', 'tax_dest_id'],
+            domain: null,
+            loaded: function(self, fposition_map){ 
+                self.db.add_taxes_map(fposition_map);
+            },
+        }, {
+            model:  'account.fiscal.position',
+            fields: ['name', 'tax_ids'],
+            domain: null,
+            loaded: function(self, fposition){ 
+                self.db.add_fiscal_position(fposition);
+            },
+        }, {
+            model:  'product.pricelist',
+            fields: ['name'],
+            domain: function(){ return ['|', ['company_id', '=', self.company && self.company.id || false], ['company_id', '=', false]] },
+            loaded: function(self, pricelists){ 
+                self.db.add_pricelist(pricelists);
+            },
+        }, {
+            model:  'res.country.state',
+            fields: ['name'],
+            domain: null,
+            loaded: function(self, states){ 
+                for (var key in states){
+                    var state_name = states[key].name;
+                    self.get('state_names').push(state_name);
+                }
+                self.db.add_states(states);
+            },
+        },
+        {
+            model:  'res.country',
+            fields: ['name'],
+            domain: null,
+            loaded: function(self, countries){ 
+                for (var key in countries){
+                    var country_name = countries[key].name;
+                    self.get('country_names').push(country_name);
+                }
+                self.db.add_countries(countries);
+            },
+        }
+    ],
+
+    load_server_data: function(){
+        debugger;
+        var self = this;
+        var progress = 0;
+        var progress_step = 1.0 / self.models.length;
+        var tmp = {}; // this is used to share a temporary state between models loaders
+
+        var loaded = new Promise(function (resolve, reject) {
+            function load_model(index) {
+                if (index >= self.models.length) {
+                    resolve();
+                } else {
+                    var model = self.models[index];
+                    // self.setLoadingMessage(_t('Loading')+' '+(model.label || model.model || ''), progress);
+
+                    var cond = typeof model.condition === 'function'  ? model.condition(self,tmp) : true;
+                    if (!cond) {
+                        load_model(index+1);
+                        return;
+                    }
+
+                    var fields =  typeof model.fields === 'function'  ? model.fields(self,tmp)  : model.fields;
+                    var domain =  typeof model.domain === 'function'  ? model.domain(self,tmp)  : model.domain;
+                    var context = typeof model.context === 'function' ? model.context(self,tmp) : model.context || {};
+                    var ids     = typeof model.ids === 'function'     ? model.ids(self,tmp) : model.ids;
+                    var order   = typeof model.order === 'function'   ? model.order(self,tmp):    model.order;
+                    progress += progress_step;
+
+                    if( model.model ){
+                        var params = {
+                            model: model.model,
+                            // context: _.extend(context, self.session.user_context || {}),
+                            context: _.extend(context, session.user_context || {}),
+                        };
+
+                        if (model.ids) {
+                            params.method = 'read';
+                            params.args = [ids, fields];
+                        } else {
+                            params.method = 'search_read';
+                            params.domain = domain;
+                            params.fields = fields;
+                            params.orderBy = order;
                         }
-                        self.get('customer_codes').push(customers[key].ref);
+
+                        // Tweek para product
+                        if (model.model == 'product.product'){
+                            // PRODUCTS
+                            var product_fields = self._get_product_fields();
+                            params.method = 'fetch_product_data';
+                            params.args = [product_fields, [['sale_ok', '=', true]] ];
+                        }
+
+                        rpc.query(params).then(function (result) {
+                            try { // catching exceptions in model.loaded(...)
+                                Promise.resolve(model.loaded(self, result, tmp))
+                                    .then(function () { load_model(index + 1); },
+                                        function (err) { reject(err); });
+                            } catch (err) {
+                                console.error(err.message, err.stack);
+                                reject(err);
+                            }
+                        }, function (err) {
+                            reject(err);
+                        });
+                    } else if (model.loaded) {
+                        try { // catching exceptions in model.loaded(...)
+                            Promise.resolve(model.loaded(self, tmp))
+                                .then(function () { load_model(index +1); },
+                                    function (err) { reject(err); });
+                        } catch (err) {
+                            reject(err);
+                        }
+                    } else {
+                        load_model(index + 1);
                     }
-                    self.db.add_partners(customers);
+                }
+            }
 
-                    // TAXES
-                    return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']]);
-                }).then(function(taxes) {
-                    self.set('taxes', taxes);
-                    self.db.add_taxes(taxes);
+            try {
+                return load_model(0);
+            } catch (err) {
+                return Promise.reject(err);
+            }
+        });
 
-                    // FISCAL POSITION TAX
-                    return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id']);
-                }).then(function(fposition_map) {
-                    self.db.add_taxes_map(fposition_map);
-
-                    // FISCAL POSITION
-                    return self.fetch('account.fiscal.position', ['name', 'tax_ids']);
-                }).then(function(fposition) {
-                    self.db.add_fiscal_position(fposition);
-
-                    //PRICELIST
-                    return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]]);
-                }).then(function(pricelists) {
-                    for (var key in pricelists){
-                        var pricelist_name = pricelists[key].name;
-                        self.get('pricelist_names').push(pricelist_name);
-                    }
-                    self.db.add_pricelist(pricelists);
-
-                    //STATES
-                    return self.fetch('res.country.state', ['name']);
-                }).then(function(states) {
-                    for (var key in states){
-                        var state_name = states[key].name;
-                        self.get('state_names').push(state_name);
-                    }
-                    self.db.add_states(states);
-                    return self.fetch('res.country', ['name']);
-                }).then(function(countries) {
-                    for (var key in countries){
-                        var country_name = countries[key].name;
-                        self.get('country_names').push(country_name);
-                    }
-                    self.db.add_countries(countries);
-                })
         return loaded;
     },
     load_new_partners: function(){
@@ -1019,6 +1226,32 @@ exports = {
     TsModel: TsModel,
     Orderline: Orderline
 }; 
+exports.load_models = function(models,options) {
+    options = options || {};
+    if (!(models instanceof Array)) {
+        models = [models];
+    }
+
+    var pmodels = exports.TsModel.prototype.models;
+    var index = pmodels.length;
+    if (options.before) {
+        for (var i = 0; i < pmodels.length; i++) {
+            if (    pmodels[i].model === options.before ||
+                    pmodels[i].label === options.before ){
+                index = i;
+                break;
+            }
+        }
+    } else if (options.after) {
+        for (var i = 0; i < pmodels.length; i++) {
+            if (    pmodels[i].model === options.after ||
+                    pmodels[i].label === options.after ){
+                index = i + 1;
+            }
+        }
+    }
+    pmodels.splice.apply(pmodels,[index,0].concat(models));
+};
 return exports;
 });
 

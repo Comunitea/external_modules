@@ -5,36 +5,30 @@ var OrderSuper = TsModels.Order
 var session = require('web.session');
 // var Model = require('web.DataModel');
 var rpc = require('web.rpc');
+var core = require('web.core');
+var _t = core._t;
+
+
+// Añado modelo de plantillas
+TsModels.load_models({
+    model: 'product.template',
+    fields: ['name', 'display_name', 'product_variant_ids', 'product_variant_count'],
+    loaded: function(self,templates){
+        debugger;
+        self.db.add_templates(templates);
+ 
+        // Set names list to autocomplete
+        self.set('template_names', [])
+        for (var key in templates){
+            var tmp = templates[key]
+            self.get('template_names').push(tmp.display_name);
+        }
+    },
+});
 
 
 var TsModelSuper = TsModels.TsModel
 TsModels.TsModel = TsModels.TsModel.extend({
-    // hace que entre dos veces a cargarlo todo
-    // load_server_data: function(){
-    //     var self=this;
-    //     var loaded = TsModelSuper.prototype.load_server_data.call(this,{})
-    //     var template_fields = ['name', 'display_name', 'product_variant_ids', 'product_variant_count']
-    //     var template_domain = [['sale_ok','=',true]]
-    //     // FIX; NOT RENDER DATAWIDGET AT TIME?
-    //     loaded = self.fetch('product.template', template_fields, template_domain)
-    //         .then(function(templates){
-    //             self.db.add_templates(templates);
-
-    //             // Set names list to autocomplete
-    //             self.set('template_names', [])
-    //             for (var key in templates){
-    //                 var tmp = templates[key]
-    //                 self.get('template_names').push(tmp.display_name);
-    //             }
-    //         });
-    //     return TsModelSuper.prototype.load_server_data.call(this,{})
-    // },
-
-    //TOVERWRITED TODO IMPROVE: ver como hacer la herencia de arriba bien
-    // parece que el la sentencia when - done que llama a esta función le basta 
-    // on que el padre esté listo.
-
-
    _get_product_fields: function(){
         var res = TsModelSuper.prototype._get_product_fields.call(this,{});
         res.push('product_tmpl_id');
@@ -73,127 +67,130 @@ TsModels.TsModel = TsModels.TsModel.extend({
         $.extend(res, new_vals)
         return res
     },
-    load_server_data: function(){
-        var self=this;
-        var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', session.uid]])
-            .then(function(users){
-                self.set('user', users[0]);
-                    // COMPANY
-                return self.fetch('res.company',
-                [
-                    'currency_id',
-                    'name',
-                    'phone',
-                    'partner_id',
-                    'country_id'
-                ],
-                [['id','=',session.user_context.allowed_company_ids[0]]]);
-                }).then(function(companies){
-                    self.set('company',companies[0]);
+    // SOBREESCRITO POR TELEVENTA para añadir LAS PLANTILLAS, NO NECESARIO YA
+    // load_server_data: function(){
+    //     var self=this;
+    //     var loaded = self.fetch('res.users',['name','company_id'],[['id', '=', session.uid]])
+    //         .then(function(users){
+    //             self.set('user', users[0]);
+    //                 // COMPANY
+    //             return self.fetch('res.company',
+    //             [
+    //                 'currency_id',
+    //                 'name',
+    //                 'phone',
+    //                 'partner_id',
+    //                 'country_id'
+    //             ],
+    //             [['id','=',session.user_context.allowed_company_ids[0]]]);
+    //             }).then(function(companies){
+    //                 self.set('company',companies[0]);
 
-                    // UNITS
-                    return self.fetch('uom.uom', ['name'], []);
-                }).then(function(units){
-                    for (var key in units){
-                        self.get('units_names').push(units[key].name)
-                    }
+    //                 // UNITS
+    //                 return self.fetch('uom.uom', ['name'], []);
+    //             }).then(function(units){
+    //                 for (var key in units){
+    //                     self.get('units_names').push(units[key].name)
+    //                 }
 
-                    self.db.add_units(units);
-                    console.time('Test performance products');
+    //                 self.db.add_units(units);
+    //                 console.time('Test performance products');
 
-                    // PRODUCTS
-                    var product_fields = self._get_product_fields();
+    //                 // PRODUCTS
+    //                 var product_fields = self._get_product_fields();
                    
-                    return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]], kwargs: {context: session.user_context}})
-                }).then(function(products){
-                    // TODO OPTIMIZAR
-                    self.db.add_products(products);
-                    var products_list = [];
-                    var search_string = ""
-                    for (var key in products){
-                        var product_obj = self.db.get_product_by_id(products[key].id)
-                         products_list.push(product_obj);
-                         search_string += self.db._product_search_string(product_obj)
-                         self.get('products_names').push(product_obj.display_name);
-                         self.get('products_codes').push(product_obj.default_code);
-                    }
-                    self.set('product_search_string', search_string)
-                    self.get('products').reset(products_list)
+    //                 return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]], kwargs: {context: session.user_context}})
+    //             }).then(function(products){
+    //                 // TODO OPTIMIZAR
+    //                 self.db.add_products(products);
+    //                 var products_list = [];
+    //                 var search_string = ""
+    //                 for (var key in products){
+    //                     var product_obj = self.db.get_product_by_id(products[key].id)
+    //                      products_list.push(product_obj);
+    //                      search_string += self.db._product_search_string(product_obj)
+    //                      self.get('products_names').push(product_obj.display_name);
+    //                      self.get('products_codes').push(product_obj.default_code);
+    //                 }
+    //                 self.set('product_search_string', search_string)
+    //                 self.get('products').reset(products_list)
 
-                    // PARTNERS
-                    var partner_fields = self._get_partner_fields();
-                    // MIG: No field customer
-                    // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
-                    return self.fetch('res.partner', partner_fields, [['type', '=', 'delivery']])
-                }).then(function(customers){
-                    for (var key in customers){
-                        var customer = customers[key];
-                        var customer_name = self.getComplexName(customer);
-                        self.get('customer_names').push(customer_name);
-                        if (customer.company_type == 'company'){
-                            self.get('company_customer_names').push(customer_name);
-                        }
-                        self.get('customer_codes').push(customers[key].ref);
-                    }
-                    self.db.add_partners(customers);
+    //                 // PARTNERS
+    //                 var partner_fields = self._get_partner_fields();
+    //                 // MIG: No field customer
+    //                 // return self.fetch('res.partner', partner_fields, ['|', ['customer', '=', true], ['type', '=', 'delivery']])
+    //                 // return self.fetch('res.partner', partner_fields, [['type', '=', 'delivery']])
+    //                 return self.fetch('res.partner', partner_fields, [])
+    //             }).then(function(customers){
+    //                 for (var key in customers){
+    //                     var customer = customers[key];
+    //                     var customer_name = self.getComplexName(customer);
+    //                     self.get('customer_names').push(customer_name);
+    //                     if (customer.company_type == 'company'){
+    //                         self.get('company_customer_names').push(customer_name);
+    //                     }
+    //                     self.get('customer_codes').push(customers[key].ref);
+    //                 }
+    //                 self.db.add_partners(customers);
 
-                    // TAXES
-                    return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']]);
-                }).then(function(taxes) {
-                    self.set('taxes', taxes);
-                    self.db.add_taxes(taxes);
+    //                 // TAXES
+    //                 return self.fetch('account.tax', ['amount', 'price_include', 'amount_type'], [['type_tax_use','=','sale']]);
+    //             }).then(function(taxes) {
+    //                 self.set('taxes', taxes);
+    //                 self.db.add_taxes(taxes);
 
-                    // FISCAL POSITION TAX
-                    return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id']);
-                }).then(function(fposition_map) {
-                    self.db.add_taxes_map(fposition_map);
+    //                 // FISCAL POSITION TAX
+    //                 return self.fetch('account.fiscal.position.tax', ['position_id', 'tax_src_id', 'tax_dest_id']);
+    //             }).then(function(fposition_map) {
+    //                 self.db.add_taxes_map(fposition_map);
 
-                    // FISCAL POSITION
-                    return self.fetch('account.fiscal.position', ['name', 'tax_ids']);
-                }).then(function(fposition) {
-                    self.db.add_fiscal_position(fposition);
+    //                 // FISCAL POSITION
+    //                 return self.fetch('account.fiscal.position', ['name', 'tax_ids']);
+    //             }).then(function(fposition) {
+    //                 self.db.add_fiscal_position(fposition);
 
-                    //PRICELIST
-                    return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]]);
-                }).then(function(pricelists) {
-                    for (var key in pricelists){
-                        var pricelist_name = pricelists[key].name;
-                        self.get('pricelist_names').push(pricelist_name);
-                    }
-                    self.db.add_pricelist(pricelists);
+    //                 //PRICELIST
+    //                 return self.fetch('product.pricelist', ['name'], ['|', ['company_id', '=', self.get('company').id], ['company_id', '=', false]]);
+    //             }).then(function(pricelists) {
+    //                 for (var key in pricelists){
+    //                     var pricelist_name = pricelists[key].name;
+    //                     self.get('pricelist_names').push(pricelist_name);
+    //                 }
+    //                 self.db.add_pricelist(pricelists);
 
-                    //STATES
-                    return self.fetch('res.country.state', ['name']);
-                }).then(function(states) {
-                    for (var key in states){
-                        var state_name = states[key].name;
-                        self.get('state_names').push(state_name);
-                    }
-                    self.db.add_states(states);
-                    return self.fetch('res.country', ['name']);
-                }).then(function(countries) {
-                    for (var key in countries){
-                        var country_name = countries[key].name;
-                        self.get('country_names').push(country_name);
-                    }
-                    self.db.add_countries(countries);
-                     // ADDED BECAUSE DIFICULT INHERIT
-                     var template_fields = ['name', 'display_name', 'product_variant_ids', 'product_variant_count']
-                     // var template_domain = [['sale_ok','=',true], ['id', 'in', [5123, 7269]]]
-                     var template_domain = [['sale_ok','=',true]]
-                     return self.fetch('product.template', template_fields, template_domain)           
-                 }).then(function(templates){
-                     self.db.add_templates(templates);
+    //                 //STATES
+    //                 return self.fetch('res.country.state', ['name']);
+    //             }).then(function(states) {
+    //                 for (var key in states){
+    //                     var state_name = states[key].name;
+    //                     self.get('state_names').push(state_name);
+    //                 }
+    //                 self.db.add_states(states);
+    //                 return self.fetch('res.country', ['name']);
+    //             }).then(function(countries) {
+    //                 for (var key in countries){
+    //                     var country_name = countries[key].name;
+    //                     self.get('country_names').push(country_name);
+    //                 }
+    //                 self.db.add_countries(countries);
+    //                  // ADDED BECAUSE DIFICULT INHERIT
+    //                  var template_fields = ['name', 'display_name', 'product_variant_ids', 'product_variant_count']
+    //                  // var template_domain = [['sale_ok','=',true], ['id', 'in', [5123, 7269]]]
+    //                  var template_domain = [['sale_ok','=',true]]
+    //                  return self.fetch('product.template', template_fields, template_domain)           
+    //              }).then(function(templates){
+    //                  self.db.add_templates(templates);
  
-                     // Set names list to autocomplete
-                     self.set('template_names', [])
-                     for (var key in templates){
-                         var tmp = templates[key]
-                         self.get('template_names').push(tmp.display_name);
-                     }
-                })
-        return loaded;
-    },
+    //                  // Set names list to autocomplete
+    //                  self.set('template_names', [])
+    //                  for (var key in templates){
+    //                      var tmp = templates[key]
+    //                      self.get('template_names').push(tmp.display_name);
+    //                  }
+    //             })
+    //     return loaded;
+    // },
+
 
     build_order_create_lines: function(order_model, order_lines){
         var model_by_tmpl_id = {}

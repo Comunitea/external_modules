@@ -66,9 +66,12 @@ class SaleOrder(models.Model):
             mode = line.pop('mode')
             line.pop('cid')
             if mode == 'template_single':
-                continue
+                # continue
                 # vals = self._get_ts_template_line_vals(order_obj, line)
                 # t_template_line.create(vals)
+                vals = self._get_ts_line_vals(order_obj, line)
+                # vals.update({'template_line': template_line_obj.id})
+                t_order_line.create(vals)
             elif mode == 'template_variants':
                 continue
             elif mode == 'variant':

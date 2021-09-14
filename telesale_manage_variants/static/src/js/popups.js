@@ -133,7 +133,7 @@ var GridWidget = TsBaseWidget.extend({
                 added_line.parent_cid = template_line_model.cid;
                 // Update parent_line dictionary with child line
                 template_line_model.variant_related_cid[variant_id] = added_line.cid;
-                // self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
+                self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
         })
         .fail(function(unused, event){
             alert('Ocurrió un fallo en al obtener la traducción');
@@ -364,9 +364,10 @@ var GridWidget = TsBaseWidget.extend({
         this._super();
         this.$('#add-variants-button').bind('click', function(event){
             self.add_variants_button();
-            self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
             self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
             self.$('#close-filter').click();
+            debugger;
+            self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
         });
 
         // Cancel button

@@ -72,7 +72,6 @@ var CustomerHistoryPopUp = PopUpWidget.extend({
         this.hide()
     },
     show: function(selected_line){
-        debugger;
         var self = this;
         this.sold_history_widget = new SoldHistoryWidget(this, {});
         this.sold_history_widget.appendTo($(this.el));

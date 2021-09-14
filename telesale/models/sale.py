@@ -186,7 +186,8 @@ class SaleOrderLine(models.Model):
             'product_uom_qty': line.product_uom_qty,
             'discount': line.discount,
             'tax_id': [x._origin.id for x in line.tax_id],
-            'standard_price': line.product_id.standard_price
+            'standard_price': line.product_id.standard_price,
+            'name': line.name
 
         })
         return res
