@@ -225,8 +225,8 @@
                     <div class="row semiheight">
                         <div class="fullheight centerinside fullwidth">
                           <div class="centerthis">
-                            <label for="expected_date">Date Planned:</label>
-                            <input class="mandatory"  type="date" id='expected_date' name="expected_date" t-att-value="widget.order_model.get('expected_date')" tabIndex="6"/>
+                            <label for="commitment_date">Date Planned:</label>
+                            <input class="mandatory"  type="date" id='commitment_date' name="commitment_date" t-att-value="widget.order_model.get('commitment_date')" tabIndex="6"/>
                           </div>
                         </div>
                     </div>
@@ -485,6 +485,8 @@
                   </div>
               </div>
         </div>
+        <div id="empty_inheritme" class="col-2 fullheight">
+        </div>
         <div class="col-2 fullheight">
             <div class="row semiheight">
                 <div class="fullheight centerinside fullwidth">
@@ -507,8 +509,6 @@
                       </div>
                   </div>
               </div>
-        </div>
-        <div class="col-2 fullheight">
         </div>
         <div class="col-4 fullheight centerinside">
           <div id="buttons_order_div" class="fullheight centerinside fullwidth">

@@ -101,7 +101,7 @@ var OrderHistoryWidget = TsBaseWidget.extend({
         }
     },
     get_order_fields: function(){
-        var field_list = ['name', 'partner_id','date_order','state', 'expected_date', 'amount_total']
+        var field_list = ['name', 'partner_id','date_order','state', 'commitment_date', 'amount_total']
         return field_list
     },
     get_order_domain: function(partner_id, date_start, date_end, my_filter){

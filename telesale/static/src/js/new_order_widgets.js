@@ -83,7 +83,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.$('#partner').blur(_.bind(this.set_value, this, 'partner'))
         this.$('#shipp_addr').blur(_.bind(this.set_value, this, 'shipp_addr'))
         this.$('#date_order').blur(_.bind(this.set_value, this, 'date_order'))
-        this.$('#expected_date').blur(_.bind(this.set_value, this, 'expected_date'))
+        this.$('#commitment_date').blur(_.bind(this.set_value, this, 'commitment_date'))
         this.$('#coment').blur(_.bind(this.set_value, this, 'coment'))
         this.$('#client_order_ref').blur(_.bind(this.set_value, this, 'client_order_ref'))
         this.$('#observations').blur(_.bind(this.set_value, this, 'observations'))
@@ -718,7 +718,7 @@ var OrderWidget = TsBaseWidget.extend({
         get_order_fields: function(){
         // Called when load an order from server
             return ['partner_shipping_id','note','client_order_ref','name',
-                    'partner_id','date_order','state','amount_total','expected_date', 'pricelist_id', 'observations']
+                    'partner_id','date_order','state','amount_total','commitment_date', 'pricelist_id', 'observations']
 
         },
         get_line_fields: function(){
@@ -976,6 +976,7 @@ var TotalsOrderWidget = TsBaseWidget.extend({
         bind_orderline_events: function() {
             this.order_model = this.ts_model.get('selectedOrder');
             this.order_model.bind('change:selected_line', this.bind_selectedline_events, this);
+            this.order_model.bind('change:global_discount', this.changeTotals, this);
 
             this.currentOrderLines = (this.ts_model.get('selectedOrder')).get('orderLines');
             this.currentOrderLines.bind('add', this.changeTotals, this);

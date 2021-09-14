@@ -45,9 +45,11 @@ class SaleOrder(models.Model):
             'partner_shipping_id': order.get('partner_shipping_id',
                                              partner_obj.id),
             # 'order_policy': 'picking',
-            'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
-            # 'expected_date': order['expected_date'] + " 19:00:00" or
-            # False,
+            # 'date_order': time.strftime("%Y-%m-%d %H:%M:%S"),
+            'date_order': order['date_order'] + " 19:00:00" or
+            False,
+            'commitment_date': order['commitment_date'] + " 19:00:00" or
+            False,
             'note': order['note'],
             'observations': order['observations'],
             'warehouse_id': warehouse_id,
