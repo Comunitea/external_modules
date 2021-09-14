@@ -366,7 +366,6 @@ var GridWidget = TsBaseWidget.extend({
             self.add_variants_button();
             self.ts_widget.new_order_screen.totals_order_widget.changeTotals();
             self.$('#close-filter').click();
-            debugger;
             self.ts_model.ts_widget.new_order_screen.order_widget.renderElement();
         });
 

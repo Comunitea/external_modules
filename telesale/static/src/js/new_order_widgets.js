@@ -546,7 +546,6 @@ var OrderWidget = TsBaseWidget.extend({
                 this.ts_model.get('selectedOrder').addLine();
                 var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
                 this.ts_model.get('selectedOrder').selectLine(added_line);
-                // debugger;
                 // this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product').get(0).focus(); //set focus on line when we add one
                 // this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product')[0].focus(); //set focus on line when we add one
                 this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product').focus(); //set focus on line when we add one
@@ -651,7 +650,6 @@ var OrderWidget = TsBaseWidget.extend({
         button_show_client: function(){
             // var win = window.open('', '_blank');
             var client_id = this.check_customer_get_id()
-            // debugger;
             if (client_id){
                 this.do_action({
                     type: 'ir.actions.act_window',
@@ -783,7 +781,6 @@ var OrderWidget = TsBaseWidget.extend({
         },
         // Get lines from model and render it
         renderLines: function(options){
-            // debugger;
             var self = this;
 
             // Destroy line widgets

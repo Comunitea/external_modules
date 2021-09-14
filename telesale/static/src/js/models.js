@@ -219,7 +219,9 @@ var TsModel = Backbone.Model.extend({
             model:  'res.company',
             fields: [ 'currency_id', 'name', 'phone', 'partner_id', 'vat', 'name', 'phone', 'partner_id' , 'country_id'],
             ids:    function(self){ return [session.user_context.allowed_company_ids[0]]; },
-            loaded: function(self, companies){ debugger; self.company = companies[0]; self.set('company', companies[0]); },
+            loaded: function(self, companies){ 
+                self.company = companies[0]; self.set('company', companies[0]); 
+            },
             
         },{
             model:  'uom.uom',
@@ -234,11 +236,11 @@ var TsModel = Backbone.Model.extend({
                 console.time('Test performance products');
             },
         }, {
+            // Tiene su propio método ts_fetch_product
             model:  'product.product',
             // fields: self._get_product_fields(),
             domain: null,
             loaded: function(self, products){
-                debugger;
                 // TODO OPTIMIZAR
                 self.db.add_products(products);
                 var products_list = [];
@@ -326,7 +328,6 @@ var TsModel = Backbone.Model.extend({
     ],
 
     load_server_data: function(){
-        debugger;
         var self = this;
         var progress = 0;
         var progress_step = 1.0 / self.models.length;

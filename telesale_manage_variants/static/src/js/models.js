@@ -14,7 +14,6 @@ TsModels.load_models({
     model: 'product.template',
     fields: ['name', 'display_name', 'product_variant_ids', 'product_variant_count'],
     loaded: function(self,templates){
-        debugger;
         self.db.add_templates(templates);
  
         // Set names list to autocomplete

@@ -374,9 +374,10 @@ var TsWidget = AbstractAction.extend({
         var self = this;
 
         function close(){
-            // return rpc.query({model: 'ir.model.data', method: 'search_read', args:[[['name', '=', 'action_client_ts_menu']], ['res_id']]}).pipe(function(res) {
-            //     window.location = '/web#action=' + res[0]['res_id'];
-            // });
+            debugger;
+            return rpc.query({model: 'ir.model.data', method: 'search_read', args:[[['name', '=', 'action_client_ts_menu']], ['res_id']]}).then(function(res) {
+                window.location = '/web#action=' + res[0]['res_id'];
+            });
         }
         var draft_order = true
         if(draft_order){

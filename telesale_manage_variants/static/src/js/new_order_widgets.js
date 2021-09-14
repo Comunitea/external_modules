@@ -214,7 +214,6 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
        this.renderElement();
     },
     renderLines: function(options){
-        // debugger;
         var self = this;
         // Destroy line widgets
         for(var i = 0, len = this.orderlinewidgets.length; i < len; i++){
