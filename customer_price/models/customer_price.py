@@ -4,21 +4,24 @@ from odoo import api, fields, models
 from odoo.addons import decimal_precision as dp
 import time
 
+from odoo.tools.profiler import profile
+
+
 
 class CustomerPrice(models.Model):
     _name = "customer.price"
     _description = 'customer price'
 
-    product_tmpl_id = fields.Many2one('product.template', 'Template')
+    product_tmpl_id = fields.Many2one('product.template', 'Template', index=1)
     product_id = fields.Many2one('product.product', 'Product', index=1)
-    partner_id = fields.Many2one('res.partner', 'Customer', required=True)
+    partner_id = fields.Many2one('res.partner', 'Customer', required=True, index=True)
     min_qty = fields.Float('Min Quantity', default=0.0, required=True)
     price = fields.Float(
         'Price', default=0.0, digits=dp.get_precision('Product Price'),
         required=True, help="The price to purchase a product")
-    date_start = fields.Date('Start Date',
+    date_start = fields.Date('Start Date', index=True,
                              help="Start date for this customer price")
-    date_end = fields.Date('End Date', help="End date for this customer price")
+    date_end = fields.Date('End Date', index=True, help="End date for this customer price")
     company_id = fields.\
         Many2one('res.company', 'Company',
                  default=lambda self: self.env.user.company_id.id, index=1)
@@ -57,7 +60,7 @@ class CustomerPrice(models.Model):
             ]
             customer_prices = self.env['customer.price'].\
                 search(domain, limit=1, order='min_qty desc')
-        print(customer_prices)
+        #print(customer_prices)
         return customer_prices
 
     @api.model
@@ -65,6 +68,5 @@ class CustomerPrice(models.Model):
         customer_prices = self.sudo().get_customer_price_rec(
             partner_id, product, qty, date)
         if customer_prices:
-            print(customer_prices.price)
             return customer_prices.price
         return False
