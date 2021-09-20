@@ -50,11 +50,6 @@ class StockPicking(models.Model):
             if pick.batch_id and pick.batch_id.picking_type_id and pick.picking_type_id != pick.batch_id.picking_type_id:
                 raise ValidationError('Todos los albaranes tienen que ser del mismo tipo de la agrupación')
 
-    @api.multi
-    def write(self, vals):
-        return super().write(vals)
-
-
     @api.depends('move_type', 'move_lines.state', 'move_lines.picking_id')
     @api.one
     def _compute_state(self):
@@ -102,10 +97,9 @@ class StockPicking(models.Model):
     @api.multi
     @api.depends('move_lines', 'state')
     def get_n_lines(self):
+        hide_price = self._context.get('hide_price', False)
         for pick in self:
             pick._compute_state()
-            price_subtotal = round(sum(x.price_subtotal for x in pick.move_lines),2)
-            price_subtotal_pending = round(sum(x.price_subtotal_pending for x in pick.move_lines),2)
             reserved = round(sum(x.price_subtotal_reserved for x in pick.move_lines),2)
             move_id_count= len(pick.move_lines)
             # if pick.picking_type_id.code == 'outgoing':
@@ -128,13 +122,18 @@ class StockPicking(models.Model):
                 move_lines_count_not = pick.move_lines_count - len(
                     pick.move_lines.filtered(lambda x: x.reserved_availability))
 
-            if price_subtotal != reserved:
-                info_str = '{} de {} €. '.format(reserved, price_subtotal)
+            if hide_price:
+                info_str = ''
             else:
-                info_str = '{} € '.format(price_subtotal)
+                price_subtotal = round(sum(x.price_subtotal for x in pick.move_lines),2)
+                # price_subtotal_pending = round(sum(x.price_subtotal_pending for x in pick.move_lines),2)
+                if price_subtotal != reserved:
+                    info_str = '{} de {} €. '.format(reserved, price_subtotal)
+                else:
+                    info_str = '{} € '.format(price_subtotal)
             pick.price_subtotal = reserved
-            pick.info_str = '{}{} {} de {} lines'.format(info_str, state_text, move_lines_count_not,
-                                                               move_id_count)
+            pick.info_str = '{}{} {} de {} lines. {} Uds'.format(info_str, state_text, move_lines_count_not,
+                                                               move_id_count, pick.product_uom_qty)
 
     @api.multi
     def unlink_from_batch(self):

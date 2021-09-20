@@ -46,6 +46,7 @@ class StockBatchPicking(models.Model):
         for batch in self:
             batch.move_lines_count = sum(x.move_lines_count for x in batch.picking_ids)
 
+    
     @api.multi
     def compute_picking_qties(self):
         for batch in self:
