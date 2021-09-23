@@ -36,7 +36,7 @@
         'static/src/xml/key_shorts_template.xml',
         'static/src/xml/new_order_template.xml',
         'static/src/xml/order_history_template.xml',
-        'static/src/xml/sale_history_template.xml',
+        # 'static/src/xml/sale_history_template.xml',
         'static/src/xml/product_catalog_template.xml',
         'static/src/xml/customer_list_template.xml',
         'static/src/xml/popups_template.xml',
