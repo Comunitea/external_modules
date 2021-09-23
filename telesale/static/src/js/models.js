@@ -257,7 +257,7 @@ var TsModel = Backbone.Model.extend({
             },
         }, {
             model:  'res.partner',
-            fields: ['parent_id', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type'],
+            fields: ['parent_id', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type', 'property_payment_term_id'],
             // domain: function(){ return [['type', '=', 'delivery']]; },
             domain: null,
             loaded: function(self, customers){ 
