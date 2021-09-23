@@ -29,7 +29,7 @@ var TsModel = Backbone.Model.extend({
     Backbone.Model.prototype.initialize.call(this, attributes);
         var  self = this;
         this.session = session;  // openerp session
-        this.ready = $.Deferred(); // used to notify the GUI that the PosModel has loaded all resources
+        this.ready = $.Deferred(); // used to notify the GUI that the TsModel has loaded all resources
         this.ready2 = $.Deferred(); // used to notify the GUI that thepromotion has writed in the server
         this.ready3 = $.Deferred(); // used to notify the GUI that tsavecurrentorder is finished
         // this.flush_mutex = new $.Mutex();  // used to make sure the orders are sent to the server once at time
@@ -1253,6 +1253,29 @@ exports.load_models = function(models,options) {
     }
     pmodels.splice.apply(pmodels,[index,0].concat(models));
 };
+
+// Add fields to the list of read fields when a model is loaded
+// by the point of sale.
+// e.g: module.load_fields("product.product",['price','category'])
+
+exports.load_fields = function(model_name, fields) {
+    if (!(fields instanceof Array)) {
+        fields = [fields];
+    }
+
+    var models = exports.TsModel.prototype.models;
+    for (var i = 0; i < models.length; i++) {
+        var model = models[i];
+        if (model.model === model_name) {
+            // if 'fields' is empty all fields are loaded, so we do not need
+            // to modify the array
+            if ((model.fields instanceof Array) && model.fields.length > 0) {
+                model.fields = model.fields.concat(fields || []);
+            }
+        }
+    }
+};
+
 return exports;
 });
 
