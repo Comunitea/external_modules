@@ -76,7 +76,8 @@ var TsWidget = AbstractAction.extend({
                 'product_catalog': this.product_catalog_screen,
                 'customer_list': this.customer_list_screen,
                 'key_shorts': this.key_shorts_screen,
-                'sale_history': this.sale_history_screen,
+                // CMNT MIG: No la usa jim
+                // 'sale_history': this.sale_history_screen,
             },
             popup_set:{
                 // 'product_sust_popup': this.product_sust_popup,
@@ -115,9 +116,9 @@ var TsWidget = AbstractAction.extend({
         this.filter_customer_popup = new PopUps.CustomerHistoryPopUp(this, {});
         this.filter_customer_popup.appendTo(this.$('#content'));
         
-        // Sale History Screen
-        this.sale_history_screen = new Screens.SaleHistoryScreenWidget(this, {});
-        this.sale_history_screen.appendTo(this.$('#content'));
+        // Sale History Screen CMNT MIG NO SE USA EN JIM
+        // this.sale_history_screen = new Screens.SaleHistoryScreenWidget(this, {});
+        // this.sale_history_screen.appendTo(this.$('#content'));
         // --------  SCREEN SELECTOR ---------
         var screen_vals = this._get_screen_selector_vals();
         this.screen_selector = new Screens.ScreenSelector(screen_vals);

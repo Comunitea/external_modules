@@ -5,7 +5,9 @@ var TsBaseWidget = require('telesale.TsBaseWidget');
 var NewOrder = require('telesale.new_order_widgets');
 var CustomerList = require('telesale.CustomerList');
 var OrderHistory = require('telesale.OrderHistory');
-var SaleHistory = require('telesale.SaleHistory');
+// CMNT MIG: No se usda en Jim
+// var SaleHistory = require('telesale.SaleHistory');
+
 var ProductCatalog = require('telesale.ProductCatalog');
 var models = require('telesale.models');
 var core = require('web.core');
