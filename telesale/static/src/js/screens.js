@@ -206,16 +206,16 @@ exports.OrderHistoryScreenWidget = ScreenWidget.extend({
     },
 });
 
-exports.SaleHistoryScreenWidget = ScreenWidget.extend({
-    template: 'Sale-History-Screen-Widget',
-    init: function(parent,options){
-        this._super(parent,options)
-    },
-    start: function(){
-        this.sale_history_widget = new SaleHistory.SaleHistoryWidget(this, {});
-        this.sale_history_widget.replace(this.$('#placeholder-sale-history-widget'));
-    },
-});
+// exports.SaleHistoryScreenWidget = ScreenWidget.extend({
+//     template: 'Sale-History-Screen-Widget',
+//     init: function(parent,options){
+//         this._super(parent,options)
+//     },
+//     start: function(){
+//         this.sale_history_widget = new SaleHistory.SaleHistoryWidget(this, {});
+//         this.sale_history_widget.replace(this.$('#placeholder-sale-history-widget'));
+//     },
+// });
 
 exports.KeyShortsScreenWidget = ScreenWidget.extend({
     template: 'Key-Shorts-Screen-Widget',

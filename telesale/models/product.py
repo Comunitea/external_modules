@@ -163,10 +163,17 @@ class ProductProduct(models.Model):
 
         init = offset + 1
         end = init + 99
-        result_str = "%s - %s / %s" % (init, end, len(self.search(domain)))
+        total = len(self.search(domain))
+        show_next = True
+        if total < end:
+            end = total
+            show_next = False
+        result_str = "%s - %s / %s" % (init, end, total)
         result = {
             'result_str': result_str,
-            'products': res
+            'products': res,
+            'show_next': show_next,
+            'show_prev': (init != 1)
         }
         return result
 

@@ -16,11 +16,11 @@
                <div class="center"><input onclick="this.select()" id="search-product-barcode" placeholder="Search Barcode" class="tab1"/></div>
                <div class="center"><button id="search-product-button">SEARCH</button></div>
                <div class="center">
-                    <button id="search-product-prev">&lt;&lt;</button>
+                    <button t-if="widget.show_prev" id="search-product-prev">&lt;&lt;</button>
                     <div class="paginator">
                     <strong><span t-esc="widget.result_str"/></strong>
                     </div>
-                    <button id="search-product-next">&gt;&gt;</button>
+                    <button t-if="widget.show_next" id="search-product-next">&gt;&gt;</button>
                 </div>
                <div class="center"><button id="add-alll-button">ADD ALL</button></div>
             </div>

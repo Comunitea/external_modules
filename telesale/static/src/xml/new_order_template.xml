@@ -94,9 +94,10 @@
                 <button id="button_no" class="selected-screen"><t t-esc="widget.button_no"/></button>
             </div>
             <!-- Sale History -->
-            <div class="col-2">
+            <!-- CMNT No se usa en JIM -->
+            <!-- <div class="col-2">
                 <button id="button_sh" class="select-screen"><t t-esc="widget.button_sh"/></button>
-            </div>
+            </div> -->
             <!-- Product Catalog -->
             <div class="col-2">
                 <button id="button_pc" class="select-screen"><t t-esc="widget.button_pc"/></button>

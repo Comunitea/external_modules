@@ -131,6 +131,8 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         this.last_barcode_search = "";
         this.page = 1;
         this.result_str = "";
+        this.show_next = false;
+        this.show_prev = false;
     },
 
     load_products_from_server: function(product_name, product_barcode, offset){
@@ -144,7 +146,9 @@ var ProductCatalogWidget = TsBaseWidget.extend({
         var loaded = rpc.query({model: 'product.product', method: 'ts_search_products', args:[search_str, search_barcode, partner_id, pricelist_id, offset], kwargs: {context: session.user_context}})
         .then(function(result){
             self.catalog_products = result['products'];
-            self.result_str = result['result_str']
+            self.result_str = result['result_str'];
+            self.show_next = result['show_next']
+            self.show_prev = result['show_prev']
         });
         return loaded;
 
