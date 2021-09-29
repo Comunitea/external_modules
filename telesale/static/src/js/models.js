@@ -55,8 +55,9 @@ var TsModel = Backbone.Model.extend({
             'units':                  [], // Array of units
             'units_names':            [], // Array of units names
            
-            'customer_names':            [], // Array of customer names
-            'company_customer_names':            [], // Array of customer names
+            'customer_names':            [], // Array of all customer names
+            'company_customer_names':            [], // Array of customer company names
+            'delivery_customer_names':            [], // Array of customer company names
             'pricelist_names':            [], // Pricelist names
             'country_names':            [], // Country names
             'state_names':            [], // State names
@@ -257,7 +258,7 @@ var TsModel = Backbone.Model.extend({
             },
         }, {
             model:  'res.partner',
-            fields: ['parent_id', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type', 'property_payment_term_id'],
+            fields: ['parent_id', 'type', 'is_company', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type', 'property_payment_term_id'],
             // domain: function(){ return [['type', '=', 'delivery']]; },
             domain: null,
             loaded: function(self, customers){ 
@@ -265,8 +266,11 @@ var TsModel = Backbone.Model.extend({
                     var customer = customers[key];
                     var customer_name = self.getComplexName(customer);
                     self.get('customer_names').push(customer_name);
-                    if (customer.company_type == 'company'){
+                    if (customer.is_company === true){
                         self.get('company_customer_names').push(customer_name);
+                    }
+                    if (customer.type == 'delivery'){
+                        self.get('delivery_customer_names').push(customer_name);
                     }
                     self.get('customer_codes').push(customers[key].ref);
                 }
@@ -553,6 +557,7 @@ var TsModel = Backbone.Model.extend({
         return vals
     },
  
+    // OVERWRITED IN JIM_TELESALE
     build_order_create_lines: function(order_model, order_lines){
         for (var key in order_lines){
             var line = order_lines[key];

@@ -190,7 +190,7 @@ TsModels.TsModel = TsModels.TsModel.extend({
     //     return loaded;
     // },
 
-
+    // OVERWRITED JIM
     build_order_create_lines: function(order_model, order_lines){
         var model_by_tmpl_id = {}
         for (var key in order_lines){

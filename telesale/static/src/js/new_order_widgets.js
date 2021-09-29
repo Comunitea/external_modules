@@ -89,12 +89,13 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.$('#observations').blur(_.bind(this.set_value, this, 'observations'))
         this.$('#pricelist').blur(_.bind(this.set_value, this, 'pricelist'))
 
-        var array_names = self.ts_model.get('company_customer_names');
         var address_names = self.ts_model.get('customer_names');
+        var company_customer_names = self.ts_model.get('company_customer_names');
+        var delivery_customer_names = self.ts_model.get('company_customer_names');
         // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
             source: function(request, response) {
-                var results = $.ui.autocomplete.filter(array_names, request.term);
+                var results = $.ui.autocomplete.filter(company_customer_names, request.term);
                 response(results.slice(0, 20));
             }
         });
@@ -111,7 +112,7 @@ var DataOrderWidget = TsBaseWidget.extend({
 
         this.$('#shipp_addr').autocomplete({
             source: function(request, response) {
-                var results = $.ui.autocomplete.filter(address_names, request.term);
+                var results = $.ui.autocomplete.filter(delivery_customer_names, request.term);
                 response(results.slice(0, 20));
             }
         });
@@ -1016,9 +1017,9 @@ var TotalsOrderWidget = TsBaseWidget.extend({
             this.order_model = this.ts_model.get('selectedOrder');
             this._super();
 
-            this.$('.confirm-button').click(function (){ self.no_more_clicks(); self.confirmCurrentOrder();});
+            this.$('.confirm-button').click(function (){ self.no_more_clicks(); self.confirmCurrentOrderButton();});
             this.$('.cancel-button').click(function (){  self.no_more_clicks(); self.cancelCurrentOrder();});
-            this.$('.save-button').click(function (){    self.no_more_clicks(); self.saveCurrentOrder();});
+            this.$('.save-button').click(function (){    self.no_more_clicks(); self.saveCurrentOrderButton();});
                
             this.$('.print-button').click(function (){ self.no_more_clicks(); self.printCurrentOrder(); });
         },
@@ -1112,14 +1113,17 @@ var TotalsOrderWidget = TsBaseWidget.extend({
              });
         },
         cancelCurrentOrder: function() {
-            var currentOrder = this.order_model;
-            currentOrder.set('action_button', 'cancel')
-            if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ||  !currentOrder.get('erp_id')){
-                alert(_t('You cant cancel an order which state is diferent than draft.'));
-                this.enable_more_clicks();
-            }
-            else if ( currentOrder.check() ){
-                this.ts_model.cancel_order(currentOrder.get('erp_id'));
+            if (confirm(_t("¿Estas seguro de que deseas cancelar este pedido?"))) {
+                
+                var currentOrder = this.order_model;
+                currentOrder.set('action_button', 'cancel')
+                if ( (currentOrder.get('erp_state')) && (currentOrder.get('erp_state') != 'draft') ||  !currentOrder.get('erp_id')){
+                    alert(_t('You cant cancel an order which state is diferent than draft.'));
+                    this.enable_more_clicks();
+                }
+                else if ( currentOrder.check() ){
+                    this.ts_model.cancel_order(currentOrder.get('erp_id'));
+                }
             }
         },
         doPrint: function(erp_id){
@@ -1151,6 +1155,17 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                 });
             }
         },
+        saveCurrentOrderButton: function(avoid_load) {
+            if (confirm(_t("¿Estas seguro de que deseas guardar este pedido?"))) {
+                this.saveCurrentOrder()
+            }   
+        },
+        confirmCurrentOrderButton: function(avoid_load) {
+            if (confirm(_t("¿Estas seguro de que deseas confirmar este pedido?"))) {
+                this.confirmCurrentOrder()
+            }   
+        },
+
         saveCurrentOrder: function(avoid_load) {
             var self = this;
             var currentOrder = this.order_model;
@@ -1173,23 +1188,23 @@ var TotalsOrderWidget = TsBaseWidget.extend({
                         var domain = [['chanel', '=', 'telesale'], ['user_id', '=', self.ts_model.get('user').id]]
                     }
                     var loaded = self.ts_model.fetch('sale.order', ['id', 'name'], domain)
-                       .then(function(orders){
-                           if (orders[0]) {
-                           var my_id = orders[0].id
-                           $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
-                           .then(function(){
+                    .then(function(orders){
+                        if (orders[0]) {
+                        var my_id = orders[0].id
+                        $.when( self.ts_widget.new_order_screen.order_widget.load_order_from_server(my_id) )
+                        .then(function(){
                                 self.ts_model.last_sale_id = false
                                 self.ts_model.ready3.resolve()
-                           })
-                           .catch(function(){
+                        })
+                        .catch(function(){
                                 self.ts_model.last_sale_id = false
                                 self.ts_model.ready3.reject()
-                           });
+                        });
 
-                         }
-                       });
+                        }
+                    });
                 });
-            }   
+            }
         },
 
 });
