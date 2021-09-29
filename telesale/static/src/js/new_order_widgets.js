@@ -391,17 +391,19 @@ var OrderlineWidget = TsBaseWidget.extend({
         });
     },
     call_product_uom_change: function(product_id, qty){
-        var self = this;
-        var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
-        var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
-        return rpc.query({model: 'sale.order.line', method: 'ts_product_uom_change', args:[product_id, customer_id, pricelist_id, qty], kwargs: {context: session.user_context}})
-        .then(function(result){
-            self.model.set('pvp', self.ts_model.my_round(result.price_unit));
-            var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
-            self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
-            self.refresh('pvp');
-            self.$('.col-pvp').select();
-        });
+        return
+        // NO SE PARA QUE LO NECESITO, PERO HACE QUE AL CAMBIAR LA CANTIDAD ME QUITE EL PRECIO
+        // var self = this;
+        // var customer_id = self.ts_model.db.partner_name_id[self.order.get('partner')];
+        // var pricelist_id = self.ts_model.db.pricelist_name_id[self.order.get('pricelist')];
+        // return rpc.query({model: 'sale.order.line', method: 'ts_product_uom_change', args:[product_id, customer_id, pricelist_id, qty], kwargs: {context: session.user_context}})
+        // .then(function(result){
+        //     self.model.set('pvp', self.ts_model.my_round(result.price_unit));
+        //     var subtotal = self.model.get('pvp') * self.model.get('qty') * (1 - self.model.get('discount') / 100.0)
+        //     self.model.set('total', self.ts_model.my_round(subtotal || 0,2));
+        //     self.refresh('pvp');
+        //     self.$('.col-pvp').select();
+        // });
     },
     perform_onchange: function(key) {
         var self=this;
