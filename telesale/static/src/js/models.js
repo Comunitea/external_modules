@@ -303,6 +303,10 @@ var TsModel = Backbone.Model.extend({
             fields: ['name'],
             domain: function(){ return ['|', ['company_id', '=', self.company && self.company.id || false], ['company_id', '=', false]] },
             loaded: function(self, pricelists){ 
+                for (var key in pricelists){
+                    var pricelist_name = pricelists[key].name;
+                    self.get('pricelist_names').push(pricelist_name);
+                }
                 self.db.add_pricelist(pricelists);
             },
         }, {
