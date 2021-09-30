@@ -36,7 +36,7 @@
 
             <div class='client-name'><t t-esc='partner.name' /></div>
             <div class='edit-buttons'>
-                <div class='button edit'><i class='fa fa-pencil-square' /></div>
+                <div t-if="partner.company_type == 'person'" class='button edit'><i class='fa fa-pencil-square' /></div>
             </div>
 
             <div class='client-details-box-header clearfix'>
@@ -155,7 +155,7 @@
                     </div>
 
             <div class='client-details-box-header clearfix'>
-                <div class='client-detail'>
+                <div class='client-detail inherit-me'>
                         <span class='label'>Type</span>
                         <select style="display:inline;" class="company_type" name="type_select">
                               <option value="person">Address</option> 

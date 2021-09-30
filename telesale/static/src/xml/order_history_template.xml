@@ -26,13 +26,13 @@
                 <div class="col-2 fullheight centerinside textcenter">
                     <div class="centerthis">
                         <label for="date_start">Date Start:</label>
-                        <input type="date" id='input-date_start' name="date_start" t-att-value="widget.ts_model.getCurrentDateStr()"/>
+                        <input type="date" id='input-date_start' name="date_start"/>
                     </div>
                 </div>
                 <div class="col-2 fullheight centerinside textcenter">
                     <div class="centerthis">
                         <label for="date_end">Date End:</label>
-                        <input type="date" id='input-date_end' name="date_end" t-att-value="widget.ts_model.getCurrentDateStr()"/>
+                        <input type="date" id='input-date_end' name="date_end"/>
                     </div>
                 </div>
                 <div class="col-4 fullheight centerinside textcenter">

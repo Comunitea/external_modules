@@ -307,11 +307,11 @@ var TsModel = Backbone.Model.extend({
             },
         }, {
             model:  'res.country.state',
-            fields: ['name'],
+            fields: ['display_name'],
             domain: null,
-            loaded: function(self, states){ 
+            loaded: function(self, states){
                 for (var key in states){
-                    var state_name = states[key].name;
+                    var state_name = states[key].display_name;
                     self.get('state_names').push(state_name);
                 }
                 self.db.add_states(states);

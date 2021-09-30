@@ -130,7 +130,7 @@ exports.TS_LS = core.Class.extend({
             var state = states[i];
 
             this.state_by_id[state.id] = state;
-            this.state_name_id[state.name] = state.id;
+            this.state_name_id[state.display_name] = state.id;
         }
     },
     add_countries: function(contries){

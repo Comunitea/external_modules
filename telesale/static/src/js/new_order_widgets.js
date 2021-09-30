@@ -91,7 +91,7 @@ var DataOrderWidget = TsBaseWidget.extend({
 
         var address_names = self.ts_model.get('customer_names');
         var company_customer_names = self.ts_model.get('company_customer_names');
-        var delivery_customer_names = self.ts_model.get('company_customer_names');
+        var delivery_customer_names = self.ts_model.get('delivery_customer_names');
         // Autocomplete products and units from array of names
         this.$('#partner').autocomplete({
             source: function(request, response) {
@@ -157,7 +157,7 @@ var DataOrderWidget = TsBaseWidget.extend({
         this.perform_onchange(key, value);
     },
 
-    // FULL OVERWRITED IN MODULE TELESALE_FINANCIAL_RISK
+    // FULL OVERWRITED JIM_TELESALE
     perform_onchange: function(key, value) {
         var self=this;
         if (!value) {return;}

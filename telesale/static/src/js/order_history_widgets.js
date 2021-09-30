@@ -66,6 +66,8 @@ var OrderHistoryWidget = TsBaseWidget.extend({
     init: function(parent, options) {
         this._super(parent,options);
         this.partner_orders = [];
+        this.start_date = '';
+        this.end_date = '';
 
     },
     renderElement: function () {
@@ -99,6 +101,17 @@ var OrderHistoryWidget = TsBaseWidget.extend({
             var history_line = new HistorylineWidget(this, {order: history_order});
             history_line.appendTo($history_content);
         }
+        var start = self.ts_model.getCurrentDateStr();
+        var end = self.ts_model.getCurrentDateStr();
+        if (this.start_date != ''){
+            start = this.start_date
+        }
+        if (this.end_date != ''){
+            end = this.end_date
+        }
+
+        self.$('#input-date_start').val(start)
+        self.$('#input-date_end').val(end)
     },
     get_order_fields: function(){
         var field_list = ['name', 'partner_id','date_order','state', 'commitment_date', 'amount_total']
@@ -136,6 +149,8 @@ var OrderHistoryWidget = TsBaseWidget.extend({
         if (!period){
             var date_start = this.$('#input-date_start').val();
             var date_end = this.$('#input-date_end').val();
+            this.start_date = date_start;
+            this.end_date = date_start;
         }
         else{
              var start_date = new Date();
@@ -167,6 +182,8 @@ var OrderHistoryWidget = TsBaseWidget.extend({
         .then(function(){
             self.renderElement();
             self.$('#input-customer').val(partner_name);
+            self.$('#input-date_start').val(date_start)
+            self.$('#input-date_end').val(date_end)
         }).catch(function(){
            alert("Error fetching orders from server");
            this.$('#input-customer').focus();
