@@ -21,13 +21,27 @@
                 </field>
             </field>
         </record>
+
+        <!--record id="view_stock_move_pivot" model="ir.ui.view">
+            <field name="name">stock.move.report.pivot</field>
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <pivot string="Stock Move Analysis" disable_linking="True">
+                    <field name="picking_type_id" type="col"/>
+                    <field name="state" type="row"/>
+                    <field name="reserved_availability" type="measure"/>
+                    <field name="product_uom_qty" type="measure"/>
+                </pivot>
+            </field>
+       </record-->
+
         <record id="view_move_search_group" model="ir.ui.view">
             <field name="name">stock.move.search.group</field>
             <field name="model">stock.move</field>
             <field name="inherit_id" ref="stock.view_move_search"/>
             <field name="arch" type="xml">
                 <!-- Group by sale origin -->
-                <xpath expr="//filter[@name='groupby_picking_id']" position="after">
+                <xpath expr="//filter[@name='by_product']" position="before">
                      <separator/>
                     <filter string="Picking type" name="groupby_picking_type"  context="{'group_by':'picking_type_id'}"/>
                     

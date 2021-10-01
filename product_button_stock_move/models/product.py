@@ -39,7 +39,7 @@ class ProductTemplate(models.Model):
     def action_open_list_stock_moves(self):
         self.ensure_one()
         action = self.env.ref('stock.stock_move_action').read()[0]
-        action['domain'] = [('product_id.product_tmpl_id', 'in', self.ids)]
+        action['domain'] = [('state', 'not in', ['draft', 'cancel']), ('product_id.product_tmpl_id', 'in', self.ids)]
         context = self._context.copy()
         context.update (self.get_moves_search_domain())
         action['context']= context
@@ -54,7 +54,7 @@ class ProductProduct(models.Model):
 
         self.ensure_one()
         action = self.env.ref('stock.stock_move_action').read()[0]
-        action['domain'] = [('product_id', 'in', self.ids)]
+        action['domain'] = [('state', 'not in', ['draft', 'cancel']), ('product_id', 'in', self.ids)]
         context = self._context.copy()
         context.update(self.env['product.template'].get_moves_search_domain())
         action['context']= context
