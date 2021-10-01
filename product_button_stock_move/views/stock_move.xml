@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_move_tree_qties" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_tree"/>
+            <field name="arch" type="xml">
+                <field name="product_uom_qty" position="after">
+                    <field name="reserved_availability"/>
+                    <field name="quantity_done"/>
+                </field>
+                <field name="reference" position="after">
+                    <field name="picking_id" invisible="context.get('hide_picking', True)"/>
+                </field>
+                <field name="reference" position="attributes">
+                    <attribute name="invisible">context.get('hide_reference', False)</attribute>
+                </field>
+                <field name="product_id" position="attributes">
+                    <attribute name="invisible">context.get('hide_product', False)</attribute>
+                </field>
+            </field>
+        </record>
+        <record id="view_move_search_group" model="ir.ui.view">
+            <field name="name">stock.move.search.group</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_search"/>
+            <field name="arch" type="xml">
+                <!-- Group by sale origin -->
+                <xpath expr="//filter[@name='groupby_picking_id']" position="after">
+                     <separator/>
+                    <filter string="Picking type" name="groupby_picking_type"  context="{'group_by':'picking_type_id'}"/>
+                    
+                     <separator/>
+                </xpath>
+
+            </field>
+        </record>
+
+</odoo>
