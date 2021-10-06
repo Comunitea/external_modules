@@ -153,12 +153,12 @@ class SaleOrder(models.Model):
             'payment_mode_id': order.payment_mode_id.id,
         })
         return res
-    
+
     @api.model
     def action_telesale_mail(self, order_id):
-        self.env.ref('sale.email_template_edi_sale').send_mail(order_id)   
+        self.env.ref('sale.email_template_edi_sale').send_mail(order_id)
         return
-        
+
 
 
 class SaleOrderLine(models.Model):
@@ -268,7 +268,7 @@ class SaleOrderLine(models.Model):
             }
             res.append(dic)
         return res
-    
+
     @api.model
     def ts_get_sale_history(self, partner_id, pricelist_id, offset=0, limit=20):
         """
@@ -305,7 +305,7 @@ class SaleOrderLine(models.Model):
             price_today = l.price_unit
             if result.get('price_unit', 0.0):
                 price_today = result['price_unit']
-            
+
             # Get taxes
             tax_ids = result.get('tax_id', [])
             dic = {
@@ -320,7 +320,7 @@ class SaleOrderLine(models.Model):
                 'taxes_ids': tax_ids
             }
             res.append(dic)
-        
+
         init = offset + 1
         end = init + (limit -1)
         result_str = "%s - %s / %s" % (init, end, len(prod_ids))

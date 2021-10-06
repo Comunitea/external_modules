@@ -54,7 +54,7 @@ var TsModel = Backbone.Model.extend({
             'ts_config':              null,
             'units':                  [], // Array of units
             'units_names':            [], // Array of units names
-           
+
             'customer_names':            [], // Array of all customer names
             'company_customer_names':            [], // Array of customer company names
             'delivery_customer_names':            [], // Array of customer company names
@@ -131,7 +131,7 @@ var TsModel = Backbone.Model.extend({
 
     //                 // PRODUCTS
     //                 var product_fields = self._get_product_fields();
-                   
+
     //                 return rpc.query({model: 'product.product', method: 'fetch_product_data', args:[product_fields, [['sale_ok', '=', true]]], kwargs: {context: session.user_context}})
     //             }).then(function(products){
     //                 // TODO OPTIMIZAR
@@ -215,20 +215,20 @@ var TsModel = Backbone.Model.extend({
             fields: ['name','company_id'],
             domain: function(){ return [['id', '=', session.uid]]; },
             loaded: function(self, users){ self.set('user', users[0]); },
-            
+
         },{
             model:  'res.company',
             fields: [ 'currency_id', 'name', 'phone', 'partner_id', 'vat', 'name', 'phone', 'partner_id' , 'country_id'],
             ids:    function(self){ return [session.user_context.allowed_company_ids[0]]; },
-            loaded: function(self, companies){ 
-                self.company = companies[0]; self.set('company', companies[0]); 
+            loaded: function(self, companies){
+                self.company = companies[0]; self.set('company', companies[0]);
             },
-            
+
         },{
             model:  'uom.uom',
             fields: [ 'name'],
             domain: null,
-            loaded: function(self, units){ 
+            loaded: function(self, units){
                 for (var key in units){
                     self.get('units_names').push(units[key].name)
                 }
@@ -261,7 +261,7 @@ var TsModel = Backbone.Model.extend({
             fields: ['parent_id', 'type', 'is_company', 'country_id', 'display_name', 'name', 'ref', 'phone', 'user_id','comment','email', 'zip', 'street', 'state_id', 'country_id', 'vat', 'write_date', 'commercial_partner_name', 'city', 'comercial', 'company_type', 'property_payment_term_id'],
             // domain: function(){ return [['type', '=', 'delivery']]; },
             domain: null,
-            loaded: function(self, customers){ 
+            loaded: function(self, customers){
                 for (var key in customers){
                     var customer = customers[key];
                     var customer_name = self.getComplexName(customer);
@@ -280,7 +280,7 @@ var TsModel = Backbone.Model.extend({
             model:  'account.tax',
             fields: ['amount', 'price_include', 'amount_type'],
             domain: function(){ return [['type_tax_use','=','sale']]; },
-            loaded: function(self, taxes){ 
+            loaded: function(self, taxes){
                 self.set('taxes', taxes);
                 self.db.add_taxes(taxes);
             },
@@ -288,21 +288,21 @@ var TsModel = Backbone.Model.extend({
             model:  'account.fiscal.position.tax',
             fields: ['position_id', 'tax_src_id', 'tax_dest_id'],
             domain: null,
-            loaded: function(self, fposition_map){ 
+            loaded: function(self, fposition_map){
                 self.db.add_taxes_map(fposition_map);
             },
         }, {
             model:  'account.fiscal.position',
             fields: ['name', 'tax_ids'],
             domain: null,
-            loaded: function(self, fposition){ 
+            loaded: function(self, fposition){
                 self.db.add_fiscal_position(fposition);
             },
         }, {
             model:  'product.pricelist',
             fields: ['name'],
             domain: function(){ return ['|', ['company_id', '=', self.company && self.company.id || false], ['company_id', '=', false]] },
-            loaded: function(self, pricelists){ 
+            loaded: function(self, pricelists){
                 for (var key in pricelists){
                     var pricelist_name = pricelists[key].name;
                     self.get('pricelist_names').push(pricelist_name);
@@ -325,7 +325,7 @@ var TsModel = Backbone.Model.extend({
             model:  'res.country',
             fields: ['name'],
             domain: null,
-            loaded: function(self, countries){ 
+            loaded: function(self, countries){
                 for (var key in countries){
                     var country_name = countries[key].name;
                     self.get('country_names').push(country_name);
@@ -435,7 +435,7 @@ var TsModel = Backbone.Model.extend({
                 } else {
                     def.reject();
                 }
-            }, function(err,event){ event.preventDefault(); def.reject(); });   
+            }, function(err,event){ event.preventDefault(); def.reject(); });
         return def;
     },
     // return the current order
@@ -560,7 +560,7 @@ var TsModel = Backbone.Model.extend({
         }
         return vals
     },
- 
+
     // OVERWRITED IN JIM_TELESALE
     build_order_create_lines: function(order_model, order_lines){
         for (var key in order_lines){
@@ -586,7 +586,7 @@ var TsModel = Backbone.Model.extend({
         order_model.set('erp_state', order_obj.state);
         var state = order_obj.state
         order_model.set('state', state);
-      
+
         if (order_obj.commitment_date){
             var only_date = order_obj.commitment_date.split(' ');
             if(only_date.length > 1){
@@ -610,7 +610,7 @@ var TsModel = Backbone.Model.extend({
         order_model.set('pricelist', pricelist_obj.name);
 
         this.build_order_create_lines(order_model, order_lines)
-        
+
     },
     parse_duration_watch_format: function(minutes){
         var res = "00:00";
@@ -1143,7 +1143,7 @@ var Order = Backbone.Model.extend({
             var line_vals = {ts_model: this.ts_model, order:this,
                              code:prod_obj.default_code || "" ,
                              product:prod_obj.display_name,
-                             unit:uom_obj.name || line.product_uom[1], 
+                             unit:uom_obj.name || line.product_uom[1],
                              qty:my_round(l_qty),
                              pvp: my_round(line.current_pvp ? line.current_pvp : 0, 2),
                              total: my_round(line.product_uom_qty * line.price_unit * (1 - line.discount /100)),
@@ -1170,7 +1170,7 @@ var Order = Backbone.Model.extend({
         }
         if (!force_new_line){
             force_new_line = false;
-        }           
+        }
         if($('#partner').val()){
             if(this.selected_orderline && !force_new_line && this.selected_orderline.get('product') == "" ){
               $('.remove-line-button').click()
@@ -1201,7 +1201,7 @@ var Order = Backbone.Model.extend({
         if (!current_partner)
             return parent_name
 
-        if (!current_partner.parent_id) 
+        if (!current_partner.parent_id)
             return parent_name
 
         var parent_id = current_partner.parent_id[0]
@@ -1213,8 +1213,8 @@ var Order = Backbone.Model.extend({
         }
         if (top_parent)
             parent_name = top_parent.name
-        
-        
+
+
         return parent_name
     }
 
@@ -1235,7 +1235,7 @@ exports = {
     Order: Order,
     TsModel: TsModel,
     Orderline: Orderline
-}; 
+};
 exports.load_models = function(models,options) {
     options = options || {};
     if (!(models instanceof Array)) {
