@@ -265,6 +265,7 @@ var TsModel = Backbone.Model.extend({
                 for (var key in customers){
                     var customer = customers[key];
                     var customer_name = self.getComplexName(customer);
+                    customer.custom_name = customer_name
                     self.get('customer_names').push(customer_name);
                     if (customer.is_company === true){
                         self.get('company_customer_names').push(customer_name);

@@ -46,6 +46,9 @@
                                     <td t-att-col="col_obj_index+1" t-att-class="cell.line_cid and 'cell-selected' or '' ">
                                         <t t-if="cell.enable">
                                             <div class="grid-cell" t-att-row-id="row_obj.id" t-att-col-id="col_obj.id" t-att-variant-id="cell.id" t-att-line-cid="cell.line_cid">
+                                                <div id="ref_div">
+                                                    <strong><t t-esc="cell.ref"/></strong>
+                                                </div>
                                                 <div id="stock_div" t-att-class="cell.stock &gt; 0 and 'grid-stock' or 'grid-no-stock' " t-att-stock-value="cell.stock.toFixed(2)">
                                                     STOCK: <strong><t t-esc="cell.stock.toFixed(2)"/></strong>
                                                 </div>

@@ -71,6 +71,7 @@ class ProductTemplate(models.Model):
                         discount = result['discount']
                 cell_dic = {
                     'id': product and product.id or 0,
+                    'ref': product.default_code,
                     'stock': product and var_info[stock_field] or 0.0,
                     'price': price,
                     'discount': discount,

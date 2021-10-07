@@ -540,6 +540,7 @@ var OrderWidget = TsBaseWidget.extend({
         },
         button_add_line: function(){
             // click add line event function
+            var self=this;
             var order =  this.ts_model.get('selectedOrder')
             var partner_id = this.ts_model.db.partner_name_id[order.get('partner')]
             if (!partner_id){
@@ -551,6 +552,9 @@ var OrderWidget = TsBaseWidget.extend({
                 this.ts_model.get('selectedOrder').selectLine(added_line);
                 // this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product').get(0).focus(); //set focus on line when we add one
                 // this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product')[0].focus(); //set focus on line when we add one
+                setTimeout(function(){
+                    self.orderlinewidgets[self.orderlinewidgets.length - 1].$('.col-product').focus();
+                }, 100)
                 this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-product').focus(); //set focus on line when we add one
             }
         },

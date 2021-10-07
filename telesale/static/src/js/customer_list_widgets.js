@@ -338,10 +338,11 @@ var CustomerListWidget = TsBaseWidget.extend({
         
                 return false;
             });
-            var partner_names = self.ts_model.get('customer_names');
+            // var partner_names = self.ts_model.get('customer_names');
+            var company_customer_names = self.ts_model.get('company_customer_names');
             contents.find('#parent').autocomplete({
                 source: function(request, response) {
-                    var results = $.ui.autocomplete.filter(partner_names, request.term);
+                    var results = $.ui.autocomplete.filter(company_customer_names, request.term);
                     response(results.slice(0, 20));
                 }
             });
@@ -474,7 +475,7 @@ var CustomerListWidget = TsBaseWidget.extend({
         rpc.query({model: 'res.partner', method: 'update_partner_from_ui', args:[fields]}).then(function(partner_id){
             self.saved_client_details(partner_id);
         },function(err,event){
-            event.preventDefault();
+            // event.preventDefault();
             alert(_t('Error saving partner to the server'))
         });
 

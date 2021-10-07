@@ -270,6 +270,7 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
     //Ovewwrited to focus template
      // MIG
     button_remove_line: function(){
+            var self=this;
             var current_order = this.ts_model.get('selectedOrder');
             var selected_line = current_order.getSelectedLine();
             if (selected_line.mode == 'template_variants'){
@@ -287,6 +288,9 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
             if (selected_line){
                 var n_line = selected_line.get('n_line')
                 if (this.orderlinewidgets[n_line-1]){
+                    setTimeout(function(){
+                        self.orderlinewidgets[n_line-1].$('.col-template').focus();
+                    }, 100)
                     this.orderlinewidgets[n_line-1].$('.col-template').focus();
                 }
             }
@@ -294,6 +298,7 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
     // MIG
     button_add_line: function(){
             // click add line event function
+            var self=this;
             var order =  this.ts_model.get('selectedOrder')
             var partner_id = this.ts_model.db.partner_name_id[order.get('partner')]
             if (!partner_id){
@@ -303,7 +308,11 @@ var OrderWidget = NewOrderWidgets.OrderWidget.include({
                 this.ts_model.get('selectedOrder').addLine();
                 var added_line = this.ts_model.get('selectedOrder').getLastOrderline();
                 this.ts_model.get('selectedOrder').selectLine(added_line);
-                this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-template').focus(); //set focus on line when we add one
+                // MIG v11, renderElement not triggered when focus done
+                setTimeout(function(){
+                    self.orderlinewidgets[self.orderlinewidgets.length - 1].$('.col-template').focus();
+                }, 100)
+                // this.orderlinewidgets[this.orderlinewidgets.length - 1].$('.col-template').focus(); //set focus on line when we add one
             }
     },
 

@@ -62,7 +62,9 @@
                 <div class='client-detail'>
                     <span class='label'>Related Partner</span>
                     <t t-if='partner.parent_id'>
-                        <span class='detail client-parent'><t t-esc='partner.parent_id[1]' /></span>
+                        <!-- <span class='detail client-parent'><t t-esc='partner.parent_id[1]' /></span> -->
+                        <!-- <span class='detail client-parent'><t t-esc='partner.custom_name' /></span> -->
+                        <span class='detail client-parent'><t t-esc='widget.ts_model.db.get_partner_by_id(partner.parent_id[0]).custom_name' /></span>
                     </t>
                     <t t-if='!partner.parent_id'>
                         <span class='detail client-parent empty'>N/A</span>
@@ -168,7 +170,9 @@
                 </div>
                 <div class='client-detail'>
                         <span class='label'>Related Partner</span>
-                        <input id="parent" class='detail parent'   name='parent_id'         t-att-value='partner.parent_id ? partner.parent_id[1] : ""' placeholder='Parent'></input>
+                        <!-- <input id="parent" class='detail parent'   name='parent_id'         t-att-value='partner.parent_id ? partner.parent_id[1] : ""' placeholder='Parent'></input> -->
+                        <!-- <input id="parent" class='detail parent'   name='parent_id'         t-att-value='partner.parent_id ? partner.custom_name : ""' placeholder='Parent'></input> -->
+                        <input id="parent" class='detail parent'   name='parent_id'         t-att-value='partner.parent_id ? widget.ts_model.db.get_partner_by_id(partner.parent_id[0]).custom_name : ""' placeholder='Parent'></input>
                 </div>    
             </div>
 

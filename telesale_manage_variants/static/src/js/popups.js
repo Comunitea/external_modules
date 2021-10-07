@@ -200,6 +200,7 @@ var GridWidget = TsBaseWidget.extend({
         var pricelist_id = this.ts_model.db.pricelist_name_id[current_order.get('pricelist')];
         return rpc.query({model: 'product.template', method: 'ts_get_grid_structure', args:[template_id, partner_id, pricelist_id], kwargs: {context: session.user_context}})
         .then(function(result){
+            debugger;
             self.column_attrs =result.column_attrs
             self.row_attrs = result.row_attrs
             self.str_table = result.str_table
