@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_layout" name="Portal layout: rma menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == '347' or mod_347_detail" t-attf-class="breadcrumb-item #{'active ' if not mod_347_detail else ''}">
+                <a t-if="mod_347_detail" t-attf-href="/my/347?{{ keep_query() }}">347</a>
+                <t t-else="">347</t>
+            </li>
+            <li t-if="mod_347_detail" class="breadcrumb-item active">
+                <t t-esc="mod_347_detail.report_id.year"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home" name="Portal My Home: rma entries" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="mod_347_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">AEAT mod 347 data</t>
+                <t t-set="url" t-value="'/my/347'"/>
+                <t t-set="count" t-value="mod_347_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_347_list" name="Datos 347">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">347</t>
+            </t>
+            <t t-if="not mod_347_records">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no 347 data.
+                </div>
+            </t>
+            <t t-if="mod_347_records" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Year</th>
+                        <th class="text-right">Total</th>
+                        <th class="text-right">First quarter</th>
+                        <th class="text-right">Second quarter</th>
+                        <th class="text-right">Third quarter</th>
+                        <th class="text-right">Fourth quarter</th>
+                        <th class="text-right">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="mod_347_records" t-as="mod_347_record">
+                        <td class="text-center">
+
+                            <a t-att-href="mod_347_record.get_portal_url()" t-att-title="mod_347_record.sudo().report_id.year">
+                                <span t-esc="str(mod_347_record.sudo().report_id.year)"/>
+                            </a>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="mod_347_record.amount" t-options='{"widget": "monetary", "display_currency": mod_347_record.report_id.currency_id}'/>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="mod_347_record.first_quarter" t-options='{"widget": "monetary", "display_currency": mod_347_record.report_id.currency_id}'/>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="mod_347_record.second_quarter" t-options='{"widget": "monetary", "display_currency": mod_347_record.report_id.currency_id}'/>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="mod_347_record.third_quarter" t-options='{"widget": "monetary", "display_currency": mod_347_record.report_id.currency_id}'/>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="mod_347_record.fourth_quarter" t-options='{"widget": "monetary", "display_currency": mod_347_record.report_id.currency_id}'/>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="mod_347_record.state"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_347_detail" name="Registro 347" inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <div class="row mt16 o_portal_sale_sidebar">
+                <!-- Sidebar -->
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+
+                    <t t-set="title">
+                        <h2 class="mb-0">
+                            <b t-esc="str(mod_347_detail.report_id.year)" data-id="report_year"/>
+                        </h2>
+                    </t>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li class="list-group-item flex-grow-1">
+
+                                <a t-if="mod_347_detail.state in ('pending', 'sent')" role="button" class="btn btn-primary btn-block mb8"
+                                    t-att-href="mod_347_detail.get_confirm_url()">
+                                    Aceptar datos del 347
+                                </a>
+                                <a t-if="mod_347_detail.state in ('pending', 'sent')" role="button" class="btn btn-primary btn-block mb8"
+                                    t-att-href="mod_347_detail.get_reject_url()">
+                                    Rechazar datos del 347
+                                </a>
+                            </li>
+
+                            <li class="navspy list-group-item pl-0 flex-grow-1" t-ignore="true" role="complementary">
+                                <ul class="nav flex-column bs-sidenav"/>
+                            </li>
+
+                            <li t-if="mod_347_detail.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1">
+                                    <strong class="text-muted">Your Contact</strong>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="mod_347_detail.user_id.image" t-att-src="image_data_uri(mod_347_detail.user_id.image)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not mod_347_detail.user_id.image" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="mod_347_detail.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small">
+                                            <i class="fa fa-comment"/>
+                                            Send message
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+
+                <div id="quote_content" class="col-12 col-lg justify-content-end">
+                    <div class="container">
+                        <div class="card pb-5">
+                            <div class="card-body">
+
+                                <!-- status messages -->
+                                <div t-if="mod_347_detail.state == 'confirmed'" class="alert alert-success alert-dismissable d-print-none" role="status">
+                                    <strong>Gracias por confirmar los datos relativos al 347</strong>
+                                </div>
+
+                                <div t-if="mod_347_detail.state == 'exception'" class="alert alert-danger alert-dismissable d-print-none" role="alert">
+                                    <strong>Gracias por informarnos, nos pondremos en contacto con usted para solventar los problema</strong>
+                                    <strong>
+                                        Puede indicarnos el problema mediante
+                                        <a href="#discussion" class="small">mensaje</a>
+                                    </strong>
+                                </div>
+                                <p>Le comunicamos que a efectos de comprobación del modelo 347:</p>
+                                <p>Nuestros datos en dicha declaración son:</p>
+                                <p>
+                                    <strong>Nombre:</strong>
+                                    <span t-field="mod_347_detail.report_id.company_id.name"/>
+                                    <br/>
+                                    <strong>NIF:</strong>
+                                    <span t-esc="mod_347_detail.report_id.company_id.vat or ''"/>
+                                    <br/>
+                                    <strong>Provincia:</strong>
+                                    <span t-esc="mod_347_detail.report_id.company_id.state_id.name or ''"/>
+                                    <br/>
+                                </p>
+                                <p>Los datos que vamos a declarar en relación a las operaciones habidas con su empresa son:</p>
+                                <p>
+                                    <strong>Nombre:</strong>
+                                    <span t-field="mod_347_detail.partner_id.name"/>
+                                    <br/>
+                                    <strong>NIF:</strong>
+                                    <span t-field="mod_347_detail.partner_vat"/>
+                                    <br/>
+                                    <strong>Código de país:</strong>
+                                    <span t-field="mod_347_detail.partner_country_code"/>
+                                    <br/>
+                                    <strong>Código de provincia:</strong>
+                                    <span t-field="mod_347_detail.partner_state_code"/>
+                                    <br/>
+                                </p>
+                                <p>
+                                    <strong>Tipo de operación:</strong>
+                                    <span t-field="mod_347_detail.operation_key"/>
+                                </p>
+                                <t t-if="mod_347_detail.amount">
+                                    <p>
+                                        <strong>Importe de las operaciones:</strong>
+                                        <span t-field="mod_347_detail.amount"/>
+                                        <br/>
+                                        <strong>Operaciones primer trimestre:</strong>
+                                        <span t-field="mod_347_detail.first_quarter"/>
+                                        <br/>
+                                        <strong>Operaciones segundo trimestre:</strong>
+                                        <span t-field="mod_347_detail.second_quarter"/>
+                                        <br/>
+                                        <strong>Operaciones tercer trimestre:</strong>
+                                        <span t-field="mod_347_detail.third_quarter"/>
+                                        <br/>
+                                        <strong>Operaciones cuarto trimestre:</strong>
+                                        <span t-field="mod_347_detail.fourth_quarter"/>
+                                        <br/>
+                                    </p>
+                                </t>
+                                <t t-if="mod_347_detail.cash_amount">
+                                    <p>
+                                        <strong>Importe recibido en efectivo:</strong>
+                                        <span t-field="mod_347_detail.cash_amount"/>
+                                        <br/>
+                                    </p>
+                                </t>
+                                <t t-if="mod_347_detail.real_estate_transmissions_amount">
+                                    <p>
+                                        <strong>Importe de transmisión de inmueble:</strong>
+                                        <span t-field="mod_347_detail.real_estate_transmissions_amount"/>
+                                        <br/>
+                                        <strong>Inmuebles primer trimestre:</strong>
+                                        <span t-field="mod_347_detail.first_quarter_real_estate_transmission"/>
+                                        <br/>
+                                        <strong>Inmuebles segundo trimestre:</strong>
+                                        <span t-field="mod_347_detail.second_quarter_real_estate_transmission"/>
+                                        <br/>
+                                        <strong>Inmuebles tercer trimestre:</strong>
+                                        <span t-field="mod_347_detail.third_quarter_real_estate_transmission"/>
+                                        <br/>
+                                        <strong>Inmuebles cuarto trimestre:</strong>
+                                        <span t-field="mod_347_detail.fourth_quarter_real_estate_transmission"/>
+                                        <br/>
+                                    </p>
+                                </t>
+                                <div id="facturas">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Factura</th>
+                                                <th>Fecha</th>
+                                                <th>Importe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="mod_347_detail.move_record_ids.sorted('date')" t-as="move_record">
+                                                <td>
+                                                    <a t-att-href="move_record.invoice_id.get_portal_url()" t-att-title="move_record.invoice_id.sudo().reference">
+                                                        <span t-field="move_record.invoice_id.sudo().reference"/>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <span t-field="move_record.date"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="move_record.amount_signed"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- chatter -->
+            <div id="move_record_communication" class="mt-4">
+                <h2>Communication</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="mod_347_detail"/>
+                </t>
+            </div>
+            <div class="oe_structure mb32"/>
+        </xpath>
+    </template>
+</odoo>
