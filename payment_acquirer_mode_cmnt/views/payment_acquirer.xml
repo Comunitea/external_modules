@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="payment_acquirer_mode_cmnt_form_view" model="ir.ui.view">
+            <field name="name">payment.acquirer.mode.cmnt.form.view</field>
+            <field name="model">payment.acquirer</field>
+            <field name="inherit_id" ref="payment.acquirer_form" />
+            <field name="arch" type="xml">
+                <xpath expr='//group[@name="acquirer_left"]' position='inside'>
+                    <field name="payment_mode_id" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
