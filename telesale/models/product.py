@@ -100,7 +100,7 @@ class ProductProduct(models.Model):
                            pricelist_id, offset=0):
         res = []
         # import ipdb; ipdb.set_trace()
-        domain = [('name', 'ilike', product_name)]
+        domain = ['|', ('name', 'ilike', product_name), ('default_code', 'ilike', product_name)]
         if product_barcode:
             domain2 = ('barcode', 'ilike', product_barcode)
             if product_name:
@@ -108,7 +108,7 @@ class ProductProduct(models.Model):
             else:  # Only search by barcode
                 domain = [domain2]
         stock_field = self._get_stock_field()
-        fields = ['id', 'name', 'barcode', stock_field, 'price',
+        fields = ['id', 'name', 'default_code', 'barcode', stock_field, 'price',
                   'taxes_id']
         ctx = self._context.copy()
         ctx.update(pricelist=pricelist_id, partner=partner_id)
@@ -134,7 +134,7 @@ class ProductProduct(models.Model):
             tax_ids = result.get('tax_id', [])
             formated = {
                 'id': dic['id'],
-                'display_name': dic.get('name', 0.0),
+                'display_name': "[" + dic.get('default_code', '') + "] " + dic.get('name', 0.0),
                 'barcode': dic.get('barcode', 0.0),
                 'stock': dic.get(stock_field, 0.0),
                 'price': price,
