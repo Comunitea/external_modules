@@ -334,7 +334,7 @@
                 <button id="promo-button" tabIndex="13">CR</button>
               </div>
             </div>
-            <div class="col-1 fullheight centerinside">
+            <!--TODO: Migrar<div class="col-1 fullheight centerinside">
               <div class="centerthis">
                 <button id="info-button" tabIndex="16">INFO</button>
               </div>
@@ -348,7 +348,7 @@
               <div class="centerthis">
                 <button id="mail-button" tabIndex="18">EMAIL</button>
               </div>
-            </div>
+            </div>-->
             <!-- POP UP GENERIC EXAMPLE -->
             <!-- <div class="col-1 fullheight centerinside">
               <div class="centerthis">
@@ -375,7 +375,7 @@
                   <t t-if="widget.ts_model.get('selectedOrder').get('state') == 'cancel'">
                       (Canceled)
                   </t>
-                  
+
                   <span t-esc="widget.ts_model.get('selectedOrder').get('num_order')"/>
                 </div>
               </div>
@@ -450,7 +450,7 @@
                         t-att-value="widget.order_model.get('total_discount').toFixed(2)" readonly="readonly" tabIndex="-1"/> -->
                     <span t-esc="widget.order_model.get('total_discount').toFixed(2)"/>
                 </div>
-                </div> 
+                </div>
             </div>
 
               <div class="row semiheight">
@@ -495,7 +495,7 @@
                     <label for="total">Margin (%):</label>
 <!--                     <input type="numeric" class='total' id='total_margin'
                         t-att-value="widget.order_model.get('total_margin_per')" readonly="readonly" tabIndex="-1"/> -->
-                    <span t-esc="widget.order_model.get('total_margin_per')"/>    
+                    <span t-esc="widget.order_model.get('total_margin_per')"/>
                 </div>
               </div>
               </div>
@@ -506,7 +506,7 @@
                       <label for="total" class="totalorder">Total Order:</label>
                     <!--   <input type="numeric" class='total totalorder' id="total_order"
                           t-att-value="widget.order_model.get('total').toFixed(2)" tabIndex="-1" readonly="readonly"/> -->
-                       <span t-esc="widget.order_model.get('total').toFixed(2)"/>   
+                       <span t-esc="widget.order_model.get('total').toFixed(2)"/>
                       </div>
                   </div>
               </div>
