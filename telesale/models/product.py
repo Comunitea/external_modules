@@ -109,7 +109,7 @@ class ProductProduct(models.Model):
                 domain = [domain2]
         stock_field = self._get_stock_field()
         fields = ['id', 'name', 'default_code', 'barcode', stock_field, 'price',
-                  'taxes_id']
+                  'taxes_id', 'attribute_names']
         ctx = self._context.copy()
         ctx.update(pricelist=pricelist_id, partner=partner_id)
         read = self.with_context(ctx).search_read(domain, fields, limit=100,
@@ -132,9 +132,12 @@ class ProductProduct(models.Model):
 
             # Get taxes
             tax_ids = result.get('tax_id', [])
+            display_name = "[" + dic.get('default_code', '') + "] " + dic.get('name', 0.0)
+            if dic.get('attribute_names'):
+                display_name += ' (' + dic['attribute_names']+ ')'
             formated = {
                 'id': dic['id'],
-                'display_name': "[" + dic.get('default_code', '') + "] " + dic.get('name', 0.0),
+                'display_name': display_name,
                 'barcode': dic.get('barcode', 0.0),
                 'stock': dic.get(stock_field, 0.0),
                 'price': price,
