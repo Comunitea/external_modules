@@ -19,6 +19,7 @@
                 <field name="pdo_quantity"
                     attrs="{'invisible': [('payment_on_delivery', '=', False)], 'required': [('payment_on_delivery', '!=', 'False')]}"/>
                 <field name="failed_shipping"/>
+                <field name="shipping_weight" invisible="1"/>
             </field>
             <field name="carrier_id" position="after">
                 <field name="carrier_service"/>
