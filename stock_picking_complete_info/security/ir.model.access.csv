@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_move_change_reserve_line_user,move.change.reserve.line.user,model_move_change_reserve_line,stock.group_stock_user,1,0,0,0
-access_move_change_reserve_line_manager,move.change.reserve.line.manager,model_move_change_reserve_line,stock.group_stock_manager,1,1,1,1
-access_unreserved_available_quant_user,unreserved.available.quant.user,model_unreserved_available_quant,stock.group_stock_user,1,1,1,1
-access_move_change_reserve_line_user,move.change.reserve.line.user,model_move_change_reserve_line,stock.group_stock_user,1,1,1,1
