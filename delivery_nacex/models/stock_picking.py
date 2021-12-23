@@ -26,8 +26,19 @@ class StockPicking(models.Model):
     shipment_reference = fields.Char("Shipment Reference")
     delivery_note = fields.Char(compute="_compute_delivery_note")
     ncx_payment_on_delivery = fields.Boolean("POD", default=False)
+    """This is computed with sudo for avoiding problems if you don't have
+        access to sales orders (stricter warehouse users, inter-company
+        records...).
+        """
+    currency_id = fields.Many2one(
+        related="sale_id.currency_id",
+        readonly=True,
+        string="Currency",
+        related_sudo=True,
+    )
     ncx_pdo_quantity = fields.Monetary(
         string='Total',
+        currency_field='currency_id'
     )
 
     def nacex_get_label(self):

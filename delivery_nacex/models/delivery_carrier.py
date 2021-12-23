@@ -39,7 +39,10 @@ class DeliveryCarrier(models.Model):
 
     _inherit = "delivery.carrier"
 
-    integration_type = fields.Selection(selection_add=[("nacex", "NACEX")])
+    delivery_type = fields.Selection(
+        selection_add=[("nacex", "NACEX")],
+        ondelete="set default",
+    )
     ncx_account = fields.Char(string="Nacex Account Number", required=True)
     ncx_password = fields.Char(string="Nacex Account Password", required=True)
     ncx_client = fields.Char("NACEX Client Code")
