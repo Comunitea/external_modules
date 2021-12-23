@@ -138,8 +138,8 @@ class DeliveryCarrier(models.Model):
             "tip_cob={}".format(self.ncx_payment_type),
             "ref_cli={}".format(picking.name),
             "tip_env={}".format(self.ncx_package_type),
-            "bul={}".format(picking.carrier_packages),
-            "kil={}".format(round(picking.carrier_weight)),
+            "bul={}".format(picking.number_of_packages or 1),
+            "kil={}".format(round(picking.shipping_weight)),
             "nom_ent={}".format(picking.partner_id.display_name[:50]),
             "dir_ent={} {}".format(picking.partner_id.street if picking.partner_id.street else '', picking.partner_id.street2 if picking.partner_id.street2 else ''),
             "pais_ent={}".format(picking.partner_id.country_id.code),
@@ -150,7 +150,7 @@ class DeliveryCarrier(models.Model):
             "obs2={}".format(picking.delivery_note[38:75] if picking.delivery_note else ''),
             "obs3={}".format(picking.delivery_note[75:113] if picking.delivery_note else ''),
             "obs4={}".format(picking.delivery_note[113:151] if picking.delivery_note else ''),
-            "ret={}".format("S" if picking.ncx_shipping_return else "N"),
+            "ret={}".format("S" if self.ncx_shipping_return else "N"),
         ]
 
         if picking.ncx_payment_on_delivery and self.ncx_pod_type:
