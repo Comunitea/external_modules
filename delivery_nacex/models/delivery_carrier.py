@@ -76,6 +76,9 @@ class DeliveryCarrier(models.Model):
         default="D",
     )
 
+    def nacex_send_shipping(self, pickings):
+        return [self.nacex_create_shipping(p) for p in pickings]
+
     def nacex_get_tracking_link(self, picking):
         return "http://www.nacex.es/irSeguimiento.do?seguimiento={}".format(
             picking.carrier_tracking_ref
