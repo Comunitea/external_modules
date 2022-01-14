@@ -61,6 +61,8 @@ class WebsiteSale(ProductConfiguratorController):
         acquirer = request.env["payment.acquirer"].browse(acquirer_id)
         if acquirer and acquirer.payment_mode_id:
             order.payment_mode_id = acquirer.payment_mode_id.id
+        else:
+            order.payment_mode_id = order.partner_id.customer_payment_mode_id.id
 
         return super(WebsiteSale, self).payment_transaction(
             acquirer_id,
