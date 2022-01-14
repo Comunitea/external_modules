@@ -4,6 +4,7 @@ from odoo import _, fields, models, api
 from odoo.exceptions import UserError
 from base64 import b64decode
 from odoo.addons import decimal_precision as dp
+from datetime import datetime,timedelta
 
 
 class StockPicking(models.Model):
@@ -100,7 +101,8 @@ class StockPicking(models.Model):
     @api.model
     def cron_check_shipment_status(self):
         pickings = self.env['stock.picking'].search([
-            ('delivered', '=', False), ('carrier_tracking_ref', '!=', False)
+            ('delivered', '=', False), ('carrier_tracking_ref', '!=', False),
+            ('date_done', '>', datetime.now() + timedelta(days=-90))
         ])
         for picking in pickings:
             picking.check_shipment_status()
