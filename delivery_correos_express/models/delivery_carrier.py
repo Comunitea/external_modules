@@ -12,6 +12,7 @@ from .correos_express_request import (
     CORREOS_EXPRESS_SERVICE,
     CorreosExpressRequest,
 )
+from odoo.addons.phone_validation.tools import phone_validation
 
 
 class DeliveryCarrier(models.Model):
@@ -54,7 +55,10 @@ class DeliveryCarrier(models.Model):
     def _get_correos_express_receiver_info(self, picking):
         partner = picking.partner_id
         streets = self._get_partner_streets(partner)
-        phone = partner.mobile or partner.phone or ""
+        # phone = partner.mobile or partner.phone or ""
+        phone = phone_validation.phone_sanitize_numbers(
+                    [partner.mobile or partner.phone], partner.country_id.code, None
+                )[partner.mobile or partner.phone]["sanitized"]
         return {
             "codDest": "",
             "nomDest": partner.name or "",  # mandatory
@@ -72,6 +76,9 @@ class DeliveryCarrier(models.Model):
     def _get_correos_express_sender_info(self, picking):
         partner = picking.picking_type_id.warehouse_id.partner_id
         streets = self._get_partner_streets(partner)
+        phone = phone_validation.phone_sanitize_numbers(
+                    [partner.mobile or partner.phone], partner.country_id.code, None
+                )[partner.mobile or partner.phone]["sanitized"]
         return {
             "codRte": self.correos_express_customer_code,
             "nomRte": partner.name or "",
@@ -82,7 +89,7 @@ class DeliveryCarrier(models.Model):
             "paisISORte": partner.country_id.code or "",
             "codPosIntRte": "",
             "contacRte": partner.name or "",
-            "telefRte": partner.phone or "",
+            "telefRte":  phone[:15] if phone else "",  # mandatory
             "emailRte": partner.email or "",
         }
 
