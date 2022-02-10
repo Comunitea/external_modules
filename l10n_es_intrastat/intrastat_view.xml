@@ -43,42 +43,39 @@
 		<field name="type">form</field>
 		<field name="arch" type="xml">
 			<form string="Intrastat Declaration">
-
+                <header>
+                    <button icon="gtk-execute" type="object" name="action_gather" string="Gather lines" colspan="1" states="draft,edit" 
+                        confirm="Are you sure you want to gather lines (if any lines currently, will be deleted and replaced with new ones)?"/>
+                    <button icon="gtk-go-forward" type="object" name="action_send" string="Create file" colspan="1" states="done" help="Create ITX formatted file for IDEP import"/>
+                    <button icon="gtk-ok" type="object" name="action_done" string="Done" colspan="1" states="draft,edit" />
+                    <button icon="gtk-convert" type="object" name="action_reset" string="Reset to draft" colspan="1" states="done"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <group colspan="4" col="6">
                     <group col="2">
                         <field name="company_id"/>
-                        <field name="start_date"/>
+                        <field name="ttype"/>
+                        <field name="date_done"/>
                     </group>
-
                     <group col="2">
                         <field name="country_id" invisible="1"/>
-                        <field name="ttype"/>
+                        <field name="start_date"/>
                         <field name="end_date"/>
                     </group>
-
                     <group col="2">
                          <field name="merge_lines"/>
                          <field name="revision"/>
-                          <field name="data_source"/>
+                         <field name="data_source"/>
                     </group>   
+                </group>
+                <group colspan="4" col="6">
+                    <field name="total_weight"/>
+                    <field name="total_amount"/>
+                    <field name="num_lines"/>
                 </group>
                 <notebook >
                     <page string="General">
         				<field name="intrastat_line_ids" string="Declaration details" colspan="4" nolabel="1"/>
-        				<group colspan="4" col="6">
-                            <field name="total_weight"/>
-        					<field name="total_amount"/>
-        					<field name="num_lines"/>
-        				</group>
-        				<group colspan="4" col="8">
-        					<field name="state"/>
-        					<field name="date_done"/>
-                            <button icon="gtk-execute" type="object" name="action_gather" string="Gather lines" colspan="1" states="draft,edit" 
-                                confirm="Are you sure you want to gather lines (if any lines currently, will be deleted and replaced with new ones)?"/>
-                            <button icon="gtk-go-forward" type="object" name="action_send" string="Create file" colspan="1" states="done" help="Create ITX formatted file for IDEP import"/>
-                            <button icon="gtk-ok" type="object" name="action_done" string="Done" colspan="1" states="draft,edit" />
-                            <button icon="gtk-convert" type="object" name="action_reset" string="Reset to draft" colspan="1" states="done"/>
-                        </group>
                     </page>
                     <page string="Notes">
                         <group colspan="4">
@@ -119,7 +116,8 @@
                 <field name="amount_statistic_company_currency"/>
                 <field name="supplementary_quantity"/>
                 <field name="weight"/>
-				<field name="extnr"/>
+				<field name="partner_vat"/>
+                <field name="extnr"/>
 			</tree>
 		</field>
 	</record>
@@ -141,16 +139,17 @@
                         <field name="statistical_procedure"/>
         				<field name="weight"/>
                         <field name="supplementary_quantity" on_change="onchange_qty(product_id, supplementary_quantity)"/>
+                        <field name="partner_vat"/>
                     </group>
                     <group>
                         <field name="country_code"/>
-                         <field name="state_code"/>
-                         <field name="country_origin_id"/>
-                         <field name="transaction"/>
-                         <field name="port_loading_unloading"/>
-                         <field name="intrastat_code"/>
-                         <field name="extnr"/>
-                         <field name="amount_company_currency"/>
+                        <field name="state_code"/>
+                        <field name="country_origin_id"/>
+                        <field name="transaction"/>
+                        <field name="port_loading_unloading"/>
+                        <field name="intrastat_code"/>
+                        <field name="extnr"/>
+                        <field name="amount_company_currency"/>
                         <field name="amount_statistic_company_currency"/>
                     </group>
 

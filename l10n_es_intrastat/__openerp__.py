@@ -36,7 +36,7 @@
         "picking_invoice_rel",
     ],
     'init': [],
-    'update_xml': [
+    'data': [
         'security/intrastat_security.xml',
         'security/ir.model.access.csv',
         'intrastat_view.xml',

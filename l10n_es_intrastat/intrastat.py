@@ -251,6 +251,7 @@ class l10n_es_intrastat(models.Model):
                     log.debug("product on invoice line was explicitly banned from intrastat")
                     continue
 
+                country_origin = inv_line.product_id.origin_country_id
                 intrastat = inv_line.product_id.intrastat_id or inv_line.product_id.categ_id.intrastat_id
                 if not intrastat:
                     raise osv.except_osv(_('Configuration Error !'), 
@@ -296,7 +297,7 @@ class l10n_es_intrastat(models.Model):
                     'product_id': inv_line.product_id.id,
                     'intrastat_id': intrastat.id,
                     'intrastat_code': intrastat_code,
-                    'country_origin_id': False,
+                    'country_origin_id': (country_origin and country_origin.id or False) if declaration.ttype == 'E' else False,
                     'statistical_procedure': 1,
                     'weight': weight or 0.0,
                     'supplementary_quantity': quantity or 0.0,
@@ -306,6 +307,7 @@ class l10n_es_intrastat(models.Model):
                     'transport': 3,
                     'port_loading_unloading': False,
                     'extnr': invoice.number[-13:],
+                    'partner_vat': invoice.partner_id.commercial_partner_id.vat[:14],
                 }) )
             log.debug("invoice %s gave us following intrastat lines: %s", invoice.number, decl_lines)
         return decl_lines
@@ -352,6 +354,7 @@ class l10n_es_intrastat(models.Model):
             value = move.price_unit or move.product_id.list_price
             ref = move.picking_id and move.picking_id.name or '%d [%s] %s' % (move.id, move.product_id.default_code, move.product_id.name)
 
+            country_origin = move.product_id.origin_country_id
             intrastat = move.product_id.intrastat_id or move.product_id.categ_id.intrastat_id
             if not intrastat:
                 raise osv.except_osv(_('Configuration Error !'), 
@@ -418,7 +421,7 @@ class l10n_es_intrastat(models.Model):
                 'product_id': move.product_id.id,
                 'intrastat_id': intrastat and intrastat.id,
                 'intrastat_code': intrastat_code,
-                'country_origin_id': False,
+                'country_origin_id': (country_origin and country_origin.id or False) if declaration.ttype == 'E' else False,
                 'statistical_procedure': 1,
                 'weight': weight or 0.0,
                 'supplementary_quantity': quantity or 0.0,
@@ -428,6 +431,8 @@ class l10n_es_intrastat(models.Model):
                 'transport': 3,
                 'port_loading_unloading': False,
                 'extnr': ref[:13],
+                'partner_vat': invoices and invoices[0].partner_id.commercial_partner_id.vat[:14] or 
+                    move.picking_id and move.picking_id.partner_id.commercial_partner_id.vat[:14] or '',
             }) )
         return decl_lines
 
@@ -474,20 +479,30 @@ class l10n_es_intrastat(models.Model):
                             decl_lines[i][2]['port_loading_unloading'] == lines_combined[j][2]['port_loading_unloading'] and \
                             decl_lines[i][2]['intrastat_code'] == lines_combined[j][2]['intrastat_code'] and \
                             decl_lines[i][2]['country_origin_id'] == lines_combined[j][2]['country_origin_id'] and \
+                            decl_lines[i][2]['partner_vat'] == lines_combined[j][2]['partner_vat'] and \
                             decl_lines[i][2]['statistical_procedure'] == lines_combined[j][2]['statistical_procedure']:
-                            
+                            if not decl_lines[i][2]['country_origin_id'] and \
+                                decl_lines[i][2]['product_id'] != lines_combined[j][2]['product_id']:
+                                similar = False
+                                continue
                             similar = True
-                            
-                            lines_combined[j][2]['invoice_id'] = False
-                            lines_combined[j][2]['invoice_line_id'] = False
-                            lines_combined[j][2]['picking_id'] = False
-                            lines_combined[j][2]['move_id'] = False
-                            lines_combined[j][2]['extnr'] = False
-    
+                            if decl_lines[i][2]['invoice_id'] != lines_combined[j][2]['invoice_id']:
+                                lines_combined[j][2]['invoice_id'] = False
+                            if decl_lines[i][2]['invoice_line_id'] != lines_combined[j][2]['invoice_line_id']:
+                                lines_combined[j][2]['invoice_line_id'] = False
+                            if decl_lines[i][2]['picking_id'] != lines_combined[j][2]['picking_id']:
+                                lines_combined[j][2]['picking_id'] = False
+                            if decl_lines[i][2]['move_id'] != lines_combined[j][2]['move_id']:
+                                lines_combined[j][2]['move_id'] = False
+                            if decl_lines[i][2]['product_id'] != lines_combined[j][2]['product_id']:
+                                lines_combined[j][2]['product_id'] = False
+                            if decl_lines[i][2]['extnr'] != lines_combined[j][2]['extnr']:
+                                lines_combined[j][2]['extnr'] = False
                             lines_combined[j][2]['weight'] += decl_lines[i][2]['weight'] or 0.0
                             lines_combined[j][2]['supplementary_quantity'] += decl_lines[i][2]['supplementary_quantity'] or 0.0
                             lines_combined[j][2]['amount_company_currency'] += decl_lines[i][2]['amount_company_currency'] or 0.0
                             lines_combined[j][2]['amount_statistic_company_currency'] += decl_lines[i][2]['amount_statistic_company_currency'] or 0.0
+                            break
                     if not similar:
                         lines_combined.append(decl_lines[i])
                 decl_lines = lines_combined
@@ -523,7 +538,6 @@ class l10n_es_intrastat(models.Model):
 
             lines_all = []
             for intrastat_line in declaration.intrastat_line_ids:
-                
                 if not intrastat_line.country_code:
                     raise osv.except_osv(_("Missing code of country origin/destination"), 
                                          _("The line with source reference %s has no code of country origin/destination selected") % intrastat_line.extnr)
@@ -545,6 +559,12 @@ class l10n_es_intrastat(models.Model):
                 if not intrastat_line.statistical_procedure:
                     raise osv.except_osv(_("Missing statistical procedure"), 
                                          _("The line with source reference %s has no statistical procedure selected") % intrastat_line.extnr)
+                if not intrastat_line.country_origin and declaration.ttype == 'E':
+                    raise osv.except_osv(_("Missing country origin of product"), 
+                                         _("The line with source reference %s has no country origin of product") % intrastat_line.extnr)
+                if not intrastat_line.partner_vat and declaration.ttype == 'E':
+                    raise osv.except_osv(_("Missing partner vat"), 
+                                         _("The line with source reference %s has no partner vat") % intrastat_line.extnr)
 
                 lines_all.append({ 
                     'match': [ 
@@ -557,6 +577,7 @@ class l10n_es_intrastat(models.Model):
                         intrastat_line.intrastat_code.replace(' ', ''), # Field 7
                         intrastat_line.country_origin or '', # Field 8
                         intrastat_line.statistical_procedure or '', # Field 9
+                        intrastat_line.partner_vat if declaration.ttype == 'E' else '', # Field 14
                         declaration.currency_id.name, # No se exporta
                         ],
                     'vals': [ 
@@ -587,7 +608,8 @@ class l10n_es_intrastat(models.Model):
                             ['{0:.3f}'.format(x['vals'][0]).replace('.', ',')] + #Utilizamos como separador decimal la coma 
                             ['{0:.3f}'.format(x['vals'][1]).replace('.', ',')] + #Utilizamos como separador decimal la coma
                             ['{0:.2f}'.format(x['vals'][2]).replace('.', ',')] + #Utilizamos como separador decimal la coma
-                            ['{0:.2f}'.format(x['vals'][3]).replace('.', ',')],  #Utilizamos como separador decimal la coma
+                            ['{0:.2f}'.format(x['vals'][3]).replace('.', ',')] + #Utilizamos como separador decimal la coma
+                            [x['match'][9] if declaration.ttype == 'E' else ''], 
                             lines_combined)
             for line in itx_lines:
                 if line[9] == '0,000' and line[10] == '0,000': #Utilizamos como separador decimal la coma
@@ -599,7 +621,7 @@ class l10n_es_intrastat(models.Model):
                 itx_line = line                
                 itx_file.writerow(itx_line)
 
-            filename = '%s%02d%02d%s%s.itx' % (
+            filename = '%s%02d%02d%s%s.csv' % (
                 declaration.ttype,
                 decl_date.year,
                 decl_date.month,
@@ -720,9 +742,10 @@ class l10n_es_intrastat_line(osv.osv):
         # Field 17: Externe informatie (13 variable XX)
         'extnr': fields.char('Source reference', size=13, required=False),
         #'company_id': fields.related('parent_id', 'company_id', type='many2one', relation='res.company', string='Company', store=True, readonly=True),
+        'partner_vat': fields.char('Company CIF/NIF', size=14),
     }
     
-    _order = 'country_id, incoterm_id, transaction, transport, intrastat_code, statistical_procedure'
+    _order = 'partner_vat, country_id, incoterm_id, transaction, transport, intrastat_code, product_id, statistical_procedure'
 
     def onchange_country(self, cr, uid, ids, country_id, context=None):
         res = {'value': {}}
