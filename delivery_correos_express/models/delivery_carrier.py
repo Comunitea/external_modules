@@ -55,10 +55,9 @@ class DeliveryCarrier(models.Model):
     def _get_correos_express_receiver_info(self, picking):
         partner = picking.partner_id
         streets = self._get_partner_streets(partner)
-        # phone = partner.mobile or partner.phone or ""
         phone = phone_validation.phone_sanitize_numbers(
-                    [partner.mobile or partner.phone], partner.country_id.code, None
-                )[partner.mobile or partner.phone]["sanitized"]
+                    [partner.phone or partner.mobile ], partner.country_id.code, None
+                )[partner.phone or partner.mobile ]["sanitized"]
         return {
             "codDest": "",
             "nomDest": partner.name or "",  # mandatory
@@ -77,8 +76,8 @@ class DeliveryCarrier(models.Model):
         partner = picking.picking_type_id.warehouse_id.partner_id
         streets = self._get_partner_streets(partner)
         phone = phone_validation.phone_sanitize_numbers(
-                    [partner.mobile or partner.phone], partner.country_id.code, None
-                )[partner.mobile or partner.phone]["sanitized"]
+                    [partner.phone or partner.mobile ], partner.country_id.code, None
+                )[partner.phone or partner.mobile ]["sanitized"]
         return {
             "codRte": self.correos_express_customer_code,
             "nomRte": partner.name or "",
