@@ -24,7 +24,7 @@
     'summary': '',
     'version': "14.0.1.0.0",
     'category': 'Human Resources',
-    'website': 'comunitea.com',
+    'website': 'https://comunitea.com',
     'author': 'Comunitea',
     'license': 'AGPL-3',
     'application': False,
@@ -34,9 +34,9 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'data/paperformat.xml',
         'wizard/employee_print_attendance_report.xml',
         'views/hr_employee_attendance_report.xml',
         'hr_attendance_report.xml',
-        'data/paperformat.xml',
     ],
 }

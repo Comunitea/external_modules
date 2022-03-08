@@ -27,14 +27,10 @@ class HrAttendanceReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        report_obj = self.env["ir.actions.report"]
-        report = report_obj._get_report_from_name(
-            "hr_attendance_report.print_attendance"
-        )
         docs = []
         employee_attendance = {}
         totals = {}
-        for employee in self.env[report.model].browse(data["ids"]):
+        for employee in self.env["hr.employee"].browse(data["ids"]):
             employee_attendance[employee.id] = []
             docs.append(employee)
             from_date_s = data.get("form", {}).get("from_date", "")
@@ -122,7 +118,7 @@ class HrAttendanceReport(models.AbstractModel):
             }
         docargs = {
             "doc_ids": data["ids"],
-            "doc_model": report.model,
+            "doc_model": "hr.employee",
             "docs": docs,
             "attendances": employee_attendance,
             "data": data,
