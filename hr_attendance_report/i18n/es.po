@@ -1,34 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* hr_attendance_report
+#       * hr_attendance_report
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-08 09:32+0000\n"
-"PO-Revision-Date: 2020-07-08 09:32+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2022-03-08 17:41+0000\n"
+"PO-Revision-Date: 2022-03-08 17:41+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: hr_attendance_report
-#: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
-msgid "% Jor"
-msgstr "% Jor"
-
-#. module: hr_attendance_report
-#: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
-msgid "100"
-msgstr ""
-
-#. module: hr_attendance_report
-#: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
-msgid "100.0"
-msgstr ""
 
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
@@ -61,11 +46,6 @@ msgid "Complementarias"
 msgstr ""
 
 #. module: hr_attendance_report
-#: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
-msgid "Contract"
-msgstr "Contrato"
-
-#. module: hr_attendance_report
 #: model:ir.model.fields,field_description:hr_attendance_report.field_hr_employee_print_attendance_report__create_uid
 msgid "Created by"
 msgstr "Creado por"
@@ -78,12 +58,10 @@ msgstr "Creado el"
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
 msgid "Day"
-msgstr ""
+msgstr "Día"
 
 #. module: hr_attendance_report
 #: model:ir.model.fields,field_description:hr_attendance_report.field_hr_employee_print_attendance_report__display_name
-#: model:ir.model.fields,field_description:hr_attendance_report.field_ir_qweb_widget_date__display_name
-#: model:ir.model.fields,field_description:hr_attendance_report.field_ir_qweb_widget_time__display_name
 #: model:ir.model.fields,field_description:hr_attendance_report.field_report_hr_attendance_report_print_attendance__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
@@ -110,8 +88,6 @@ msgstr "Desde:"
 
 #. module: hr_attendance_report
 #: model:ir.model.fields,field_description:hr_attendance_report.field_hr_employee_print_attendance_report__id
-#: model:ir.model.fields,field_description:hr_attendance_report.field_ir_qweb_widget_date__id
-#: model:ir.model.fields,field_description:hr_attendance_report.field_ir_qweb_widget_time__id
 #: model:ir.model.fields,field_description:hr_attendance_report.field_report_hr_attendance_report_print_attendance__id
 msgid "ID"
 msgstr ""
@@ -123,8 +99,6 @@ msgstr "Horas de entrada y salida"
 
 #. module: hr_attendance_report
 #: model:ir.model.fields,field_description:hr_attendance_report.field_hr_employee_print_attendance_report____last_update
-#: model:ir.model.fields,field_description:hr_attendance_report.field_ir_qweb_widget_date____last_update
-#: model:ir.model.fields,field_description:hr_attendance_report.field_ir_qweb_widget_time____last_update
 #: model:ir.model.fields,field_description:hr_attendance_report.field_report_hr_attendance_report_print_attendance____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
@@ -197,12 +171,12 @@ msgstr "Fdo.: El trabajador"
 #. module: hr_attendance_report
 #: model:ir.model.fields,field_description:hr_attendance_report.field_hr_employee_print_attendance_report__to_date
 msgid "To"
-msgstr "Para"
+msgstr "Hasta"
 
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
 msgid "To:"
-msgstr ""
+msgstr "Hasta:"
 
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
@@ -222,7 +196,7 @@ msgstr ""
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
 msgid "Worker data"
-msgstr ""
+msgstr "Datos del trabajador"
 
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
@@ -232,16 +206,6 @@ msgstr "Razón social"
 #. module: hr_attendance_report
 #: model:ir.model,name:hr_attendance_report.model_hr_employee_print_attendance_report
 msgid "hr.employee.print.attendance.report"
-msgstr ""
-
-#. module: hr_attendance_report
-#: model:ir.model,name:hr_attendance_report.model_ir_qweb_widget_date
-msgid "ir.qweb.widget.date"
-msgstr ""
-
-#. module: hr_attendance_report
-#: model:ir.model,name:hr_attendance_report.model_ir_qweb_widget_time
-msgid "ir.qweb.widget.time"
 msgstr ""
 
 #. module: hr_attendance_report
@@ -257,7 +221,7 @@ msgstr ""
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.hr_employee_print_assitance_report_form
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #. module: hr_attendance_report
 #: model:ir.model,name:hr_attendance_report.model_report_hr_attendance_report_print_attendance
