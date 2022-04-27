@@ -3,7 +3,7 @@ import logging
 
 from odoo import http
 from odoo.http import request
-
+from odoo.addons.sale.controllers.portal import CustomerPortal
 from odoo.addons.sale.controllers.product_configurator import (
     ProductConfiguratorController,
 )
@@ -61,6 +61,8 @@ class WebsiteSale(ProductConfiguratorController):
         acquirer = request.env["payment.acquirer"].browse(acquirer_id)
         if acquirer and acquirer.payment_mode_id:
             order.payment_mode_id = acquirer.payment_mode_id.id
+        else:
+            order.payment_mode_id = order.partner_id.customer_payment_mode_id.id
 
         return super(WebsiteSale, self).payment_transaction(
             acquirer_id,
@@ -70,3 +72,28 @@ class WebsiteSale(ProductConfiguratorController):
             token=None,
             **kwargs
         )
+
+
+class CustomerPortalCustom(CustomerPortal):
+    
+    @http.route(['/my/orders/<int:order_id>/transaction/'], type='json', auth="public", website=True)
+    def payment_transaction_token(self, acquirer_id, order_id, save_token=False, access_token=None, **kwargs):
+        if not acquirer_id:
+            return False
+
+        try:
+            acquirer_id = int(acquirer_id)
+        except:
+            return False
+
+        order = request.env['sale.order'].sudo().browse(order_id)
+        if not order or not order.order_line or not order.has_to_be_paid():
+            return False
+
+        # Set order payment_method_id from the acquirer related payment method
+        acquirer = request.env["payment.acquirer"].browse(acquirer_id)
+        if acquirer and acquirer.payment_mode_id:
+            order.payment_mode_id = acquirer.payment_mode_id.id
+        else:
+            order.payment_mode_id = order.partner_id.customer_payment_mode_id.id
+        return super().payment_transaction_token(acquirer_id, order_id, save_token=save_token, access_token=access_token, **kwargs)

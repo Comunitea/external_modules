@@ -104,7 +104,6 @@ class AccountPaymentTerm(models.Model):
         if day > self.days_in_month(date_in):
             day = self.days_in_month(date_in)
         while True:
-
             if date_in.day == day:
                 return date_in
             date_in += timedelta(days=1)
