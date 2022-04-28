@@ -137,10 +137,8 @@ class AccountPaymentTerm(models.Model):
 
     def compute(self, value, date_ref=False):
         # TODO REVISAR SANTI / OMAR
-        if self._context.get("invoice_id", False):
-            invoice = self.env["account.invoice"].browse(
-                self._context["invoice_id"]
-            )
+        if self._context.get("invoice", False):
+            invoice = self._context["invoice"]
 
             if (
                 invoice.value_date
@@ -150,15 +148,16 @@ class AccountPaymentTerm(models.Model):
             elif invoice.payment_ref_date:
                 date_ref = invoice.payment_ref_date
 
-        if self.adjust_month and self.type in ('in_invoice', 'in_refund'):
-            dia = date_ref.day
-            if dia in range(1,6):
-                fecha_aj = date_ref - relativedelta(months=1) + relativedelta(day=31)
+            if self.adjust_month and invoice.type in ('in_invoice', 'in_refund'):
+                dia = date_ref.day
+                if dia in range(1,6):
+                    fecha_aj = date_ref - relativedelta(months=1) + relativedelta(day=31)
+                else:
+                    fecha_aj = date_ref
             else:
                 fecha_aj = date_ref
         else:
             fecha_aj = date_ref
-
 
         result = super(AccountPaymentTerm, self).compute(value, fecha_aj)
 
