@@ -150,7 +150,7 @@ class AccountPaymentTerm(models.Model):
             elif invoice.payment_ref_date:
                 date_ref = invoice.payment_ref_date
 
-        if self.adjust_month:
+        if self.adjust_month and self.type in ('in_invoice', 'in_refund'):
             dia = date_ref.day
             if dia in range(1,6):
                 fecha_aj = date_ref - relativedelta(months=1) + relativedelta(day=31)
