@@ -24,9 +24,9 @@ class SaleOrder(models.Model):
         self.ensure_one()
         report = self.env.ref("account.account_invoices_without_payment")
         if report.report_type in ["qweb-html", "qweb-pdf"]:
-            result, format = report.render_qweb_pdf(self.sudo().invoice_ids._ids)
+            result, format = report._render_qweb_pdf(self.sudo().invoice_ids._ids)
         else:
-            res = report.render(self.sudo().invoice_ids._ids)
+            res = report._render(self.sudo().invoice_ids._ids)
             if not res:
                 raise UserError(
                     _("Unsupported report type %s found.") % report.report_type
