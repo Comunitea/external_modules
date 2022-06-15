@@ -7,8 +7,8 @@ class AccountMove(models.Model):
 
     _inherit = "account.move"
 
-    def _post(self):
-        res = super()._post()
+    def _post(self, soft=True):
+        res = super()._post(soft=soft)
         for move in self:
             if (
                 move.move_type in ("out_invoice", "out_refund")
