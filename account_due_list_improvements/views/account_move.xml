@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="account_move_payments" model="ir.ui.view">
+        <field name="name">account.move.payments</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_payments"
+                    class="oe_stat_button"
+                    type="object"
+                    icon="fa-list"
+                    attrs="{'invisible': ['|',('payments_count', '=', 0),('state','not in',['posted'])]}">
+                    <field name="payments_count" widget="statinfo" string="Payments"/>
+    
+            <!-- <div class="o_form_field o_stat_info">
+            <span class="o_stat_value">
+              <field name="payments_count"/>
+            </span>
+            <span class="o_stat_text">Payments</span>
+            </div> -->
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
