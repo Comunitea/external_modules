@@ -93,16 +93,31 @@ class StockMove(models.Model):
             move.price_subtotal_reserved = round(reserved_qty * price, prec)
             move.currency_id = currency_id
 
-
-
     @api.multi
     def force_set_qty_done(self, reset=True, field='product_uom_qty'):
         for move in self.filtered(lambda x: x.state in ('confirmed', 'assigned', 'partially_available')):
-            if move.move_line_ids:
-                move.move_line_ids.force_assigned_qty_done(reset, field)
-            #else:
-            #    move.quantity_done = not reset and move[field] or 0.0
+            if reset:
+                move.move_line_ids.write({'qty_done': 0})
+                continue
 
+            if move.state == 'confirmed':
+                ## Tengo que crear los movimientos
+                vals = move._prepare_move_line_vals()
+                sml_id = self.env['stock.move.line'].create(vals)
+                sml_id.qty_done = move[field]
+
+            elif move.state == 'assigned':
+                for sml in move.move_line_ids:
+                    sml.qty_done = sml.product_uom_qty
+
+            elif move.state == 'partially_available':
+                if reset:
+                    move.move_line_ids.write({'qty_done': 0})
+                else:
+                    quantity = move[field] - move.reserved_availability
+                    if quantity and quantity > 0:
+                        move.move_line_ids[0].qty_done += quantity
+      
     def _prepare_procurement_values(self):
         res = super(StockMove, self). \
             _prepare_procurement_values()
