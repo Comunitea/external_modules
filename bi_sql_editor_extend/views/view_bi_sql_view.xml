@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2022 - Today: Comunitea (http://www.comunitea.com)
+@author Santi Argüeso
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+
+<odoo>
+
+    <record id="view_bi_sql_view_extend_form" model="ir.ui.view">
+        <field name="model">bi.sql.view</field>
+        <field name="inherit_id" ref="bi_sql_editor.view_bi_sql_view_form"/>
+        <field name="arch" type="xml">
+            <button name="button_open_view" position="after">
+
+                <button name="button_fields_edition" type="object" states="ui_valid" string="Field edition"
+                    help="Permite editar los campos sin volver a crear el modelo"/>
+                <button name="button_update_fields" type="object" states="fields_edition" string="Check and Update field changes form query"
+                    help="Compueba la query y genera los nuevos campos" class="oe_highlight"/>
+                <button name="button_update_or_create_fields" type="object" states="fields_edition" string="Save field changes"
+                    help="Guarda los campos editados o crea los nuevos"/>
+            </button>
+
+            <field name="query"  position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ('draft', 'fields_edition'))]}</attribute>
+            </field>
+            <field name="bi_sql_view_field_ids" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ('sql_valid', 'fields_edition'))]}</attribute>
+            </field>
+        </field>
+    </record>
+
+</odoo>
