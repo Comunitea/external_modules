@@ -20,7 +20,7 @@ msgstr ""
 msgid ""
 "By default only validated payments are searched, this option also include "
 "concilied payments"
-msgstr ""
+msgstr "Por defecto solo se buscan los pagos validados. Esta opción incluye los conciliados."
 
 #. module: account_review_break_payments
 #: model_terms:ir.ui.view,arch_db:account_review_break_payments.view_review_payments_form
