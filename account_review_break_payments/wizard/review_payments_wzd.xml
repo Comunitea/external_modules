@@ -11,13 +11,13 @@
                     <group>
                         <field name="company_id"/>
                     </group>
-                    <p class="oe_grey">You can set the option to search and cancel them, but first time is better to reviw it</p>
-                    <group>
-                        <field name="cancel_payments"/>
-                    </group>
                     <p class="oe_grey">By default only validated payments are searched, this option also include concilied payments</p>
                     <group>
                         <field name="include_reconcilied"/>
+                    </group>
+                    <p class="oe_grey">You can set the option to search and cancel them, but first time is better to reviw it</p>
+                    <group>
+                        <field name="cancel_payments"/>
                     </group>
                     <footer>
                         <button string="Cancel" special="cancel"/>
