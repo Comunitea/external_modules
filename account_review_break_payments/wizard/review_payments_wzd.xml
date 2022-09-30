@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_review_payments_form" model="ir.ui.view">
+            <field name="name">view.review_payments.form</field>
+            <field name="model">review.payments.wzd</field>
+            <field name="arch" type="xml">
+                <form string="Review Payments">
+                    
+                    <p class="oe_grey">This wizard will search for payments not linked to transatios, linked to a partner, and with not reconcilied invoices</p>
+                    <group>
+                        <field name="company_id"/>
+                    </group>
+                    <p class="oe_grey">You can set the option to search and cancel them, but first time is better to reviw it</p>
+                    <group>
+                        <field name="cancel_payments"/>
+                    </group>
+                    <footer>
+                        <button string="Cancel" special="cancel"/>
+                        or
+                        <button string="Search break payments"  attrs="{'invisible': [('cancel_payments', '=', True)]}" name="action_confirm" type="object"/>
+                        <button string="Cancel Break Payments" class="btn btn-warning" attrs="{'invisible': [('cancel_payments', '!=', True)]}" name="action_confirm" type="object"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_review_payments" model="ir.actions.act_window">
+            <field name="name">Review Payments</field>
+            <field name="res_model">review.payments.wzd</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_review_payments_form"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_action_review_payments"
+            parent="account.menu_finance_entries"
+            action="action_review_payments"
+            groups="account_review_break_payments.group_review_payments"
+            sequence="20"/>
+
+</odoo>
