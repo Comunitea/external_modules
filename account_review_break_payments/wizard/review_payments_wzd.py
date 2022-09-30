@@ -22,14 +22,20 @@ class ReviewPaymentsWzd(models.TransientModel):
                                  readonly=True,
                                  default=lambda self: self.env.company)
     cancel_payments = fields.Boolean('Cancel break payments')
+    include_reconcilied = fields.Boolean('Search for reconcilied payments')
 
 
     def action_confirm(self):
+
+        states = ['posted']
+        if self.include_reconcilied:
+            states.append('reconciled')
+
         domain = [
             ('company_id', '=', self.company_id.id),
             ('partner_id', '!=', False),
             ('payment_transaction_id', '=', False),  # Los paypal o redsys de la web pueden no tener factura aun
-            ('state', 'in', ('posted', 'reconciled'))
+            ('state', 'in', states)
         ]
         # payments = self.env['account.payment'].sudo().search(domain)
         payments = self.env['account.payment'].search(domain)

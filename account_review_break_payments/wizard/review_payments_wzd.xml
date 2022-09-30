@@ -15,6 +15,10 @@
                     <group>
                         <field name="cancel_payments"/>
                     </group>
+                    <p class="oe_grey">By default only validated payments are searched, this option also include concilied payments</p>
+                    <group>
+                        <field name="include_reconcilied"/>
+                    </group>
                     <footer>
                         <button string="Cancel" special="cancel"/>
                         or
