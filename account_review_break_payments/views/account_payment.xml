@@ -1,0 +1,15 @@
+<odoo>
+
+<!-- account.payment inherit tree view -->
+<record id="view_account_payment_tree_add_info" model="ir.ui.view">
+    <field name="name">account.payment.inherit.view.tree</field>
+    <field name="model">account.payment</field>
+    <field name="inherit_id" ref="account.view_account_payment_tree"/>
+    <field name="arch" type="xml">
+        <field name="partner_type" position="after">
+            <field name="reconciled_invoices_count"/>
+        </field>
+        
+    </field>
+</record>
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_review_payments_wzd,access_review_payments_wzd,model_review_payments_wzd,account_review_break_payments.group_review_payments,1,1,1,1
