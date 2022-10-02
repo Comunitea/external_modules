@@ -13,13 +13,6 @@
                     icon="fa-list"
                     attrs="{'invisible': ['|',('payments_count', '=', 0),('state','not in',['posted'])]}">
                     <field name="payments_count" widget="statinfo" string="Payments"/>
-    
-            <!-- <div class="o_form_field o_stat_info">
-            <span class="o_stat_value">
-              <field name="payments_count"/>
-            </span>
-            <span class="o_stat_text">Payments</span>
-            </div> -->
                 </button>
             </xpath>
         </field>
