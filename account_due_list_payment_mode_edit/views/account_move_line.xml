@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="account_move_line_payments" model="ir.ui.view">
+        <field name="name">account.move.line.payments</field>
+        <field name="model">account.move.line</field>
+        <field
+            name="inherit_id"
+            ref="account_payment_partner.view_move_line_form"
+        />
+        <field name="arch" type="xml">
+            <field name="payment_mode_id" position="before">
+                <field name="payment_mode_type" invisible="1"/>
+            </field>
+            <field name="payment_mode_id" position="attributes">
+                <attribute name="domain">[('payment_type', '=', payment_mode_type)]</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
