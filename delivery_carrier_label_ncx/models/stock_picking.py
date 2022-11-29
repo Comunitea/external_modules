@@ -107,14 +107,101 @@ class StockPicking(models.Model):
         labels = self.env["ir.attachment"].search(
             [("res_id", "=", self.id), ("res_model", "=", self._name)]
         )
-        for label in labels:
-            if label.mimetype == "image/png":
-                doc_format = "png"
+        if labels:
+            for label in labels:
+                if label.mimetype == "image/png":
+                    doc_format = "png"
+                else:
+                    doc_format = "raw"
+                self.carrier_id.account_id.printer.print_document(
+                    None, base64.b64decode(label.datas), doc_format=doc_format
+                )
+        else:
+            if self.carrier_tracking_ref:
+                self.get_nacex_label_again()
+
+    def get_nacex_label_again(self):
+        client, history = self.create_client_ncx()
+
+        try:
+            label = self.get_ncx_label(client, self.carrier_tracking_ref)
+            _logger.debug("label: {}".format(label))
+        except Exception as e:
+            try:
+                _logger.error(
+                    _(
+                        "Connection error: {}, while trying to retrieve the label."
+                    ).format(history.last_received['envelope'][0][0][1].text)
+                )
+            except:
+                msg = _("Access error message: {}").format(e)
+                _logger.error(
+                    _(
+                        "Connection error: {}, while trying to retrieve the label."
+                    ).format(e)
+                )
+            self.failed_shipping = True
+            return
+
+        try:
+            if label and label[0] != "ERROR":
+                if self.carrier_id.account_id.ncx_printer_model == "IMAGEN_B":
+                    file_b64 = self.base64_url_decode(label)
+
+                    attachment_values = {
+                        "name": "Label: {}".format(self.name),
+                        "type": "binary",
+                        "datas": base64.b64encode(file_b64),
+                        "datas_fname": "Label" + self.name + ".png",
+                        "store_fname": self.name,
+                        "res_model": self._name,
+                        "res_id": self.id,
+                        "mimetype": "image/png",
+                    }
+
+                else:
+                    # We need to replace blank spaces with line breaks
+                    label_text = ''
+                    for line in label:
+                        if len(line) > 64 and self.carrier_id.account_id.ncx_oldmodel:
+                            line = line.split("=")[0] + '=' + line.split("=")[1].replace('|', '').replace('}', '')[:29] + '|}'
+                        label_text += re.sub('[^!-~]+',' ',line).strip() + '\n'
+                    file_b64 = base64.b64encode(str.encode(label_text))
+                    attachment_values = {
+                        "name": "Label: {}".format(self.name),
+                        "type": "binary",
+                        "datas": file_b64,
+                        "datas_fname": "Label" + self.name + ".txt",
+                        "store_fname": self.name,
+                        "res_model": self._name,
+                        "res_id": self.id,
+                        "mimetype": "text/plain",
+                    }
+                self.env["ir.attachment"].create(attachment_values)
+                self.print_ncx_label()
+            elif label and label[0] == "ERROR":
+                _logger.error(
+                    _("Error while trying to retrieve the label: {}").format(
+                        label[1]
+                    )
+                )
+                msg = _("Error while trying to retrieve the label: {}").format(label[1])
+                self.message_post(body=msg)
+                self.failed_shipping = True
             else:
-                doc_format = "raw"
-            self.carrier_id.account_id.printer.print_document(
-                None, base64.b64decode(label.datas), doc_format=doc_format
+                _logger.error(
+                    _("Error while trying to retrieve the label")
+                )
+                self.failed_shipping = True
+        except Exception as e:
+            _logger.error(
+                _(
+                    "Connection error: {}, while trying to save the label."
+                ).format(e)
             )
+            self.failed_shipping = True
+            return
+        
 
     def action_generate_carrier_label(self):
         if self.carrier_type == "ncx":
@@ -359,6 +446,8 @@ class StockPicking(models.Model):
                             label[1]
                         )
                     )
+                    msg = _("Error while trying to retrieve the label: {}").format(label[1])
+                    self.message_post(body=msg)
                     self.failed_shipping = True
                 else:
                     _logger.error(
