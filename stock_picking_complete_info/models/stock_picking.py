@@ -150,7 +150,7 @@ class StockPicking(models.Model):
     def force_set_qty_done(self):
         field = self._context.get('field', 'product_uom_qty')
         reset = self._context.get('reset', True)
-        states = ('confirmed', 'partially_available', 'assigned')
+        states = ('confirmed', 'assigned')
         for picking in self:
             if picking.state not in states:
                 raise ValidationError(_('State {} incorrect for {}'.format(picking.state, picking.name)))
