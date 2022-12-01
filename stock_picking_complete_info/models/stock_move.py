@@ -96,6 +96,9 @@ class StockMove(models.Model):
     @api.multi
     def force_set_qty_done(self, reset=True, field='product_uom_qty'):
         for move in self.filtered(lambda x: x.state in ('confirmed', 'assigned', 'partially_available')):
+            if move.move_line_ids:
+                move.move_line_ids.force_assigned_qty_done(reset, field)
+            continue
             if reset:
                 move.move_line_ids.write({'qty_done': 0})
                 continue
