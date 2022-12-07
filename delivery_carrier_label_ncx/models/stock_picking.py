@@ -444,7 +444,7 @@ class StockPicking(models.Model):
                             label[1]
                         )
                     )
-                    msg = _("Error while trying to retrieve the label with the ref {}: {}").format(label[1], res._raw_elements[0].text)
+                    msg = _("Error while trying to retrieve the label with the ref {}: {}").format(res._raw_elements[0].text, label)
                     self.message_post(body=msg)
                     self.failed_shipping = True
                 else:
