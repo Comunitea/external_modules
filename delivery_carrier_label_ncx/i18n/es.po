@@ -96,8 +96,8 @@ msgstr "Error al recuperar la etiqueta."
 #. module: delivery_carrier_label_ncx
 #: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:356
 #, python-format
-msgid "Error while trying to retrieve the label: {}"
-msgstr "Error al recuperar la etiqueta: {}"
+msgid "Error while trying to retrieve the label with the ref {}: {}"
+msgstr "Error al recuperar la etiqueta con el tracking {}: {}"
 
 #. module: delivery_carrier_label_ncx
 #: code:addons/delivery_carrier_label_ncx/models/stock_picking.py:172
