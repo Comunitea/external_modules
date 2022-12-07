@@ -102,12 +102,10 @@ class StockPicking(models.Model):
     def print_ncx_label(self):
         self.ensure_one()
 
-        if not self.carrier_id.account_id.printer:
-            return
         labels = self.env["ir.attachment"].search(
             [("res_id", "=", self.id), ("res_model", "=", self._name)]
         )
-        if labels:
+        if labels and self.carrier_id.account_id.printer:
             for label in labels:
                 if label.mimetype == "image/png":
                     doc_format = "png"
@@ -116,7 +114,7 @@ class StockPicking(models.Model):
                 self.carrier_id.account_id.printer.print_document(
                     None, base64.b64decode(label.datas), doc_format=doc_format
                 )
-        else:
+        elif not labels:
             if self.carrier_tracking_ref:
                 self.get_nacex_label_again()
 
@@ -125,7 +123,7 @@ class StockPicking(models.Model):
 
         try:
             label = self.get_ncx_label(client, self.carrier_tracking_ref)
-            _logger.debug("label: {}".format(label))
+            _logger.info("label: {}".format(label))
         except Exception as e:
             try:
                 _logger.error(
