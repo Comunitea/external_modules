@@ -61,6 +61,8 @@ class AccountInvoice(models.Model):
         self.ensure_one()
 
         new_invoice = self.new_invoice_from_payment_return()
+        new_invoice.with_context(
+            bypass_risk=True).action_invoice_open()
 
         template = self.env.ref(
             'payment_return_invoice_resend.email_template_returned_invoice')
@@ -116,4 +118,4 @@ class AccountInvoice(models.Model):
         if data_id:
             composer_id.attachment_ids = [(6,0, [data_id.id, data2_id.id])]
         composer_id.with_context(ctx).send_mail()
-        return
+        return new_invoice
