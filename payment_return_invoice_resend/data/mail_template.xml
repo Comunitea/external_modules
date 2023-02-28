@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="0">
+    
+    <record id="email_template_returned_invoice" model="mail.template">
+        <field name="name">Notificación facturas devueltas</field>
+        <field name="email_from">${object.user_id.email_formatted |safe}</field>
+        <!-- <field name="email_from">${(ctx['user_id'].email or '')|safe}</field> -->
+        <field name="subject">Factura Devuelta</field>
+        <field name="partner_to">${object.partner_id.id}</field>
+        <field name="model_id" ref="account.model_account_invoice"/>
+        <field name="auto_delete" eval="False"/>
+        <!-- <field name="report_template" ref="account.report_invoice"/>
+        <field name="report_name">${(object.name or '').replace('/','_')}</field> -->
+        <!-- <field name="lang">${object.lang}</field> -->
+        <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Estimado cliente ${object.partner_id.name},</p>
+
+    <p>Le informamos que las siguientes facturas han sido devueltas.</p>
+    <p>Le adjuntamos dichas facturas junto con una factura de recargo de devoluciones.</p>
+
+</div>
+        ]]></field>
+    </record>
+
+</odoo>
