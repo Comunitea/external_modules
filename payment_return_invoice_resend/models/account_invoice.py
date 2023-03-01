@@ -112,9 +112,6 @@ class AccountInvoice(models.Model):
         )["value"]
         composer_id.write(values)
 
-
-
-
         if data_id:
             composer_id.attachment_ids = [(6,0, [data_id.id, data2_id.id])]
         composer_id.with_context(ctx).send_mail()

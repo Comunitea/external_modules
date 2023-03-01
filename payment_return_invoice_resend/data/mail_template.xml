@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo noupdate="0">
+<odoo noupdate="1">
     
     <record id="email_template_returned_invoice" model="mail.template">
         <field name="name">Notificación facturas devueltas</field>
@@ -17,8 +17,8 @@
 
     <p>Estimado cliente ${object.partner_id.name},</p>
 
-    <p>Le informamos que las siguientes facturas han sido devueltas.</p>
-    <p>Le adjuntamos dichas facturas junto con una factura de recargo de devoluciones.</p>
+    <p>Le informamos que el pago de las siguientes facturas ha sido devuelto.</p>
+    <p>Le adjuntamos dichas facturas junto con una factura por el coste de los gastos de devolución.</p>
 
 </div>
         ]]></field>

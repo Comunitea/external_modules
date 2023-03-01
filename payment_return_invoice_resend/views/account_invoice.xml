@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="account.invoice_form"/>
         <field name="arch" type="xml">
             <button id="account_invoice_payment_btn" position="after">
-                <button name="send_payment_returned_mail" type="object" string="Generate Ccharge from payment return" invisible="1"/>
+                <button name="send_payment_returned_mail" type="object" string="Generate charge from payment return" invisible="1"/>
             </button>
         </field>
     </record>
