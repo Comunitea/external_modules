@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="before">
+
+    <t t-name="TableWidget" t-inherit="pos_restaurant.TableWidget" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[@t-esc='orderCount']/.." position="replace">
+            <span t-att-style="posPrintedStyle" t-att-class="orderCountClass" t-att-hidden="orderCount === 0">
+                <t t-esc="orderCount" />
+            </span>
+        </xpath>
+    </t> 
+
+</templates>

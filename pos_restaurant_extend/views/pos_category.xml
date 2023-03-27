@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- pos.config -->
+
+    <record id="pos_category_tree_view" model="ir.ui.view">
+        <field name="name">pos.category.tree.view</field>
+        <field name="model">pos.category</field>
+        <field name="inherit_id" ref="point_of_sale.product_pos_category_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sequence']" position="replace">
+                <field name="sequence"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

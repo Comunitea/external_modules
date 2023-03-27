@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_pos_session_form" model="ir.ui.view">
+        <field name="name">pos.session.form.view</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='cash_register_total_entry_encoding']/.." position="before">
+                <group style="margin:0;padding:0;">
+                    <field style="text-align:right;margin:0;padding:0;" name="cash_register_balance_start" widget="monetary" options="{'currency_field': 'currency_id'}" string="Opening Balance"/>
+                </group>
+            </xpath>
+            <xpath expr="//button[@name='%(point_of_sale.action_pos_box_out)d']/.." position="after">
+                <group style="margin:0;padding:0;" attrs="{'invisible' : [('state', 'in', ['opening_control'])]}">
+                    <button class="oe_inline oe_link" name="%(point_of_sale.action_pos_box_out)d" type="action" attrs="{'invisible' : ['|',('state', '!=', 'closing_control'),('cash_register_total_entry_encoding', '=', 0.0)]}" context="{'cash_out_proposal': True}">Cash Out Proposal</button>
+                </group>
+            </xpath>
+            <button name="action_pos_session_validate" position="after">
+                <button name="action_open_session_details" type="object" string="Print Sales Details" attrs="{'invisible' : [('state', '!=', 'closed')]}" class="oe_highlight"/>
+            </button>
+            <xpath expr="//field[@name = 'stop_at']" position="after">
+                <field name="average_customer_price" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

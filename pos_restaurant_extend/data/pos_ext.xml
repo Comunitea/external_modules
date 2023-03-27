@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="assets_backend" name="pos_ext assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/floors.js" />
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/lines.js" />
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/multiprint.js" />
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/PrintServeServiceButton.js" />
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/ServiceSelectionButton.js" />
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/ReceiptScreen.js" />
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/TableWidget.js" />
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/FloorScreen.js" />
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/ChromeWidgets/ReloadOrdersButton.js"></script>
+            <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/SubmitOrderButton.js" />
+        </xpath>
+        <xpath expr="//link[@id='pos-stylesheet']" position="after">
+            <link rel="stylesheet" href="/pos_restaurant_extend/static/src/css/pos_ext.css"/>
+        </xpath>
+    </template>
+
+</odoo>
