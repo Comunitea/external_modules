@@ -27,14 +27,19 @@
                                     <tr>
                                         <th>business name</th>
                                         <th>VAT</th>
-                                        <th>CCC</th>
+                                        <th>Work Adress</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td><span t-field="o.address_id.name"/></td>
                                         <td><span t-field="o.address_id.vat"/></td>
-                                        <td></td>
+                                        <td>
+                                            <span t-field="o.address_id.street"/><br/>
+                                            <span t-field="o.address_id.street2"/><br/>
+                                            <span t-field="o.address_id.zip"/> <span t-field="o.address_id.city"/>
+                                            <br/><span t-field="o.address_id.country_id"/>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -45,6 +50,7 @@
                                         <th>Name and surname</th>
                                         <th>naf</th>
                                         <th>nif</th>
+                                        <th>CCC</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,6 +58,7 @@
                                         <td><span t-field="o.name"/></td>
                                         <td><span t-field="o.sudo().ssnid"/></td>
                                         <td><span t-field="o.sudo().identification_id"/></td>
+                                        <td><span t-field="o.sudo().ccc"/></td>
                                     </tr>
                                 </tbody>
                             </table>
