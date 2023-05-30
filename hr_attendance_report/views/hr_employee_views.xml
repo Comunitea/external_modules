@@ -7,7 +7,6 @@
         <field name="arch" type="xml">
             <field name="passport_id" position="after">
                 <field name="ssnid" groups="hr.group_hr_user" />
-                <field name="ccc" groups="hr.group_hr_user" />
             </field>
         </field>
     </record>
