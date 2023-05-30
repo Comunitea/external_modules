@@ -28,6 +28,7 @@
                                         <th>business name</th>
                                         <th>VAT</th>
                                         <th>Work Adress</th>
+                                        <th>CCC</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,6 +41,9 @@
                                             <span t-field="o.address_id.zip"/> <span t-field="o.address_id.city"/>
                                             <br/><span t-field="o.address_id.country_id"/>
                                         </td>
+                                        <td>
+                                        <span t-field="o.company_id.ccc"/>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -50,7 +54,6 @@
                                         <th>Name and surname</th>
                                         <th>naf</th>
                                         <th>nif</th>
-                                        <th>CCC</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -58,7 +61,6 @@
                                         <td><span t-field="o.name"/></td>
                                         <td><span t-field="o.sudo().ssnid"/></td>
                                         <td><span t-field="o.sudo().identification_id"/></td>
-                                        <td><span t-field="o.sudo().ccc"/></td>
                                     </tr>
                                 </tbody>
                             </table>
