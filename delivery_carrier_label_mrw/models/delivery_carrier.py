@@ -31,3 +31,14 @@ class DeliveryCarrier(models.Model):
         return "https://www.mrw.es/seguimiento_envios/MRW_resultados_consultas.asp?modo=nacional&envio={}".format(
             picking.carrier_tracking_ref
         )
+
+class DeliveryCarrierService(models.Model):
+
+    _inherit = 'delivery.carrier.service'
+
+    mrw_return = fields.Selection([
+        ('N', 'Sin retorno'),
+        ('D', 'Retorno de albarán cobro en destino'),
+        ('S', 'Retorno de mercancía'),
+        ('R', 'Retorno cheque Portugal'),
+    ], string='Retorno MRW', default="N")
