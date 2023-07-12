@@ -33,12 +33,13 @@ class ProductProduct(models.Model):
     @api.depends('seller_ids', 'seller_ids.name', 'seller_ids.price')
     def _compute_supplier_info(self):
         for product in self:
-            if product.seller_ids:
-                product.nbr_suppliers = len(product.seller_ids)
-                product.supplier_min_qty = product.seller_ids[0].min_qty
-                product.supplier_price = product.seller_ids[0].price
-                product.supplier_delay = product.seller_ids[0].delay
-                product.main_supplier_id = product.seller_ids[0].name
+            sellers = product.seller_ids.filtered(lambda s: s.product_id.id == product.id)
+            if sellers:
+                product.nbr_suppliers = len(sellers)
+                product.supplier_min_qty = sellers[0].min_qty
+                product.supplier_price = sellers[0].price
+                product.supplier_delay = sellers[0].delay
+                product.main_supplier_id = sellers[0].name
             else:
                 product.nbr_suppliers = 0
                 product.supplier_min_qty = 0
