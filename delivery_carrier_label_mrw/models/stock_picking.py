@@ -251,6 +251,7 @@ class StockPicking(models.Model):
                             ),  # self.date.strftime("%d/%m/%Y"),
                             "Referencia": self.name,
                             "CodigoServicio": self.carrier_service.carrier_code,
+                            "Retorno": self.carrier_service.mrw_return,
                             "Frecuencia": self.carrier_id.account_id.mrw_frequency
                             if self.carrier_service.carrier_code == "0005"
                             else "",
