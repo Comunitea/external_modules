@@ -33,7 +33,7 @@ class ProductProduct(models.Model):
     @api.depends('seller_ids', 'seller_ids.name', 'seller_ids.price')
     def _compute_supplier_info(self):
         for product in self:
-            sellers = product.seller_ids.filtered(lambda s: s.product_id.id == product.id)
+            sellers = product.seller_ids.filtered(lambda s: s.product_id.id == product.id or not s.product_id )
             if sellers:
                 product.nbr_suppliers = len(sellers)
                 product.supplier_min_qty = sellers[0].min_qty
