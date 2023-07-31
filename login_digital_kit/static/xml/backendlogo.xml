@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="Menu" t-inherit="web.Menu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//a[hasclass('o_menu_brand')]" position="before">
+            <a href="#">
+                <img id="backend_company_logo" t-attf-src="/web/binary/company_logo" style="max-height:1cm; max-width:4cm;" alt="Logo"/>
+            </a>
+        </xpath>
+    </t>
+
+</templates>

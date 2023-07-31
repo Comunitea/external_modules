@@ -30,6 +30,9 @@
     ],
     'data': [
         'templates/webclient_templates.xml',
+        'views/assets.xml',
     ],
-    'qweb': [],
+    'qweb': [
+        'static/xml/backendlogo.xml',
+    ],
 }
