@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="web_login_digital_kit" inherit_id="web.login" name="Digital Kit Login">
-        <xpath expr="//form" position="after">
+    <template id="web_login_digital_kit" inherit_id="web.login_layout" name="Digital Kit Login">
+        <xpath expr="//div[hasclass('container')]/div[last()]" position="after">
             <div class="row">
                 <img class="img-fluid"
                     t-attf-src="/login_digital_kit/static/img/digital_kit_logos.png/"
