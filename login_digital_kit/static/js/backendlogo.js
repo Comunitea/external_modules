@@ -20,8 +20,26 @@ odoo.define('login_digital_kit.backendlogo', function (require) {
          * @override
          */
         start: function () {
-            $('#backend_company_logo').attr('src', '/web/image/res.company/'+session.user_companies.current_company[0]+'/logo_web');
+            this._is_enabled_logo(session.user_companies.current_company[0]);
             return this._super.apply(this, arguments);
+        },
+
+        _is_enabled_logo: function (company_id) {
+            var self = this;
+            var def = $.Deferred();
+            var params = {
+                model: 'res.company',
+                method: 'search_read',
+                domain: [['id', '=', company_id]],
+                fields: ['show_backend_logo'],
+            };
+            return self._rpc(params).then(function (result) {
+                if (result.length > 0 && result[0].show_backend_logo) {
+                    $('#backend_company_logo').attr('src', '/web/image/res.company/'+company_id+'/logo_web');
+                } else {
+                    $('#backend_company_logo_row').removeClass().addClass('d-none');
+                }
+            });
         },
 
     });

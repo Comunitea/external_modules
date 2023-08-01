@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-
     <t t-extend="Menu">
-        <t t-jquery="a.o_menu_brand" t-operation="before">
-             <a href="#">
-                <img id="backend_company_logo" t-attf-src="/web/binary/company_logo" style="max-height:1cm; max-width:4cm;" alt="Logo"/>
-            </a>
+        <t t-jquery="nav.o_main_navbar" t-operation="before">
+            <div id="backend_company_logo_row" class="container-fluid d-none d-md-block mt-1 mb-1">
+                <a href="#">
+                    <img class="img-responsive" id="backend_company_logo" t-attf-src="/web/binary/company_logo" alt="Logo"/>
+                </a>
+            </div>
         </t>
     </t>
-
 </templates>
