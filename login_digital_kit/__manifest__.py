@@ -31,6 +31,7 @@
     'data': [
         'templates/webclient_templates.xml',
         'views/assets.xml',
+        'views/res_company.xml',
     ],
     'qweb': [
         'static/xml/backendlogo.xml',
