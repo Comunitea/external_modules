@@ -20,7 +20,7 @@ odoo.define('login_digital_kit.backendlogo', function (require) {
          * @override
          */
         start: function () {
-            this._is_enabled_logo(session.user_companies.current_company[0]);
+            this._is_enabled_logo(session.company_id);
             return this._super.apply(this, arguments);
         },
 
