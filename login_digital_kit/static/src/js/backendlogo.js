@@ -14,8 +14,6 @@ patch(NavBar.prototype, 'backendlogo', {
     dependencies: ["rpc"],
     setup() {
         this._super();
-        console.log("session => ", session);
-        console.log("session.company_id => ", session.company_id);
         this._is_enabled_logo(session.user_companies.current_company);
     },
 
