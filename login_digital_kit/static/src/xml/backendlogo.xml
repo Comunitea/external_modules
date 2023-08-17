@@ -4,7 +4,7 @@
         <xpath expr="//nav[hasclass('o_main_navbar')]" position="before">
             <div id="backend_company_logo_row" class="container-fluid d-none d-md-block mt-1 mb-1">
                 <a href="#">
-                    <img class="img img-fluid" id="backend_company_logo" style="max-width: 40px;" t-attf-src="/web/binary/company_logo" alt="Logo"/>
+                    <img class="img img-fluid" id="backend_company_logo" style="max-width: 200px;" t-attf-src="/web/binary/company_logo" alt="Logo"/>
                 </a>
             </div>
         </xpath>
