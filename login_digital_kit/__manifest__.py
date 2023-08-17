@@ -19,7 +19,7 @@
 
 {
     'name': 'Login Digital Kit',
-    'version': '14.0.1.0.0',
+    'version': '16.0.1.0.0',
     'category': 'Custom',
     'author': 'Comunitea,',
     'license': 'AGPL-3',
@@ -30,10 +30,12 @@
     ],
     'data': [
         'templates/webclient_templates.xml',
-        'views/assets.xml',
         'views/res_company.xml',
     ],
-    'qweb': [
-        'static/xml/backendlogo.xml',
-    ],
+    "assets": {
+        "web.assets_backend": [
+            'login_digital_kit/static/src/js/backendlogo.js',
+            'login_digital_kit/static/src/xml/backendlogo.xml',
+        ],
+    },
 }
