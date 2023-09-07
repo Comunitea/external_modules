@@ -12,6 +12,8 @@ class StockMove(models.Model):
 
     _inherit = "stock.move"
 
+    def _get_order_for_picking(self):
+        return "priority desc, date asc, id desc"
 
     def _get_new_picking_domain(self):
 
@@ -42,8 +44,7 @@ class StockMove(models.Model):
         Picking = self.env['stock.picking']
         for move in self:
             recompute = False
-            picking = Picking.search(move._get_new_picking_domain(), limit=1)
-
+            picking = Picking.search(move._get_new_picking_domain(), order=move._get_order_for_picking(), limit=1)
             if picking:
                 # Cambio
                 #if picking.partner_id.id != move.partner_id.id or picking.origin != move.origin:
