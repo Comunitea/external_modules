@@ -30,7 +30,7 @@ class ProductProduct(models.Model):
                                    compute="_compute_supplier_info",
                                    )
 
-    @api.depends('seller_ids', 'seller_ids.name', 'seller_ids.price')
+    @api.depends('seller_ids', 'seller_ids.name', 'seller_ids.price', 'seller_ids.sequence')
     def _compute_supplier_info(self):
         for product in self:
             sellers = product.seller_ids.filtered(lambda s: s.product_id.id == product.id or not s.product_id )
