@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_virtual_serial_user,stock.virtual.serial user,model_virtual_serial,stock.group_stock_user,1,1,1,1
+access_virtual_last_location,virtual.last.location user,model_virtual_last_location,stock.group_stock_user,1,1,1,1

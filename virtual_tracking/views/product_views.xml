@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<record id="product_template_search_view_At" model="ir.ui.view">
+            <field name="name">product.template.search.at</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view" />
+            <field name="arch" type="xml">
+                <filter name="consumable" position="after">
+                    <filter
+                    string="A. Tracking"
+                    name="alternative_tracking"
+                    domain="[('virtual_tracking', '=', True)]"/>
+                </filter>
+            </field>
+        </record>
+<record model="ir.ui.view" id="product_template_form_view_procurement_button">
+    <field name="name">product.template_procurement</field>
+    <field name="model">product.template</field>
+    <field name="groups_id" eval="[(4, ref('stock.group_stock_user'))]"/>
+    <field name="inherit_id" ref="product.product_template_only_form_view"/>
+    <field name="arch" type="xml">
+        <button name="action_open_quants" position="before">
+            <field name="template_tracking" invisible="1"/>
+            <button
+                    class="oe_stat_button"
+                    name="action_view_serials"
+                    type="object"
+                    icon="fa-barcode"
+                    help="Open serial list"
+                    attrs="{'invisible': [('template_tracking', '=', 'none')]}"> 
+                <div class="o_field_widget o_stat_info">
+                    <span class="o_stat_value">
+                        <field
+                            name="tracking_count"
+                            widget="statinfo"
+                            nolabel="1"
+                            class="mr4"/>
+                    </span>
+                    <span class="o_stat_text">Barcodes</span>
+                </div>
+            </button>
+        </button>
+    </field>
+    </record>
+
+     <record id="view_template_property_form" model="ir.ui.view">
+            <field name="name">product.template.stock.property.form.inherit_at</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_template_property_form" />
+            <field name="arch" type="xml">
+                <field name="tracking" position="after">
+                    <field name="virtual_tracking" attrs="{'invisible': ['|', ('tracking', '!=', 'none'), ('type', 'in', ['service', 'digital'])]}"/>
+                    <field name="template_tracking" invisible="1"/>
+                </field>
+            </field>
+     </record>
+
+        <record model="ir.ui.view" id="product_form_view_at">
+            <field name="name">product.product.form.at</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <button name="action_open_quants" position="before">
+                    <field name="template_tracking" invisible="1"/>
+                    <button
+                    class="oe_stat_button"
+                    name="action_view_serials"
+                    type="object"
+                    icon="fa-barcode"
+                    help="Open serial list"
+                    attrs="{'invisible': [('template_tracking', '=', 'none')]}"
+                >
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                                <field
+                                name="tracking_count"
+                                widget="statinfo"
+                                nolabel="1"
+                                class="mr4"
+                            />
+                            </span>
+                            <span class="o_stat_text">Barcodes</span>
+                        </div>
+                    </button>
+                </button>
+                <field name="barcode" position="after">
+                    <!--field name="bom_ids" invisible="1"/-->
+                </field>
+
+            </field>
+        </record>
+</odoo>
