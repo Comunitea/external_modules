@@ -9,8 +9,8 @@
     "author": "Comunitea, ",
     "depends": [
         "mrp",
-        "stock",
-        "web_widget_color",
+        "sale_stock",
+        
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -19,7 +19,6 @@
         "views/stock_lot.xml",
         "views/product_views.xml",
         "views/stock_location.xml",
-        
     ],
     "installable": True,
 }

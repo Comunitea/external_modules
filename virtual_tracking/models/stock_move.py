@@ -15,12 +15,10 @@ _logger = logging.getLogger(__name__)
 class StockMove(models.Model):
     _inherit = "stock.move"
 
-    @api.multi
     def _get_available_serial_ids(self):
         self.ensure_one()
         self.available_serial_ids = self.move_line_ids.mapped("available_serial_ids")
 
-    @api.multi
     def _compute_serial_ids(self):
         for move in self:
             move.serial_name_ids = move.move_line_ids.mapped("serial_name_ids")
@@ -69,7 +67,6 @@ class StockMove(models.Model):
             ),
         }
   
-    @api.multi
     def action_view_serials(self):
         action = self.env.ref("stock.action_production_lot_form").read()[0]
         action['context']= {'product_id': self.product_id.id,
@@ -99,6 +96,5 @@ class StockMove(models.Model):
             return 0
         return super()._run_valuation(quantity=quantity)
 
-    @api.multi
     def _action_done(self):
         return super()._action_done()

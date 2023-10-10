@@ -26,12 +26,10 @@ class ForbiddenSerialName(models.Model):
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    @api.multi
     def _compute_tracking_count(self):
         for templ_id in self:
             templ_id.tracking_count = sum(x.tracking_count for x in self.product_variant_ids)
 
-    @api.multi
     @api.depends('tracking', 'virtual_tracking')
     def _compute_template_tracking(self):
         for template in self:
@@ -52,21 +50,18 @@ class ProductTemplate(models.Model):
     
     forbidden_serial_ids = fields.One2many('forbidden.serial.name', 'product_id', string='Not valid serial names')
 
-    @api.multi
     def write(self, vals):
         tracking = vals.get('tracking', False)
         if tracking and tracking != 'none':
             vals['virtual_tracking'] = False
         return super().write(vals)
 
-    @api.model
     def create(self, vals):
         tracking = vals.get('tracking', False)
         if tracking and tracking != 'none':
             vals['virtual_tracking'] = False
         return super().create(vals)
 
-    @api.multi
     def action_view_serials(self):
         action = self.env.ref("stock.action_production_lot_form").read()[0]
         action["context"] = {"product_id": self.id}
@@ -91,7 +86,6 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    @api.multi
     def _compute_tracking_count(self):
         tracking_ids = self.filtered(lambda x: x.template_tracking != 'none')
         for product_id in tracking_ids:
@@ -104,8 +98,6 @@ class ProductProduct(models.Model):
     tracking_count = fields.Integer("Tracking serial count", compute=_compute_tracking_count)
     reg_exp = fields.Char('Regular expression', help="Patron de expresiones regulares para los lotes o números de serie para una cadena de x caracteres(numeros y letras) y que empieza por ABC re.compile('^ABC[A-Za-z0-9]{x}$')")
     
-
-    @api.multi
     def action_view_serials(self):
         action = self.env.ref("stock.action_production_lot_form").read()[0]
         domain = self.get_serial_domain()

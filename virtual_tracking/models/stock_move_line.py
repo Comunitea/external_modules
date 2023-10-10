@@ -15,7 +15,6 @@ _logger = logging.getLogger(__name__)
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
-    @api.multi
     def _get_available_serial_ids(self):
         # Devuelve los números dee serie disponibles para este move_line
         spl = self.env["stock.lot"]
@@ -84,7 +83,6 @@ class StockMoveLine(models.Model):
         if self.template_tracking == 'virtual' and not self._context.get("by_pass_compute_qties", False):
             self.qty_done = len(self.serial_ids) + len(self.serial_name_ids) 
 
-    @api.multi
     def action_alternative_tracking_in_move_line(self):
         self.ensure_one()
         # if self.get_use_create_lots():
@@ -103,7 +101,6 @@ class StockMoveLine(models.Model):
             "res_id": self.id,
         }
 
-    @api.multi
     def action_open_tracking_form(self):
         self.ensure_one()
         view = self.env.ref("alternative_tracking.stock_move_line_tracking_form")
@@ -119,7 +116,6 @@ class StockMoveLine(models.Model):
             "res_id": self.id,
         }
 
-    @api.multi
     def write(self, vals):
         if vals.get('lot_ids_string', False):
             lot_names = self.env['stock.move.line'].product_id.compute_names_from_string(vals['lot_ids_string'])

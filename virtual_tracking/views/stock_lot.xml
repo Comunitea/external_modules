@@ -2,12 +2,12 @@
 <odoo>
     <record id="view_stock_move_lots_at" model="ir.ui.view">
         <field name="name">stock.move.lots.form.at.form</field>
-        <field name="model">stock.production.lot</field>
+        <field name="model">stock.lot</field>
          <field name="inherit_id" ref="stock.view_production_lot_form" />
         <field name="arch" type="xml">
             <field name="ref" position="after">
                 <field name="location_id" readonly="0" attrs="{'required': [('virtual_tracking', '=', True)]}"/>
-                <field name="real_location_id" readonly="0" attrs="{'required': [('virtual_tracking', '=', True)]}"/>
+                <field name="serial_location_id" readonly="0" attrs="{'required': [('virtual_tracking', '=', True)]}"/>
                 <field name="virtual_tracking" readonly="0" />
                 <field name="move_line_ids" readonly="1" invisible="1" />
 
@@ -26,25 +26,24 @@
     </record>
     <record id="view_production_lot_tree_at" model="ir.ui.view">
         <field name="name">stock.move.lots.tree.at</field>
-        <field name="model">stock.production.lot</field>
+        <field name="model">stock.lot</field>
          <field name="inherit_id" ref="stock.view_production_lot_tree" />
         <field name="arch" type="xml">
             <xpath expr="//tree" position="attributes">
-                <attribute name="decoration-muted">not location_id_company</attribute>
+                <attribute name="decoration-muted">serial_location_id != 'internal'</attribute>
             </xpath>
             <field name="create_date" position="before">
-                <field name="location_id_company" invisible="1" />
                 <field name="product_qty" invisible="0" />
-                <field name="location_id" readonly="1" />
-                <field name="real_location_id" readonly="1" />
+                <field name="serial_location_id" readonly="1" />
+                <field name="serial_location_id" readonly="1" />
                 <field name="virtual_tracking" readonly="1" invisible="1" />
             </field>
 
         </field>
     </record>
     <record id="search_product_lot_filter_inherit_product_expiry" model="ir.ui.view">
-        <field name="name">stock.production.lot.search.inherit</field>
-        <field name="model">stock.production.lot</field>
+        <field name="name">stock.lot.search.inherit</field>
+        <field name="model">stock.lot</field>
         <field name="inherit_id" ref="stock.search_product_lot_filter" />
         <field name="arch" type="xml">
             <field name="product_id" position="after">
@@ -54,9 +53,9 @@
                     filter_domain="['|',('name','ilike',self),('barcode','ilike',self)]"
                 />
                 <field
-                    name="real_location_id"
+                    name="serial_location_id"
                     string="Location"
-                    filter_domain="[('real_location_id','ilike',self)]"
+                    filter_domain="[('serial_location_id','ilike',self)]"
                 />
                 <separator />
                 <filter

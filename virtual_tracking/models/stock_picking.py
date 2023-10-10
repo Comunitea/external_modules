@@ -16,7 +16,6 @@ class StockPicking(models.Model):
         for sml_id in self:
             sml_id.create_serial_ids_from_serial_names()
 
-    @api.multi
     def get_sml_ids_serial_ids(self):
         return self.mapped('move_line_ids.serial_ids') # + self.mapped('move_line_ids.lot_id') 
 

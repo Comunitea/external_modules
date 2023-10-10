@@ -59,7 +59,6 @@ class VirtualSerial(models.Model):
             _logger.info("Ha ocurrido un error al crear con %s"%(values))
             return self.env['virtual.serial']
 
-    @api.multi
     def convert_to_spl(self, move_line_id, product_id, location_id):
         # Convierte una lista de virtual serial a lotes de odoo
         # Y lo añade a un stock_move_line
@@ -86,7 +85,7 @@ class VirtualSerial(models.Model):
                     'name': vpl_id.name,
                     'product_id': product_id.id,
                     'location_id': location_id.serial_location.id,
-                    'real_location_id': location_id.id,
+                    'serial_location_id': location_id.id,
                     'ref': vpl_id.name}
                 values_to_link += [values]
         if id_to_link:
@@ -94,54 +93,18 @@ class VirtualSerial(models.Model):
         if values_to_link:
             move_line_id.serial_ids = [(0, 0, values) for values in values_to_link]
 
-class VirtualLastLoc(models.Model):
-    _name = "virtual.last.location"
-    _description = "Virtual Serial Last Location"
-    _auto = False
-    _rec_name = 'lot_id'
-    _order = 'date desc'
-
-    @api.model
-    def _get_done_states(self):
-        return ['sale', 'done', 'paid']
-
-    location_id = fields.Many2one(comodel_name='stock.location', string="Actual Location", readonly=True)
-    lot_id = fields.Many2one(comodel_name='stock.lot', string="Virtual Serial", readonly=True)
-    product_id = fields.Many2one(comodel_name='product.product', string="Producto", readonly=True)
-    date = fields.Datetime('Order Date', readonly=True)
-
-    def _query(self):
-        select_ = """
-            select
-            sml.id as id,
-            lmlrel.serial_id as lot_id,
-            sml.product_id as product_id,
-            sml.date as date,
-            sml.location_dest_id as location_id
-            from stock_move_line sml
-            join serial_id_move_line_id_rel lmlrel on lmlrel.move_line_id = sml.id
-            where sml.state = 'done'
-        """
-        return select_
-
-    @api.model_cr
-    def init(self):
-        # self._table = sale_report
-        tools.drop_view_if_exists(self.env.cr, self._table)
-        self.env.cr.execute("""CREATE or REPLACE VIEW %s as (%s)""" % (self._table, self._query()))
-
 class StockLot(models.Model):
     _inherit = "stock.lot"
 
     virtual_tracking = fields.Boolean(related='product_id.virtual_tracking')
     location_id = fields.Many2one("stock.location", "Location")
+    serial_location_id = fields.Selection(related="serial_location_id.usage", string="Location Usage", store=True)
     serial_location_id = fields.Many2one(related="location_id.serial_location", string="Serial Location", store=True)
     move_line_ids = fields.One2many(
         "stock.move.line", compute="_compute_tracking_moves"
     )
     move_ids = fields.One2many("stock.move", compute="_compute_tracking_moves")
 
-    @api.multi
     def unlink(self):
         sql = "select move_line_id from serial_id_move_line_id_rel where serial_id in %s"
         self._cr.execute(sql, [tuple(self.ids)])
@@ -150,7 +113,6 @@ class StockLot(models.Model):
             raise ValidationError (_('Serial numbers used in any '))
         return super().unlink()
 
-    @api.multi
     def _compute_tracking_moves(self):
         for lot in self:
             domain = ['|', ('lot_id', '=', lot.id), ("serial_ids", "in", lot.id)]
@@ -184,7 +146,7 @@ class StockLot(models.Model):
     def create(self, vals):
         return super().create(vals)
 
-    def update_real_location_id(self):
+    def update_serial_location_id(self):
         # Script para calcular el la ubicación real por si se descoloca
         if not self:
             self = self.search([])
@@ -195,9 +157,8 @@ class StockLot(models.Model):
             if vll_id:
                 location_id = serial.location_id
                 serial.location_id = vll_id.location_id
-                _logger.info(">>>> De {} ({}) a {}".format(location_id.display_name, vll_id.location_id.serial_location.display_name, serial.real_location_id.display_name))
+                _logger.info(">>>> De {} ({}) a {}".format(location_id.display_name, vll_id.location_id.serial_location.display_name, serial.serial_location_id.display_name))
 
-    @api.multi
     def write(self, vals):
         if vals.get("name"):
             if self.env.user.company_id.serial_to_upper_case:

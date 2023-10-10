@@ -20,7 +20,6 @@ class StockLocation(models.Model):
             return True
         return super().should_bypass_reservation()
 
-    @api.multi
     def write(self, vals):
         res = super().write(vals)
         if 'serial_location' in vals:

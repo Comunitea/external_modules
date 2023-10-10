@@ -10,7 +10,7 @@ class ResCompany(models.Model):
     _inherit = 'res.company'
 
     serial_to_upper_case = fields.Boolean(
-        string='Upper lot/serial names', defaut=False
+        string='Upper lot/serial names', default=False
     )
 
 
