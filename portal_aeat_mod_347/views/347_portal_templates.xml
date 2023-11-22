@@ -245,7 +245,7 @@
                                                     <span t-field="move_record.date"/>
                                                 </td>
                                                 <td>
-                                                    <span t-field="move_record.amount_signed"/>
+                                                    <span t-field="move_record.amount"/>
                                                 </td>
                                             </tr>
                                         </tbody>
