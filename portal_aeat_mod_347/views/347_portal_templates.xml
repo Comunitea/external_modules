@@ -237,7 +237,7 @@
                                         <tbody>
                                             <tr t-foreach="mod_347_detail.move_record_ids.sorted('date')" t-as="move_record">
                                                 <td>
-                                                    <a t-att-href="move_record.invoice_id.get_portal_url()" t-att-title="move_record.invoice_id.sudo().reference">
+                                                    <a t-if="move_record.invoice_id" t-att-href="move_record.invoice_id.get_portal_url()" t-att-title="move_record.invoice_id.sudo().reference">
                                                         <span t-field="move_record.invoice_id.sudo().reference"/>
                                                     </a>
                                                 </td>
