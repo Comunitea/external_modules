@@ -6,9 +6,17 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position='inside'>
+                <field name="carrier_type" invisible="1"/>
+                <button
+                    name="retry_get_mrw_label"
+                    string="Retry Get MRW Label"
+                    type="object"
+                    attrs="{'invisible': ['|', ('carrier_type', '!=', 'mrw'), ('carrier_tracking_ref', '=', False)]}"
+                />
+            </xpath>
             <xpath expr="//group[@name='carrier_data']" position="after">
                 <group string="MRW Data" attrs="{'invisible': [('carrier_type', '!=', 'mrw')]}">
-                    <field name="carrier_type" invisible="1"/>
                     <field name="shipment_reference"/>
                     <field name="failed_shipping"/>
                 </group>

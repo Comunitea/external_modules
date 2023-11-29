@@ -445,3 +445,43 @@ class StockPicking(models.Model):
 
         response = client.service.CancelarEnvio(**CancelarEnvio, _soapheaders=[headers])
         return response
+    
+    def retry_get_mrw_label(self):
+        client, history = self.create_client()
+
+        if client and self.carrier_tracking_ref:
+            headers = self.setMRWHeaders(client)
+            try:
+                label = self.get_carrier_label(
+                    client, headers, self.carrier_tracking_ref
+                )
+            except Exception as e:
+                _logger.error(
+                    _(
+                        "Connection error: {}, while trying to retrieve the label."
+                    ).format(e)
+                )
+                return
+
+            if label["Estado"] == "1":
+                file_b64 = base64.b64encode(label["EtiquetaFile"])
+                self.env["ir.attachment"].create(
+                    {
+                        "name": "Label: {}".format(self.name),
+                        "type": "binary",
+                        "datas": file_b64,
+                        "datas_fname": "Label" + self.name + ".pdf",
+                        "store_fname": self.name,
+                        "res_model": self._name,
+                        "res_id": self.id,
+                        "mimetype": "application/x-pdf",
+                    }
+                )
+            elif label["Estado"] == "0":
+                raise AccessError(
+                    _("Error while trying to retrieve the label: {}").format(
+                        label["Mensaje"]
+                    )
+                )
+            else:
+                raise AccessError(_("Error while trying to retrieve the label"))
