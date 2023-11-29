@@ -30,6 +30,19 @@
         </field>
     </record>
 
+    <record id="view_product_main_supplier_inherit" model="ir.ui.view">
+        <field name="name">product.template.main.supplier.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <group name="vendors" position="before">
+                <group string="Proveedor principal" name="main_supplier" >
+                    <field name="main_supplier_id" />
+                </group>
+            </group>
+        </field>
+    </record>
+
     <record id="product_unreceived_items" model="ir.ui.view">
         <field name="name">product.unreceived.items.product.form</field>
         <field name="model">product.product</field>
