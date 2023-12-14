@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_picking_form_at" model="ir.ui.view">
+        <field name="name">view.picking.form.at</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <button name="action_see_move_scrap" position="after">
+                    <button 
+                        class="oe_stat_button"
+                        name="show_tracking_serial_ids"
+                        string="Tracking"
+                        type="object"
+                        icon="fa-barcode"
+                        />
+            </button>
+        </field>
+    </record>
+
+</odoo>

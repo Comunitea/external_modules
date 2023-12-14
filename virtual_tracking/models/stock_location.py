@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class StockLocation(models.Model):
     _inherit = "stock.location"
 
-    serial_location = fields.Many2one('stock.location', string='Ubicación de nº serie')
+    serial_location_id = fields.Many2one('stock.location', string='Ubicación de nº serie')
 
     def should_bypass_reservation(self):
         if self._context.get('bypass_reservation', False):
@@ -22,7 +22,7 @@ class StockLocation(models.Model):
 
     def write(self, vals):
         res = super().write(vals)
-        if 'serial_location' in vals:
+        if 'serial_location_id' in vals:
             for location in self:
-                location.child_ids.write({'serial_location': location.serial_location})
+                location.child_ids.write({'serial_location_id': location.serial_location_id})
         return res

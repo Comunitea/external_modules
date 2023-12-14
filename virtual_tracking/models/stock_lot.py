@@ -84,8 +84,8 @@ class VirtualSerial(models.Model):
                 values = {
                     'name': vpl_id.name,
                     'product_id': product_id.id,
-                    'location_id': location_id.serial_location.id,
-                    'serial_location_id': location_id.id,
+                    'location_id': location_id.serial_location_id.id,
+                    # 'serial_location_id': location_id.id,
                     'ref': vpl_id.name}
                 values_to_link += [values]
         if id_to_link:
@@ -96,10 +96,16 @@ class VirtualSerial(models.Model):
 class StockLot(models.Model):
     _inherit = "stock.lot"
 
+    def _get_serial_location_id(self):
+        domain = [('serial_ids', 'in', self)]
+        # sml_ids = self.env[('state', '=', 'done'), ('serial_ids', 'in', self)]
+        
+
     virtual_tracking = fields.Boolean(related='product_id.virtual_tracking')
-    location_id = fields.Many2one("stock.location", "Location")
-    serial_location_id = fields.Selection(related="serial_location_id.usage", string="Location Usage", store=True)
-    serial_location_id = fields.Many2one(related="location_id.serial_location", string="Serial Location", store=True)
+    location_id = fields.Many2one("stock.location", "Location") # Es la serial location del ultimo movmiento
+    # serial_location_id = fields.Many2one("stock.location")
+    location_id_usage = fields.Selection(related="location_id.usage")
+    # real_location_id = fields.Many2one('stock.location', compute="_get_serial_location_id")
     move_line_ids = fields.One2many(
         "stock.move.line", compute="_compute_tracking_moves"
     )
@@ -135,18 +141,15 @@ class StockLot(models.Model):
             # if not stock_location:
             #     stock_location = self.env.ref('stock.stock_location_stock')
             # d1 = self.env['product.product'].get_serial_domain(location_id=stock_location.id)
-            # d1 = [("serial_location_id", "=", stock_location.serial_location.id)]
-            d1 = [("serial_location_id.usage", "=", 'internal')]
+            # d1 = [("serial_location_id", "=", stock_location.serial_location_id.id)]
+            d1 = [("location_id.usage", "=", 'internal')]
             args = expression.normalize_domain(args)
             args = expression.AND([d1, args])
         res = super().search(args, offset=offset, limit=limit, order=order, count=count)
         return res
 
-    @api.model
-    def create(self, vals):
-        return super().create(vals)
-
     def update_serial_location_id(self):
+        # TODO REVISAR
         # Script para calcular el la ubicación real por si se descoloca
         if not self:
             self = self.search([])
@@ -157,7 +160,7 @@ class StockLot(models.Model):
             if vll_id:
                 location_id = serial.location_id
                 serial.location_id = vll_id.location_id
-                _logger.info(">>>> De {} ({}) a {}".format(location_id.display_name, vll_id.location_id.serial_location.display_name, serial.serial_location_id.display_name))
+                _logger.info(">>>> De {} ({}) a {}".format(location_id.display_name, vll_id.location_id.serial_location_id.display_name, serial.serial_location_id.display_name))
 
     def write(self, vals):
         if vals.get("name"):
@@ -167,11 +170,10 @@ class StockLot(models.Model):
                     vals.update({'name': name, 'ref': name})
         return super().write(vals)
 
-    @api.model
-    def create(self, vals):
-        
-        name = vals.get("name").upper()
-        if name != vals.get("name"):
-            if self.env.user.company_id.serial_to_upper_case:
-                vals.update({'name': name, 'ref': name})
-        return super().create(vals)
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        if self.env.user.company_id.serial_to_upper_case:
+            for val in vals_list:
+                val['name'] = val['name'].upper()
+        return super().create(vals_list)

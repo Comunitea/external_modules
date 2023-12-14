@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<record id="view_stock_move_line_operation_tree_at" model="ir.ui.view">
+        <field name="name">Stock Move Line Alternative Tracking</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree" />
+        <field name="arch" type="xml">
+            <field name="product_uom_id" position="after">
+                <field name="template_tracking" invisible="0" />
+                <button
+                    name="action_open_tracking_form"
+                    string="Open tracking"
+                    type="object"
+                    icon="fa-barcode"
+                    context="{'recal_qty_done': True}"
+                    attrs="{'invisible': [('template_tracking', '!=', 'virtual')]}"
+                />
+            </field>
+        </field>
+
+
+</record>
+<record id="view_stock_move_line_detailed_operation_tree" model="ir.ui.view">
+        <field name="name">Stock Move Line Detailed Operations</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree" />
+        <field name="arch" type="xml">
+            <field name="product_uom_id" position="after">
+                <field name="template_tracking" invisible="0" />
+                <button
+                    name="action_open_tracking_form"
+                    string="Open tracking"
+                    type="object"
+                    icon="fa-barcode"
+                    context="{'recal_qty_done': True}"
+                    attrs="{'invisible': [('template_tracking', '!=', 'virtual')]}"
+                />
+            </field>
+        </field>
+</record>
+
+<record id="stock_move_line_tracking_form" model="ir.ui.view">
+        <field name="name">Stock Move Line Tracking Form Tracking</field>
+        <field name="model">stock.move.line</field>
+        <field name="priority">9999</field>
+        <field name="arch" type="xml">
+            <form string="Move Detail">
+                <header>
+                     <field name="state" widget="statusbar" readonly="1"/>
+                 </header>
+                 <group attrs="{'invisible': [('state', '=', 'done')]}">
+                    <group>
+                        <field name="location_id" invisible="0" readonly="1"/>
+                        <field name="location_dest_id" invisible="0" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="picking_id" invisible="1" readonly="1"/>
+                        <field name="is_locked" invisible="1" readonly="1"/>
+                    </group>
+                </group>
+                    <group attrs="{'invisible': [('state', '=', 'done')]}">
+                        <group string="Principal">
+                            <field name="product_id" readonly="1"/>
+                            <field string="Tracking" name="template_tracking" readonly="1"/>
+                            <field string="Tracking" name="tracking" readonly="1"/>
+                        </group>
+                        <group string="Tracking">
+                            <label for="reserved_uom_qty"/>
+                            <div class="o_row">
+                                <span><field name="reserved_uom_qty" readonly="1" nolabel="1"/></span>
+                                <span><field name="product_uom_id" readonly="1" nolabel="1"/></span>
+                            </div>
+                            <label for="qty_done"/>
+                            <div class="o_row">
+                                <span><field name="qty_done" attrs="{'readonly': [('state', '=', 'done')]}" nolabel="1"/></span>
+                                <span><field name="product_uom_id" readonly="1" nolabel="1"/></span>
+                            </div>
+                            <!--field name="lot_name"  attrs="{'invisible': ['|', ('template_tracking', '=', 'virtual'), ('tracking','!=', 'none')]}"/>
+                            <field name="lot_id"  attrs="{'invisible': ['|', ('template_tracking', '=', 'virtual'), ('tracking','!=', 'none')]}"/-->
+                        </group>
+                     </group>
+                    
+                     <div attrs="{'invisible': [('template_tracking','!=', 'virtual')]}" >
+                        <group string="Tracking"  >
+                            <group invisible="0">
+                                <field name="picking_type_use_existing_lots"/>
+                                <field name="picking_type_use_create_lots"/>
+                            </group>
+                            <group invisible="0">
+                                <field name="template_tracking"/>
+                                <field options="{'no_create': True}" name="available_serial_ids"
+                                    context="{'default_product_id': product_id, 'default_virtual_tracking': 1}"  
+                                    invisible="1"
+                                    widget="many2many_tags"
+                                    />
+                            
+                            </group>
+                        </group>
+                        <!--Dbería de ocultar una de estas 2 opciones. De momento muestro las dos-->
+                        <h3>Ocultar una opción </h3>
+                        <group string="Texto Manual">  
+                            <!--attrs="{'invisible': ['|', ('state', '==', 'done'), ('picking_type_use_create_lots', '=', False)]}">-->
+                            <label for="serial_ids_string" string="Cadena de texto"/>
+                            <field name="serial_ids_string" nolabel="1" 
+                                attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </group>
+                        <group string="Serial Existentes" >
+                            <!--attrs="{'invisible': ['|', ('state', '==', 'done'), ('picking_type_use_create_lots', '=', True)]}">-->
+                            <label for="serial_ids" string="Nº existentes"/>
+                            <field name="serial_ids" nolabel="1" 
+                                widget="many2many_tags" options="{'no_create': True}" 
+                                attrs="{'readonly': [('state', '=', 'done')]}"
+                                domain="[('id', 'in', available_serial_ids)]"/>
+                        </group>
+                    </div>
+                    
+                    <footer class="oe_edit_only">
+                        <button string="Convertir a Nº de serie" 
+                            type="object" name="convert_serial_ids_string_to_serial_ids" class="oe_highlight" 
+                            context="{'recal_qty_done': True, 'apply_regexp': False, }"
+                            attrs="{'invisible': ['|', ('state', '=', 'done'), ('serial_ids_string', '=', '')]}"/>
+                        <button string="Confirm" attrs="{'invisible': [('serial_ids_string', '!=', '')]}" special="save" class="oe_highlight"/>
+                        <button string="Discard" special="cancel"/>
+                    </footer>
+            </form>
+        
+        </field>
+</record>
+</odoo>

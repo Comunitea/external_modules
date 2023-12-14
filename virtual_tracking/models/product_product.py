@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 import re
 
 TRACKING_VALUES = [
-        ('virtual', 'Nº Serie Virtual'),
+        ('virtual', 'By Virtual Serial Number'),
         ('serial', 'By Unique Serial Number'),
         ('lot', 'By Lots'),
         ('none', 'No Tracking')]
@@ -30,37 +30,44 @@ class ProductTemplate(models.Model):
         for templ_id in self:
             templ_id.tracking_count = sum(x.tracking_count for x in self.product_variant_ids)
 
-    @api.depends('tracking', 'virtual_tracking')
-    def _compute_template_tracking(self):
-        for template in self:
-            if template.virtual_tracking:
-                template.template_tracking = 'virtual'
-            else:
-                template.template_tracking = template.tracking
-
+    forbidden_serial_ids = fields.One2many('forbidden.serial.name', 'product_id', string='Not valid serial names')
     virtual_tracking = fields.Boolean(
         "With tracking", help="Alternative tracking for products with tracking = 'none'"
     )
-    tracking_count = fields.Integer("Tracking serial count", compute=_compute_tracking_count)
-    template_tracking = fields.Selection(
-        selection=TRACKING_VALUES,
-        string='Product Tracking', 
-        compute=_compute_template_tracking, 
-        store=True)
-    
-    forbidden_serial_ids = fields.One2many('forbidden.serial.name', 'product_id', string='Not valid serial names')
+    tracking_count = fields.Integer(
+        "Tracking serial count", compute=_compute_tracking_count
+    )
+    template_tracking = fields.Selection(selection=TRACKING_VALUES, string='Product Tracking')
 
     def write(self, vals):
-        tracking = vals.get('tracking', False)
-        if tracking and tracking != 'none':
-            vals['virtual_tracking'] = False
+        template_tracking = vals.get('template_tracking', False)
+        if template_tracking == 'virtual':
+            vals.update({
+                'tracking': 'none',
+                'virtual_tracking': True,
+            })
+        elif template_tracking:
+            vals.update({
+                'tracking': template_tracking,
+                'virtual_tracking': False,
+            })
         return super().write(vals)
 
-    def create(self, vals):
-        tracking = vals.get('tracking', False)
-        if tracking and tracking != 'none':
-            vals['virtual_tracking'] = False
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, val_list):
+        for val in val_list:
+            template_tracking = val.get('template_tracking', False)
+            if template_tracking == 'virtual':
+                val.update({
+                    'tracking': 'none',
+                    'virtual_tracking': True,
+                })
+            elif template_tracking:
+                val.update({
+                    'tracking': template_tracking,
+                    'virtual_tracking': False,
+                })
+        return super().create(val_list)
 
     def action_view_serials(self):
         action = self.env.ref("stock.action_production_lot_form").read()[0]
@@ -76,12 +83,6 @@ class ProductTemplate(models.Model):
         else:
             action["domain"] = [('id', 'in', [])]
         return action
-
-    @api.onchange("tracking")
-    def onchange_tracking(self):
-        self.virtual_tracking = False
-        return super().onchange_tracking()
-
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
@@ -113,8 +114,8 @@ class ProductProduct(models.Model):
             action["domain"] = [('id', 'in', [])]
         return action
     
-    # Esta función devuelve los nº de serie  disponibles en una ubicación para un artículo
-    def get_serial_domain(self, location_id=False, warehouse_id=False, lot_names=[], strict='='):
+    # Esta función devuelve los nº de serie  disponibles en una ubicación para x artículo(s)
+    def get_serial_domain(self, location_id=False, lot_names=[], all_x_prod=False):
         n_prod = len(self)
         if not n_prod:
             domain = []
@@ -124,17 +125,17 @@ class ProductProduct(models.Model):
             domain = [('product_id', 'in', self.ids)]
         if lot_names:
             domain = expression.AND([domain, [("name", "in", lot_names)]])
-        if strict == 'all':
+        if all_x_prod:
+            #Devuelvo todos los del producto
             return domain
+        
         if not location_id:
-            if warehouse_id:
-                location_id = warehouse_id.lot_stock_id
-            else:
-                location_id = self.env.ref('stock.stock_location_stock')
-        domain = expression.AND([domain, [("location_id", strict, location_id.serial_location.id)]])
+            location_id = self.env.user.get_lot_stock_id()
+        domain = expression.AND([domain, [("location_id", '=', location_id.id)]])
         return domain
 
-    def compute_names_from_string(self, lot_names, apply_regexp=True, product_id=False, move_line_id=False):
+    #sanitize_lot_names
+    def sanitize_lot_names(self, lot_names, apply_regexp=True):
         if not lot_names:
             return []
         # Si lot_names es una cadena: Reemplazo los . y las , por retorno de carro y separo por lineas para hacer una lista
@@ -153,48 +154,47 @@ class ProductProduct(models.Model):
         if self.env.user.company_id.serial_to_upper_case:            
             if lot_names:
                 lot_names = [x.upper() for x in lot_names]
-
-        # Si no hay producto, salgo aquí, solo lo convierto a una lista
-        if not product_id:
-            # Elimino duplicados de la lista
-            set_list = set(lot_names)
-            # Elimino vacios
-            lot_names = list(set_list - {''})
+        
+        # Elimino duplicados de la lista
+        set_list = set(lot_names)
+        # Elimino vacios
+        lot_names = list(set_list - {''})
+        
+        if not self:
+            #Si no envía producto, salgo aquí, solo limpia la lista
             return lot_names
    
         # Miro si tengo que aplicar Expresiones regulares. Lo normal es que si
         if not apply_regexp and 'apply_regexp' in self._context:
             apply_regexp = self._context.get("apply_regexp", True)
-
-   
         not_lot_names = []
-        if product_id.not_lot_name_ids:
-            not_lot_name = product_id.not_lot_name_ids.mapped('regexp')
+        domain = [('product_id', '=', self.id)]
+        forbidden_names = self.env['forbidden.serial.name'].search(domain).mapped('name')
+        if forbidden_names:
+            not_lot_names += forbidden_names
         
-        # ademas, para evitar los repetidos y ya leidos en ese albarán, aunque en otras líneas
-        other_moves = self[0].move_id.picking_id.move_line_ids.filtered(lambda x: x.product_id == self.product_id)
-        if other_moves:
-            not_lot_name += other_moves.mapped('serial_ids.name')
-        else:
-            not_lot_name += self.mapped('serial_ids.name')
-
-        # Revisar esto
-            if self.serial_name_ids:
-                not_lot_name += self.mapped('serial_name_ids.name')
-
+        if self._context.get('picking_id', False):
+            other_moves = self._context['picking_id'].move_line_ids.filtered(lambda x: x.product_id == self.product_id)
+            # ademas, para evitar los repetidos y ya leidos en ese albarán, aunque en otras líneas
+            if other_moves:
+                not_lot_names += other_moves.mapped('serial_ids.name')
+            else:
+                not_lot_names += self.mapped('serial_ids.name')
+        
         res = []
         for lot in lot_names:
+            lot = lot.strip()
             if lot is None:
                 continue
-            lot = lot.strip()
-            
             if len(lot) < 3:
+                _logger.info(_('%s invalid: <3 caracter'))
                 continue
-            if lot in not_lot_name:
+            if lot in not_lot_names:
+                _logger.info(_('%s invalid: Forbidden or in same pick'))
                 continue
             if lot in res:
                 continue
-
+            
             """
             EJEMPLO DE EXPRESION REGULAR: 
                 re.match(expresion_regular, texto_a chequear, flags=re.IGNORECASE)
@@ -204,8 +204,9 @@ class ProductProduct(models.Model):
                 and re.match('%'%product_id.serial_regexp, lot, flags=re.IGNORECASE):
             """
 
-            if apply_regexp and self.product_id.serial_regexp:
-                if not re.match('%s' % self.product_id.serial_regexp, lot):  # , flags=re.IGNORECASE)
+            if apply_regexp and self.reg_exp:
+                if not re.match('%s' % self.reg_exp, lot):  # , flags=re.IGNORECASE)
+                    _logger.info(_('%s invalid: REGEXP'))
                     continue
             res.append(lot)
         return sorted(res)

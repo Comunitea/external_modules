@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_stock_virtual_serial_user,stock.virtual.serial user,model_virtual_serial,stock.group_stock_user,1,1,1,1
+access_stock_forbidden_serial_name_user,forbidden.serial.name user,model_forbidden_serial_name,stock.group_stock_user,1,1,1,1
