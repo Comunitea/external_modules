@@ -26,7 +26,7 @@ class StockPicking(models.Model):
     
     def _prepare_stock_move_vals(self, first_line, order_lines):
         res = super(StockPicking, self)._prepare_stock_move_vals(first_line, order_lines)
-        if first_line.selected_attribute_value_ids:
+        if first_line.selected_attribute_value_ids and first_line.selected_attribute_value_ids != '[]':
             res.update({"selected_attribute_value_ids": first_line.selected_attribute_value_ids})
         return res
 
