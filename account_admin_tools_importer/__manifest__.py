@@ -3,7 +3,7 @@
 
 {
     "name": "Account Admin Importation Tools",
-    "version": "16.0.0.0.0",
+    "version": "15.0.0.0.0",
     "author": "Comunitea",
     "website": "https://www.comunitea.com",
     "category": "Enterprise Specific Modules",

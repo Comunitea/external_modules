@@ -19,7 +19,7 @@
 
 {
     'name': 'Login Digital Kit',
-    'version': '16.0.1.0.0',
+    'version': '15.0.1.0.0',
     'category': 'Custom',
     'author': 'Comunitea,',
     'license': 'AGPL-3',

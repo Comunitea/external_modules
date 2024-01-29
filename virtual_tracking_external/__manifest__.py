@@ -3,7 +3,7 @@
 
 {
     "name": "Virtual Tracking",
-    "version": "16.0.0.0.0",
+    "version": "15.0.0.0.0",
     "category": "Product",
     "license": "AGPL-3",
     "author": "Comunitea, ",
