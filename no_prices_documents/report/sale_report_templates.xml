@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template inherit_id="sale.report_saleorder_document" id="report_saleorder_document">
+        <xpath expr="//table[@class='table table-sm o_main_table table-borderless mt-4']" position="attributes">
+            <attribute name='t-if'>doc.show_prices</attribute>
+        </xpath>
+        <xpath expr="//table[@class='table table-sm o_main_table table-borderless mt-4']" position="after">
+            <t t-else="">
+                <table class="table table-sm o_main_table table-borderless mt-4">
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_description" class="text-start">Description</th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+                    <t t-foreach="lines_to_report" t-as="line">
+                        <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                            <t t-if="not line.display_type">
+                                <td name="td_name"><span t-field="line.name"/></td>
+                            </t>
+                            <t t-elif="line.display_type == 'line_section'">
+                                <td name="td_section_line" colspan="99">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </t>
+                            <t t-elif="line.display_type == 'line_note'">
+                                <td name="td_note_line" colspan="99">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
