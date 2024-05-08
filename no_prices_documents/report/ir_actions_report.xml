@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_report_saleorder_no_prices" model="ir.actions.report">
+        <field name="name">Quotation / Order without prices </field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">no_prices_documents.report_saleorder_no_prices</field>
+        <field name="report_file">no_prices_documents.report_saleorder_no_prices</field>
+        <field name="print_report_name">(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_pro_forma_invoice_no_prices" model="ir.actions.report">
+        <field name="name">PRO-FORMA Invoice without prices</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">no_prices_documents.report_saleorder_pro_forma_no_prices</field>
+        <field name="report_file">no_prices_documents.report_saleorder_pro_forma_no_prices</field>
+        <field name="print_report_name">'PRO-FORMA - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="groups_id" eval="[(4, ref('sale.group_proforma_sales'))]"/>
+    </record>
+
+    <record id="account_invoices_no_prices" model="ir.actions.report">
+        <field name="name">Invoices without prices</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">no_prices_documents.report_invoice_no_prices</field>
+        <field name="report_file">no_prices_documents.report_invoice_no_prices</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="attachment">(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')</field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

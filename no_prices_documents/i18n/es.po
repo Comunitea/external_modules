@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-14 09:00+0000\n"
-"PO-Revision-Date: 2024-03-14 09:00+0000\n"
+"POT-Creation-Date: 2024-05-08 09:45+0000\n"
+"PO-Revision-Date: 2024-05-08 09:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,29 +16,243 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: no_prices_documents
-#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document
+#: model:ir.actions.report,print_report_name:no_prices_documents.action_report_pro_forma_invoice_no_prices
+msgid "'PRO-FORMA - %s' % (object.name)"
+msgstr "'PRO-FORMA - %s' % (object.name)"
+
+#. module: no_prices_documents
+#: model:ir.actions.report,print_report_name:no_prices_documents.account_invoices_no_prices
+msgid "(object._get_report_base_filename())"
+msgstr "(object._get_report_base_filename())"
+
+#. module: no_prices_documents
+#: model:ir.actions.report,print_report_name:no_prices_documents.action_report_saleorder_no_prices
+msgid ""
+"(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or "
+"'Order - %s' % (object.name)"
+msgstr ""
+"(object.state in ('draft', 'sent') and 'Presupuesto - %s' % (object.name)) or "
+"'Pedido - %s' % (object.name)"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
 msgid "<span>Description</span>"
 msgstr "<span>Descripción</span>"
 
 #. module: no_prices_documents
-#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<span>Quantity</span>"
+msgstr "<span>Cantidad</span>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid ""
+"<strong class=\"text-center\">Scan me with your banking "
+"app.</strong><br/><br/>"
+msgstr ""
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Amount Due</strong>"
+msgstr "<strong>Importe adeudado</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Credit Note Date:</strong>"
+msgstr "<strong>Fecha de la nota de crédito:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Customer Code:</strong>"
+msgstr "<strong>Código de cliente:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Date:</strong>"
+msgstr "<strong>Fecha:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Due Date:</strong>"
+msgstr "<strong>Fecha de vencimiento:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "<strong>Expiration:</strong>"
+msgstr "<strong>Vencimiento:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "<strong>Fiscal Position Remark:</strong>"
+msgstr "<strong>Observaciones de la posición fiscal:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Incoterm: </strong>"
+msgstr ""
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Invoice Date:</strong>"
+msgstr "<strong>Fecha factura:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Receipt Date:</strong>"
+msgstr "<strong>Fecha de recepción:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Reference:</strong>"
+msgstr "<strong>Referencia:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "<strong>Salesperson:</strong>"
+msgstr "<strong>Vendedor:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "<strong>Shipping Address:</strong>"
+msgstr "<strong>Dirección de envío:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "<strong>Signature</strong>"
+msgstr "<strong>Firma</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "<strong>Source:</strong>"
+msgstr "<strong>Origen:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "<strong>Your Reference:</strong>"
+msgstr "<strong>Su referencia:</strong>"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Amount Due"
+msgstr "Importe adeudado"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Cancelled Invoice"
+msgstr "Factura cancelada"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Credit Note"
+msgstr "Nota de crédito"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
 msgid "Description"
 msgstr "Descripción"
 
 #. module: no_prices_documents
-#: model:ir.model,name:no_prices_documents.model_account_move
-msgid "Journal Entry"
-msgstr "Asiento contable"
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Discount"
+msgstr "Descuento"
 
 #. module: no_prices_documents
-#: model:ir.model,name:no_prices_documents.model_sale_order
-msgid "Sales Order"
-msgstr "Pedido de venta"
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Draft Invoice"
+msgstr "Borrador de factura"
 
 #. module: no_prices_documents
-#: model:ir.model.fields,field_description:no_prices_documents.field_account_bank_statement_line__show_prices
-#: model:ir.model.fields,field_description:no_prices_documents.field_account_move__show_prices
-#: model:ir.model.fields,field_description:no_prices_documents.field_account_payment__show_prices
-#: model:ir.model.fields,field_description:no_prices_documents.field_sale_order__show_prices
-msgid "Show Prices"
-msgstr "Mostrar precios"
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Due Date"
+msgstr "Fecha de vencimiento"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: no_prices_documents
+#: model:ir.actions.report,name:no_prices_documents.account_invoices_no_prices
+msgid "Invoices without prices"
+msgstr "Facturas sin precios"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "Invoicing Address:"
+msgstr "Dirección de facturación:"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "Invoicing and Shipping Address:"
+msgstr "Dirección de facturación y envío:"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "Order #"
+msgstr "Pedido #"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "Order Date:"
+msgstr "Fecha del pedido:"
+
+#. module: no_prices_documents
+#: model:ir.actions.report,name:no_prices_documents.action_report_pro_forma_invoice_no_prices
+msgid "PRO-FORMA Invoice without prices"
+msgstr "Factura PRO-FORMA sin precios"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Paid on"
+msgstr "Pagado el"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Please use the following communication for your payment :"
+msgstr "Por favor utilice la siguiente referencia al realizar su pago: "
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "Pro-Forma Invoice #"
+msgstr "Factura PRO-FORMA #"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "Quantity"
+msgstr "Cantidad"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "Quotation #"
+msgstr "Presupuesto #"
+
+#. module: no_prices_documents
+#: model:ir.actions.report,name:no_prices_documents.action_report_saleorder_no_prices
+msgid "Quotation / Order without prices "
+msgstr "Presupuesto / Pedido sin precios"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_saleorder_document_no_prices
+msgid "Quotation Date:"
+msgstr "Fecha del presupuesto:"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Tax ID"
+msgstr "Identificación fiscal"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Vendor Bill"
+msgstr "Factura de proveedor"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "Vendor Credit Note"
+msgstr "Nota de crédito de proveedor"
+
+#. module: no_prices_documents
+#: model_terms:ir.ui.view,arch_db:no_prices_documents.report_invoice_document_no_prices
+msgid "if paid before"
+msgstr "si se paga antes del"
