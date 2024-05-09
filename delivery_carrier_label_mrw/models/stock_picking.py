@@ -72,7 +72,7 @@ class StockPicking(models.Model):
         if self.carrier_type == "mrw":
             return self._generate_mrw_label()
         return super().action_generate_carrier_label()
-    
+
     @api.multi
     def remove_tracking_info(self):
         for pick in self.filtered(lambda x: x.carrier_type == "mrw"):
@@ -107,7 +107,7 @@ class StockPicking(models.Model):
             if delivery_note.strip() == "":
                 delivery_note = "N/A"
             pick.delivery_note = delivery_note[:45]
-            
+
     def create_tracking_client(self):
         session = Session()
         session.verify = False
@@ -138,7 +138,7 @@ class StockPicking(models.Model):
             if self.carrier_id.account_id.test_enviroment:
                 url = "http://sagec-test.mrw.es/MRWEnvio.asmx?WSDL"
             else:
-                url = "http://sagec.mrw.es/MRWEnvio.asmx?WSDL"
+                url = "https://sagec.mrw.es/MRWEnvio.asmx?WSDL"
             client = Client(url, transport=transport, plugins=[history])
 
             if client:
@@ -151,7 +151,7 @@ class StockPicking(models.Model):
     def setMRWHeaders(self, client):
 
         try:
-            element_type = client.get_element("{http://www.mrw.es/}AuthInfo")            
+            element_type = client.get_element("{http://www.mrw.es/}AuthInfo")
             headers = element_type(
                 CodigoFranquicia=self.carrier_id.account_id.mrw_franchise,
                 CodigoAbonado=self.carrier_id.account_id.mrw_account,
@@ -381,7 +381,7 @@ class StockPicking(models.Model):
                 return {"state_id": city_zip.city_id.state_id.id}
 
     def check_delivery_address(self):
-        if self.carrier_type == "mrw":   
+        if self.carrier_type == "mrw":
             if not self.partner_id.state_id:
                 state_id = self.get_state_id(self.partner_id)
                 if not state_id:
@@ -445,7 +445,7 @@ class StockPicking(models.Model):
 
         response = client.service.CancelarEnvio(**CancelarEnvio, _soapheaders=[headers])
         return response
-    
+
     def retry_get_mrw_label(self):
         client, history = self.create_client()
 
