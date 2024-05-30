@@ -3,6 +3,9 @@
 #    Copyright (C) 2016 Comunitea All Rights Reserved
 #    $Jesús Ventosinos Mayor <jesus@comunitea.com>$
 #
+#    Copyright (C) 2024 Comunitea All Rights Reserved
+#    $Javier Colmenero Fernández <javier@comunitea.com>$
+#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published
 #    by the Free Software Foundation, either version 3 of the License, or
@@ -18,3 +21,4 @@
 #
 ##############################################################################
 from . import company
+from . import resource_calendar

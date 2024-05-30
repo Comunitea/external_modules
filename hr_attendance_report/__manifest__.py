@@ -22,7 +22,7 @@
 {
     'name': 'Attendance report',
     'summary': '',
-    'version': "16.0.0.0.0",
+    'version': "16.0.0.1.1",
     'category': 'Human Resources',
     'website': 'https://comunitea.com',
     'author': 'Comunitea',
@@ -31,6 +31,7 @@
     'installable': True,
     'depends': [
         'hr_attendance',
+        'hr_holidays_public'
     ],
     'data': [
         'security/ir.model.access.csv',
