@@ -88,9 +88,17 @@ class HrAttendanceReport(models.AbstractModel):
                     from_date2_datetime = datetime.strptime(
                         from_date_2, "%Y-%m-%d %H:%M:%S"
                     )
-                    max_hours = employee.resource_calendar_id.get_work_hours_count(
+                    # max_hours = employee.resource_calendar_id.get_work_hours_count(
+                    #     from_date_datetime,
+                    #     from_date2_datetime,
+                    # )
+                    # Corrijo que no se tienen en cuenta ni los hr.leaves
+                    # específicos de empleado ni los festivos de OCA
+                    max_hours = employee.\
+                            resource_calendar_id.get_work_hours_count_exclude_all(
                         from_date_datetime,
                         from_date2_datetime,
+                        employee
                     )
                     extra_hours = day_attendances["ord_hours"] - max_hours
                     if day_attendances["ord_hours"] > max_hours:
