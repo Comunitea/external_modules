@@ -35,8 +35,10 @@ class ResourceCalendar(models.Model):
         descuenta las horas o días de ausencias (Vacaciones, asuntos propio...)
         """
         self.ensure_one()
-        # Necesario para excluir los festivos de OCA
-        self = self.with_context(exclude_public_holidays=True)
+        # Necesario para excluir los festivos de OCA, y el employee_id para
+        # que lo haga por provincias también
+        self = self.with_context(
+            exclude_public_holidays=True, employee_id=employee.id)
         # Set timezone in UTC if no timezone is explicitly given
         if not start_dt.tzinfo:
             start_dt = start_dt.replace(tzinfo=utc)
