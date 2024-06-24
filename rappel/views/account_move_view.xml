@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_move_form_add_no_rappel" model="ir.ui.view">
+        <field name="name">account.move.form.add_no_rappel</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_subtotal']" position="after">
+                <field name="no_rappel"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

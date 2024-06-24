@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<odoo noupdate="0">
+    <record id="rappel_mail_advice" model="mail.template">
+        <field name="name">Rappel Email Advice</field>
+        <field name="email_from">{{(object.user_id.email or object.company_id.email or 'noreply@localhost')}}</field>
+        <field name="reply_to">{{(object.user_id.email or object.company_id.email or 'noreply@localhost')}}</field>
+        <field name="subject">Notice of rebate program</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="partner_to">{{ctx.get('partner_id') or ''}}</field>
+        <field name="lang">{{ctx.get('partner_lang') or ''}}</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html" type="html">
+            <!-- <title>Rebate Program <t t-out="ctx['partner_name']"/></title> -->
+            <style>
+                span.oe_mail_footer_access{
+                    display:block;
+                    text-align:center;
+                    color:grey;
+                }
+            </style>
+            <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                <p>Dear Sir or Madam,</p>
+                <div>
+                    <t t-foreach="ctx.get('values')" t-as="line">
+                        <p>We are writing to inform you of the current status of your rebate program <em><t t-out="line['concepto']"/></em>.
+                            <t t-if="line['advice_timing'] == 'fixed'">
+                                With <t t-out="line['timing']"/> days left of
+                            </t>
+                            <t t-elif="line['advice_timing'] == 'variable'">
+                                After <t t-out="line['timing']"/>% of
+                            </t>
+                            the quarter your total purchase amount for this period is:
+                        </p>
+                        <p t-if="line['curr_qty']">Amount: <t t-out="line['curr_qty']"/></p>
+                    </t>
+                </div>
+                <p>If you have any questions, please do not hesitate to contact your account manager <t t-out="object.user_id.name"/>.</p>
+                <p>Best regards.</p>
+                <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+                    <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;"><span style="text-transform: uppercase;" t-out="object.company_id.name"/></h3>
+                </div>
+                <div style="width: 375px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+                    <span style="color: #222; margin-bottom: 5px; display: block; ">
+                        <t t-if="object.company_id.street">
+                            <t t-out="object.company_id.street"/><br/>
+                        </t>
+                        <t t-if="object.company_id.street2">
+                            <t t-out="object.company_id.street2"/><br/>
+                        </t>
+                        <t t-if="object.company_id.city or object.company_id.zip">
+                            <t t-out="object.company_id.zip"/> <t t-out="object.company_id.city"/><br/>
+                        </t>
+                        <t t-if="object.company_id.country_id">
+                            <t t-out="object.company_id.state_id.name or ''"/> <t t-out="object.company_id.country_id.name or ''"/><br/>
+                        </t>
+                    </span>
+                    <div t-if="object.company_id.phone">
+                        <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                            Phone: <t t-out="object.company_id.phone"/>
+                        </div>
+                    </div>
+                    <div t-if="object.company_id.website">
+                        Web : <a t-attf-href="#{object.company_id.website}"><t t-out="object.company_id.website"/></a>
+                    </div>
+                    <p></p>
+                </div>
+
+            </div>
+        </field>
+    </record>
+
+</odoo>

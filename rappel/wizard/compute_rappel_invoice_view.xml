@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rappel_invoice" model="ir.ui.view">
+        <field name="name">Rappel Invoice</field>
+        <field name="model">rappel.invoice.wzd</field>
+        <field name="arch" type="xml">
+            <form string="Create rappel invoices">
+                <group>
+                    <field name="journal_id"/>
+                    <field name="group_by_partner"/>
+                    <field name="invoice_date" />
+                </group>
+                <footer>
+                    <button name="action_invoice" string="Create" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rappel_invoice" model="ir.actions.act_window">
+        <field name="name">Create rappel invoices</field>
+        <field name="res_model">rappel.invoice.wzd</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_rappel_calculated"/>
+    </record>
+
+</odoo>
