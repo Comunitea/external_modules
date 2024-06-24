@@ -22,7 +22,7 @@
             </xpath>
             <xpath expr="//page[@name='sales_purchases']" position="inside">
                 <group string="Rappels">
-                    <field name="rappel_ids" nolabel="1" colspan="4">
+                    <field name="rappel_ids" nolabel="1" colspan="2">
                         <tree editable="bottom">
                         <field name="rappel_id"/>
                         <field name="date_start"/>
