@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_l10n_es_aeat_mod347_partner_portal","l10n_es_aeat_mod347_partner portal","l10n_es_aeat_mod347.model_l10n_es_aeat_mod347_partner_record","base.group_portal",1,0,0,0
+"access_l10n_es_aeat_mod347_move_portal","l10n_es_aeat_mod347_move portal","l10n_es_aeat_mod347.model_l10n_es_aeat_mod347_move_record","base.group_portal",1,0,0,0
