@@ -117,9 +117,9 @@ class ResPartnerRappelRel(models.Model):
                     if not section:
                         section = self.env['rappel.section'].search(
                             [('rappel_id', '=', rappel.rappel_id.id),
-                             ('rappel_from', '<=', total),
-                             ('rappel_until', '=', False)],
+                             ('rappel_from', '<=', total)],
                             order='rappel_from desc', limit=1)
+                    
                     if not section:
                         rappel_info['amount'] = 0.0
                     else:
