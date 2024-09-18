@@ -59,7 +59,7 @@ class Rappel(models.Model):
             rappels = self.search([])
         else:
             rappels = self
-        rappel_infos = self.env["rappel.current.info"].search([])
+        rappel_infos = self.env["rappel.current.info"].search([('rappel_id', 'in', rappels.ids)])
         if rappel_infos:
             rappel_infos.unlink()
         for rappel in rappels:
