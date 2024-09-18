@@ -8,3 +8,4 @@ class ResPartner(models.Model):
 
     rappel_ids = fields.One2many('res.partner.rappel.rel', 'partner_id',
                                  'Rappels')
+    rappel_info_ids = fields.One2many('rappel.current.info', 'partner_id', 'Rappel Current Info')
