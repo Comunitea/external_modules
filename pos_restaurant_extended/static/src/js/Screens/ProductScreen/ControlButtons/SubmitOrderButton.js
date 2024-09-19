@@ -10,8 +10,7 @@ const PosExtSubmitOrderButton = (SubmitOrderButton) =>
                 try {
                     this.clicked = true;
                     const order = this.env.pos.get_order();
-                    const table = order.getTable();
-                    const floor = table.floor;
+                    const floor = order.getFloor();
                     if (order.hasChangesToPrint()) {
                         const isPrintSuccessful = await order.printChanges();
                         if (isPrintSuccessful) {

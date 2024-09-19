@@ -13,12 +13,8 @@ const PosExtOrder= (Order) =>
         var decimals = number - Math.floor(number)
         var divider = 5;
 
-        if ((decimals *100) % divider == 0) {
-            return number;
-        }
-        if (Math.floor(decimals*100) % divider == 0) {
-            return number;
-        }
+        if ((decimals *100) % divider == 0) return number;
+        if (Math.floor(decimals*100) % divider == 0) return number;
         return (divider - (decimals *100) % divider)/100 + number;
     }
     
@@ -84,17 +80,17 @@ const PosExtOrder= (Order) =>
         var allow_categs = this.pos.config.service_level_categories;
 
         // REVISAR
-        // if (allow_categs.includes(line_categ) && this.pos.config.service_level_default) {
-        //     line.show_service_popup();
-        // }
+        if (allow_categs.includes(line_categ) && this.pos.config.service_level_default) {
+            line.show_service_popup();
+        }
 
     }
-    // REVISAR
+
     get_last_requested_service() {
         var last_requested_service = this.last_requested_service;
         return last_requested_service;
     }
-    // REVISAR
+    
     set_last_requested_service(value) {
         this.last_requested_service = value;
         // this.trigger('change', this);
@@ -118,7 +114,7 @@ const PosExtOrder= (Order) =>
         this.last_requested_service = json.last_requested_service;
     }
     
-    // REVISAR
+    
     has_only_cash_payment(){
         var has_only_cash = true;
         this.paymentlines.models.each(function(paymentline){
@@ -129,9 +125,14 @@ const PosExtOrder= (Order) =>
         return has_only_cash;
     }
 
+    getFloor(){
+        var table = this.getTable();
+        return table ? table.floor : null;
+    }
+
 };
 
-Registries.Model.extend('Order', PosExtOrder);
+Registries.Model.extend(Order, PosExtOrder);
 
 const PosExtOrderline = (Orderline) =>
     class extends Orderline {
@@ -230,25 +231,25 @@ const PosExtOrderline = (Orderline) =>
         // }
 
         // REVISAR
-        // async show_service_popup(){
-        //     var service_level = this.pos.config.service_level;
-        //     var list = [];
-        //     for (var n = 1; n <= service_level; n++) {
-        //         list.push({ label: '#' + n,  item: n, id: n });
-        //     }
-        //     const { confirmed, payload: selectedService } = await Gui.showPopup(
-        //         'SelectionPopup',
-        //         {
-        //             title: _t('Order'),
-        //             list: list,
-        //         }
-        //     );
-        //     if (confirmed) {
-        //         this.set_position(parseInt(selectedService));
-        //     }
-        // }
+        async show_service_popup(){
+            var service_level = this.pos.config.service_level;
+            var list = [];
+            for (var n = 1; n <= service_level; n++) {
+                list.push({ label: '#' + n,  item: n, id: n });
+            }
+            const { confirmed, payload: selectedService } = await Gui.showPopup(
+                'SelectionPopup',
+                {
+                    title: _t('Order'),
+                    list: list,
+                }
+            );
+            if (confirmed) {
+                this.set_position(parseInt(selectedService));
+            }
+        }
 
         
     }
 
-    Registries.Model.extend('Orderline', PosExtOrderline);
+    Registries.Model.extend(Orderline, PosExtOrderline);

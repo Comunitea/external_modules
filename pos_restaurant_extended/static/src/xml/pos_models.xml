@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension" owl="1">
+        <xpath expr="//li/span[hasclass('product-name')]" position="before">
+            <div t-if="props.line.get_position()" class='sort-order-button'>
+                #<t class="position" t-esc="props.line.get_position()" />
+            </div>
+        </xpath>
+    </t>
+</templates>    

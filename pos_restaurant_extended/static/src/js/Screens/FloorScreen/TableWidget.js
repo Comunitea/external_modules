@@ -19,3 +19,18 @@ const PostExtTableWidget = (TableWidget) =>
     };
 
 Registries.Component.extend(TableWidget, PostExtTableWidget);
+
+
+
+/* <script type="text/javascript" src="/pos_restaurant_extend/static/src/js/floors.js" /> NO
+<script type="text/javascript" src="/pos_restaurant_extend/static/src/js/lines.js" /> SI
+<script type="text/javascript" src="/pos_restaurant_extend/static/src/js/multiprint.js" /> NO
+<script type="text/javascript" src="/pos_restaurant_extend/static/src/js/PrintServeServiceButton.js" /> SI
+<script type="text/javascript" src="/pos_restaurant_extend/static/src/js/ServiceSelectionButton.js" /> SI 
+<script type="text/javascript" src="/pos_restaurant_extend/static/src/js/ReceiptScreen.js" /> SI 
+<script type="text/javascript" src="/pos_restaurant_extend/static/src/js/TableWidget.js" /> SI 
+<script type="text/javascript" src="/pos_restaurant_extend/static/src/js/FloorScreen.js" /> SI 
+<script type="text/javascript" src="/pos_restaurant_extend/static/src/js/ChromeWidgets/ReloadOrdersButton.js"></script>
+<script type="text/javascript" src="/pos_restaurant_extend/static/src/js/SubmitOrderButton.js" /> SI 
+FALTA REVISAR EL TEMA IMPRESIÓN
+*/
