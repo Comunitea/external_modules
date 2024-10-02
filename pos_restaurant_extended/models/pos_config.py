@@ -72,7 +72,7 @@ class PosConfig(models.Model):
                 })
         self.floor_facility_ids = json.dumps(floor_facility_ids)
     
-    floor_facility_ids = fields.Binary(
+    floor_facility_ids = fields.Json(
         string='Floor facility',
         default='',
         compute='_compute_floor_facility_ids'

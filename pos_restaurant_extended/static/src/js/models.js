@@ -2,43 +2,27 @@
 
 import Registries from 'point_of_sale.Registries';
 import { PosGlobalState, Order, Orderline, Payment } from 'point_of_sale.models';
+import { _t, qweb } from 'web.core';
 
 const PosRestaurantPosGlobalStateExtended = (PosGlobalState) =>
     class extends PosGlobalState {
         constructor(obj){
             super(obj);
             this.failed_orders_to_sync = [];
+            this.show_guests = false;
         }
 
         async setTable(table, orderUid=null) {
-            this.table = table;
-            try {
-                this.loadingOrderState = true;
-                await this._syncTableOrdersFromServer(table.id);
-            } catch (error) {
-                throw error;
-            } finally {
-                this.loadingOrderState = false;
-                const currentOrder = this.getTableOrders(table.id).find(order => orderUid ? order.uid === orderUid : !order.finalized);
-                if (currentOrder) {
-                    this.set_order(currentOrder);
-                } else {
-                   var new_order=this.add_new_order();
-                   if (new_order.pos.config.show_guests_popup) {
-                    //BUSCAR UNA FORMA MEJOR DE HACER ESTO
-                    $(document).ready(function() {
-                        $(".control-button-number").parent().trigger("click");
-                    });
-                   }
-                }
-            }
+            const currentOrder = this.getTableOrders(table.id).find(order => orderUid ? order.uid === orderUid : !order.finalized);
+            this.show_guests =  eval(!currentOrder && this.config.show_guests_popup) ;
+            return await super.setTable(table, orderUid);
         }
 
         async load_orders() {
             if(this.config.cash_control && this.pos_session.state == 'opening_control') {
                 this.env.pos.db.remove_all_unpaid_orders();
             }
-            await super.load_orders();
+            return await super.load_orders();
         }
 
         _save_to_server (orders, options) {
@@ -111,6 +95,61 @@ const PosRestaurantPosGlobalStateExtended = (PosGlobalState) =>
                 });
 
         }
+
+        async transferTable(table) {
+            var curr_table = this.tables_by_id[this.orderToTransfer.tableId]
+            var final_table = table;
+            await super.transferTable(table);
+            var data = await this.computeTransferData(curr_table, final_table);
+            console.log(data);
+            this.print_transfer(curr_table, final_table);
+        }
+        
+        async print_transfer(curr_table, final_table){
+            var printers = this.unwatched.printers;
+            let isPrintSuccessful = true;
+            for (var i = 0; i < printers.length; i++) {
+                if (printers[i].config.name == 'Cocina') {
+                    var data = await this.computeTransferData(curr_table, final_table);
+                    var receipt = qweb.render('PrintTableTransfer', { data: data, widget: this });
+                    const result = await printers[i].print_receipt(receipt);
+                    if (!result.successful) {
+                        isPrintSuccessful = false;
+                    }
+                }
+            }
+            return isPrintSuccessful;
+
+        }
+
+        async computeTransferData(curr_table, final_table) {
+            var d = new Date();
+            var day = String(d.getDate()).padStart(2, '0');
+            var month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses en JS van de 0 a 11
+            var year = d.getFullYear();
+            var hours = String(d.getHours()).padStart(2, '0');
+            var minutes = String(d.getMinutes()).padStart(2, '0');
+
+            var cashier = this.get_cashier();
+            var user = "";
+            if (cashier) {
+                user = cashier.name.split(" ")[0];
+            }
+
+            return {
+                'user': user,
+                'time': {
+                    'day': day,
+                    'month': month,
+                    'year': year,
+                    'hours': hours,
+                    'minutes': minutes,
+                },
+                'curr_table': curr_table.name,
+                'final_table': final_table.name,
+            };
+        }
+
     };
 
 Registries.Model.extend(PosGlobalState, PosRestaurantPosGlobalStateExtended);

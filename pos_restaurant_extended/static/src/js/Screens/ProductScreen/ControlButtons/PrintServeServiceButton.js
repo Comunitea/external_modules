@@ -84,20 +84,18 @@ class PrintServerServiceButton extends PosComponent{
     async printSelectedService(selectedService) {
         this.selectedOrder.set_last_requested_service(selectedService);
         let isPrintSuccessful = true;
-        //PARTE DE LAS IMOPRESORAS COMENTADA PARA HACE PRUEBAS
-        // var printers = this.env.pos.printers;
-        // for (var i = 0; i < printers.length; i++) {
-        //     if (printers[i].config.name == 'Cocina') {
-        //         var data = await this.computeData(selectedService);
-        //         var receipt = qweb.render('PrintServeServiceReceipt', { data: data, widget: this });
-        //         const result = await printers[i].print_receipt(receipt);
-        //         if (!result.successful) {
-        //             isPrintSuccessful = false;
-        //         }
-        //     }
-        // }
-        var data = await this.computeData(selectedService);
-        var receipt = qweb.render('PrintServeServiceReceipt', { data: data, widget: this });
+        var printers = this.env.pos.unwatched.printers
+        for (var i = 0; i < printers.length; i++) {
+            if (printers[i].config.name == 'Cocina') {
+                var data = await this.computeData(selectedService);
+                var receipt = qweb.render('PrintServeServiceReceipt', { data: data, widget: this });
+                console.log(receipt);
+                const result = await printers[i].print_receipt(receipt);
+                if (!result.successful) {
+                    isPrintSuccessful = false;
+                }
+            }
+        }
         return isPrintSuccessful;
     }
 

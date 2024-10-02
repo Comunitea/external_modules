@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="pos_restaurant.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='is_order_printer']" position="after">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_right_pane" id="service_level"
+                    attrs="{'invisible': [('pos_module_pos_restaurant', '=', False)]}">
+                        <div>
+                            <label for="pos_service_level" string="Service Level" class="col-lg-3"/>
+                            <div class="text-muted">
+                                Max Service Level
+                            </div>
+                            <field name="pos_service_level" class="oe_inline"/>
+                        </div>
+                    </div>            
+                </div>
+
+                <div class="col-12 col-lg-6 o_setting_box"
+                    id="service_level_default"
+                    attrs="{'invisible': [('pos_module_pos_restaurant', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                        <field name="pos_service_level_default" string="Service Level"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="pos_service_level_default" string="Service Level"/>
+                        <div class="text-muted">
+                            If the box is not checked, a pop up will appear asking<br/>
+                            for the service number with each new order line.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 o_setting_box"
+                    id="service_level_categories"
+                    attrs="{'invisible': [('pos_module_pos_restaurant', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="pos_service_level_categories" string="Service Level Categories"/>
+                        <div class="text-muted">
+                            Show service level popup for selected categories
+                        </div>
+                        <field name="pos_service_level_categories" widget="many2many_tags"/>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 o_setting_box"
+                    id="show_guests_popup"
+                    attrs="{'invisible': [('pos_module_pos_restaurant', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                        <field name="pos_show_guests_popup" string="Show Guests Popup"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="pos_show_guests_popup" string="Show Guests Popup"/>
+                        <div class="text-muted">
+                            Ask for the number of guests in new orders
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 o_setting_box"
+                    id="floor_facility_ids"
+                    attrs="{'invisible': [(1,'=',1)]}">
+                    <div class="o_setting_left_pane">
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="pos_floor_facility_ids" string="Floor Facility"/>
+                        <field name="pos_floor_facility_ids" string="Floor Facility"/>
+                    </div>
+                </div>
+            </xpath>
+            
+            <xpath expr="//field[@name='pos_receipt_header']/.." position="before">
+                <div style="float: left; width: 100%;">
+                    <field name="pos_receipt_logo" widget="image" class="oe_avatar oe_left"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[@id='auto_printing']//div[hasclass('content-group')]" position="after">
+                <div>
+                    <field name="pos_iface_not_autoprint_cash" class="oe_inline"/><span class="oe_inline"><b>Not autoprint cash</b></span>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[@id='order_reference']" position="after">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane" id="print_address">
+                        <field name="pos_print_address" string="Print Address"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="pos_print_address" string="Print Address"/>
+                        <div class="content-group mt16" attrs="{'invisible' : [('pos_print_address', '=', False)]}">
+                            <div id="receipt_company_label_1">
+                                <label for="pos_receipt_company_label_1" string="Comp 1" class="col-lg-3"/>
+                                <field name="pos_receipt_company_label_1"/>
+                            </div>
+                            <div id="receipt_company_label_2">
+                                <label for="pos_receipt_company_label_2" string="Comp 2" class="col-lg-3"/>
+                                <field name="pos_receipt_company_label_2"/>
+                            </div>
+                            <div id="receipt_company_vat">
+                                <label for="pos_receipt_company_vat" string="VAT" class="col-lg-3"/>
+                                <field name="pos_receipt_company_vat"/>
+                            </div>
+                            <div id="receipt_company_address_1">
+                                <label for="pos_receipt_company_address_1" string="Addr 1" class="col-lg-3"/>
+                                <field name="pos_receipt_company_address_1"/>
+                            </div>
+                            <div id="receipt_company_address_2">
+                                <label for="pos_receipt_company_address_2" string="Addr 2" class="col-lg-3"/>
+                                <field name="pos_receipt_company_address_2"/>
+                            </div>
+                            <div id="receipt_company_phone">
+                                <label for="pos_receipt_company_phone" string="Phone" class="col-lg-3"/>
+                                <field name="pos_receipt_company_phone"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </xpath>
+
+            <xpath expr="//div[@id='pos_accounting_section']" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="pos_session_close_send"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Session inform</span>
+                        <div class="text-muted">
+                            Send session inform after closing.
+                        </div>
+                        <div class="content-group">
+                            <div class="row mt16" title="An e-mail with the session inform will be send to this mail.">
+                                <label string="Mail to" for="pos_session_close_partner" class="col-lg-3 o_light_label" widget="selection"/>
+                                <field name="pos_session_close_partner"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    
+
+</odoo>

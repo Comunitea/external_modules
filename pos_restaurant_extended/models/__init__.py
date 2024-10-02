@@ -4,3 +4,4 @@ from . import pos_config
 from . import restaurant_floor
 from . import restaurant_printer
 from . import pos_order
+from . import res_config_settings

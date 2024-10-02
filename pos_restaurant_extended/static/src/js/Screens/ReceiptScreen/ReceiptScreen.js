@@ -8,22 +8,19 @@ const PosExtReceiptScreen = (ReceiptScreen) =>
         async printReceipt() {
             await super.printReceipt();
             if (!this.currentOrder.finalized) {
+                this.currentOrder.initialize_validation_date();
                 this.currentOrder.set_pos_printed(true);
             }
         }
 
-        get currentOrder() {
-            var order = super.currentOrder;
-            order.initialize_validation_date();
-            return order;
-        }
+        // get currentOrder() {
+        //     var order = super.currentOrder;
+        //     //order.initialize_validation_date(); ESTO IMPIDE QUE SE IMPRIMA LA FACTURA
+        //     return order;
+        // }
 
         _shouldAutoPrint() {
-            if (this.env.pos.config.iface_not_autoprint_cash && this.currentOrder.has_only_cash_payment()) {
-                return false
-            } else {
-                return super._shouldAutoPrint();
-            }
+            return this.env.pos.config.iface_not_autoprint_cash && this.currentOrder.has_only_cash_payment() ? false : super._shouldAutoPrint();
         }
     };
 

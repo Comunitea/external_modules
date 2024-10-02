@@ -14,8 +14,10 @@ const PosExtOrder= (Order) =>
         var divider = 5;
 
         if ((decimals *100) % divider == 0) return number;
-        if (Math.floor(decimals*100) % divider == 0) return number;
-        return (divider - (decimals *100) % divider)/100 + number;
+        else {
+            if (Math.floor(decimals*100) % divider == 0) return number;
+            return (divider - (decimals *100) % divider)/100 + number;
+        }
     }
     
     add_product(product, options) {
@@ -56,6 +58,18 @@ const PosExtOrder= (Order) =>
         this.fix_tax_included_price(line);
 
         this.set_orderline_options(line, options);
+
+        // No sé si es necesario
+        //     if (options.price_extra !== undefined){
+        //     line.price_extra = options.price_extra;
+        //     var new_price = line.product.get_price(this.pricelist, line.get_quantity(), options.price_extra) * (1 + (extra/100));
+        //     if (extra != 0) {
+        //         new_price = this.roundToNearestMultipleOfFive(new_price);
+        //     }
+        //     line.set_unit_price(new_price);
+        //     this.fix_tax_included_price(line);
+        // }
+
 
         var to_merge_orderline;
         /* We want to add products always as new lines */
@@ -230,7 +244,7 @@ const PosExtOrderline = (Orderline) =>
         //     }
         // }
 
-        // REVISAR
+        
         async show_service_popup(){
             var service_level = this.pos.config.service_level;
             var list = [];

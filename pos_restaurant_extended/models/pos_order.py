@@ -26,8 +26,8 @@ class PosOrder(models.Model):
         for order in self:
             order.has_notes = any(l.note != '' for l in order.lines)
 
-    def _prepare_mail_values(self, name, message, client, receipt):
-        res = super()._prepare_mail_values(name, message, client, receipt)
+    def _prepare_mail_values(self, name, client, ticket):
+        res = super()._prepare_mail_values(name,client,ticket)
         # Cambiar email
         if (res['email_from'] == self.env.user.email_formatted and
                 self.env.user.company_id):
@@ -36,14 +36,12 @@ class PosOrder(models.Model):
 
     def _get_fields_for_order_line(self):
         res = super(PosOrder, self)._get_fields_for_order_line()
-        res.append('position')
-        res.append('table_id')
+        res.extend(['position','table_id'])
         return res
 
     def _get_fields_for_draft_order(self):
         res = super(PosOrder, self)._get_fields_for_draft_order()
-        res.append('pos_printed')
-        res.append('last_requested_service')
+        res.extend(['pos_printed', 'last_requested_service'])
         return res
 
     @api.model
@@ -136,10 +134,8 @@ class ReportSaleDetails(models.AbstractModel):
                 sign = -1
             attendeees += (sign * order.customer_count)
         sessions = orders.mapped('session_id')
-        statements = self.env['account.bank.statement'].\
-            search([('pos_session_id', 'in', sessions.ids)])
-        manual_lines = statements.mapped('line_ids').\
-            filtered(lambda x: not x.payment_ref.startswith('POS'))
+        manual_lines = self.env['account.bank.statement.line'].\
+            search([('pos_session_id', 'in', sessions.ids),('payment_ref','not like','POS%')])
 
         data.update({'sessions': sessions,
                      'total_attendees': attendeees,
@@ -206,16 +202,19 @@ class PosSession(models.Model):
             'res_id': wzd.id,
         }
 
-    def action_pos_session_validate(self):
-        res = super().action_pos_session_validate()
+    def action_pos_session_validate(self, balancing_account=False, amount_to_balance=0, bank_payment_method_diffs=None):
+        res = super().action_pos_session_validate(
+            balancing_account=balancing_account, 
+            amount_to_balance=amount_to_balance,
+            bank_payment_method_diffs=bank_payment_method_diffs)
         if (self.config_id.session_close_send and self.config_id.
                 session_close_partner):
             report_view = self.env["ir.actions.report"]._get_report_from_name(
                 "pos_report_session_summary.report_session_summary"
             )
-
+            
             pdf_report = (
-                report_view.sudo()._render_qweb_pdf([self.id])[0] or False
+                report_view.sudo()._render_qweb_pdf(report_ref=report_view.id,res_ids=[self.id])[0] or False
             )
 
             attachment = [
@@ -236,12 +235,15 @@ class PosSession(models.Model):
             )
         return res
 
-    def _create_account_move(self):
+    def _create_account_move(self, balancing_account=False, amount_to_balance=0, bank_payment_method_diffs=None):
         ctx = self.env.context.copy()
         ctx.update({
             'force_open_date': self.start_at,
         })
-        return super(PosSession, self.with_context(ctx))._create_account_move()
+        return super(PosSession, self.with_context(ctx))._create_account_move(
+            balancing_account=balancing_account,
+            amount_to_balance=amount_to_balance, 
+            bank_payment_method_diffs=bank_payment_method_diffs)
 
 
 class AccountMove(models.Model):
