@@ -19,7 +19,7 @@
             <br/><br/><br/><br/>
             <div><strong>SACAR ORDEN</strong></div>
             <div><strong>-------------------</strong></div>
-            <div><span><strong>Table: <span bold='on'><t t-esc="data.table" /></span></strong></span></div>
+            <div><span><strong>Table: <span bold='on'><t t-esc="data.table.name" /></span></strong></span></div>
             <div><span>Waiter: <t t-esc="data.user" /></span></div>
             <div>
                 <span><t t-esc='data.time.day' />/<t t-esc='data.time.month' />/<t t-esc='data.time.year' /></span>
