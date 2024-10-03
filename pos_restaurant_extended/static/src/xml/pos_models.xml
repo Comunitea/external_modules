@@ -26,10 +26,10 @@
                     </t>
                     <div style="font-size: 35px;"><span>Fecha: <t t-esc="changes.date" /></span></div>
                 </div>
-                <t t-if="changes.floor || changes.table">
+                <t t-if="changes.floor_name || changes.table_name">
                     <br />
                     <div class="pos-receipt-title">
-                        <t t-esc="changes.floor" /> / <t t-esc="changes.table"/>
+                        <t t-esc="changes.floor_name" /> / <t t-esc="changes.table_name"/>
                     </div>
                 </t>
                 <t t-if="changes.customer_count">
@@ -54,10 +54,10 @@
                             <div><span>Order service: <t t-esc="print_position" /></span></div>
                         </t>
                         <div class="multiprint-flex pos-receipt-title" style="font-size: 35px;">
-                            <t t-esc="change.qty" style="text-align: left;"/>
-                            <span t-esc="change.name_wrapped[0]"  style="text-align: center;"/>
+                            <t t-esc="change.quantity" style="text-align: left;"/>
+                            <span t-esc="change.name"  style="text-align: center;"/>
                         </div>
-                        <t t-call="NameWrapped"/>
+                        <!-- <t t-call="NameWrapped"/> -->
                         <t t-if="change.note">
                             <div>
                                 NOTE

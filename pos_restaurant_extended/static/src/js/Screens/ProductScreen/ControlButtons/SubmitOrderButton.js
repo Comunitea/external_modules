@@ -12,8 +12,7 @@ const PosExtSubmitOrderButton = (SubmitOrderButton) =>
                     const order = this.env.pos.get_order();
                     const floor = order.getFloor();
                     if (order.hasChangesToPrint()) {
-                        // const isPrintSuccessful = await order.printChanges(); HACER PRUEBAS DE IMPRESION
-                        const isPrintSuccessful =true;
+                        const isPrintSuccessful = await order.printChanges();
                         if (isPrintSuccessful) {
                             order.updatePrintedResume();
                             this.showScreen('FloorScreen', { floor: floor });
