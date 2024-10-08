@@ -1,0 +1,90 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* pos_restaurant_options
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-08 13:30+0000\n"
+"PO-Revision-Date: 2024-10-08 13:30+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_restaurant_options
+#: model:ir.model.fields,field_description:pos_restaurant_options.field_pos_order_line__selected_attribute_value_ids
+msgid "Attribute IDs"
+msgstr "IDs de atributo"
+
+#. module: pos_restaurant_options
+#: model:ir.model,name:pos_restaurant_options.model_product_attribute_value
+msgid "Attribute Value"
+msgstr "Valor del atributo"
+
+#. module: pos_restaurant_options
+#: model:ir.model,name:pos_restaurant_options.model_mrp_bom
+msgid "Bill of Material"
+msgstr "Lista de materiales"
+
+#. module: pos_restaurant_options
+#: model:ir.model,name:pos_restaurant_options.model_mrp_bom_line
+msgid "Bill of Material Line"
+msgstr "Línea de lista de materiales"
+
+#. module: pos_restaurant_options
+#: model:ir.model.fields,field_description:pos_restaurant_options.field_product_product__combination_max_qty
+#: model:ir.model.fields,field_description:pos_restaurant_options.field_product_template__combination_max_qty
+msgid "Combination quantity"
+msgstr "Cantidad de combinación"
+
+#. module: pos_restaurant_options
+#. odoo-javascript
+#: code:addons/pos_restaurant_options/static/src/js/Screens/ProductScreen/ProductScreen.js:0
+#, python-format
+msgid "Lot/Serial Number(s) Required"
+msgstr "Número(s) de lote/número(s) de serie requerido(s)"
+
+#. module: pos_restaurant_options
+#: model:ir.model,name:pos_restaurant_options.model_pos_order_line
+msgid "Point of Sale Order Lines"
+msgstr "Líneas de pedido de punto de venta"
+
+#. module: pos_restaurant_options
+#: model:ir.model,name:pos_restaurant_options.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "Pedidos de TPV"
+
+#. module: pos_restaurant_options
+#: model:ir.model,name:pos_restaurant_options.model_pos_session
+msgid "Point of Sale Session"
+msgstr "Sesión TPV"
+
+#. module: pos_restaurant_options
+#: model:ir.model,name:pos_restaurant_options.model_product_template
+#: model:ir.model.fields,field_description:pos_restaurant_options.field_product_attribute_value__bom_product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: pos_restaurant_options
+#: model:ir.model.fields,field_description:pos_restaurant_options.field_stock_move__selected_attribute_value_ids
+msgid "Selected attribute value ids"
+msgstr "IDs de valor de atributo seleccionado"
+
+#. module: pos_restaurant_options
+#: model:ir.model,name:pos_restaurant_options.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de stock"
+
+#. module: pos_restaurant_options
+#: model:ir.model,name:pos_restaurant_options.model_stock_picking
+msgid "Transfer"
+msgstr "Traslado"
+
+#. module: pos_restaurant_options
+#: model:ir.model.fields,field_description:pos_restaurant_options.field_mrp_bom__with_no_variant_attributes
+msgid "With no variant attributes"
+msgstr "Sin atributos de variante"

@@ -237,7 +237,8 @@ const PosExtOrderline = (Orderline) =>
             super.init_from_JSON(json);
             this.position = json.position;
         }
-        // REVISAR PROBABLEMENTE NO SE USE
+        
+        // REVISAR VIENE DEL POS_PMS_LINK
         // apply_ms_data(data){
         //     if (typeof data.position !== 'undefined') {
         //         this.set_position(data.position);
