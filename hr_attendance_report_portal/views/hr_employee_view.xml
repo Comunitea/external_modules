@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="hr_employee_attendance_report_form_view" model="ir.ui.view">
+        <field name="name">hr.employee.attendance.report.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="%(hr_attendance_report_portal.action_hr_employee_attendance_report)d" type="action" class="oe_stat_button">
+                    <field name="attendance_report_count" widget="statinfo" string="Attendate Reports"/>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

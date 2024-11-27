@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_employee_attendance_report_form" model="ir.ui.view">
+        <field name="name">hr.employee.attendance.report.form</field>
+        <field name="model">hr.employee.attendance.report</field>
+        <field name="arch" type="xml">
+            <form string="Employee Attendance Report">
+                <header>
+                    <button name="print_report" string="Print Report" type="object" class="oe_highlight" attrs="{'invisible': [('signed', '=', False)]}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <field name="signed" invisible="True"/>
+                        <field name="employee_id" attrs="{'readonly': [('signed', '=', True)]}"/>
+                        <field name="from_date" attrs="{'readonly': [('signed', '=', True)]}"/>
+                        <field name="to_date" attrs="{'readonly': [('signed', '=', True)]}"/>
+                    </group>
+                    <notebook>
+                        <page string="Attendaces">
+                            <field name="line_ids" nolabel="1" widget="one2many_list" colspan="2">
+                                <tree string="Employee Attendance Report" create="false" edit="false">
+                                    <field name="day"/>
+                                    <field name="ord_hours" widget="float_time"/>
+                                    <field name="extra" widget="float_time"/>
+                                    <field name="message"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Signature">
+                            <group>
+                                <field name="signed_date"/>
+                                <field name="signed_by"/>
+                                <field name="signature" widget="image"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_hr_employee_attendance_report_tree" model="ir.ui.view">
+        <field name="name">hr.employee.attendance.report.tree</field>
+        <field name="model">hr.employee.attendance.report</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Attendance Report">
+                <field name="employee_id"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                <field name="signed"/>
+            </tree>
+        </field>
+    </record>
+    <record id="search_hr_employee_attendance_report" model="ir.ui.view">
+        <field name="name">hr.employee.attendance.report.search</field>
+        <field name="model">hr.employee.attendance.report</field>
+        <field name="arch" type="xml">
+            <search string="Search Attendance Reports">
+                <field name="employee_id"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                <field name="signed"/>
+                <separator/>
+                <filter name="signed" string="Signed" domain="[('signed', '=', True)]"/>
+                <filter name="not_signed" string="Not Signed" domain="[('signed', '=', False)]"/>
+                <separator/>
+                <filter string="From Date" name="from_date" date="from_date" />
+                <filter string="To Date" name="to_date" date="to_date" />
+            </search>
+        </field>
+    </record>
+    <record id="action_hr_employee_attendance_report" model="ir.actions.act_window">
+        <field name="res_model">hr.employee.attendance.report</field>
+        <field name="name">Attendance Reports</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('employee_id', '=', active_id)]</field>
+        <field name="context">{'default_employee_id': active_id}</field>
+    </record>
+</odoo>

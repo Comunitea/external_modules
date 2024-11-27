@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="print_attendance" inherit_id="hr_attendance_report.print_attendance">
+        <xpath expr="//div[@name='signature']" position="attributes">
+            <attribute name="t-if">signature == False</attribute>
+        </xpath>
+        <xpath expr="//div[@name='signature']" position="after">
+            <div class="col-5" t-else="">
+                <p>Signed: The worker</p>
+                <img t-att-src="signature" style="border-bottom: 1px solid #000; margin-top: 1px; width: 150px;"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

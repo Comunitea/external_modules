@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_my_home_menu_attendance_report" name="Portal layout : attendance_report menu entries" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'attendance_report'" t-attf-class="breadcrumb-item #{'active ' if not attendance_report else ''}">
+                <a t-if="attendance_report" t-attf-href="/my/attendance_reports?{{ keep_query() }}">Attendance reports</a>
+                <t t-else="">Attendance reports</t>
+            </li>
+            <li t-if="attendance_report" class="breadcrumb-item active">
+                <t t-esc="attendance_report.name" t-if="attendance_report.name != '/'"/>
+                <t t-else=""><em>Draft attendance report</em></t>
+            </li>
+        </xpath>
+    </template>
+    <template id="portal_my_home_attendance_report" name="Show attendance reports" inherit_id="portal.portal_my_home" customize_show="True" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Attendance reports</t>
+                <t t-set="url" t-value="'/my/attendance_reports'"/>
+                <t t-set="placeholder_count" t-value="'attendance_report_count'"/>
+            </t>
+        </xpath>
+    </template>
+    <template id="portal_my_attendance_reports" name="My attendance reports">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Attendance Reports</t>
+            </t>
+            <t t-if="not attendance_reports">
+                <p>There are currently no attendance reports for your account.</p>
+            </t>
+            <t t-if="attendance_reports" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Name</th>
+                        <th>Signed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="attendance_reports" t-as="attendance_report">
+                        <tr>
+                            <td>
+                                <a t-att-href="attendance_report.get_portal_url()">
+                                    <t t-esc="attendance_report.name"/>
+                                </a>
+                            </td>
+                            <td><span t-field="attendance_report.signed"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_attendance_report_page" name="attendance_report Portal Template" inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-set="o_portal_fullwidth_alert" groups="stock.group_stock_manager">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#model=%s&amp;id=%s&amp;action=%s&amp;active_id=%s&amp;view_type=form' % (attendance_report._name, attendance_report.id, attendance_report.env.ref('hr_attendance_report_portal.action_hr_employee_attendance_report').id, attendance_report.employee_id.id)"/>
+                </t>
+
+            </t>
+            <div class="row mt16 o_portal_attendance_report_sidebar">
+                <!-- Sidebar -->
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="title">
+                        <h2 class="mb-0">
+                            <b t-field="attendance_report.employee_id.name" style="text-align: center"/>
+                            <br/>
+                            <em>
+                                <span t-field="attendance_report.from_date"/> - <span t-field="attendance_report.to_date"/>
+                            </em>
+                        </h2>
+                    </t>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li class="list-group-item flex-grow-1">
+                                <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                                    <div>
+                                        <a t-if="not attendance_report.signed" role="button" class="btn btn-primary btn-block mb8" data-bs-toggle="modal" data-bs-target="#modalaccept" href="#">
+                                            <i class="fa fa-check"/>Accept &amp; Sign
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="navspy list-group-item ps-0 flex-grow-1" t-ignore="true" role="complementary">
+                                <ul class="nav flex-column bs-sidenav"></ul>
+                            </li>
+                            <li class="list-group-item flex-grow-1" t-if="attendance_report.signature">
+                                Signed by: <span t-field="attendance_report.signed_by" />
+                            </li>
+                            <li class="list-group-item flex-grow-1" t-if="attendance_report.signature">
+                                Signed on: <span t-field="attendance_report.signed_date"/>
+                            </li>
+                            <li class="list-group-item flex-grow-1" t-if="attendance_report.signature">
+                                <img t-att-src="'data:image/png;base64,%s' % str(attendance_report.signature)[2:-1]" style="width: 300px"/>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <div id="attendance_report_content" class="col-12 col-lg">
+                    <div class=" col-lg col-12 justify-content-end w-100">
+                        <table class="table table-sm">
+                            <thead class="bg-100">
+                            <tr>
+                                <th class="text-right">Day</th>
+                                <th class="text-right">Ordinary hours</th>
+                                <th class="text-right">Extra Hours</th>
+                                <th class="text-right">Time</th>
+                            </tr>
+                            </thead>
+                            <tbody id="attendance_report_container">
+                                <t t-call="hr_attendance_report_portal.attendance_report_lines_table">
+                                    <t t-set="line_ids" t-value="attendance_report.line_ids"/>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- errors -->
+                    <div id="edit_errors"/>
+
+                    <div role="dialog" class="modal fade" id="modalaccept">
+                        <div class="modal-dialog" t-if="not attendance_report.signed">
+                            <form id="accept" method="POST" t-att-data-attendance_report-id="attendance_report.id" t-att-data-token="attendance_report.access_token" class="js_accept_json modal-content js_website_submit_form">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" name="attendance_report" t-att-value="attendance_report"/>
+                                <header class="modal-header">
+                                    <h4 class="modal-title">Sing Attendace Report</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </header>
+                                <main class="modal-body" id="sign-dialog">
+                                    <p>
+                                        By signing this attendance report, you confirm that you have reviewed the information and that it is accurate.
+                                    </p>
+                                    <t t-call="portal.signature_form">
+                                        <t t-set="call_url" t-value="attendance_report.get_portal_url(suffix='/accept')"/>
+                                        <t t-set="default_name" t-value="attendance_report.employee_id.name"/>
+                                    </t>
+                                </main>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- chatter -->
+                <div id="attendance_report_communication" class="mt-4">
+                    <h2>History</h2>
+                    <t t-call="portal.message_thread">
+                        <t t-set="object" t-value="attendance_report"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="attendance_report_lines_table" name="Attendance report lines table">
+        <t t-foreach="line_ids" t-as="ol" t-key="ol_index">
+            <tr>
+                <td class="text-right">
+                    <span t-out="ol.day"/>
+                </td>
+                <td class="text-right">
+                    <span t-esc="'%s:%s' % (str(ol.ord_hours).split('.')[0], int(float(str('%.2f' % ol.ord_hours).split('.')[1])/100*60))"/>
+                </td>
+                <td class="text-right">
+                    <span t-esc="'%s:%s' % (str(ol.extra).split('.')[0], int(float(str('%.2f' % ol.extra).split('.')[1])/100*60))"/>
+                </td>
+                <td class="text-right">
+                    <span t-out="ol.message"/>
+                </td>
+            </tr>
+        </t>
+    </template>
+</odoo>
