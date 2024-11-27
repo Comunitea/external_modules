@@ -137,7 +137,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-5">
+                            <div class="col-5" name="signature">
                                 <p>Signed: The worker</p>
                                 <p style="border-bottom: 1px solid #000; margin-top: 25px; width: 150px;"></p>
                             </div>
