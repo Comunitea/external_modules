@@ -35,7 +35,10 @@ class EmployeeAttendanceReport(models.Model):
     @api.depends('employee_id')
     def _compute_message_follower_ids(self):
         for report in self:
-            partner = report.employee_id.user_id.partner_id
+            partner = self.env['res.partner'].search([
+                ('id', '=', self.env['ir.config_parameter'].sudo().get_param('hr_attendance_report_portal.partner_to_send_id')),
+            ])
+            partner += report.company_id.partner_to_send_id + report.employee_id.user_id.partner_id
             if partner:
                 report.message_unsubscribe(partner_ids=report.message_follower_ids.mapped('partner_id').ids)
                 report.message_subscribe(partner_ids=partner.ids)
@@ -139,8 +142,7 @@ class EmployeeAttendanceReport(models.Model):
         to_date = datetime.strftime(self.to_date, '%Y-%m-%d')
         res = {'from_date': from_date, 'to_date': to_date, 'attendance_report': self.id}
         datas['form'] = res
-        return self.env.ref('hr_attendance_report.action_print_attendance').\
-            report_action(self, data=datas)
+        return self.env.ref('hr_attendance_report.action_print_attendance').report_action(self, data=datas)
 
 
 class EmployeeAttendanceReportLine(models.Model):

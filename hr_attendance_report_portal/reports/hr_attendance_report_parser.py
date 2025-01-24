@@ -42,21 +42,20 @@ class EmployeePrintAttendanceReport(models.AbstractModel):
             for leave in leaves:
                 date = leave.date_from
                 while date <= leave.date_to:
+                    day = str(date.day)
+                    if len(day) == 1:
+                        day = '0' + day
+                    vals = {
+                        'day': day,
+                        'extra': 0,
+                        'ord_hours': 0,
+                        'in_out_str': leave.holiday_status_id.name
+                    }
                     if num_months > 0:
                         month = (date.year - from_date.year) * 12 + date.month - from_date.month
-                        month_attendance[month].append({
-                            'day': str(date.day),
-                            'extra': 0,
-                            'ord_hours': 0,
-                            'in_out_str': leave.holiday_status_id.name
-                        })
+                        month_attendance[month].append(vals)
                     else:
-                        res['attendances'][employee.id].append({
-                            'day': str(date.day),
-                            'extra': 0,
-                            'ord_hours': 0,
-                            'in_out_str': leave.holiday_status_id.name
-                        })
+                        res['attendances'][employee.id].append(vals)
                     date += relativedelta(days=1)
             # Buscar los festivos
             holidays = self.env['hr.holidays.public'].get_holidays_list(
@@ -65,21 +64,20 @@ class EmployeePrintAttendanceReport(models.AbstractModel):
                 partner_id=employee.user_id.partner_id.id
             )
             for holiday in holidays:
+                day = str(holiday.date.day)
+                if len(day) == 1:
+                    day = '0' + day
+                vals = {
+                    'day': day,
+                    'extra': 0,
+                    'ord_hours': 0,
+                    'in_out_str': holiday.name
+                }
                 if num_months > 0:
                     month = (holiday.date.year - from_date.year) * 12 + holiday.date.month - from_date.month
-                    month_attendance[month].append({
-                        'day': str(holiday.date.day),
-                        'extra': 0,
-                        'ord_hours': 0,
-                        'in_out_str': holiday.name
-                    })
+                    month_attendance[month].append(vals)
                 else:
-                    res['attendances'][employee.id].append({
-                        'day': str(holiday.date.day),
-                        'extra': 0,
-                        'ord_hours': 0,
-                        'in_out_str': holiday.name
-                    })
+                    res['attendances'][employee.id].append(vals)
             # reordenamos las asistencias por día
             if num_months > 0:
                 del res['attendances'][employee.id][:]
