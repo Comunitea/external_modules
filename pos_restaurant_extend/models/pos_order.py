@@ -204,7 +204,7 @@ class PosSession(models.Model):
 
     def action_pos_session_validate(self, balancing_account=False, amount_to_balance=0, bank_payment_method_diffs=None):
         res = super().action_pos_session_validate(
-            balancing_account=balancing_account, 
+            balancing_account=balancing_account,
             amount_to_balance=amount_to_balance,
             bank_payment_method_diffs=bank_payment_method_diffs)
         if (self.config_id.session_close_send and self.config_id.
@@ -212,7 +212,7 @@ class PosSession(models.Model):
             report_view = self.env["ir.actions.report"]._get_report_from_name(
                 "pos_report_session_summary.report_session_summary"
             )
-            
+
             pdf_report = (
                 report_view.sudo()._render_qweb_pdf(report_ref=report_view.id,res_ids=[self.id])[0] or False
             )
@@ -242,15 +242,16 @@ class PosSession(models.Model):
         })
         return super(PosSession, self.with_context(ctx))._create_account_move(
             balancing_account=balancing_account,
-            amount_to_balance=amount_to_balance, 
+            amount_to_balance=amount_to_balance,
             bank_payment_method_diffs=bank_payment_method_diffs)
 
 
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         if self.env.context.get('force_open_date', False):
-            vals['date'] = self.env.context.get('force_open_date', False).date()
-        return super(AccountMove, self).create(vals)
+            for vals in vals_list:
+                vals['date'] = self.env.context.get('force_open_date', False).date()
+        return super().create(vals_list)
