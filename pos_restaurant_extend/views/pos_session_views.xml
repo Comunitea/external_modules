@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_session_form" model="ir.ui.view">
+        <field name="name">pos.session.form.view</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_pos_session_closing_control']" position="after">
+                <button name="action_open_session_details" type="object" string="Print Sales Details" attrs="{'invisible' : [('state', '!=', 'closed')]}" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//field[@name = 'stop_at']" position="after">
+                <field name="average_customer_price" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+    
+
+</odoo>

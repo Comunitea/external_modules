@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="PrintServeServiceButton" owl="1">
+        <span class="control-button order-serve2" t-on-click="onClick">
+            <i class="fa fa-bell-o"></i>
+            Marchar
+            <span t-if="nService" class="control-button-service" style="">
+                <t t-esc="nService" />
+            </span>
+        </span>
+    </t>
+
+    <t t-name="PrintServeServiceReceipt">
+        <div class="pos-receipt" style="text-align: center; font-size: 35px;">
+            <br/><br/><br/><br/>
+            <br/><br/><br/><br/>
+            <br/><br/><br/><br/>
+            <br/><br/><br/><br/>
+            <div><strong>SACAR ORDEN</strong></div>
+            <div><strong>-------------------</strong></div>
+            <div><span><strong>Table: <span bold='on'><t t-esc="data.table.name" /></span></strong></span></div>
+            <div><span>Waiter: <t t-esc="data.user" /></span></div>
+            <div>
+                <span><t t-esc='data.time.day' />/<t t-esc='data.time.month' />/<t t-esc='data.time.year' /></span>
+                <span> </span>
+                <span><t t-esc='data.time.hours' />:<t t-esc='data.time.minutes' /></span>
+            </div>
+            <div><strong><span bold='on'><t t-esc="data.msg"/></span></strong></div>
+            <div><strong>-------------------</strong></div>
+            <div><strong>FIN ORDEN</strong></div>
+        </div>
+    </t>
+
+
+    
+
+</templates>
