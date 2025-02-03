@@ -11,4 +11,15 @@
         </field>
     </record>
 
+    <record id="view_account_invoice_filter_add_partial_filter" model="ir.ui.view">
+        <field name="name">account.invoice.select</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <filter name="open" position="after">
+                <filter name="partial" string="Partially Paid" domain="[('state', '=', 'posted'), ('payment_state', '=', 'partial')]"/>
+            </filter>
+        </field>
+    </record>
+
 </odoo>

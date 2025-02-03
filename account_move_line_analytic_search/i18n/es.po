@@ -1,0 +1,21 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#       * account_move_line_analytic_search
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-03 19:55+0000\n"
+"PO-Revision-Date: 2025-02-03 19:55+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_move_line_analytic_search
+#: model_terms:ir.ui.view,arch_db:account_move_line_analytic_search.view_account_invoice_filter_add_partial_filter
+msgid "Partially Paid"
+msgstr "Pagada parcialmente"
