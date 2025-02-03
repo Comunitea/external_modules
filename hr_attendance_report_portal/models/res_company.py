@@ -6,6 +6,7 @@ class ResCompany(models.Model):
 
     attendance_report_autocreation_period = fields.Selection([
         ('monthly', 'Monthly'),
+        ('bimonthly', 'Bimonthly'),
         ('quarterly', 'Quarterly'),
         ('yearly', 'Yearly'),
     ], string='Period', default='monthly', required=True)

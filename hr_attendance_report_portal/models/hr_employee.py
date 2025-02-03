@@ -17,6 +17,9 @@ class HrEmployee(models.Model):
             if company.attendance_report_autocreation_period == 'monthly':
                 from_date = today.replace(day=1) - relativedelta(months=1)
                 to_date = from_date + relativedelta(months=1, days=-1)
+            elif company.attendance_report_autocreation_period == 'bimonthly':
+                from_date = today.replace(day=1, month=((today.month - 1) // 2) * 2 + 1) - relativedelta(months=2)
+                to_date = from_date + relativedelta(months=2, days=-1)
             elif company.attendance_report_autocreation_period == 'quarterly':
                 from_date = today.replace(day=1, month=((today.month - 1) // 3) * 3 + 1) - relativedelta(months=3)
                 to_date = from_date + relativedelta(months=3, days=-1)
