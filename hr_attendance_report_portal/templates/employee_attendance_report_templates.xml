@@ -54,7 +54,7 @@
         </t>
     </template>
 
-    <template id="portal_attendance_report_page" name="attendance_report Portal Template" inherit_id="portal.portal_sidebar" primary="True">
+    <template id="portal_attendance_report_page" name="AttendanceReportPortalTemplate" inherit_id="portal.portal_sidebar" primary="True">
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
             <t t-set="o_portal_fullwidth_alert" groups="stock.group_stock_manager">
                 <t t-call="portal.portal_back_in_edit_mode">
@@ -105,12 +105,12 @@
                     <div class=" col-lg col-12 justify-content-end w-100">
                         <table class="table table-sm">
                             <thead class="bg-100">
-                            <tr>
-                                <th class="text-right">Day</th>
-                                <th class="text-right">Ordinary hours</th>
-                                <th class="text-right">Extra Hours</th>
-                                <th class="text-right">Time</th>
-                            </tr>
+                                <tr>
+                                    <th style="text-align: right">Day</th>
+                                    <th style="text-align: right">Ordinary hours</th>
+                                    <th style="text-align: right">Extra Hours</th>
+                                    <th style="text-align: right">Time</th>
+                                </tr>
                             </thead>
                             <tbody id="attendance_report_container">
                                 <t t-call="hr_attendance_report_portal.attendance_report_lines_table">
@@ -157,16 +157,32 @@
     <template id="attendance_report_lines_table" name="Attendance report lines table">
         <t t-foreach="line_ids" t-as="ol" t-key="ol_index">
             <tr>
-                <td class="text-right">
-                    <span t-out="ol.day"/>
+                <td style="text-align: right">
+                    <span t-if="ol.day &lt; 10">
+                        0<t t-esc="ol.day"/>
+                    </span>
+                    <span t-else="">
+                        <t t-esc="ol.day"/>
+                    </span>
                 </td>
-                <td class="text-right">
-                    <span t-esc="'%s:%s' % (str(ol.ord_hours).split('.')[0], int(float(str('%.2f' % ol.ord_hours).split('.')[1])/100*60))"/>
+                <td style="text-align: right">
+                    <span
+                        t-esc="'%s:%s' % (str(ol.ord_hours).split('.')[0] if len(str(ol.ord_hours).split('.')[0]) > 1 else '0' + str(ol.ord_hours).split('.')[0], int(float(str('%.2f' % ol.ord_hours).split('.')[1])/100*60) if int(float(str('%.2f' % ol.ord_hours).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % ol.ord_hours).split('.')[1])/100*60)))"
+                    />
                 </td>
-                <td class="text-right">
-                    <span t-esc="'%s:%s' % (str(ol.extra).split('.')[0], int(float(str('%.2f' % ol.extra).split('.')[1])/100*60))"/>
+                <td style="text-align: right">
+                    <t t-if = "ol.extra &gt;= 0">
+                        <span
+                            t-esc="'%s:%s' % (str(ol.extra).split('.')[0] if int(str(ol.extra).split('.')[0]) > 9 else '0' + str(ol.extra).split('.')[0], int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) if int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % ol.extra).split('.')[1])/100*60)))"
+                        />
+                    </t>
+                    <t t-else="">
+                        <span
+                            t-esc="'%s:%s' % (str(ol.extra).split('.')[0] if int(str(ol.extra).split('.')[0]) &lt; -9 else '-0' + str(ol.extra).split('.')[0][1], int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) if int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % ol.extra).split('.')[1])/100*60)))"
+                        />
+                    </t>
                 </td>
-                <td class="text-right">
+                <td style="text-align: right">
                     <span t-out="ol.message"/>
                 </td>
             </tr>
