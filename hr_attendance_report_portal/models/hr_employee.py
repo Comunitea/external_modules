@@ -1,4 +1,4 @@
-from odoo import models, fields, _
+from odoo import models, fields
 from dateutil.relativedelta import relativedelta
 
 
@@ -46,23 +46,15 @@ class HrEmployee(models.Model):
                 ('active', '=', True),
                 ('company_id', '=', company.id),
             ])
-            for employee in employee_ids:
-                if not reports:
-                    report = self.env['hr.employee.attendance.report'].create({
+
+            if employee_ids:
+                vals = []
+
+                for employee in employee_ids:
+                    vals.append({
                         'employee_id': employee.id,
                         'from_date': from_date,
                         'to_date': to_date,
                     })
 
-                    report.message_unsubscribe(partner_ids=report.message_follower_ids.mapped('partner_id').ids)
-                    report.message_subscribe(partner_ids=report.employee_id.user_id.partner_id.ids)
-
-                    report.message_post(
-                        body=_('%s attendance report has been created, please sign it <a href="%s">here<a>') % (report.name, report.access_url),
-                        subject=_('Attendance Report Created'),
-                        attachment_ids=[],
-                        message_type="email",
-                        subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_comment'),
-                    )
-
-                    report._compute_message_follower_ids()
+                self.env['hr.employee.attendance.report'].create(vals)
