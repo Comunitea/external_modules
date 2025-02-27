@@ -7,6 +7,7 @@
             <form string="Employee Attendance Report">
                 <header>
                     <button name="print_report" string="Print Report" type="object" class="oe_highlight" attrs="{'invisible': [('signed', '=', False)]}"/>
+                    <button name="recompute_line_ids" string="Recalculate attendance" type="object" class="oe_highlight" attrs="{'invisible': [('signed', '=', True)]}"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
