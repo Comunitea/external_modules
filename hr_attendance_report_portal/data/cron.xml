@@ -7,7 +7,7 @@
         <field name="interval_number">1</field>
         <field name="interval_type">months</field>
         <field name="numbercall">-1</field>
-        <field name="nextcall" eval="(datetime.now().replace(day=1) + relativedelta(months=1)).strftime('%Y-%m-%d 00:00:00')" />
+        <field name="nextcall" eval="(datetime.now().replace(day=15) + relativedelta(months=1)).strftime('%Y-%m-%d 00:00:00')" />
         <field eval="False" name="doall"/>
         <field name="model_id" ref="model_hr_employee"/>
         <field name="code">model._create_attendance_report()</field>
