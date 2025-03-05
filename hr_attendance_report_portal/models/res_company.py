@@ -13,7 +13,7 @@ class ResCompany(models.Model):
 
     partner_to_send_id = fields.Many2one(
         'res.partner',
-        string='Partner to Send',
+        string='Company Partner to Send',
         relation="hr_attendance_report_portal_partner_company",
         domain="[('company_id', '=', id)]",
     )

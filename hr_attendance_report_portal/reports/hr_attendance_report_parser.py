@@ -52,17 +52,32 @@ class EmployeePrintAttendanceReport(models.AbstractModel):
                         'in_out_str': leave.holiday_status_id.name
                     }
                     if num_months > 0:
+                        has_day = False
                         month = (date.year - from_date.year) * 12 + date.month - from_date.month
-                        month_attendance[month].append(vals)
+                        for attendance in month_attendance[month]:
+                            if attendance['day'] == day:
+                                attendance['in_out_str'] = "%s | %s" % (attendance['in_out_str'], leave.holiday_status_id.name)
+                                has_day = True
+                                break
+
+                        if not has_day:
+                            month_attendance[month].append(vals)
                     else:
-                        res['attendances'][employee.id].append(vals)
+                        has_day = False
+                        for attendance in res['attendances'][employee.id]:
+                            if attendance['day'] == day:
+                                attendance['in_out_str'] = "%s | %s" % (attendance['in_out_str'], leave.holiday_status_id.name)
+                                has_day = True
+                                break
+                        if not has_day:
+                            res['attendances'][employee.id].append(vals)
                     date += relativedelta(days=1)
             # Buscar los festivos
             holidays = self.env['hr.holidays.public'].get_holidays_list(
                 start_dt=from_date,
                 end_dt=to_date,
-                partner_id=employee.user_id.partner_id.id
-            )
+                partner_id=employee.address_id.id
+            ).filtered(lambda h: employee.address_id.zip_id in h.zip_ids or not h.zip_ids)
             for holiday in holidays:
                 day = str(holiday.date.day)
                 if len(day) == 1:
@@ -75,9 +90,24 @@ class EmployeePrintAttendanceReport(models.AbstractModel):
                 }
                 if num_months > 0:
                     month = (holiday.date.year - from_date.year) * 12 + holiday.date.month - from_date.month
-                    month_attendance[month].append(vals)
+                    has_day = False
+                    for attendance in month_attendance[month]:
+                        if attendance['day'] == day:
+                            attendance['in_out_str'] = "%s | %s" % (attendance['in_out_str'], holiday.name)
+                            has_day = True
+                            break
+
+                    if not has_day:
+                        month_attendance[month].append(vals)
                 else:
-                    res['attendances'][employee.id].append(vals)
+                    has_day = False
+                    for attendance in res['attendances'][employee.id]:
+                        if attendance['day'] == day:
+                            attendance['in_out_str'] = "%s | %s" % (attendance['in_out_str'], holiday.name)
+                            has_day = True
+                            break
+                    if not has_day:
+                        res['attendances'][employee.id].append(vals)
             # reordenamos las asistencias por día
             if num_months > 0:
                 del res['attendances'][employee.id][:]

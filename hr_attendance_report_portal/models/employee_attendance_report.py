@@ -13,7 +13,7 @@ class EmployeeAttendanceReport(models.Model):
     employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
     from_date = fields.Date('From', required=True)
     to_date = fields.Date('To', required=True)
-    signature = fields.Binary('Signature', tracking=True, readonly=False)
+    signature = fields.Binary('Signature', tracking=True, readonly=True)
     signed = fields.Boolean('Signed', readonly=True, compute='_compute_signed', store=True)
     signed_by = fields.Char('Signed By', readonly=True)
     signed_date = fields.Date('Signed Date', readonly=True)
@@ -31,6 +31,24 @@ class EmployeeAttendanceReport(models.Model):
         compute='_compute_message_follower_ids',
         store=True,
     )
+
+    @api.model
+    def create(self, vals):
+        res = super(EmployeeAttendanceReport, self).create(vals)
+        for report in res:
+            report.message_unsubscribe(partner_ids=report.message_follower_ids.mapped('partner_id').ids)
+            report.message_subscribe(partner_ids=report.employee_id.user_id.partner_id.ids)
+
+            report.message_post(
+                body=_('%s attendance report has been created, please sign it <a href="%s">here<a>') % (report.name, report.access_url),
+                subject=_('Attendance Report Created'),
+                attachment_ids=[],
+                message_type="email",
+                subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_comment'),
+            )
+
+            report._compute_message_follower_ids()
+        return res
 
     @api.depends('employee_id')
     def _compute_message_follower_ids(self):
@@ -107,6 +125,10 @@ class EmployeeAttendanceReport(models.Model):
         super(EmployeeAttendanceReport, self)._compute_access_url()
         for attendance in self:
             attendance.access_url = '/my/attendance_reports/%s' % (attendance.id)
+
+    def recompute_line_ids(self):
+        self.ensure_one()
+        self._compute_line_ids()
 
     @api.depends('employee_id', 'from_date', 'to_date')
     def _compute_line_ids(self):
