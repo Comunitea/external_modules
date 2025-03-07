@@ -1,0 +1,35 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#       * account_invoice_last_payment_date
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-07 14:26+0000\n"
+"PO-Revision-Date: 2025-03-07 14:26+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_invoice_last_payment_date
+#: model:ir.model,name:account_invoice_last_payment_date.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento contable"
+
+#. module: account_invoice_last_payment_date
+#: model:ir.model.fields,field_description:account_invoice_last_payment_date.field_account_bank_statement_line__last_payment_date
+#: model:ir.model.fields,field_description:account_invoice_last_payment_date.field_account_move__last_payment_date
+#: model:ir.model.fields,field_description:account_invoice_last_payment_date.field_account_payment__last_payment_date
+msgid "Last Payment Date"
+msgstr "Fecha de pago"
+
+#. module: account_invoice_last_payment_date
+#: model:ir.model.fields,help:account_invoice_last_payment_date.field_account_bank_statement_line__last_payment_date
+#: model:ir.model.fields,help:account_invoice_last_payment_date.field_account_move__last_payment_date
+#: model:ir.model.fields,help:account_invoice_last_payment_date.field_account_payment__last_payment_date
+msgid "Shows the date of the last payment made for this invoice"
+msgstr "Muestra la fecha del último pago hecho en esta factura"
