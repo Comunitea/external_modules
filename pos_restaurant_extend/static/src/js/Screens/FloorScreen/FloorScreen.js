@@ -2,6 +2,7 @@
 
 import FloorScreen  from 'pos_restaurant.FloorScreen';
 import Registries from 'point_of_sale.Registries';
+import { isConnectionError } from 'point_of_sale.utils';
 
 
 const PostExtFloorScreen = (FloorScreen) =>
