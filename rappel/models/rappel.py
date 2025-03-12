@@ -101,3 +101,29 @@ class RappelCalculated(models.Model):
     quantity = fields.Float(required=True)
     rappel_id = fields.Many2one('rappel', 'Rappel', required=True)
     invoice_id = fields.Many2one("account.invoice", "Invoice", readonly=True)
+
+    def get_invoice_line_data(self):
+        rappel_product = self.rappel_id.type_id.product_id
+        account_id = rappel_product.property_account_income_id
+        if not account_id:
+            account_id = rappel_product.categ_id. \
+                property_account_income_categ_id
+        taxes_ids = rappel_product.taxes_id
+        fpos = self.partner_id.property_account_position_id or False
+        if fpos:
+            account_id = fpos.map_account(account_id)
+            taxes_ids = fpos.map_tax(taxes_ids)
+        tax_ids = [(6, 0, [x.id for x in taxes_ids])]
+        return {
+            'product_id': rappel_product.id,
+            'name': '%s (%s-%s)' % (
+                self.rappel_id.name,
+                self.date_start,
+                self.date_end
+            ),
+            'invoice_id': self.invoice_id.id,
+            'account_id': account_id.id,
+            'invoice_line_tax_ids': tax_ids,
+            'price_unit': self.quantity,
+            'quantity': 1
+        }

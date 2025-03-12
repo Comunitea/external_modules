@@ -50,28 +50,7 @@ class ComputeRappelInvoice(models.TransientModel):
                     if self[0].group_by_partner:
                         partner_group[rappel.partner_id.id] = invoice
                 rappel.invoice_id = invoice.id
-                rappel_product = rappel.rappel_id.type_id.product_id
-                account_id = rappel_product.property_account_income_id
-                if not account_id:
-                    account_id = rappel_product.categ_id.\
-                        property_account_income_categ_id
-                taxes_ids = rappel_product.taxes_id
-                fpos = rappel.partner_id.property_account_position_id or False
-                if fpos:
-                    account_id = fpos.map_account(account_id)
-                    taxes_ids = fpos.map_tax(taxes_ids)
-                tax_ids = [(6, 0, [x.id for x in taxes_ids])]
-
-                invoice_line_obj.create({'product_id': rappel_product.id,
-                                         'name': '%s (%s-%s)' %
-                                                 (rappel.rappel_id.name,
-                                                  rappel.date_start,
-                                                  rappel.date_end),
-                                         'invoice_id': invoice.id,
-                                         'account_id': account_id.id,
-                                         'invoice_line_tax_ids': tax_ids,
-                                         'price_unit': rappel.quantity,
-                                         'quantity': 1})
+                invoice_line_obj.create(rappel.get_invoice_line_data())
 
         if not invoices:
             raise exceptions.Warning(_('Any invoice created!'))
