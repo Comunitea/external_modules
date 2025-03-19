@@ -77,7 +77,7 @@ class EmployeePrintAttendanceReport(models.AbstractModel):
                 start_dt=from_date,
                 end_dt=to_date,
                 partner_id=employee.address_id.id
-            ).filtered(lambda h: employee.address_id.zip_id in h.zip_ids or not h.zip_ids)
+            )
             for holiday in holidays:
                 day = str(holiday.date.day)
                 if len(day) == 1:
