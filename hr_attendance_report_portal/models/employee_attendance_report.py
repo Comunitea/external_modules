@@ -35,8 +35,12 @@ class EmployeeAttendanceReport(models.Model):
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
         partner_id = self.env['res.partner'].search([
-            ('id', '=', self.env['ir.config_parameter'].sudo().get_param('hr_attendance_report_portal.partner_to_send_id')),
+            ('id', '=', self.env['ir.config_parameter'].sudo().get_param('hr_attendance_report_portal.company_partner_to_send_id')),
         ])
+        if not partner_id:
+            partner_id = self.env['res.partner'].search([
+                ('id', '=', self.env['ir.config_parameter'].sudo().get_param('hr_attendance_report_portal.partner_to_send_id')),
+            ])
         if partner_id:
             kwargs['email_from'] = _("ATTENDANCE REPORT <%s>") % partner_id.email
         return super(EmployeeAttendanceReport, self).message_post(**kwargs)
