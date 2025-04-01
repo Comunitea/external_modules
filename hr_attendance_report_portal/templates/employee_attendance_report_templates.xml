@@ -167,20 +167,13 @@
                 </td>
                 <td style="text-align: right">
                     <span
-                        t-esc="'%s:%s' % (str('%.2f' % ol.ord_hours).split('.')[0] if len(str('%.2f' % ol.ord_hours).split('.')[0]) > 1 else '0' + str('%.2f' % ol.ord_hours).split('.')[0], int(float(str('%.2f' % ol.ord_hours).split('.')[1])/100*60) if int(float(str('%.2f' % ol.ord_hours).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % ol.ord_hours).split('.')[1])/100*60)))"
+                        t-esc="ol.ord_hours" t-options="{'widget': 'float_time'}"
                     />
                 </td>
                 <td style="text-align: right">
-                    <t t-if = "ol.extra &gt;= 0">
-                        <span
-                            t-esc="'%s:%s' % (str('%.2f' % ol.extra).split('.')[0] if len(str(ol.extra).split('.')[0]) > 1 else '0' + str('%.2f' % ol.extra).split('.')[0], int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) if int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % ol.extra).split('.')[1])/100*60)))"
-                        />
-                    </t>
-                    <t t-else="">
-                        <span
-                            t-esc="'-%s:%s' % (str('%.2f' % abs(ol.extra)).split('.')[0] if len(str('%.2f' % abs(ol.extra)).split('.')[0]) > 1 else '0' + str('%.2f' % abs(ol.extra)).split('.')[0], int(float(str('%.2f' % abs(ol.extra)).split('.')[1])/100*60) if int(float(str('%.2f' % abs(ol.extra)).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % abs(ol.extra)).split('.')[1])/100*60)))"
-                        />
-                    </t>
+                    <span
+                        t-esc="ol.extra" t-options="{'widget': 'float_time'}"
+                    />
                 </td>
                 <td style="text-align: right">
                     <span t-out="ol.message"/>
