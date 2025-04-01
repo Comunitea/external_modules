@@ -173,12 +173,12 @@
                 <td style="text-align: right">
                     <t t-if = "ol.extra &gt;= 0">
                         <span
-                            t-esc="'%s:%s' % (str('%.2f' % ol.extra).split('.')[0] if int(str(ol.extra).split('.')[0]) > 9 else '0' + str('%.2f' % ol.extra).split('.')[0], int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) if int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % ol.extra).split('.')[1])/100*60)))"
+                            t-esc="'%s:%s' % (str('%.2f' % ol.extra).split('.')[0] if len(str(ol.extra).split('.')[0]) > 1 else '0' + str('%.2f' % ol.extra).split('.')[0], int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) if int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % ol.extra).split('.')[1])/100*60)))"
                         />
                     </t>
                     <t t-else="">
                         <span
-                            t-esc="'%s:%s' % (str('%.2f' % ol.extra).split('.')[0] if int(str(ol.extra).split('.')[0]) &lt; -9 else '-0' + str('%.2f' % ol.extra).split('.')[0][1], int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) if int(float(str('%.2f' % ol.extra).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % ol.extra).split('.')[1])/100*60)))"
+                            t-esc="'-%s:%s' % (str('%.2f' % abs(ol.extra)).split('.')[0] if len(str('%.2f' % abs(ol.extra)).split('.')[0]) > 1 else '0' + str('%.2f' % abs(ol.extra)).split('.')[0], int(float(str('%.2f' % abs(ol.extra)).split('.')[1])/100*60) if int(float(str('%.2f' % abs(ol.extra)).split('.')[1])/100*60) > 9 else '0' + str(int(float(str('%.2f' % abs(ol.extra)).split('.')[1])/100*60)))"
                         />
                     </t>
                 </td>
