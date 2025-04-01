@@ -94,8 +94,7 @@ class HrAttendanceReport(models.AbstractModel):
                     # )
                     # Corrijo que no se tienen en cuenta ni los hr.leaves
                     # específicos de empleado ni los festivos de OCA
-                    max_hours = employee.\
-                            resource_calendar_id.get_work_hours_count_exclude_all(
+                    max_hours = employee.resource_calendar_id.get_work_hours_count_exclude_all(
                         from_date_datetime,
                         from_date2_datetime,
                         employee
@@ -111,6 +110,25 @@ class HrAttendanceReport(models.AbstractModel):
                 if day_attendances["ord_hours"] or day_attendances["extra"]:
                     employee_attendance[employee.id].append(day_attendances)
                 from_date += relativedelta(days=1)
+
+            overtime = self.env["hr.attendance.overtime"].sudo().search(
+                [
+                    ("employee_id", "=", employee.id),
+                    ("date", ">=", datetime.strptime(from_date_s, "%Y-%m-%d").date()),
+                    ("date", "<=", datetime.strptime(to_date_s, "%Y-%m-%d").date()),
+                ]
+            )
+
+            extra = 0.0
+            if overtime:
+                extra = sum(
+                    duration for duration in overtime.mapped("duration")
+                )
+            else:
+                extra = sum(
+                    x["extra"] for x in employee_attendance[employee.id]
+                )
+
             totals[employee.id] = {
                 "total": sum(
                     x["ord_hours"] for x in employee_attendance[employee.id]
@@ -120,9 +138,7 @@ class HrAttendanceReport(models.AbstractModel):
                     x["ord_hours"] for x in employee_attendance[employee.id]
                 ),
                 "complementary": 0,
-                "extra": sum(
-                    x["extra"] for x in employee_attendance[employee.id]
-                ),
+                "extra": extra
             }
         docargs = {
             "doc_ids": data["ids"],
