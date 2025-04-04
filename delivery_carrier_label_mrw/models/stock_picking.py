@@ -447,8 +447,6 @@ class StockPicking(models.Model):
 
         response = client.service.CancelarEnvio(**CancelarEnvio, _soapheaders=[headers])
         return response
-<<<<<<< HEAD
-=======
 
     def retry_get_mrw_label(self):
         client, history = self.create_client()
@@ -489,4 +487,3 @@ class StockPicking(models.Model):
                 )
             else:
                 raise AccessError(_("Error while trying to retrieve the label"))
->>>>>>> 6a2753fae2c605b82d18e5f88546d0467b3f9324
