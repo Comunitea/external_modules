@@ -176,9 +176,9 @@ class StockPicking(models.Model):
         client, history = self.create_client_ncx()
 
         if client:
-            
+
             arrayOfString_3 = [
-                "expe_codigo={}".format(self.carrier_tracking_ref),  
+                "expe_codigo={}".format(self.carrier_tracking_ref),
             ]
 
             cancelExpedicion = {
@@ -203,7 +203,7 @@ class StockPicking(models.Model):
             else:
                 msg = _("Access error")
                 raise AccessError(msg)
-                    
+
     def get_ncx_label(self, client, numeroEnvio):
 
         getEtiqueta = {
@@ -403,6 +403,8 @@ class StockPicking(models.Model):
                 return
 
             self.shipment_status_ncx()
+        else:
+            return super().check_shipment_status()
 
     def base64_url_decode(self, label):
         padding_factor = (4 - len(label) % 4) % 4
