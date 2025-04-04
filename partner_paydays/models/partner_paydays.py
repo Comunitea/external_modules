@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api, _, exceptions
 
 
@@ -75,6 +76,7 @@ class AccountPaymentTerm(models.Model):
         string="Fecha de referencia",
         default="invoice_date",
     )
+    adjust_month = fields.Boolean("Ajuste inicio de mes", default=False)
 
     @api.model
     def _decode_payment_days(self, days_char):
@@ -135,10 +137,8 @@ class AccountPaymentTerm(models.Model):
 
     def compute(self, value, date_ref=False):
         # TODO REVISAR SANTI / OMAR
-        if self._context.get("invoice_id", False):
-            invoice = self.env["account.invoice"].browse(
-                self._context["invoice_id"]
-            )
+        if self._context.get("invoice", False):
+            invoice = self._context["invoice"]
 
             if (
                 invoice.value_date
@@ -148,7 +148,18 @@ class AccountPaymentTerm(models.Model):
             elif invoice.payment_ref_date:
                 date_ref = invoice.payment_ref_date
 
-        result = super(AccountPaymentTerm, self).compute(value, date_ref)
+            if self.adjust_month and invoice.type in ('in_invoice', 'in_refund'):
+                dia = date_ref.day
+                if dia in range(1,6):
+                    fecha_aj = date_ref - relativedelta(months=1) + relativedelta(day=31)
+                else:
+                    fecha_aj = date_ref
+            else:
+                fecha_aj = date_ref
+        else:
+            fecha_aj = date_ref
+
+        result = super(AccountPaymentTerm, self).compute(value, fecha_aj)
 
         if not self.env.context.get("partner_id"):
             return result

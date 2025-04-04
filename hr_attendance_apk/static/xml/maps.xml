@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="WidgetGoogleMaps">
+        <div id="attendance_id" style="display:none;">
+            <t t-esc="id"/>
+        </div>
+        <div class="col-md-12">
+            <span class="metadata-marker" data-region_tag="html-body"/>
+            <div id="map"/>
+            <script type="text/javascript" src="/hr_attendance_apk/static/js/attendance_positions.js"/>
+            <script type="text/javascript" async="async" defer="defer"
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_3Mma3hft3POI5f2LhzxSzie0dF1BtOs&amp;language=es&amp;callback=attendancePositionsInitMap"/>
+        </div>
+    </t>
+</templates>

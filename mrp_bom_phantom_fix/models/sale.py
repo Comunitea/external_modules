@@ -88,6 +88,8 @@ class SaleOrderLine(models.Model):
                 delivered_qties = {}
                 returned_qties = {}
                 for move in moves:
+                    if move.product_id.id not in quantities:
+                        continue
                     quantities_uom = line.env['uom.uom'].browse(
                         quantities[move.product_id.id]['uom'])
                     pack_qty = move.product_uom._compute_quantity(

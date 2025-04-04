@@ -14,7 +14,8 @@
         'base_report_to_printer',
         'account_payment_mode',
         'stock_picking_report_valued',
-        'sale_shipping_info_helper'
+        'sale_shipping_info_helper',
+        'account_payment_sale'
     ],
     'data': [
         'views/delivery_carrier.xml',

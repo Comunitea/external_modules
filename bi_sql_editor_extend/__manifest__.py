@@ -5,7 +5,7 @@
 {
     'name': 'BI SQL Editor',
     'summary': 'Extension for BI SQL Editor. Not need to recreate model for editing views and fields',
-    'version': '14.0.1.0.0',
+    'version': '12.0.1.0.0',
     'license': 'AGPL-3',
     'category': 'Reporting',
     'author': 'Comunitea',

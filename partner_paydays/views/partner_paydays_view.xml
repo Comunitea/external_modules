@@ -37,8 +37,8 @@
         <field name="arch" type="xml">
             <field name="name" position="after">
                 <field name="reference_date"/>
+                <field name="adjust_month"/>
             </field>
         </field>
     </record>
 </odoo>
-

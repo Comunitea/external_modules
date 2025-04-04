@@ -7,6 +7,7 @@
     "category": "eCommerce",
     "depends": [
         "payment",
+        "website_sale",
     ],
     "data": [
         "views/payment_acquirer.xml",

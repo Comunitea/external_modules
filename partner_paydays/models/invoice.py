@@ -32,6 +32,7 @@ class AccountInvoice(models.Model):
 
         if not date_reference:
             date_reference = fields.Date.context_today(self)
+
         if not self.payment_term_id:
             # When no payment term defined
             self.date_due = self.date_due or self.date_invoice
@@ -40,6 +41,7 @@ class AccountInvoice(models.Model):
             pterm_list = pterm.with_context(
                 currency_id=self.company_id.currency_id.id,
                 partner_id=self.partner_id.commercial_partner_id.id,
+                invoice = self,
             ).compute(value=1, date_ref=date_reference)[0]
             self.date_due = max(line[0] for line in pterm_list)
 
@@ -48,7 +50,7 @@ class AccountInvoice(models.Model):
         for inv in self:
             ctx = dict(
                 self._context,
-                invoice_id=inv.id,
+                invoice=inv,
                 partner_id=inv.partner_id.commercial_partner_id.id,
             )
             super(AccountInvoice, inv.with_context(ctx)).action_move_create()

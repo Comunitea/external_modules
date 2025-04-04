@@ -78,14 +78,14 @@ class Mod347ControllerCustom(Mod347Controller):
 
     @http.route()
     def mod347_accept(self, res_id, token):
-        res = super().mod_347_accept(res_id, token)
+        res = Mod347Controller.mod347_accept(self, res_id, token)
         if request.env.user.has_group('base.group_portal'):
-            return request.redirect('/my/347_detail/{}'.format(res_ud))
+            return request.redirect('/my/347_detail/{}'.format(res_id))
         return res
 
     @http.route()
     def mod347_reject(self, res_id, token):
-        res = super().mod347_reject(res_id, token)
+        res = Mod347Controller.mod347_reject(self, res_id, token)
         if request.env.user.has_group('base.group_portal'):
-            return request.redirect('/my/347_detail/{}'.format(res_ud))
+            return request.redirect('/my/347_detail/{}'.format(res_id))
         return res

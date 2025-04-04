@@ -1,0 +1,161 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_attendance_apk
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-10 08:28+0000\n"
+"PO-Revision-Date: 2019-05-10 08:28+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_attendance_apk
+#: model:ir.model,name:hr_attendance_apk.model_hr_attendance
+msgid "Attendance"
+msgstr "Asistencia"
+
+#. module: hr_attendance_apk
+#: model:res.groups,name:hr_attendance_apk.group_hr_attendance_gps
+msgid "Attendances GPS Manager"
+msgstr "Responsable Asistencias (APK)"
+
+#. module: hr_attendance_apk
+#: model:ir.model,name:hr_attendance_apk.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,company_id:0
+msgid "Company id"
+msgstr "Comañia"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,contact_phone:0
+msgid "Contact phone"
+msgstr "Teléfono de contacto"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,display_name:0
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: hr_attendance_apk
+#: model:ir.model,name:hr_attendance_apk.model_hr_employee
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: hr_attendance_apk
+#: field:hr.attendance,accuracity:0
+msgid "Error"
+msgstr "Error"
+
+#. module: hr_attendance_apk
+#: view:hr.attendance:hr_attendance_apk.view_attendance_form
+msgid "GPS"
+msgstr "GPS"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: hr_attendance_apk
+#: field:hr.attendance,ip:0
+msgid "IP"
+msgstr "IP"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,image:0
+msgid "Image"
+msgstr "Imagen"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,image_medium:0
+#: field:clock.company.apk,image_small:0
+msgid "Image medium"
+msgstr "Imagen medium"
+
+#. module: hr_attendance_apk
+#: model:ir.actions.act_window,name:hr_attendance_apk.action_view_clock_company_apk_form
+#: view:res.company:hr_attendance_apk.view_clock_company_apk_in_comapny
+msgid "Info apk"
+msgstr "Info apk"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,__last_update:0
+msgid "Last Modified on"
+msgstr "Last Modified on"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: hr_attendance_apk
+#: field:hr.attendance,latitude:0
+msgid "Latitude"
+msgstr "Latitud"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,logo_color:0
+msgid "Logo color"
+msgstr "Logo color"
+
+#. module: hr_attendance_apk
+#: help:clock.company.apk,image:0
+msgid "Logo in apk"
+msgstr "Logo en apk"
+
+#. module: hr_attendance_apk
+#: field:hr.attendance,longitude:0
+msgid "Longitude"
+msgstr "Longitud"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,min_minute:0
+msgid "Minutes between logs"
+msgstr "Tiempo entre logos"
+
+#. module: hr_attendance_apk
+#: view:clock.company.apk:hr_attendance_apk.view_clock_company_apk_form
+#: field:clock.company.apk,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: hr_attendance_apk
+#: code:addons/hr_attendance_apk/models/hr_employee.py:31
+#, python-format
+msgid "Not enogh time between logs: {} minutes"
+msgstr "No hay tiempo suficiente entre los logs: {} minutos"
+
+#. module: hr_attendance_apk
+#: field:hr.attendance,url_gps:0
+msgid "Position"
+msgstr "Posición"
+
+#. module: hr_attendance_apk
+#: field:clock.company.apk,welcome_message:0
+msgid "Welcome message"
+msgstr "Mensaje de bienvienida"
+

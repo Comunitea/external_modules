@@ -60,6 +60,11 @@ class PurchaseOrder(models.Model):
                 except AccessError:  # no write access rights -> just ignore
                     break
 
+    @api.multi
+    def action_set_date_planned(self):
+        for order in self:
+            order.order_line.filtered(lambda x: x.product_id).update({'date_planned': order.date_planned})
+
 
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
