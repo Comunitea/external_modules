@@ -11,7 +11,8 @@
     'license': 'AGPL-3',
     'depends': [
         'connector_prestashop',
-        'base_location'
+        'base_location',
+        'queue_job',
     ],
     'data': [
         'views/prestashop_backend.xml',
