@@ -12,13 +12,14 @@ class PrestashopBackend(models.Model):
     resize_images = fields.Boolean()
     start_import_date = fields.Datetime()
 
+    # todo mig: Revisar lo del stock virtual conservativo
     product_qty_field = fields.Selection(
         selection_add=[
             ("virtual_stock_conservative", "Stock virtual conservativo")
-        ]
+        ],
+        ondelete={"virtual_stock_conservative": "set default"},
     )
 
-    @api.multi
     def synchronize_sale_states(self):
         for backend in self:
             self.env['prestashop.sale.order.state'].import_batch(backend)
