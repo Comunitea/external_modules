@@ -143,31 +143,37 @@ class EmployeeAttendanceReport(models.Model):
         self.ensure_one()
         self._compute_line_ids()
 
+    def get_lines(self, employee_id, from_date, to_date):
+        data = {
+            'ids': [employee_id.id],
+            'form': {
+                'from_date': datetime.strftime(from_date, "%Y-%m-%d"),
+                'to_date': datetime.strftime(to_date, "%Y-%m-%d")
+            }
+        }
+        res = self.env['report.hr_attendance_report.print_attendance']._get_report_values(
+            docids=employee_id.id,
+            data=data
+        )
+        values = []
+        if not res["attendances"] or not res["attendances"][employee_id.id]:
+            return values
+        for attendance in res["attendances"][employee_id.id]:
+            values.append((0, 0, {
+                'day': attendance['day'],
+                'ord_hours': attendance['ord_hours'],
+                'extra': attendance['extra'],
+                'message': attendance['in_out_str']
+            }))
+        return values
+
     @api.depends('employee_id', 'from_date', 'to_date')
     def _compute_line_ids(self):
         for report in self:
             if not report.employee_id or not report.from_date or not report.to_date:
                 continue
             report.line_ids = False
-            data = {
-                'ids': [report.employee_id.id],
-                'form': {
-                    'from_date': datetime.strftime(report.from_date, "%Y-%m-%d"),
-                    'to_date': datetime.strftime(report.to_date, "%Y-%m-%d")
-                }
-            }
-            res = self.env['report.hr_attendance_report.print_attendance']._get_report_values(
-                docids=report.employee_id.id,
-                data=data
-            )
-            values = []
-            for attendance in res["attendances"][report.employee_id.id]:
-                values.append((0, 0, {
-                    'day': attendance['day'],
-                    'ord_hours': attendance['ord_hours'],
-                    'extra': attendance['extra'],
-                    'message': attendance['in_out_str']
-                }))
+            values = self.get_lines(report.employee_id, report.from_date, report.to_date)
             report.write({'line_ids': values})
 
     def print_report(self):

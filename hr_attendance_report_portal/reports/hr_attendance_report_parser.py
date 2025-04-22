@@ -39,6 +39,8 @@ class EmployeePrintAttendanceReport(models.AbstractModel):
                 ('state', '=', 'validate'),
                 ('state', '=', 'validate1'),
             ])
+            if not leaves and not res['attendances'][employee.id]:
+                continue
             for leave in leaves:
                 date = leave.date_from
                 while date <= leave.date_to:

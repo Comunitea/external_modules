@@ -51,10 +51,11 @@ class HrEmployee(models.Model):
                 vals = []
 
                 for employee in employee_ids:
-                    vals.append({
-                        'employee_id': employee.id,
-                        'from_date': from_date,
-                        'to_date': to_date,
-                    })
-
+                    lines = self.env['hr.employee.attendance.report'].get_lines(employee, from_date, to_date)
+                    if lines != []:
+                        vals.append({
+                            'employee_id': employee.id,
+                            'from_date': from_date,
+                            'to_date': to_date,
+                        })
                 self.env['hr.employee.attendance.report'].create(vals)
