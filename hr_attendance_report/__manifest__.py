@@ -22,7 +22,7 @@
 {
     'name': 'Attendance report',
     'summary': '',
-    'version': "16.0.0.1.1",
+    'version': "17.0.1.0.0",
     'category': 'Human Resources',
     'website': 'https://comunitea.com',
     'author': 'Comunitea',

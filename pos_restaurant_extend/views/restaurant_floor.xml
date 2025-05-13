@@ -14,7 +14,7 @@
                 <notebook>
                     <page name="table" string="Tables">
                         <field name="table_ids">
-                            <tree string="Tables">
+                            <tree>
                                 <field name="name"/>
                                 <field name="seats"/>
                                 <field name="shape"/>

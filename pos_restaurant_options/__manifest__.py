@@ -1,6 +1,6 @@
 {
     'name': 'Product Restaurant Options',
-    'version': '16.0.1.0.0',
+    'version': "17.0.1.0.0",
     'description': 'Product Restaurant Options',
     'depends': [
         'mrp',

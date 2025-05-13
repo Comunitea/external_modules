@@ -15,7 +15,7 @@
         <field name="name">rappel.type.tree</field>
         <field name="model">rappel.type</field>
         <field name="arch" type="xml">
-            <tree string="Rappel Types">
+            <tree>
                 <field name="name"/>
                 <field name="code"/>
             </tree>

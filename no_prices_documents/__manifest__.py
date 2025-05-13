@@ -1,6 +1,6 @@
 {
     'name': 'Documents Without Prices',
-    'version': '16.0.1.0',
+    'version': "17.0.1.0.0",
     'description': 'Hide prices on odoo documents',
     'author': 'Comunitea',
     'website': 'https://comunitea.com/',

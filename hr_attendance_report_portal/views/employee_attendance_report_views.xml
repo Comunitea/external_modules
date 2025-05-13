@@ -23,7 +23,7 @@
                     <notebook>
                         <page string="Attendaces">
                             <field name="line_ids" nolabel="1" widget="one2many_list" colspan="2">
-                                <tree string="Employee Attendance Report" create="false" edit="false">
+                                <tree create="false" edit="false">
                                     <field name="day"/>
                                     <field name="ord_hours" widget="float_time"/>
                                     <field name="extra" widget="float_time"/>
@@ -51,7 +51,7 @@
         <field name="name">hr.employee.attendance.report.tree</field>
         <field name="model">hr.employee.attendance.report</field>
         <field name="arch" type="xml">
-            <tree string="Employee Attendance Report">
+            <tree>
                 <field name="employee_id"/>
                 <field name="from_date"/>
                 <field name="to_date"/>

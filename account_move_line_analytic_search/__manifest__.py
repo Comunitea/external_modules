@@ -1,7 +1,7 @@
 {
     'name': 'Analytic Distribution Search in account',
     'summary': 'Analytic Distribution Search in account move lins',
-    'version': "16.0.1.0.0",
+    'version': "17.0.1.0.0",
     'category': 'Accounting',
     'website': 'https://comunitea.com',
     'author': 'Comunitea',

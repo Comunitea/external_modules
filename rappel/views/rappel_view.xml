@@ -17,7 +17,7 @@
         <field name="name">rappel.tree</field>
         <field name="model">rappel</field>
         <field name="arch" type="xml">
-            <tree string="Rappel">
+            <tree>
                 <field name="name" />
                 <field name="type_id" />
                 <field name="calc_mode" />
@@ -54,7 +54,7 @@
                                 <field name="fix_qty" attrs="{'invisible':[('calc_mode','!=','fixed')]}" string="Fix" />
                             </group>
                             <field name="sections" attrs="{'invisible':[('calc_mode','!=','variable')]}" colspan="4" nolabel="1">
-                                <tree string="By sections" editable="top">
+                                <tree editable="top">
                                     <field name="rappel_from" />
                                     <field name="rappel_until" />
                                     <field name="percent" />
@@ -100,7 +100,7 @@
         <field name="model">rappel.calculated</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
-            <tree string="Rappel calculated">
+            <tree>
                 <field name="partner_id" />
                 <field name="rappel_id" />
                 <field name="date_start" />

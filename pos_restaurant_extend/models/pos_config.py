@@ -93,7 +93,7 @@ class PosConfig(models.Model):
         for table in res:
             if table['orders'] > 0:
                 domain = [('state', '=', 'draft'), ('table_id', 'in', [table['id']])]
-                order_stats = self.env['pos.order'].read_group(domain, ['pos_printed'], 'pos_printed')
+                order_stats = self.env['pos.order']._read_group(domain, 'pos_printed', ['__count'])
                 orders_map = dict((s['pos_printed'], s['pos_printed_count']) for s in order_stats)
                 if True in orders_map:
                     table['pos_printed'] = (orders_map[True]/table['orders']) * 100

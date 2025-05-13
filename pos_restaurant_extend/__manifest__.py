@@ -1,7 +1,7 @@
 {
     'name': 'Pos Restaurant Extension',
     'category': 'Point of Sale',
-    'version': "16.0.1.0.0",
+    'version': "17.0.1.0.0",
     'description': "",
     'author': 'Comunitea servicios Tecnológicos S.L.',
     'website': 'https://www.comunitea.com',

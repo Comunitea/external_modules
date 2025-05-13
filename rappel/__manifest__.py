@@ -21,7 +21,7 @@
     'name': 'Rappel management',
     'author': 'Comunitea',
     'category': 'Sale',
-    'version': '16.0.1.0.0',
+    'version': "17.0.1.0.0",
     'website': 'www.comunitea.com',
     'description': """
 Rappel Management
