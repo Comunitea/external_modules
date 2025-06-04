@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="dhl_express_view_delivery_carrier_form" model="ir.ui.view">
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook/page[1]" position='before'>
+                <page
+                    string="DHL Express Configuration"
+                    attrs="{'invisible': [('delivery_type', '!=', 'dhl_express')]}"
+                >
+                    <group>
+                        <group string="Connection">
+                            <field
+                                name="dhl_express_account"
+                                attrs="{'required': [('delivery_type', '=', 'dhl_express')]}"
+                            />
+                            <field
+                                name="dhl_express_login"
+                                attrs="{'required': [('delivery_type', '=', 'dhl_express')]}"
+                            />
+                            <field
+                                name="dhl_express_password"
+                                attrs="{'required': [('delivery_type', '=', 'dhl_express')]}"
+                            />
+                            <field name="debug_in_chatter"/>
+                            <field
+                                name="dhl_express_label_template"
+                                attrs="{'required': [('delivery_type', '=', 'dhl_express')]}"
+                            />
+                            <field
+                                name="dhl_express_documents"
+                                attrs="{'required': [('delivery_type', '=', 'dhl_express')]}"
+                            />
+                            <field
+                                name="dhl_express_daily_picking"
+                            />
+                            <field
+                                name="dhl_express_plt_service"
+                            />
+                            <field
+                                name="dhl_express_customs_duty"
+                            />
+                            <field
+                                name="dhl_express_service"
+                                attrs="{'required': [('delivery_type', '=', 'dhl_express')]}"
+                            />
+                            <field
+                                name="dhl_express_file_format"
+                                attrs="{'required': [('delivery_type', '=', 'dhl_express')]}"
+                            />
+                            <field name="dhl_uk_importer"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//group[@name='country_details']" position="after">
+                <group name="allowed_pricelists">
+                    <field name="allowed_pricelist_ids" widget="many2many_tags"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

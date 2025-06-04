@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="dhl_express_product_template_only_form_view" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position='after'>
+                <field
+                    name="dhl_express_code"
+                />
+                <field
+                    name="dhl_express_description"
+                />
+                <field
+                    name="dhl_express_measurement"
+                />
+                <field name="dhl_service_type" attrs="{'invisible': [('type', '!=', 'service')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="dhl_express_product_normal_form_view" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position='after'>
+                <field
+                    name="dhl_express_code"
+                />
+                <field
+                    name="dhl_express_description"
+                />
+                <field
+                    name="dhl_express_measurement"
+                />
+                <field name="dhl_service_type" attrs="{'invisible': [('type', '!=', 'service')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="dhl_express_product_pricelist_view" model="ir.ui.view">
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='pricelist_discounts']" position='after'>
+                <group name="pricelist_dhl_ddp" string="DHL">
+                    <field name="dhl_express_ddp"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

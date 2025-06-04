@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="dhl_express_view_picking_withcarrier_out_form" model="ir.ui.view">
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='tracking']" position='after'>
+                <label for="dhl_express_shipment_reference"/>
+                <div name="shipment_reference">
+                    <field name="dhl_express_shipment_reference" class="oe_inline" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}"/>
+                </div>
+                <label for="dhl_express_confirmation_number"/>
+                <div name="shipment_confirmation">
+                    <field name="dhl_express_confirmation_number" class="oe_inline" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
