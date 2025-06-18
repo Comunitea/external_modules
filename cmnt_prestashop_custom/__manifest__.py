@@ -3,7 +3,7 @@
 
 {
     'name': 'Prestashop customizations from Comunitea',
-    'version': "17.0.1.0.0",
+    'version': "18.0.1.0.0",
     'category': 'Connector',
     'author': 'Comunitea',
     'maintainer': 'Comunitea',
