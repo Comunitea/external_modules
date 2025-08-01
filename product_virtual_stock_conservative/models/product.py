@@ -13,6 +13,8 @@ class ProductTemplate(models.Model):
                 product.outgoing_qty
 
     virtual_stock_conservative = fields.Float(
+        string="Virtual Stock Conservative",
+        help="Stock real - Outgoing stock",
         compute="_compute_virtual_stock_conservative",
         readonly=True)
 
@@ -27,5 +29,7 @@ class ProductProduct(models.Model):
                 product.outgoing_qty
 
     virtual_stock_conservative = fields.Float(
+        string="Virtual Stock Conservative",
+        help="Stock real - Outgoing stock",
         compute="_compute_virtual_stock_conservative",
         readonly=True)
