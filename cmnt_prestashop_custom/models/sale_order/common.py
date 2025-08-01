@@ -28,7 +28,7 @@ class SaleOrde(models.Model):
                     order.action_cancel()
         return res
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         res = super().create(vals)
         if res.prestashop_state.trigger_cancel:
