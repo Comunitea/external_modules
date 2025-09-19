@@ -26,7 +26,11 @@ class ProductTemplate(models.Model):
         for templ_id in self:
             templ_id.tracking_count = sum(x.tracking_count for x in self.product_variant_ids)
 
-
+    template_tracking = fields.Selection(
+        TRACKING_VALUES,
+        string="Tracking", required=True, default='none', # Not having a default value here causes issues when migrating.
+        compute='_compute_template_tracking', inverse="_inverse_template_tracking", store=True, readonly=False, precompute=True,
+        help="Ensure the traceability of a storable product in your warehouse.")
     virtual_tracking = fields.Boolean(
         "With tracking", help="Alternative tracking for products with tracking = 'none'"
     )
@@ -35,35 +39,18 @@ class ProductTemplate(models.Model):
     )
     template_tracking = fields.Selection(selection=TRACKING_VALUES, string='Product Tracking')
 
-    def write(self, vals):
-        template_tracking = vals.get('template_tracking', False)
-        if template_tracking == 'virtual':
-            vals.update({
-                'tracking': 'none',
-                'virtual_tracking': True,
-            })
-        elif template_tracking:
-            vals.update({
-                'tracking': template_tracking,
-                'virtual_tracking': False,
-            })
-        return super().write(vals)
+    @api.depends('is_storable')
+    def _compute_template_tracking(self):
+        self.filtered(lambda t: not t.is_storable and t.tracking != 'none').tracking = 'none'
 
-    @api.model_create_multi
-    def create(self, val_list):
-        for val in val_list:
-            template_tracking = val.get('template_tracking', False)
-            if template_tracking == 'virtual':
-                val.update({
-                    'tracking': 'none',
-                    'virtual_tracking': True,
-                })
-            elif template_tracking:
-                val.update({
-                    'tracking': template_tracking,
-                    'virtual_tracking': False,
-                })
-        return super().create(val_list)
+    def _inverse_template_tracking(self):
+        for templ in self:
+            if templ.template_tracking == 'virtual':
+                templ.virtual_tracking = True
+                templ.tracking = 'none'
+            else:
+                templ.virtual_tracking = False
+                templ.tracking = templ.template_tracking
 
     def action_view_serials(self):
         action = self.env.ref("stock.action_production_lot_form").read()[0]
@@ -105,20 +92,23 @@ class ProductProduct(models.Model):
     not_lot_name_ids = fields.Char("Forbidden lot names", help="Forbidden lot names, splitted by ', '")
 
     def write(self, vals):
+        if 'not_lot_names_ids' in vals:
+            #Elimino espacios
+            vals['not_lot_name_ids'] = vals['not_lot_name_ids'].replace(', ', ',').replace(' ,', ',')
         res = super().write(vals)
-
-        fields = ['default_code', 'barcode', 'barcode_1', 'barcode_2']
-        if len(self) == 1 and any(f in vals for f in fields):
-            vals['not_not_lot_name_ids'] = self._compute_not_lot_name_ids()
+        if len(self) == 1:
+            fields = self.compute_not_lot_name_ids_fields()
+            if any(f in vals for f in fields):
+                self.not_lot_name_ids = self._compute_not_lot_name_ids()
         return res
 
     def compute_not_lot_name_ids_fields(self):
-        return ['default_code', 'barcode', 'barcode_1', 'barcode_2']
+        return ['default_code', 'barcode']
 
     def _compute_not_lot_name_ids(self):
         if self.not_lot_name_ids:
             # Elimino espacios
-            not_lot_names_ids = self.not_lot_name_ids.replace(', ', ',').replace(' ,', ',').split(",")
+            not_lot_names_ids = self.not_lot_name_ids.split(",")
         else:
             not_lot_names_ids = []
         for f in self.compute_not_lot_name_ids_fields():

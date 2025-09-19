@@ -7,16 +7,12 @@
             <field name="priority" eval="70"/>
             <field name="inherit_id" ref="stock.res_config_settings_view_form" />
             <field name="arch" type="xml">
-                <xpath expr="//div[@id='owner_stored_products']" position="after">
-                    <div class="col-12 col-lg-6 o_setting_box" id="id_serial_to_upper_case">
-                        <div class="o_setting_left_pane">
-                            <field name="serial_to_upper_case"/>
-                        </div>
-                        <div class="o_setting_right_pane">
+                <xpath expr="//field[@name='group_stock_production_lot']" position="inside">
+                    <div class="row mt-2" invisible="not group_stock_production_lot">
+                        <field name="serial_to_upper_case" class="col flex-grow-0 ml16 mr0 pe-2"/>
+                        <div class="col ps-0">
                             <label for="serial_to_upper_case"/>
-                            <div class="text-muted">
-                                Convert all serial numbers to upper case 
-                            </div>
+                            <div class="text-muted"> Convert all serial numbers to upper case.</div>
                         </div>
                     </div>
                 </xpath>

@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-<record id="product_template_search_view_At" model="ir.ui.view">
+    <record id="view_template_property_form" model="ir.ui.view">
+        <field name="name">product.template.stock.property.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.view_template_property_form"/>
+        <field name="arch" type="xml">
+            <field name="tracking" invisible="not is_storable" groups="stock.group_production_lot"/>
+            <xpath expr="//field[@name='tracking']" position="after">
+                <field name="template_tracking" invisible="not is_storable" groups="stock.group_production_lot"/>    
+                <field name="virtual_tracking"/>
+            </xpath>
+            <field name="tracking" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+    <!--record id="product_template_search_view_At" model="ir.ui.view">
             <field name="name">product.template.search.at</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_search_view" />
@@ -16,7 +31,6 @@
     <record model="ir.ui.view" id="product_template_form_view_procurement_button">
         <field name="name">product.template_procurement</field>
         <field name="model">product.template</field>
-        <!--field name="groups_id" eval="[(4, ref('stock.group_stock_user'))]"/-->
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
         
@@ -42,20 +56,6 @@
                     </div>
                 </button>
             </button>
-        </field>
-    </record>
-    <record id="view_template_property_form" model="ir.ui.view">
-        <field name="name">product.template.stock.property.form</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="stock.view_template_property_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='tracking']" position="after">
-                <field name="virtual_tracking"/>
-                <field name="template_tracking" widget="radio" attrs="{'invisible': [('type', '=', 'service')]}"/>
-            </xpath>
-            <field name="tracking" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </field>
         </field>
     </record>
 
@@ -96,6 +96,6 @@
                     </button>
                 </button>
             </field>
-        </record>
+        </record-->
 
 </odoo>
