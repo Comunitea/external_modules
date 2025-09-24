@@ -276,6 +276,10 @@ class StockPicking(models.Model):
                     }
                 }
 
+                self.message_post(
+                    body="Datos enviados a MRW transportista: {}".format(TransmEnvio)
+                )
+
                 res = client.service.TransmEnvio(
                     **TransmEnvio, _soapheaders=[headers]
                 )
