@@ -26,6 +26,7 @@ msgid "Attendance"
 msgstr "Asistencia"
 
 #. module: hr_attendance_report
+#: model:ir.model.fields,field_description:hr_attendance_report.field_res_company__ccc
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
 msgid "CCC"
 msgstr ""
@@ -34,6 +35,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.hr_employee_print_assitance_report_form
 msgid "Cancel"
 msgstr "Cancelar"
+
+#. module: hr_attendance_report
+#: model:ir.model,name:hr_attendance_report.model_res_company
+msgid "Companies"
+msgstr "Empresas"
 
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
@@ -62,7 +68,6 @@ msgstr "Día"
 
 #. module: hr_attendance_report
 #: model:ir.model.fields,field_description:hr_attendance_report.field_hr_employee_print_attendance_report__display_name
-#: model:ir.model.fields,field_description:hr_attendance_report.field_report_hr_attendance_report_print_attendance__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
@@ -88,7 +93,6 @@ msgstr "Desde:"
 
 #. module: hr_attendance_report
 #: model:ir.model.fields,field_description:hr_attendance_report.field_hr_employee_print_attendance_report__id
-#: model:ir.model.fields,field_description:hr_attendance_report.field_report_hr_attendance_report_print_attendance__id
 msgid "ID"
 msgstr ""
 
@@ -99,7 +103,6 @@ msgstr "Horas de entrada y salida"
 
 #. module: hr_attendance_report
 #: model:ir.model.fields,field_description:hr_attendance_report.field_hr_employee_print_attendance_report____last_update
-#: model:ir.model.fields,field_description:hr_attendance_report.field_report_hr_attendance_report_print_attendance____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
@@ -149,14 +152,30 @@ msgid "Print"
 msgstr "Imprimir"
 
 #. module: hr_attendance_report
+#: model_terms:ir.ui.view,arch_db:hr_attendance_report.hr_employee_public_view_form_inherit
+msgid "Print Attendance Report"
+msgstr "Imprimir informe de asistencia"
+
+#. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.hr_employee_print_assitance_report_form
 msgid "Print assitance report"
 msgstr "Imprimir informe de asistencia"
 
 #. module: hr_attendance_report
 #: model:ir.actions.act_window,name:hr_attendance_report.hr_employee_print_assitance_report_action
+#: model:ir.actions.act_window,name:hr_attendance_report.hr_employee_public_print_assitance_report_action
 msgid "Print attendance report"
 msgstr "Imprimir informe de asistencia"
+
+#. module: hr_attendance_report
+#: model:ir.model,name:hr_attendance_report.model_hr_employee_public
+msgid "Public Employee"
+msgstr "Empleado Público"
+
+#. module: hr_attendance_report
+#: model:ir.model,name:hr_attendance_report.model_resource_calendar
+msgid "Resource Working Time"
+msgstr "Horario de Trabajo de Recursos"
 
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
@@ -192,6 +211,11 @@ msgstr "CIF"
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
 msgid "Voluntarias"
 msgstr ""
+
+#. module: hr_attendance_report
+#: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance
+msgid "Work Address"
+msgstr "Domicilio del centro de trabajo"
 
 #. module: hr_attendance_report
 #: model_terms:ir.ui.view,arch_db:hr_attendance_report.print_attendance

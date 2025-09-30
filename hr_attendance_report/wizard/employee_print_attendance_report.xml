@@ -31,4 +31,15 @@
             <field name="binding_view_types">list,form</field>
         </record>
 
+        <record id="hr_employee_public_print_assitance_report_action" model="ir.actions.act_window">
+            <field name="name">Print attendance report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.employee.print.attendance.report</field>
+            <field name="view_id" ref="hr_employee_print_assitance_report_form"/>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="hr.model_hr_employee_public" />
+            <field name="binding_view_types">list,form</field>
+        </record>
+
 </odoo>

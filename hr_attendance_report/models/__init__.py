@@ -22,3 +22,4 @@
 ##############################################################################
 from . import company
 from . import resource_calendar
+from . import hr_employee_public
