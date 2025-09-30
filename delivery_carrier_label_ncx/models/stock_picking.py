@@ -22,6 +22,7 @@ import base64
 import re
 
 from datetime import datetime
+from odoo import models, fields
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
