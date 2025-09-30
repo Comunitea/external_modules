@@ -33,5 +33,6 @@ class EmployeePrintAttendanceReport(models.TransientModel):
         datas = {'ids': self._context.get('active_ids', [])}
         res = {'from_date': self.from_date, 'to_date': self.to_date}
         datas['form'] = res
-        return self.env.ref('hr_attendance_report.action_print_attendance').\
+        action_id = self.env["ir.actions.report"]._for_xml_id('hr_attendance_report.action_print_attendance')['id']
+        return self.env["ir.actions.report"].sudo().browse(action_id).\
             report_action(self, data=datas)

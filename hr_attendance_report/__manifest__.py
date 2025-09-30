@@ -30,8 +30,9 @@
     'application': False,
     'installable': True,
     'depends': [
+        'hr',
         'hr_attendance',
-        'hr_holidays_public'
+        'hr_holidays_public',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -40,6 +41,7 @@
         'reports/hr_employee_attendance_report.xml',
         'reports/hr_attendance_report.xml',
         'views/company_views.xml',
-        'views/hr_employee_views.xml'
+        'views/hr_employee_views.xml',
+        'views/hr_employee_public_views.xml',
     ],
 }
