@@ -8,7 +8,7 @@ from .cex_request import CexRequest
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
-    delivery_type = fields.Selection(selection_add=[("cex", "Correos Express")])
+    delivery_type = fields.Selection(selection_add=[("cex", "Correos Express")], ondelete={"cex": "set default"})
     cex_account = fields.Char(string="Correos Express Account")
     cex_password = fields.Char(string="Correos Express Password")
     cex_codRte = fields.Char(string="Correos Express codRte")

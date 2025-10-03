@@ -26,7 +26,10 @@ class DeliveryCarrier(models.Model):
 
     _inherit = "delivery.carrier"
 
-    delivery_type = fields.Selection(selection_add=[("ncx", "NACEX")])
+    delivery_type = fields.Selection(
+        selection_add=[("ncx", "NACEX")],
+        ondelete={"ncx": "set default"},
+    )
     ncx_account = fields.Char("NACEX Account")
     ncx_password = fields.Char("NACEX Password")
     ncx_client = fields.Char("NACEX Client Code")
