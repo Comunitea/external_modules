@@ -8,7 +8,7 @@ from .cex_request import CexRequest
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
-    carrier_type = fields.Selection(selection_add=[("cex", "Correos Express")])
+    delivery_type = fields.Selection(selection_add=[("cex", "Correos Express")])
     cex_account = fields.Char(string="Correos Express Account")
     cex_password = fields.Char(string="Correos Express Password")
     cex_codRte = fields.Char(string="Correos Express codRte")
@@ -36,7 +36,7 @@ class DeliveryCarrier(models.Model):
             }
             if label.get("package_id"):
                 data["package_id"] = label["package_id"]
-            
+
             attachment = self.env["ir.attachment"].create(data)
             body = _("Correos Express label for tracking ref {}").format(picking.tracking_ref)
             picking.message_post(body=body, attachments=attachment)

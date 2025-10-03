@@ -7,8 +7,8 @@
         <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='carrier_data']" position="after">
-                <group string="ncx Data" attrs="{'invisible': [('carrier_type', '!=', 'ncx')]}">
-                    <field name="carrier_type" invisible="1"/>
+                <group string="ncx Data" attrs="{'invisible': [('delivery_type', '!=', 'ncx')]}">
+                    <field name="delivery_type" invisible="1"/>
                     <field name="shipment_reference"/>
                     <field name="ncx_shipping_return"/>
                 </group>

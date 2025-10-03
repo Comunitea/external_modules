@@ -26,7 +26,7 @@ class DeliveryCarrier(models.Model):
 
     _inherit = "delivery.carrier"
 
-    carrier_type = fields.Selection(selection_add=[("ncx", "NACEX")])
+    delivery_type = fields.Selection(selection_add=[("ncx", "NACEX")])
     ncx_account = fields.Char("NACEX Account")
     ncx_password = fields.Char("NACEX Password")
     ncx_client = fields.Char("NACEX Client Code")
@@ -79,7 +79,7 @@ class DeliveryCarrier(models.Model):
         padding_factor = (4 - len(label) % 4) % 4
         label += "="*padding_factor
         return base64.b64decode(str(label).translate(dict(zip(map(ord, u'-_'), u'+/'))))
-    
+
     def _prepare_ncx_shipping(self, picking):
         self.ensure_one()
         arrayOfString_3 = [
@@ -114,7 +114,7 @@ class DeliveryCarrier(models.Model):
             "arrayOfString_3": arrayOfString_3
         }
         return putExpedicion
-    
+
     def ncx_send_shipping(self, pickings):
         return [self.ncx_create_shipping(p) for p in pickings]
 
@@ -143,7 +143,7 @@ class DeliveryCarrier(models.Model):
             raise UserError(
                 _("There was an error connecting to Nacex. Check the connection log.")
             )
-    
+
     def _ncx_check_cancel_response(self, res, picking):
         if res and res._raw_elements and res._raw_elements[0].text == 'ERROR':
             msg = _("Access error message: {}").format(res._raw_elements[0].text)
