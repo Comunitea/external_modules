@@ -14,7 +14,6 @@
         'base_geolocalize',
     ],
     "data": [
-        "views/res_users.xml",
         "views/res_config_settings.xml",
         "views/hr_employee.xml",
     ],

@@ -7,7 +7,11 @@ import re
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
-    allow_remote_check_in = fields.Boolean(related="user_id.allow_remote_check_in", readonly=False)
+    allow_remote_check_in = fields.Boolean(
+        string="Allow Remote Check-In",
+        help="If enabled, the user will be able to check in remotely.",
+        default=False,
+    )
 
     def _attendance_action_change(self):
         client_ip = str(request.httprequest.environ['REMOTE_ADDR'])
@@ -21,7 +25,7 @@ class HrEmployee(models.Model):
                     ip_allowed = True
                     break
         if not ip_allowed:
-            if not self.user_id.allow_remote_check_in:
+            if not self.allow_remote_check_in:
                 raise UserError(_('URL not allowed for attendance check in/out'))
             else:
                 res = super()._attendance_action_change()

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-07 15:20+0000\n"
-"PO-Revision-Date: 2025-10-07 15:20+0000\n"
+"POT-Creation-Date: 2025-10-08 13:46+0000\n"
+"PO-Revision-Date: 2025-10-08 13:46+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,6 @@ msgstr ""
 
 #. module: hr_attendance_limit_by_ip
 #: model:ir.model.fields,field_description:hr_attendance_limit_by_ip.field_hr_employee__allow_remote_check_in
-#: model:ir.model.fields,field_description:hr_attendance_limit_by_ip.field_res_users__allow_remote_check_in
 msgid "Allow Remote Check-In"
 msgstr "Permitir registro remoto"
 
@@ -53,7 +52,6 @@ msgstr "IPs permitidas para el registro de entrada/salida"
 
 #. module: hr_attendance_limit_by_ip
 #: model:ir.model.fields,help:hr_attendance_limit_by_ip.field_hr_employee__allow_remote_check_in
-#: model:ir.model.fields,help:hr_attendance_limit_by_ip.field_res_users__allow_remote_check_in
 msgid "If enabled, the user will be able to check in remotely."
 msgstr "Si está habilitado, el usuario podrá registrarse de forma remota."
 
@@ -74,11 +72,6 @@ msgstr ""
 msgid "URL not allowed for attendance check in/out"
 msgstr ""
 "URL no permitida para el registro de entrada/salida"
-
-#. module: hr_attendance_limit_by_ip
-#: model:ir.model,name:hr_attendance_limit_by_ip.model_res_users
-msgid "User"
-msgstr "Usuario"
 
 #. module: hr_attendance_limit_by_ip
 #. odoo-python
