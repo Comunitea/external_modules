@@ -37,3 +37,11 @@ class HrEmployee(models.Model):
                         raise UserError(_('You can not check in without location data.'))
                 return res
         return super()._attendance_action_change()
+
+
+class HrEmployeePublic(models.Model):
+    _inherit = "hr.employee.public"
+
+    allow_remote_check_in = fields.Boolean(
+        readonly=True,
+    )
