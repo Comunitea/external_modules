@@ -8,9 +8,9 @@
     'author': 'PESOL, Odoo Community Association (OCA), Comunitea',
     'website': 'https://github.com/OCA/delivery-carrier',
     'depends': [
-        'cmnt_delivery_carrier_label',
+        'delivery',
     ],
     'data': [
-        'views/carrier_account.xml'
+        'views/delivery_carrier.xml'
     ]
 }

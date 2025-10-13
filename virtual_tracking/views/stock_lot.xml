@@ -6,14 +6,12 @@
          <field name="inherit_id" ref="stock.view_production_lot_form" />
         <field name="arch" type="xml">
             <field name="ref" position="after">
-                <field name="location_id" readonly="0" attrs="{'required': [('virtual_tracking', '=', True)]}"/>
-                <!--field name="real_location_id" readonly="0" attrs="{'required': [('virtual_tracking', '=', True)]}"/-->
+                <field name="location_id" readonly="0" invisible="virtual_tracking == True"/>
                 <field name="virtual_tracking" readonly="0" />
-                <!--field name="move_line_ids" readonly="1" invisible="1" /-->
 
             </field>
             <div name="button_box" position="inside">
-                <button 
+                <button
                     class="oe_stat_button"
                     name="show_tracking_move_ids"
                     string="Tracking"
@@ -21,7 +19,7 @@
                     icon="fa-barcode"
                     />
             </div>
-            
+
         </field>
     </record>
     <record id="view_production_lot_tree" model="ir.ui.view">

@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="stock_delivery.view_picking_withcarrier_out_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='carrier_data']" position="after">
-                <group string="ncx Data" attrs="{'invisible': [('delivery_type', '!=', 'ncx')]}">
+                <group string="ncx Data" invisible="delivery_type != 'ncx'">
                     <field name="delivery_type" invisible="1"/>
                     <field name="shipment_reference"/>
                     <field name="ncx_shipping_return"/>
@@ -16,13 +16,13 @@
         </field>
     </record>
 
-    <record id="cmnt_delivery_carrier_ncx_carrier_account" model="ir.ui.view">
-        <field name="name">cmnt.delivery.carrier.dhl.carrier.account</field>
-        <field name="model">carrier.account</field>
-        <field name="inherit_id" ref="base_delivery_carrier_label.carrier_account_view_form"/>
+    <record id="delivery_carrier_inherit_view_form" model="ir.ui.view">
+        <field name="name">delivery.carrier.inherit.view.form</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[last()]" position="after">
-                <group string="ncx configuration" attrs="{'invisible': [('integration_type', '!=', 'ncx')]}">
+            <group name="provider_details" position="after">
+               <group string="ncx configuration" invisible="delivery_type != 'ncx'">
                     <field name="ncx_client"/>
                     <field name="ncx_delegation"/>
                     <field name="ncx_client_department"/>
@@ -32,7 +32,7 @@
                     <field name="ncx_package_type"/>
                     <field name="ncx_pod_type"/>
                 </group>
-            </xpath>
+            </group>
         </field>
     </record>
 

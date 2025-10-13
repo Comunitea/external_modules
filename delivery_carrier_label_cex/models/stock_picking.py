@@ -12,25 +12,11 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from unidecode import unidecode
 
-try:
-    import genshi
-    import genshi.template
-except (ImportError, IOError) as err:
-    import logging
-
-    logging.getLogger(__name__).warn("Module genshi is not available")
-
-loader = genshi.template.TemplateLoader(
-    os.path.join(os.path.dirname(__file__), "template"), auto_reload=True
-)
-
-
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
     cex_result = fields.Text("CEX Result")
 
-    @api.multi
     def number_of_packages_for_cex(self):
         self.ensure_one()
         # TODO check pack operation no disponible en v 12

@@ -25,7 +25,7 @@
     "author": "comunitea",
     "website": "www.comunitea.com",
     "license": "AGPL-3",
-    "depends": ["delivery_package_number", "delivery_state"],
+    "depends": ["delivery_package_number", "delivery_state", "stock_delivery"],
     "data": ["views/stock_picking.xml"],
     "external_dependencies": {"python": ["zeep"]},
     "installable": True,

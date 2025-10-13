@@ -13,7 +13,7 @@
                     type="object"
                     icon="fa-barcode"
                     context="{'recal_qty_done': True}"
-                    attrs="{'invisible': [('template_tracking', '!=', 'virtual')]}"
+                    invisible="template_tracking != 'virtual'"
                 />
             </field>
         </field>
@@ -33,7 +33,7 @@
                     type="object"
                     icon="fa-barcode"
                     context="{'recal_qty_done': True}"
-                    attrs="{'invisible': [('template_tracking', '!=', 'virtual')]}"
+                    invisible="template_tracking != 'virtual'"
                 />
             </field>
         </field>
@@ -48,7 +48,7 @@
                 <header>
                      <field name="state" widget="statusbar" readonly="1"/>
                  </header>
-                 <group attrs="{'invisible': [('state', '=', 'done')]}">
+                 <group invisible="state == 'done'">
                     <group>
                         <field name="location_id" invisible="0" readonly="1"/>
                         <field name="location_dest_id" invisible="0" readonly="1"/>
@@ -58,7 +58,7 @@
                         <field name="is_locked" invisible="1" readonly="1"/>
                     </group>
                 </group>
-                    <group attrs="{'invisible': [('state', '=', 'done')]}">
+                    <group invisible="state == 'done'">
                         <group string="Principal">
                             <field name="product_id" readonly="1"/>
                             <field string="Tracking" name="template_tracking" readonly="1"/>
@@ -72,15 +72,15 @@
                             </div>
                             <label for="qty_done"/>
                             <div class="o_row">
-                                <span><field name="qty_done" attrs="{'readonly': [('state', '=', 'done')]}" nolabel="1"/></span>
+                                <span><field name="qty_done" invisible="state == 'done'" nolabel="1"/></span>
                                 <span><field name="product_uom_id" readonly="1" nolabel="1"/></span>
                             </div>
                             <!--field name="lot_name"  attrs="{'invisible': ['|', ('template_tracking', '=', 'virtual'), ('tracking','!=', 'none')]}"/>
                             <field name="lot_id"  attrs="{'invisible': ['|', ('template_tracking', '=', 'virtual'), ('tracking','!=', 'none')]}"/-->
                         </group>
                      </group>
-                    
-                     <div attrs="{'invisible': [('template_tracking','!=', 'virtual')]}" >
+
+                     <div invisible="template_tracking != 'virtual'">
                         <group string="Tracking"  >
                             <group invisible="0">
                                 <field name="picking_type_use_existing_lots"/>
@@ -89,41 +89,42 @@
                             <group invisible="0">
                                 <field name="template_tracking"/>
                                 <field options="{'no_create': True}" name="available_serial_ids"
-                                    context="{'default_product_id': product_id, 'default_virtual_tracking': 1}"  
+                                    context="{'default_product_id': product_id, 'default_virtual_tracking': 1}"
                                     invisible="1"
                                     widget="many2many_tags"
                                     />
-                            
+
                             </group>
                         </group>
                         <!--Dbería de ocultar una de estas 2 opciones. De momento muestro las dos-->
                         <h3>Ocultar una opción </h3>
-                        <group string="Texto Manual">  
+                        <group string="Texto Manual">
                             <!--attrs="{'invisible': ['|', ('state', '==', 'done'), ('picking_type_use_create_lots', '=', False)]}">-->
                             <label for="serial_ids_string" string="Cadena de texto"/>
-                            <field name="serial_ids_string" nolabel="1" 
-                                attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="serial_ids_string" nolabel="1"
+                                invisible="state == 'done'"/>
                         </group>
                         <group string="Serial Existentes" >
                             <!--attrs="{'invisible': ['|', ('state', '==', 'done'), ('picking_type_use_create_lots', '=', True)]}">-->
                             <label for="serial_ids" string="Nº existentes"/>
-                            <field name="serial_ids" nolabel="1" 
-                                widget="many2many_tags" options="{'no_create': True}" 
-                                attrs="{'readonly': [('state', '=', 'done')]}"
+                            <field name="serial_ids" nolabel="1"
+                                widget="many2many_tags" options="{'no_create': True}"
+                                invisible="state == 'done'"
                                 domain="[('id', 'in', available_serial_ids)]"/>
                         </group>
                     </div>
-                    
+
                     <footer class="oe_edit_only">
-                        <button string="Convertir a Nº de serie" 
-                            type="object" name="convert_serial_ids_string_to_serial_ids" class="oe_highlight" 
+                        <button string="Convertir a Nº de serie"
+                            type="object" name="convert_serial_ids_string_to_serial_ids" class="oe_highlight"
                             context="{'recal_qty_done': True, 'apply_regexp': False, }"
-                            attrs="{'invisible': ['|', ('state', '=', 'done'), ('serial_ids_string', '=', '')]}"/>
-                        <button string="Confirm" attrs="{'invisible': [('serial_ids_string', '!=', '')]}" special="save" class="oe_highlight"/>
+                            invisible="state == 'done' or serial_ids_string == ''"
+                        />
+                        <button string="Confirm" invisible="serial_ids_string != ''" special="save" class="oe_highlight"/>
                         <button string="Discard" special="cancel"/>
                     </footer>
             </form>
-        
+
         </field>
 </record>
 </odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="delivery_carrier_inherit_view_form" model="ir.ui.view">
+        <field name="name">delivery.carrier.inherit.view.form</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_details" position="after">
+                <group string="cex configuration" invisible="delivery_type != 'cex'">
+                    <field name="cex_codRte"/>
+                    <field name="cex_solicitante"/>
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

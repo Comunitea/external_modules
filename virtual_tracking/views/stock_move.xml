@@ -21,10 +21,10 @@
             <field name="inherit_id" ref="stock.view_stock_move_operations" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='move_line_ids']" position="after">
-                    <field name="template_tracking" attrs="{'invisible': [('template_tracking', '!=', 'virtual')]}" />
-                    <field name="serial_ids" widget="many2many_tags" attrs="{'invisible': ['|', ('serial_ids', '=', False), ('template_tracking', '!=', 'virtual')]}" />
+                    <field name="template_tracking" invisible="template_tracking != 'virtual'" />
+                    <field name="serial_ids" widget="many2many_tags" invisible="serial_ids == False or template_tracking != 'virtual'"/>
                 </xpath>
-                
+
             </field>
         </record>
 </odoo>
