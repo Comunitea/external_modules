@@ -10,6 +10,7 @@
     'depends': [
         'delivery',
     ],
+    "external_dependencies": {"python": ["genshi"]},
     'data': [
         'views/delivery_carrier.xml'
     ]
