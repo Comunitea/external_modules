@@ -34,8 +34,7 @@
     ],
     "assets": {
         "web.assets_backend": [
-            'login_digital_kit/static/src/js/backendlogo.js',
-            'login_digital_kit/static/src/xml/backendlogo.xml',
+            'login_digital_kit/static/src/**/*',
         ],
     },
 }
