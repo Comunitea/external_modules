@@ -1,0 +1,14 @@
+.o-aside {
+        flex: 0 0 $chatter_zone_width;
+        max-width: initial;
+        min-width: initial;
+        overflow: auto;
+        @media screen and (max-width: 768px) {
+            flex: 0 0 100% !important;
+            width: auto;
+            max-width: none; 
+            min-width: 0;  
+            height: fit-content;
+            margin-top: 0 !important;
+        }
+    }
