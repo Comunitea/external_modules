@@ -15,9 +15,8 @@ class ProductImageMapper(Component):
         elif self.backend_record.import_image_type == "db":
             image_data = record["content"]
             if self.backend_record.resize_images:
-                image_data = tools.image_get_resized_images(
-                    image_data, return_small=False
-                )["image_medium"]
+                # En Odoo 18.0, usar image_process para redimensionar a tamaño medio (256x256)
+                image_data = tools.image_process(image_data, size=(256, 256))
             return {"file_db_store": image_data}
 
     @mapping
