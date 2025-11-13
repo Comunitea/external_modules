@@ -21,18 +21,25 @@
         <field name="model">delivery.carrier</field>
         <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
         <field name="arch" type="xml">
-            <group name="provider_details" position="after">
-               <group string="ncx configuration" invisible="delivery_type != 'ncx'">
-                    <field name="ncx_client"/>
-                    <field name="ncx_delegation"/>
-                    <field name="ncx_client_department"/>
-                    <field name="ncx_printer_model"/>
-                    <field name="ncx_oldmodel"/>
-                    <field name="ncx_payment_type"/>
-                    <field name="ncx_package_type"/>
-                    <field name="ncx_pod_type"/>
-                </group>
-            </group>
+            <xpath expr="//notebook/page[1]" position='before'>
+                <page
+                    string="NCX Configuration"
+                    invisible="delivery_type != 'ncx'"
+                >
+                <group>
+                        <field name="ncx_account"/>
+                        <field name="ncx_password"/>
+                        <field name="ncx_client"/>
+                        <field name="ncx_delegation"/>
+                        <field name="ncx_client_department"/>
+                        <field name="ncx_printer_model"/>
+                        <field name="ncx_oldmodel"/>
+                        <field name="ncx_payment_type"/>
+                        <field name="ncx_package_type"/>
+                        <field name="ncx_pod_type"/>
+                    </group>
+                </page>
+            </xpath>
         </field>
     </record>
 
