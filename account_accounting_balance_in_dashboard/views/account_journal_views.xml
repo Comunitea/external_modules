@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_journal_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">accounting.balance.account.journal.dashboard</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='dashboard_bank_cash_right']/div[1]" position="before">
+                <div class="row" t-if="'show_accounting_balance' in dashboard">
+                    <div id="dashboard_accounting_balance" class="col overflow-hidden text-start">
+                        <span>Accounting Balance</span>
+                    </div>
+                    <div class="col-auto text-end">
+                        <span dir="ltr"><t t-out="dashboard.accounting_balance"/></span>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_journal_form" model="ir.ui.view">
+        <field name="name">accounting.balance.view.account.journal.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <field name="default_account_id" position="after">
+                <field name="show_accounting_balance_dashboard"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

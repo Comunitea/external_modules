@@ -1,0 +1,31 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_accounting_balance_in_dashboard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-21 12:20+0000\n"
+"PO-Revision-Date: 2025-11-21 12:20+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_accounting_balance_in_dashboard
+#: model_terms:ir.ui.view,arch_db:account_accounting_balance_in_dashboard.account_journal_dashboard_kanban_view
+msgid "<span>Accounting Balance</span>"
+msgstr "<span>Saldo Contable</span>"
+
+#. module: account_accounting_balance_in_dashboard
+#: model:ir.model,name:account_accounting_balance_in_dashboard.model_account_journal
+msgid "Journal"
+msgstr "Diario"
+
+#. module: account_accounting_balance_in_dashboard
+#: model:ir.model.fields,field_description:account_accounting_balance_in_dashboard.field_account_journal__show_accounting_balance_dashboard
+msgid "Show Accounting Balance in Dashboard"
+msgstr "Mostrar Saldo Contable en el Tablero"
