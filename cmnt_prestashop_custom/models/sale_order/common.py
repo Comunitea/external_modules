@@ -22,7 +22,7 @@ class SaleOrde(models.Model):
                     ):
                         order.invoice_ids.filtered(
                             lambda r: r.state == "draft"
-                        ).action_cancel()
+                        ).button_cancel()
                     if order.state == "done":
                         order.action_unlock()
                     order.action_cancel()
