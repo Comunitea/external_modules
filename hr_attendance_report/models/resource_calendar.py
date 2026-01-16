@@ -13,9 +13,9 @@ from odoo.addons.resource.models.resource import Intervals
 
 class ResourceCalendar(models.Model):
     _inherit = "resource.calendar"
-        
+
     def get_work_hours_count_exclude_all(
-            self, start_dt, end_dt, employee, 
+            self, start_dt, end_dt, employee,
             compute_leaves=True, domain=None):
         """
         Versión de get_work_hours_count que debería excluir tanto las
@@ -26,11 +26,11 @@ class ResourceCalendar(models.Model):
         (sin exito para una ausencia de empleado)
         En caso de ser False se llama otra función _attendance_intervals_batch.
         El módulo de hr_holidays_public añade la funcionalidad de excluir los
-        hr.holidays.public pero no se puede hacer junto con las ausencias de 
+        hr.holidays.public pero no se puede hacer junto con las ausencias de
         Odoo.
         Aquí primero llamo con el contexto para excluir los festicvos de OCA,
-        si el resultado es 0 lo devuelvo, sino corrijo la llamada a 
-        _work_intervals_batch, para que descuente las horas de las ausencias, 
+        si el resultado es 0 lo devuelvo, sino corrijo la llamada a
+        _work_intervals_batch, para que descuente las horas de las ausencias,
         que parece faltarle especificar el recurso del empleado, ya que sino no
         descuenta las horas o días de ausencias (Vacaciones, asuntos propio...)
         """
@@ -44,24 +44,29 @@ class ResourceCalendar(models.Model):
             start_dt = start_dt.replace(tzinfo=utc)
         if not end_dt.tzinfo:
             end_dt = end_dt.replace(tzinfo=utc)
-        
+
         # Primero consulto los festivos generales
         intervals = employee.resource_calendar_id.\
             _attendance_intervals_batch(
                 start_dt, end_dt, employee.resource_id)[employee.resource_id.id]
-        hours_without_holidays = sum(
-            (stop - start).total_seconds() / 3600
-            for start, stop, meta in intervals
-        )
+        hours_without_holidays = 0
+        for start, stop, meta in intervals:
+            if len(meta) > 1:
+                for m in meta:
+                    if m.date_from == m.date_to:
+                        hours_without_holidays += m.hour_to - m.hour_from
+            if hours_without_holidays == 0:
+                hours_without_holidays += (stop - start).total_seconds() / 3600
+
         # Era festivo, devuelvo 0
         if not hours_without_holidays:
             return hours_without_holidays
-        
+
         # Para que odoo descuernte las ausencias necesito pasarle el recurso del empleado
         intervals = self._work_intervals_batch(
             start_dt, end_dt, domain=domain, resources=employee.resource_id)[employee.resource_id.id]
 
         return sum(
-            (stop - start).total_seconds() / 3600
+            hours_without_holidays
             for start, stop, meta in intervals
         )
