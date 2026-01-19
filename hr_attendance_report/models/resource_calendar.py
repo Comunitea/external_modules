@@ -49,6 +49,19 @@ class ResourceCalendar(models.Model):
         intervals = employee.resource_calendar_id.\
             _attendance_intervals_batch(
                 start_dt, end_dt, employee.resource_id)[employee.resource_id.id]
+        hours_without_holidays = self._get_custom_hours(intervals)
+
+        # Era festivo, devuelvo 0
+        if not hours_without_holidays:
+            return hours_without_holidays
+
+        # Para que odoo descuernte las ausencias necesito pasarle el recurso del empleado
+        intervals = self._work_intervals_batch(
+            start_dt, end_dt, domain=domain, resources=employee.resource_id)[employee.resource_id.id]
+
+        return self._get_custom_hours(intervals)
+
+    def _get_custom_hours(self, intervals):
         hours_without_holidays = 0
         for start, stop, meta in intervals:
             if len(meta) > 1:
@@ -61,15 +74,4 @@ class ResourceCalendar(models.Model):
                 (stop - start).total_seconds() / 3600.0
                 for start, stop, meta in intervals
             )
-
-        # Era festivo, devuelvo 0
-        if not hours_without_holidays:
-            return hours_without_holidays
-
-        # Para que odoo descuernte las ausencias necesito pasarle el recurso del empleado
-        intervals = self._work_intervals_batch(
-            start_dt, end_dt, domain=domain, resources=employee.resource_id)[employee.resource_id.id]
-        return sum(
-            (stop - start).total_seconds() / 3600.0 if len(meta) < 2 else hours_without_holidays
-            for start, stop, meta in intervals
-        )
+        return hours_without_holidays
