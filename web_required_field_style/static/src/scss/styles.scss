@@ -1,0 +1,9 @@
+$cmnt-input-background-required: mix(#0000ff, transparent, 10) !default;
+
+.o_required_modifier {
+	@include print-variable(
+		o-input-background-color,	
+		$cmnt-input-background-required
+	);
+
+}
