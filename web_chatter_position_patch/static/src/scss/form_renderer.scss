@@ -1,14 +1,26 @@
-.o-aside {
-        flex: 0 0 $chatter_zone_width;
-        max-width: initial;
-        min-width: initial;
-        overflow: auto;
-        @media screen and (max-width: 768px) {
-            flex: 0 0 100% !important;
-            width: auto;
-            max-width: none; 
-            min-width: 0;  
-            height: fit-content;
-            margin-top: 0 !important;
-        }
+// Mixin para los estilos del aside
+@mixin aside-chatter-styles {
+    flex: 0 0 27% !important;
+    max-width: initial;
+    min-width: initial;
+    overflow: auto;
+
+    @media screen and (max-width: 768px) {
+        flex: 0 0 100% !important;
+        width: auto;
+        max-width: none;
+        min-width: 0;
+        height: fit-content;
+        margin-top: 0 !important;
     }
+}
+
+.o-mail-Form-chatter {
+    &.o-aside {
+        @include aside-chatter-styles;
+    }
+}
+.o-aside{
+    @include aside-chatter-styles;
+}
+
