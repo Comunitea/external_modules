@@ -18,18 +18,12 @@
 #
 ##############################################################################
 import logging
-import base64
-import re
-
-from datetime import datetime
 
 from requests import Session
 
-from odoo import _, api, fields, models
-from odoo.exceptions import AccessError, UserError
-from odoo.addons import decimal_precision as dp
+from odoo import _
+from odoo.exceptions import AccessError
 from zeep import Client
-from zeep import xsd
 from zeep.cache import SqliteCache
 from zeep.plugins import HistoryPlugin
 from zeep.transports import Transport
@@ -75,7 +69,7 @@ class NcxRequest:
     Not all the features are implemented, but could be easily extended with
     the provided API. We leave the operations empty for future.
     """
-    def __init__(self, carrier):        
+    def __init__(self, carrier):
         self.carrier = carrier
         self.client, self.history = self.create_client_ncx()
 

@@ -17,9 +17,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+import re
+import logging
 import base64
-from odoo import models, fields, api
+from lxml import etree
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError, AccessError
 from .nacex_request import NcxRequest
+
+_logger = logging.getLogger(__name__)
 
 
 class DeliveryCarrier(models.Model):
@@ -110,7 +116,7 @@ class DeliveryCarrier(models.Model):
             "obs2={}".format(picking.delivery_note[38:75] if picking.delivery_note else ''),
             "obs3={}".format(picking.delivery_note[75:113] if picking.delivery_note else ''),
             "obs4={}".format(picking.delivery_note[113:151] if picking.delivery_note else ''),
-            "ret={}".format("S" if self.ncx_shipping_return else "N"),
+            "ret={}".format("S" if picking.ncx_shipping_return else "N"),
         ]
 
         if self.ncx_payment_on_delivery and self.ncx_pod_type:
@@ -133,7 +139,6 @@ class DeliveryCarrier(models.Model):
         response = ncx_request.putExpedicion(vals)
         vals.update({"tracking_number": False, "exact_price": 0})
         response_message = self._ncx_check_response(response)
-        self._mrw_log_request(mrw_request)
         ncx_tracking_ref = response["carrier_tracking_ref"]
         vals["tracking_number"] = ncx_tracking_ref or ""
         vals["shipment_reference"] = response["shipment_reference"] or ""
