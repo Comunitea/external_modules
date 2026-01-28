@@ -30,5 +30,4 @@ class StockPicking(models.Model):
     shipment_reference = fields.Char("Shipment Reference")
     failed_shipping = fields.Boolean("Failed Shipping", default=False)
     delivery_type = fields.Selection(related="carrier_id.delivery_type")
-    delivery_note = fields.Char(compute="_compute_delivery_note")
     ncx_shipping_return = fields.Boolean("Shipping with return", default=False)
