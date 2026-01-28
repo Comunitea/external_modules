@@ -99,7 +99,7 @@ class NcxRequest:
                 '{urn:soap/types}nacexwsImplServiceSoapBinding',
                 'http://pda.nacex.com/nacex_ws/soap')
 
-            res = service.putExpedicion(
+            return service.putExpedicion(
                 **putExpedicion
             )
 
