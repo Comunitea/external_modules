@@ -17,7 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
+import base64
 from odoo import models, fields, api
 from .nacex_request import NcxRequest
 
@@ -72,6 +72,12 @@ class DeliveryCarrier(models.Model):
         ],
         default="D",
     )
+    ncx_service = fields.Selection(
+        [
+            ("27", "E-nacex"),
+        ],
+        default="27",
+    )
 
     def ncx_get_tracking_link(self, picking):
         return "http://www.nacex.es/irSeguimiento.do?seguimiento={}".format(
@@ -88,7 +94,7 @@ class DeliveryCarrier(models.Model):
         arrayOfString_3 = [
             "del_cli={}".format(self.ncx_delegation),
             "num_cli={}".format(self.ncx_client),
-            "tip_ser={}".format(self.carrier_service.carrier_code),
+            "tip_ser={}".format(self.ncx_service),
             "tip_cob={}".format(self.ncx_payment_type),
             "ref_cli={}".format(picking.name),
             "tip_env={}".format(self.ncx_package_type),

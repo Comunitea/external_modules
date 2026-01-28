@@ -37,6 +37,7 @@
                         <field name="ncx_payment_type"/>
                         <field name="ncx_package_type"/>
                         <field name="ncx_pod_type"/>
+                        <field name="ncx_service"/>
                     </group>
                 </page>
             </xpath>
