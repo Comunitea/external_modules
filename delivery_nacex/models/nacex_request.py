@@ -103,14 +103,7 @@ class NcxRequest:
                 **putExpedicion
             )
 
-    def getEtiqueta(self, carrier_tracking_ref):
-
-        getEtiqueta = {
-            "String_1": self.carrier.ncx_account,
-            "String_2": self.carrier.ncx_password,
-            "String_3": carrier_tracking_ref,
-            "String_4": self.carrier.ncx_printer_model
-        }
+    def getEtiqueta(self, getEtiqueta):
 
         with self.client.settings(strict=False):
 

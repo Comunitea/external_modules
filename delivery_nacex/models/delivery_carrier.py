@@ -201,11 +201,19 @@ class DeliveryCarrier(models.Model):
         self.log_xml(ncx_last_request, "ncx_request")
         self.log_xml(ncx_last_response, "ncx_response")
 
+    def _prepare_ncx_label(self, ncx_tracking_ref):
+        return {
+            "String_1": self.ncx_account,
+            "String_2": self.ncx_password,
+            "String_3": ncx_tracking_ref,
+            "String_4": self.ncx_printer_model
+        }
+
     def ncx_get_label(self, ncx_tracking_ref, picking):
         self.ensure_one()
         if not ncx_tracking_ref:
             return False
-        vals = self._prepare_label(ncx_tracking_ref)
+        vals = self._prepare_ncx_label(ncx_tracking_ref)
         ncx_request = NcxRequest(self)
         label = ncx_request.getEtiqueta(vals)
         if label and label[0] != "ERROR":
