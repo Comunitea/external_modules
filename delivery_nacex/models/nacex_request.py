@@ -106,10 +106,10 @@ class NcxRequest:
     def getEtiqueta(self, carrier_tracking_ref):
 
         getEtiqueta = {
-            "String_1": self.ncx_account,
-            "String_2": self.ncx_password,
+            "String_1": self.carrier.ncx_account,
+            "String_2": self.carrier.ncx_password,
             "String_3": carrier_tracking_ref,
-            "String_4": self.ncx_printer_model
+            "String_4": self.carrier.ncx_printer_model
         }
 
         with self.client.settings(strict=False):
@@ -126,8 +126,8 @@ class NcxRequest:
         ]
 
         cancelExpedicion = {
-            "String_1": self.ncx_account,
-            "String_2": self.ncx_password,
+            "String_1": self.carrier.ncx_account,
+            "String_2": self.carrier.ncx_password,
             "arrayOfString_3": arrayOfString_3
         }
 
@@ -141,8 +141,8 @@ class NcxRequest:
 
     def getEstadoExpedicion(self, carrier_tracking_ref):
         getEstadoExpedicion = {
-            "String_1": self.ncx_account,
-            "String_2": self.ncx_password,
+            "String_1": self.carrier.ncx_account,
+            "String_2": self.carrier.ncx_password,
             "String_3": carrier_tracking_ref,
         }
 
