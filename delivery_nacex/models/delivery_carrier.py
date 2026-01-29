@@ -19,6 +19,7 @@
 ##############################################################################
 import re
 import logging
+#import logging.config
 import base64
 from lxml import etree
 from odoo import models, fields, api, _
@@ -26,6 +27,16 @@ from odoo.exceptions import UserError, AccessError
 from .nacex_request import NcxRequest
 
 _logger = logging.getLogger(__name__)
+
+# Configura el logging para ver el tráfico XML
+#logging.config.dictConfig({
+#    'version': 1,
+#    'formatters': {'verbose': {'format': '%(name)s: %(message)s'}},
+#    'handlers': {'console': {'class': 'logging.StreamHandler', 'formatter': 'verbose'}},
+#    'loggers': {
+#        'zeep.transports': {'level': 'DEBUG', 'handlers': ['console']},
+#    }
+#})
 
 
 class DeliveryCarrier(models.Model):
@@ -139,9 +150,9 @@ class DeliveryCarrier(models.Model):
         response = ncx_request.putExpedicion(vals)
         vals.update({"tracking_number": False, "exact_price": 0})
         response_message = self._ncx_check_response(response)
-        ncx_tracking_ref = response["carrier_tracking_ref"]
+        ncx_tracking_ref = response_message["carrier_tracking_ref"]
         vals["tracking_number"] = ncx_tracking_ref or ""
-        vals["shipment_reference"] = response["shipment_reference"] or ""
+        vals["shipment_reference"] = response_message["shipment_reference"] or ""
         self.ncx_get_label(ncx_tracking_ref, picking)
         return vals
 
