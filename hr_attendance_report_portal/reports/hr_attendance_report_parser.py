@@ -31,10 +31,13 @@ class EmployeePrintAttendanceReport(models.AbstractModel):
                     month_attendance[month].append(attendance)
                     last_day = int(attendance['day'])
             # Buscar las fechas de vacaciones y faltas de asistencia del empleado
+            # Incluimos ausencias que solapan el rango del informe, aunque crucen meses.
+            from_dt = datetime.combine(from_date, datetime.min.time())
+            to_dt = datetime.combine(to_date, datetime.max.time())
             leaves = self.env['hr.leave'].search([
                 ('employee_id', '=', employee.id),
-                ('date_from', '>=', from_date),
-                ('date_to', '<=', to_date),
+                ('date_from', '<=', to_dt),
+                ('date_to', '>=', from_dt),
                 '|',
                 ('state', '=', 'validate'),
                 ('state', '=', 'validate1'),
@@ -42,8 +45,10 @@ class EmployeePrintAttendanceReport(models.AbstractModel):
             if not leaves and not res['attendances'][employee.id]:
                 continue
             for leave in leaves:
-                date = leave.date_from
-                while date <= leave.date_to:
+                leave_start = max(leave.date_from.date(), from_date)
+                leave_end = min(leave.date_to.date(), to_date)
+                date = leave_start
+                while date <= leave_end:
                     day = str(date.day)
                     if len(day) == 1:
                         day = '0' + day
