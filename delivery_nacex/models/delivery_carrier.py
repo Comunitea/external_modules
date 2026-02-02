@@ -249,7 +249,7 @@ class DeliveryCarrier(models.Model):
                 }
             attachment = self.env["ir.attachment"].create(attachment_values)
             body = _("Nacex label for tracking ref {}").format(ncx_tracking_ref)
-            picking.message_post(body=body, attachments=attachment)
+            picking.message_post(body=body)
         elif label and label[0] == "ERROR":
             _logger.error(
                 _("Error while trying to retrieve the label: {}").format(
