@@ -12,8 +12,8 @@ class HrEmployee(models.Model):
             employee.attendance_report_count = self.env['hr.employee.attendance.report'].search_count([('employee_id', '=', employee.id)])
 
     def _create_attendance_report(self, automatic=False, use_new_cursor=False):
-        today = fields.Date.today()
-        for company in self.env['res.company'].search([]):
+            today = fields.Date.today()
+            company = self.env.company
             if company.attendance_report_autocreation_period == 'monthly':
                 from_date = today.replace(day=1) - relativedelta(months=1)
                 to_date = from_date + relativedelta(months=1, days=-1)
