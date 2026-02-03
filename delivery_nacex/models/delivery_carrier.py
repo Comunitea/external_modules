@@ -53,7 +53,6 @@ class DeliveryCarrier(models.Model):
     ncx_delegation = fields.Char("NACEX Delegation Code")
     ncx_client_department = fields.Char("NACEX Franchise Code")
     ncx_oldmodel = fields.Boolean(string='Old model')
-    ncx_payment_on_delivery = fields.Boolean(string='Payment on delivery', default=False)
     ncx_printer_model = fields.Selection(
         [
             ("TECSV4_B", "TECSV4_B"),
@@ -129,10 +128,6 @@ class DeliveryCarrier(models.Model):
             "obs4={}".format(picking.delivery_note[113:151] if picking.delivery_note else ''),
             "ret={}".format("S" if picking.ncx_shipping_return else "N"),
         ]
-
-        if self.ncx_payment_on_delivery and self.ncx_pod_type:
-            arrayOfString_3.append("ree={}".format(self.pdo_quantity))
-            arrayOfString_3.append("tip_ree={}".format(self.ncx_pod_type))
 
         putExpedicion = {
             "String_1": self.ncx_account,
