@@ -115,7 +115,7 @@ class DeliveryCarrier(models.Model):
             "ref_cli={}".format(picking.name),
             "tip_env={}".format(self.ncx_package_type),
             "bul={}".format(picking.number_of_packages if picking.number_of_packages else 1),
-            "kil={}".format(picking.shipping_weight if picking.shipping_weight else 1),
+            "kil={}".format(round(picking.shipping_weight,3) if picking.shipping_weight else 1),
             "nom_ent={}".format(picking.partner_id.display_name[:50]),
             "dir_ent={} {}".format(picking.partner_id.street if picking.partner_id.street else '', picking.partner_id.street2 if picking.partner_id.street2 else ''),
             "pais_ent={}".format(picking.partner_id.country_id.code),
