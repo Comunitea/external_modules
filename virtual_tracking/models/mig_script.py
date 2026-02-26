@@ -18,7 +18,7 @@ def get_xml_id(model, id):
 def execute_kw(model, function, domain, limit=0):
     return models.execute_kw(DB, UID, PASS, model, 'search', [domain], {'limit': limit})
 
-def import_from_odoo (model, domain, fields, limit=0)
+def import_from_odoo (model, domain, fields, limit=0):
     ids = execute_kw(model, 'search', domain, limit)
     return models.execute_kw(DB, UID, PASS, model, 'read', [ids], {'fields': fields})
 
@@ -32,7 +32,7 @@ class ResUsers(models.Model):
             return json[id]
         return False
 
-    def import_brand_ids(self, test=True)
+    def import_brand_ids(self, test=True):
         brand_ids = import_from_odoo('product.brand', [], ['name'])
         if test:
             return brand_ids
@@ -40,7 +40,7 @@ class ResUsers(models.Model):
             for brand in brand_ids:
                 self.env['product.brand'].create(brand)
 
-    def import_categ_ids(self, test=True)
+    def import_categ_ids(self, test=True):
         categ_ids = import_from_odoo('product.category', [('name', '!=', 'All')], ['name', 'parent_id'])
         if test:
             return categ_ids
