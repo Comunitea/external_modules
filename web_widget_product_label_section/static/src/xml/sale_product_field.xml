@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <t t-inherit="sale.SaleProductField" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if='props.readonly']/t[@t-if='!isSectionOrNote']/t[@t-else='']/textarea[@t-ref='labelNodeRef']" position="attributes">
+            <attribute name="readonly" remove="1"/>
+            <attribute name="t-att-readonly">sectionAndNoteIsReadonly</attribute>
+        </xpath>
+    </t>
+</odoo>
