@@ -93,7 +93,7 @@ class ResPartnerRappelRel(models.Model):
                     total_rappel = rappel.rappel_id.fix_qty
                 else:
                     total = sum([x.price_subtotal
-                                 for x in invoice_lines]) + \
+                                 for x in invoice_lines]) - \
                         sum([x.price_subtotal for x in refund_lines])
                     if total:
                         total_rappel = total * rappel.rappel_id.fix_qty / 100.0
