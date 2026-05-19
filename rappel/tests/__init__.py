@@ -1,0 +1,5 @@
+# © 2024 Comunitea
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+from . import test_rappel
+from . import test_rappel_compute
+from . import test_rappel_invoice
