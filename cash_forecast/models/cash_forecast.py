@@ -43,7 +43,7 @@ class CashForecast(models.Model):
     previous_payment_inputs = fields.Float('Overdue Payment Inputs',
         readonly=True, copy=False)
     previous_payment_input_ids = fields.Many2many(
-        comodel_name='bank.payment.line',
+        comodel_name='account.payment.line',
         string='Overdue Input Payment items',
         relation='cash_forecast_previous_payment_input_rel',
         readonly=True,
@@ -51,7 +51,7 @@ class CashForecast(models.Model):
     previous_payment_outputs = fields.Float('Overdue Payment Outputs',
         readonly=True, copy=False)
     previous_payment_output_ids = fields.Many2many(
-        comodel_name='bank.payment.line',
+        comodel_name='account.payment.line',
         string='Overdue Output Payment Items',
         relation='cash_forecast_previous_payment_output_rel',
         readonly=True,
@@ -72,14 +72,12 @@ class CashForecast(models.Model):
                                     readonly=True, copy=False)
 
 
-    @api.multi
     def delete_forecast_lines(self):
         for forecast in self:
             domain = [('forecast_id', '=', forecast.id)]
             self.env['cash.forecast.line'].search(domain).unlink()
         return
 
-    @api.multi
     def unlink(self):
         self.delete_forecast_lines()
         res = super(CashForecast, self).unlink()
@@ -157,7 +155,6 @@ class CashForecast(models.Model):
         return move_lines
 
 
-    @api.multi
     def _get_move_line_domain(self, type, date_start, date_end, account_ids
     = False):
         self.ensure_one()
@@ -261,7 +258,6 @@ class CashForecast(models.Model):
         }
         return vals
 
-    @api.multi
     def create_lines(self):
         self.ensure_one()
         self.delete_forecast_lines()
@@ -322,14 +318,12 @@ class CashForecast(models.Model):
             prev_line = self.env['cash.forecast.line'].create(line_vals)
         return
 
-    @api.multi
     @api.depends('previous_input_ids')
     def _compute_previous_inputs(self):
         for forecast in self:
             forecast.previous_inputs = sum(forecast.previous_input_ids.mapped(
                 'amount_residual'))
 
-    @api.multi
     @api.depends('previous_output_ids')
     def _compute_previous_outputs(self):
         for forecast in self:
@@ -337,7 +331,6 @@ class CashForecast(models.Model):
                 forecast.previous_output_ids.mapped(
                 'amount_residual'))
 
-    @api.multi
     @api.depends('previous_payment_input_ids')
     def _compute_previous_payment_inputs(self):
         for forecast in self:
@@ -345,7 +338,6 @@ class CashForecast(models.Model):
                 forecast.previous_payment_input_ids.mapped(
                 'amount_currency'))
 
-    @api.multi
     @api.depends('previous_payment_output_ids')
     def _compute_previous_payment_outputs(self):
         for forecast in self:
@@ -353,7 +345,6 @@ class CashForecast(models.Model):
                 forecast.previous_payment_output_ids.mapped(
                     'amount_currency'))
 
-    @api.multi
     @api.depends('previous_outputs', 'previous_inputs')
     def _compute_previous_balance(self):
         for forecast in self:
@@ -432,13 +423,13 @@ class CashForecastLine(models.Model):
     )
     payment_inputs = fields.Float('Payment Inputs', readonly=True, copy=False)
     payment_input_ids = fields.Many2many(
-        comodel_name='bank.payment.line', string='Input Payment items',
+        comodel_name='account.payment.line', string='Input Payment items',
         relation='cash_forecast_payment_input_line_rel', readonly=True,
         copy=False)
     payment_outputs = fields.Float('Payment Outputs', readonly=True,
                                    copy=False)
     payment_output_ids = fields.Many2many(
-        comodel_name='bank.payment.line', string='Output Payment items',
+        comodel_name='account.payment.line', string='Output Payment items',
         relation='cash_forecast_payment_output_lines_rel', readonly=True,
         copy=False)
     payment_move_line_outputs = fields.Float(

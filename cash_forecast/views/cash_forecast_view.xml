@@ -6,12 +6,12 @@
         <field name="name">cash.forecast.view.tree</field>
         <field name="model">cash.forecast</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="date"/>
                 <field name="periods"/>
                 <field name="company_id"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record id="cash_forecast_view_form" model="ir.ui.view">
@@ -84,8 +84,7 @@
     <record id="action_cash_forecast" model="ir.actions.act_window">
         <field name="name">Cash Forecast</field>
         <field name="res_model">cash.forecast</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem name="Cash Forecast" id="menu_cash_forecast"
@@ -101,32 +100,34 @@
             <search string="Search Payments">
                 <filter name="from_invoices"
                         string="From invoices"
-                        domain="[('stored_invoice_id', '&lt;&gt;', False)]"/>
+                        domain="[('move_id.move_type', 'in',
+                                ['out_invoice', 'out_refund',
+                                'in_invoice', 'in_refund'])]"/>
                 <separator orientation="vertical"/>
                 <filter name="unreconciled"
                         string="Unreconciled"
                         domain="[('reconciled','=',False)]"
                         help="Unreconciled payments"/>
                 <separator orientation="vertical"/>
-                <filter string="Overdue"
+                 <filter string="Overdue"
                         domain="[('date_maturity','&lt;',time.strftime('%%Y-%%m-%%d'))]"
                         help="Overdue payments" name="overdue"/>
                 <separator orientation="vertical"/>
                 <field name="account_id"/>
                 <field name="name"/>
                 <field name="partner_id"/>
-                <field name="invoice_id"/>
+                <field name="move_id"/>
                 <field name="invoice_user_id"/>
                 <field name="invoice_origin"/>
                 <field name="date_maturity"/>
                 <field name="reconciled"/>
                 <field name="amount_residual"/>
                 <field name="amount_residual_currency"/>
-                <group expand="0" string="Group By...">
-                    <filter string="Invoice"
+                <group>
+                   <filter string="Invoice"
                             name="invoice"
                             domain="[]"
-                            context="{'group_by':'stored_invoice_id'}"/>
+                            context="{'group_by':'move_id'}"/>
                     <filter string="Month"
                             name="month"
                             domain="[]"
@@ -159,14 +160,14 @@
     <record model="ir.actions.act_window" id="action_payments">
         <field name="name">Payments and due list</field>
         <field name="res_model">account.move.line</field>
-        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="view_mode">list,form,pivot,graph</field>
         <field name="context">{'search_default_payment_mode': 1,'search_default_due_date': 1,'search_default_partner': 1,'search_default_journal': 1}</field>
         <field name="view_ids" eval="[(5, 0, 0),
-                                      (0, 0, {'view_mode': 'tree', 'view_id': ref('account_due_list.view_payments_tree')}),
+                                      (0, 0, {'view_mode': 'list', 'view_id': ref('account_due_list.view_payments_tree')}),
                                       (0, 0, {'view_mode': 'pivot', 'view_id': ref('account_due_list.view_payments_pivot')}),
                                       (0, 0, {'view_mode': 'graph', 'view_id': ref('account_due_list.view_payments_graph')})]"/>
         <field name="search_view_id" ref="view_payments_cash_filter"/>
-        <field name="domain">[('account_id.internal_type', 'in', ['receivable', 'payable'])]</field>
+        <field name="domain">[('account_id.account_type', 'in', ['asset_receivable', 'liability_payable'])]</field>
 
     </record>
 
@@ -174,7 +175,7 @@
         <field name="name">cash.forecast.line.view.tree</field>
         <field name="model">cash.forecast.line</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="month"/>
                 <field name="start_date"/>
                 <field name="end_date"/>
@@ -211,7 +212,7 @@
                     icon="fa-search-plus"/>
                 <field name="period_balance"/>
                 <field name="final_balance"/>
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

@@ -3,7 +3,7 @@
 
 {
     'name': 'Cash Forecast',
-    'version': '12.0.1.0.0',
+    'version': '19.0.1.0.0',
     'author': 'Comunitea ',
     "category": "Custom",
     "description": """Cash forecast for configured periods""",
@@ -12,7 +12,8 @@
         'account',
         'account_payment_order',
         'l10n_es_account_banking_sepa_fsdd',
-        'account_due_list'
+        'account_due_list',
+        'account_payment_mode',
     ],
     'contributors': [
         "Comunitea ",
