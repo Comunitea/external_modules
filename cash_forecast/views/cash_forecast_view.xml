@@ -34,33 +34,45 @@
                         <field name="payment_mode_ids"  widget="many2many_tags"/>
                         <field name="company_id"/>
                     </group>
-                    <group string="Overdue" col="17">
-                        <field name="previous_inputs"/>
-                        <button name="get_calculated_previous_inputs"
-                            type="object"
-                            help="Show previous inputs"
-                            icon="fa-search-plus"/>
-                        <field name="previous_payment_inputs"/>
-                        <button name="get_calculated_previous_payment_inputs"
-                            type="object"
-                            help="Show previous payment inputs"
-                            icon="fa-search-plus"/>
-                        <field name="previous_outputs"/>
-                        <button name="get_calculated_previous_outputs"
-                            type="object"
-                            help="Show previous outputs"
-                            icon="fa-search-plus"/>
-                        <field name="previous_payment_outputs"/>
-                        <button name="get_calculated_previous_payment_outputs"
-                            type="object"
-                            help="Show previous payment outputs"
-                            icon="fa-search-plus"/>
-                        <field name="previous_payment_move_line_outputs"/>
-                        <button name="get_calculated_previous_payment_move_line_outputs"
-                            type="object"
-                            help="Show previous payment move line outputs"
-                            icon="fa-search-plus"/>
-                        <field name="previous_balance"/>
+                    <group string="Overdue">
+                        <group>
+                            <field name="previous_inputs"/>
+                            <button name="get_calculated_previous_inputs"
+                                type="object"
+                                help="Show previous inputs"
+                                icon="fa-search-plus"/>
+                        </group>
+                        <group>
+                            <field name="previous_payment_inputs"/>
+                            <button name="get_calculated_previous_payment_inputs"
+                                type="object"
+                                help="Show previous payment inputs"
+                                icon="fa-search-plus"/>
+                        </group>
+                        <group>
+                            <field name="previous_outputs"/>
+                            <button name="get_calculated_previous_outputs"
+                                type="object"
+                                help="Show previous outputs"
+                                icon="fa-search-plus"/>
+                        </group>
+                        <group>
+                            <field name="previous_payment_outputs"/>
+                            <button name="get_calculated_previous_payment_outputs"
+                                type="object"
+                                help="Show previous payment outputs"
+                                icon="fa-search-plus"/>
+                        </group>
+                        <group>
+                            <field name="previous_payment_move_line_outputs"/>
+                            <button name="get_calculated_previous_payment_move_line_outputs"
+                                type="object"
+                                help="Show previous payment move line outputs"
+                                icon="fa-search-plus"/>
+                        </group>
+                        <group>
+                            <field name="previous_balance"/>
+                        </group>
 
 
                     </group>

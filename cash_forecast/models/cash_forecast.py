@@ -93,8 +93,6 @@ class CashForecast(models.Model):
             (
                 account_account a
                 INNER JOIN
-                    account_account_type at ON a.user_type_id = at.id
-                INNER JOIN
                     account_move_line ml
                         ON a.id = ml.account_id
                         AND ml.date <= %s
@@ -114,49 +112,23 @@ class CashForecast(models.Model):
 
     @api.model
     def _get_payment_line(self, type, date_start, date_end):
-        if type == 'input':
-            account_ids = self.env['account.payment.mode'].search([
-                ('payment_type', '=', 'inbound'),
-                ('charge_financed', '!=', 'True')]).mapped(
-                'transfer_account_id'). \
-                filtered(lambda x: x.user_type_id.type == 'receivable')
-        else:
-            account_ids = self.env['account.payment.mode'].search([(
-                'payment_type', '=', 'outbound')]).mapped(
-                'transfer_account_id'). \
-                filtered(lambda x: x.user_type_id.type == 'payable')
-        domain = self._get_move_line_domain(
-            type, date_start, date_end, account_ids)
+        domain = self._get_move_line_domain(type, date_start, date_end)
         move_lines = self.env['account.move.line'].search(domain)
-        move_ids = move_lines.mapped('move_id')
-        move_lines_2 = self.env['account.move.line'].search([
-            ('move_id', 'in', move_ids.mapped('id')),
-            ('id', 'not in', move_lines.mapped('id'))
-            ])
-        return move_lines_2.mapped('bank_payment_line_id')
+        return move_lines.mapped('payment_line_ids')
 
     @api.model
     def _get_move_line_payment(self, type, date_start, date_end):
-        if type == 'input':
-            account_ids = self.env['account.payment.mode'].search([(
-                'payment_type', '=', 'inbound')]).mapped(
-                'transfer_account_id'). \
-                filtered(lambda x: x.user_type_id.type == 'receivable')
+        domain = self._get_move_line_domain('payments', date_start, date_end)
+        payment_accounts = self._get_payment_mode_accounts(type)
+        if payment_accounts:
+            domain.append(('account_id', 'in', payment_accounts.ids))
         else:
-            account_ids = self.env['account.payment.mode'].search([(
-                'payment_type', '=', 'outbound')]).mapped(
-                'transfer_account_id'). \
-                filtered(lambda x: x.user_type_id.type == 'other')
-        domain = self._get_move_line_domain(
-            'payments', date_start, date_end, account_ids)
-        print(domain)
+            domain.append(('id', '=', False))
         move_lines = self.env['account.move.line'].search(domain)
-        print(move_lines)
         return move_lines
 
 
-    def _get_move_line_domain(self, type, date_start, date_end, account_ids
-    = False):
+    def _get_move_line_domain(self, type, date_start, date_end):
         self.ensure_one()
         move_line_domain = [
             ('company_id', 'child_of', self.company_id.id),
@@ -169,20 +141,39 @@ class CashForecast(models.Model):
             )
         if type == 'input':
             move_line_domain.append(
-                ('account_id.internal_type', 'in', ('receivable', ))
+                ('account_id.account_type', '=', 'asset_receivable')
             )
-        elif type== 'output':
+        elif type == 'output':
             move_line_domain.append(
-                ('account_id.internal_type', 'in', ('payable',)))
-        if self.payment_mode_ids and not account_ids:
+                ('account_id.account_type', '=', 'liability_payable'))
+        if self.payment_mode_ids:
             payment_mode_ids = self.payment_mode_ids.mapped('id')
             move_line_domain.append(('payment_mode_id', 'in',
                                      payment_mode_ids))
-        if account_ids:
-            move_line_domain.append(('account_id', 'in',
-                                    account_ids.mapped('id')))
 
         return move_line_domain
+
+    def _get_payment_mode_accounts(self, type):
+        payment_type = 'inbound' if type == 'input' else 'outbound'
+        payment_modes = self.payment_mode_ids or self.env[
+            'account.payment.mode'
+        ].search([
+            ('company_id', '=', self.company_id.id),
+            ('payment_type', '=', payment_type),
+        ])
+        accounts = self.env['account.account']
+        method_lines_field = f'{payment_type}_payment_method_line_ids'
+
+        for payment_mode in payment_modes:
+            journals = payment_mode.fixed_journal_id | \
+                payment_mode.variable_journal_ids
+            method_lines = journals[method_lines_field].filtered(
+                lambda line, payment_mode=payment_mode:
+                line.payment_method_id == payment_mode.payment_method_id
+            )
+            accounts |= method_lines.mapped('payment_account_id')
+
+        return accounts
 
 
 
@@ -198,8 +189,8 @@ class CashForecast(models.Model):
 
         if not prevline_id:
             bank_account_ids = self.env['account.account'].search([
-                ('user_type_id.type', '=', 'liquidity'),
-                ('company_id', 'child_of', self.company_id.id)])
+                ('account_type', '=', 'asset_cash'),
+                ('company_ids', 'child_of', self.company_id.id)])
             initial_balance = self.get_balance(bank_account_ids, self.date,
                                                False)
             start_date = fields.Date.to_date(self.date)
@@ -318,63 +309,29 @@ class CashForecast(models.Model):
             prev_line = self.env['cash.forecast.line'].create(line_vals)
         return
 
-    @api.depends('previous_input_ids')
-    def _compute_previous_inputs(self):
-        for forecast in self:
-            forecast.previous_inputs = sum(forecast.previous_input_ids.mapped(
-                'amount_residual'))
-
-    @api.depends('previous_output_ids')
-    def _compute_previous_outputs(self):
-        for forecast in self:
-            forecast.previous_outputs = -1 * sum(
-                forecast.previous_output_ids.mapped(
-                'amount_residual'))
-
-    @api.depends('previous_payment_input_ids')
-    def _compute_previous_payment_inputs(self):
-        for forecast in self:
-            forecast.previous_payment_inputs = sum(
-                forecast.previous_payment_input_ids.mapped(
-                'amount_currency'))
-
-    @api.depends('previous_payment_output_ids')
-    def _compute_previous_payment_outputs(self):
-        for forecast in self:
-            forecast.previous_payment_outputs = -1 * sum(
-                forecast.previous_payment_output_ids.mapped(
-                    'amount_currency'))
-
-    @api.depends('previous_outputs', 'previous_inputs')
-    def _compute_previous_balance(self):
-        for forecast in self:
-            forecast.previous_balance = forecast.previous_inputs + \
-                                        forecast.previous_outputs + \
-                                        forecast.previous_payment_inputs + \
-                                        forecast.previous_payment_outputs
 
     def get_calculated_previous_inputs(self):
         res = self.env.ref('cash_forecast.action_payments').read()[0]
         view = self.env.ref('account_due_list.view_payments_tree')
-        res['views'] = [(view.id, 'tree')]
+        res['views'] = [(view.id, 'list')]
         res['domain'] = [('id', 'in', self.previous_input_ids.ids)]
         return res
 
     def get_calculated_previous_outputs(self):
         res = self.env.ref('cash_forecast.action_payments').read()[0]
         view = self.env.ref('account_due_list.view_payments_tree')
-        res['views'] = [(view.id, 'tree')]
+        res['views'] = [(view.id, 'list')]
         res['domain'] = [('id', 'in', self.previous_output_ids.ids)]
         return res
 
     def get_calculated_previous_payment_inputs(self):
-        res = self.env.ref('account_payment_order.bank_payment_line_action').read()[0]
+        res = self.env.ref('account_payment_order.account_payment_line_action').read()[0]
         res['domain'] = [('id', 'in', self.previous_payment_input_ids.ids)]
         return res
 
     def get_calculated_previous_payment_outputs(self):
         res = \
-        self.env.ref('account_payment_order.bank_payment_line_action').read()[
+        self.env.ref('account_payment_order.account_payment_line_action').read()[
             0]
         res['domain'] = [('id', 'in', self.previous_payment_output_ids.ids)]
         return res
@@ -384,12 +341,6 @@ class CashForecast(models.Model):
         res['domain'] = [('id', 'in',
                           self.previous_payment_move_line_output_ids.ids)]
         return res
-
-    #def view_forecasted_items(self):
-    #    res = self.env.ref(
-    #        'purchase_advance_payment_forecast.action_forecast_items
-        #        ').read()[0]
-    #    return res
 
     def view_all_payment_items(self):
         res = self.env.ref(
@@ -448,14 +399,14 @@ class CashForecastLine(models.Model):
     def get_calculated_inputs(self):
         res = self.env.ref('cash_forecast.action_payments').read()[0]
         view = self.env.ref('account_due_list.view_payments_tree')
-        res['views'] = [(view.id, 'tree')]
+        res['views'] = [(view.id, 'list')]
         res['domain'] = [('id', 'in', self.input_ids.ids)]
         return res
 
     def get_calculated_outputs(self):
         res = self.env.ref('cash_forecast.action_payments').read()[0]
         view = self.env.ref('account_due_list.view_payments_tree')
-        res['views'] = [(view.id, 'tree')]
+        res['views'] = [(view.id, 'list')]
         res['domain'] = [('id', 'in', self.output_ids.ids)]
         return res
 
