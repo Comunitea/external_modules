@@ -264,11 +264,6 @@ class CashForecast(models.Model):
                                                   previous_date)
         previous_payment_output_ids = self._get_payment_line('output', False,
                                                   previous_date)
-        previous_payment_move_line_output_ids = self._get_move_line_payment(
-            'output', False, previous_date)
-        previous_payment_move_line_outputs = sum(
-            previous_payment_move_line_output_ids.mapped(
-                'amount_residual'))
         previous_inputs = sum(previous_input_ids.mapped(
             'amount_residual'))
         previous_outputs = sum(previous_output_ids.mapped(
@@ -280,8 +275,7 @@ class CashForecast(models.Model):
         previous_balance = previous_inputs + \
                            previous_outputs + \
                            previous_payment_inputs + \
-                           previous_payment_outputs + \
-                           previous_payment_move_line_outputs
+                           previous_payment_outputs
         self.write(
             {
                 'previous_input_ids': [(6, 0, previous_input_ids.ids)],
@@ -296,8 +290,6 @@ class CashForecast(models.Model):
                 'previous_outputs': previous_outputs,
                 'previous_payment_inputs': previous_payment_inputs,
                 'previous_payment_outputs': previous_payment_outputs,
-                'previous_payment_move_line_outputs':
-                    previous_payment_move_line_outputs,
                 'previous_balance': previous_balance
 
             }
@@ -334,12 +326,6 @@ class CashForecast(models.Model):
         self.env.ref('account_payment_order.account_payment_line_action').read()[
             0]
         res['domain'] = [('id', 'in', self.previous_payment_output_ids.ids)]
-        return res
-    def get_calculated_previous_payment_move_line_outputs(self):
-        res = self.env.ref('account.action_account_moves_all_a'). \
-            read()[0]
-        res['domain'] = [('id', 'in',
-                          self.previous_payment_move_line_output_ids.ids)]
         return res
 
     def view_all_payment_items(self):
@@ -383,16 +369,6 @@ class CashForecastLine(models.Model):
         comodel_name='account.payment.line', string='Output Payment items',
         relation='cash_forecast_payment_output_lines_rel', readonly=True,
         copy=False)
-    payment_move_line_outputs = fields.Float(
-        'Payment Move Line Outputs',
-        readonly=True,
-        copy=False)
-    payment_move_line_output_ids = fields.Many2many(
-        comodel_name='account.move.line',
-        string=' Output Payment Move Line items',
-        relation='cash_forecast_payment_output_move_lines_rel',
-        readonly=True,
-        copy=False)
     start_date = fields.Date('From', readonly=True)
     end_date = fields.Date('To', readonly=True)
 
@@ -420,10 +396,4 @@ class CashForecastLine(models.Model):
         res = self.env.ref('account_payment_order.bank_payment_line_action').\
             read()[0]
         res['domain'] = [('id', 'in', self.payment_output_ids.ids)]
-        return res
-
-    def get_calculated_payment_move_line_outputs(self):
-        res = self.env.ref('account.action_account_moves_all_a').\
-            read()[0]
-        res['domain'] = [('id', 'in', self.payment_move_line_output_ids.ids)]
         return res
