@@ -56,16 +56,6 @@ class CashForecast(models.Model):
         relation='cash_forecast_previous_payment_output_rel',
         readonly=True,
         copy=False)
-    previous_payment_move_line_outputs = fields.Float(
-        'Overdue Payment Outputs Move Lines',
-        readonly=True,
-        copy=False)
-    previous_payment_move_line_output_ids = fields.Many2many(
-        comodel_name='account.move.line',
-        string=' Overdue Output Payment Move Line items',
-        relation='cash_forecast_previous_payment_output_move_lines_rel',
-        readonly=True,
-        copy=False)
     previous_balance = fields.Float('Overdue Balance', readonly=True,
                                     copy=False)
     cash_line_ids = fields.One2many('cash.forecast.line', 'forecast_id',
@@ -220,13 +210,7 @@ class CashForecast(models.Model):
                                                    end_date)
         payment_outputs = -1 * sum(payment_output_ids.mapped(
             'amount_currency'))
-        payment_move_line_output_ids = self._get_move_line_payment('output',
-                                                    start_date, end_date)
-        payment_move_line_outputs =  sum(
-            payment_move_line_output_ids.mapped(
-            'amount_residual'))
-        period_balance = inputs + outputs + payment_inputs + payment_outputs\
-                         + payment_move_line_outputs
+        period_balance = inputs + outputs + payment_inputs + payment_outputs
         final_balance = initial_balance + period_balance
         vals = {
             'month': start_date.month,
@@ -239,11 +223,8 @@ class CashForecast(models.Model):
             'output_ids': [(6, 0, output_ids.ids)],
             'payment_inputs': payment_inputs,
             'payment_outputs': payment_outputs,
-            'payment_move_line_outputs': payment_move_line_outputs,
             'payment_input_ids': [(6, 0, payment_input_ids.ids)],
             'payment_output_ids': [(6, 0, payment_output_ids.ids)],
-            'payment_move_line_output_ids': [(6, 0,
-                                            payment_move_line_output_ids.ids)],
             'period_balance': period_balance,
             'final_balance': final_balance,
         }
@@ -284,8 +265,6 @@ class CashForecast(models.Model):
                                             previous_payment_input_ids.ids)],
                 'previous_payment_output_ids': [(6, 0,
                                             previous_payment_output_ids.ids)],
-                'previous_payment_move_line_output_ids': [(6, 0,
-                                previous_payment_move_line_output_ids.ids)],
                 'previous_inputs': previous_inputs,
                 'previous_outputs': previous_outputs,
                 'previous_payment_inputs': previous_payment_inputs,
@@ -387,13 +366,13 @@ class CashForecastLine(models.Model):
         return res
 
     def get_calculated_payment_inputs(self):
-        res = self.env.ref('account_payment_order.bank_payment_line_action').\
+        res = self.env.ref('account_payment_order.account_payment_line_action').\
             read()[0]
         res['domain'] = [('id', 'in', self.payment_input_ids.ids)]
         return res
 
     def get_calculated_payment_outputs(self):
-        res = self.env.ref('account_payment_order.bank_payment_line_action').\
+        res = self.env.ref('account_payment_order.account_payment_line_action').\
             read()[0]
         res['domain'] = [('id', 'in', self.payment_output_ids.ids)]
         return res
