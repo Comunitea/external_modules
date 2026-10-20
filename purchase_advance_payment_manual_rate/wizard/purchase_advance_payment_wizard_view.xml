@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_account_voucher_wizard" model="ir.ui.view">
+        <field name="name">Advance Payment - purchase_advance_payment_manual_rate</field>
+        <field name="model">account.voucher.wizard.purchase</field>
+        <field
+            name="inherit_id"
+            ref="purchase_advance_payment.view_account_voucher_wizard"
+        />
+        <field name="arch" type="xml">
+            <field name="currency_amount" position="before">
+                <field name="manual_rate_available" invisible="1" />
+                <field name="use_manual_rate" invisible="1" />
+                <label for="manual_rate" invisible="not manual_rate_available" />
+                <div
+                    name="manual_rate_div"
+                    class="o_row"
+                    invisible="not manual_rate_available"
+                >
+                    <span>1</span>
+                    <field
+                        name="manual_rate_base_currency_id"
+                        readonly="1"
+                        options="{'no_open': True}"
+                        class="w-auto"
+                    />
+                    <span>=</span>
+                    <field
+                        name="manual_rate"
+                        digits="[12, 6]"
+                        class="oe_inline"
+                    />
+                    <field
+                        name="manual_rate_currency_id"
+                        readonly="1"
+                        options="{'no_open': True}"
+                        class="w-auto"
+                    />
+                    <button
+                        type="object"
+                        name="action_refresh_manual_rate"
+                        icon="fa-refresh"
+                        title="Reset the rate to the one defined in the system"
+                        class="btn btn-link p-0"
+                        invisible="not use_manual_rate"
+                    />
+                </div>
+                <label for="manual_inverse_rate" invisible="not manual_rate_available" />
+                <div
+                    name="manual_inverse_rate_div"
+                    class="o_row"
+                    invisible="not manual_rate_available"
+                >
+                    <span>1</span>
+                    <field
+                        name="manual_rate_currency_id"
+                        readonly="1"
+                        options="{'no_open': True}"
+                        class="w-auto"
+                    />
+                    <span>=</span>
+                    <field
+                        name="manual_inverse_rate"
+                        digits="[12, 6]"
+                        class="oe_inline"
+                    />
+                    <field
+                        name="manual_rate_base_currency_id"
+                        readonly="1"
+                        options="{'no_open': True}"
+                        class="w-auto"
+                    />
+                </div>
+            </field>
+        </field>
+    </record>
+</odoo>

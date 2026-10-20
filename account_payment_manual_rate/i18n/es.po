@@ -1,0 +1,161 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_payment_manual_rate
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 08:47+0000\n"
+"PO-Revision-Date: 2026-10-20 08:47+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_payment_manual_rate
+#: model_terms:ir.ui.view,arch_db:account_payment_manual_rate.view_account_payment_form
+#: model_terms:ir.ui.view,arch_db:account_payment_manual_rate.view_account_payment_register_form
+msgid "<span>1</span>"
+msgstr ""
+
+#. module: account_payment_manual_rate
+#: model_terms:ir.ui.view,arch_db:account_payment_manual_rate.view_account_payment_form
+#: model_terms:ir.ui.view,arch_db:account_payment_manual_rate.view_account_payment_register_form
+msgid "<span>=</span>"
+msgstr ""
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__display_name
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__display_name
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_rate
+msgid "Exchange Rate"
+msgstr "Tipo de cambio"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__id
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__id
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__id
+msgid "ID"
+msgstr ""
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__manual_inverse_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__manual_inverse_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_inverse_rate
+msgid "Inverse Exchange Rate"
+msgstr "Tipo de cambio inverso"
+
+#. module: account_payment_manual_rate
+#: model:ir.model,name:account_payment_manual_rate.model_manual_currency_rate_mixin
+msgid "Manual Currency Rate Mixin"
+msgstr "Mixin de tipo de cambio manual"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__use_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__use_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__use_manual_rate
+msgid "Manual Exchange Rate"
+msgstr "Tipo de cambio manual"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__manual_rate_available
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__manual_rate_available
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_rate_available
+msgid "Manual Rate Available"
+msgstr "Tipo manual disponible"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__manual_rate_base_currency_id
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__manual_rate_base_currency_id
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_rate_base_currency_id
+msgid "Manual Rate Base Currency"
+msgstr "Moneda base del tipo manual"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__manual_rate_company_id
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__manual_rate_company_id
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_rate_company_id
+msgid "Manual Rate Company"
+msgstr "Compañía del tipo manual"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__manual_rate_currency_id
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__manual_rate_currency_id
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_rate_currency_id
+msgid "Manual Rate Currency"
+msgstr "Moneda del tipo manual"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__manual_rate_date
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__manual_rate_date
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_rate_date
+msgid "Manual Rate Date"
+msgstr "Fecha del tipo manual"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment__manual_rate_expected
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_account_payment_register__manual_rate_expected
+#: model:ir.model.fields,field_description:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_rate_expected
+msgid "Manual Rate Expected"
+msgstr "Tipo manual esperado"
+
+#. module: account_payment_manual_rate
+#: model:ir.model,name:account_payment_manual_rate.model_account_payment_register
+msgid "Pay"
+msgstr "Pagar"
+
+#. module: account_payment_manual_rate
+#: model:ir.model,name:account_payment_manual_rate.model_account_payment
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: account_payment_manual_rate
+#: model_terms:ir.ui.view,arch_db:account_payment_manual_rate.view_account_payment_form
+#: model_terms:ir.ui.view,arch_db:account_payment_manual_rate.view_account_payment_register_form
+msgid "Reset the rate to the one defined in the system"
+msgstr "Restablecer el tipo al definido en el sistema"
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_account_payment__manual_rate_available
+#: model:ir.model.fields,help:account_payment_manual_rate.field_account_payment_register__manual_rate_available
+#: model:ir.model.fields,help:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_rate_available
+msgid "The currency differs from the base one, so a rate is meaningful."
+msgstr "La moneda difiere de la base, por lo que un tipo de cambio tiene sentido."
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_account_payment__use_manual_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_account_payment_register__use_manual_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_manual_currency_rate_mixin__use_manual_rate
+msgid "The exchange rate differs from the one defined in the system."
+msgstr "El tipo de cambio difiere del definido en el sistema."
+
+#. module: account_payment_manual_rate
+#. odoo-python
+#: code:addons/account_payment_manual_rate/models/manual_currency_rate_mixin.py:0
+msgid "The exchange rate must be strictly positive."
+msgstr "El tipo de cambio debe ser estrictamente positivo."
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_account_payment__manual_inverse_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_account_payment_register__manual_inverse_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_inverse_rate
+msgid "Units of the base currency per 1 unit of the currency."
+msgstr "Unidades de la moneda base por 1 unidad de la moneda."
+
+#. module: account_payment_manual_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_account_payment__manual_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_account_payment_register__manual_rate
+#: model:ir.model.fields,help:account_payment_manual_rate.field_manual_currency_rate_mixin__manual_rate
+msgid "Units of the currency per 1 unit of the base currency."
+msgstr "Unidades de la moneda por 1 unidad de la moneda base."
