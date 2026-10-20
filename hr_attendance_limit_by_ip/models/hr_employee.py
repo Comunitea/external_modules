@@ -24,7 +24,7 @@ class HrEmployee(models.Model):
                 if re.match(ip_regex, client_ip):
                     ip_allowed = True
                     break
-        if not ip_allowed:
+        if not ip_allowed and '/iot/' not in request.httprequest.environ['PATH_INFO']:
             if not self.allow_remote_check_in:
                 raise UserError(_('URL not allowed for attendance check in/out'))
             else:
