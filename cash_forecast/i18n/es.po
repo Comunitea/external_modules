@@ -1,29 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* cash_forecast
+# 	* cash_forecast
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-08 12:08+0000\n"
-"PO-Revision-Date: 2019-11-08 12:08+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2026-10-21 20:24+0000\n"
+"PO-Revision-Date: 2026-10-21 20:24+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line__payment_move_line_output_ids
-msgid " Output Payment Move Line items"
-msgstr "Movimientos de pagos remesados"
-
-#. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast__previous_payment_move_line_output_ids
-msgid " Overdue Output Payment Move Line items"
-msgstr "Movimientos de pagos remesados vencidos"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast__payment_mode_ids
@@ -85,7 +75,7 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: cash_forecast
-#: selection:cash.forecast,period_type:0
+#: model:ir.model.fields.selection,name:cash_forecast.selection__cash_forecast__period_type__day
 msgid "Day"
 msgstr "Día"
 
@@ -121,15 +111,10 @@ msgid "From invoices"
 msgstr "De facturas"
 
 #. module: cash_forecast
-#: model_terms:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
-msgid "Group By..."
-msgstr "Agrupar por..."
-
-#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast__id
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line__initial_balance
@@ -162,12 +147,6 @@ msgid "Journal"
 msgstr "Diario"
 
 #. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast____last_update
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line____last_update
-msgid "Last Modified on"
-msgstr "Última modificación en"
-
-#. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast__write_uid
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line__write_uid
 msgid "Last Updated by"
@@ -180,8 +159,8 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: cash_forecast
-#: selection:cash.forecast,period_type:0
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line__month
+#: model:ir.model.fields.selection,name:cash_forecast.selection__cash_forecast__period_type__month
 #: model_terms:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
 msgid "Month"
 msgstr "Mes"
@@ -259,11 +238,6 @@ msgid "Overdue Payment Outputs"
 msgstr "Pagos vencidos"
 
 #. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast__previous_payment_move_line_outputs
-msgid "Overdue Payment Outputs Move Lines"
-msgstr "Movimientos de pagos vencidos"
-
-#. module: cash_forecast
 #: model_terms:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
 msgid "Overdue payments"
 msgstr "Pagos vencidos"
@@ -282,11 +256,6 @@ msgstr "Cobros"
 #: model_terms:ir.ui.view,arch_db:cash_forecast.view_payments_cash_filter
 msgid "Payment Mode"
 msgstr "Modo de pago"
-
-#. module: cash_forecast
-#: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line__payment_move_line_outputs
-msgid "Payment Move Line Outputs"
-msgstr "Movimientos de pagos vencidos"
 
 #. module: cash_forecast
 #: model:ir.model.fields,field_description:cash_forecast.field_cash_forecast_line__payment_outputs
@@ -320,13 +289,8 @@ msgstr "Buscar efectos"
 
 #. module: cash_forecast
 #: model_terms:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
-msgid "Show Payment Move Line outputs"
-msgstr "Muestra Movimientos de pagos"
-
-#. module: cash_forecast
-#: model_terms:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
 msgid "Show Payment inputs"
-msgstr "Muestraa cobros"
+msgstr "Muestra cobros"
 
 #. module: cash_forecast
 #: model_terms:ir.ui.view,arch_db:cash_forecast.cash_forecast_line_view_tree
@@ -360,11 +324,6 @@ msgstr "Muestra cobros previos"
 
 #. module: cash_forecast
 #: model_terms:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
-msgid "Show previous payment move line outputs"
-msgstr "Muestra movimientos de pagos previos"
-
-#. module: cash_forecast
-#: model_terms:ir.ui.view,arch_db:cash_forecast.cash_forecast_view_form
 msgid "Show previous payment outputs"
 msgstr "Muestra pagos previos"
 
@@ -389,17 +348,16 @@ msgid "Unreconciled payments"
 msgstr "Cobros no conciliados"
 
 #. module: cash_forecast
-#: selection:cash.forecast,period_type:0
+#: model:ir.model.fields.selection,name:cash_forecast.selection__cash_forecast__period_type__week
 msgid "Week"
 msgstr "Semana"
 
 #. module: cash_forecast
 #: model:ir.model,name:cash_forecast.model_cash_forecast
 msgid "cash.forecast"
-msgstr ""
+msgstr "Previsión de tesorería"
 
 #. module: cash_forecast
 #: model:ir.model,name:cash_forecast.model_cash_forecast_line
 msgid "cash.forecast.line"
-msgstr ""
-
+msgstr "Línea de previsión de tesorería"

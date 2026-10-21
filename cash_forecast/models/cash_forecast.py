@@ -21,7 +21,7 @@ class CashForecast(models.Model):
     date = fields.Date('Calculation Date', readonly=True)
     company_id = fields.Many2one(
         'res.company',
-        default=lambda self: self.env.user.company_id,
+        default=lambda self: self.env.company,
         required=True, readonly=True
     )
     payment_mode_ids = fields.Many2many(
@@ -73,38 +73,59 @@ class CashForecast(models.Model):
         res = super(CashForecast, self).unlink()
         return res
 
+    def _get_liquidity_accounts(self):
+        """Accounts whose posted balance is the available cash.
+
+        Besides the cash and bank accounts, it includes the outstanding
+        receipts/payments accounts (payments not yet reconciled with the
+        statement) and the suspense accounts (statement lines not yet
+        reconciled). Both kinds are counted so a statement line pending of
+        reconciliation does not duplicate its outstanding payment.
+        Using a recordset, an account shared by several roles counts once.
+        """
+        self.ensure_one()
+        company_domain = ('company_id', 'child_of', self.company_id.id)
+        accounts = self.env['account.account'].search([
+            ('account_type', '=', 'asset_cash'),
+            ('company_ids', 'child_of', self.company_id.id),
+        ])
+        journals = self.env['account.journal'].search([
+            company_domain, ('type', 'in', ('bank', 'cash', 'credit'))])
+        liquid_journals = journals.filtered(
+            lambda j: j.type in ('bank', 'cash'))
+        accounts |= liquid_journals.default_account_id
+        accounts |= liquid_journals.suspense_account_id
+        method_lines = (journals.inbound_payment_method_line_ids
+                        | journals.outbound_payment_method_line_ids)
+        accounts |= method_lines.payment_account_id
+        return accounts
+
     def get_balance(self, account_ids, date_ini, date_end):
+        if not account_ids:
+            return 0
+        company_ids = self.env['res.company'].search(
+            [('id', 'child_of', self.company_id.id)]).ids
         query = """
-            SELECT
-                SUM(COALESCE(sub.debit, 0.0)) AS debit,
-                SUM(COALESCE(sub.credit, 0.0)) AS credit,
-                SUM(COALESCE(sub.balance, 0.0)) AS balance
-            FROM
-            (
-                account_account a
-                INNER JOIN
-                    account_move_line ml
-                        ON a.id = ml.account_id
-                        AND ml.date <= %s
-                        AND a.id IN %s
-            ) sub
+            SELECT COALESCE(SUM(ml.balance), 0.0)
+            FROM account_move_line ml
+            WHERE ml.account_id IN %s
+                AND ml.date <= %s
+                AND ml.parent_state = 'posted'
+                AND ml.company_id IN %s
             """
-        query_params = ()
-        query_params += (
-            date_ini,
-        )
-        query_params += (
-            tuple(account_ids.ids),
-        )
-        self.env.cr.execute(query, query_params)
-        res = self.env.cr.fetchall()
-        return res[0][2] or 0
+        self.env['account.move.line'].flush_model()
+        self.env.cr.execute(
+            query, (tuple(account_ids.ids), date_ini, tuple(company_ids)))
+        return self.env.cr.fetchone()[0] or 0
 
     @api.model
-    def _get_payment_line(self, type, date_start, date_end):
-        domain = self._get_move_line_domain(type, date_start, date_end)
+    def _get_payment_line(self, type, date_start, date_end,
+                          posted_only=False):
+        domain = self._get_move_line_domain(
+            type, date_start, date_end, posted_only=posted_only)
         move_lines = self.env['account.move.line'].search(domain)
-        return move_lines.mapped('payment_line_ids')
+        return move_lines.payment_line_ids.filtered(
+            lambda x: x.state != 'cancel')
 
     @api.model
     def _get_move_line_payment(self, type, date_start, date_end):
@@ -118,12 +139,17 @@ class CashForecast(models.Model):
         return move_lines
 
 
-    def _get_move_line_domain(self, type, date_start, date_end):
+    def _get_move_line_domain(self, type, date_start, date_end,
+                              posted_only=False):
         self.ensure_one()
         move_line_domain = [
             ('company_id', 'child_of', self.company_id.id),
             ('date_maturity', '<=', date_end),
-            ('reconciled', '=', False)
+            ('reconciled', '=', False),
+            # Drafts are kept in the forecast periods on purpose: they work
+            # as manual forecast items. Overdue items must be posted.
+            ('parent_state', '=', 'posted') if posted_only
+            else ('parent_state', '!=', 'cancel'),
         ]
         if date_start:
             move_line_domain.append(
@@ -168,19 +194,21 @@ class CashForecast(models.Model):
 
 
     @api.model
-    def _get_move_lines(self, type, date_start, date_end):
+    def _get_move_lines(self, type, date_start, date_end, posted_only=False):
 
         domain = self._get_move_line_domain(
-            type, date_start, date_end)
-        return self.env['account.move.line'].search(domain)
+            type, date_start, date_end, posted_only=posted_only)
+        move_lines = self.env['account.move.line'].search(domain)
+        # Items already in a payment order are forecast as payment lines
+        return move_lines.filtered(
+            lambda x: not x.payment_line_ids.filtered(
+                lambda p: p.state != 'cancel'))
 
 
     def _get_cash_forecast_line_vals(self, iter, prevline_id):
 
         if not prevline_id:
-            bank_account_ids = self.env['account.account'].search([
-                ('account_type', '=', 'asset_cash'),
-                ('company_ids', 'child_of', self.company_id.id)])
+            bank_account_ids = self._get_liquidity_accounts()
             initial_balance = self.get_balance(bank_account_ids, self.date,
                                                False)
             start_date = fields.Date.to_date(self.date)
@@ -232,19 +260,21 @@ class CashForecast(models.Model):
 
     def create_lines(self):
         self.ensure_one()
+        # Search in the forecast company, whatever the company active in the UI
+        self = self.with_company(self.company_id)
         self.delete_forecast_lines()
         self.date = fields.Date.today()
         prev_line = None
         previous_date = fields.Date.to_date(self.date) + \
                         relativedelta(days=-1)
-        previous_input_ids = self._get_move_lines('input', False,
-                                                  previous_date)
-        previous_output_ids = self._get_move_lines('output', False,
-                                                   previous_date)
-        previous_payment_input_ids = self._get_payment_line('input', False,
-                                                  previous_date)
-        previous_payment_output_ids = self._get_payment_line('output', False,
-                                                  previous_date)
+        previous_input_ids = self._get_move_lines(
+            'input', False, previous_date, posted_only=True)
+        previous_output_ids = self._get_move_lines(
+            'output', False, previous_date, posted_only=True)
+        previous_payment_input_ids = self._get_payment_line(
+            'input', False, previous_date, posted_only=True)
+        previous_payment_output_ids = self._get_payment_line(
+            'output', False, previous_date, posted_only=True)
         previous_inputs = sum(previous_input_ids.mapped(
             'amount_residual'))
         previous_outputs = sum(previous_output_ids.mapped(

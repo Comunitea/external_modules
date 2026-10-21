@@ -18,7 +18,7 @@
         <field name="name">cash.forecast.view.form</field>
         <field name="model">cash.forecast</field>
         <field name="arch" type="xml">
-            <form>
+            <form class="o_cash_forecast_form">
                 <header>
                     <button class="btn-primary" name="create_lines" type="object" string="Create Forecast Lines"/>
                 </header>
@@ -39,28 +39,28 @@
                             <field name="previous_inputs"/>
                             <button name="get_calculated_previous_inputs"
                                 type="object"
-                                help="Show previous inputs"
+                                title="Show previous inputs"
                                 icon="fa-search-plus"/>
                         </group>
                         <group>
                             <field name="previous_payment_inputs"/>
                             <button name="get_calculated_previous_payment_inputs"
                                 type="object"
-                                help="Show previous payment inputs"
+                                title="Show previous payment inputs"
                                 icon="fa-search-plus"/>
                         </group>
                         <group>
                             <field name="previous_outputs"/>
                             <button name="get_calculated_previous_outputs"
                                 type="object"
-                                help="Show previous outputs"
+                                title="Show previous outputs"
                                 icon="fa-search-plus"/>
                         </group>
                         <group>
                             <field name="previous_payment_outputs"/>
                             <button name="get_calculated_previous_payment_outputs"
                                 type="object"
-                                help="Show previous payment outputs"
+                                title="Show previous payment outputs"
                                 icon="fa-search-plus"/>
                         </group>
                         <group>
@@ -188,26 +188,22 @@
                 <field name="inputs"/>
                  <button name="get_calculated_inputs"
                     type="object"
-                         string="Show inputs"
-                    help="Show inputs"
+                    title="Show inputs"
                     icon="fa-search-plus"/>
                 <field name="payment_inputs"/>
                  <button name="get_calculated_payment_inputs"
                     type="object"
-                          string="Show Payment inputs"
-                    help="Show Payment inputs"
+                    title="Show Payment inputs"
                     icon="fa-search-plus"/>
                 <field name="outputs"/>
                 <button name="get_calculated_outputs"
                     type="object"
-                        string="Show outputs"
-                    help="Show outputs"
+                    title="Show outputs"
                     icon="fa-search-plus"/>
                 <field name="payment_outputs"/>
                 <button name="get_calculated_payment_outputs"
                     type="object"
-                        string="Show Payment outputs"
-                    help="Show Payment outputs"
+                    title="Show Payment outputs"
                     icon="fa-search-plus"/>
                 <field name="period_balance"/>
                 <field name="final_balance"/>

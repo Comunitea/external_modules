@@ -9,9 +9,7 @@
     "description": """Cash forecast for configured periods""",
     'license': 'AGPL-3',
     'depends': [
-        'account',
         'account_payment_order',
-        'l10n_es_account_banking_sepa_fsdd',
         'account_due_list',
         'account_payment_mode',
     ],
@@ -24,5 +22,10 @@
         'security/ir.model.access.csv',
         'security/cash_forecast_security.xml'
     ],
+    "assets": {
+        "web.assets_backend": [
+            "cash_forecast/static/src/scss/cash_forecast.scss",
+        ],
+    },
     "installable": True
 }

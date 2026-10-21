@@ -1,0 +1,5 @@
+// Without chatter, Odoo limits the sheet to 1400px and leaves an empty
+// column on wide screens. The forecast lines table needs the full width.
+.o_form_view.o_cash_forecast_form .o_form_sheet_bg {
+    max-width: none;
+}
