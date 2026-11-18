@@ -54,9 +54,10 @@ class AccountAdminToolsImporter(models.TransientModel):
         if len(account_code) > 0:
             brother_account_code = account_code[:-1]
             while len(brother_account_code) > 0:
-                accounts = self.env['account.account'].search(
+                accounts = self.env['account.account'].with_company(
+                    self.company_id).search(
                     [('code', '=like', brother_account_code + '%%'),
-                     ('company_id', '=', self.company_id.id)])
+                     ('company_ids', 'in', self.company_id.id)])
                 if accounts:
                     return accounts[0]
                 brother_account_code = brother_account_code[:-1]
@@ -94,9 +95,10 @@ class AccountAdminToolsImporter(models.TransientModel):
                 if re.match(self.csv_code_regexp, record_code) and \
                         re.match(self.csv_name_regexp, record_name):
 
-                    accounts = self.env['account.account'].search(
+                    accounts = self.env['account.account'].with_company(
+                        self.company_id).search(
                         [('code', '=', record_code),
-                         ('company_id', '=', self.company_id.id)])
+                         ('company_ids', 'in', self.company_id.id)])
                     if accounts:
                         if self.overwrite:
                             logger.debug("Overwriting account: %s %s" %
@@ -108,25 +110,22 @@ class AccountAdminToolsImporter(models.TransientModel):
                             record_code)
 
                         if not brother_account:
-                            logger.warning("Couldn't find a\
-                                brother account for: %s" % record_code)
+                            logger.warning("Couldn't find a brother "
+                                           "account for: %s" % record_code)
+                            continue
 
-                        logger.debug("Creating new account:\
-                            %s %s" % (record_code, record_name))
-                        account = self.env['account.account'].create(
+                        logger.debug("Creating new account: %s %s" %
+                                     (record_code, record_name))
+                        account = self.env['account.account'].with_company(
+                            self.company_id).create(
                             {
                                 'code': record_code,
                                 'name': record_name,
-                                'internal_type': brother_account.internal_type,
-                                'user_type_id':
-                                    brother_account.user_type_id.id,
-                                'group_id': brother_account.group_id.id,
+                                'account_type': brother_account.account_type,
                                 'reconcile': brother_account.reconcile,
-                                'company_id': self.company_id.id,
+                                'company_ids': [(6, 0, self.company_id.ids)],
                                 'currency_id': brother_account.currency_id.id,
-                                'tax_ids': [(6, 0, [tax.id for
-                                                    tax in
-                                                    brother_account.tax_ids])],
+                                'tax_ids': [(6, 0, brother_account.tax_ids.ids)],
                                 'note': False,
                             })
 
@@ -143,9 +142,8 @@ class AccountAdminToolsImporter(models.TransientModel):
             'name': _("Imported accounts"),
             'type': 'ir.actions.act_window',
             'res_model': 'account.account',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'views': [(False, 'tree'), (account_view.id, 'form')],
+            'view_mode': 'list,form',
+            'views': [(False, 'list'), (account_view.id, 'form')],
             'domain': "[('id', 'in', %s)]" % str(imported_accounts._ids),
             'context': self.env.context,
         }
