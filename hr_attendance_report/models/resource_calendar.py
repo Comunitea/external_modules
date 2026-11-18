@@ -9,7 +9,6 @@ from pytz import timezone, utc
 from odoo import models
 
 
-
 class ResourceCalendar(models.Model):
     _inherit = "resource.calendar"
 
@@ -60,27 +59,17 @@ class ResourceCalendar(models.Model):
 
         return self._get_custom_hours(intervals, start_dt, end_dt, domain, employee)
 
-    def _get_custom_hours(self, intervals, start_dt=False, end_dt=False, domain=[], employee=False):
-        hours_without_holidays = 0
-        check_leave_hours = False
-        for start, stop, meta in intervals:
-            if len(meta) > 1:
-                for m in meta:
-                    if m.date_from == m.date_to:
-                        hours_without_holidays += m.hour_to - m.hour_from
-                        check_leave_hours = True
+    def _get_custom_hours(self, intervals, start_dt=False, end_dt=False, domain=None, employee=False):
+        """Horas de los intervalos.
 
-        if hours_without_holidays == 0:
-            hours_without_holidays = sum(
-                (stop - start).total_seconds() / 3600.0
-                for start, stop, meta in intervals
-            )
-        if start_dt and end_dt and employee and check_leave_hours:
-            leaves = self._leave_intervals_batch(
-                start_dt, end_dt, domain=domain, resources=employee.resource_id)[employee.resource_id.id]
-            hours_leaves = sum(
-                (stop - start).total_seconds() / 3600.0
-                for start, stop, meta in leaves
-            )
-            hours_without_holidays -= hours_leaves
-        return hours_without_holidays
+        En 16.0, si un intervalo juntaba varias líneas de horario, se tomaban las horas
+        de la línea de "día especial" (date_from == date_to) y se descontaban aparte las
+        ausencias. En 19.0, resource.calendar.attendance ya no tiene date_from/date_to:
+        no hay días especiales y las líneas que se solapan se unen, así que las horas son
+        la suma de los intervalos (los de _work_intervals_batch ya vienen sin ausencias).
+        Se mantiene la firma por compatibilidad.
+        """
+        return sum(
+            (stop - start).total_seconds() / 3600.0
+            for start, stop, meta in intervals
+        )
