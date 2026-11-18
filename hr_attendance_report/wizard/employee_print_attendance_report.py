@@ -30,7 +30,7 @@ class EmployeePrintAttendanceReport(models.TransientModel):
 
     def print_report(self):
         self.ensure_one()
-        datas = {'ids': self._context.get('active_ids', [])}
+        datas = {'ids': self.env.context.get('active_ids', [])}
         res = {'from_date': self.from_date, 'to_date': self.to_date}
         datas['form'] = res
         action_id = self.env["ir.actions.report"]._for_xml_id('hr_attendance_report.action_print_attendance')['id']
