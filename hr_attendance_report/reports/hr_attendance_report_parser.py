@@ -111,19 +111,20 @@ class HrAttendanceReport(models.AbstractModel):
                     employee_attendance[employee.id].append(day_attendances)
                 from_date += relativedelta(days=1)
 
-            overtime = self.env["hr.attendance.overtime"].sudo().search(
+            # En 19.0 las horas extra son hr.attendance.overtime.line; cuentan las
+            # aprobadas con su duración final (como validated_overtime_hours de Odoo).
+            overtime = self.env["hr.attendance.overtime.line"].sudo().search(
                 [
                     ("employee_id", "=", employee.id),
                     ("date", ">=", datetime.strptime(from_date_s, "%Y-%m-%d").date()),
                     ("date", "<=", datetime.strptime(to_date_s, "%Y-%m-%d").date()),
+                    ("status", "=", "approved"),
                 ]
             )
 
             extra = 0.0
             if overtime:
-                extra = sum(
-                    duration for duration in overtime.mapped("duration")
-                )
+                extra = sum(overtime.mapped("manual_duration"))
             else:
                 extra = sum(
                     x["extra"] for x in employee_attendance[employee.id]
