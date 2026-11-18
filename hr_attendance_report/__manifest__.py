@@ -41,7 +41,6 @@
         'reports/hr_employee_attendance_report.xml',
         'reports/hr_attendance_report.xml',
         'views/company_views.xml',
-        'views/hr_employee_views.xml',
         'views/hr_employee_public_views.xml',
     ],
 }
