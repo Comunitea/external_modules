@@ -24,6 +24,7 @@ from odoo import models, fields
 class EmployeePrintAttendanceReport(models.TransientModel):
 
     _name = 'hr.employee.print.attendance.report'
+    _description = 'Print attendance report'
 
     from_date = fields.Date('From', required=True)
     to_date = fields.Date('To', required=True)
@@ -33,6 +34,5 @@ class EmployeePrintAttendanceReport(models.TransientModel):
         datas = {'ids': self.env.context.get('active_ids', [])}
         res = {'from_date': self.from_date, 'to_date': self.to_date}
         datas['form'] = res
-        action_id = self.env["ir.actions.report"]._for_xml_id('hr_attendance_report.action_print_attendance')['id']
-        return self.env["ir.actions.report"].sudo().browse(action_id).\
+        return self.env.ref('hr_attendance_report.action_print_attendance').\
             report_action(self, data=datas)

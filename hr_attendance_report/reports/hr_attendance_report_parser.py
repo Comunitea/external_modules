@@ -24,6 +24,7 @@ from odoo import api, fields, models
 
 class HrAttendanceReport(models.AbstractModel):
     _name = "report.hr_attendance_report.print_attendance"
+    _description = "Attendance report"
 
     @api.model
     def _get_report_values(self, docids, data=None):
