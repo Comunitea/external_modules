@@ -251,3 +251,9 @@ msgstr "o"
 #: model:ir.model,name:hr_attendance_report.model_report_hr_attendance_report_print_attendance
 msgid "report.hr_attendance_report.print_attendance"
 msgstr ""
+
+#. module: hr_attendance_report
+#. odoo-python
+#: code:addons/hr_attendance_report/reports/hr_attendance_report_parser.py:0
+msgid "You can only print your own attendance report."
+msgstr "Solo puede imprimir su propio registro de jornada."

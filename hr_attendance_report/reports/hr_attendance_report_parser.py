@@ -19,7 +19,8 @@
 ##############################################################################
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import AccessError
 
 
 class HrAttendanceReport(models.AbstractModel):
@@ -31,7 +32,15 @@ class HrAttendanceReport(models.AbstractModel):
         docs = []
         employee_attendance = {}
         totals = {}
-        for employee in self.env["hr.employee"].browse(data["ids"]):
+        employees = self.env["hr.employee"].browse(data["ids"])
+        # Cualquier empleado puede imprimir su propio registro (desde el empleado
+        # público); el de otros, solo los responsables de asistencias. El informe se
+        # lee con sudo: en 19.0 los datos del empleado (dirección de trabajo, NAF, NIF)
+        # no son legibles para un usuario interno sin permisos de RR. HH.
+        if not self.env.user.has_group("hr_attendance.group_hr_attendance_officer") \
+                and employees - self.env.user.employee_ids:
+            raise AccessError(_("You can only print your own attendance report."))
+        for employee in employees.sudo():
             employee_attendance[employee.id] = []
             docs.append(employee)
             from_date_s = data.get("form", {}).get("from_date", "")
